@@ -1,0 +1,19 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "kval-spectravault-node"
+version = "0.2.0"
+description = "Policy-constrained adaptive connectivity node for NVIDIA Jetson Orin Nano"
+readme = "README.md"
+requires-python = ">=3.12"
+license = { text = "Apache-2.0" }
+authors = [{ name = "Preceptual.ai" }]
+dependencies = []
+
+[project.scripts]
+kval-node = "kval_node.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]

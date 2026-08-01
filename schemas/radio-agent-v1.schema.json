@@ -1,0 +1,64 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://preceptual.ai/kval/schemas/radio-agent-v1.schema.json",
+  "title": "Kval radio standards agent response",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema", "success", "capability"],
+  "properties": {
+    "schema": {"const": "kval-radio-agent/v1"},
+    "success": {"const": true},
+    "capability": {
+      "type": "object",
+      "additionalProperties": true,
+      "required": [
+        "connection_uuid",
+        "standard_identifiers",
+        "implementation_id",
+        "conformance_report_sha256"
+      ],
+      "properties": {
+        "connection_uuid": {"type": "string", "format": "uuid"},
+        "rat": {"enum": ["geran", "utran", "eutran", "nr", "nr-ntn"]},
+        "3gpp_release": {"type": "integer", "minimum": 15, "maximum": 19},
+        "dnn": {"type": "string", "minLength": 1, "maxLength": 100},
+        "s_nssai": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["sst", "sd"],
+          "properties": {
+            "sst": {"type": "integer", "minimum": 0, "maximum": 255},
+            "sd": {"type": ["string", "null"], "pattern": "^[0-9A-F]{6}$"}
+          }
+        },
+        "standard_identifiers": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "enum": [
+              "3gpp-ts-23.003",
+              "3gpp-release-17",
+              "3gpp-release-18",
+              "etsi-en-303-648",
+              "etsi-en-303-681-1",
+              "etsi-en-303-681-2",
+              "etsi-en-303-681-3",
+              "etsi-en-303-681-4",
+              "ieee-1900.5.1-2020",
+              "ieee-1900.5.2-2024",
+              "ansi-vita-49.2-2017-r2024"
+            ]
+          }
+        },
+        "approved_sdr_profile_ids": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {"type": "string", "minLength": 1}
+        },
+        "implementation_id": {"type": "string", "minLength": 1},
+        "conformance_report_sha256": {"type": "string", "pattern": "^[0-9a-fA-F]{64}$"}
+      }
+    }
+  }
+}
+

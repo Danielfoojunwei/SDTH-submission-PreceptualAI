@@ -1,0 +1,38 @@
+name: software-verification
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  linux-software:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install verification dependency
+        run: python -m pip install 'cryptography>=41,<47'
+      - name: Install Kval without network-resolved runtime dependencies
+        run: python -m pip install --no-deps --no-build-isolation -e .
+      - name: Compile
+        run: python -m compileall -q src tests scripts
+      - name: Test
+        run: python -m unittest discover -s tests -v
+      - name: Reject production simulation providers
+        run: |
+          if grep -RniE 'class (Mock|Fake|Simulated)|MockTelemetry|FakeTelemetry|SimulationBackend' src; then
+            exit 1
+          fi
+      - name: Confirm hardware gate fails off Jetson
+        run: |
+          if kval-node preflight; then
+            echo 'preflight unexpectedly accepted a non-Jetson runner' >&2
+            exit 1
+          fi
+

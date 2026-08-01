@@ -1,0 +1,13 @@
+{
+  "node_id": "air-node-01",
+  "catalog_path": "/etc/kval/catalog.signed.json",
+  "catalog_public_key_path": "/etc/kval/operator.public.pem",
+  "audit_database_path": "/var/lib/kval/audit.db",
+  "latest_result_path": "/run/kval/latest.json",
+  "service_class": "critical_data",
+  "poll_interval_seconds": 2.0,
+  "observation_max_age_seconds": 8.0,
+  "minimum_confidence": 0.75,
+  "apply_network_changes": false
+}
+

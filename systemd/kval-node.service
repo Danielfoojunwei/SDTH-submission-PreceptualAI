@@ -1,0 +1,29 @@
+[Unit]
+Description=Kval SPECTRAVAULT adaptive connectivity node
+After=NetworkManager.service ModemManager.service network-online.target
+Wants=NetworkManager.service ModemManager.service network-online.target
+
+[Service]
+Type=simple
+ExecStart=/opt/kval/venv/bin/kval-node run --config /etc/kval/node.json
+Restart=on-failure
+RestartSec=3
+Environment=KVAL_ENABLE_APPLY=NO
+User=root
+Group=root
+UMask=0027
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=true
+ProtectKernelTunables=true
+ProtectKernelModules=true
+ProtectControlGroups=true
+RestrictAddressFamilies=AF_UNIX AF_INET AF_INET6 AF_NETLINK
+CapabilityBoundingSet=CAP_NET_ADMIN CAP_NET_RAW
+AmbientCapabilities=CAP_NET_ADMIN CAP_NET_RAW
+ReadWritePaths=/var/lib/kval /run/kval
+
+[Install]
+WantedBy=multi-user.target
+
