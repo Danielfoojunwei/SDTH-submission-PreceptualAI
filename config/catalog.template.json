@@ -1,0 +1,105 @@
+{
+  "catalog_version": "replace-me-v1",
+  "created_at": "2026-08-01T00:00:00+00:00",
+  "expires_at": "2026-09-01T00:00:00+00:00",
+  "profiles": [
+    {
+      "profile_id": "wifi-primary",
+      "access_type": "wifi",
+      "connection_uuid": "REPLACE_WITH_REAL_NETWORKMANAGER_UUID",
+      "interface": "wlan0",
+      "probe_target": "REPLACE_WITH_REACHABLE_TEST_HOST",
+      "monetary_cost": 0.1,
+      "energy_cost": 0.2,
+      "minimum_dwell_seconds": 30,
+      "maximum_switches_per_hour": 8,
+      "allowed_service_classes": ["critical_data", "telemetry", "bulk_data"],
+      "standards": {
+        "required_identifiers": []
+      }
+    },
+    {
+      "profile_id": "cellular-3g",
+      "access_type": "3g",
+      "connection_uuid": "REPLACE_WITH_REAL_NETWORKMANAGER_UUID",
+      "interface": "wwan0",
+      "probe_target": "REPLACE_WITH_REACHABLE_TEST_HOST",
+      "monetary_cost": 0.4,
+      "energy_cost": 0.4,
+      "minimum_dwell_seconds": 60,
+      "maximum_switches_per_hour": 6,
+      "allowed_service_classes": ["telemetry"],
+      "standards": {
+        "required_identifiers": ["3gpp-ts-23.003"],
+        "required_rat": "utran",
+        "dnn": "REPLACE_WITH_REAL_APN_OR_DNN"
+      }
+    },
+    {
+      "profile_id": "cellular-4g",
+      "access_type": "4g",
+      "connection_uuid": "REPLACE_WITH_REAL_NETWORKMANAGER_UUID",
+      "interface": "wwan0",
+      "probe_target": "REPLACE_WITH_REACHABLE_TEST_HOST",
+      "monetary_cost": 0.45,
+      "energy_cost": 0.45,
+      "minimum_dwell_seconds": 60,
+      "maximum_switches_per_hour": 6,
+      "allowed_service_classes": ["critical_data", "telemetry", "bulk_data"],
+      "standards": {
+        "required_identifiers": ["3gpp-ts-23.003"],
+        "required_rat": "eutran",
+        "dnn": "REPLACE_WITH_REAL_APN_OR_DNN"
+      }
+    },
+    {
+      "profile_id": "cellular-5g",
+      "access_type": "5g",
+      "connection_uuid": "REPLACE_WITH_REAL_NETWORKMANAGER_UUID",
+      "interface": "wwan0",
+      "probe_target": "REPLACE_WITH_REACHABLE_TEST_HOST",
+      "monetary_cost": 0.5,
+      "energy_cost": 0.5,
+      "minimum_dwell_seconds": 60,
+      "maximum_switches_per_hour": 6,
+      "allowed_service_classes": ["critical_data", "telemetry", "bulk_data"],
+      "standards": {
+        "required_identifiers": ["3gpp-ts-23.003", "3gpp-release-18"],
+        "required_rat": "nr",
+        "minimum_3gpp_release": 18,
+        "dnn": "REPLACE_WITH_REAL_DNN",
+        "s_nssai": {"sst": 1, "sd": "010203"},
+        "capability_socket": "/run/kval-radio/cellular-5g.sock"
+      }
+    },
+    {
+      "profile_id": "ntn-primary",
+      "access_type": "ntn",
+      "connection_uuid": "REPLACE_WITH_REAL_NETWORKMANAGER_UUID",
+      "interface": "eth1",
+      "probe_target": "REPLACE_WITH_REACHABLE_TEST_HOST",
+      "monetary_cost": 0.8,
+      "energy_cost": 0.7,
+      "minimum_dwell_seconds": 120,
+      "maximum_switches_per_hour": 4,
+      "allowed_service_classes": ["critical_data", "telemetry"],
+      "standards": {
+        "required_identifiers": [
+          "3gpp-release-18",
+          "etsi-en-303-648",
+          "etsi-en-303-681-1",
+          "etsi-en-303-681-2",
+          "etsi-en-303-681-3",
+          "etsi-en-303-681-4",
+          "ieee-1900.5.1-2020",
+          "ieee-1900.5.2-2024",
+          "ansi-vita-49.2-2017-r2024"
+        ],
+        "required_rat": "nr-ntn",
+        "minimum_3gpp_release": 18,
+        "capability_socket": "/run/kval-radio/ntn-primary.sock",
+        "sdr_profile_id": "REPLACE_WITH_OPERATOR_APPROVED_SDR_PROFILE_ID"
+      }
+    }
+  ]
+}
