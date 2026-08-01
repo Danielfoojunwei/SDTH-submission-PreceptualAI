@@ -1,0 +1,22 @@
+{
+  "socket_path": "/run/kval-radio/ntn-primary.sock",
+  "evidence_public_key_path": "/etc/kval/radio-evidence.public.pem",
+  "profiles": [
+    {
+      "profile_id": "ntn-primary",
+      "sdr_profile_id": "REPLACE_WITH_OPERATOR_APPROVED_SDR_PROFILE_ID",
+      "connection_uuid": "REPLACE_WITH_REAL_NETWORKMANAGER_UUID",
+      "evidence_path": "/etc/kval/radio-evidence/ntn-primary.signed.json",
+      "activate_argv": [
+        "/usr/local/libexec/kval-radio-driver",
+        "activate",
+        "REPLACE_WITH_OPERATOR_APPROVED_SDR_PROFILE_ID"
+      ],
+      "verify_argv": [
+        "/usr/local/libexec/kval-radio-driver",
+        "status",
+        "--json"
+      ]
+    }
+  ]
+}

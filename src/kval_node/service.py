@@ -12,6 +12,7 @@ from .audit import AuditLedger
 from .config import NodeConfig
 from .executor import NetworkManagerExecutor
 from .hardware import PlatformReport, verify_jetson_platform
+from .identity import RuntimeContext, load_verified_node_manifest
 from .models import (
     Recommendation,
     ScoredProfile,
@@ -29,6 +30,12 @@ class KvalNode:
     def __init__(self, config: NodeConfig) -> None:
         self.config = config
         self.platform: PlatformReport = verify_jetson_platform()
+        self.identity = load_verified_node_manifest(
+            config.node_manifest_path,
+            config.node_manifest_public_key_path,
+        )
+        if self.identity.node_id != config.node_id:
+            raise ValueError("configured node_id does not match the signed node manifest")
         self.catalog = load_verified_catalog(config.catalog_path, config.catalog_public_key_path)
         self.audit = AuditLedger(config.audit_database_path)
         self.collector = TelemetryCollector()
@@ -70,6 +77,14 @@ class KvalNode:
         apply_requested: bool,
     ) -> dict[str, object]:
         decision = self.shield.evaluate(recommendation, snapshot, apply_requested=apply_requested)
+        context = RuntimeContext.build(
+            self.identity,
+            platform=self.platform.to_dict(),
+            catalog_hash=self.catalog.payload_hash,
+            snapshot=snapshot,
+            service_class=self.config.service_class.value,
+            decision_engine="deterministic-baseline-v1",
+        )
         activation: dict[str, object] | None = None
         activation_error: str | None = None
         if decision.action is ShieldAction.APPLY_APPROVED_PROFILE:
@@ -92,6 +107,7 @@ class KvalNode:
         payload: dict[str, object] = {
             "schema": "kval-node-result/v1",
             "node_id": self.config.node_id,
+            "context": context.to_dict(),
             "platform": self.platform.to_dict(),
             "catalog": {
                 "version": self.catalog.version,

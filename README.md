@@ -23,6 +23,10 @@ Implemented production paths:
 - 3GPP DNN, S-NSSAI, RAT, Release 17/18 and NR-NTN policy vocabulary.
 - Fail-closed ETSI RRS, IEEE 1900.5, and ANSI/VITA 49.2 capability contract for
   standards-based SDR integrations.
+- Root-only radio-agent service with signed evidence, conformance-report hash
+  verification, exact profile/UUID pinning, and fixed no-shell driver commands.
+- Offline-signed per-node identity and learning-cohort manifest, with every
+  decision bound to a fresh runtime context digest.
 - SQLite WAL audit ledger with a SHA-256 hash chain.
 - A systemd service, dependency installer, dependency cache, provisioning tool,
   and hardware-in-loop validation script.
@@ -55,8 +59,8 @@ production product must use a commercial Orin module and validated carrier.
 ## Install on the physical Jetson
 
 ```bash
-git clone https://github.com/Danielfoojunwei/Kval-.git
-cd Kval-
+git clone https://github.com/Danielfoojunwei/SDTH-submission-PreceptualAI.git
+cd SDTH-submission-PreceptualAI
 sudo ./scripts/install_jetson.sh
 ```
 
@@ -88,6 +92,9 @@ python3 scripts/provision_catalog.py \
 4. Copy only `catalog.signed.json` and `operator.public.pem` to the node. Keep
    `operator.private.pem` off the node.
 5. Copy and edit `config/node.example.json` as `/etc/kval/node.json`.
+6. Create one node manifest from `config/node-manifest.template.json`, sign it
+   offline with `scripts/provision_node_manifest.py`, and install the signed
+   envelope as `/etc/kval/node-manifest.signed.json`.
 
 ## Validate before enabling switching
 
@@ -126,3 +133,5 @@ See [Jetson validation](docs/JETSON_VALIDATION.md) and
 [architecture](docs/ARCHITECTURE.md), plus the
 [standards interoperability contract](docs/STANDARDS_INTEROPERABILITY.md) and
 [dependency policy](docs/DEPENDENCIES.md).
+The full learning and fleet evidence ladder is in
+[the end-to-end proof plan](docs/END_TO_END_PROOF_PLAN.md).

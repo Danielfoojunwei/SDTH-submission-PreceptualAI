@@ -1,0 +1,27 @@
+[Unit]
+Description=Kval fail-closed modem and SDR standards agent
+After=NetworkManager.service ModemManager.service
+Wants=NetworkManager.service ModemManager.service
+
+[Service]
+Type=simple
+ExecStart=/opt/kval/venv/bin/kval-radio-agent --config /etc/kval/radio-agent.json
+Restart=on-failure
+RestartSec=3
+User=root
+Group=root
+UMask=0077
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=true
+ProtectKernelTunables=true
+ProtectKernelModules=true
+ProtectControlGroups=true
+RestrictAddressFamilies=AF_UNIX AF_NETLINK
+CapabilityBoundingSet=CAP_NET_ADMIN CAP_NET_RAW
+AmbientCapabilities=CAP_NET_ADMIN CAP_NET_RAW
+ReadWritePaths=/run/kval-radio
+
+[Install]
+WantedBy=multi-user.target

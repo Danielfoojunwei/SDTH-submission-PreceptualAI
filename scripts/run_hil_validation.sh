@@ -25,6 +25,8 @@ jq -e '.p95_ms <= 100.0' "${run_dir}/05-benchmark.json" >/dev/null
 jq -e '.valid == true' "${run_dir}/06-audit.json" >/dev/null
 jq -e '[.telemetry.observations[] | select(.confidence >= 0.75)] | length >= 1' \
   "${run_dir}/04-second-cycle.json" >/dev/null
+jq -e '.context.context_hash | test("^[0-9a-f]{64}$")' "${run_dir}/04-second-cycle.json" >/dev/null
+jq -e '.context.node.node_id == .node_id' "${run_dir}/04-second-cycle.json" >/dev/null
 
 if [[ -n ${KVAL_HIL_APPLY_PROFILE:-} ]]; then
   KVAL_ENABLE_APPLY=YES "${kval_bin}" hil-activate \
@@ -40,4 +42,3 @@ find "${run_dir}" -maxdepth 1 -type f -name '*.json' -print0 \
   | xargs -0 sha256sum >"${run_dir}/MANIFEST.sha256"
 
 echo "Physical validation passed. Evidence: ${run_dir}"
-

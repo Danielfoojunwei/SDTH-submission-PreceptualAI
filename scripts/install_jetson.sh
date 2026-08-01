@@ -46,18 +46,26 @@ apt-get install --yes --no-install-recommends "${packages[@]}"
 
 project_root=$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)
 install -d -m 0750 /etc/kval /var/lib/kval /run/kval /opt/kval
+install -d -m 0700 /etc/kval/radio-evidence /run/kval-radio
 python3 -m venv --system-site-packages /opt/kval/venv
 /opt/kval/venv/bin/python -m pip install --no-deps --no-build-isolation "${project_root}"
 
 if [[ ! -e /etc/kval/node.json ]]; then
   install -m 0640 "${project_root}/config/node.example.json" /etc/kval/node.json
 fi
+if [[ ! -e /etc/kval/node-manifest.template.json ]]; then
+  install -m 0600 "${project_root}/config/node-manifest.template.json" /etc/kval/node-manifest.template.json
+fi
 install -m 0644 "${project_root}/systemd/kval-node.service" /etc/systemd/system/kval-node.service
+if [[ ! -e /etc/kval/radio-agent.json ]]; then
+  install -m 0600 "${project_root}/config/radio-agent.example.json" /etc/kval/radio-agent.json
+fi
+install -m 0644 "${project_root}/systemd/kval-radio-agent.service" /etc/systemd/system/kval-radio-agent.service
 systemctl daemon-reload
 systemctl enable kval-node.service
+systemctl enable kval-radio-agent.service
 
 /opt/kval/venv/bin/python -c 'import cryptography, tensorrt, kval_node; print(kval_node.__version__)'
 /opt/kval/venv/bin/kval-node preflight
 
 echo "Kval installed. Provision /etc/kval/catalog.signed.json and operator.public.pem before starting the service."
-

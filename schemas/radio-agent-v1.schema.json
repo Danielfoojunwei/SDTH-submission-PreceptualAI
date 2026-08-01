@@ -3,8 +3,7 @@
   "$id": "https://preceptual.ai/kval/schemas/radio-agent-v1.schema.json",
   "title": "Kval radio standards agent response",
   "type": "object",
-  "additionalProperties": false,
-  "required": ["schema", "success", "capability"],
+  "required": ["schema", "success"],
   "properties": {
     "schema": {"const": "kval-radio-agent/v1"},
     "success": {"const": true},
@@ -58,7 +57,14 @@
         "implementation_id": {"type": "string", "minLength": 1},
         "conformance_report_sha256": {"type": "string", "pattern": "^[0-9a-fA-F]{64}$"}
       }
-    }
-  }
+    },
+    "active_profile_id": {"type": "string", "minLength": 1},
+    "connection_uuid": {"type": "string", "format": "uuid"},
+    "catalog_hash": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "implementation_id": {"type": ["string", "null"]}
+  },
+  "oneOf": [
+    {"required": ["capability"], "not": {"required": ["active_profile_id"]}},
+    {"required": ["active_profile_id", "connection_uuid", "catalog_hash"], "not": {"required": ["capability"]}}
+  ]
 }
-

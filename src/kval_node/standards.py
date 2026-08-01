@@ -179,17 +179,25 @@ class RadioStandardsClient:
             raise RuntimeError("radio capability evidence is for a different connection UUID")
         return capability
 
-    def activate(self, path: Path, profile_id: str, connection_uuid: str, catalog_hash: str) -> dict[str, Any]:
+    def activate(
+        self,
+        path: Path,
+        profile_id: str,
+        sdr_profile_id: str,
+        connection_uuid: str,
+        catalog_hash: str,
+    ) -> dict[str, Any]:
         response = self.request(
             path,
             {
                 "operation": "activate",
                 "profile_id": profile_id,
+                "sdr_profile_id": sdr_profile_id,
                 "connection_uuid": connection_uuid,
                 "catalog_hash": catalog_hash,
             },
         )
-        if response.get("success") is not True or response.get("active_profile_id") != profile_id:
+        if response.get("success") is not True or response.get("active_profile_id") != sdr_profile_id:
             raise RuntimeError(f"radio standards agent did not confirm profile activation: {response}")
         return response
 

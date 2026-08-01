@@ -86,6 +86,27 @@ Activation uses the same socket and includes the signed catalogue hash. The
 agent must return `success: true` and the exact active profile ID. Kval then
 activates and verifies the corresponding NetworkManager UUID.
 
+## Included radio agent
+
+`kval-radio-agent` implements this boundary on the Jetson. Its root-owned
+configuration maps every signed-catalog profile and approved SDR profile ID to one exact NetworkManager UUID,
+one offline-signed evidence envelope, and fixed activation/status argument
+vectors. It never invokes a shell and accepts requests only from a root peer.
+
+Before returning capability evidence or activating a profile it verifies:
+
+- the Ed25519 signature from `/etc/kval/radio-evidence.public.pem`;
+- that evidence names the requested approved profile and connection UUID;
+- that the referenced conformance report is root-owned, not group/world
+  writable, and still matches its signed SHA-256 digest;
+- that driver executables are absolute, root-owned, executable, and not
+  group/world writable; and
+- after activation, that the driver reports the exact active profile ID.
+
+The vendor driver remains hardware-specific. Provision its immutable argument
+vectors in `/etc/kval/radio-agent.json`; do not place frequency, gain, waveform,
+or other free-form RF controls in the Kval catalogue.
+
 ## What still requires laboratory evidence
 
 - 3GPP modem/GCF or PTCRB certification and operator acceptance.
@@ -96,4 +117,3 @@ activates and verifies the corresponding NetworkManager UUID.
 
 Kval's software gates make these integrations possible and fail closed when
 their evidence is absent. They do not replace external conformance testing.
-

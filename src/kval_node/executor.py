@@ -56,6 +56,7 @@ class NetworkManagerExecutor:
         if profile.standards.capability_socket is not None and profile.standards.sdr_profile_id is not None:
             radio_agent_output = self._standards_client.activate(
                 profile.standards.capability_socket,
+                profile.profile_id,
                 profile.standards.sdr_profile_id,
                 profile.connection_uuid,
                 catalog_hash,

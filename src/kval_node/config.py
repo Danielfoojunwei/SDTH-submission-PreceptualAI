@@ -11,6 +11,8 @@ from .models import ServiceClass
 @dataclass(frozen=True)
 class NodeConfig:
     node_id: str
+    node_manifest_path: Path
+    node_manifest_public_key_path: Path
     catalog_path: Path
     catalog_public_key_path: Path
     audit_database_path: Path
@@ -27,6 +29,8 @@ class NodeConfig:
         raw: dict[str, Any] = json.loads(config_path.read_text(encoding="utf-8"))
         required = {
             "node_id",
+            "node_manifest_path",
+            "node_manifest_public_key_path",
             "catalog_path",
             "catalog_public_key_path",
             "audit_database_path",
@@ -54,6 +58,8 @@ class NodeConfig:
             raise ValueError("node_id cannot be empty")
         return cls(
             node_id=node_id,
+            node_manifest_path=Path(raw["node_manifest_path"]),
+            node_manifest_public_key_path=Path(raw["node_manifest_public_key_path"]),
             catalog_path=Path(raw["catalog_path"]),
             catalog_public_key_path=Path(raw["catalog_public_key_path"]),
             audit_database_path=Path(raw["audit_database_path"]),
@@ -64,4 +70,3 @@ class NodeConfig:
             minimum_confidence=confidence,
             apply_network_changes=bool(raw["apply_network_changes"]),
         )
-

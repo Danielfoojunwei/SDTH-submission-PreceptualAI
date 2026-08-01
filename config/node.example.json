@@ -1,5 +1,7 @@
 {
   "node_id": "air-node-01",
+  "node_manifest_path": "/etc/kval/node-manifest.signed.json",
+  "node_manifest_public_key_path": "/etc/kval/operator.public.pem",
   "catalog_path": "/etc/kval/catalog.signed.json",
   "catalog_public_key_path": "/etc/kval/operator.public.pem",
   "audit_database_path": "/var/lib/kval/audit.db",
@@ -10,4 +12,3 @@
   "minimum_confidence": 0.75,
   "apply_network_changes": false
 }
-

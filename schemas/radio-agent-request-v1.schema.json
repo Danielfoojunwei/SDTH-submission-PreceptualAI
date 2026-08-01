@@ -16,14 +16,14 @@
     {
       "type": "object",
       "additionalProperties": false,
-      "required": ["operation", "profile_id", "connection_uuid", "catalog_hash"],
+      "required": ["operation", "profile_id", "sdr_profile_id", "connection_uuid", "catalog_hash"],
       "properties": {
         "operation": {"const": "activate"},
         "profile_id": {"type": "string", "minLength": 1},
+        "sdr_profile_id": {"type": "string", "minLength": 1},
         "connection_uuid": {"type": "string", "format": "uuid"},
         "catalog_hash": {"type": "string", "pattern": "^[0-9a-f]{64}$"}
       }
     }
   ]
 }
-
