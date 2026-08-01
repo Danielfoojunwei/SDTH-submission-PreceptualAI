@@ -16,8 +16,8 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
-      - name: Install verification dependency
-        run: python -m pip install 'cryptography>=41,<47'
+      - name: Install explicit build and verification dependencies
+        run: python -m pip install 'setuptools>=68,<82' 'cryptography>=41,<47'
       - name: Install Kval without network-resolved runtime dependencies
         run: python -m pip install --no-deps --no-build-isolation -e .
       - name: Compile
@@ -35,4 +35,3 @@ jobs:
             echo 'preflight unexpectedly accepted a non-Jetson runner' >&2
             exit 1
           fi
-
