@@ -61,9 +61,18 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument("--interface", default=None, help="Wi-Fi interface to survey, e.g. wlan0")
     parser.add_argument("--adapter-id", default=None, help="defaults to kval-sensor@<hostname>")
     parser.add_argument(
+        "--allow-active-scan",
+        action="store_true",
+        help=(
+            "enable the iw scan backend, which TRANSMITS 802.11 probe requests. "
+            "Off by default: observations it contributes to are marked non-passive "
+            "and the node will refuse them"
+        ),
+    )
+    parser.add_argument(
         "--passive-scan-only",
         action="store_true",
-        help="disable the active-probing iw scan backend; survey and SDR only",
+        help="accepted and redundant: passive operation is now the default",
     )
     parser.add_argument("--no-sdr", action="store_true", help="do not use an attached RTL-SDR")
     parser.add_argument("--no-modem", action="store_true", help="do not use ModemManager serving-cell data")
@@ -82,7 +91,12 @@ def main() -> None:
 
     backends = build_backends(
         interface=args.interface,
-        enable_scan=not args.passive_scan_only,
+        # Emitting has to be asked for. It was the default, and the observation
+        # was stamped passive either way, so a deployment that never chose to
+        # transmit transmitted anyway and could not tell from the evidence.
+        # ``--passive-scan-only`` no longer changes anything; it is kept so
+        # existing units keep working and keep meaning what they say.
+        enable_scan=args.allow_active_scan and not args.passive_scan_only,
         enable_sdr=not args.no_sdr,
         enable_modem=not args.no_modem,
     )

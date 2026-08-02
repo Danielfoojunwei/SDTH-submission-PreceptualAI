@@ -27,12 +27,25 @@ Measurement sources, in preference order:
     by a configured margin; the noise floor is a low percentile of the same
     sweep. Both are computed from the sweep itself, never assumed.
 
-Everything here is **receive-only**. No backend transmits, tunes a transmitter,
-or sets gain or power. ``iw scan`` performs active probing on the host's own
-already-associated Wi-Fi interface via the standard kernel path; the survey and
-``rtl_power`` backends are strictly passive. Operators who require strict
-receive-only emission behaviour should run with ``--passive-scan-only``, which
-disables the scan backend and uses survey plus SDR data alone.
+No backend tunes a transmitter or sets gain or power, and all but one are
+strictly receive-only: ``iw survey``, ``rtl_power``, ``nmcli`` (with
+``--rescan no``, so it reads a cached BSS list) and the modem's serving-cell
+data are obtained without the host emitting.
+
+``iw scan`` is the exception and is **not** receive-only: it sends 802.11 probe
+request frames. This module used to claim "everything here is receive-only" in
+one sentence and concede the probing in the next, while stamping every
+observation ``passive: True`` regardless of which backend produced it — and the
+node refuses a non-passive observation, so that guard could never fire. For a
+system whose primary claim is that it cannot be found by its own emissions,
+passivity has to be derived from what actually ran, which is what
+``measurement_is_passive`` now does.
+
+The scan backend is therefore **off by default**. Enabling it with
+``--allow-active-scan`` is a deliberate choice to transmit, and the observations
+it contributes to are marked non-passive, which the node will refuse. That is
+the intended consequence rather than an obstacle to route around: an observation
+obtained by emitting is not admissible evidence for a system that claims not to.
 """
 
 from __future__ import annotations
@@ -78,11 +91,46 @@ class SensorBackend(Protocol):
 
     name: str
 
+    #: Whether obtaining this backend's measurement causes the host to emit.
+    #: Declared per backend because it is a property of the measurement method,
+    #: not of the deployment's intent — see ``PASSIVE_BACKENDS``.
+    passive: bool
+
     def available(self) -> bool:
         """True when this backend's tool and hardware are actually present."""
 
     def measure(self, bands: Sequence[SpectrumBand]) -> dict[str, BandMeasurement]:
         """Return measurements keyed by band_id for whatever it can observe."""
+
+
+def backend_is_passive(backend: SensorBackend) -> bool:
+    """Whether this backend obtains its measurement without the host emitting.
+
+    Read from the backend rather than from a list of names kept beside it: a
+    name list is a second place to be wrong, and the failure mode of getting it
+    wrong is a transmitter reported as silent.
+
+    A backend that declares nothing is treated as emitting. Passivity is the
+    claim this whole system rests on, so it is the one that has to be made
+    explicitly — silence about it is not evidence of silence.
+    """
+    return getattr(backend, "passive", False) is True
+
+
+def measurement_is_passive(contributors: Sequence[SensorBackend]) -> bool:
+    """Was every backend that contributed to this band receive-only?
+
+    ``iw scan`` sends 802.11 probe request frames, which is transmitting. This
+    module's docstring said so while every observation it produced was stamped
+    ``passive: True`` regardless of which backend produced it — and the node
+    refuses a non-passive observation, so that guard could never fire. The
+    adapter never told it there was anything to refuse.
+
+    A band no backend could measure is passive: nothing was emitted to obtain
+    nothing. It still carries zero quality and its errors, so the analyzer
+    treats it as insufficient evidence rather than as a clear band.
+    """
+    return all(backend_is_passive(backend) for backend in contributors)
 
 
 # --- iw survey (primary: real noise floor + measured busy ratio) ----------------
@@ -161,6 +209,7 @@ class IwSurveyBackend:
     """Kernel channel survey: measured noise floor and busy/active occupancy."""
 
     name = "iw-survey"
+    passive = True
 
     def __init__(self, interface: str) -> None:
         self.interface = interface
@@ -285,6 +334,7 @@ class IwScanBackend:
     """Distinct BSSIDs per band, their peak signal, and advertised BSS Load."""
 
     name = "iw-scan"
+    passive = False
 
     def __init__(self, interface: str) -> None:
         self.interface = interface
@@ -339,6 +389,7 @@ class NmcliWifiBackend:
     """
 
     name = "nmcli-wifi"
+    passive = True
 
     def available(self) -> bool:
         try:
@@ -465,6 +516,7 @@ class ModemSignalBackend:
     """
 
     name = "modem-signal"
+    passive = True
 
     def available(self) -> bool:
         try:
@@ -603,6 +655,7 @@ class RtlPowerBackend:
     """Real power-spectral-density sweep from an attached RTL-SDR."""
 
     name = "rtl-power"
+    passive = True
 
     def __init__(self, *, integration_seconds: int = 1, bin_hz: int = 100_000) -> None:
         self.integration_seconds = integration_seconds
@@ -718,23 +771,32 @@ class SpectrumSensorAdapter:
 
     def observe(self, policy: SpectrumPolicy, *, now: datetime | None = None) -> list[dict[str, Any]]:
         observed_at = (now or utc_now()).isoformat()
-        per_backend: list[dict[str, BandMeasurement]] = []
+        # Keep each table paired with the backend that produced it. Passivity is
+        # a property of the code that ran, so it is read from the producer
+        # rather than from the source names inside the measurement — a backend
+        # naming a source it did not produce would otherwise decide how its own
+        # emissions are reported.
+        per_backend: list[tuple[SensorBackend, dict[str, BandMeasurement]]] = []
         for backend in self.backends:
             try:
-                per_backend.append(backend.measure(policy.bands))
+                per_backend.append((backend, backend.measure(policy.bands)))
             except Exception as exc:  # a failing backend must not abort the scan
-                per_backend.append(
+                per_backend.append((
+                    backend,
                     {
                         band.band_id: BandMeasurement(
                             band.band_id, None, None, None, 0, 0.0, (), (f"{backend.name}: {exc}",)
                         )
                         for band in policy.bands
-                    }
-                )
+                    },
+                ))
 
         observations: list[dict[str, Any]] = []
         for band in policy.bands:
-            parts = [table[band.band_id] for table in per_backend if band.band_id in table]
+            contributors = [
+                backend for backend, table in per_backend if band.band_id in table
+            ]
+            parts = [table[band.band_id] for _, table in per_backend if band.band_id in table]
             merged = merge_measurements(band, parts)
             observations.append(
                 {
@@ -742,7 +804,12 @@ class SpectrumSensorAdapter:
                     "observed_at": observed_at,
                     "source_adapter_id": self.adapter_id,
                     "conformance_hash": self.conformance_hash,
-                    "passive": True,
+                    # Derived from the backends that actually contributed, not
+                    # asserted. This was hardcoded ``True``, which made the
+                    # node's refusal of a non-passive observation unreachable:
+                    # the adapter could run an active scan and still report the
+                    # result as passive. The node now gets a fact it can act on.
+                    "passive": measurement_is_passive(contributors),
                     # The node refuses out-of-range values, so an unmeasured
                     # band reports a defined value carrying errors and zero
                     # quality; the analyzer then treats it as insufficient
@@ -780,7 +847,7 @@ class SpectrumSensorAdapter:
 def build_backends(
     *,
     interface: str | None,
-    enable_scan: bool = True,
+    enable_scan: bool = False,
     enable_sdr: bool = True,
     enable_modem: bool = True,
 ) -> list[SensorBackend]:
@@ -788,6 +855,11 @@ def build_backends(
 
     Returns an empty list when no measurement source exists, so the daemon can
     refuse to start rather than serve observations it cannot make.
+
+    ``enable_scan`` defaults to False. It defaulted to True, which meant a
+    caller that never mentioned scanning still transmitted probe requests. The
+    other three defaults enable receive-only backends, so they stay on: the
+    asymmetry is the point, since only one of these emits.
     """
     backends: list[SensorBackend] = []
     if interface:

@@ -15,8 +15,11 @@ from datetime import datetime, timedelta, timezone
 
 from kval_node.sensor_adapter import (
     BandMeasurement,
+    IwScanBackend,
+    IwSurveyBackend,
     SpectrumSensorAdapter,
     adapter_conformance_hash,
+    build_backends,
     merge_measurements,
     occupancy_from_sweep,
     parse_iw_scan,
@@ -232,6 +235,7 @@ class AdapterContractTests(unittest.TestCase):
 
     class _Backend:
         name = "test-backend"
+        passive = True
 
         def __init__(self, table):
             self._table = table
@@ -306,6 +310,11 @@ class AdapterContractTests(unittest.TestCase):
     def test_failing_backend_does_not_abort_the_scan(self) -> None:
         class Broken:
             name = "broken"
+            # A receive-only backend that failed. Stated, because a backend
+            # that declares nothing counts as emitting, and a failure is not
+            # evidence that nothing was transmitted: an active scan can send
+            # its probe requests and then time out.
+            passive = True
 
             def available(self) -> bool:
                 return True
@@ -343,6 +352,118 @@ class BandPlanTests(unittest.TestCase):
                     )
                     self.assertLess(parsed.freq_low_hz, parsed.freq_high_hz)
                     self.assertIn(raw["source"], sources)
+
+
+class PassivityIsDerivedNotAssertedTests(unittest.TestCase):
+    """The claim the whole system rests on, made checkable.
+
+    ``passive`` was a hardcoded ``True`` on every observation. ``iw scan``
+    transmits 802.11 probe requests, ran by default, and its results were
+    stamped passive like everything else — so the node's refusal of a
+    non-passive observation could never fire. A sensor whose primary claim is
+    that it cannot be found by its own emissions has to derive that claim from
+    what actually ran.
+    """
+
+    class _Receiver:
+        name = "receiver"
+        passive = True
+
+        def available(self) -> bool:
+            return True
+
+        def measure(self, bands):
+            return {
+                band.band_id: BandMeasurement(band.band_id, 10.0, -95.0, None, 1, 1.0,
+                                              ("receiver",), ())
+                for band in bands
+            }
+
+    class _Emitter:
+        name = "emitter"
+        passive = False
+
+        def available(self) -> bool:
+            return True
+
+        def measure(self, bands):
+            return {
+                band.band_id: BandMeasurement(band.band_id, 20.0, -90.0, None, 2, 1.0,
+                                              ("emitter",), ())
+                for band in bands
+            }
+
+    class _Undeclared:
+        name = "undeclared"
+
+        def available(self) -> bool:
+            return True
+
+        def measure(self, bands):
+            return {
+                band.band_id: BandMeasurement(band.band_id, 5.0, -99.0, None, 1, 1.0,
+                                              ("undeclared",), ())
+                for band in bands
+            }
+
+    def _policy(self) -> SpectrumPolicy:
+        return SpectrumPolicy.from_dict(
+            {
+                "policy_id": "p", "region": "US",
+                "created_at": (NOW - timedelta(minutes=1)).isoformat(),
+                "expires_at": (NOW + timedelta(days=1)).isoformat(),
+                "bands": [{
+                    "band_id": "b", "label": "b",
+                    "freq_low_hz": 2_400_000_000, "freq_high_hz": 2_483_500_000,
+                    "max_resolution_bandwidth_hz": 1_000_000,
+                }],
+            },
+            now=NOW,
+        )
+
+    def _observe(self, *backends) -> dict:
+        adapter = SpectrumSensorAdapter(list(backends), adapter_id="passivity-test")
+        return adapter.observe(self._policy(), now=NOW)[0]
+
+    def test_a_receive_only_measurement_is_reported_passive(self) -> None:
+        self.assertTrue(self._observe(self._Receiver())["passive"])
+
+    def test_an_emitting_backend_makes_the_measurement_non_passive(self) -> None:
+        self.assertFalse(self._observe(self._Emitter())["passive"])
+
+    def test_one_emitter_among_receivers_is_enough(self) -> None:
+        # The mixed case is the real deployment: survey plus scan. Averaging
+        # passivity would be meaningless — the host either transmitted or it
+        # did not.
+        self.assertFalse(self._observe(self._Receiver(), self._Emitter())["passive"])
+
+    def test_a_backend_that_declares_nothing_counts_as_emitting(self) -> None:
+        # Fail closed. Silence about emission is not evidence of silence, and
+        # the cost of the other default is a transmitter reported as quiet.
+        self.assertFalse(self._observe(self._Undeclared())["passive"])
+
+    def test_the_node_refuses_what_the_adapter_marks_non_passive(self) -> None:
+        # End to end: the guard that could never fire, firing. Without this the
+        # derivation would be a field nothing acts on.
+        with self.assertRaisesRegex(ValueError, "must be marked passive"):
+            SpectrumObservation.from_dict(self._observe(self._Emitter()))
+
+    def test_the_node_accepts_a_genuinely_passive_measurement(self) -> None:
+        parsed = SpectrumObservation.from_dict(self._observe(self._Receiver()))
+        self.assertTrue(parsed.passive)
+
+    def test_the_real_scan_backend_declares_that_it_transmits(self) -> None:
+        # The one backend in this module that emits. If someone flips this to
+        # True, every probe request it sends starts being reported as silence.
+        self.assertFalse(IwScanBackend("wlan0").passive)
+
+    def test_the_real_survey_backend_declares_that_it_does_not(self) -> None:
+        self.assertTrue(IwSurveyBackend("wlan0").passive)
+
+    def test_active_scanning_is_off_unless_it_is_asked_for(self) -> None:
+        import inspect
+        default = inspect.signature(build_backends).parameters["enable_scan"].default
+        self.assertIs(default, False, "a caller that never mentioned scanning would transmit")
 
 
 if __name__ == "__main__":

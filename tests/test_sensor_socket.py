@@ -67,9 +67,16 @@ def policy() -> SpectrumPolicy:
 
 
 class _FixedBackend:
-    """Supplies pre-set BandMeasurements so the wire path can be exercised."""
+    """Supplies pre-set BandMeasurements so the wire path can be exercised.
+
+    A stand-in for radio hardware, because the socket contract cannot be tested
+    without something on the far end of it. It declares itself passive: it
+    stands in for a receive-only backend, and a backend that declares nothing is
+    counted as emitting.
+    """
 
     name = "wire-test-backend"
+    passive = True
 
     def __init__(self, table: dict[str, BandMeasurement]) -> None:
         self._table = table
