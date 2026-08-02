@@ -77,7 +77,43 @@ DEFAULT_GROUP_THRESHOLD = 3
 
 #: Similarity at or above which two records are treated as near-duplicates.
 #: Injected records resemble each other because one template generated them.
-DEFAULT_SIMILARITY_THRESHOLD = 0.9
+#:
+#: This was 0.9, which made the detector inert. Jaccard runs over ``key=value``
+#: pairs, so a single differing value is punished twice — it leaves the
+#: intersection *and* adds two terms to the union. A record needs nineteen
+#: fields before one varying field still scores 0.9, and a decision record here
+#: has six. A templated injection whose records differ only in a sequence
+#: number scored 0.714 and never grouped at all: the detector for MemMorph
+#: could not see MemMorph. Measured, not reasoned — see the timing gate below
+#: for why lowering this is safe.
+DEFAULT_SIMILARITY_THRESHOLD = 0.65
+
+#: How much faster than the node's own recording cadence a group must have been
+#: written before it counts as foreign.
+#:
+#: Similarity alone cannot carry this detector, and that is not a tuning
+#: problem. A node flapping between links under jamming — this system's normal
+#: condition — produces exactly what an injection produces: small groups of
+#: mutually similar records unlike the rest of history. Measured over ten
+#: profiles at three cycles each, every one of the ten regimes matched the
+#: injection on group size, share of history, internal similarity (0.714) and
+#: external similarity (0.333) alike. No threshold separates them, so a
+#: sensitive detector would fire on every node in contested spectrum.
+#:
+#: What does separate them is *rate*. A link change happens at the cadence the
+#: node decides at; injected records are written into the store in one
+#: operation. The cadence is taken from the node's own surrounding history
+#: rather than configured, so the test calibrates itself to whatever loop
+#: interval a deployment runs.
+#:
+#: Applied in both directions — see ``_written_off_the_node_s_cadence``.
+#:
+#: The evasion is real and stated: an attacker who holds the signing key, knows
+#: the node's cadence, and is willing to space the injection to match it within
+#: a factor of four defeats this test. That attacker is a long way past the
+#: signature check that runs first, and has to pace an attack whose whole appeal
+#: is that three records are enough.
+DEFAULT_CADENCE_FACTOR = 4.0
 
 #: How much *less* similar a group must be to the rest of history than to
 #: itself before it counts as foreign. Without this margin the test fires on a
@@ -234,20 +270,62 @@ class MemoryAuditor:
         group_threshold: int = DEFAULT_GROUP_THRESHOLD,
         similarity_threshold: float = DEFAULT_SIMILARITY_THRESHOLD,
         novelty_margin: float = DEFAULT_NOVELTY_MARGIN,
+        cadence_factor: float = DEFAULT_CADENCE_FACTOR,
     ) -> None:
         self.group_threshold = max(2, group_threshold)
         self.similarity_threshold = bounded_number(
             similarity_threshold, "similarity_threshold", 0.0, 1.0
         )
         self.novelty_margin = bounded_number(novelty_margin, "novelty_margin", 0.0, 1.0)
+        self.cadence_factor = bounded_number(cadence_factor, "cadence_factor", 1.0, 1000.0)
+
+    def _written_off_the_node_s_cadence(
+        self, records: Sequence[SignedRecord], members: Sequence[int], outsiders: Sequence[int]
+    ) -> tuple[bool, float, float]:
+        """Was this group written at a rate the node's own loop does not produce?
+
+        Deliberately two-sided. A burst written in one operation is the obvious
+        case, but a template drip-fed hours apart in a history recorded every
+        few minutes did not come from the loop either — and treating only the
+        fast side as suspicious would hand the attacker an evasion for the cost
+        of waiting. What a link change has, and neither of those has, is the
+        node's own cadence.
+
+        The cadence comes from the records *outside* the group, so an injected
+        burst cannot drag down the very baseline that judges it. Returns the
+        verdict along with both rates so the finding can state them.
+        """
+        def median_gap(indices: Sequence[int]) -> float:
+            times = sorted(records[i].recorded_at for i in indices)
+            gaps = [
+                (later - earlier).total_seconds()
+                for earlier, later in zip(times, times[1:])
+            ]
+            return statistics.median(gaps) if gaps else math.nan
+
+        cadence = median_gap(outsiders)
+        internal = median_gap(members)
+        if not math.isfinite(cadence) or not math.isfinite(internal) or cadence <= 0.0:
+            # Too little surrounding history to calibrate against. Refusing to
+            # judge is the honest answer; the novelty test alone is what fires
+            # on every link change, which is why it cannot govern by itself.
+            return False, internal, cadence
+        too_fast = internal * self.cadence_factor < cadence
+        too_slow = internal > cadence * self.cadence_factor
+        return too_fast or too_slow, internal, cadence
 
     def _templated_groups(self, records: Sequence[SignedRecord]) -> list[InjectionFinding]:
-        """Groups of mutually near-duplicate records unlike the rest of history.
+        """Groups of near-duplicate records, unlike the rest of history, written
+        faster than the node records.
 
-        Both halves are required. Mutual similarity alone is satisfied by a
-        node repeating a stable decision; distinctness alone is satisfied by
-        any unusual event. Together they describe a template inserted into a
-        history that did not contain it.
+        All three are required, and the third is what makes the other two
+        usable. Mutual similarity alone is satisfied by a node repeating a
+        stable decision. Distinctness alone is satisfied by any unusual event —
+        including an ordinary link change, which is a small group of similar
+        records unlike everything around it and is therefore *indistinguishable
+        from an injection* by similarity alone. Only the rate separates them: a
+        link change arrives at the cadence the node decides at, an injection is
+        written in one operation.
         """
         count = len(records)
         if count < self.group_threshold:
@@ -293,6 +371,14 @@ class MemoryAuditor:
             )
             if internal - external < self.novelty_margin:
                 continue
+            off_cadence, group_gap, cadence = self._written_off_the_node_s_cadence(
+                records, members, outsiders
+            )
+            if not off_cadence:
+                # Similar, and unlike the rest of history, but arriving at the
+                # rate the node itself records at. That is a link change, which
+                # is what this node does for a living.
+                continue
             span = (
                 records[max(members)].recorded_at - records[min(members)].recorded_at
             ).total_seconds()
@@ -302,7 +388,9 @@ class MemoryAuditor:
                     record_indices=tuple(members),
                     detail=(
                         f"{len(members)} records with internal similarity {internal:.3f} "
-                        f"against {external:.3f} to the rest of history, spanning {span:.1f}s"
+                        f"against {external:.3f} to the rest of history, spanning {span:.3f}s "
+                        f"at {group_gap:.3f}s between records against a node cadence of "
+                        f"{cadence:.1f}s"
                     ),
                 )
             )

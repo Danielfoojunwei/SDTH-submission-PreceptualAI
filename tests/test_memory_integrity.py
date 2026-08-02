@@ -375,5 +375,109 @@ class BoundedInfluenceTests(unittest.TestCase):
         json.dumps(bounded_influence([1.0, 2.0, 3.0, 4.0]).to_dict())
 
 
+class CadenceSeparatesInjectionFromLinkChangeTests(unittest.TestCase):
+    """The detector's real discriminator, and the one it shipped without.
+
+    Similarity was never able to carry this test. A node flapping between links
+    under jamming — the condition this whole system exists for — produces small
+    groups of mutually similar records unlike the rest of history, which is
+    also the exact description of an injection. Measured, they match on group
+    size, share of history, internal similarity and external similarity alike,
+    so no threshold separates them. Rate does: the node's loop writes at one
+    cadence, and an injection does not come from the loop.
+    """
+
+    CADENCE = timedelta(seconds=30)
+
+    def setUp(self) -> None:
+        self.key = Ed25519PrivateKey.generate()
+        self.public = self.key.public_key()
+        self.auditor = MemoryAuditor()
+        self.base = utc_now()
+
+    def _decision(self, profile: str, rtt: float, sequence: int) -> dict:
+        return {
+            "selected_profile_id": profile,
+            "rtt_ms": rtt,
+            "loss_pct": 0.2,
+            "score": 0.81,
+            "reason": "BEST_MEASURED_LATENCY",
+            "sequence": sequence,
+        }
+
+    def _at(self, when: timedelta, payload: dict) -> SignedRecord:
+        return sign_record(payload, self.key, node_id=NODE, now=self.base + when)
+
+    def _flapping(self, cycles: int = 30) -> list[SignedRecord]:
+        """Contested spectrum: the node switches link every three cycles."""
+        return [
+            self._at(
+                self.CADENCE * index,
+                self._decision(f"link_{index // 3}", 40.0 + 20 * (index // 3), index),
+            )
+            for index in range(cycles)
+        ]
+
+    def _templated(self, spacing: timedelta, start: timedelta) -> list[SignedRecord]:
+        return [
+            self._at(start + spacing * j, self._decision("attacker_relay", 2.0, 900 + j))
+            for j in range(DEFAULT_GROUP_THRESHOLD)
+        ]
+
+    def _kinds(self, records: list[SignedRecord]) -> set[str]:
+        return {f.kind for f in self.auditor.audit(records, self.public, node_id=NODE).findings}
+
+    def test_flapping_between_links_under_jamming_is_not_poisoning(self) -> None:
+        # Ten regimes, each matching an injection on every similarity measure.
+        # A detector that fires here is one an operator switches off.
+        self.assertNotIn("TEMPLATED_GROUP", self._kinds(self._flapping()))
+
+    def test_a_failover_that_sticks_is_not_poisoning(self) -> None:
+        bimodal = [
+            self._at(
+                self.CADENCE * index,
+                self._decision(
+                    "lte_b3" if index < 15 else "sat_ku", 40.0 if index < 15 else 600.0, index
+                ),
+            )
+            for index in range(30)
+        ]
+        self.assertNotIn("TEMPLATED_GROUP", self._kinds(bimodal))
+
+    def test_the_paper_s_injection_written_in_one_operation_is_caught(self) -> None:
+        # MemMorph writes its records into the store at once. At the 0.9
+        # similarity threshold this shipped with, these three scored 0.714
+        # against each other and never grouped: the detector could not see the
+        # attack it is named for.
+        history = self._flapping() + self._templated(
+            timedelta(milliseconds=17), timedelta(seconds=930)
+        )
+        self.assertIn("TEMPLATED_GROUP", self._kinds(history))
+
+    def test_drip_feeding_the_same_template_is_also_caught(self) -> None:
+        # The gate is two-sided on purpose. Three records hours apart in a
+        # history recorded every thirty seconds did not come from the loop
+        # either, and a one-sided gate would sell the evasion for the price of
+        # waiting.
+        history = self._flapping() + self._templated(timedelta(hours=3), timedelta(hours=1))
+        self.assertIn("TEMPLATED_GROUP", self._kinds(history))
+
+    def test_the_evasion_is_where_it_is_documented_to_be(self) -> None:
+        # An attacker holding the signing key who paces the injection to the
+        # node's own cadence escapes this test. Pinned so the limit stays a
+        # stated property rather than becoming a surprise.
+        history = self._flapping() + self._templated(self.CADENCE, timedelta(seconds=930))
+        self.assertNotIn("TEMPLATED_GROUP", self._kinds(history))
+
+    def test_the_finding_states_both_rates_it_compared(self) -> None:
+        history = self._flapping() + self._templated(
+            timedelta(milliseconds=17), timedelta(seconds=930)
+        )
+        report = self.auditor.audit(history, self.public, node_id=NODE)
+        detail = next(f for f in report.findings if f.kind == "TEMPLATED_GROUP").detail
+        self.assertIn("node cadence of 30.0s", detail)
+        self.assertIn("between records", detail)
+
+
 if __name__ == "__main__":
     unittest.main()
