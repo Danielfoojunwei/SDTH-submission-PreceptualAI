@@ -111,6 +111,55 @@ capability leases are Kval's own, not theirs.
 | Liu, Guo, **Lam**, Zhao, **Efficient Dropout-Resilient Aggregation for Privacy-Preserving Machine Learning**, IEEE TIFS 18:1839-1854, 2023, [10.1109/TIFS.2022.3163592](https://doi.org/10.1109/TIFS.2022.3163592) | Secure aggregation that stays correct when participants drop out mid-protocol | **Implemented as a property, not a protocol.** Aggregation here tolerates nodes appearing and disappearing between rounds and features missing from individual updates, and is tested for it. Kval does not implement their cryptographic secure-aggregation protocol — statistics are already non-sensitive by construction, so the masking machinery has nothing to protect. |
 | **Lam** (first author), Mitra, Gondesen, Yi, **ANT-Centric IoT Security Reference Architecture**, IEEE IoT-J 9(8):5895-5908, 2022, [10.1109/JIOT.2021.3073734](https://doi.org/10.1109/JIOT.2021.3073734) | Security managed around critical activities within micro-perimeters rather than inherited enterprise models | **Framing adopted.** It is the best published articulation — and it is his own — of why receive-only should be a *structural* property rather than a policy promise. Kval enforces exactly that: no transmit path exists, and CI fails the build if one appears. |
 
+## Beyond the DSA line
+
+The dynamic-spectrum-access papers are a small slice of Prof. Lam's output
+(~437 DBLP records). His secure-distributed-ML and trust-architecture work is
+where he leads as first or senior author, and it is more directly useful to a
+sensing fleet than the spectrum-access line.
+
+| Paper | Mechanism | Status |
+|---|---|---|
+| Zhao, Zhao, Yang, Wang, Wang, Lyu, Niyato, **Lam**, **Local Differential Privacy based Federated Learning for IoT**, IEEE IoT-J 2021, [arXiv:2004.08856](https://arxiv.org/abs/2004.08856) | Perturbs each participant's shared values *locally, before release*, via the Piecewise Mechanism and variants, so the aggregator never sees an individual's true contribution | **Implemented** — `privacy.py`. See below. |
+| Liu, Guo, **Lam**, Zhao, **Efficient Dropout-Resilient Aggregation**, IEEE TIFS 18:1839-1854, 2023, [10.1109/TIFS.2022.3163592](https://doi.org/10.1109/TIFS.2022.3163592) | Secure aggregation correct under mid-protocol dropout | **Property implemented, protocol not.** Aggregation tolerates nodes appearing/disappearing and features missing from individual updates, and is tested for it. Their cryptographic masking is not implemented — with LDP applied, statistics are no longer sensitive in transit, so the masking machinery has less to protect. |
+| **Lam** (first author), Mitra, Gondesen, Yi, **ANT-Centric IoT Security Reference Architecture**, IEEE IoT-J 9(8), 2022, [10.1109/JIOT.2021.3073734](https://doi.org/10.1109/JIOT.2021.3073734) | Security managed around critical activities within micro-perimeters | **Framing adopted.** Best published articulation — his own — of why receive-only should be structural rather than promised. Kval enforces exactly that: no transmit path exists and CI fails the build if one appears. |
+| **Toward Efficient and Certified Recovery From Poisoning Attacks in FL**, IEEE TIFS 2025, [arXiv:2401.08216](https://arxiv.org/abs/2401.08216); **Privacy-Preserving Federated Unlearning With Certified Client Removal**, TIFS 2025; **A Survey on Federated Unlearning**, ACM CSUR 2025, [arXiv:2310.20448](https://arxiv.org/abs/2310.20448) | Certified removal of a client's influence, and certified *recovery* after poisoning | **Partially covered.** `cohorts.excise_contributor` achieves exact removal, which is stronger than certified approximate removal — but only because aggregation here is over sufficient statistics rather than gradients. Their harder problem does not arise. Certified recovery of a *trained model* is not implemented; no model ships. |
+| **Effective Intrusion Detection in Heterogeneous IoT Networks via Ensemble Knowledge Distillation-Based FL**, IEEE ICC 2024, [arXiv:2401.11968](https://arxiv.org/abs/2401.11968) | Federated anomaly detection across heterogeneous edge nodes | **Not built.** The closest published analogue to federated anomaly detection across a sensing fleet, and a strong candidate for future work. Not implemented because it requires a trained model, and none ships. |
+| **Self-initialized Distributed Certificate Authority for MANET** (ISA 2009); **A robust certification service for highly dynamic MANET in emergency tasks**, Int. J. Communication Systems 2009, [10.1002/dac.1015](https://doi.org/10.1002/dac.1015) | Issuing and validating credentials among intermittently-connected wireless nodes with **no reachable central authority** | **Not built, and the most under-appreciated find.** This is prior art by him on exactly the partitioned-fleet problem: today a Kval sub-node that loses its operator link runs until its signed policy expires and then fails closed. Distributed certification would let a partition re-validate locally instead. A real gap, now with a citation attached. |
+| Yang, Zhao, **Lam**, Xiong, Wu, Xiao, **Distributed DRL-Based Spectrum and Power Allocation for HetNets**, IEEE TWC 21(9), 2022, [10.1109/TWC.2022.3153175](https://doi.org/10.1109/TWC.2022.3153175) | Per-cell decisions from **locally observed information only**, with light coordination | **Framing adopted.** Evidence that local-observation autonomy plus light coordination converges — the degraded/partitioned-backhaul mode Kval already implements deterministically. The allocation half is transmit-side. |
+
+### Local differential privacy: closing a threat this repository documented
+
+The machine-unlearning paper's premise is that a spectrum model leaks the
+location data it was trained on. Applied here: **a fleet baseline built from
+each node's exact feature means encodes where the sensors are and what each one
+sees.** Sharing only sufficient statistics narrows that exposure; it does not
+close it, because a node's exact mean is still its exact mean.
+
+`privacy.py` implements the Piecewise Mechanism so each node perturbs its
+contribution *before release*. The perturbation is unbiased, so the fleet mean
+still converges to the truth while no individual value is revealed —
+demonstrated in tests over 4,000 releases recovering a 200 ms truth within
+15 ms.
+
+Three things are stated plainly because they are real costs:
+
+* **Randomness here is genuine, unlike elsewhere.** `forecast.py` seeds its
+  particle swarm deterministically so a forecast is reconstructable from the
+  audit ledger. Privacy inverts that requirement: a deterministic
+  "perturbation" is none, and anyone knowing the seed recovers the true value.
+  This module uses `secrets.SystemRandom`. Auditability is kept at the right
+  level — the ledger records *that* perturbation happened and with what budget,
+  never the unperturbed value.
+* **The budget composes.** Releasing k features at full budget spends
+  k·epsilon, so the budget is divided across features released together. Repeat
+  rounds over the same data compose too; `epsilon` is per-release.
+* **LDP and consensus filtering are in tension.** Trimming or consensus
+  clustering removes injected noise along with outliers, biasing an unbiased
+  estimator. An operator must choose privacy or poisoning-resistance for a
+  given release; applying both to the same values weakens each. This is
+  documented in the module rather than silently combined.
+
 ### Related work by the same authors, outside the three-way collaboration
 
 | Paper | Mechanism | Status |
