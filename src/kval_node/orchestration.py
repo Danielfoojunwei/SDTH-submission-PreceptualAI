@@ -86,6 +86,28 @@ DEFAULT_FEATURE_RANGES: dict[str, FeatureRange] = {
     "contested_band_count": FeatureRange(0.0, 32.0),
 }
 
+#: Share of a feature's privacy budget spent protecting its mean, the rest
+#: going to its spread. Both moments leave the node, so both are perturbed and
+#: the two shares sum to the declared budget under sequential composition.
+#:
+#: The mean takes the larger share because it is the primary quantity every
+#: consumer reads, and because a spread is already a second-order figure that
+#: tolerates more noise before it stops being useful for grouping. This is a
+#: stated engineering judgement, not a derived optimum.
+MEAN_BUDGET_SHARE = 0.6
+
+
+def _spread_range(span: FeatureRange) -> FeatureRange:
+    """The interval a standard deviation of this feature can occupy.
+
+    A bounded feature has a bounded spread: the most dispersed distribution on
+    ``[low, high]`` puts half its mass at each end, giving a standard deviation
+    of half the width. Deriving the bound rather than declaring a second set of
+    operator ranges keeps the two from drifting apart, and a perturbation
+    calibrated to too wide an interval would add noise nothing required.
+    """
+    return FeatureRange(0.0, (span.high - span.low) / 2.0)
+
 #: Records the influence bound is computed over before a baseline is trusted.
 MIN_RECORDS_FOR_INFLUENCE_BOUND = 3
 
@@ -140,9 +162,26 @@ def privatise_update(
         )
 
     declared = ranges or DEFAULT_FEATURE_RANGES
-    privatiser = LocalPrivatiser(
-        {name: span for name, span in declared.items() if name in update.statistics},
-        epsilon=bounded_number(epsilon, "epsilon", 0.01, 50.0),
+    matched = {name: span for name, span in declared.items() if name in update.statistics}
+    # The spread is released too, so it is privatised too. Reconstructing
+    # ``sum_squares`` from the *true* spread published every node's exact
+    # per-feature variance while claiming the release was perturbed: the mean
+    # was protected and the second moment walked out untouched, recoverable to
+    # zero error by any aggregator. That is not a small leak here. Variance in
+    # signal is the multipath signature of an enclosed or reflective site, and
+    # it is the quantity cohort clustering and the heterogeneity assessment use
+    # to tell one environment from another — so the exact thing the fleet
+    # fingerprints environments by was the thing being handed over intact.
+    #
+    # Each feature's budget is therefore split across the two moments it
+    # actually releases. Sequential composition over the pair costs the sum, so
+    # the split is what keeps the declared total honest rather than doubling
+    # the spend behind the operator's back.
+    spread_ranges = {name: _spread_range(span) for name, span in matched.items()}
+    budget = bounded_number(epsilon, "epsilon", 0.01, 50.0)
+    privatiser = LocalPrivatiser(matched, epsilon=budget * MEAN_BUDGET_SHARE)
+    spread_privatiser = LocalPrivatiser(
+        spread_ranges, epsilon=budget * (1.0 - MEAN_BUDGET_SHARE)
     )
     perturbed: dict[str, Any] = {}
     touched: list[str] = []
@@ -152,13 +191,21 @@ def privatise_update(
             perturbed[name] = statistic
             continue
         released = privatiser.privatise(name, statistic.mean)
-        needed = max(needed, released.contributors_needed_for_1pct)
+        released_spread = spread_privatiser.privatise(name, statistic.stddev())
+        needed = max(
+            needed,
+            released.contributors_needed_for_1pct,
+            released_spread.contributors_needed_for_1pct,
+        )
         touched.append(name)
-        # Only the mean is perturbed. The count is not sensitive, and the sum
-        # of squares is recomputed from the perturbed mean so the released
-        # statistics stay internally consistent rather than describing a
-        # distribution that cannot exist.
-        spread = statistic.stddev()
+        # A spread cannot be negative, so the perturbation is clamped at zero.
+        # The clamp is itself a disclosure — a released zero is more likely to
+        # have come from a small true spread — but it is bounded and visible,
+        # which an impossible variance would not be.
+        spread = max(0.0, released_spread.perturbed)
+        # Recomputed from the perturbed moments so the released statistics stay
+        # internally consistent rather than describing a distribution that
+        # cannot exist.
         perturbed[name] = type(statistic)(
             count=statistic.count,
             mean=released.perturbed,

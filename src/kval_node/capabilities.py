@@ -26,12 +26,16 @@ from .config import NodeConfig
 from .dataset import FEATURE_NAMES, CorpusExporter, DatasetError
 from .federated import FederatedUpdate, RobustAggregator, sign_update, verify_update
 from .geolocate import (
+    CalibrationObservation,
     EmitterLocator,
     GeolocationError,
     NodePosition,
+    PathLossCalibrator,
     PathLossModel,
     SignalSighting,
+    SurveyedReference,
 )
+from .propagation import BandSeries, PropagationDiscriminator
 from .fabric import (
     FabricAggregator,
     FabricError,
@@ -55,6 +59,7 @@ from .lease import LeaseAction, LeaseError, LeaseNonceStore, redeem_lease, verif
 from .memory_integrity import MemoryAuditor, SignedRecord
 from .mobility import DEFAULT_PLACE_RADIUS_M
 from .models import TelemetrySnapshot, parse_timestamp, utc_now
+from .cohorts import assess_heterogeneity
 from .orchestration import (
     FleetLearning,
     cohort_assignments,
@@ -97,6 +102,11 @@ POWER_DOCUMENT_TYPE = "kval-power-policy/v1"
 TRANSPORT_DOCUMENT_TYPE = "kval-transport-policy/v1"
 ROSTER_DOCUMENT_TYPE = "kval-peer-roster/v1"
 PATH_LOSS_DOCUMENT_TYPE = "kval-path-loss-model/v1"
+#: Operator-surveyed reference emitters the fleet may calibrate propagation
+#: against. Separate from the fitted model above: this is the *input* an
+#: operator vouches for, and it is signed because a node that could nominate
+#: its own references could fit any exponent it liked.
+PATH_LOSS_REFERENCE_DOCUMENT_TYPE = "kval-path-loss-references/v1"
 
 #: Record type under which localisation results are written to the ledger, so
 #: the mobility model has a history of fixes to read back.
@@ -796,6 +806,192 @@ class CapabilityServices:
         return result
 
     # --- emitter tracking ------------------------------------------------------
+
+    def _recorded_spectrum_observations(self) -> tuple[list[dict[str, Any]], str | None]:
+        """Every spectrum observation this node has recorded, oldest first.
+
+        Read from the decision records rather than re-sensed, because the
+        question is what changed over time and a fresh scan is one sample. A
+        cycle where sensing was unavailable recorded no observations, so gaps
+        are absent rather than filled — which is what lets the discriminator
+        refuse on a gap instead of interpolating across an outage.
+        """
+        ledger = AuditLedger(self.config.audit_database_path)
+        try:
+            rows = [
+                row
+                for row in ledger.signed_records(limit=MEMORY_AUDIT_RECORDS)
+                if row["record_type"] == "decision"
+            ]
+        except (sqlite3.Error, KeyError, ValueError) as exc:
+            return [], f"audit ledger unreadable: {exc}"
+        finally:
+            ledger.close()
+
+        observations: list[dict[str, Any]] = []
+        for row in rows:
+            spectrum = (row["payload"] or {}).get("spectrum") or {}
+            if spectrum.get("available") is not True:
+                continue
+            observations.extend(spectrum.get("observations", []))
+        return observations, None
+
+    def discriminate_propagation(self, *, now: datetime | None = None) -> dict[str, Any]:
+        """Say whether a band degraded by attenuation or by energy arriving in it.
+
+        This is the distinction an operator cannot make from a link going bad:
+        something between the platform and the emitter, or another emitter. It
+        names neither an actor nor an intent — ``interference.py`` already holds
+        that line and this holds it too. What it adds is the physical mechanism,
+        which is an observation about the channel rather than about anybody.
+        """
+        if self.config.spectrum_policy_path is None:
+            return _unavailable("propagation discrimination needs a signed spectrum policy")
+        try:
+            policy, policy_hash = self.load_spectrum_policy()
+        except Exception as exc:
+            return {"available": False, "reason": f"spectrum policy invalid: {exc}"}
+
+        recorded, failure = self._recorded_spectrum_observations()
+        if failure is not None:
+            return {"available": False, "reason": failure}
+
+        by_band: dict[str, list[SpectrumObservation]] = {}
+        for raw in recorded:
+            try:
+                observation = SpectrumObservation.from_dict(raw)
+            except (ValueError, KeyError, TypeError):
+                # A record the current parser refuses is not evidence. Skipping
+                # it keeps one malformed row from silencing the whole history.
+                continue
+            by_band.setdefault(observation.band_id, []).append(observation)
+
+        series = [
+            BandSeries(band, tuple(by_band[band.band_id]))
+            for band in policy.bands
+            if by_band.get(band.band_id)
+        ]
+        if not series:
+            return {
+                "available": False,
+                "reason": "no recorded spectrum observations for any policy band",
+                "policy_id": policy.policy_id,
+                "policy_hash": policy_hash,
+            }
+
+        verdicts = PropagationDiscriminator().discriminate_bands(series)
+        return {
+            "available": True,
+            "policy_id": policy.policy_id,
+            "policy_hash": policy_hash,
+            "bands_examined": len(series),
+            "verdicts": [verdict.to_dict() for verdict in verdicts],
+        }
+
+    def calibrate_path_loss(self, *, now: datetime | None = None) -> dict[str, Any]:
+        """Fit the propagation exponent from operator-surveyed reference emitters.
+
+        Replaces a constant an operator had to measure by hand with one the
+        fleet fits and re-fits as conditions change. The fitted exponent is
+        itself an environment measurement: free space sits near 2, outdoor
+        clutter around 3, heavy obstruction well above 4.
+
+        Only surveyed references may feed this. Fitting against an *estimated*
+        emitter position would fit the model to its own errors and every range
+        it later produced would be confidently wrong, so the calibrator refuses
+        derived positions by type, by document shape, and by survey uncertainty.
+        """
+        if self.config.path_loss_reference_path is None:
+            return _unavailable(
+                "path-loss calibration needs a signed set of surveyed reference emitters"
+            )
+        if self.config.fabric_roster_path is None:
+            return _unavailable("path-loss calibration needs the fabric roster for node positions")
+        try:
+            payload, document_hash = self._verify_document(
+                self.config.path_loss_reference_path, expected_type=PATH_LOSS_REFERENCE_DOCUMENT_TYPE
+            )
+            roster, _roster_hash = self.load_peer_roster()
+        except Exception as exc:
+            return {"available": False, "reason": f"calibration inputs invalid: {exc}"}
+
+        positions = {
+            peer.node_id: NodePosition(
+                peer.node_id, peer.latitude_deg, peer.longitude_deg, peer.altitude_m
+            )
+            for peer in roster.peers
+            if peer.has_position()
+        }
+        try:
+            reference = SurveyedReference.from_dict(payload["reference"])
+        except (KeyError, TypeError, ValueError) as exc:
+            return {"available": False, "reason": f"surveyed reference refused: {exc}"}
+
+        observations: list[CalibrationObservation] = []
+        unknown_nodes: list[str] = []
+        for raw in payload.get("measurements", []):
+            node_id = str(raw.get("node_id", ""))
+            position = positions.get(node_id)
+            if position is None:
+                unknown_nodes.append(node_id)
+                continue
+            try:
+                observations.append(
+                    CalibrationObservation(
+                        reference=reference,
+                        observer=position,
+                        received_dbm=float(raw["received_dbm"]),
+                    )
+                )
+            except (KeyError, TypeError, ValueError) as exc:
+                return {"available": False, "reason": f"calibration measurement refused: {exc}"}
+
+        fit = PathLossCalibrator().fit(observations)
+        result = {
+            "available": True,
+            "document_hash": document_hash,
+            "fit": fit.to_dict(),
+        }
+        if unknown_nodes:
+            # Named rather than dropped: a measurement from a node the roster
+            # does not position is a provisioning error, and silently fitting
+            # without it hides that the fleet is misconfigured.
+            result["measurements_from_unpositioned_nodes"] = sorted(set(unknown_nodes))
+        return result
+
+    def assess_fleet_heterogeneity(self, *, now: datetime | None = None) -> dict[str, Any]:
+        """Report how different the fleet's radio environments actually are.
+
+        Cohorts form whether or not they mean anything. This says whether the
+        grouping separated environments or split one environment by noise, and
+        reports the regime on an absolute scale so "heavy" means the same thing
+        next week and in another deployment.
+        """
+        if self.config.fabric_roster_path is None or self.config.federated_inbox_path is None:
+            return _unavailable("heterogeneity assessment needs the roster and a federated inbox")
+        try:
+            roster, roster_hash = self.load_peer_roster()
+        except Exception as exc:
+            return {"available": False, "reason": f"peer roster invalid: {exc}"}
+
+        updates, rejected = self._load_updates(roster, now=now)
+        if not updates:
+            # An empty inbox is not a homogeneous fleet. Reporting a regime here
+            # would describe a fleet that never contributed anything.
+            return {
+                "available": False,
+                "reason": "no verified peer contributions to assess",
+                "roster_id": roster.roster_id,
+                "rejected": rejected,
+            }
+        assessment = assess_heterogeneity(updates)
+        return {
+            "available": True,
+            "roster_id": roster.roster_id,
+            "roster_hash": roster_hash,
+            "rejected": rejected,
+            "assessment": assessment.to_dict(),
+        }
 
     def track_emitter(
         self, band_id: str, *, horizon_seconds: float = 600.0, now: datetime | None = None

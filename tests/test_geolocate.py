@@ -3,16 +3,26 @@ from __future__ import annotations
 import math
 import unittest
 
+from dataclasses import dataclass
+
 from kval_node.geolocate import (
     EARTH_RADIUS_M,
+    MAX_PLAUSIBLE_PATH_LOSS_EXPONENT,
+    MIN_CALIBRATION_POINTS,
+    MIN_PLAUSIBLE_PATH_LOSS_EXPONENT,
+    CalibrationObservation,
     EmitterLocator,
     GeolocationError,
     NodePosition,
+    PathLossCalibrator,
     PathLossModel,
     SignalSighting,
+    SurveyedReference,
     classify_residuals,
+    environment_band,
     geometry_ratio,
     robust_residual_scale,
+    slant_range_m,
 )
 
 # A roughly equilateral triangle of nodes, ~200 m on a side.
@@ -372,6 +382,514 @@ class NlosRejectionTests(unittest.TestCase):
         payload = json.loads(json.dumps(estimate.to_dict()))
         self.assertEqual(payload["excluded"][0]["node_id"], "n3")
         self.assertEqual(len(payload["residuals"]), 4)
+
+
+# --- path-loss calibration from surveyed references --------------------------------
+
+REFERENCE = SurveyedReference(
+    reference_id="beacon-1",
+    latitude_deg=1.3000,
+    longitude_deg=103.8000,
+    survey_uncertainty_m=0.5,
+    survey_provenance="OPERATOR_SURVEYED",
+)
+
+#: A reference surveyed to centimetres, which is what a short-range calibration
+#: needs: two metres from a beacon known to half a metre, the survey error *is*
+#: the measurement, and the fit excludes the point for saying so.
+PRECISE_REFERENCE = SurveyedReference(
+    reference_id="beacon-1",
+    latitude_deg=1.3000,
+    longitude_deg=103.8000,
+    survey_uncertainty_m=0.05,
+    survey_provenance="SURVEY_CONTROL_POINT",
+)
+
+#: Distances spanning 1.6 decades, which is what a fleet spread around a
+#: surveyed beacon actually looks like.
+SPREAD_M = (50.0, 150.0, 400.0, 1000.0, 2000.0)
+
+
+def observer_at(
+    distance_m: float, *, index: int = 0, bearing_deg: float = 0.0, altitude_m: float = 0.0
+) -> NodePosition:
+    """A node ``distance_m`` from ``REFERENCE`` on the given bearing."""
+    north = distance_m * math.cos(math.radians(bearing_deg))
+    east = distance_m * math.sin(math.radians(bearing_deg))
+    cos_lat = math.cos(math.radians(REFERENCE.latitude_deg))
+    return NodePosition(
+        f"cal{index}",
+        REFERENCE.latitude_deg + math.degrees(north / EARTH_RADIUS_M),
+        REFERENCE.longitude_deg + math.degrees(east / (EARTH_RADIUS_M * cos_lat)),
+        altitude_m,
+    )
+
+
+def calibration_set(
+    distances=SPREAD_M,
+    *,
+    exponent: float = 2.5,
+    reference_power_dbm: float = -40.0,
+    reference: SurveyedReference = REFERENCE,
+    noise: tuple[float, ...] | None = None,
+) -> list[CalibrationObservation]:
+    """Measurements a surveyed reference would produce under a known model.
+
+    This is the model's forward direction, so a clean set is exactly what the
+    fit has to invert — which is what makes recovery of the input parameters a
+    meaningful check rather than a tautology about least squares.
+    """
+    observations = []
+    for index, distance in enumerate(distances):
+        power = reference_power_dbm - 10.0 * exponent * math.log10(distance)
+        if noise is not None:
+            power += noise[index]
+        observations.append(
+            CalibrationObservation(reference, observer_at(distance, index=index), power)
+        )
+    return observations
+
+
+class SurveyedReferenceTests(unittest.TestCase):
+    def test_a_derived_position_cannot_be_declared_as_a_survey(self) -> None:
+        # The vocabulary is closed so that "estimated" has no spelling that
+        # passes for surveyed ground truth.
+        with self.assertRaises(ValueError):
+            SurveyedReference("r", 1.3, 103.8, 1.0, "ESTIMATED_BY_THIS_NODE")
+
+    def test_survey_uncertainty_cannot_be_omitted(self) -> None:
+        # No default: a caller must state how well the position is known,
+        # because that number is what rejects an estimate offered as a survey.
+        with self.assertRaises(TypeError):
+            SurveyedReference("r", 1.3, 103.8, survey_provenance="OPERATOR_SURVEYED")
+
+    def test_latitude_is_range_checked(self) -> None:
+        with self.assertRaises(ValueError):
+            SurveyedReference("r", 91.0, 103.8, 1.0, "OPERATOR_SURVEYED")
+
+    def test_from_dict_refuses_an_emitter_estimate(self) -> None:
+        # The realistic accident: this module's own output piped back into its
+        # own input. Fitting against it would tune the model on its own errors.
+        estimate = EmitterLocator().locate(
+            [sighting("a", -45.0), sighting("b", -71.0), sighting("c", -73.0)], TRIANGLE
+        )
+        payload = estimate.to_dict()
+        payload.update(
+            {
+                "reference_id": "beacon-1",
+                "survey_uncertainty_m": 1.0,
+                "survey_provenance": "OPERATOR_SURVEYED",
+            }
+        )
+        with self.assertRaisesRegex(ValueError, "derived"):
+            SurveyedReference.from_dict(payload)
+
+    def test_from_dict_refuses_a_document_carrying_a_derived_schema(self) -> None:
+        # Belt and braces on the key check: renaming a field must not open the
+        # loop the field names close.
+        with self.assertRaisesRegex(ValueError, "derived"):
+            SurveyedReference.from_dict(
+                {
+                    "schema": "kval-track-prediction/v1",
+                    "reference_id": "beacon-1",
+                    "latitude_deg": 1.3,
+                    "longitude_deg": 103.8,
+                    "survey_uncertainty_m": 1.0,
+                    "survey_provenance": "OPERATOR_SURVEYED",
+                }
+            )
+
+    def test_from_dict_accepts_a_survey_document(self) -> None:
+        reference = SurveyedReference.from_dict(
+            {
+                "reference_id": "beacon-1",
+                "latitude_deg": 1.3,
+                "longitude_deg": 103.8,
+                "altitude_m": 12.0,
+                "survey_uncertainty_m": 0.25,
+                "survey_provenance": "SURVEY_CONTROL_POINT",
+            }
+        )
+        self.assertEqual(reference.reference_id, "beacon-1")
+        self.assertEqual(reference.altitude_m, 12.0)
+
+
+class CalibrationInputTests(unittest.TestCase):
+    """The surveyed-only rule, enforced where a caller would otherwise slip."""
+
+    def test_an_emitter_estimate_cannot_be_used_as_a_reference(self) -> None:
+        # An Estimate has latitude_deg and longitude_deg, so duck typing would
+        # let the circular case straight through if the type were not checked.
+        estimate = EmitterLocator().locate(
+            [sighting("a", -45.0), sighting("b", -71.0), sighting("c", -73.0)], TRIANGLE
+        )
+        with self.assertRaises(TypeError):
+            CalibrationObservation(estimate, observer_at(500.0), -80.0)
+
+    def test_a_roster_node_position_cannot_be_used_as_a_reference(self) -> None:
+        # A roster position is surveyed, but it is a *receiver*. Using one as
+        # the emitter would fit the model against the wrong end of the path.
+        with self.assertRaises(TypeError):
+            CalibrationObservation(NODE_A, observer_at(500.0), -80.0)
+
+    def test_a_duck_typed_position_cannot_be_used_as_a_reference(self) -> None:
+        @dataclass(frozen=True)
+        class LooksLikeAPosition:
+            reference_id: str = "beacon-1"
+            latitude_deg: float = 1.3
+            longitude_deg: float = 103.8
+            altitude_m: float = 0.0
+            survey_uncertainty_m: float = 0.5
+            survey_provenance: str = "OPERATOR_SURVEYED"
+
+        with self.assertRaises(TypeError):
+            CalibrationObservation(LooksLikeAPosition(), observer_at(500.0), -80.0)
+
+    def test_the_observer_must_be_a_roster_position(self) -> None:
+        with self.assertRaises(TypeError):
+            CalibrationObservation(REFERENCE, REFERENCE, -80.0)
+
+    def test_the_fitter_refuses_anything_that_is_not_a_calibration_observation(self) -> None:
+        with self.assertRaises(TypeError):
+            PathLossCalibrator().fit([(REFERENCE, observer_at(500.0), -80.0)])
+
+
+class SlantRangeTests(unittest.TestCase):
+    def test_horizontal_distance_is_recovered(self) -> None:
+        self.assertAlmostEqual(slant_range_m(REFERENCE, observer_at(1000.0)), 1000.0, places=3)
+
+    def test_altitude_is_not_ignored(self) -> None:
+        # A node above a reference is further from it than the map says, and
+        # using the ground distance would shift the fit's x axis by half a
+        # decade here — a whole environment band on its own.
+        aloft = observer_at(100.0, altitude_m=300.0)
+        self.assertAlmostEqual(slant_range_m(REFERENCE, aloft), math.hypot(100.0, 300.0), places=3)
+
+
+class PathLossFitTests(unittest.TestCase):
+    def test_the_fit_recovers_the_parameters_that_generated_the_data(self) -> None:
+        fit = PathLossCalibrator().fit(calibration_set(exponent=2.8, reference_power_dbm=-35.0))
+        self.assertTrue(fit.fitted)
+        self.assertAlmostEqual(fit.path_loss_exponent, 2.8, places=9)
+        self.assertAlmostEqual(fit.reference_power_dbm, -35.0, places=9)
+        self.assertEqual(fit.reference_id, "beacon-1")
+
+    def test_the_fitted_model_drives_the_locator(self) -> None:
+        # The point of the whole exercise: a model nobody measured by hand
+        # produces the same position an operator-calibrated one does.
+        fit = PathLossCalibrator().fit(
+            calibration_set(
+                exponent=MODEL.path_loss_exponent,
+                reference_power_dbm=MODEL.reference_power_dbm,
+            )
+        )
+        sightings = [SignalSighting(node.node_id, received_power(node), True) for node in PENTAGON]
+        estimate = EmitterLocator().locate(sightings, PENTAGON, path_loss=fit.model)
+        self.assertEqual(estimate.method, "trilateration")
+        error = metres_between(
+            estimate.latitude_deg, estimate.longitude_deg, EMITTER_LAT, EMITTER_LON
+        )
+        self.assertLess(error, 1.0)
+
+    def test_the_fitted_model_round_trips_through_the_signed_document_loader(self) -> None:
+        # The fit's ``model`` block is keyed for PathLossModel.from_dict, so an
+        # operator can sign an accepted fit into the same path-loss document the
+        # hand-measured route uses, with no transcription step to get wrong.
+        fit = PathLossCalibrator().fit(calibration_set())
+        loaded = PathLossModel.from_dict(fit.to_dict()["model"])
+        self.assertAlmostEqual(loaded.path_loss_exponent, 2.5, places=4)
+        self.assertAlmostEqual(loaded.reference_power_dbm, -40.0, places=3)
+
+    def test_the_residual_and_both_standard_errors_are_reported(self) -> None:
+        # Least squares always returns numbers. These are what say whether the
+        # numbers are evidence.
+        fit = PathLossCalibrator().fit(calibration_set(noise=(2.0, -1.5, 0.5, 1.0, -2.0)))
+        self.assertGreater(fit.residual_rms_db, 0.0)
+        self.assertGreater(fit.exponent_standard_error, 0.0)
+        self.assertGreater(fit.reference_power_standard_error_db, 0.0)
+
+    def test_the_residual_is_reported_as_a_range_error_an_operator_can_act_on(self) -> None:
+        clean = PathLossCalibrator().fit(calibration_set())
+        scattered = PathLossCalibrator().fit(
+            calibration_set(noise=(4.0, -4.0, 4.0, -4.0, 4.0))
+        )
+        self.assertAlmostEqual(clean.range_error_factor, 1.0, places=6)
+        self.assertGreater(scattered.range_error_factor, 1.0)
+
+    def test_the_sample_count_and_every_exclusion_are_reported(self) -> None:
+        fit = PathLossCalibrator().fit(calibration_set())
+        self.assertEqual(fit.samples, len(SPREAD_M))
+        self.assertEqual(fit.excluded_samples, 0)
+
+    def test_a_fit_at_the_minimum_sample_count_says_so(self) -> None:
+        fit = PathLossCalibrator().fit(calibration_set())
+        self.assertIn(
+            "AT_THE_MINIMUM_SAMPLE_COUNT_SO_ONE_MEASUREMENT_MOVES_THE_RESIDUAL", fit.reasons
+        )
+
+    def test_a_narrow_but_usable_span_is_flagged_rather_than_hidden(self) -> None:
+        fit = PathLossCalibrator().fit(
+            calibration_set((200.0, 300.0, 500.0, 700.0, 1000.0), exponent=3.0)
+        )
+        self.assertTrue(fit.fitted)
+        self.assertLess(fit.distance_span_decades, 1.0)
+        self.assertIn("DISTANCE_SPAN_IS_NARROW_SO_THE_EXPONENT_IS_WEAKLY_CONSTRAINED", fit.reasons)
+
+    def test_the_fit_never_claims_to_have_identified_the_place(self) -> None:
+        # The exponent-to-environment mapping is indicative. Two different
+        # environments can produce the same exponent, and the result says so.
+        fit = PathLossCalibrator().fit(calibration_set())
+        self.assertIn(
+            "ENVIRONMENT_BAND_IS_INDICATIVE_NOT_AN_IDENTIFICATION_OF_THE_PLACE", fit.reasons
+        )
+        self.assertIn(
+            "FIT_DESCRIBES_THIS_ENVIRONMENT_ONLY_AND_DOES_NOT_TRANSFER_TO_A_PEER", fit.reasons
+        )
+
+    def test_results_serialize_without_infinity_or_nan(self) -> None:
+        import json
+
+        fitted = json.loads(json.dumps(PathLossCalibrator().fit(calibration_set()).to_dict()))
+        refused = json.loads(json.dumps(PathLossCalibrator().fit([]).to_dict()))
+        self.assertEqual(fitted["schema"], "kval-path-loss-fit/v1")
+        self.assertTrue(fitted["fitted"])
+        self.assertFalse(refused["fitted"])
+        self.assertIsNone(refused["model"])
+        self.assertIsNone(refused["residual_rms_db"])
+
+
+class PathLossFitRefusalTests(unittest.TestCase):
+    def test_too_few_measurements_are_refused(self) -> None:
+        fit = PathLossCalibrator().fit(calibration_set(SPREAD_M[:4]))
+        self.assertFalse(fit.fitted)
+        self.assertIsNone(fit.model)
+        self.assertIn(
+            f"NEED_AT_LEAST_{MIN_CALIBRATION_POINTS}_SURVEYED_MEASUREMENTS_TO_FIT", fit.reasons
+        )
+
+    def test_measurements_at_one_radius_cannot_give_a_slope(self) -> None:
+        # The degeneracy: a ring of nodes all 1 km from the beacon constrains
+        # nothing about how power falls with distance, however many there are.
+        ring = [
+            CalibrationObservation(
+                REFERENCE,
+                observer_at(1000.0, index=index, bearing_deg=bearing),
+                -40.0 - 25.0 * math.log10(1000.0),
+            )
+            for index, bearing in enumerate((0.0, 72.0, 144.0, 216.0, 288.0))
+        ]
+        fit = PathLossCalibrator().fit(ring)
+        self.assertFalse(fit.fitted)
+        self.assertIn("DISTANCE_SPAN_TOO_NARROW_TO_SEPARATE_A_SLOPE_FROM_NOISE", fit.reasons)
+
+    def test_a_narrow_cluster_of_distances_is_refused(self) -> None:
+        fit = PathLossCalibrator().fit(calibration_set((950.0, 975.0, 1000.0, 1025.0, 1050.0)))
+        self.assertFalse(fit.fitted)
+        self.assertIn("DISTANCE_SPAN_TOO_NARROW_TO_SEPARATE_A_SLOPE_FROM_NOISE", fit.reasons)
+        self.assertLess(fit.distance_span_decades, 0.1)
+
+    def test_a_non_finite_measurement_refuses_the_whole_set(self) -> None:
+        # Dropping it and fitting the rest would be the flattering choice: a
+        # receiver reporting a non-finite power is broken, so nothing else it
+        # reported in that batch is trustworthy either.
+        observations = calibration_set()
+        observations[2] = CalibrationObservation(
+            REFERENCE, observer_at(400.0, index=2), float("nan")
+        )
+        fit = PathLossCalibrator().fit(observations)
+        self.assertFalse(fit.fitted)
+        self.assertIn("NON_FINITE_RECEIVED_POWER_IN_THE_CALIBRATION_SET", fit.reasons)
+
+    def test_two_reference_emitters_cannot_share_one_fit(self) -> None:
+        # The intercept is that emitter's own radiated power. Two emitters have
+        # two intercepts, and one fit through both trades slope against the
+        # difference: a weaker beacon further out reads as a steeper
+        # environment.
+        other = SurveyedReference("beacon-2", 1.31, 103.81, 0.5, "OPERATOR_SURVEYED")
+        observations = calibration_set() + calibration_set(
+            (300.0, 900.0), reference=other
+        )
+        fit = PathLossCalibrator().fit(observations)
+        self.assertFalse(fit.fitted)
+        self.assertIn("OBSERVATIONS_MIX_MORE_THAN_ONE_SURVEYED_REFERENCE_EMITTER", fit.reasons)
+
+    def test_an_observer_standing_on_the_reference_is_refused(self) -> None:
+        observations = calibration_set()
+        observations[0] = CalibrationObservation(
+            REFERENCE, observer_at(0.0, index=0), -20.0
+        )
+        fit = PathLossCalibrator().fit(observations)
+        self.assertFalse(fit.fitted)
+        self.assertIn("AN_OBSERVER_IS_AT_THE_SURVEYED_REFERENCE_SO_NO_DISTANCE_EXISTS", fit.reasons)
+
+    def test_an_implausibly_shallow_exponent_is_refused_and_not_clamped(self) -> None:
+        # A fitted 0.8 means the measurements are wrong — a mislabelled
+        # reference, a distance in the wrong unit. Clamping it to 1.5 would
+        # hand back a fabricated number wearing a plausible value.
+        fit = PathLossCalibrator().fit(calibration_set(exponent=0.8))
+        self.assertFalse(fit.fitted)
+        self.assertIsNone(fit.model)
+        self.assertIn("FITTED_EXPONENT_OUTSIDE_PHYSICALLY_PLAUSIBLE_RANGE", fit.reasons)
+        self.assertAlmostEqual(fit.path_loss_exponent, 0.8, places=9)
+
+    def test_an_implausibly_steep_exponent_is_refused(self) -> None:
+        # The powers an exponent of 7 implies are themselves absurd, which is
+        # the point: propagation is not exotic, the data is wrong.
+        fit = PathLossCalibrator().fit(
+            calibration_set(
+                (2.0, 4.0, 8.0, 16.0, 32.0),
+                exponent=7.0,
+                reference_power_dbm=-30.0,
+                reference=PRECISE_REFERENCE,
+            )
+        )
+        self.assertFalse(fit.fitted)
+        self.assertIn("FITTED_EXPONENT_OUTSIDE_PHYSICALLY_PLAUSIBLE_RANGE", fit.reasons)
+
+    def test_power_rising_with_distance_is_named_for_what_it_is(self) -> None:
+        # Near and far transposed in the survey looks exactly like this.
+        fit = PathLossCalibrator().fit(calibration_set(exponent=-2.0))
+        self.assertFalse(fit.fitted)
+        self.assertIn("FITTED_POWER_RISES_WITH_DISTANCE_WHICH_IS_NOT_PROPAGATION", fit.reasons)
+
+    def test_an_implausible_reference_power_is_refused(self) -> None:
+        # The reference power is extrapolated back to 1 m, far outside the
+        # data, so a poor fit runs away there first. A receiver cannot report
+        # +60 dBm, and a model claiming it would scale every range wrongly.
+        fit = PathLossCalibrator().fit(calibration_set(reference_power_dbm=60.0))
+        self.assertFalse(fit.fitted)
+        self.assertIn("FITTED_REFERENCE_POWER_OUTSIDE_ANY_PLAUSIBLE_RECEIVER_RANGE", fit.reasons)
+
+    def test_scatter_too_large_for_a_log_distance_law_is_refused(self) -> None:
+        fit = PathLossCalibrator().fit(
+            calibration_set(noise=(15.0, -15.0, 15.0, -15.0, 15.0))
+        )
+        self.assertFalse(fit.fitted)
+        self.assertIn(
+            "RESIDUAL_TOO_LARGE_FOR_A_LOG_DISTANCE_LAW_TO_DESCRIBE_THESE_POINTS", fit.reasons
+        )
+        # A refused fit still reports what it computed: an operator who can see
+        # the residual can find the cause, one told only "false" cannot.
+        self.assertIsNotNone(fit.residual_rms_db)
+        self.assertIsNotNone(fit.path_loss_exponent)
+
+    def test_a_flat_noisy_set_is_refused_rather_than_overflowing(self) -> None:
+        # A stuck receiver reads nearly the same power at every distance, so the
+        # fitted exponent lands within a hair of zero. The implied range error
+        # is then 10**(residual / ~0), which in Python *raises* rather than
+        # saturating to infinity — so the arithmetic that describes how useless
+        # the fit is would crash before the fit could be refused for being
+        # useless. The noise below is orthogonal to the fit's x axis, which
+        # keeps a real residual while leaving the tiny slope intact.
+        import json
+
+        xs = [math.log10(distance) for distance in SPREAD_M]
+        mean_x = sum(xs) / len(xs)
+        centred = [x - mean_x for x in xs]
+        noise = [0.5, -0.5, 0.5, -0.5, 0.0]
+        noise[4] = -sum(c * n for c, n in zip(centred, noise)) / centred[4]
+
+        fit = PathLossCalibrator().fit(calibration_set(exponent=1e-5, noise=tuple(noise)))
+        self.assertGreater(fit.residual_rms_db / (10.0 * fit.path_loss_exponent), 308.0)
+        self.assertFalse(fit.fitted)
+        self.assertIn("FITTED_EXPONENT_OUTSIDE_PHYSICALLY_PLAUSIBLE_RANGE", fit.reasons)
+        self.assertIsNone(json.loads(json.dumps(fit.to_dict()))["range_error_factor"])
+
+    def test_a_refused_fit_claims_no_environment_band(self) -> None:
+        fit = PathLossCalibrator().fit(calibration_set(exponent=0.8))
+        self.assertEqual(fit.environment_band, "UNCLASSIFIED")
+        self.assertIn("NO_ENVIRONMENT_BAND_IS_CLAIMED_FOR_A_REFUSED_FIT", fit.reasons)
+
+    def test_an_estimated_position_offered_as_a_survey_fails_on_its_own_numbers(self) -> None:
+        # The last line of defence behind the type check. Someone who copies an
+        # emitter estimate into a SurveyedReference and declares its uncertainty
+        # honestly — tens or hundreds of metres — is refused, because a survey
+        # that vague resolves none of these distances.
+        vague = SurveyedReference("beacon-1", 1.3000, 103.8000, 300.0, "OPERATOR_SURVEYED")
+        fit = PathLossCalibrator().fit(calibration_set(reference=vague))
+        self.assertFalse(fit.fitted)
+        self.assertEqual(fit.excluded_samples, len(SPREAD_M))
+        self.assertIn("MEASUREMENT_TOO_CLOSE_FOR_THE_SURVEY_TO_RESOLVE_EXCLUDED", fit.reasons)
+
+    def test_one_unresolved_measurement_does_not_lose_the_whole_fit(self) -> None:
+        coarse = SurveyedReference("beacon-1", 1.3000, 103.8000, 6.0, "OPERATOR_SURVEYED")
+        fit = PathLossCalibrator().fit(
+            calibration_set((50.0, 150.0, 400.0, 1000.0, 2000.0, 3000.0), reference=coarse)
+        )
+        self.assertTrue(fit.fitted)
+        self.assertEqual(fit.samples, 6)
+        self.assertEqual(fit.excluded_samples, 1)
+        self.assertIn("MEASUREMENT_TOO_CLOSE_FOR_THE_SURVEY_TO_RESOLVE_EXCLUDED", fit.reasons)
+
+    def test_the_minimum_sample_count_cannot_be_configured_away(self) -> None:
+        # Below five points the residual is a property of one measurement
+        # rather than of the data, so the floor is not a default.
+        calibrator = PathLossCalibrator(min_points=2)
+        self.assertEqual(calibrator.min_points, MIN_CALIBRATION_POINTS)
+
+
+class EnvironmentBandTests(unittest.TestCase):
+    def test_a_free_space_exponent_reads_as_free_space(self) -> None:
+        self.assertEqual(environment_band(2.0, 0.1), "FREE_SPACE_LIKE")
+
+    def test_an_urban_exponent_reads_as_outdoor_clutter(self) -> None:
+        self.assertEqual(environment_band(3.1, 0.2), "OUTDOOR_CLUTTER_LIKE")
+
+    def test_a_steep_exponent_reads_as_heavy_obstruction(self) -> None:
+        self.assertEqual(environment_band(4.6, 0.3), "HEAVY_OBSTRUCTION_LIKE")
+
+    def test_no_band_is_claimed_when_the_error_bar_crosses_an_edge(self) -> None:
+        # 2.4 +/- 0.3 is consistent with free space and with clutter alike.
+        # Naming either would be a claim the data does not make.
+        self.assertEqual(environment_band(2.4, 0.3), "UNCLASSIFIED")
+
+    def test_a_non_finite_exponent_is_unclassified(self) -> None:
+        self.assertEqual(environment_band(float("nan"), 0.1), "UNCLASSIFIED")
+
+    def test_a_node_inside_a_structure_learns_that_as_a_number(self) -> None:
+        # The capability in one sentence: nobody told this node it was indoors.
+        fit = PathLossCalibrator().fit(
+            calibration_set(
+                (2.0, 5.0, 12.0, 30.0, 80.0),
+                exponent=4.5,
+                reference_power_dbm=-30.0,
+                reference=PRECISE_REFERENCE,
+            )
+        )
+        self.assertTrue(fit.fitted)
+        self.assertEqual(fit.environment_band, "HEAVY_OBSTRUCTION_LIKE")
+        self.assertAlmostEqual(fit.path_loss_exponent, 4.5, places=9)
+
+
+class OperatorCalibratedPathIsUnchangedTests(unittest.TestCase):
+    """A deployment with no surveyed references must behave exactly as before."""
+
+    def test_a_hand_measured_model_still_needs_no_fit(self) -> None:
+        model = PathLossModel(reference_power_dbm=-40.0, path_loss_exponent=2.5)
+        self.assertEqual(model.reference_distance_m, 1.0)
+        self.assertAlmostEqual(model.distance_m(-40.0), 1.0, places=9)
+        estimate = EmitterLocator().locate(
+            [sighting("a", -45.0), sighting("b", -71.0), sighting("c", -73.0)],
+            TRIANGLE,
+            path_loss=model,
+        )
+        self.assertEqual(estimate.method, "trilateration")
+
+    def test_the_fits_exponent_bounds_match_the_signed_document_loader(self) -> None:
+        # They have to: a fit an operator accepts gets signed into the same
+        # path-loss document, and a fit the loader would then reject is a fit
+        # that should never have been offered.
+        for edge in (MIN_PLAUSIBLE_PATH_LOSS_EXPONENT, MAX_PLAUSIBLE_PATH_LOSS_EXPONENT):
+            PathLossModel.from_dict(
+                {"reference_power_dbm": -40.0, "path_loss_exponent": edge}
+            )
+        with self.assertRaises(ValueError):
+            PathLossModel.from_dict(
+                {
+                    "reference_power_dbm": -40.0,
+                    "path_loss_exponent": MAX_PLAUSIBLE_PATH_LOSS_EXPONENT + 0.01,
+                }
+            )
 
 
 if __name__ == "__main__":

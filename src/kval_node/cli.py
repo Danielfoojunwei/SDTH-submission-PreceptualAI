@@ -119,6 +119,15 @@ def build_parser() -> argparse.ArgumentParser:
     locate.add_argument("--config", default=DEFAULT_CONFIG)
     locate.add_argument("--band-id", required=True)
 
+    propagation = subparsers.add_parser("diagnose-propagation")
+    propagation.add_argument("--config", default=DEFAULT_CONFIG)
+
+    calibrate = subparsers.add_parser("calibrate-path-loss")
+    calibrate.add_argument("--config", default=DEFAULT_CONFIG)
+
+    heterogeneity = subparsers.add_parser("fleet-heterogeneity")
+    heterogeneity.add_argument("--config", default=DEFAULT_CONFIG)
+
     fed_update = subparsers.add_parser("federated-update")
     fed_update.add_argument("--config", default=DEFAULT_CONFIG)
     fed_update.add_argument("--output", default=None)
@@ -274,6 +283,18 @@ def main() -> None:
     if args.command == "locate-emitter":
         services = CapabilityServices(NodeConfig.load(args.config))
         _print_capability(services.locate_emitter(args.band_id))
+        return
+    if args.command == "diagnose-propagation":
+        services = CapabilityServices(NodeConfig.load(args.config))
+        _print_capability(services.discriminate_propagation())
+        return
+    if args.command == "calibrate-path-loss":
+        services = CapabilityServices(NodeConfig.load(args.config))
+        _print_capability(services.calibrate_path_loss())
+        return
+    if args.command == "fleet-heterogeneity":
+        services = CapabilityServices(NodeConfig.load(args.config))
+        _print_capability(services.assess_fleet_heterogeneity())
         return
     if args.command == "federated-update":
         result = CapabilityServices(NodeConfig.load(args.config)).federated_update()

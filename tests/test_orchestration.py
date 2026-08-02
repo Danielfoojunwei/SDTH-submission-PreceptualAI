@@ -375,5 +375,66 @@ class IntegrityGuardsLearningTests(unittest.TestCase):
         json.dumps(trusted_baseline(examples, memory_report=None)[1].to_dict())
 
 
+class BothReleasedMomentsArePrivatisedTests(unittest.TestCase):
+    """The spread leaves the node too, so the spread is perturbed too.
+
+    ``sum_squares`` used to be reconstructed from the *true* standard deviation
+    while the mean was perturbed, so every node published its exact per-feature
+    variance and any aggregator could recover it to zero error. The reason code
+    said no exact mean left the node, which was true and beside the point.
+
+    It matters more than a second-order statistic usually would: variance in
+    signal is the multipath signature of an enclosed or reflective site, and it
+    is the quantity cohort clustering and the heterogeneity assessment use to
+    tell one environment from another. The exact thing the fleet fingerprints
+    environments by was the thing walking out intact.
+    """
+
+    TRUE_MEAN = 62.0
+    TRUE_SPREAD = 17.5
+    COUNT = 200
+
+    def _release(self, epsilon: float = 0.5):
+        statistics = {
+            "signal_percent": FeatureStatistics(
+                self.COUNT,
+                self.TRUE_MEAN,
+                self.COUNT * (self.TRUE_MEAN**2 + self.TRUE_SPREAD**2),
+            )
+        }
+        released, disclosure = privatise_update(
+            FederatedUpdate("n1", NOW, self.COUNT, statistics), epsilon=epsilon
+        )
+        return released.statistics["signal_percent"], disclosure
+
+    def test_the_exact_spread_never_leaves_the_node(self) -> None:
+        # Many draws, because a single one could coincide by luck. Before the
+        # fix every draw returned the true value to zero error.
+        recovered = [self._release()[0].stddev() for _ in range(200)]
+        exact = [value for value in recovered if abs(value - self.TRUE_SPREAD) < 1e-9]
+        self.assertEqual(exact, [], "the true per-node spread was released unperturbed")
+
+    def test_the_mean_is_still_perturbed(self) -> None:
+        means = [self._release()[0].mean for _ in range(200)]
+        exact = [value for value in means if abs(value - self.TRUE_MEAN) < 1e-9]
+        self.assertEqual(exact, [])
+
+    def test_a_released_spread_is_never_negative(self) -> None:
+        # A negative variance describes a distribution that cannot exist, and
+        # would make stddev() return a complex or NaN value downstream.
+        for _ in range(200):
+            self.assertGreaterEqual(self._release()[0].stddev(), 0.0)
+
+    def test_the_count_is_still_released_exactly(self) -> None:
+        # Deliberate and unchanged: the observation count is not a siting
+        # signal, and the aggregator needs it to weight contributions.
+        self.assertEqual(self._release()[0].count, self.COUNT)
+
+    def test_the_release_stays_json_serialisable(self) -> None:
+        released, disclosure = self._release()
+        json.dumps(released.to_dict())
+        json.dumps(disclosure.to_dict())
+
+
 if __name__ == "__main__":
     unittest.main()
