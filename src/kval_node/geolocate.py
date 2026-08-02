@@ -26,6 +26,20 @@ fewer than three positioned nodes, near-collinear nodes (the position
 perpendicular to the line is unconstrained), or nodes whose clocks are not
 disciplined enough for their reports to describe the same moment.
 
+**Non-line-of-sight rejection.** Trilateration additionally applies the
+residual-consistency test of Hua, Yin, Lu, Zhang and **Feng Li**, "NLOS
+Identification and Positioning Algorithm Based on Localization Residual in
+Wireless Sensor Networks", Sensors 18(9):2991, 2018
+([10.3390/s18092991](https://doi.org/10.3390/s18092991)). Their insight is that
+an obstructed path produces a range measurement that is inconsistent with the
+solution the *other* anchors agree on, and that the inconsistency has a known
+sign: an obstruction can only make a path look **longer**, never shorter. So a
+node whose measured range greatly exceeds what the rest of the fleet implies is
+plausibly blocked and is excluded; a node whose measured range is much *shorter*
+cannot be explained by obstruction at all, and is excluded under a separate,
+louder reason — a signal arriving stronger than physics allows for that distance
+is the signature of a nearby repeater, a reflection, or a fabricated report.
+
 Every result carries an uncertainty radius and the method that produced it.
 **No accuracy figure is claimed here.** Real accuracy depends on node geometry,
 multipath, antenna patterns, and the calibration quality, and must be measured
@@ -35,6 +49,7 @@ in the deployment.
 from __future__ import annotations
 
 import math
+import statistics
 from dataclasses import dataclass
 from typing import Any, Sequence
 
@@ -52,6 +67,43 @@ MIN_NODES = 3
 #: Ratio of the smaller to larger principal spread below which the nodes are
 #: treated as collinear and the estimate is refused.
 MIN_GEOMETRY_RATIO = 0.05
+
+#: Consistency factor converting the median absolute deviation into a standard
+#: deviation estimate for a normal distribution.
+MAD_TO_SIGMA = 1.4826
+
+#: Residual, in units of the robust residual scale, beyond which a sighting is
+#: treated as inconsistent with what the rest of the fleet agrees on. 3.0 is the
+#: conventional robust-statistics cut; it is a threshold on *disagreement*, not
+#: an accuracy claim.
+NLOS_RESIDUAL_SIGMAS = 3.0
+
+#: Residual, in metres, below which a solution is treated as already consistent
+#: and nothing is excluded. Also floors the robust scale, since a set of
+#: perfectly consistent measurements otherwise gives a scale of ~0 and every
+#: sighting looks like an infinite-sigma outlier.
+MIN_RESIDUAL_SCALE_M = 1.0
+
+#: Anchors that must remain for the residual test to mean anything. **Three
+#: anchors always fit perfectly** — the linearised system has two equations and
+#: two unknowns — so a three-anchor solution has zero residual whether or not
+#: one of them is blocked. Four is the smallest set where a residual carries
+#: information, which caps how many blocked nodes a fleet of ``n`` can survive
+#: at ``n - 4``.
+MIN_NODES_FOR_RESIDUAL_TEST = 4
+
+#: Residual RMS, as a multiple of the array's own aperture, beyond which the
+#: measurements carry no positional information at that scale and no estimate is
+#: returned. When the anchors disagree by more than the distance between them,
+#: the solution is an artefact of least squares, not a location.
+MAX_RESIDUAL_TO_APERTURE_RATIO = 1.0
+
+#: Factor by which dropping one anchor must improve the residual before that
+#: anchor is blamed for the inconsistency. Removing an anchor from a clean set
+#: improves the fit slightly, just by removing a constraint; removing a blocked
+#: one improves it by an order of magnitude. Requiring a large ratio keeps the
+#: test from quietly trimming good anchors to flatter the result.
+RESIDUAL_IMPROVEMENT_FACTOR = 3.0
 
 
 class GeolocationError(RuntimeError):
@@ -125,6 +177,24 @@ class SignalSighting:
 
 
 @dataclass(frozen=True)
+class ResidualFinding:
+    """One node's disagreement with the solution the others support."""
+
+    node_id: str
+    residual_m: float
+    normalised: float
+    classification: str
+
+    def to_dict(self) -> dict[str, Any]:
+        return {
+            "node_id": self.node_id,
+            "residual_m": round(self.residual_m, 2),
+            "normalised": round(self.normalised, 3),
+            "classification": self.classification,
+        }
+
+
+@dataclass(frozen=True)
 class Estimate:
     method: str
     latitude_deg: float
@@ -134,6 +204,8 @@ class Estimate:
     inside_hull: bool
     geometry_ratio: float
     reasons: tuple[str, ...]
+    excluded: tuple[ResidualFinding, ...] = ()
+    residuals: tuple[ResidualFinding, ...] = ()
 
     def to_dict(self) -> dict[str, Any]:
         return {
@@ -146,6 +218,8 @@ class Estimate:
             "inside_hull": self.inside_hull,
             "geometry_ratio": round(self.geometry_ratio, 6),
             "reasons": list(self.reasons),
+            "excluded": [finding.to_dict() for finding in self.excluded],
+            "residuals": [finding.to_dict() for finding in self.residuals],
         }
 
 
@@ -200,6 +274,21 @@ def geometry_ratio(points: Sequence[tuple[float, float]]) -> float:
     return math.sqrt(max(0.0, minor) / major)
 
 
+def array_aperture(points: Sequence[tuple[float, float]]) -> float:
+    """RMS distance of the anchors from their centroid, in metres.
+
+    The natural length scale of the sensing array, used to judge whether a
+    residual is small enough for the solution to mean anything.
+    """
+    if not points:
+        return 0.0
+    mean_x = sum(p[0] for p in points) / len(points)
+    mean_y = sum(p[1] for p in points) / len(points)
+    return math.sqrt(
+        sum((p[0] - mean_x) ** 2 + (p[1] - mean_y) ** 2 for p in points) / len(points)
+    )
+
+
 def _point_in_hull(point: tuple[float, float], points: Sequence[tuple[float, float]]) -> bool:
     """Convex-hull containment via cross-product sign consistency.
 
@@ -239,13 +328,88 @@ def _point_in_hull(point: tuple[float, float], points: Sequence[tuple[float, flo
     return True
 
 
+# --- NLOS identification via localisation residual --------------------------------
+
+
+def robust_residual_scale(residuals: Sequence[float]) -> float:
+    """Scale of the residual distribution, resistant to the outliers being sought.
+
+    A plain standard deviation is inflated by the very anchors this test is
+    meant to find, so a blocked node raises the bar it is measured against and
+    hides. The median absolute deviation does not have that feedback.
+    """
+    if not residuals:
+        return MIN_RESIDUAL_SCALE_M
+    ordered = sorted(residuals)
+    median = statistics.median(ordered)
+    deviation = statistics.median([abs(value - median) for value in ordered])
+    return max(MIN_RESIDUAL_SCALE_M, deviation * MAD_TO_SIGMA)
+
+
+def classify_residuals(
+    node_ids: Sequence[str],
+    residuals: Sequence[float],
+    *,
+    threshold_sigmas: float = NLOS_RESIDUAL_SIGMAS,
+) -> list[ResidualFinding]:
+    """Label each sighting by how far it sits from the fleet's agreed solution.
+
+    ``residuals`` are ``implied_distance - measured_distance`` in metres, so:
+
+    * **negative** — the node measured a *longer* range than the solution
+      implies. That is what an obstruction does: extra attenuation reads as
+      extra distance. Classified ``NLOS_SUSPECTED``.
+    * **positive** — the node measured a *shorter* range than the solution
+      implies, meaning it heard the emitter more strongly than the geometry
+      allows. Obstruction cannot cause this. Classified
+      ``IMPLAUSIBLY_STRONG`` and treated as the more serious finding, because a
+      repeater, a reflection or a fabricated report all look like this and none
+      of them are propagation.
+    """
+    if len(node_ids) != len(residuals):
+        raise ValueError("node_ids and residuals must be the same length")
+    scale = robust_residual_scale(residuals)
+    median = statistics.median(residuals) if residuals else 0.0
+    findings: list[ResidualFinding] = []
+    for node_id, residual in zip(node_ids, residuals):
+        # Centre on the median: a constant offset shared by every node is a
+        # calibration error in the path-loss model, not one node being blocked.
+        normalised = (residual - median) / scale
+        if abs(normalised) <= threshold_sigmas:
+            classification = "CONSISTENT"
+        elif normalised < 0:
+            classification = "NLOS_SUSPECTED"
+        else:
+            classification = "IMPLAUSIBLY_STRONG"
+        findings.append(
+            ResidualFinding(
+                node_id=node_id,
+                residual_m=residual,
+                normalised=normalised,
+                classification=classification,
+            )
+        )
+    return findings
+
+
 # --- estimators --------------------------------------------------------------------
 
 
 class EmitterLocator:
-    def __init__(self, *, min_nodes: int = MIN_NODES, min_geometry_ratio: float = MIN_GEOMETRY_RATIO) -> None:
+    def __init__(
+        self,
+        *,
+        min_nodes: int = MIN_NODES,
+        min_geometry_ratio: float = MIN_GEOMETRY_RATIO,
+        reject_nlos: bool = True,
+        nlos_threshold_sigmas: float = NLOS_RESIDUAL_SIGMAS,
+        max_residual_ratio: float = MAX_RESIDUAL_TO_APERTURE_RATIO,
+    ) -> None:
         self.min_nodes = max(3, min_nodes)
         self.min_geometry_ratio = min_geometry_ratio
+        self.reject_nlos = reject_nlos
+        self.nlos_threshold_sigmas = nlos_threshold_sigmas
+        self.max_residual_ratio = max_residual_ratio
 
     def _usable(
         self,
@@ -289,11 +453,55 @@ class EmitterLocator:
                 "node geometry is effectively collinear; position perpendicular to that line is unconstrained"
             )
 
+        excluded: tuple[ResidualFinding, ...] = ()
+        residuals: tuple[ResidualFinding, ...] = ()
         if path_loss is not None:
+            if self.reject_nlos:
+                usable, points, excluded, drop_reasons = self._reject_inconsistent(
+                    usable, points, path_loss
+                )
+                reasons.extend(drop_reasons)
+                # Excluding a node changes the geometry, so the collinearity
+                # guard has to hold for the set actually used, not the set
+                # offered.
+                node_positions = [by_id[s.node_id] for s in usable]
+                points, mean_lat, mean_lon = to_local_xy(node_positions)
+                ratio = geometry_ratio(points)
+                if ratio < self.min_geometry_ratio:
+                    raise GeolocationError(
+                        "after excluding inconsistent sightings the remaining nodes are effectively collinear"
+                    )
+            else:
+                reasons.append("NLOS_REJECTION_DISABLED_BY_CONFIGURATION")
             estimate_xy, radius, method = self._trilaterate(usable, points, path_loss)
+            aperture = array_aperture(points)
+            if radius > self.max_residual_ratio * aperture:
+                # Reached when several anchors are blocked at once: no single
+                # removal explains the disagreement, so nothing was excluded and
+                # the surviving set still cannot be reconciled. Returning the
+                # least-squares point here would hand back a position that can
+                # be kilometres wrong with only a reason string to warn of it.
+                raise GeolocationError(
+                    "anchors disagree by more than the array aperture; no position is supported "
+                    f"by these measurements (residual {radius:.0f} m vs aperture {aperture:.0f} m)"
+                )
+            # Report how well each *surviving* anchor agrees, so a marginal one
+            # that was not excluded is still visible to an operator.
+            final_distances = [path_loss.distance_m(s.received_dbm) for s in usable]
+            residuals = tuple(
+                classify_residuals(
+                    [s.node_id for s in usable],
+                    [
+                        math.dist(estimate_xy, point) - distance
+                        for point, distance in zip(points, final_distances)
+                    ],
+                    threshold_sigmas=self.nlos_threshold_sigmas,
+                )
+            )
         else:
             estimate_xy, radius, method = self._weighted_centroid(usable, points)
             reasons.append("NO_CALIBRATED_PATH_LOSS_MODEL_SO_CENTROID_ONLY")
+            reasons.append("NLOS_REJECTION_NEEDS_RANGES_SO_IS_UNAVAILABLE_FOR_CENTROID")
 
         inside = _point_in_hull(estimate_xy, points)
         if not inside:
@@ -312,7 +520,114 @@ class EmitterLocator:
             inside_hull=inside,
             geometry_ratio=ratio,
             reasons=tuple(dict.fromkeys(reasons)),
+            excluded=excluded,
+            residuals=residuals,
         )
+
+    def _fit(
+        self,
+        sightings: Sequence[SignalSighting],
+        points: Sequence[tuple[float, float]],
+        path_loss: PathLossModel,
+    ) -> tuple[tuple[float, float], float, list[float]]:
+        """Solve, and report how badly the anchors disagree with that solution."""
+        estimate_xy, _radius, _method = self._trilaterate(sightings, points, path_loss)
+        distances = [path_loss.distance_m(s.received_dbm) for s in sightings]
+        residuals = [
+            math.dist(estimate_xy, point) - distance
+            for point, distance in zip(points, distances)
+        ]
+        rms = math.sqrt(sum(r**2 for r in residuals) / len(residuals))
+        return estimate_xy, rms, residuals
+
+    def _rejection_floor(self) -> int:
+        return max(self.min_nodes, MIN_NODES_FOR_RESIDUAL_TEST)
+
+    def _reject_inconsistent(
+        self,
+        sightings: Sequence[SignalSighting],
+        points: Sequence[tuple[float, float]],
+        path_loss: PathLossModel,
+    ) -> tuple[list[SignalSighting], list[tuple[float, float]], tuple[ResidualFinding, ...], list[str]]:
+        """Exclude anchors that cannot be reconciled with the rest.
+
+        This is the localisation-residual test of Hua et al.: a blocked anchor
+        is found not by looking at its own residual under the full solve — the
+        full solve is already dragged by it, which is why every anchor then
+        looks mildly wrong and none looks decisively wrong — but by asking
+        **which single anchor, if removed, makes the remaining ones agree**.
+        Removal happens one at a time with a full re-solve after each, and only
+        when the improvement is large enough that no clean anchor could produce
+        it by chance.
+        """
+        remaining = list(sightings)
+        remaining_points = list(points)
+        dropped: list[ResidualFinding] = []
+        reasons: list[str] = []
+        floor = self._rejection_floor()
+
+        if len(remaining) <= floor:
+            reasons.append("TOO_FEW_ANCHORS_TO_IDENTIFY_A_BLOCKED_ONE")
+            return remaining, remaining_points, (), reasons
+
+        while len(remaining) > floor:
+            try:
+                _xy, rms, _residuals = self._fit(remaining, remaining_points, path_loss)
+            except GeolocationError:
+                # A geometry this solve cannot handle is not evidence about any
+                # single node, so nothing is excluded on the strength of it.
+                break
+            if rms <= MIN_RESIDUAL_SCALE_M:
+                break
+
+            best_index: int | None = None
+            best_rms = math.inf
+            best_residual = 0.0
+            for index in range(len(remaining)):
+                trial = remaining[:index] + remaining[index + 1 :]
+                trial_points = remaining_points[:index] + remaining_points[index + 1 :]
+                try:
+                    trial_xy, trial_rms, _ = self._fit(trial, trial_points, path_loss)
+                except GeolocationError:
+                    continue
+                if trial_rms < best_rms:
+                    best_index, best_rms = index, trial_rms
+                    # Judge the candidate against the solution the *others*
+                    # support, not the one it helped produce.
+                    best_residual = math.dist(trial_xy, remaining_points[index]) - path_loss.distance_m(
+                        remaining[index].received_dbm
+                    )
+
+            if best_index is None or best_rms * RESIDUAL_IMPROVEMENT_FACTOR >= rms:
+                # No single anchor explains the disagreement. That is a fleet-
+                # wide problem — a mis-calibrated path-loss model, or several
+                # blocked anchors at once — and blaming one node would be wrong.
+                if rms > MIN_RESIDUAL_SCALE_M:
+                    reasons.append("ANCHORS_DISAGREE_BUT_NO_SINGLE_ONE_EXPLAINS_IT")
+                break
+
+            classification = "NLOS_SUSPECTED" if best_residual < 0 else "IMPLAUSIBLY_STRONG"
+            dropped.append(
+                ResidualFinding(
+                    node_id=remaining[best_index].node_id,
+                    residual_m=best_residual,
+                    normalised=rms / max(best_rms, MIN_RESIDUAL_SCALE_M),
+                    classification=classification,
+                )
+            )
+            reasons.append(
+                "EXCLUDED_NLOS_SUSPECTED_SIGHTING"
+                if classification == "NLOS_SUSPECTED"
+                else "EXCLUDED_SIGHTING_STRONGER_THAN_PROPAGATION_ALLOWS"
+            )
+            del remaining[best_index]
+            del remaining_points[best_index]
+
+        if len(remaining) == floor and len(sightings) > floor:
+            # Worth saying out loud: from here the test cannot run again, so a
+            # further blocked anchor would survive silently into the solution.
+            reasons.append("AT_MINIMUM_ANCHOR_COUNT_NO_FURTHER_REJECTION_POSSIBLE")
+        return remaining, remaining_points, tuple(dropped), reasons
 
     @staticmethod
     def _weighted_centroid(
