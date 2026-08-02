@@ -32,9 +32,9 @@ bands an exactly linear function of ``log10 R``:
 
     ``n = [log10(k2/k1) + (alpha2 - alpha1) * log10 R] / log10(f2/f1)``
 
-so between 10 and 20 GHz the rain exponent runs from about 3.3 at drizzle to
-about 1.5 at a tropical downpour, and passes through 1.98 at roughly 25 mm/h.
-The ITU-R P.840 cloud exponent over the same pair sits between 1.82 and 2.00
+so between 10 and 20 GHz the rain exponent runs from about 3.4 at drizzle to
+about 1.4 at a tropical downpour, and passes through 1.99 at roughly 25 mm/h.
+The ITU-R P.840 cloud exponent over the same pair sits between 1.82 and 1.99
 across the whole plausible liquid-water temperature range. **They overlap.** A
 25 mm/h rain and a fog bank produce the same slope between those two bands, and
 a module that reported "cloud" there would be guessing. This one reports both,
@@ -792,8 +792,8 @@ def cloud_exponent(
     in ``M`` and a linear factor is a constant offset in the logarithm. That is
     what makes the cloud test strong: it needs no declared water content, only a
     temperature, and the exponent barely moves across the whole temperature
-    range anyway — between 10 and 20 GHz it runs from 1.82 at -20 C to 2.00 at
-    +40 C, against a rain window three times as wide.
+    range anyway — between 10 and 20 GHz it runs from 1.82 at -20 C to 1.99 at
+    +40 C, against a rain window more than ten times as wide.
 
     As with rain, ``weights`` are the measurement's own, so that the model is
     reduced to one exponent the same way the measurement was.
@@ -1865,11 +1865,11 @@ class WeatherDiscriminator:
         if declared.rain_rate_mm_per_h is not None:
             return self._declared_rate_rain(frequencies, weights, declared, fit, reasons)
 
-        # The chord exponent is linear in ``log10 R``, so the whole plausible
+        # The model exponent is linear in ``log10 R``, so the whole plausible
         # rainfall range maps onto the interval between its two endpoints and no
-        # search is needed. Which endpoint is which depends on the band pair:
-        # above about 5 GHz ``alpha`` falls with frequency and heavier rain
-        # flattens the slope, below it the sign reverses.
+        # search is needed. Which endpoint is which depends on the bands: above
+        # about 5 GHz ``alpha`` falls with frequency and heavier rain flattens
+        # the slope, below it the sign reverses.
         endpoints = tuple(
             rain_exponent(
                 frequencies,
