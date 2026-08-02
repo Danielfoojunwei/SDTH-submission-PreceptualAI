@@ -87,10 +87,15 @@ def verify_model_manifest(envelope: dict[str, Any], public_key: Ed25519PublicKey
         raise ModelTrustError("model manifest body must be an object")
     try:
         manifest = ModelManifest.from_dict(body)
-    except (KeyError, ValueError) as exc:
+    except (KeyError, ValueError, TypeError) as exc:
         raise ModelTrustError(f"model manifest is incomplete: {exc}") from exc
     if not manifest.model_id or not manifest.training_data_lineage:
         raise ModelTrustError("model manifest must name a model and its training-data lineage")
+    # The signature covers the canonical projection, so any field the presented
+    # manifest carries beyond it would be unauthenticated. Reject rather than
+    # silently dropping it.
+    if body != manifest.canonical():
+        raise ModelTrustError("model manifest contains unauthenticated or non-canonical fields")
     try:
         signature = base64.b64decode(str(envelope["signature"]), validate=True)
     except (KeyError, ValueError) as exc:
@@ -154,13 +159,21 @@ class DriftDetector:
 
     def evaluate(self, features: dict[str, float]) -> DriftVerdict:
         out_of_range: list[str] = []
+        non_finite: list[str] = []
         max_z = 0.0
         provided = {str(k): float(v) for k, v in features.items()}
         missing = tuple(sorted(set(self.baseline.means) - set(provided)))
+        unknown = tuple(sorted(set(provided) - set(self.baseline.means)))
         for name, mean in self.baseline.means.items():
             if name not in provided:
                 continue
-            z = abs(provided[name] - mean) / self.baseline.stddevs[name]
+            value = provided[name]
+            # A NaN comparison is False, so an unguarded z-test would silently
+            # ADVISE on a non-finite feature. Treat it as out of distribution.
+            if not math.isfinite(value):
+                non_finite.append(name)
+                continue
+            z = abs(value - mean) / self.baseline.stddevs[name]
             max_z = max(max_z, z)
             if z > self.z_threshold:
                 out_of_range.append(name)
@@ -169,9 +182,18 @@ class DriftDetector:
         if missing:
             decision = LearnedDecision.ABSTAIN
             reasons.append("REQUIRED_FEATURES_MISSING")
+        if non_finite:
+            decision = LearnedDecision.ABSTAIN
+            reasons.append("NON_FINITE_FEATURE_VALUES")
+            out_of_range.extend(non_finite)
         if out_of_range:
             decision = LearnedDecision.ABSTAIN
             reasons.append("FEATURES_OUT_OF_TRAINED_DISTRIBUTION")
+        if unknown:
+            # Extra features mean the live schema does not match the trained
+            # one; that is a schema mismatch, not a harmless addition.
+            decision = LearnedDecision.ABSTAIN
+            reasons.append("FEATURES_OUTSIDE_BASELINE_SCHEMA")
         if not reasons:
             reasons.append("WITHIN_TRAINED_DISTRIBUTION")
         return DriftVerdict(
@@ -192,30 +214,51 @@ class ChangePoint:
 
 
 def detect_change_point(series: Sequence[float], *, threshold_sigmas: float = 5.0, min_samples: int = 8) -> ChangePoint:
-    """CUSUM change-point detector over a metric stream.
+    """Change-point detector over a metric stream.
 
-    Returns the first index at which the cumulative deviation from the running
-    mean exceeds ``threshold_sigmas`` standard deviations. Too-short or flat
-    series report no change rather than a spurious one.
+    Splits the series at every interior index and returns the split whose
+    before/after means are most separated, measured in pooled within-segment
+    standard deviations. ``index`` is that best split — the first sample of the
+    new regime — and ``magnitude`` is the separation there.
+
+    ``magnitude`` is *standardized*, so it measures how cleanly the two regimes
+    separate rather than the raw size of the shift: a noiseless 1→5 step and a
+    noiseless 1→500 step are equally detectable and score alike. This is the
+    intended semantic, and it is what a raw cumulative-sum peak fails to
+    provide — that peak returns toward zero and scales with series length
+    rather than with the strength of the change.
+
+    Too-short, flat, or non-finite series report no change rather than a
+    spurious one.
     """
     values = [require_finite(value, "series value") for value in series]
-    if len(values) < min_samples:
+    if len(values) < max(min_samples, 4):
         return ChangePoint(False, None, 0.0, ("INSUFFICIENT_SAMPLES",))
-    mean = statistics.fmean(values)
     stddev = statistics.pstdev(values)
     if stddev == 0.0:
         return ChangePoint(False, None, 0.0, ("NO_VARIANCE",))
-    cumulative = 0.0
-    peak = 0.0
-    peak_index: int | None = None
-    for index, value in enumerate(values):
-        cumulative += (value - mean) / stddev
-        if abs(cumulative) > peak:
-            peak = abs(cumulative)
-            peak_index = index
-    if peak >= threshold_sigmas:
-        return ChangePoint(True, peak_index, round(peak, 6), ("CUSUM_THRESHOLD_EXCEEDED",))
-    return ChangePoint(False, None, round(peak, 6), ("NO_CHANGE_POINT",))
+
+    # Floor the denominator relative to the series scale. Without it a
+    # perfectly clean step divides by zero within-segment spread and would have
+    # to fall back to the whole-series spread, which scores the true split
+    # *lower* than its noisy neighbours and reports the wrong index.
+    floor = stddev * 1e-6
+    best = 0.0
+    best_index: int | None = None
+    for index in range(1, len(values)):
+        before = values[:index]
+        after = values[index:]
+        spread = math.sqrt(
+            (statistics.pvariance(before) + statistics.pvariance(after)) / 2.0
+        )
+        separation = abs(statistics.fmean(after) - statistics.fmean(before)) / max(spread, floor)
+        if separation > best:
+            best = separation
+            best_index = index
+
+    if best >= threshold_sigmas:
+        return ChangePoint(True, best_index, round(best, 6), ("CHANGE_POINT_THRESHOLD_EXCEEDED",))
+    return ChangePoint(False, None, round(best, 6), ("NO_CHANGE_POINT",))
 
 
 @dataclass(frozen=True)
@@ -274,13 +317,22 @@ class CausalGate:
         var_before = statistics.variance(before_values)
         var_after = statistics.variance(after_values)
         denominator = math.sqrt(var_before / len(before_values) + var_after / len(after_values))
-        if denominator == 0.0:
-            welch_t = math.inf if improvement != 0 else 0.0
-        else:
-            welch_t = (mean_after - mean_before) / denominator
-            if not higher_is_better:
-                welch_t = -welch_t
         reasons: list[str] = []
+        if denominator == 0.0:
+            # Both samples are perfectly flat. That is a degenerate measurement,
+            # not infinite confidence, and an infinity would not survive JSON
+            # serialization into the audit ledger. Refuse to attribute.
+            return CausalVerdict(
+                False,
+                round(mean_before, 6),
+                round(mean_after, 6),
+                round(improvement, 6),
+                0.0,
+                ("ZERO_VARIANCE_IN_BOTH_SAMPLES",),
+            )
+        welch_t = (mean_after - mean_before) / denominator
+        if not higher_is_better:
+            welch_t = -welch_t
         attributed = improvement >= self.min_effect and welch_t >= self.t_threshold
         if improvement < self.min_effect:
             reasons.append("IMPROVEMENT_BELOW_MIN_EFFECT")
@@ -293,6 +345,6 @@ class CausalGate:
             mean_before=round(mean_before, 6),
             mean_after=round(mean_after, 6),
             improvement=round(improvement, 6),
-            welch_t=round(welch_t, 6) if math.isfinite(welch_t) else welch_t,
+            welch_t=round(welch_t, 6),
             reasons=tuple(reasons),
         )

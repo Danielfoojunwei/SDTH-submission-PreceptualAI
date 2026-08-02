@@ -100,6 +100,20 @@ class TegrastatsParserTests(unittest.TestCase):
         self.assertIsNone(result.hottest())
         self.assertFalse(result.has_thermal_evidence())
 
+    def test_junction_temperature_is_not_discarded(self) -> None:
+        line = "RAM 1024/7620MB CPU@55C GPU@52C tj@78C VDD_IN 8200mW/8000mW"
+        result = parse_tegrastats(line, observed_at=NOW)
+        self.assertEqual(result.cpu_temp_c, 55.0)
+        self.assertEqual(result.junction_temp_c, 78.0)
+        # The junction sensor is the hottest and must drive the governor.
+        self.assertEqual(result.hottest(), 78.0)
+
+    def test_module_rail_selected_by_name_not_position(self) -> None:
+        # VDD_SYS_SOC appears first, but VDD_IN is the module input rail.
+        line = "RAM 1/2MB CPU@50C VDD_SYS_SOC 1500mW/1400mW VDD_IN 9000mW/8800mW"
+        result = parse_tegrastats(line, observed_at=NOW)
+        self.assertEqual(result.module_watts, 9.0)
+
 
 class PowerGovernorTests(unittest.TestCase):
     def setUp(self) -> None:
@@ -147,6 +161,32 @@ class PowerGovernorTests(unittest.TestCase):
         )
         self.assertIs(rec.reason, PowerReason.INSUFFICIENT_EVIDENCE)
         self.assertEqual(rec.target_nvpmodel_id, 1)
+
+    def test_missing_thermal_alone_is_insufficient(self) -> None:
+        # Battery evidence without any thermal reading must not yield NOMINAL:
+        # the governor cannot know that raising the power mode is safe.
+        rec = self.governor.recommend(
+            self.policy,
+            reading(cpu_temp_c=None, gpu_temp_c=None, battery_percent=95.0),
+            current_nvpmodel_id=0,
+        )
+        self.assertIs(rec.reason, PowerReason.INSUFFICIENT_EVIDENCE)
+        self.assertEqual(rec.target_nvpmodel_id, 1)
+
+    def test_junction_temperature_triggers_thermal_limit(self) -> None:
+        hot = PowerReading(
+            observed_at=NOW,
+            source="test",
+            cpu_temp_c=60.0,
+            gpu_temp_c=58.0,
+            module_watts=8.0,
+            battery_percent=80.0,
+            hardware_throttled=False,
+            nvpmodel_id=0,
+            junction_temp_c=90.0,
+        )
+        rec = self.governor.recommend(self.policy, hot, current_nvpmodel_id=0)
+        self.assertIs(rec.reason, PowerReason.THERMAL_LIMIT)
 
 
 if __name__ == "__main__":

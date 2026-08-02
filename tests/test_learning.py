@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import base64
 import copy
+import json
 import unittest
 
 from cryptography.hazmat.primitives.asymmetric.ed25519 import Ed25519PrivateKey
@@ -98,6 +99,20 @@ class DriftDetectorTests(unittest.TestCase):
         self.assertIs(verdict.decision, LearnedDecision.ABSTAIN)
         self.assertIn("loss", verdict.missing_features)
 
+    def test_nan_feature_fails_closed(self) -> None:
+        verdict = DriftDetector(self.baseline).evaluate({"rtt": float("nan"), "loss": 1.0})
+        self.assertIs(verdict.decision, LearnedDecision.ABSTAIN)
+        self.assertIn("NON_FINITE_FEATURE_VALUES", verdict.reasons)
+
+    def test_infinite_feature_fails_closed(self) -> None:
+        verdict = DriftDetector(self.baseline).evaluate({"rtt": float("inf"), "loss": 1.0})
+        self.assertIs(verdict.decision, LearnedDecision.ABSTAIN)
+
+    def test_unknown_feature_abstains(self) -> None:
+        verdict = DriftDetector(self.baseline).evaluate({"rtt": 50.0, "loss": 1.0, "surprise": 3.0})
+        self.assertIs(verdict.decision, LearnedDecision.ABSTAIN)
+        self.assertIn("FEATURES_OUTSIDE_BASELINE_SCHEMA", verdict.reasons)
+
 
 class ChangePointTests(unittest.TestCase):
     def test_detects_shift(self) -> None:
@@ -113,6 +128,17 @@ class ChangePointTests(unittest.TestCase):
         result = detect_change_point([1.0, 2.0])
         self.assertFalse(result.detected)
         self.assertIn("INSUFFICIENT_SAMPLES", result.reasons)
+
+    def test_reports_the_actual_change_index(self) -> None:
+        result = detect_change_point([1.0] * 10 + [50.0] * 10, threshold_sigmas=3.0)
+        self.assertTrue(result.detected)
+        self.assertEqual(result.index, 10)
+
+    def test_reports_index_for_a_noisy_step(self) -> None:
+        series = [1, 1.1, 0.9, 1, 1.05, 0.95, 1, 1.02, 9, 9.1, 8.9, 9, 9.05, 8.95, 9, 9.02]
+        result = detect_change_point(series, threshold_sigmas=3.0)
+        self.assertTrue(result.detected)
+        self.assertEqual(result.index, 8)
 
 
 class CausalGateTests(unittest.TestCase):
@@ -135,6 +161,22 @@ class CausalGateTests(unittest.TestCase):
         verdict = gate.evaluate([1.0, 2.0], [3.0, 4.0], higher_is_better=True)
         self.assertFalse(verdict.attributed)
         self.assertIn("INSUFFICIENT_SAMPLES", verdict.reasons)
+
+    def test_zero_variance_is_not_infinite_confidence(self) -> None:
+        gate = CausalGate(min_effect=1.0, t_threshold=2.0)
+        verdict = gate.evaluate([100.0] * 5, [10.0] * 5, higher_is_better=False)
+        self.assertFalse(verdict.attributed)
+        self.assertIn("ZERO_VARIANCE_IN_BOTH_SAMPLES", verdict.reasons)
+        # The verdict must survive JSON serialization into the audit ledger.
+        json.dumps(verdict.to_dict())
+
+    def test_higher_is_better_direction(self) -> None:
+        gate = CausalGate(min_effect=5.0, t_threshold=2.0)
+        before = [10.0, 11.0, 9.0, 10.5, 9.5]
+        after = [100.0, 102.0, 98.0, 101.0, 99.0]
+        self.assertTrue(gate.evaluate(before, after, higher_is_better=True).attributed)
+        # The same data read as a lower-is-better metric is a regression.
+        self.assertFalse(gate.evaluate(before, after, higher_is_better=False).attributed)
 
 
 if __name__ == "__main__":

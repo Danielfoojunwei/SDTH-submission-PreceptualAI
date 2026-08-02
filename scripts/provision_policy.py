@@ -8,6 +8,7 @@ writes an envelope the node can verify with the operator public key alone.
 from __future__ import annotations
 
 import argparse
+import hashlib
 import json
 import sys
 from pathlib import Path
@@ -23,6 +24,7 @@ from kval_node.capabilities import (  # noqa: E402
 from kval_node.lease import sign_lease  # noqa: E402
 from kval_node.power import PowerPolicy  # noqa: E402
 from kval_node.signing import (  # noqa: E402
+    canonical_json,
     generate_operator_keypair,
     load_private_key,
     public_key_id,
@@ -66,7 +68,10 @@ def main() -> None:
         # Validate before signing so a malformed policy never gets a signature.
         validator(payload)
         envelope = sign_document(document_type, payload, private_key)
-        summary = {"kind": args.kind, "document_type": document_type}
+        # Emit the hash a lease's policy_hash field must carry to bind to this
+        # exact policy; without it an operator has to compute it by hand.
+        policy_hash = hashlib.sha256(canonical_json(payload)).hexdigest()
+        summary = {"kind": args.kind, "document_type": document_type, "policy_hash": policy_hash}
 
     args.output.write_text(json.dumps(envelope, indent=2, sort_keys=True) + "\n", encoding="utf-8")
     summary.update({"output": str(args.output), "key_id": public_key_id(private_key.public_key())})

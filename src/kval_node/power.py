@@ -102,9 +102,14 @@ class PowerReading:
     battery_percent: float | None
     hardware_throttled: bool
     nvpmodel_id: int | None
+    junction_temp_c: float | None = None
 
     def hottest(self) -> float | None:
-        temps = [value for value in (self.cpu_temp_c, self.gpu_temp_c) if value is not None]
+        temps = [
+            value
+            for value in (self.cpu_temp_c, self.gpu_temp_c, self.junction_temp_c)
+            if value is not None
+        ]
         return max(temps) if temps else None
 
     def has_thermal_evidence(self) -> bool:
@@ -116,6 +121,7 @@ class PowerReading:
             "source": self.source,
             "cpu_temp_c": self.cpu_temp_c,
             "gpu_temp_c": self.gpu_temp_c,
+            "junction_temp_c": self.junction_temp_c,
             "module_watts": self.module_watts,
             "battery_percent": self.battery_percent,
             "hardware_throttled": self.hardware_throttled,
@@ -123,8 +129,19 @@ class PowerReading:
         }
 
 
-_TEMP_FIELD = re.compile(r"(?P<name>cpu|gpu|tj|thermal)@(?P<value>-?[0-9]+(?:\.[0-9]+)?)C", re.IGNORECASE)
-_POWER_FIELD = re.compile(r"(?:VDD_IN|POM_5V_IN|VDD_SYS_SOC|TOTAL)\s+(?P<value>[0-9]+)(?:mW|/)", re.IGNORECASE)
+_TEMP_FIELD = re.compile(r"(?P<name>cpu|gpu|tj|soc\d?|thermal)@(?P<value>-?[0-9]+(?:\.[0-9]+)?)C", re.IGNORECASE)
+#: Module-input power rails, most preferred first. `tegrastats` prints several
+#: rails per line and their order varies by carrier board, so the rail is
+#: selected by name rather than by position — matching the first rail that
+#: appears would report an SoC-only rail as total module power.
+_POWER_RAILS = ("VDD_IN", "POM_5V_IN", "VDD_SYS_GPU", "VDD_SYS_SOC")
+_POWER_FIELD = re.compile(
+    r"\b(?P<rail>[A-Z0-9_]+)\s+(?P<instant>[0-9]+)mW/(?P<average>[0-9]+)mW", re.IGNORECASE
+)
+#: `tegrastats` does not print the word "throttled"; hardware throttling shows
+#: up as a non-zero thermal-throttling counter or an explicit flag when the
+#: platform exposes one.
+_THROTTLE_FIELD = re.compile(r"(?:throttl\w*)[@ :]*(?P<value>[0-9]+)?", re.IGNORECASE)
 
 
 def parse_tegrastats(line: str, *, observed_at: datetime | None = None) -> PowerReading:
@@ -134,10 +151,16 @@ def parse_tegrastats(line: str, *, observed_at: datetime | None = None) -> Power
     stay ``None`` rather than being guessed. A line with no thermal field yields
     a reading with no thermal evidence, which the governor treats as
     insufficient rather than safe.
+
+    Junction temperature (``tj@``) is retained as its own signal rather than
+    discarded when a ``cpu@`` field is also present, because on Orin the
+    junction sensor is often the hottest one and it is what
+    :meth:`PowerReading.hottest` must see.
     """
     when = observed_at or utc_now()
     cpu_temp: float | None = None
     gpu_temp: float | None = None
+    junction_temp: float | None = None
     for match in _TEMP_FIELD.finditer(line):
         value = float(match.group("value"))
         name = match.group("name").lower()
@@ -145,18 +168,31 @@ def parse_tegrastats(line: str, *, observed_at: datetime | None = None) -> Power
             cpu_temp = value
         elif name == "gpu":
             gpu_temp = value
-        elif name in {"tj", "thermal"} and cpu_temp is None:
-            cpu_temp = value
+        elif name.startswith("tj") or name == "thermal" or name.startswith("soc"):
+            junction_temp = value if junction_temp is None else max(junction_temp, value)
+
     module_watts: float | None = None
-    power_match = _POWER_FIELD.search(line)
-    if power_match:
-        module_watts = round(float(power_match.group("value")) / 1000.0, 3)
-    throttled = "throttl" in line.lower()
+    rails = {
+        match.group("rail").upper(): float(match.group("instant"))
+        for match in _POWER_FIELD.finditer(line)
+    }
+    for rail in _POWER_RAILS:
+        if rail in rails:
+            module_watts = round(rails[rail] / 1000.0, 3)
+            break
+
+    throttled = False
+    throttle_match = _THROTTLE_FIELD.search(line)
+    if throttle_match:
+        counter = throttle_match.group("value")
+        throttled = counter is None or int(counter) > 0
+
     return PowerReading(
         observed_at=when,
         source="tegrastats",
         cpu_temp_c=cpu_temp,
         gpu_temp_c=gpu_temp,
+        junction_temp_c=junction_temp,
         module_watts=module_watts,
         battery_percent=None,
         hardware_throttled=throttled,
@@ -227,8 +263,10 @@ class PowerGovernor:
             )
 
         hottest = reading.hottest()
-        if hottest is None and reading.battery_percent is None:
-            detail.append("no thermal or battery evidence; holding economy mode")
+        # Thermal evidence is mandatory: without it the governor cannot know
+        # whether raising the power mode is safe, so it must not return NOMINAL.
+        if hottest is None:
+            detail.append("no thermal evidence; holding economy mode")
             return PowerRecommendation(
                 PowerReason.INSUFFICIENT_EVIDENCE,
                 economy,
@@ -238,7 +276,7 @@ class PowerGovernor:
                 tuple(detail),
             )
 
-        if hottest is not None and hottest >= policy.thermal_ceiling_c:
+        if hottest >= policy.thermal_ceiling_c:
             detail.append(f"hottest sensor {hottest}C at/above ceiling {policy.thermal_ceiling_c}C")
             return PowerRecommendation(
                 PowerReason.THERMAL_LIMIT,
@@ -252,8 +290,7 @@ class PowerGovernor:
         # Hysteresis: if we are in economy for thermal reasons, stay there until
         # the resume temperature is reached.
         if (
-            hottest is not None
-            and current_nvpmodel_id == economy
+            current_nvpmodel_id == economy
             and economy != performance
             and hottest > policy.thermal_resume_c
         ):

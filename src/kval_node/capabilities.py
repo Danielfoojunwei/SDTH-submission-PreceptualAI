@@ -29,6 +29,20 @@ SPECTRUM_DOCUMENT_TYPE = "kval-spectrum-policy/v1"
 POWER_DOCUMENT_TYPE = "kval-power-policy/v1"
 TRANSPORT_DOCUMENT_TYPE = "kval-transport-policy/v1"
 
+#: Lease actions governed by the signed power policy.
+_POWER_ACTIONS = frozenset(
+    {
+        LeaseAction.SET_POWER_MODE,
+        LeaseAction.SET_INFERENCE_DUTY,
+        LeaseAction.SET_SCAN_INTERVAL,
+        LeaseAction.SET_TELEMETRY_INTERVAL,
+    }
+)
+
+#: Sentinel used when a governing policy exists but cannot be loaded. It can
+#: never equal a real SHA-256 digest, so the lease comparison always refuses.
+_UNRESOLVABLE_POLICY_HASH = "policy-unresolvable"
+
 
 def _unavailable(reason: str) -> dict[str, Any]:
     return {"available": False, "reason": reason}
@@ -73,7 +87,8 @@ class CapabilityServices:
                 "policy_id": policy.policy_id,
                 "policy_hash": policy_hash,
             }
-        intelligence = SpectrumAnalyzer().analyze(policy, observations, now=now)
+        analyzer = SpectrumAnalyzer(max_observation_age_seconds=self.config.observation_max_age_seconds)
+        intelligence = analyzer.analyze(policy, observations, now=now)
         result = intelligence.to_dict()
         result["available"] = True
         result["policy_hash"] = policy_hash
@@ -154,6 +169,19 @@ class CapabilityServices:
 
     # --- leases ---------------------------------------------------------------
 
+    def _active_policy_hash(self, action: LeaseAction) -> str | None:
+        """Hash of the signed policy that governs ``action``, if one applies."""
+        try:
+            if action in _POWER_ACTIONS:
+                return self.load_power_policy()[1]
+            if action is LeaseAction.ACTIVATE_APPROVED_SPECTRUM_PROFILE:
+                return self.load_spectrum_policy()[1]
+        except Exception:
+            # A policy that cannot be loaded cannot authorise anything; the
+            # caller turns this into a refusal rather than an unchecked pass.
+            return _UNRESOLVABLE_POLICY_HASH
+        return None
+
     def verify_lease_envelope(
         self,
         envelope: dict[str, Any],
@@ -164,7 +192,10 @@ class CapabilityServices:
     ) -> dict[str, Any]:
         if self.config.lease_public_key_path is None:
             return _unavailable("lease verification is not configured (no lease public key)")
-        public_key = load_public_key(self.config.lease_public_key_path)
+        try:
+            public_key = load_public_key(self.config.lease_public_key_path)
+        except Exception as exc:  # unreadable/invalid key must fail closed
+            return {"available": True, "valid": False, "redeemed": False, "error": f"lease public key unusable: {exc}"}
         current = now or utc_now()
         try:
             if redeem:
@@ -172,6 +203,9 @@ class CapabilityServices:
                     return _unavailable("lease redemption requires a lease_nonce_database_path")
                 if expected_action is None:
                     return _unavailable("lease redemption requires an expected action")
+                # Bind the lease to the policy actually in force, so a lease
+                # naming a superseded policy cannot redeem against a new one.
+                expected_policy_hash = self._active_policy_hash(expected_action)
                 store = LeaseNonceStore(self.config.lease_nonce_database_path)
                 try:
                     lease = redeem_lease(
@@ -180,6 +214,7 @@ class CapabilityServices:
                         store,
                         node_id=self.config.node_id,
                         expected_action=expected_action,
+                        expected_policy_hash=expected_policy_hash,
                         now=current,
                     )
                 finally:
@@ -208,23 +243,53 @@ def read_tegrastats_sample(*, timeout_seconds: float = 3.0) -> str | None:
     except (FileNotFoundError, OSError):
         return None
     try:
-        assert process.stdout is not None
         line = _read_line_with_timeout(process, timeout_seconds)
-        return line.strip() or None if line else None
+        return (line.strip() or None) if line else None
     finally:
         process.terminate()
         try:
             process.wait(timeout=2.0)
         except subprocess.TimeoutExpired:
             process.kill()
+            process.wait(timeout=2.0)
+        if process.stdout is not None:
+            process.stdout.close()
 
 
 def _read_line_with_timeout(process: "subprocess.Popen[str]", timeout_seconds: float) -> str | None:
-    import selectors
+    """Read one complete line within a real deadline.
 
+    ``select`` only reports that *some* bytes are ready; a blocking
+    ``readline()`` afterwards can still hang on a partial line. Read
+    byte-at-a-time against a monotonic deadline so the timeout is genuinely
+    enforced.
+    """
+    import os
+    import selectors
+    import time
+
+    stream = process.stdout
+    if stream is None:
+        return None
+    deadline = time.monotonic() + timeout_seconds
     selector = selectors.DefaultSelector()
-    assert process.stdout is not None
-    selector.register(process.stdout, selectors.EVENT_READ)
-    if selector.select(timeout_seconds):
-        return process.stdout.readline()
-    return None
+    try:
+        selector.register(stream, selectors.EVENT_READ)
+    except (ValueError, OSError):
+        return None
+    buffer: list[str] = []
+    try:
+        while True:
+            remaining = deadline - time.monotonic()
+            if remaining <= 0:
+                return None
+            if not selector.select(remaining):
+                return None
+            chunk = os.read(stream.fileno(), 4096).decode("utf-8", errors="replace")
+            if not chunk:
+                return "".join(buffer) or None
+            buffer.append(chunk)
+            if "\n" in chunk:
+                return "".join(buffer).split("\n", 1)[0]
+    finally:
+        selector.close()

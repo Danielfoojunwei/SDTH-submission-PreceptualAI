@@ -49,6 +49,8 @@ class RecoveryConfig:
     def __post_init__(self) -> None:
         if self.failed_loss_percent <= self.degraded_loss_percent:
             raise ValueError("failed_loss_percent must exceed degraded_loss_percent")
+        if self.backoff_base_seconds <= 0:
+            raise ValueError("backoff_base_seconds must be positive")
         if self.backoff_cap_seconds < self.backoff_base_seconds:
             raise ValueError("backoff_cap_seconds must be >= backoff_base_seconds")
         if self.healthy_samples_to_recover < 1 or self.degraded_samples_to_fail < 1:
@@ -102,7 +104,9 @@ class LinkStateMachine:
         return len(self._switch_times)
 
     def _backoff(self) -> float:
-        exponent = max(0, self.reconnect_attempts - 1)
+        # Clamp the exponent before the shift: an unbounded attempt counter on a
+        # permanently down link would otherwise overflow the float multiply.
+        exponent = min(max(0, self.reconnect_attempts - 1), 32)
         delay = self.config.backoff_base_seconds * (2**exponent)
         return min(delay, self.config.backoff_cap_seconds)
 
@@ -177,7 +181,9 @@ class LinkStateMachine:
         if flaps >= self.config.max_flaps_per_hour:
             reasons.append("FLAP_LIMIT_REACHED")
             return RecoveryAction.ESCALATE, self.config.backoff_cap_seconds
-        self.reconnect_attempts += 1
+        # Saturate rather than grow without bound; the value only selects a
+        # backoff step and distinguishes reconnect from failover.
+        self.reconnect_attempts = min(self.reconnect_attempts + 1, 1_000_000)
         backoff = self._backoff()
         if self.reconnect_attempts <= 2:
             return RecoveryAction.RECONNECT, backoff

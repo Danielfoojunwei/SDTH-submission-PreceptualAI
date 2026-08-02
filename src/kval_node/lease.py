@@ -50,6 +50,11 @@ class LeaseAction(str, Enum):
 NONCE_MIN_LENGTH = 16
 NONCE_MAX_LENGTH = 128
 
+#: Bounds that name one exact permitted value rather than a limit. A power mode
+#: is an identity, not a ceiling: "at most mode 2" is meaningless because
+#: nvpmodel IDs are labels, not an ordered scale.
+EXACT_BOUNDS: frozenset[str] = frozenset({"nvpmodel_id"})
+
 
 @dataclass(frozen=True)
 class CapabilityLease:
@@ -119,8 +124,23 @@ class CapabilityLease:
         return self.bounds[name]
 
     def within(self, name: str, value: float) -> bool:
-        """A leased value is valid only up to its declared numeric bound."""
-        return require_finite(value, name) <= self.bounds.get(name, float("-inf"))
+        """Check ``value`` against the lease bound named ``name``.
+
+        Bound semantics are not uniform, so a single comparison would be wrong
+        for half of them. A ``min_*`` bound is a floor the node must not go
+        below (scanning faster than ``min_scan_interval_seconds`` is *more*
+        aggressive, not less); ``nvpmodel_id`` names one exact approved mode;
+        everything else is a ceiling. An undeclared bound is never satisfied.
+        """
+        if name not in self.bounds:
+            return False
+        number = require_finite(value, name)
+        limit = self.bounds[name]
+        if name in EXACT_BOUNDS:
+            return number == limit
+        if name.startswith("min_"):
+            return number >= limit
+        return number <= limit
 
 
 class LeaseError(RuntimeError):
@@ -160,8 +180,15 @@ def verify_lease(
         raise LeaseError("lease signature is missing or malformed") from exc
     try:
         lease = CapabilityLease.body_from_dict(body, now=current)
-    except ValueError as exc:
-        raise LeaseError(str(exc)) from exc
+    except (ValueError, KeyError, TypeError) as exc:
+        # A malformed body must fail the lease contract, not escape as an
+        # unrelated exception type that a caller will not be handling.
+        raise LeaseError(f"lease body is malformed: {exc}") from exc
+    # The signature covers the normalized body, so anything the presented
+    # envelope carries beyond that projection is unauthenticated. Reject rather
+    # than silently dropping it.
+    if body != lease.to_body():
+        raise LeaseError("lease body contains unauthenticated or non-canonical fields")
     encoded = canonical_json(lease.to_body())
     try:
         public_key.verify(signature, encoded)

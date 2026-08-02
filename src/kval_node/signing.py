@@ -3,6 +3,7 @@ from __future__ import annotations
 import base64
 import hashlib
 import json
+import os
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
@@ -31,14 +32,17 @@ def generate_operator_keypair(private_path: Path, public_path: Path) -> None:
         raise FileExistsError("refusing to overwrite an existing operator key")
     private_key = Ed25519PrivateKey.generate()
     public_key = private_key.public_key()
-    private_path.write_bytes(
-        private_key.private_bytes(
-            encoding=serialization.Encoding.PEM,
-            format=serialization.PrivateFormat.PKCS8,
-            encryption_algorithm=serialization.NoEncryption(),
+    # Create the file 0600 *before* any key bytes are written; writing first and
+    # chmod-ing after leaves a window where the private key is world-readable.
+    descriptor = os.open(private_path, os.O_WRONLY | os.O_CREAT | os.O_EXCL, 0o600)
+    with os.fdopen(descriptor, "wb") as handle:
+        handle.write(
+            private_key.private_bytes(
+                encoding=serialization.Encoding.PEM,
+                format=serialization.PrivateFormat.PKCS8,
+                encryption_algorithm=serialization.NoEncryption(),
+            )
         )
-    )
-    private_path.chmod(0o600)
     public_path.write_bytes(
         public_key.public_bytes(
             encoding=serialization.Encoding.PEM,

@@ -38,6 +38,12 @@ class RecoveryConfigTests(unittest.TestCase):
         with self.assertRaises(ValueError):
             RecoveryConfig(degraded_loss_percent=90.0, failed_loss_percent=80.0)
 
+    def test_non_positive_backoff_rejected(self) -> None:
+        for base in (0.0, -1.0):
+            with self.subTest(base=base):
+                with self.assertRaisesRegex(ValueError, "backoff_base_seconds"):
+                    RecoveryConfig(backoff_base_seconds=base, backoff_cap_seconds=60.0)
+
 
 class LinkStateMachineTests(unittest.TestCase):
     def test_healthy_holds(self) -> None:
@@ -80,6 +86,14 @@ class LinkStateMachineTests(unittest.TestCase):
         self.assertIs(recovering.action, RecoveryAction.PROBE_MORE)
         healthy = machine.observe(obs(), now=NOW + timedelta(seconds=2))
         self.assertIs(healthy.health, LinkHealth.HEALTHY)
+
+    def test_permanently_down_link_does_not_overflow(self) -> None:
+        # A link that never recovers must not crash the state machine.
+        machine = LinkStateMachine()
+        for index in range(2000):
+            decision = machine.observe(obs(link_up=False), now=NOW + timedelta(seconds=index))
+        self.assertLessEqual(decision.backoff_seconds, machine.config.backoff_cap_seconds)
+        self.assertIn(decision.action, {RecoveryAction.FAILOVER, RecoveryAction.ESCALATE})
 
     def test_sustained_degradation_fails(self) -> None:
         config = RecoveryConfig(degraded_samples_to_fail=2, degraded_loss_percent=15.0, failed_loss_percent=80.0)

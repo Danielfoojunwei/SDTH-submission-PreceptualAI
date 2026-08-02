@@ -51,6 +51,40 @@ class LeaseSigningTests(unittest.TestCase):
         self.assertTrue(lease.within("nvpmodel_id", 1.0))
         self.assertFalse(lease.within("nvpmodel_id", 2.0))
 
+    def test_floor_bounds_use_floor_semantics(self) -> None:
+        envelope = sign_lease(
+            lease_body(action="set_scan_interval", bounds={"min_scan_interval_seconds": 4.0}), self.key
+        )
+        lease = verify_lease(envelope, self.key.public_key(), node_id="vault-node-01", now=NOW)
+        # Scanning faster than the floor is MORE aggressive and must be refused.
+        self.assertFalse(lease.within("min_scan_interval_seconds", 0.1))
+        self.assertTrue(lease.within("min_scan_interval_seconds", 4.0))
+        self.assertTrue(lease.within("min_scan_interval_seconds", 30.0))
+
+    def test_exact_bounds_require_equality(self) -> None:
+        envelope = sign_lease(lease_body(bounds={"nvpmodel_id": 1.0}), self.key)
+        lease = verify_lease(envelope, self.key.public_key(), node_id="vault-node-01", now=NOW)
+        self.assertTrue(lease.within("nvpmodel_id", 1.0))
+        self.assertFalse(lease.within("nvpmodel_id", 0.0))
+        self.assertFalse(lease.within("nvpmodel_id", 2.0))
+
+    def test_undeclared_bound_is_never_satisfied(self) -> None:
+        envelope = sign_lease(lease_body(), self.key)
+        lease = verify_lease(envelope, self.key.public_key(), node_id="vault-node-01", now=NOW)
+        self.assertFalse(lease.within("not_declared", 0.0))
+
+    def test_malformed_body_raises_lease_error(self) -> None:
+        envelope = sign_lease(lease_body(), self.key)
+        del envelope["body"]["action"]
+        with self.assertRaises(LeaseError):
+            verify_lease(envelope, self.key.public_key(), node_id="vault-node-01", now=NOW)
+
+    def test_unauthenticated_extra_field_rejected(self) -> None:
+        envelope = sign_lease(lease_body(), self.key)
+        envelope["body"]["smuggled"] = "extra"
+        with self.assertRaisesRegex(LeaseError, "unauthenticated|malformed"):
+            verify_lease(envelope, self.key.public_key(), node_id="vault-node-01", now=NOW)
+
     def test_tampered_bounds_fail(self) -> None:
         envelope = sign_lease(lease_body(), self.key)
         altered = copy.deepcopy(envelope)

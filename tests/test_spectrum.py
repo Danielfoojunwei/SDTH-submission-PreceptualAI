@@ -64,6 +64,14 @@ class SpectrumPolicyTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "receive-only"):
             SpectrumPolicy.from_dict(raw, now=NOW)
 
+    def test_passive_only_must_be_exactly_true(self) -> None:
+        for value in ("true", 1, None):
+            with self.subTest(value=value):
+                raw = policy_dict()
+                raw["passive_only"] = value
+                with self.assertRaisesRegex(ValueError, "receive-only"):
+                    SpectrumPolicy.from_dict(raw, now=NOW)
+
     def test_expired_policy_is_rejected(self) -> None:
         raw = policy_dict()
         raw["created_at"] = (NOW - timedelta(days=2)).isoformat()
@@ -76,6 +84,12 @@ class SpectrumObservationTests(unittest.TestCase):
     def test_non_passive_observation_is_refused(self) -> None:
         with self.assertRaisesRegex(ValueError, "passive"):
             observation(passive=False)
+
+    def test_truthy_non_true_passive_value_is_refused(self) -> None:
+        for value in ("yes", 1, [1]):
+            with self.subTest(value=value):
+                with self.assertRaisesRegex(ValueError, "passive"):
+                    observation(passive=value)
 
     def test_occupancy_bounds_enforced(self) -> None:
         with self.assertRaises(ValueError):
@@ -126,6 +140,30 @@ class SpectrumAnalyzerTests(unittest.TestCase):
         intel = self.analyzer.analyze(self.policy, [], now=NOW)
         self.assertEqual(intel.bands[0].status, BandStatus.INSUFFICIENT_EVIDENCE)
         self.assertEqual(intel.bands[0].confidence, 0.0)
+
+    def test_stale_observation_is_not_reported_clear(self) -> None:
+        old = observation(observed_at=(NOW - timedelta(days=10)).isoformat(), occupancy_percent=0.0)
+        intel = self.analyzer.analyze(self.policy, [old], now=NOW)
+        self.assertEqual(intel.bands[0].status, BandStatus.INSUFFICIENT_EVIDENCE)
+        self.assertEqual(intel.clear_comms_band_ids, ())
+        self.assertIn("STALE_OR_FUTURE_OBSERVATIONS_DISCARDED", intel.reasons)
+
+    def test_future_dated_observation_cannot_mask_live_jamming(self) -> None:
+        live_jamming = observation(occupancy_percent=95.0, noise_floor_dbm=-80.0)
+        forged_future = observation(
+            observed_at=(NOW + timedelta(hours=1)).isoformat(),
+            occupancy_percent=1.0,
+            noise_floor_dbm=-95.0,
+        )
+        intel = self.analyzer.analyze(self.policy, [live_jamming, forged_future], now=NOW)
+        self.assertEqual(intel.bands[0].status, BandStatus.JAMMING_SUSPECTED)
+        self.assertTrue(intel.jamming_suspected)
+
+    def test_low_quality_observation_is_insufficient(self) -> None:
+        poor = observation(occupancy_percent=0.0, quality=0.05)
+        intel = self.analyzer.analyze(self.policy, [poor], now=NOW)
+        self.assertEqual(intel.bands[0].status, BandStatus.INSUFFICIENT_EVIDENCE)
+        self.assertEqual(intel.clear_comms_band_ids, ())
 
     def test_observation_outside_policy_is_rejected(self) -> None:
         rogue = observation(band_id="wifi-2g4")

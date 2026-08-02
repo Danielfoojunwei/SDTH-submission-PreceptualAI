@@ -35,7 +35,18 @@ from .signing import canonical_json
 from .validation import non_empty_str, sha256_hex
 
 _WG_KEY = re.compile(r"^[A-Za-z0-9+/]{43}=$")
-_PSK_HINT = re.compile(r"preshared|private key\s*[:=]\s*[A-Za-z0-9+/]{43}=", re.IGNORECASE)
+#: Shapes that indicate secret material rather than public evidence: any
+#: preshared-key mention, a WireGuard PrivateKey/private key assignment (the
+#: canonical wg-quick config form as well as `wg show`'s prose), and the nmcli
+#: Wi-Fi PSK fields.
+_PSK_HINT = re.compile(
+    r"preshared[-_ ]?key"
+    r"|private[-_ ]?key\s*[:=]"
+    r"|\bpsk\s*[:=]"
+    r"|802-11-wireless-security\.(psk|leap-password|wep-key\d?)"
+    r"|802-1x\.(password|private-key-password)",
+    re.IGNORECASE,
+)
 
 WPA3_SAE = "sae"
 WPA3_ENTERPRISE_192 = "wpa-eap-suite-b-192"
@@ -122,6 +133,8 @@ class NftablesPolicy:
     def from_dict(cls, raw: dict[str, Any]) -> "NftablesPolicy":
         expected = sha256_hex(raw["expected_ruleset_sha256"], "expected_ruleset_sha256") if raw.get("expected_ruleset_sha256") else None
         require_drop = bool(raw.get("require_default_drop_output", True))
+        # An empty or all-disabled section would verify nothing while still
+        # reporting a pass; a configured section must assert something.
         if expected is None and not require_drop:
             raise ValueError("nftables policy must pin a ruleset hash or require default-drop output")
         return cls(expected_ruleset_sha256=expected, require_default_drop_output=require_drop)
@@ -182,13 +195,60 @@ class WireguardPeerState:
     public_key: str
     allowed_ips: frozenset[str]
     has_recent_handshake: bool
+    handshake_age_seconds: float | None
 
 
-def parse_wg_show(output: str) -> dict[str, list[WireguardPeerState]]:
+_HANDSHAKE_UNIT_SECONDS = {
+    "second": 1.0,
+    "seconds": 1.0,
+    "minute": 60.0,
+    "minutes": 60.0,
+    "hour": 3600.0,
+    "hours": 3600.0,
+    "day": 86400.0,
+    "days": 86400.0,
+    "week": 604800.0,
+    "weeks": 604800.0,
+    "month": 2592000.0,
+    "months": 2592000.0,
+    "year": 31536000.0,
+    "years": 31536000.0,
+}
+_HANDSHAKE_PART = re.compile(r"(\d+)\s+(second|minute|hour|day|week|month|year)s?")
+
+#: A tunnel whose last handshake is older than this is not carrying live
+#: traffic. WireGuard rekeys well inside this window while a session is active.
+DEFAULT_MAX_HANDSHAKE_AGE_SECONDS = 300.0
+
+
+def parse_handshake_age(text: str) -> float | None:
+    """Parse ``wg show``'s "latest handshake" phrase into seconds.
+
+    Returns ``None`` when the peer has never completed a handshake or the
+    phrase cannot be parsed — both of which callers must treat as "not live",
+    never as "recent".
+    """
+    lowered = text.strip().lower()
+    if not lowered or "never" in lowered:
+        return None
+    total = 0.0
+    matched = False
+    for amount, unit in _HANDSHAKE_PART.findall(lowered):
+        total += float(amount) * _HANDSHAKE_UNIT_SECONDS[unit]
+        matched = True
+    return total if matched else None
+
+
+def parse_wg_show(
+    output: str, *, max_handshake_age_seconds: float = DEFAULT_MAX_HANDSHAKE_AGE_SECONDS
+) -> dict[str, list[WireguardPeerState]]:
     """Parse human-readable ``wg show`` output into peer state per interface.
 
     The human format hides the private key as ``(hidden)`` and never prints a
-    pre-shared key, so it is safe to parse into evidence.
+    pre-shared key, so it is safe to parse into evidence. A handshake counts as
+    recent only if its parsed age is within ``max_handshake_age_seconds`` —
+    "never", an unparseable phrase, and a days-old handshake all count as not
+    recent.
     """
     interfaces: dict[str, list[WireguardPeerState]] = {}
     current_iface: str | None = None
@@ -197,11 +257,13 @@ def parse_wg_show(output: str) -> dict[str, list[WireguardPeerState]]:
     def flush_peer() -> None:
         nonlocal current_peer
         if current_iface is not None and current_peer is not None:
+            age = current_peer.get("handshake_age_seconds")
             interfaces[current_iface].append(
                 WireguardPeerState(
                     public_key=current_peer["public_key"],
                     allowed_ips=frozenset(current_peer.get("allowed_ips", [])),
-                    has_recent_handshake=current_peer.get("has_recent_handshake", False),
+                    has_recent_handshake=age is not None and age <= max_handshake_age_seconds,
+                    handshake_age_seconds=age,
                 )
             )
         current_peer = None
@@ -221,7 +283,7 @@ def parse_wg_show(output: str) -> dict[str, list[WireguardPeerState]]:
             addresses = line.split(":", 1)[1].strip()
             current_peer["allowed_ips"] = [a.strip() for a in addresses.split(",") if a.strip() and a.strip() != "(none)"]
         elif current_peer is not None and line.startswith("latest handshake:"):
-            current_peer["has_recent_handshake"] = "never" not in line.lower()
+            current_peer["handshake_age_seconds"] = parse_handshake_age(line.split(":", 1)[1])
     flush_peer()
     return interfaces
 
@@ -247,7 +309,10 @@ def verify_wireguard(policy: WireguardPolicy, parsed: dict[str, list[WireguardPe
         else:
             evidence.append("PEER_ALLOWED_IPS_MATCH")
         if not state.has_recent_handshake:
-            errors.append("WireGuard peer has no recent handshake")
+            if state.handshake_age_seconds is None:
+                errors.append("WireGuard peer has never completed a handshake")
+            else:
+                errors.append("WireGuard peer handshake is older than the freshness limit")
         else:
             evidence.append("PEER_HANDSHAKE_RECENT")
     return not errors, tuple(sorted(set(evidence))), tuple(sorted(set(errors)))
@@ -278,19 +343,32 @@ def hash_nft_ruleset(ruleset_json: dict[str, Any]) -> str:
     return hashlib.sha256(normalize_nft_ruleset(ruleset_json).encode("utf-8")).hexdigest()
 
 
+#: Families that must each be covered by a default-drop output chain. `inet`
+#: covers both IPv4 and IPv6; otherwise `ip` and `ip6` are needed separately,
+#: or IPv4 egress stays unfiltered while an IPv6-only chain reports a pass.
+_REQUIRED_EGRESS_FAMILIES = frozenset({"ip", "ip6"})
+
+
 def output_chain_defaults_drop(ruleset_json: dict[str, Any]) -> bool:
+    """True only if every IP family's filter-output chain defaults to drop."""
     items = ruleset_json.get("nftables", [])
+    if not isinstance(items, list):
+        return False
+    covered: set[str] = set()
     for item in items:
         chain = item.get("chain") if isinstance(item, dict) else None
-        if isinstance(chain, dict) and chain.get("hook") == "output":
-            if str(chain.get("policy", "")).lower() != "drop":
-                return False
-    return any(
-        isinstance(item, dict)
-        and isinstance(item.get("chain"), dict)
-        and item["chain"].get("hook") == "output"
-        for item in items
-    )
+        if not isinstance(chain, dict) or chain.get("hook") != "output":
+            continue
+        if str(chain.get("type", "filter")).lower() != "filter":
+            continue
+        family = str(chain.get("family", "")).lower()
+        if str(chain.get("policy", "")).lower() != "drop":
+            return False
+        if family == "inet":
+            covered |= _REQUIRED_EGRESS_FAMILIES
+        elif family in _REQUIRED_EGRESS_FAMILIES:
+            covered.add(family)
+    return _REQUIRED_EGRESS_FAMILIES <= covered
 
 
 def verify_nftables(policy: NftablesPolicy, ruleset_json: dict[str, Any]) -> tuple[bool, tuple[str, ...], tuple[str, ...]]:
@@ -443,5 +521,17 @@ class TransportVerifier:
             "verified": overall_ok,
             "sections": sections,
         }
-        assert_no_secret_material(report)
+        try:
+            assert_no_secret_material(report)
+        except RuntimeError as exc:
+            # Never emit suspected secret material, and never let the guard
+            # turn a real result into an unhandled crash. Replace the evidence
+            # with a failed, redacted report.
+            return {
+                "schema": "kval-transport-preflight/v1",
+                "policy_id": self.policy.policy_id,
+                "verified": False,
+                "sections": {},
+                "redaction_error": str(exc),
+            }
         return report

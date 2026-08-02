@@ -67,7 +67,8 @@ class NodeConfig:
         node_id = str(raw["node_id"]).strip()
         if not node_id:
             raise ValueError("node_id cannot be empty")
-        transport_wifi_uuid = raw.get("transport_wifi_connection_uuid")
+        transport_wifi_uuid_raw = raw.get("transport_wifi_connection_uuid")
+        transport_wifi_uuid = str(transport_wifi_uuid_raw).strip() if transport_wifi_uuid_raw else ""
         return cls(
             node_id=node_id,
             catalog_path=Path(raw["catalog_path"]),
@@ -83,7 +84,7 @@ class NodeConfig:
             spectrum_sensor_socket=_optional_path(raw, "spectrum_sensor_socket"),
             power_policy_path=_optional_path(raw, "power_policy_path"),
             transport_policy_path=_optional_path(raw, "transport_policy_path"),
-            transport_wifi_connection_uuid=str(transport_wifi_uuid).strip() if transport_wifi_uuid else None,
+            transport_wifi_connection_uuid=transport_wifi_uuid or None,
             lease_public_key_path=_optional_path(raw, "lease_public_key_path"),
             lease_nonce_database_path=_optional_path(raw, "lease_nonce_database_path"),
         )

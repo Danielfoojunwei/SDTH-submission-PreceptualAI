@@ -62,6 +62,8 @@ class ModalityObservation:
         missing: tuple[str, ...] = (),
     ) -> "ModalityObservation":
         source = non_empty_str(source_id, "source_id")
+        if observed_at.tzinfo is None:
+            raise ValueError("observed_at must be timezone-aware")
         validated: dict[str, float] = {}
         for key, value in features.items():
             number = float(value)
@@ -127,16 +129,24 @@ DEFAULT_MANDATORY: frozenset[Modality] = frozenset({Modality.NETWORK, Modality.P
 
 
 class MultimodalFuser:
+    #: Clock skew tolerated on a source timestamp. Anything further ahead is
+    #: implausible and is discarded rather than allowed to win freshest-wins.
+    FUTURE_TOLERANCE_SECONDS = 1.0
+
     def __init__(
         self,
         *,
         window_seconds: float,
         mandatory: frozenset[Modality] = DEFAULT_MANDATORY,
+        minimum_quality: float = 0.0,
     ) -> None:
         if window_seconds <= 0:
             raise ValueError("window_seconds must be positive")
+        if not 0.0 <= minimum_quality <= 1.0:
+            raise ValueError("minimum_quality must be between 0 and 1")
         self.window_seconds = window_seconds
         self.mandatory = mandatory
+        self.minimum_quality = minimum_quality
 
     def fuse(
         self,
@@ -145,13 +155,23 @@ class MultimodalFuser:
         now: datetime | None = None,
     ) -> FusedState:
         current = now or utc_now()
-        # Keep only the freshest observation per modality, and only within window.
+        # Keep only the freshest observation per modality, and only within
+        # window. Future-dated and low-quality observations are tracked
+        # separately so they cannot be mistaken for ordinary staleness.
         freshest: dict[Modality, ModalityObservation] = {}
         stale: set[Modality] = set()
+        future: set[Modality] = set()
+        low_quality: set[Modality] = set()
         for observation in observations:
             age = observation.age_seconds(current)
-            if age < -1.0 or age > self.window_seconds:
+            if age < -self.FUTURE_TOLERANCE_SECONDS:
+                future.add(observation.modality)
+                continue
+            if age > self.window_seconds:
                 stale.add(observation.modality)
+                continue
+            if observation.quality < self.minimum_quality:
+                low_quality.add(observation.modality)
                 continue
             existing = freshest.get(observation.modality)
             if existing is None or observation.observed_at > existing.observed_at:
@@ -160,10 +180,18 @@ class MultimodalFuser:
         present = frozenset(freshest)
         missing_mandatory = tuple(sorted(m.value for m in self.mandatory - present))
         stale_only = tuple(sorted(m.value for m in stale if m not in present))
+        future_only = tuple(sorted(m.value for m in future if m not in present))
+        low_quality_only = tuple(sorted(m.value for m in low_quality if m not in present))
 
         total_modalities = len(Modality)
         completeness = round(len(present) / total_modalities, 6)
-        provenance_coverage = 1.0 if present else 0.0
+        # Mean quality of the modalities actually contributing to this state —
+        # a real measure, not a constant.
+        provenance_coverage = (
+            round(sum(item.quality for item in freshest.values()) / len(freshest), 6)
+            if freshest
+            else 0.0
+        )
 
         reasons: list[str] = []
         decision_ready = not missing_mandatory
@@ -171,6 +199,10 @@ class MultimodalFuser:
             reasons.append("MANDATORY_MODALITY_ABSENT")
         if stale_only:
             reasons.append("MODALITY_OBSERVATIONS_STALE")
+        if future_only:
+            reasons.append("MODALITY_OBSERVATIONS_FUTURE_DATED")
+        if low_quality_only:
+            reasons.append("MODALITY_OBSERVATIONS_BELOW_MINIMUM_QUALITY")
         if decision_ready:
             reasons.append("MANDATORY_MODALITIES_PRESENT_AND_FRESH")
 
@@ -179,7 +211,7 @@ class MultimodalFuser:
             window_seconds=self.window_seconds,
             decision_ready=decision_ready,
             present_modalities=tuple(sorted(m.value for m in present)),
-            stale_modalities=stale_only,
+            stale_modalities=tuple(sorted(set(stale_only) | set(future_only) | set(low_quality_only))),
             missing_mandatory=missing_mandatory,
             provenance_coverage=provenance_coverage,
             completeness=completeness,

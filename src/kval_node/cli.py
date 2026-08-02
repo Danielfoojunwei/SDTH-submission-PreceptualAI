@@ -20,6 +20,20 @@ def _print(value: object) -> None:
     print(json.dumps(value, indent=2, sort_keys=True, default=str))
 
 
+def _print_capability(result: dict[str, object]) -> None:
+    """Print a capability result and exit non-zero unless it genuinely passed.
+
+    A capability that is unavailable, unverified, or invalid must not look like
+    success to a shell, a systemd unit, or the HIL script.
+    """
+    _print(result)
+    if result.get("available") is not True:
+        raise SystemExit(3)
+    for key in ("verified", "valid"):
+        if key in result and result[key] is not True:
+            raise SystemExit(4)
+
+
 def _with_node(config_path: str, action: str, **kwargs: object) -> object:
     node = KvalNode(NodeConfig.load(config_path))
     try:
@@ -114,11 +128,11 @@ def main() -> None:
         _print(_with_node(args.config, "activate", profile_id=args.profile_id))
         return
     if args.command == "spectrum-scan":
-        _print(CapabilityServices(NodeConfig.load(args.config)).sense_spectrum())
+        _print_capability(CapabilityServices(NodeConfig.load(args.config)).sense_spectrum())
         return
     if args.command == "power-plan":
         services = CapabilityServices(NodeConfig.load(args.config))
-        _print(
+        _print_capability(
             services.plan_power(
                 tegrastats_line=args.tegrastats_line,
                 current_nvpmodel_id=args.current_nvpmodel_id,
@@ -126,13 +140,13 @@ def main() -> None:
         )
         return
     if args.command == "transport-preflight":
-        _print(CapabilityServices(NodeConfig.load(args.config)).transport_preflight())
+        _print_capability(CapabilityServices(NodeConfig.load(args.config)).transport_preflight())
         return
     if args.command == "verify-lease":
         services = CapabilityServices(NodeConfig.load(args.config))
         envelope = json.loads(Path(args.lease).read_text(encoding="utf-8"))
         expected_action = LeaseAction(args.action) if args.action else None
-        _print(
+        _print_capability(
             services.verify_lease_envelope(
                 envelope,
                 expected_action=expected_action,

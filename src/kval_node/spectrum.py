@@ -118,8 +118,9 @@ class SpectrumPolicy:
             raise ValueError("spectrum policy expiry must be after creation")
         if expires_at <= current:
             raise ValueError("spectrum policy has expired")
-        # Receive-only is not optional. A policy that tries to disable it is rejected.
-        if not bool(raw.get("passive_only", True)):
+        # Receive-only is not optional. A policy that tries to disable it — or
+        # that supplies anything other than an explicit true — is rejected.
+        if raw.get("passive_only", True) is not True:
             raise ValueError("passive_only cannot be disabled; Kval spectrum sensing is receive-only")
         max_scans = positive_int(raw.get("max_scans_per_hour", 120), "max_scans_per_hour")
         min_interval = bounded_number(
@@ -171,8 +172,10 @@ class SpectrumObservation:
         observed_at = parse_timestamp(str(raw["observed_at"]))
         source_adapter_id = non_empty_str(raw.get("source_adapter_id"), "source_adapter_id")
         conformance_hash = sha256_hex(raw.get("conformance_hash"), "conformance_hash")
-        # An observation that is not marked passive is refused outright.
-        if not bool(raw.get("passive", False)):
+        # An observation that is not marked passive is refused outright. The
+        # check is identity against True so that a truthy string or non-zero
+        # number cannot stand in for an explicit passive declaration.
+        if raw.get("passive") is not True:
             raise ValueError("spectrum observation must be marked passive; transmit evidence is refused")
         occupancy = bounded_number(raw["occupancy_percent"], "occupancy_percent", 0.0, 100.0)
         noise_floor = bounded_number(raw["noise_floor_dbm"], "noise_floor_dbm", -160.0, 30.0)
@@ -298,9 +301,50 @@ class SpectrumAnalyzer:
     #: occupancy, is treated as a jamming indicator rather than ordinary traffic.
     JAMMING_NOISE_EXCESS_DB = 8.0
 
-    def __init__(self, *, jamming_noise_excess_db: float | None = None) -> None:
+    #: An observation older than this is not evidence about the current RF
+    #: environment. Spectrum occupancy changes in seconds.
+    DEFAULT_MAX_OBSERVATION_AGE_SECONDS = 30.0
+
+    #: Clock skew tolerated on an adapter timestamp before it is treated as
+    #: implausibly future-dated and discarded.
+    FUTURE_TOLERANCE_SECONDS = 1.0
+
+    #: Below this observation quality there is not enough signal to call a band
+    #: usable, so the band is reported as insufficient rather than clear.
+    MINIMUM_CONFIDENCE = 0.25
+
+    def __init__(
+        self,
+        *,
+        jamming_noise_excess_db: float | None = None,
+        max_observation_age_seconds: float | None = None,
+        minimum_confidence: float | None = None,
+    ) -> None:
         self.jamming_noise_excess_db = (
             jamming_noise_excess_db if jamming_noise_excess_db is not None else self.JAMMING_NOISE_EXCESS_DB
+        )
+        self.max_observation_age_seconds = (
+            max_observation_age_seconds
+            if max_observation_age_seconds is not None
+            else self.DEFAULT_MAX_OBSERVATION_AGE_SECONDS
+        )
+        self.minimum_confidence = (
+            minimum_confidence if minimum_confidence is not None else self.MINIMUM_CONFIDENCE
+        )
+
+    def _insufficient(self, band: SpectrumBand, reason: str) -> BandAssessment:
+        return BandAssessment(
+            band_id=band.band_id,
+            label=band.label,
+            status=BandStatus.INSUFFICIENT_EVIDENCE,
+            occupancy_percent=None,
+            noise_floor_excess_db=None,
+            detected_emitters=None,
+            comms_candidate=band.comms_candidate,
+            emitter_present=False,
+            bearing_deg=None,
+            confidence=0.0,
+            reasons=(reason,),
         )
 
     def _assess_band(
@@ -321,6 +365,9 @@ class SpectrumAnalyzer:
                 confidence=0.0,
                 reasons=(reason,),
             )
+
+        if observation.confidence() < self.minimum_confidence:
+            return self._insufficient(band, "OBSERVATION_QUALITY_BELOW_MINIMUM")
 
         occupancy = observation.occupancy_percent
         noise_excess = round(observation.noise_floor_dbm - band.noise_floor_baseline_dbm, 3)
@@ -370,14 +417,23 @@ class SpectrumAnalyzer:
     ) -> SpectrumIntelligence:
         produced_at = now or utc_now()
         approved = policy.approved_band_ids()
-        # Refuse any observation for a band that is not on the signed allowlist.
+        # Refuse any observation that is outside the signed allowlist, older
+        # than the freshness window, or implausibly future-dated. Occupancy
+        # changes in seconds, so stale evidence is not evidence.
         by_band: dict[str, SpectrumObservation] = {}
         rejected = 0
+        stale = 0
         for observation in observations:
             if observation.band_id not in approved:
                 rejected += 1
                 continue
+            age = (produced_at - observation.observed_at).total_seconds()
+            if age > self.max_observation_age_seconds or age < -self.FUTURE_TOLERANCE_SECONDS:
+                stale += 1
+                continue
             existing = by_band.get(observation.band_id)
+            # Strictly-newer wins, so an equal-timestamp duplicate cannot
+            # displace the observation already selected.
             if existing is None or observation.observed_at > existing.observed_at:
                 by_band[observation.band_id] = observation
 
@@ -399,6 +455,8 @@ class SpectrumAnalyzer:
             reasons.append("EMITTER_PRESENCE_DETECTED")
         if rejected:
             reasons.append("OBSERVATIONS_OUTSIDE_POLICY_REJECTED")
+        if stale:
+            reasons.append("STALE_OR_FUTURE_OBSERVATIONS_DISCARDED")
         if not reasons:
             reasons.append("NOMINAL")
 
