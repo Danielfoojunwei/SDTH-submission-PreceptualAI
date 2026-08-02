@@ -152,25 +152,31 @@ class CorpusExportTests(unittest.TestCase):
         self.assertTrue(parsed["label_improved"])
 
     def test_horizon_excludes_a_distant_successor(self) -> None:
+        # Timestamps are controlled rather than taken from write latency: two
+        # consecutive ledger writes can complete inside a millisecond on a fast
+        # machine, so racing the clock would make this test flaky. Editing
+        # created_at in place is not an option either, because that breaks the
+        # hash chain and export would refuse. The ledger itself is real, so the
+        # chain-verification step still runs for real.
         self._write([decision_payload(rtt=100.0), decision_payload(rtt=10.0)])
-        # Push the second record an hour later than the first.
-        connection = sqlite3.connect(self.path)
-        later = (NOW + timedelta(hours=1)).isoformat()
-        connection.execute("UPDATE audit_records SET created_at = ? WHERE id = 2", (later,))
-        connection.commit()
-        connection.close()
-        # The chain no longer verifies after a direct edit, so export refuses —
-        # which is itself the guarantee under test elsewhere. Use a fresh
-        # exporter on a rebuilt ledger to check the horizon in isolation.
-        rebuilt = Path(self._dir.name) / "audit2.db"
-        ledger = AuditLedger(rebuilt)
-        try:
-            ledger.append("node-1", "decision", decision_payload(rtt=100.0))
-            ledger.append("node-1", "decision", decision_payload(rtt=10.0))
-        finally:
-            ledger.close()
-        examples, _stats = CorpusExporter(rebuilt, horizon_seconds=0.001).export()
-        self.assertEqual(examples, [])
+        spaced = [
+            (NOW, "node-1", decision_payload(rtt=100.0)),
+            (NOW + timedelta(hours=1), "node-1", decision_payload(rtt=10.0)),
+        ]
+
+        class SpacedExporter(CorpusExporter):
+            def _decision_records(self):
+                return iter(spaced)
+
+        far = SpacedExporter(self.path, horizon_seconds=60.0).export()
+        self.assertEqual(far[0], [])
+        # Both records drop: the first has no successor inside the window, and
+        # the last has no successor at all.
+        self.assertEqual(far[1].dropped_no_successor, 2)
+
+        near = SpacedExporter(self.path, horizon_seconds=7200.0).export()
+        self.assertEqual(len(near[0]), 1)
+        self.assertEqual(near[0][0].horizon_seconds, 3600.0)
 
 
 if __name__ == "__main__":
