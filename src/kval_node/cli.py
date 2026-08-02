@@ -106,6 +106,17 @@ def build_parser() -> argparse.ArgumentParser:
     fabric_view = subparsers.add_parser("fabric-view")
     fabric_view.add_argument("--config", default=DEFAULT_CONFIG)
 
+    locate = subparsers.add_parser("locate-emitter")
+    locate.add_argument("--config", default=DEFAULT_CONFIG)
+    locate.add_argument("--band-id", required=True)
+
+    fed_update = subparsers.add_parser("federated-update")
+    fed_update.add_argument("--config", default=DEFAULT_CONFIG)
+    fed_update.add_argument("--output", default=None)
+
+    fed_agg = subparsers.add_parser("federated-aggregate")
+    fed_agg.add_argument("--config", default=DEFAULT_CONFIG)
+
     lease = subparsers.add_parser("verify-lease")
     lease.add_argument("--config", default=DEFAULT_CONFIG)
     lease.add_argument("--lease", required=True)
@@ -186,6 +197,21 @@ def main() -> None:
         return
     if args.command == "fabric-view":
         _print_capability(CapabilityServices(NodeConfig.load(args.config)).aggregate_fleet())
+        return
+    if args.command == "locate-emitter":
+        services = CapabilityServices(NodeConfig.load(args.config))
+        _print_capability(services.locate_emitter(args.band_id))
+        return
+    if args.command == "federated-update":
+        result = CapabilityServices(NodeConfig.load(args.config)).federated_update()
+        if args.output and result.get("available") is True:
+            Path(args.output).write_text(
+                json.dumps(result["update"], indent=2, sort_keys=True) + "\n", encoding="utf-8"
+            )
+        _print_capability(result)
+        return
+    if args.command == "federated-aggregate":
+        _print_capability(CapabilityServices(NodeConfig.load(args.config)).federated_aggregate())
         return
     if args.command == "verify-lease":
         services = CapabilityServices(NodeConfig.load(args.config))

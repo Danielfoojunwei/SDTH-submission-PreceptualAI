@@ -20,6 +20,15 @@ from typing import Any
 
 from .analysis import OutcomeAnalyzer
 from .config import NodeConfig
+from .dataset import CorpusExporter, DatasetError
+from .federated import FederatedUpdate, RobustAggregator, sign_update, verify_update
+from .geolocate import (
+    EmitterLocator,
+    GeolocationError,
+    NodePosition,
+    PathLossModel,
+    SignalSighting,
+)
 from .fabric import (
     FabricAggregator,
     FabricError,
@@ -48,6 +57,7 @@ SPECTRUM_DOCUMENT_TYPE = "kval-spectrum-policy/v1"
 POWER_DOCUMENT_TYPE = "kval-power-policy/v1"
 TRANSPORT_DOCUMENT_TYPE = "kval-transport-policy/v1"
 ROSTER_DOCUMENT_TYPE = "kval-peer-roster/v1"
+PATH_LOSS_DOCUMENT_TYPE = "kval-path-loss-model/v1"
 
 #: Lease actions governed by the signed power policy.
 _POWER_ACTIONS = frozenset(
@@ -330,6 +340,113 @@ class CapabilityServices:
         result["roster_id"] = roster.roster_id
         result["roster_hash"] = roster_hash
         result["rejected_reports"] = rejected
+        return result
+
+    def _verified_reports(self, roster: PeerRoster, *, now: datetime | None) -> tuple[list[FabricReport], list[dict[str, str]]]:
+        inbox = self.config.fabric_inbox_path
+        verified: list[FabricReport] = []
+        rejected: list[dict[str, str]] = []
+        for path in sorted(inbox.glob("*.json")) if inbox and inbox.is_dir() else []:
+            try:
+                verified.append(verify_report(json.loads(path.read_text(encoding="utf-8")), roster, now=now))
+            except (FabricError, json.JSONDecodeError, OSError) as exc:
+                rejected.append({"source": path.name, "reason": str(exc)})
+        return verified, rejected
+
+    def locate_emitter(self, band_id: str, *, now: datetime | None = None) -> dict[str, Any]:
+        """Estimate an emitter's position in one band from peer reports."""
+        if self.config.fabric_roster_path is None or self.config.fabric_inbox_path is None:
+            return _unavailable("emitter localisation needs the fabric roster and inbox")
+        try:
+            roster, _hash = self.load_peer_roster()
+        except Exception as exc:
+            return {"available": False, "reason": f"peer roster invalid: {exc}"}
+
+        reports, rejected = self._verified_reports(roster, now=now)
+        positions = [
+            NodePosition(peer.node_id, peer.latitude_deg, peer.longitude_deg, peer.altitude_m)
+            for peer in roster.peers
+            if peer.has_position()
+        ]
+        sightings: list[SignalSighting] = []
+        for report in reports:
+            band = next((item for item in report.bands if item.band_id == band_id), None)
+            if band is None or band.peak_power_dbm is None or band.confidence <= 0.0:
+                continue
+            sightings.append(SignalSighting(report.node_id, band.peak_power_dbm, report.clock_trusted))
+
+        path_loss = None
+        if self.config.path_loss_model_path is not None:
+            try:
+                payload, _ = load_verified_document(
+                    self.config.path_loss_model_path,
+                    self.config.catalog_public_key_path,
+                    expected_type=PATH_LOSS_DOCUMENT_TYPE,
+                )
+                path_loss = PathLossModel.from_dict(payload)
+            except Exception as exc:
+                return {"available": False, "reason": f"path-loss model invalid: {exc}"}
+
+        try:
+            estimate = EmitterLocator().locate(sightings, positions, path_loss=path_loss)
+        except GeolocationError as exc:
+            return {
+                "available": False,
+                "reason": str(exc),
+                "band_id": band_id,
+                "sightings": len(sightings),
+                "positioned_nodes": len(positions),
+                "rejected_reports": rejected,
+            }
+        result = estimate.to_dict()
+        result["available"] = True
+        result["band_id"] = band_id
+        result["rejected_reports"] = rejected
+        return result
+
+    # --- federated statistics -------------------------------------------------
+
+    def federated_update(self, *, now: datetime | None = None) -> dict[str, Any]:
+        """Produce this node's signed contribution: statistics, never raw data."""
+        if self.config.fabric_node_key_path is None:
+            return _unavailable("federated contribution needs a fabric node key")
+        try:
+            examples, _stats = CorpusExporter(
+                self.config.audit_database_path,
+                horizon_seconds=self.config.observation_max_age_seconds * 8,
+            ).export()
+        except DatasetError as exc:
+            return {"available": False, "reason": str(exc)}
+        try:
+            update = FederatedUpdate.from_examples(examples, node_id=self.config.node_id, now=now)
+            private_key = load_private_key(self.config.fabric_node_key_path)
+        except (FabricError, OSError, ValueError) as exc:
+            return {"available": False, "reason": str(exc)}
+        return {"available": True, "update": sign_update(update, private_key)}
+
+    def federated_aggregate(self, *, now: datetime | None = None) -> dict[str, Any]:
+        """Combine peer contributions into a fleet baseline, robustly."""
+        if self.config.fabric_roster_path is None or self.config.federated_inbox_path is None:
+            return _unavailable("federated aggregation needs the roster and a federated inbox")
+        try:
+            roster, roster_hash = self.load_peer_roster()
+        except Exception as exc:
+            return {"available": False, "reason": f"peer roster invalid: {exc}"}
+
+        inbox = self.config.federated_inbox_path
+        updates: list[FederatedUpdate] = []
+        rejected: list[dict[str, str]] = []
+        for path in sorted(inbox.glob("*.json")) if inbox.is_dir() else []:
+            try:
+                updates.append(verify_update(json.loads(path.read_text(encoding="utf-8")), roster, now=now))
+            except (FabricError, json.JSONDecodeError, OSError) as exc:
+                rejected.append({"source": path.name, "reason": str(exc)})
+
+        result = RobustAggregator().aggregate(updates).to_dict()
+        result["available"] = True
+        result["roster_id"] = roster.roster_id
+        result["roster_hash"] = roster_hash
+        result["rejected"] = rejected
         return result
 
     # --- leases ---------------------------------------------------------------

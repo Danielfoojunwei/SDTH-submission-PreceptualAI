@@ -41,7 +41,7 @@ from cryptography.hazmat.primitives.asymmetric.ed25519 import Ed25519PrivateKey,
 from .models import parse_timestamp, utc_now
 from .signing import canonical_json, public_key_id
 from .spectrum import BandStatus, SpectrumIntelligence
-from .validation import non_empty_str, sha256_hex
+from .validation import bounded_number, non_empty_str, sha256_hex
 
 REPORT_SCHEMA = "kval-fabric-report/v1"
 
@@ -61,6 +61,13 @@ class PeerIdentity:
     node_id: str
     public_key: Ed25519PublicKey
     role: str
+    #: Operator-declared position, used for emitter localisation. It lives in
+    #: the signed roster rather than in a node's own report on purpose: a
+    #: self-reported position is a spoofing surface, and a node that could
+    #: claim to be anywhere could drag every estimate.
+    latitude_deg: float | None = None
+    longitude_deg: float | None = None
+    altitude_m: float = 0.0
 
     @classmethod
     def from_dict(cls, raw: dict[str, Any]) -> "PeerIdentity":
@@ -72,7 +79,24 @@ class PeerIdentity:
         key = serialization.load_pem_public_key(pem)
         if not isinstance(key, Ed25519PublicKey):
             raise ValueError(f"peer {node_id} key is not Ed25519")
-        return cls(node_id=node_id, public_key=key, role=role)
+        position = raw.get("position") or {}
+        latitude = longitude = None
+        altitude = 0.0
+        if position:
+            latitude = bounded_number(position["latitude_deg"], "latitude_deg", -90.0, 90.0)
+            longitude = bounded_number(position["longitude_deg"], "longitude_deg", -180.0, 180.0)
+            altitude = bounded_number(position.get("altitude_m", 0.0), "altitude_m", -500.0, 20000.0)
+        return cls(
+            node_id=node_id,
+            public_key=key,
+            role=role,
+            latitude_deg=latitude,
+            longitude_deg=longitude,
+            altitude_m=altitude,
+        )
+
+    def has_position(self) -> bool:
+        return self.latitude_deg is not None and self.longitude_deg is not None
 
 
 @dataclass(frozen=True)
@@ -114,6 +138,10 @@ class BandReport:
     noise_floor_excess_db: float | None
     detected_emitters: int | None
     confidence: float
+    #: Strongest received power this node measured in the band, in dBm. Carried
+    #: across the fabric because emitter localisation needs a real power figure
+    #: from each node; absent when no backend measured one.
+    peak_power_dbm: float | None = None
 
     @classmethod
     def from_dict(cls, raw: dict[str, Any]) -> "BandReport":
@@ -126,6 +154,7 @@ class BandReport:
             ),
             detected_emitters=(int(raw["detected_emitters"]) if raw.get("detected_emitters") is not None else None),
             confidence=float(raw.get("confidence", 0.0)),
+            peak_power_dbm=(float(raw["peak_power_dbm"]) if raw.get("peak_power_dbm") is not None else None),
         )
 
     def to_dict(self) -> dict[str, Any]:
@@ -136,6 +165,7 @@ class BandReport:
             "noise_floor_excess_db": self.noise_floor_excess_db,
             "detected_emitters": self.detected_emitters,
             "confidence": self.confidence,
+            "peak_power_dbm": self.peak_power_dbm,
         }
 
 
@@ -173,6 +203,7 @@ class FabricReport:
                     noise_floor_excess_db=band.noise_floor_excess_db,
                     detected_emitters=band.detected_emitters,
                     confidence=band.confidence,
+                    peak_power_dbm=band.peak_power_dbm,
                 )
                 for band in intelligence.bands
             ),

@@ -242,6 +242,7 @@ class BandAssessment:
     status: BandStatus
     occupancy_percent: float | None
     noise_floor_excess_db: float | None
+    peak_power_dbm: float | None
     detected_emitters: int | None
     comms_candidate: bool
     emitter_present: bool
@@ -256,6 +257,7 @@ class BandAssessment:
             "status": self.status.value,
             "occupancy_percent": self.occupancy_percent,
             "noise_floor_excess_db": self.noise_floor_excess_db,
+            "peak_power_dbm": self.peak_power_dbm,
             "detected_emitters": self.detected_emitters,
             "comms_candidate": self.comms_candidate,
             "emitter_present": self.emitter_present,
@@ -340,6 +342,7 @@ class SpectrumAnalyzer:
             status=BandStatus.INSUFFICIENT_EVIDENCE,
             occupancy_percent=None,
             noise_floor_excess_db=None,
+            peak_power_dbm=None,
             detected_emitters=None,
             comms_candidate=band.comms_candidate,
             emitter_present=False,
@@ -359,6 +362,7 @@ class SpectrumAnalyzer:
                 status=BandStatus.INSUFFICIENT_EVIDENCE,
                 occupancy_percent=None,
                 noise_floor_excess_db=None,
+                peak_power_dbm=None,
                 detected_emitters=None,
                 comms_candidate=band.comms_candidate,
                 emitter_present=False,
@@ -401,6 +405,7 @@ class SpectrumAnalyzer:
             status=status,
             occupancy_percent=occupancy,
             noise_floor_excess_db=noise_excess,
+            peak_power_dbm=observation.peak_power_dbm,
             detected_emitters=observation.detected_emitters,
             comms_candidate=band.comms_candidate,
             emitter_present=emitter_present,

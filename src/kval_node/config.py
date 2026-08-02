@@ -44,6 +44,11 @@ class NodeConfig:
     #: Signed manifest for a candidate predictive model. Absent means the
     #: learned path is not present at all and the node stays deterministic.
     model_manifest_path: Path | None = None
+    #: Operator-calibrated path-loss parameters. Without them, emitter
+    #: localisation falls back to a weighted centroid rather than inventing
+    #: distances from an assumed propagation model.
+    path_loss_model_path: Path | None = None
+    federated_inbox_path: Path | None = None
 
     @classmethod
     def load(cls, path: str | Path) -> "NodeConfig":
@@ -101,5 +106,7 @@ class NodeConfig:
             fabric_node_key_path=_optional_path(raw, "fabric_node_key_path"),
             fabric_inbox_path=_optional_path(raw, "fabric_inbox_path"),
             model_manifest_path=_optional_path(raw, "model_manifest_path"),
+            path_loss_model_path=_optional_path(raw, "path_loss_model_path"),
+            federated_inbox_path=_optional_path(raw, "federated_inbox_path"),
         )
 
