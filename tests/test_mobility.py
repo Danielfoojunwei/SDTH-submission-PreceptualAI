@@ -180,11 +180,37 @@ class PreferentialReturnTests(unittest.TestCase):
         self.assertLess(many.exploration_probability, few.exploration_probability)
 
     def test_a_stationary_emitter_is_predicted_to_stay(self) -> None:
+        # The default predictor, not a loosened one. This test used to need
+        # ``max_exploration=1.0`` to pass, which was the bug wearing a disguise:
+        # the obvious operator flow — locate a stationary emitter a few times,
+        # then track it — returned nothing at all under the shipped defaults.
         fixes = [at(minute, DEPOT) for minute in range(0, 60, 5)]
-        result = TrackPredictor(max_exploration=1.0).predict(fixes, horizon=self.horizon)
+        result = self.predictor.predict(fixes, horizon=self.horizon)
         self.assertTrue(result.predicted)
         self.assertLess(metres_between(result.latitude_deg, result.longitude_deg, *DEPOT), 1.0)
         self.assertIn("ONLY_ONE_KNOWN_PLACE_SO_THE_PREDICTION_IS_THAT_IT_STAYS", result.reasons)
+
+    def test_one_known_place_still_reports_that_exploration_is_likely(self) -> None:
+        # p = rho * S^-gamma is 0.600 at S=1, above the default cut. The
+        # prediction is made anyway, but the caveat has to travel with it: one
+        # known place is exactly when striking out somewhere new is most likely.
+        fixes = [at(minute, DEPOT) for minute in range(0, 60, 5)]
+        result = self.predictor.predict(fixes, horizon=self.horizon)
+        self.assertGreater(result.exploration_probability, self.predictor.max_exploration)
+        self.assertIn(
+            "A_SINGLE_KNOWN_PLACE_MAKES_EXPLORATION_LIKELY_TREAT_THIS_AS_WEAK", result.reasons
+        )
+
+    def test_the_exploration_gate_still_bites_once_there_is_a_choice(self) -> None:
+        # The gate chooses *between known places*; relaxing it at S=1 must not
+        # relax it at S=2, where the model does have an answer to contradict.
+        fixes = [at(0, DEPOT), at(10, CHECKPOINT), at(20, DEPOT), at(30, CHECKPOINT)]
+        result = self.predictor.predict(fixes, horizon=self.horizon)
+        self.assertFalse(result.predicted)
+        self.assertEqual(result.distinct_places, 2)
+        self.assertIn(
+            "EXPLORATION_MORE_LIKELY_THAN_RETURN_SO_NO_PLACE_IS_PREDICTED", result.reasons
+        )
 
     def test_uncertainty_covers_the_spread_of_known_places(self) -> None:
         result = self.predictor.predict(self._patrol(), horizon=self.horizon)
@@ -228,7 +254,7 @@ class KinematicContinuationTests(unittest.TestCase):
             Fix(START + timedelta(minutes=i), DEPOT[0] + 0.00002 * i, DEPOT[1], 50.0)
             for i in range(8)
         ]
-        result = TrackPredictor(max_exploration=1.0).predict(jitter, horizon=self.horizon)
+        result = self.predictor.predict(jitter, horizon=self.horizon)
         self.assertEqual(result.method, "preferential_return")
 
     def test_a_manoeuvring_emitter_falls_back_to_the_return_rule(self) -> None:

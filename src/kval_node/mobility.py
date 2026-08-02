@@ -286,9 +286,22 @@ class TrackPredictor:
         places = cluster_places(ordered, place_radius_m=self.place_radius_m)
         explore = exploration_probability(len(places), rho=self.rho, gamma=self.gamma)
 
-        if explore > self.max_exploration:
-            # The model's own answer is "somewhere new". Naming a place would
-            # contradict the model that produced the probability.
+        # The exploration gate decides between *known places*. With only one
+        # known place there is nothing to choose between, so applying it there
+        # was a category error: it refused hardest exactly when the evidence was
+        # cleanest. An emitter observed repeatedly at one location has
+        # demonstrably not moved, and "it stays" is the honest prediction —
+        # p = rho * S^-gamma at S=1 is 0.600, above any sane threshold, so the
+        # obvious operator flow (locate a stationary emitter a few times, then
+        # track) returned nothing at all.
+        #
+        # The probability is still reported, because a single known place is
+        # also the situation in which an emitter is *most* likely to strike out
+        # somewhere new. The caller gets the prediction and the caveat.
+        if len(places) > 1 and explore > self.max_exploration:
+            # With a real choice available, the model's own answer is
+            # "somewhere new". Naming one of the known places would contradict
+            # the model that produced the probability.
             return TrackPrediction(
                 predicted=False,
                 latitude_deg=None,
@@ -339,6 +352,13 @@ class TrackPredictor:
         reasons.append("PREFERENTIAL_RETURN_TO_A_VISIT_WEIGHTED_PLACE")
         if len(places) == 1:
             reasons.append("ONLY_ONE_KNOWN_PLACE_SO_THE_PREDICTION_IS_THAT_IT_STAYS")
+            if explore > self.max_exploration:
+                # Reported rather than acted on: one known place is also the
+                # case where striking out somewhere new is most likely, and an
+                # operator should see that alongside the prediction.
+                reasons.append(
+                    "A_SINGLE_KNOWN_PLACE_MAKES_EXPLORATION_LIKELY_TREAT_THIS_AS_WEAK"
+                )
         return TrackPrediction(
             predicted=True,
             latitude_deg=latitude,
