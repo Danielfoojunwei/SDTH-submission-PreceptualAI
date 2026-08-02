@@ -159,9 +159,14 @@ class TransportPolicy:
             raise ValueError("transport policy expiry must be after creation")
         if expires_at <= current:
             raise ValueError("transport policy has expired")
-        wireguard = WireguardPolicy.from_dict(raw["wireguard"]) if raw.get("wireguard") else None
-        wifi = WifiSecurityPolicy.from_dict(raw["wifi"]) if raw.get("wifi") else None
-        nftables = NftablesPolicy.from_dict(raw["nftables"]) if raw.get("nftables") else None
+        # Presence is tested against None, not truthiness: an empty ``{}``
+        # section is falsy, so a truthiness test would skip the parser entirely
+        # and silently disable that section's verification while still
+        # reporting a pass. Reaching the parser makes an empty section either
+        # fail validation or resolve to its safe defaults.
+        wireguard = WireguardPolicy.from_dict(raw["wireguard"]) if raw.get("wireguard") is not None else None
+        wifi = WifiSecurityPolicy.from_dict(raw["wifi"]) if raw.get("wifi") is not None else None
+        nftables = NftablesPolicy.from_dict(raw["nftables"]) if raw.get("nftables") is not None else None
         if wireguard is None and wifi is None and nftables is None:
             raise ValueError("transport policy must configure at least one section")
         return cls(

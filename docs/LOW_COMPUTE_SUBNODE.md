@@ -98,7 +98,14 @@ by signed policy: scan interval, telemetry interval, inference duty, and (on
 Jetson-class hardware) the `nvpmodel` power mode from an operator allowlist.
 `PowerGovernor` tightens all of them together under thermal, battery, or
 sustained-watt pressure, and applies hysteresis so the node does not oscillate at
-the thermal ceiling.
+the thermal ceiling. Because thermal evidence is mandatory, a reading without it
+holds the node in economy mode rather than allowing a step up.
+
+Spectrum scan duty is enforced separately by `ScanRateLimiter` against durable
+state, so `min_scan_interval_seconds` and `max_scans_per_hour` survive a process
+restart. This matters most on a sub-node that is power-cycled or that restarts
+its agent frequently: a per-process counter would reset each time and let the
+real duty cycle drift far above what the operator signed.
 
 Absolute power figures are **not** claimed here. Energy per bit, sensing duty
 cost, and battery life must be measured on the real sub-node hardware and

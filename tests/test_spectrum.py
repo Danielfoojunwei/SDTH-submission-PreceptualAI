@@ -1,10 +1,14 @@
 from __future__ import annotations
 
+import tempfile
 import unittest
 from datetime import datetime, timedelta, timezone
+from pathlib import Path
 
 from kval_node.spectrum import (
     BandStatus,
+    ScanRateExceeded,
+    ScanRateLimiter,
     SpectrumAnalyzer,
     SpectrumObservation,
     SpectrumPolicy,
@@ -176,6 +180,71 @@ class SpectrumAnalyzerTests(unittest.TestCase):
         intel = self.analyzer.analyze(other_policy, [rogue], now=NOW)
         self.assertIn("OBSERVATIONS_OUTSIDE_POLICY_REJECTED", intel.reasons)
         self.assertEqual(intel.bands[0].status, BandStatus.INSUFFICIENT_EVIDENCE)
+
+
+class ScanRateLimiterTests(unittest.TestCase):
+    def setUp(self) -> None:
+        self._directory = tempfile.TemporaryDirectory()
+        self.path = Path(self._directory.name) / "scans.db"
+
+    def tearDown(self) -> None:
+        self._directory.cleanup()
+
+    def _policy(self, **overrides) -> SpectrumPolicy:
+        raw = policy_dict()
+        raw.update(overrides)
+        return SpectrumPolicy.from_dict(raw, now=NOW)
+
+    def test_minimum_interval_is_enforced(self) -> None:
+        policy = self._policy(min_scan_interval_seconds=5.0)
+        limiter = ScanRateLimiter(self.path)
+        try:
+            limiter.check_and_record(policy, now=NOW)
+            with self.assertRaisesRegex(ScanRateExceeded, "below the policy minimum"):
+                limiter.check_and_record(policy, now=NOW + timedelta(seconds=1))
+            # Once the interval has elapsed the scan is permitted again.
+            limiter.check_and_record(policy, now=NOW + timedelta(seconds=6))
+        finally:
+            limiter.close()
+
+    def test_hourly_cap_is_enforced(self) -> None:
+        policy = self._policy(max_scans_per_hour=3, min_scan_interval_seconds=0.05)
+        limiter = ScanRateLimiter(self.path)
+        try:
+            for index in range(3):
+                limiter.check_and_record(policy, now=NOW + timedelta(seconds=index))
+            with self.assertRaisesRegex(ScanRateExceeded, "reaches the policy limit"):
+                limiter.check_and_record(policy, now=NOW + timedelta(seconds=4))
+        finally:
+            limiter.close()
+
+    def test_limits_survive_a_restart(self) -> None:
+        # Duty limits are emission controls; a per-process counter would reset
+        # on every CLI invocation, so the state must be durable.
+        policy = self._policy(min_scan_interval_seconds=5.0)
+        first = ScanRateLimiter(self.path)
+        try:
+            first.check_and_record(policy, now=NOW)
+        finally:
+            first.close()
+        second = ScanRateLimiter(self.path)
+        try:
+            with self.assertRaises(ScanRateExceeded):
+                second.check_and_record(policy, now=NOW + timedelta(seconds=1))
+        finally:
+            second.close()
+
+    def test_old_scans_leave_the_hourly_window(self) -> None:
+        policy = self._policy(max_scans_per_hour=2, min_scan_interval_seconds=0.05)
+        limiter = ScanRateLimiter(self.path)
+        try:
+            limiter.check_and_record(policy, now=NOW)
+            limiter.check_and_record(policy, now=NOW + timedelta(seconds=1))
+            with self.assertRaises(ScanRateExceeded):
+                limiter.check_and_record(policy, now=NOW + timedelta(seconds=2))
+            limiter.check_and_record(policy, now=NOW + timedelta(hours=1, seconds=5))
+        finally:
+            limiter.close()
 
 
 if __name__ == "__main__":

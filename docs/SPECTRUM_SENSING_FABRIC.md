@@ -20,8 +20,12 @@ not implemented and are not leasable actions. What Kval does:
 * asks a **root-owned spectrum sensor adapter** (a separate, operator-approved
   radio process, over a Unix socket) for passive occupancy observations on those
   bands only;
-* refuses any observation that is not marked `passive`, or that is for a band
-  outside the signed policy;
+* refuses any observation that is not marked `passive` (checked as exactly
+  `true`, so a truthy string cannot stand in for the declaration), that is for a
+  band outside the signed policy, or that is stale or future-dated;
+* enforces the policy's scan duty limits — `min_scan_interval_seconds` and
+  `max_scans_per_hour` — against durable state, so the limits hold across
+  process restarts rather than resetting on every invocation;
 * derives bounded intelligence from the observations with a transparent,
   deterministic analyzer.
 
@@ -88,9 +92,12 @@ against the signed policy. Per band it reports one of: `CLEAR`, `OCCUPIED`,
   adapter, an optional bearing accompanies it. This gives a rough presence and
   direction signal when cameras cannot.
 
-Every assessment carries a confidence derived from the observation quality, and a
-band with no fresh, error-free observation is `INSUFFICIENT_EVIDENCE` — never
-assumed clear.
+Every assessment carries a confidence derived from the observation quality. A
+band is reported as `INSUFFICIENT_EVIDENCE` — never assumed clear — when its
+observation is missing, errored, stale, future-dated, or below the minimum
+quality. Occupancy changes in seconds, so an observation outside the freshness
+window is not evidence about the current RF environment and is discarded rather
+than aged into a "clear" verdict.
 
 ## Opportunities beyond navigation
 
@@ -139,4 +146,6 @@ kval-node spectrum-scan --config /etc/kval/node.json
 ```
 
 With no sensor adapter present the command fails closed with a clear reason and
-never fabricates occupancy data.
+never fabricates occupancy data. It exits non-zero whenever the capability is
+unavailable or unverified, so a shell, a systemd unit, or the HIL script cannot
+read a failure as success.

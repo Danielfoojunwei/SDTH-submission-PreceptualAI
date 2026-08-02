@@ -95,6 +95,24 @@ class TransportPolicyTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "WPA3-Enterprise-192"):
             WifiSecurityPolicy.from_dict({"required_key_mgmt": ["wpa-eap-suite-b-192"]})
 
+    def test_empty_section_does_not_silently_disable_verification(self) -> None:
+        base = {
+            "policy_id": "t",
+            "created_at": (NOW - timedelta(minutes=1)).isoformat(),
+            "expires_at": (NOW + timedelta(days=1)).isoformat(),
+        }
+        # An empty dict is falsy; it must still reach the section parser rather
+        # than skipping that section's verification entirely.
+        with self.assertRaises(ValueError):
+            TransportPolicy.from_dict({**base, "wireguard": {}}, now=NOW)
+        with self.assertRaises(ValueError):
+            TransportPolicy.from_dict({**base, "wifi": {}}, now=NOW)
+        # An empty nftables section resolves to its safe default, which still
+        # asserts something rather than verifying nothing.
+        policy = TransportPolicy.from_dict({**base, "nftables": {}}, now=NOW)
+        self.assertIsNotNone(policy.nftables)
+        self.assertTrue(policy.nftables.require_default_drop_output)
+
 
 class WireguardParseTests(unittest.TestCase):
     def test_parse_and_verify_match(self) -> None:

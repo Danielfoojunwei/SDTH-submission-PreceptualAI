@@ -30,6 +30,7 @@ class NodeConfig:
     # Optional capability policies (absent = capability not enabled on this node).
     spectrum_policy_path: Path | None = None
     spectrum_sensor_socket: Path | None = None
+    spectrum_scan_state_path: Path | None = None
     power_policy_path: Path | None = None
     transport_policy_path: Path | None = None
     transport_wifi_connection_uuid: str | None = None
@@ -82,6 +83,7 @@ class NodeConfig:
             apply_network_changes=bool(raw["apply_network_changes"]),
             spectrum_policy_path=_optional_path(raw, "spectrum_policy_path"),
             spectrum_sensor_socket=_optional_path(raw, "spectrum_sensor_socket"),
+            spectrum_scan_state_path=_optional_path(raw, "spectrum_scan_state_path"),
             power_policy_path=_optional_path(raw, "power_policy_path"),
             transport_policy_path=_optional_path(raw, "transport_policy_path"),
             transport_wifi_connection_uuid=transport_wifi_uuid or None,

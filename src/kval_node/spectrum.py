@@ -22,9 +22,10 @@ from __future__ import annotations
 import json
 import re
 import socket
+import sqlite3
 import stat
 from dataclasses import dataclass
-from datetime import datetime
+from datetime import datetime, timedelta
 from enum import Enum
 from pathlib import Path
 from typing import Any
@@ -470,6 +471,75 @@ class SpectrumAnalyzer:
             presence_detected=presence,
             reasons=tuple(reasons),
         )
+
+
+class ScanRateExceeded(RuntimeError):
+    """Raised when a scan would exceed the signed policy's duty limits."""
+
+
+class ScanRateLimiter:
+    """Durable enforcement of a spectrum policy's scan duty limits.
+
+    ``max_scans_per_hour`` and ``min_scan_interval_seconds`` are emission-duty
+    and energy controls, so they have to hold across process restarts — a
+    per-process counter would reset on every CLI invocation. Scan times are
+    recorded in SQLite alongside the node's other durable state.
+    """
+
+    def __init__(self, path: Path) -> None:
+        self.path = path
+        path.parent.mkdir(parents=True, exist_ok=True)
+        self._connection = sqlite3.connect(path, timeout=30.0)
+        self._connection.execute("PRAGMA journal_mode=WAL")
+        self._connection.execute("PRAGMA synchronous=FULL")
+        self._connection.execute(
+            """
+            CREATE TABLE IF NOT EXISTS spectrum_scans (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                policy_id TEXT NOT NULL,
+                scanned_at TEXT NOT NULL
+            )
+            """
+        )
+        self._connection.commit()
+
+    def close(self) -> None:
+        self._connection.close()
+
+    def _recent(self, policy_id: str, since: datetime) -> list[datetime]:
+        rows = self._connection.execute(
+            "SELECT scanned_at FROM spectrum_scans WHERE policy_id = ? AND scanned_at >= ? ORDER BY scanned_at ASC",
+            (policy_id, since.isoformat()),
+        ).fetchall()
+        return [parse_timestamp(str(row[0])) for row in rows]
+
+    def check_and_record(self, policy: SpectrumPolicy, *, now: datetime | None = None) -> None:
+        """Raise :class:`ScanRateExceeded` if a scan now would breach policy."""
+        current = now or utc_now()
+        window_start = current - timedelta(hours=1)
+        recent = self._recent(policy.policy_id, window_start)
+        if len(recent) >= policy.max_scans_per_hour:
+            raise ScanRateExceeded(
+                f"scan refused: {len(recent)} scans in the last hour reaches the policy limit "
+                f"of {policy.max_scans_per_hour}"
+            )
+        if recent:
+            elapsed = (current - recent[-1]).total_seconds()
+            if elapsed < policy.min_scan_interval_seconds:
+                raise ScanRateExceeded(
+                    f"scan refused: {elapsed:.3f}s since the last scan is below the policy minimum "
+                    f"of {policy.min_scan_interval_seconds}s"
+                )
+        with self._connection:
+            self._connection.execute(
+                "INSERT INTO spectrum_scans (policy_id, scanned_at) VALUES (?, ?)",
+                (policy.policy_id, current.isoformat()),
+            )
+            # Keep the table bounded; anything older than the window is unused.
+            self._connection.execute(
+                "DELETE FROM spectrum_scans WHERE scanned_at < ?",
+                ((current - timedelta(hours=2)).isoformat(),),
+            )
 
 
 class SpectrumSensorClient:

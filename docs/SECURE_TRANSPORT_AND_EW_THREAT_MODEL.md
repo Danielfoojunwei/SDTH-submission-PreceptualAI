@@ -29,7 +29,8 @@ observability.
 |---|---|
 | Tunnel identity | WireGuard peers matched **exactly** by public key; unexpected peers fail |
 | Tunnel scope | Each peer's `AllowedIPs` must equal the policy set exactly |
-| Tunnel liveness | Peer must show a recent handshake (never-handshaked fails) |
+| Tunnel liveness | Peer handshake age is parsed and must be within the freshness limit; never-handshaked and unparseable ages fail closed |
+| Section coverage | A configured-but-empty policy section reaches its parser instead of being skipped, so it cannot silently disable its own verification |
 | No leak around the tunnel | **Both** IPv4 and IPv6 default routes must leave exclusively via the tunnel interface |
 | Egress default-deny | nftables `output` chain must default to `drop` |
 | Ruleset integrity | Normalized nftables ruleset hash must equal the pinned policy hash (handles and counters stripped so reloads don't churn the hash) |
@@ -39,11 +40,17 @@ observability.
 
 Every check **fails closed**: a missing binary, an unreadable interface, a
 malformed ruleset, or an unverifiable policy yields `verified: false` with a
-reason — never a pass by default.
+reason — never a pass by default. If the secret-material guard ever trips, the
+evidence is discarded and a redacted failed report is returned rather than the
+exception escaping and turning the gate into a silent skip.
 
 ```bash
 kval-node transport-preflight --config /etc/kval/node.json
 ```
+
+The command exits `3` when the capability is unconfigured or unavailable and `4`
+when it is configured but unverified, so a wrapper script cannot mistake a
+failure for a pass.
 
 ### Why these specific controls
 

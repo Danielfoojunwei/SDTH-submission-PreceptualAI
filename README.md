@@ -153,6 +153,10 @@ kval-node verify-lease        --config /etc/kval/node.json --lease lease.signed.
                               --action set_power_mode --redeem
 ```
 
+These commands exit `0` only on a genuine pass. A capability that is not
+configured or whose evidence is unavailable exits `3`; one that is configured
+but reports `verified: false` or `valid: false` exits `4`.
+
 ## Validate before enabling switching
 
 ```bash

@@ -22,7 +22,13 @@ from .lease import LeaseAction, LeaseError, LeaseNonceStore, redeem_lease, verif
 from .models import utc_now
 from .power import PowerGovernor, PowerPolicy, PowerReading, parse_tegrastats
 from .signing import load_public_key, load_verified_document
-from .spectrum import SpectrumAnalyzer, SpectrumPolicy, SpectrumSensorClient
+from .spectrum import (
+    ScanRateExceeded,
+    ScanRateLimiter,
+    SpectrumAnalyzer,
+    SpectrumPolicy,
+    SpectrumSensorClient,
+)
 from .transport_security import TransportPolicy, TransportVerifier
 
 SPECTRUM_DOCUMENT_TYPE = "kval-spectrum-policy/v1"
@@ -52,6 +58,12 @@ class CapabilityServices:
     def __init__(self, config: NodeConfig) -> None:
         self.config = config
 
+    def scan_state_path(self) -> Path:
+        """Durable store for spectrum scan-rate accounting."""
+        if self.config.spectrum_scan_state_path is not None:
+            return self.config.spectrum_scan_state_path
+        return self.config.audit_database_path.parent / "spectrum-scans.db"
+
     # --- spectrum -------------------------------------------------------------
 
     def load_spectrum_policy(self) -> tuple[SpectrumPolicy, str]:
@@ -78,6 +90,21 @@ class CapabilityServices:
                 "policy_id": policy.policy_id,
                 "policy_hash": policy_hash,
             }
+        # Enforce the policy's scan duty limits before touching the adapter.
+        # These are emission-duty and energy controls, so they are checked
+        # against durable state rather than a per-process counter.
+        limiter = ScanRateLimiter(self.scan_state_path())
+        try:
+            limiter.check_and_record(policy, now=now)
+        except ScanRateExceeded as exc:
+            return {
+                "available": False,
+                "reason": str(exc),
+                "policy_id": policy.policy_id,
+                "policy_hash": policy_hash,
+            }
+        finally:
+            limiter.close()
         try:
             observations = SpectrumSensorClient().scan(self.config.spectrum_sensor_socket, policy)
         except Exception as exc:  # fail closed on any adapter error
