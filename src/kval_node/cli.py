@@ -139,6 +139,9 @@ def build_parser() -> argparse.ArgumentParser:
     excise.add_argument("--config", default=DEFAULT_CONFIG)
     excise.add_argument("--node-id", required=True)
 
+    crypto = subparsers.add_parser("crypto-posture")
+    crypto.add_argument("--config", default=DEFAULT_CONFIG)
+
     lease = subparsers.add_parser("verify-lease")
     lease.add_argument("--config", default=DEFAULT_CONFIG)
     lease.add_argument("--lease", required=True)
@@ -259,6 +262,9 @@ def main() -> None:
         return
     if args.command == "excise-node":
         _print_capability(CapabilityServices(NodeConfig.load(args.config)).excise_node(args.node_id))
+        return
+    if args.command == "crypto-posture":
+        _print_capability(CapabilityServices(NodeConfig.load(args.config)).crypto_posture())
         return
     if args.command == "verify-lease":
         services = CapabilityServices(NodeConfig.load(args.config))

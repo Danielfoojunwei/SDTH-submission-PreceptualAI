@@ -64,6 +64,11 @@ class NodeConfig:
     #: partition. Operator-declared: a fleet that could pick its own quorum
     #: could pick one.
     quorum_threshold: int = 2
+    #: Refuse signatures from algorithms CNSA 2.0 does not approve. Off by
+    #: default because turning it on makes every Ed25519-signed artefact
+    #: already in the field unverifiable — a migration to plan, not a flag to
+    #: be surprised by.
+    require_cnsa_2_0: bool = False
 
     @classmethod
     def load(cls, path: str | Path) -> "NodeConfig":
@@ -130,5 +135,6 @@ class NodeConfig:
                 else None
             ),
             quorum_threshold=int(raw.get("quorum_threshold", 2)),
+            require_cnsa_2_0=bool(raw.get("require_cnsa_2_0", False)),
         )
 

@@ -68,27 +68,21 @@ class TimedatectlParserTests(unittest.TestCase):
         self.assertIsNone(parse_timedatectl("Local time: whenever"))
 
 
-class _ControlledMonitor(ClockMonitor):
-    """Drives ``check()`` with known daemon responses.
+def _monitor(*, chrony=None, ntp=None, **kwargs) -> ClockMonitor:
+    """A real ``ClockMonitor`` fed known daemon responses.
 
-    The verdict must depend on what the time daemon reports, not on whatever the
-    machine running the tests happens to have installed — a CI runner with a
-    healthy NTP client and a container with none must both produce a
-    deterministic result from the same inputs. Only the two daemon queries are
-    substituted; all of the decision logic under test is the real
-    implementation.
+    The verdict must depend on what the time daemon reports, not on whatever
+    the machine running the tests happens to have installed — a CI runner with
+    a healthy NTP client and a container with none must reach the same verdict
+    from the same inputs. The two daemon queries are constructor arguments, so
+    every line of decision logic exercised here is the real implementation and
+    nothing is overridden.
     """
-
-    def __init__(self, *, chrony=None, ntp=None, **kwargs) -> None:
-        super().__init__(**kwargs)
-        self._chrony_result = chrony
-        self._ntp_result = ntp
-
-    def _chrony(self):  # type: ignore[override]
-        return self._chrony_result
-
-    def _timedatectl(self):  # type: ignore[override]
-        return self._ntp_result
+    return ClockMonitor(
+        chrony_source=lambda: chrony,
+        ntp_sync_source=lambda: ntp,
+        **kwargs,
+    )
 
 
 class ClockMonitorTests(unittest.TestCase):
@@ -103,46 +97,46 @@ class ClockMonitorTests(unittest.TestCase):
         self.assertGreater(monitor.observed_step_seconds(), 3599.0)
 
     def test_no_time_daemon_fails_closed(self) -> None:
-        verdict = _ControlledMonitor(chrony=None, ntp=None).check()
+        verdict = _monitor(chrony=None, ntp=None).check()
         self.assertFalse(verdict.trusted)
         self.assertIs(verdict.source, ClockSource.UNKNOWN)
         self.assertIn("NO_TIME_DAEMON_EVIDENCE", verdict.reasons)
 
     def test_healthy_chrony_is_trusted(self) -> None:
-        verdict = _ControlledMonitor(chrony=(0.0001, 0.0005, True)).check()
+        verdict = _monitor(chrony=(0.0001, 0.0005, True)).check()
         self.assertTrue(verdict.trusted)
         self.assertIs(verdict.source, ClockSource.CHRONY)
         self.assertIn("CLOCK_DISCIPLINED", verdict.reasons)
 
     def test_chrony_offset_above_limit_is_not_trusted(self) -> None:
-        verdict = _ControlledMonitor(chrony=(5.0, 0.0005, True)).check()
+        verdict = _monitor(chrony=(5.0, 0.0005, True)).check()
         self.assertFalse(verdict.trusted)
         self.assertIn("CLOCK_OFFSET_ABOVE_LIMIT", verdict.reasons)
 
     def test_chrony_root_dispersion_above_limit_is_not_trusted(self) -> None:
-        verdict = _ControlledMonitor(chrony=(0.0001, 9.0, True)).check()
+        verdict = _monitor(chrony=(0.0001, 9.0, True)).check()
         self.assertFalse(verdict.trusted)
         self.assertIn("ROOT_DISPERSION_ABOVE_LIMIT", verdict.reasons)
 
     def test_chrony_not_synchronised_is_not_trusted(self) -> None:
-        verdict = _ControlledMonitor(chrony=(0.0001, 0.0005, False)).check()
+        verdict = _monitor(chrony=(0.0001, 0.0005, False)).check()
         self.assertFalse(verdict.trusted)
         self.assertIn("CHRONY_LEAP_STATUS_NOT_NORMAL", verdict.reasons)
 
     def test_timesyncd_synchronised_is_trusted(self) -> None:
-        verdict = _ControlledMonitor(chrony=None, ntp=True).check()
+        verdict = _monitor(chrony=None, ntp=True).check()
         self.assertTrue(verdict.trusted)
         self.assertIs(verdict.source, ClockSource.SYSTEMD_TIMESYNCD)
 
     def test_timesyncd_unsynchronised_is_not_trusted(self) -> None:
-        verdict = _ControlledMonitor(chrony=None, ntp=False).check()
+        verdict = _monitor(chrony=None, ntp=False).check()
         self.assertFalse(verdict.trusted)
         self.assertIn("SYSTEM_CLOCK_NOT_SYNCHRONISED", verdict.reasons)
 
     def test_a_stepped_clock_overrides_a_healthy_daemon(self) -> None:
         # A daemon claiming everything is fine does not make a stepped wall
         # clock safe to correlate against a peer.
-        monitor = _ControlledMonitor(chrony=(0.0001, 0.0005, True))
+        monitor = _monitor(chrony=(0.0001, 0.0005, True))
         monitor._wall_at_start += 3600.0
         verdict = monitor.check()
         self.assertFalse(verdict.trusted)

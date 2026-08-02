@@ -15,7 +15,7 @@ from __future__ import annotations
 import json
 import sqlite3
 import subprocess
-from datetime import datetime, timedelta
+from datetime import date, datetime, timedelta
 from pathlib import Path
 from typing import Any, Sequence
 
@@ -58,7 +58,15 @@ from .orchestration import (
     verdicts_from_reports,
 )
 from .power import PowerGovernor, PowerPolicy, PowerReading, parse_tegrastats
-from .signing import load_private_key, load_public_key, load_verified_document
+from .pqc import LMS_ALGORITHM
+from .signing import (
+    CNSA_2_0_SIGNATURE_ALGORITHMS,
+    ED25519_ALGORITHM,
+    SUPPORTED_SIGNATURE_ALGORITHMS,
+    load_private_key,
+    load_public_key,
+    load_verified_document,
+)
 from .threshold_ca import Attestation, CertificationError, CertifierRoster, Grant
 from .timesync import ClockMonitor
 from .topology import EvidencePropagator, FleetGraph, assess_fragility
@@ -826,6 +834,90 @@ class CapabilityServices:
         return renew_under_partition(
             grant, attestations, certifier_roster, new_expiry=new_expiry, now=now
         )
+
+    # --- cryptographic posture --------------------------------------------------
+
+    def crypto_posture(self, *, today: date | None = None) -> dict[str, Any]:
+        """Report this node against the CNSA 2.0 transition, with dates.
+
+        Every trust decision here rests on a signature, and the algorithm those
+        signatures use is a procurement fact before it is a technical one: from
+        **1 January 2027** a new National Security System acquisition must
+        support CNSA 2.0 or carry a documented exception, and software and
+        firmware signing — which is what a signed policy root is — must use it
+        exclusively from **2030**.
+
+        The report names each trust anchor, the algorithm it actually uses, and
+        whether that algorithm is approved. It does not grade itself: an
+        operator reads which anchors are still classical and how long they have.
+        """
+        current = today or date.today()
+        anchors: list[dict[str, Any]] = []
+
+        def record(name: str, path: Path | None, purpose: str) -> None:
+            if path is None:
+                anchors.append(
+                    {"anchor": name, "purpose": purpose, "algorithm": None,
+                     "cnsa_2_0_approved": None, "reason": "NOT_CONFIGURED_ON_THIS_NODE"}
+                )
+                return
+            algorithm = LMS_ALGORITHM if path.suffix == ".lms" else ED25519_ALGORITHM
+            anchors.append(
+                {
+                    "anchor": name,
+                    "purpose": purpose,
+                    "path": str(path),
+                    "algorithm": algorithm,
+                    "cnsa_2_0_approved": algorithm in CNSA_2_0_SIGNATURE_ALGORITHMS,
+                    "reason": (
+                        "APPROVED_FOR_NATIONAL_SECURITY_SYSTEMS"
+                        if algorithm in CNSA_2_0_SIGNATURE_ALGORITHMS
+                        else "CLASSICAL_ASYMMETRIC_RETIRED_BY_CNSA_2_0"
+                    ),
+                }
+            )
+
+        record("catalogue_and_policy", self.config.catalog_public_key_path,
+               "authorises every profile and policy the node may act on")
+        record("capability_lease", self.config.lease_public_key_path,
+               "authorises bounded, single-use actions")
+        record("fabric_node", self.config.fabric_node_key_path,
+               "binds this node's reports and audit records to it")
+
+        classical = [a for a in anchors if a["cnsa_2_0_approved"] is False]
+        reasons: list[str] = []
+        acquisition_gate = date(2027, 1, 1)
+        signing_deadline = date(2030, 12, 31)
+        days_to_gate = (acquisition_gate - current).days
+
+        if classical:
+            reasons.append("SOME_TRUST_ANCHORS_STILL_USE_CLASSICAL_ASYMMETRIC_SIGNATURES")
+            if current < acquisition_gate:
+                reasons.append(
+                    f"{days_to_gate}_DAYS_UNTIL_NEW_NSS_ACQUISITIONS_MUST_SUPPORT_CNSA_2_0"
+                )
+            else:
+                reasons.append("PAST_THE_NSS_ACQUISITION_GATE_A_DOCUMENTED_EXCEPTION_IS_REQUIRED")
+        else:
+            reasons.append("EVERY_CONFIGURED_TRUST_ANCHOR_USES_A_CNSA_2_0_APPROVED_ALGORITHM")
+
+        # Stated on every report, because the algorithm is the easy half.
+        reasons.append("SP_800_208_ALSO_REQUIRES_HARDWARE_STATE_CUSTODY_NOT_MET_BY_A_STATE_FILE")
+
+        return {
+            "available": True,
+            "schema": "kval-crypto-posture/v1",
+            "assessed_on": current.isoformat(),
+            "require_cnsa_2_0": self.config.require_cnsa_2_0,
+            "anchors": anchors,
+            "classical_anchors": [a["anchor"] for a in classical],
+            "nss_acquisition_gate": acquisition_gate.isoformat(),
+            "signing_exclusive_deadline": signing_deadline.isoformat(),
+            "days_to_acquisition_gate": days_to_gate,
+            "supported_algorithms": sorted(SUPPORTED_SIGNATURE_ALGORITHMS),
+            "cnsa_2_0_algorithms": sorted(CNSA_2_0_SIGNATURE_ALGORITHMS),
+            "reasons": reasons,
+        }
 
     # --- leases ---------------------------------------------------------------
 

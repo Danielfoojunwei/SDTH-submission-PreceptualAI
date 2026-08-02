@@ -12,7 +12,10 @@ from cryptography.exceptions import InvalidSignature
 from cryptography.hazmat.primitives import serialization
 from cryptography.hazmat.primitives.asymmetric.ed25519 import Ed25519PrivateKey, Ed25519PublicKey
 
+from dataclasses import dataclass
+
 from .models import Catalog, Profile, parse_timestamp
+from .pqc import LMS_ALGORITHM, LmsPublicKey, LmsSigner, lms_verify
 
 
 def canonical_json(value: object) -> bytes:
@@ -190,3 +193,118 @@ def load_verified_document(path: Path, public_key_path: Path, *, expected_type: 
     envelope = json.loads(path.read_text(encoding="utf-8"))
     return verify_document(envelope, load_public_key(public_key_path), expected_type=expected_type)
 
+
+# --- algorithm agility and CNSA 2.0 -------------------------------------------------
+
+#: Signature algorithms this node will accept, and whether each is approved for
+#: National Security Systems under CNSA 2.0. Ed25519 is not: CNSA 2.0 retires
+#: all classical asymmetric cryptography, and NSA puts software and firmware
+#: signing first in the transition because a verification algorithm baked into
+#: fielded hardware is locked in for that hardware's life.
+#: See ``docs/DEFENCE_STANDARDS.md``.
+ED25519_ALGORITHM = "Ed25519"
+
+CNSA_2_0_SIGNATURE_ALGORITHMS = frozenset({LMS_ALGORITHM})
+SUPPORTED_SIGNATURE_ALGORITHMS = frozenset({ED25519_ALGORITHM, LMS_ALGORITHM})
+
+
+class AlgorithmRefused(ValueError):
+    """Raised when a signature uses an algorithm this node will not accept."""
+
+
+@dataclass(frozen=True)
+class SignaturePolicy:
+    """Which signature algorithms this node will trust.
+
+    ``require_cnsa_2_0`` is the switch an operator flips to enforce the NSS
+    requirement. It is off by default because turning it on makes every
+    Ed25519-signed artefact already in the field unverifiable, which is a
+    migration to be planned rather than a flag to be surprised by.
+    """
+
+    require_cnsa_2_0: bool = False
+
+    def accepted(self) -> frozenset[str]:
+        return CNSA_2_0_SIGNATURE_ALGORITHMS if self.require_cnsa_2_0 else SUPPORTED_SIGNATURE_ALGORITHMS
+
+    def check(self, algorithm: str) -> None:
+        if algorithm not in SUPPORTED_SIGNATURE_ALGORITHMS:
+            raise AlgorithmRefused(f"unsupported signature algorithm {algorithm!r}")
+        if algorithm not in self.accepted():
+            raise AlgorithmRefused(
+                f"{algorithm} is not approved under CNSA 2.0 and this node is configured "
+                "to require CNSA 2.0 signatures"
+            )
+
+
+def sign_document_lms(
+    document_type: str, payload: dict[str, Any], signer: LmsSigner
+) -> dict[str, Any]:
+    """Sign a policy document with a stateful hash-based key.
+
+    The body signed is byte-identical to the Ed25519 path's, so an operator can
+    re-sign an existing document under the new algorithm without the payload
+    changing meaning.
+    """
+    if not document_type:
+        raise ValueError("document_type is required")
+    body = {"document_type": document_type, "payload": payload}
+    public_key = signer.private_key.public_key()
+    signature = signer.sign(canonical_json(body))
+    return {
+        "algorithm": LMS_ALGORITHM,
+        "key_id": public_key.key_id(),
+        "document_type": document_type,
+        "payload": payload,
+        "signature": base64.b64encode(signature).decode("ascii"),
+        "public_key": base64.b64encode(public_key.to_bytes()).decode("ascii"),
+    }
+
+
+def verify_document_agile(
+    envelope: dict[str, Any],
+    *,
+    expected_type: str,
+    ed25519_key: Ed25519PublicKey | None = None,
+    lms_key: LmsPublicKey | None = None,
+    policy: SignaturePolicy | None = None,
+) -> tuple[dict[str, Any], str]:
+    """Verify a document under whichever approved algorithm signed it.
+
+    The algorithm is read from the envelope but never *trusted* from it: the
+    caller supplies the trust anchors, so an attacker cannot downgrade a
+    document by relabelling it as an algorithm whose key they control. An
+    envelope naming an algorithm this node has no anchor for is refused, not
+    skipped.
+    """
+    active = policy or SignaturePolicy()
+    algorithm = str(envelope.get("algorithm", ""))
+    active.check(algorithm)
+
+    if algorithm == ED25519_ALGORITHM:
+        if ed25519_key is None:
+            raise AlgorithmRefused("document is Ed25519-signed but no Ed25519 anchor is provisioned")
+        return verify_document(envelope, ed25519_key, expected_type=expected_type)
+
+    if lms_key is None:
+        raise AlgorithmRefused("document is LMS-signed but no LMS anchor is provisioned")
+    if envelope.get("document_type") != expected_type:
+        raise ValueError(f"expected a {expected_type} document")
+    if envelope.get("key_id") != lms_key.key_id():
+        raise ValueError("document key ID does not match the provisioned LMS public key")
+    payload = envelope.get("payload")
+    if not isinstance(payload, dict):
+        raise ValueError("document payload must be an object")
+    try:
+        signature = base64.b64decode(str(envelope["signature"]), validate=True)
+    except (KeyError, ValueError) as exc:
+        raise ValueError("document signature is missing or malformed") from exc
+    body = {"document_type": expected_type, "payload": payload}
+    if not lms_verify(lms_key, canonical_json(body), signature):
+        raise ValueError("document signature verification failed")
+    return payload, hashlib.sha256(canonical_json(payload)).hexdigest()
+
+
+def load_lms_public_key(path: Path) -> LmsPublicKey:
+    """Read a provisioned LMS trust anchor."""
+    return LmsPublicKey.from_bytes(base64.b64decode(path.read_text(encoding="utf-8").strip(), validate=True))

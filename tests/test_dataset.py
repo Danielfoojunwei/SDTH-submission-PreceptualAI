@@ -164,17 +164,21 @@ class CorpusExportTests(unittest.TestCase):
             (NOW + timedelta(hours=1), "node-1", decision_payload(rtt=10.0)),
         ]
 
-        class SpacedExporter(CorpusExporter):
-            def _decision_records(self):
-                return iter(spaced)
-
-        far = SpacedExporter(self.path, horizon_seconds=60.0).export()
+        # The records are supplied directly, so this tests the horizon logic
+        # rather than how fast the host writes to SQLite. A one-millisecond
+        # horizon test once passed locally and failed on a runner that wrote
+        # in 0.58 ms — the code was right and the test was measuring the disk.
+        far = CorpusExporter(
+            self.path, horizon_seconds=60.0, record_source=lambda: iter(spaced)
+        ).export()
         self.assertEqual(far[0], [])
         # Both records drop: the first has no successor inside the window, and
         # the last has no successor at all.
         self.assertEqual(far[1].dropped_no_successor, 2)
 
-        near = SpacedExporter(self.path, horizon_seconds=7200.0).export()
+        near = CorpusExporter(
+            self.path, horizon_seconds=7200.0, record_source=lambda: iter(spaced)
+        ).export()
         self.assertEqual(len(near[0]), 1)
         self.assertEqual(near[0][0].horizon_seconds, 3600.0)
 

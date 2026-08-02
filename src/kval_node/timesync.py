@@ -26,7 +26,7 @@ import time
 from dataclasses import dataclass
 from datetime import datetime
 from enum import Enum
-from typing import Any
+from typing import Callable, Any
 
 from .commands import CommandError, run_command
 from .models import utc_now
@@ -97,17 +97,74 @@ def parse_chronyc_tracking(output: str) -> tuple[float | None, float | None, boo
     return offset, dispersion, leap_normal
 
 
+#: What a chrony query yields: (offset seconds, root dispersion, leap normal).
+ChronyReading = tuple[float | None, float | None, bool]
+
+#: A source of time-daemon evidence. Returning ``None`` means the daemon could
+#: not be reached, which is different from it reporting bad news.
+ChronySource = Callable[[], "ChronyReading | None"]
+NtpSyncSource = Callable[[], "bool | None"]
+
+
+def query_chrony() -> ChronyReading | None:
+    """Ask ``chronyc`` what the disciplined clock looks like, or admit it cannot."""
+    try:
+        result = run_command(["chronyc", "tracking"], timeout_seconds=5.0)
+    except CommandError:
+        return None
+    if result.returncode != 0:
+        return None
+    return parse_chronyc_tracking(result.stdout)
+
+
+def query_timedatectl() -> bool | None:
+    """Ask systemd whether the clock is NTP-synchronised, or admit it cannot."""
+    try:
+        result = run_command(
+            ["timedatectl", "show", "--property=NTPSynchronized", "--value"],
+            timeout_seconds=5.0,
+        )
+    except CommandError:
+        return None
+    if result.returncode == 0:
+        value = result.stdout.strip().lower()
+        if value in {"yes", "true"}:
+            return True
+        if value in {"no", "false"}:
+            return False
+    try:
+        fallback = run_command(["timedatectl", "status"], timeout_seconds=5.0)
+    except CommandError:
+        return None
+    if fallback.returncode != 0:
+        return None
+    return parse_timedatectl(fallback.stdout)
+
+
 class ClockMonitor:
-    """Tracks wall-vs-monotonic divergence and queries the host time daemon."""
+    """Tracks wall-vs-monotonic divergence and queries the host time daemon.
+
+    The two daemon queries are injected rather than hard-wired. A clock verdict
+    must depend on what the daemons report, not on what the machine running the
+    code happens to have installed — a node with a healthy NTP client and a
+    container with none must reach deterministic verdicts from the same inputs.
+    Defaulting to the real queries keeps production behaviour unchanged; being
+    able to supply them is what makes the decision logic testable without
+    subclassing around it.
+    """
 
     def __init__(
         self,
         *,
         max_offset_seconds: float = DEFAULT_MAX_OFFSET_SECONDS,
         max_step_seconds: float = DEFAULT_MAX_STEP_SECONDS,
+        chrony_source: ChronySource | None = None,
+        ntp_sync_source: NtpSyncSource | None = None,
     ) -> None:
         self.max_offset_seconds = max_offset_seconds
         self.max_step_seconds = max_step_seconds
+        self._chrony_source = chrony_source or query_chrony
+        self._ntp_sync_source = ntp_sync_source or query_timedatectl
         self._wall_at_start = time.time()
         self._monotonic_at_start = time.monotonic()
 
@@ -121,42 +178,12 @@ class ClockMonitor:
         self._wall_at_start = time.time()
         self._monotonic_at_start = time.monotonic()
 
-    @staticmethod
-    def _chrony() -> tuple[float | None, float | None, bool] | None:
-        try:
-            result = run_command(["chronyc", "tracking"], timeout_seconds=5.0)
-        except CommandError:
-            return None
-        if result.returncode != 0:
-            return None
-        return parse_chronyc_tracking(result.stdout)
-
-    @staticmethod
-    def _timedatectl() -> bool | None:
-        try:
-            result = run_command(["timedatectl", "show", "--property=NTPSynchronized", "--value"], timeout_seconds=5.0)
-        except CommandError:
-            return None
-        if result.returncode == 0:
-            value = result.stdout.strip().lower()
-            if value in {"yes", "true"}:
-                return True
-            if value in {"no", "false"}:
-                return False
-        try:
-            fallback = run_command(["timedatectl", "status"], timeout_seconds=5.0)
-        except CommandError:
-            return None
-        if fallback.returncode != 0:
-            return None
-        return parse_timedatectl(fallback.stdout)
-
     def check(self, *, now: datetime | None = None) -> TimeIntegrity:
         checked_at = now or utc_now()
         reasons: list[str] = []
         step = self.observed_step_seconds()
 
-        chrony = self._chrony()
+        chrony = self._chrony_source()
         if chrony is not None:
             offset, dispersion, leap_normal = chrony
             source = ClockSource.CHRONY
@@ -169,7 +196,7 @@ class ClockMonitor:
             offset = None
             dispersion = None
             source = ClockSource.UNKNOWN
-            ntp = self._timedatectl()
+            ntp = self._ntp_sync_source()
             if ntp is None:
                 synchronised = False
                 reasons.append("NO_TIME_DAEMON_EVIDENCE")

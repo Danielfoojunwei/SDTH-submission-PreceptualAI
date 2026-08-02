@@ -444,3 +444,71 @@ class ComposedPipelineTests(CapabilityIntegrationTests):
             self.assertIn(
                 "FORECAST_MAY_DEMOTE_A_PROFILE_AND_MAY_NEVER_PROMOTE_ONE", result["reasons"]
             )
+
+
+class CryptoPostureTests(CapabilityIntegrationTests):
+    """CNSA 2.0 readiness must be something an operator can ask the node.
+
+    From 1 January 2027 a new National Security System acquisition must support
+    CNSA 2.0. The node reports which trust anchors are still classical rather
+    than grading itself. See docs/DEFENCE_STANDARDS.md.
+    """
+
+    def test_classical_anchors_are_named_not_hidden(self) -> None:
+        from datetime import date
+
+        result = self.services.crypto_posture(today=date(2026, 9, 25))
+        self.assertTrue(result["available"])
+        self.assertIn("catalogue_and_policy", result["classical_anchors"])
+        self.assertIn(
+            "SOME_TRUST_ANCHORS_STILL_USE_CLASSICAL_ASYMMETRIC_SIGNATURES", result["reasons"]
+        )
+
+    def test_the_acquisition_gate_is_counted_down_in_days(self) -> None:
+        from datetime import date
+
+        result = self.services.crypto_posture(today=date(2026, 9, 25))
+        self.assertEqual(result["nss_acquisition_gate"], "2027-01-01")
+        self.assertEqual(result["days_to_acquisition_gate"], 98)
+        self.assertTrue(
+            any(r.endswith("_DAYS_UNTIL_NEW_NSS_ACQUISITIONS_MUST_SUPPORT_CNSA_2_0")
+                for r in result["reasons"])
+        )
+
+    def test_past_the_gate_the_report_says_an_exception_is_required(self) -> None:
+        from datetime import date
+
+        result = self.services.crypto_posture(today=date(2027, 6, 1))
+        self.assertIn(
+            "PAST_THE_NSS_ACQUISITION_GATE_A_DOCUMENTED_EXCEPTION_IS_REQUIRED",
+            result["reasons"],
+        )
+
+    def test_the_hardware_custody_gap_is_stated_on_every_report(self) -> None:
+        # The algorithm is the easy half. SP 800-208 wants the state in an HSM
+        # and this does not have one, so no report may imply otherwise.
+        from datetime import date
+
+        result = self.services.crypto_posture(today=date(2026, 9, 25))
+        self.assertIn(
+            "SP_800_208_ALSO_REQUIRES_HARDWARE_STATE_CUSTODY_NOT_MET_BY_A_STATE_FILE",
+            result["reasons"],
+        )
+
+    def test_ed25519_anchors_are_marked_unapproved(self) -> None:
+        result = self.services.crypto_posture()
+        catalogue = next(a for a in result["anchors"] if a["anchor"] == "catalogue_and_policy")
+        self.assertEqual(catalogue["algorithm"], "Ed25519")
+        self.assertFalse(catalogue["cnsa_2_0_approved"])
+        self.assertEqual(catalogue["reason"], "CLASSICAL_ASYMMETRIC_RETIRED_BY_CNSA_2_0")
+
+    def test_an_unconfigured_anchor_is_not_counted_as_compliant(self) -> None:
+        # Absent is not approved. Counting a missing anchor as passing would
+        # make the least-configured node look the most compliant.
+        result = self.services.crypto_posture()
+        lease = next(a for a in result["anchors"] if a["anchor"] == "capability_lease")
+        self.assertIsNone(lease["cnsa_2_0_approved"])
+        self.assertEqual(lease["reason"], "NOT_CONFIGURED_ON_THIS_NODE")
+
+    def test_posture_serializes(self) -> None:
+        json.dumps(self.services.crypto_posture())

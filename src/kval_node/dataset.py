@@ -29,7 +29,7 @@ import sqlite3
 from dataclasses import dataclass, field
 from datetime import datetime, timedelta
 from pathlib import Path
-from typing import Any, Iterator
+from typing import Callable, Any, Iterator
 
 from .audit import AuditLedger
 from .models import parse_timestamp
@@ -174,16 +174,32 @@ def _outcome_from(payload: dict[str, Any], profile_id: str | None) -> tuple[floa
     )
 
 
+#: Yields ``(recorded_at, node_id, payload)`` for each decision record.
+DecisionRecordSource = Callable[[], Iterator[tuple[datetime, str, dict[str, Any]]]]
+
+
 class CorpusExporter:
     """Builds a labelled corpus from a verified audit ledger."""
 
-    def __init__(self, ledger_path: Path, *, horizon_seconds: float = 60.0) -> None:
+    def __init__(
+        self,
+        ledger_path: Path,
+        *,
+        horizon_seconds: float = 60.0,
+        record_source: "DecisionRecordSource | None" = None,
+    ) -> None:
         if horizon_seconds <= 0:
             raise ValueError("horizon_seconds must be positive")
         self.ledger_path = ledger_path
         self.horizon_seconds = horizon_seconds
+        # Where decision records come from is injected so the pairing logic can
+        # be driven with records at known times. Otherwise a test of "does a
+        # successor fall inside the horizon" is really a test of how fast the
+        # host writes to SQLite — which is how a one-millisecond horizon test
+        # passed locally and failed on a runner that wrote in 0.58 ms.
+        self._record_source = record_source or self._records_from_ledger
 
-    def _decision_records(self) -> Iterator[tuple[datetime, str, dict[str, Any]]]:
+    def _records_from_ledger(self) -> Iterator[tuple[datetime, str, dict[str, Any]]]:
         connection = sqlite3.connect(self.ledger_path, timeout=30.0)
         try:
             rows = connection.execute(
@@ -217,7 +233,7 @@ class CorpusExporter:
                 f"refusing to export from an unverified audit chain: {verification.error}"
             )
 
-        records = list(self._decision_records())
+        records = list(self._record_source())
         stats.records_read = len(records)
         horizon = timedelta(seconds=self.horizon_seconds)
         examples: list[Example] = []
