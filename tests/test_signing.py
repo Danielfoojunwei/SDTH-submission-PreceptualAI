@@ -57,6 +57,73 @@ class SigningTests(unittest.TestCase):
             sign_catalog(payload, private_key)
 
 
+class CatalogTrustBoundaryTests(unittest.TestCase):
+    """Every rejection the signed catalogue makes, exercised.
+
+    The signature check had tests; none of the *content* checks did. Tracing
+    the suite showed the whole rejection half of ``validate_catalog_payload``
+    had never executed a single line — expiry, ordering, duplicate profile IDs,
+    duplicate NetworkManager UUIDs, empty catalogues, missing fields. They all
+    turned out to work. They are the boundary the entire trust model rests on,
+    which is not a thing to be right about by luck.
+    """
+
+    def setUp(self) -> None:
+        self.key = Ed25519PrivateKey.generate()
+        self.public = self.key.public_key()
+        self.now = datetime.now(timezone.utc)
+
+    def _rejects(self, pattern: str, mutate) -> None:
+        payload = valid_payload()
+        mutate(payload)
+        with self.assertRaisesRegex(ValueError, pattern):
+            sign_catalog(payload, self.key)
+
+    def test_a_catalogue_expiring_before_it_was_created_is_refused(self) -> None:
+        self._rejects("expiry must be after creation", lambda p: p.update(
+            created_at=(self.now - timedelta(days=1)).isoformat(),
+            expires_at=(self.now - timedelta(days=2)).isoformat(),
+        ))
+
+    def test_a_catalogue_created_in_the_future_is_refused(self) -> None:
+        # A clock ahead of the operator's is how a not-yet-valid catalogue would
+        # be accepted early, which is why this is checked rather than assumed.
+        self._rejects("creation time is in the future", lambda p: p.update(
+            created_at=(self.now + timedelta(hours=1)).isoformat()))
+
+    def test_an_empty_catalogue_is_refused(self) -> None:
+        self._rejects("at least one profile", lambda p: p.update(profiles=[]))
+
+    def test_duplicate_profile_ids_are_refused(self) -> None:
+        def duplicate(payload):
+            second = copy.deepcopy(payload["profiles"][0])
+            second["connection_uuid"] = "22222222-2222-4222-8222-222222222222"
+            payload["profiles"].append(second)
+        self._rejects("duplicate profile IDs", duplicate)
+
+    def test_two_profiles_sharing_one_networkmanager_uuid_are_refused(self) -> None:
+        # Two profiles pointing at one connection means activating either one
+        # silently activates the same link, so the node's record of what it
+        # selected stops matching what it did.
+        def duplicate(payload):
+            second = copy.deepcopy(payload["profiles"][0])
+            second["profile_id"] = "other"
+            payload["profiles"].append(second)
+        self._rejects("duplicate NetworkManager UUIDs", duplicate)
+
+    def test_a_missing_required_field_names_the_field(self) -> None:
+        self._rejects("missing fields: catalog_version", lambda p: p.pop("catalog_version"))
+
+    def test_a_catalogue_valid_when_signed_stops_being_accepted_once_it_expires(self) -> None:
+        # The case sign-time validation cannot cover: a catalogue that was
+        # entirely legitimate when issued and has since run out. Rejecting it is
+        # the whole point of carrying an expiry.
+        envelope = sign_catalog(valid_payload(), self.key)
+        self.assertIsNotNone(verify_catalog(envelope, self.public, now=self.now + timedelta(hours=23)))
+        with self.assertRaisesRegex(ValueError, "has expired"):
+            verify_catalog(envelope, self.public, now=self.now + timedelta(hours=25))
+
+
 if __name__ == "__main__":
     unittest.main()
 
