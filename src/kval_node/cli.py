@@ -87,6 +87,13 @@ def build_parser() -> argparse.ArgumentParser:
     transport = subparsers.add_parser("transport-preflight")
     transport.add_argument("--config", default=DEFAULT_CONFIG)
 
+    analyze = subparsers.add_parser("analyze-outcomes")
+    analyze.add_argument("--config", default=DEFAULT_CONFIG)
+    analyze.add_argument("--window", type=int, default=8)
+
+    verify_model = subparsers.add_parser("verify-model")
+    verify_model.add_argument("--config", default=DEFAULT_CONFIG)
+
     export = subparsers.add_parser("export-corpus")
     export.add_argument("--config", default=DEFAULT_CONFIG)
     export.add_argument("--output", required=True, help="JSONL destination")
@@ -154,6 +161,13 @@ def main() -> None:
         return
     if args.command == "transport-preflight":
         _print_capability(CapabilityServices(NodeConfig.load(args.config)).transport_preflight())
+        return
+    if args.command == "analyze-outcomes":
+        services = CapabilityServices(NodeConfig.load(args.config))
+        _print_capability(services.analyze_outcomes(window=args.window))
+        return
+    if args.command == "verify-model":
+        _print_capability(CapabilityServices(NodeConfig.load(args.config)).verify_model())
         return
     if args.command == "export-corpus":
         config = NodeConfig.load(args.config)

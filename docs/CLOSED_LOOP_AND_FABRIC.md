@@ -114,6 +114,54 @@ rather than to describe. Two properties are enforced:
 A record with no successor inside the horizon is dropped rather than labelled
 from nothing, and the export reports how many were dropped and why.
 
+## Outcome analysis — the learning primitives, without a model
+
+Closing the loop wired spectrum, power, recovery, multimodal and clock into
+`service.py`. The **learning** primitives stayed uncalled after that first pass:
+`detect_change_point`, `CausalGate`, `DriftDetector` and `verify_model_manifest`
+still had no production caller. Three of them never needed a model — they are
+statistics over the node's own history — so `analysis.py` now runs them.
+
+```bash
+kval-node analyze-outcomes --config /etc/kval/node.json
+```
+
+| Question | Primitive | What it reports |
+|---|---|---|
+| Did that switch help? | `CausalGate` | the same profile's latency before and after each activation, credited only if it clears both a minimum effect and a t statistic |
+| Has something changed? | `detect_change_point` | a regime shift in the recent RTT and loss series, with the index it occurred at |
+| Are we outside the normal envelope? | `DriftDetector` over a baseline built from history | whether current conditions resemble anything the node has seen |
+
+Two behaviours are worth knowing because they look like bugs and are not:
+
+* A **perfectly constant** series is refused with `ZERO_VARIANCE_IN_BOTH_SAMPLES`,
+  however large the apparent improvement. Zero variance on both sides means the
+  measurement is degenerate — a stuck sensor, not evidence — and the t statistic
+  is undefined. Real telemetry always jitters.
+* Features that never varied across history are **excluded** from the baseline
+  rather than given a zero standard deviation to divide by, and the exclusion is
+  named in the result.
+
+Everything here is descriptive statistics over recorded evidence. Nothing is
+trained, and every result carries the sample count it came from so a thin result
+cannot be mistaken for a strong one.
+
+### The model contract is now live
+
+`verify_model_manifest` genuinely cannot run without a model, so it is wired at
+the point where one would be admitted:
+
+```bash
+kval-node verify-model --config /etc/kval/node.json
+```
+
+With no `model_manifest_path` configured the command reports
+`learned_path: ABSTAIN` and exits non-zero — the learned path is simply absent
+and the node stays on the deterministic optimizer. With one configured, every
+element of the contract must verify or the model is refused. A verified manifest
+reports `ADVISORY_UNTIL_PROMOTED`: it proves provenance, not fitness, and
+promotion still requires evaluation evidence produced outside the node.
+
 ## Low-compute sub-nodes
 
 The sub-node boundary is real and is now pinned by a test: the thin modules and

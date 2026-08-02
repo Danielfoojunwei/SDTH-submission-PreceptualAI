@@ -43,6 +43,10 @@ Implemented production paths:
 - **Training corpus exporter**: turns the audit ledger into labelled
   (features, outcome) examples with no leakage, refusing to export from a ledger
   whose hash chain does not verify.
+- **Outcome analysis without a model**: change-point detection over the recent
+  latency and loss series, causal attribution for each profile switch (credited
+  only if it clears both an effect size and a t statistic), and drift against a
+  baseline built from the node's own history.
 - **Real band-plan and catalogue data**: `config/band-plans.json` carries
   published FCC/ETSI/ITU allocations with per-band sources;
   `generate_spectrum_policy.py` and `generate_catalog.py` build policies and

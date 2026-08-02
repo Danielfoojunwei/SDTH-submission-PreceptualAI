@@ -18,6 +18,7 @@ from datetime import datetime
 from pathlib import Path
 from typing import Any
 
+from .analysis import OutcomeAnalyzer
 from .config import NodeConfig
 from .fabric import (
     FabricAggregator,
@@ -27,6 +28,7 @@ from .fabric import (
     sign_report,
     verify_report,
 )
+from .learning import ModelTrustError, verify_model_manifest
 from .lease import LeaseAction, LeaseError, LeaseNonceStore, redeem_lease, verify_lease
 from .models import utc_now
 from .power import PowerGovernor, PowerPolicy, PowerReading, parse_tegrastats
@@ -205,6 +207,51 @@ class CapabilityServices:
         report["available"] = True
         report["policy_hash"] = policy_hash
         return report
+
+    # --- outcome analysis and the model contract ------------------------------
+
+    def analyze_outcomes(self, *, window: int = 8, now: datetime | None = None) -> dict[str, Any]:
+        """Descriptive statistics over recorded decisions. Needs no model."""
+        return OutcomeAnalyzer(
+            self.config.audit_database_path,
+            horizon_seconds=self.config.observation_max_age_seconds * 8,
+        ).analyze(window=window, now=now)
+
+    def verify_model(self) -> dict[str, Any]:
+        """Verify a signed model manifest, if one is configured.
+
+        This is the point at which a predictive model would be admitted. With no
+        manifest configured the learned path is simply absent and the node stays
+        on the deterministic optimizer; with one configured, every element of
+        the contract must verify or the model is refused. Either way the node
+        never runs an unverified model.
+        """
+        if self.config.model_manifest_path is None:
+            return {
+                "available": False,
+                "reason": "no model manifest configured; learned path abstains",
+                "learned_path": "ABSTAIN",
+            }
+        try:
+            envelope = json.loads(self.config.model_manifest_path.read_text(encoding="utf-8"))
+            manifest = verify_model_manifest(
+                envelope, load_public_key(self.config.catalog_public_key_path)
+            )
+        except (ModelTrustError, json.JSONDecodeError, OSError) as exc:
+            return {
+                "available": True,
+                "verified": False,
+                "learned_path": "ABSTAIN",
+                "error": str(exc),
+            }
+        return {
+            "available": True,
+            "verified": True,
+            # A verified manifest proves provenance, not fitness. Promotion
+            # still requires evaluation evidence outside this node.
+            "learned_path": "ADVISORY_UNTIL_PROMOTED",
+            "manifest": manifest.canonical(),
+        }
 
     # --- cross-node fabric ----------------------------------------------------
 

@@ -41,6 +41,9 @@ class NodeConfig:
     fabric_roster_path: Path | None = None
     fabric_node_key_path: Path | None = None
     fabric_inbox_path: Path | None = None
+    #: Signed manifest for a candidate predictive model. Absent means the
+    #: learned path is not present at all and the node stays deterministic.
+    model_manifest_path: Path | None = None
 
     @classmethod
     def load(cls, path: str | Path) -> "NodeConfig":
@@ -97,5 +100,6 @@ class NodeConfig:
             fabric_roster_path=_optional_path(raw, "fabric_roster_path"),
             fabric_node_key_path=_optional_path(raw, "fabric_node_key_path"),
             fabric_inbox_path=_optional_path(raw, "fabric_inbox_path"),
+            model_manifest_path=_optional_path(raw, "model_manifest_path"),
         )
 
