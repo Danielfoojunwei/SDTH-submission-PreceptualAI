@@ -18,11 +18,50 @@ def _clamp(value: float) -> float:
     return max(0.0, min(1.0, value))
 
 
+#: The band reserved for measurements that are already past their limit.
+#:
+#: A hard clamp to zero made every failing link score identically, and a node
+#: whose whole purpose is contested spectrum spends its worst moments with
+#: *every* link past its limits. Measured before the change: a link at 300 ms /
+#: 25% loss and one at 6000 ms / 95% loss both scored 0.20600, so the selection
+#: fell through to catalogue order — swapping the two entries in the catalogue
+#: swapped which link the node chose, while it reported
+#: ``HIGHEST_POLICY_CONSTRAINED_UTILITY`` as though a comparison had decided it.
+#:
+#: This contradicted the principle ``c2link`` already states for command links:
+#: the budget is a floor, because best-of-a-bad-set is how a vehicle keeps
+#: flying. Ranking has to survive past the limit or it is absent exactly when it
+#: is needed.
+SATURATION_FLOOR = 0.05
+
+
 def _lower_is_better(value: float, unacceptable: float) -> float:
-    return _clamp(1.0 - value / unacceptable)
+    """Score a measurement where less is better, ordered past the limit too.
+
+    Acceptable readings occupy ``[1.0, SATURATION_FLOOR]`` and readings past the
+    limit decay asymptotically below it, so nothing failing can ever outrank
+    anything acceptable. The transform is order-preserving: within the
+    acceptable region it is a positive affine map of the old score, and across
+    the boundary every acceptable reading still beats every unacceptable one. It
+    only refines comparisons that used to be ties, so no ranking that was
+    correct before can invert.
+    """
+    if unacceptable <= 0.0:
+        return 0.0
+    ratio = value / unacceptable
+    if ratio <= 1.0:
+        return _clamp(1.0 - ratio) * (1.0 - SATURATION_FLOOR) + SATURATION_FLOOR
+    return SATURATION_FLOOR / ratio
 
 
 def _higher_is_better(value: float, target: float) -> float:
+    """Score a measurement where more is better.
+
+    Deliberately left saturating. This one clamps at the *good* end — links that
+    all exceed the throughput target tie at 1.0 — and indifference between links
+    that have all met the target is a defensible answer, unlike indifference
+    between links that have all failed.
+    """
     return _clamp(value / target)
 
 
@@ -257,7 +296,15 @@ class ProfileOptimizer:
                 )
             )
 
-        eligible = sorted((score for score in scores if score.utility >= 0.0), key=lambda score: score.utility, reverse=True)
+        # Ties break on profile_id, not on catalogue order. Identical readings
+        # do still tie, and when they did the winner used to be whichever entry
+        # the catalogue happened to list first — which meant an operator could
+        # change the node's choice by reordering a file. Deterministic and
+        # declared beats incidental and silent.
+        eligible = sorted(
+            (score for score in scores if score.utility >= 0.0),
+            key=lambda score: (-score.utility, score.profile_id),
+        )
         selected = eligible[0] if eligible else None
         reasons: list[str] = []
         if selected is None:
@@ -268,6 +315,12 @@ class ProfileOptimizer:
                 if selected.utility - current.utility < objective.switch_margin:
                     selected = current
                     reasons.append("CURRENT_PROFILE_RETAINED_BY_HYSTERESIS")
+            if sum(1 for score in eligible if score.utility == selected.utility) > 1:
+                # Saying "highest utility" when nothing was higher is the same
+                # class of untrue report as naming a corroborator that measured
+                # the band clear. The operator needs to know the evidence did
+                # not separate these links.
+                reasons.append("TOP_PROFILES_TIED_ON_UTILITY_SO_THE_EVIDENCE_DID_NOT_CHOOSE")
             if not reasons:
                 reasons.append("HIGHEST_POLICY_CONSTRAINED_UTILITY")
         return Recommendation(
