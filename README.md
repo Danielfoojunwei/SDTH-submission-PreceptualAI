@@ -26,9 +26,17 @@ Implemented production paths:
 - 3GPP DNN, S-NSSAI, RAT, Release 17/18 and NR-NTN policy vocabulary.
 - Fail-closed ETSI RRS, IEEE 1900.5, and ANSI/VITA 49.2 capability contract for
   standards-based SDR integrations.
-- **Passive spectrum-sensing fabric**: signed band allowlist, root-owned
-  receive-only sensor-adapter contract, and a deterministic analyzer producing
-  band availability, jamming *suspicion*, and emitter presence.
+- **Passive spectrum-sensing fabric**: signed band allowlist, a deterministic
+  analyzer producing band availability, jamming *suspicion*, and emitter
+  presence, and a **working receive-only sensor adapter**
+  (`kval-spectrum-sensord`) that measures the real RF environment via
+  `iw survey`/`iw scan` and, when an RTL-SDR is attached, `rtl_power`. It
+  refuses to start when no measurement backend exists.
+- **Real band-plan and catalogue data**: `config/band-plans.json` carries
+  published FCC/ETSI/ITU allocations with per-band sources;
+  `generate_spectrum_policy.py` and `generate_catalog.py` build policies and
+  catalogues from those allocations and from the host's actual NetworkManager
+  connections, so a deployment needs no hand-edited placeholders.
 - **Capability leases**: operator-signed, node-bound, single-use, expiring
   authorization for each bounded action, with rollback and post-condition.
 - **Power governance**: signed thermal/battery/watt/duty policy, a real
@@ -54,8 +62,11 @@ Not claimed yet:
   real Kval field trace corpus is currently present. The runtime will not
   substitute random weights, a synthetic model, or a pretend TensorRT result;
   the learned path abstains until a signed model manifest verifies.
-- Spectrum sensitivity, false-alarm rate, or bearing accuracy. These belong to
-  the sensor adapter and must be measured with real hardware.
+- Spectrum sensitivity, false-alarm rate, or bearing accuracy. The adapter
+  reports what the radio measures; how well it measures is a property of that
+  radio and its environment and must be characterised on the deployed hardware.
+  The shipped backends supply no bearing, so presence is reported without
+  direction unless a direction-finding adapter is provided.
 - Transport preflight passes. They require real keys, UUIDs, BSSIDs, and a pinned
   ruleset on the physical node.
 - Power, energy-per-bit, or battery-life figures for any node or sub-node.
@@ -102,13 +113,28 @@ repositories and verifies them before installing Kval.
 
 ## Provision real profiles
 
-1. Create the actual NetworkManager connections and record their UUIDs:
+Generate the catalogue from the node's actual connections — no placeholder
+editing:
 
 ```bash
-nmcli -f NAME,UUID,TYPE,DEVICE connection show
+sudo python3 scripts/generate_catalog.py \
+  --probe-target <reachable-operator-host> \
+  --output catalog.json
 ```
 
-2. Copy `config/catalog.template.json`, replace every placeholder with an
+It reads real NetworkManager UUIDs, interfaces, and modem access technologies
+via `nmcli`/`mmcli`, skips anything unusable with a reason, and refuses to emit
+a catalogue if nothing usable exists. Review the cost and service-class defaults
+it flags, then sign it.
+
+`config/catalog.template.json` remains for hand-authoring; its `REPLACE_*`
+markers are deliberate — UUIDs and probe targets are node-specific, and the
+loader rejects any catalogue still containing them.
+
+To hand-author instead:
+
+1. Record the UUIDs: `nmcli -f NAME,UUID,TYPE,DEVICE connection show`
+2. Copy `config/catalog.template.json` and replace every placeholder with an
    actual connection UUID, interface, and reachable probe target.
 3. Sign the catalogue on an operator/admin machine:
 
@@ -130,15 +156,33 @@ python3 scripts/provision_catalog.py \
 Spectrum sensing, power governance, secure transport, and capability leases are
 each optional and off unless configured. Sign them on the operator machine:
 
+Build the spectrum policy from real published band allocations rather than the
+example template — optionally calibrating thresholds from this host's own radio:
+
+```bash
+python3 scripts/generate_spectrum_policy.py --region US --output spectrum-policy.json
+# or, measuring the actual environment:
+python3 scripts/generate_spectrum_policy.py --region EU \
+  --calibrate-from-host --interface wlan0 --output spectrum-policy.json
+```
+
+Then sign each policy:
+
 ```bash
 python3 scripts/provision_policy.py spectrum \
-  --input config/spectrum-policy.template.json \
+  --input spectrum-policy.json \
   --private-key operator.private.pem --public-key operator.public.pem \
   --output spectrum-policy.signed.json
 
 python3 scripts/provision_policy.py power    --input config/power-policy.template.json    ...
 python3 scripts/provision_policy.py transport --input config/transport-policy.template.json ...
 python3 scripts/provision_policy.py lease    --input lease.body.json                       ...
+```
+
+Start the sensor daemon so `spectrum-scan` has a real measurement source:
+
+```bash
+sudo systemctl enable --now kval-spectrum-sensord    # edit --interface first
 ```
 
 Then point `/etc/kval/node.json` at them — see `config/node.full-example.json`.

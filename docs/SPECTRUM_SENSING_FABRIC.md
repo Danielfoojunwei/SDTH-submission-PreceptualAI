@@ -34,6 +34,53 @@ provenance and stays inside the allowlist; the adapter owns the radio and is
 responsible for regulatory compliance. See `schemas/spectrum-agent-v1.schema.json`
 and `schemas/spectrum-policy-v1.schema.json`.
 
+## The shipped adapter and where its numbers come from
+
+`kval-spectrum-sensord` (`sensor_adapter.py`, `sensor_cli.py`) implements the
+contract against the host's own radio. Every figure it reports is measured; a
+band it cannot measure is reported with an error and zero quality, which the
+analyzer turns into `INSUFFICIENT_EVIDENCE` rather than a clear band.
+
+| Source | Command | What it genuinely measures |
+|---|---|---|
+| Kernel channel survey (primary) | `iw dev <if> survey dump` | `noise` in dBm, and `channel busy time` / `channel active time` — a **directly measured** occupancy ratio, not inferred from beacon counts |
+| BSS scan | `iw dev <if> scan` | distinct BSSIDs per band (emitter count), strongest `signal` in dBm (peak power), and the 802.11 BSS Load element's channel utilisation as advertised by each AP |
+| NetworkManager fallback | `nmcli device wifi list` | emitter count only — nmcli reports signal as a 0-100 quality percentage, not dBm, so the adapter never claims a power figure it did not measure |
+| SDR sweep | `rtl_power` | real power spectral density; occupancy is the fraction of bins exceeding the sweep's own measured noise floor by 6 dB, and the floor is the 10th percentile of that same sweep |
+
+The daemon **refuses to start** when none of these are available, so a node can
+never be served observations the hardware did not produce.
+
+`iw scan` uses the host's own already-associated interface through the standard
+kernel path, which involves active probe requests. Deployments that require
+strictly receive-only emission behaviour run with `--passive-scan-only`, which
+uses survey and SDR data alone. Neither mode gives Kval any transmit control.
+
+The `conformance_hash` each observation carries is the SHA-256 of the adapter
+module that produced it, so an operator can recompute it and confirm exactly
+which code generated a measurement.
+
+```bash
+sudo kval-spectrum-sensord \
+  --socket /run/kval-spectrum/sensor.sock \
+  --policy /etc/kval/spectrum-policy.signed.json \
+  --public-key /etc/kval/operator.public.pem \
+  --interface wlan0
+```
+
+## Band plans come from published allocations
+
+`config/band-plans.json` records real regulatory band edges — FCC Part 15
+(including the 6 GHz U-NII-5 to U-NII-8 allocation), ETSI EN 300 220 / EN 301 893
+/ EN 303 687, and the ITU ISM designations — with the source cited per band.
+`scripts/generate_spectrum_policy.py --region US` builds a policy from them
+instead of hand-written frequencies.
+
+Occupancy and noise-floor thresholds are *not* regulatory data; they are
+operator policy. `--calibrate-from-host --interface wlan0` derives them from a
+real survey of the actual deployment environment rather than a guessed constant,
+and the tool states plainly which of the two you got.
+
 ## Vault nodes and low-compute sub-nodes
 
 ```
@@ -115,8 +162,16 @@ than aged into a "clear" verdict.
 
 * Occupancy/energy sensing is **not** imaging. It gives presence, congestion, and
   interference indicators, not identification or fine localisation.
-* Accuracy, sensitivity, and any bearing estimate are entirely the adapter's;
-  Kval reports what a signed adapter provides and its stated quality.
+* The shipped adapter sees only what its radio covers. A Wi-Fi interface
+  measures the ISM/U-NII bands it supports and nothing else; bands outside that
+  coverage need an SDR, and without one they report insufficient evidence rather
+  than a reading.
+* Bearing is reported only when a direction-finding adapter supplies it. The
+  Wi-Fi and RTL-SDR backends do not, so `bearing_deg` stays null and presence is
+  reported without direction.
+* Sensitivity, false-alarm rate, and any bearing accuracy are properties of the
+  radio and its environment; none is claimed here and all require measurement on
+  the deployed hardware.
 * Jamming detection is a heuristic and can be fooled by unusual-but-legitimate
   traffic; it triggers investigation, not an automatic offensive response.
 * No performance number is claimed here. Sensitivity, false-alarm rate, and
