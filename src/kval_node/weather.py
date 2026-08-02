@@ -671,6 +671,14 @@ def implied_rain_rate(
     whole plausible rainfall range maps into less than the measurement's own
     uncertainty and the answer would be arithmetic rather than evidence.
     """
+    if exponent is None:
+        # A fit that refused has no exponent to invert, and the refusal is the
+        # answer. Coercing ``None`` here would raise a TypeError from deep
+        # inside a validator, which tells a caller nothing about what went
+        # wrong.
+        raise WeatherModelError(
+            "an exponent is required; a fit that refused has none to invert"
+        )
     measured = require_finite(exponent, "exponent")
     intercept, sensitivity = _rain_exponent_terms(
         frequencies, weights, polarisation_tilt_deg, path_elevation_deg
