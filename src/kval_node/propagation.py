@@ -1120,7 +1120,14 @@ def name_weather_mechanisms(
                 # A fade is a loss, so the excess attenuation is the negated
                 # shift: the verdict reports the change in received power.
                 excess_db=-verdict.received_power_shift_db,
-                fluctuation_std_db=verdict.baseline_power_spread_db,
+                # Deliberately not ``baseline_power_spread_db``. That is the
+                # scatter of the *reference* window, and the scintillation test
+                # asks whether scatter *rose* during the event. Passing the
+                # baseline here made the module compare the baseline against
+                # itself, so the branch could never fire and said so with a
+                # reason about frequency range that had nothing to do with it.
+                # The in-event scatter is not measured on this path, so nothing
+                # is supplied and the refusal names the real reason.
             )
             for verdict in attenuating
         ),
@@ -1134,6 +1141,13 @@ def name_weather_mechanisms(
         "assessed": True,
         "bands_used": len(attenuating),
         "weather": assessment.to_dict(),
+        # Stated rather than left to be inferred from an indeterminate verdict:
+        # scintillation is a rise in *variance*, and this path carries only the
+        # reference window's scatter. Establishing it needs the recent window's
+        # scatter too, which the discriminator does not currently report.
+        "not_assessed_here": [
+            "SCINTILLATION_NEEDS_THE_IN_EVENT_SCATTER_WHICH_THIS_PATH_DOES_NOT_CARRY"
+        ],
     }
 
     if declaration is None:
