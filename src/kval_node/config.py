@@ -67,6 +67,9 @@ class NodeConfig:
     #: means the node keeps whatever operator-calibrated model it was given, or
     #: none — it never fits against positions it estimated itself.
     path_loss_reference_path: Path | None = None
+    #: Operator-signed climate of the area of operations. Absent means weather
+    #: mechanisms are judged on physics alone, which is the honest default.
+    climate_declaration_path: Path | None = None
     federated_inbox_path: Path | None = None
     #: Range within which two positioned peers are treated as linked when
     #: building the fabric graph. An operator-declared planning figure: it
@@ -161,6 +164,7 @@ class NodeConfig:
             model_manifest_path=_optional_path(raw, "model_manifest_path"),
             path_loss_model_path=_optional_path(raw, "path_loss_model_path"),
             path_loss_reference_path=_optional_path(raw, "path_loss_reference_path"),
+            climate_declaration_path=_optional_path(raw, "climate_declaration_path"),
             federated_inbox_path=_optional_path(raw, "federated_inbox_path"),
             fabric_link_range_m=float(raw.get("fabric_link_range_m", 2000.0)),
             federated_privacy_epsilon=(

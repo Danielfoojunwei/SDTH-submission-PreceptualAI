@@ -35,7 +35,7 @@ from .geolocate import (
     SignalSighting,
     SurveyedReference,
 )
-from .propagation import BandSeries, PropagationDiscriminator
+from .propagation import BandSeries, PropagationDiscriminator, name_weather_mechanisms
 from .fabric import (
     FabricAggregator,
     FabricError,
@@ -59,6 +59,7 @@ from .lease import LeaseAction, LeaseError, LeaseNonceStore, redeem_lease, verif
 from .memory_integrity import MemoryAuditor, SignedRecord
 from .mobility import DEFAULT_PLACE_RADIUS_M
 from .models import TelemetrySnapshot, parse_timestamp, utc_now
+from .climate import ClimateDeclaration
 from .cohorts import assess_heterogeneity
 from .orchestration import (
     FleetLearning,
@@ -107,6 +108,9 @@ PATH_LOSS_DOCUMENT_TYPE = "kval-path-loss-model/v1"
 #: operator vouches for, and it is signed because a node that could nominate
 #: its own references could fit any exponent it liked.
 PATH_LOSS_REFERENCE_DOCUMENT_TYPE = "kval-path-loss-references/v1"
+#: Operator-signed climate of the area of operations. Climatology, never
+#: weather: it says what is typical here in this season, not what is happening.
+CLIMATE_DOCUMENT_TYPE = "kval-climate-declaration/v1"
 
 #: Record type under which localisation results are written to the ledger, so
 #: the mobility model has a history of fixes to read back.
@@ -880,12 +884,38 @@ class CapabilityServices:
             }
 
         verdicts = PropagationDiscriminator().discriminate_bands(series)
+        # Which attenuating mechanism, on the same evidence. Reported beside the
+        # verdicts rather than folded into them: "the path attenuated" is a
+        # measurement, "and it was probably rain" is an inference from a
+        # frequency law, and an operator should be able to see which is which.
+        declaration = None
+        if self.config.climate_declaration_path is not None:
+            try:
+                payload, _hash = self._verify_document(
+                    self.config.climate_declaration_path,
+                    expected_type=CLIMATE_DOCUMENT_TYPE,
+                )
+                declaration = ClimateDeclaration.from_dict(payload, now=now)
+            except Exception as exc:
+                # A bad declaration must not take the measurement down with it.
+                return {
+                    "available": True,
+                    "policy_id": policy.policy_id,
+                    "policy_hash": policy_hash,
+                    "bands_examined": len(series),
+                    "verdicts": [verdict.to_dict() for verdict in verdicts],
+                    "mechanisms": {
+                        "assessed": False,
+                        "reasons": [f"CLIMATE_DECLARATION_REFUSED:{exc}"],
+                    },
+                }
         return {
             "available": True,
             "policy_id": policy.policy_id,
             "policy_hash": policy_hash,
             "bands_examined": len(series),
             "verdicts": [verdict.to_dict() for verdict in verdicts],
+            "mechanisms": name_weather_mechanisms(verdicts, declaration=declaration, at=now),
         }
 
     def calibrate_path_loss(self, *, now: datetime | None = None) -> dict[str, Any]:

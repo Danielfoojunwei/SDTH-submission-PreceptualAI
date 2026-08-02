@@ -79,7 +79,10 @@ from datetime import datetime
 from typing import Any, Sequence
 
 from .mobility import Fix, metres_between
+from .models import utc_now
 from .spectrum import SpectrumBand, SpectrumObservation
+from .climate import ClimateDeclaration, corroborate_mechanism
+from .weather import BandExcess, WeatherDiscriminator, WeatherSignature
 from .validation import bounded_number, positive_int
 
 #: What the evidence supported. ``insufficient_evidence`` and ``ambiguous`` are
@@ -1066,3 +1069,89 @@ def _deduplicate(reasons: Sequence[str]) -> tuple[str, ...]:
             seen.add(reason)
             ordered.append(reason)
     return tuple(ordered)
+
+
+def name_weather_mechanisms(
+    verdicts: Sequence[PropagationVerdict],
+    *,
+    declaration: "ClimateDeclaration | None" = None,
+    at: datetime | None = None,
+    latitude_deg: float | None = None,
+    longitude_deg: float | None = None,
+) -> dict[str, Any]:
+    """Say which weather mechanisms the measured fade is consistent with.
+
+    The discriminator above answers *attenuation or another emitter*. This
+    answers the next question — which attenuating mechanism — and answers it
+    with a list rather than a winner, because several are usually consistent
+    and picking one would be the guessing this module exists to refuse.
+
+    Two independent strands, kept separate on purpose. ``weather`` is physics
+    and is true anywhere: rain rises roughly as frequency while cloud liquid
+    water rises as its square, so a node watching several bands separates them
+    by slope alone. ``climate`` is an operator-signed statement about what is
+    typical in this place at this time of year, and it is **evidence, never an
+    override** — a measurement that conflicts with the declaration is reported
+    with the conflict, because the declaration may be stale or the platform may
+    have driven out of the area it describes.
+    """
+    attenuating = [
+        verdict
+        for verdict in verdicts
+        if verdict.cause == CAUSE_PATH_ATTENUATION
+        and verdict.received_power_shift_db is not None
+        and verdict.centre_frequency_hz > 0.0
+    ]
+    if len(attenuating) < 2:
+        # One band gives a point, not a slope, and the whole discrimination
+        # here is the shape of the frequency dependence.
+        return {
+            "assessed": False,
+            "reasons": [
+                "NEED_ATTENUATION_IN_AT_LEAST_TWO_BANDS_TO_SHAPE_A_FREQUENCY_DEPENDENCE"
+            ],
+            "bands_used": len(attenuating),
+        }
+
+    signature = WeatherSignature(
+        bands=tuple(
+            BandExcess(
+                frequency_hz=verdict.centre_frequency_hz,
+                # A fade is a loss, so the excess attenuation is the negated
+                # shift: the verdict reports the change in received power.
+                excess_db=-verdict.received_power_shift_db,
+                fluctuation_std_db=verdict.baseline_power_spread_db,
+            )
+            for verdict in attenuating
+        ),
+        onset_seconds=min(
+            (v.onset_seconds for v in attenuating if v.onset_seconds is not None),
+            default=None,
+        ),
+    )
+    assessment = WeatherDiscriminator().assess(signature)
+    result: dict[str, Any] = {
+        "assessed": True,
+        "bands_used": len(attenuating),
+        "weather": assessment.to_dict(),
+    }
+
+    if declaration is None:
+        result["climate"] = {
+            "assessed": False,
+            "reasons": ["NO_CLIMATE_DECLARATION_SO_THE_PHYSICS_STANDS_ALONE"],
+        }
+        return result
+
+    result["climate"] = {
+        mechanism: corroborate_mechanism(
+            declaration,
+            mechanism,
+            physics_consistent=mechanism in assessment.consistent,
+            at=at or utc_now(),
+            latitude_deg=latitude_deg,
+            longitude_deg=longitude_deg,
+        ).to_dict()
+        for mechanism in assessment.consistent
+    }
+    return result
