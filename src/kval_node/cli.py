@@ -139,6 +139,15 @@ def build_parser() -> argparse.ArgumentParser:
     excise.add_argument("--config", default=DEFAULT_CONFIG)
     excise.add_argument("--node-id", required=True)
 
+    emcon = subparsers.add_parser("emcon-posture")
+    emcon.add_argument("--config", default=DEFAULT_CONFIG)
+
+    interference = subparsers.add_parser("report-interference")
+    interference.add_argument("--config", default=DEFAULT_CONFIG)
+    interference.add_argument("--band-id", required=True)
+    interference.add_argument("--victim-role", default="payload",
+                              choices=["c2_cnpc", "payload", "bulk"])
+
     crypto = subparsers.add_parser("crypto-posture")
     crypto.add_argument("--config", default=DEFAULT_CONFIG)
 
@@ -262,6 +271,15 @@ def main() -> None:
         return
     if args.command == "excise-node":
         _print_capability(CapabilityServices(NodeConfig.load(args.config)).excise_node(args.node_id))
+        return
+    if args.command == "emcon-posture":
+        _print_capability(CapabilityServices(NodeConfig.load(args.config)).emcon_posture())
+        return
+    if args.command == "report-interference":
+        services = CapabilityServices(NodeConfig.load(args.config))
+        _print_capability(
+            services.report_interference(args.band_id, victim_role=args.victim_role)
+        )
         return
     if args.command == "crypto-posture":
         _print_capability(CapabilityServices(NodeConfig.load(args.config)).crypto_posture())

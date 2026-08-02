@@ -39,7 +39,15 @@ from .fabric import (
     sign_report,
     verify_report,
 )
+from .c2link import (
+    C2Budget,
+    C2LinkMonitor,
+    DirectionalHealth,
+    InteroperabilityDeclaration,
+)
+from .emcon import EmconOrder, assess_emcon
 from .evidence import BeliefMass
+from .interference import build_report as build_interference_report
 from .intrusion import NodeBaseline
 from .learning import ModelTrustError, verify_model_manifest
 from .lease import LeaseAction, LeaseError, LeaseNonceStore, redeem_lease, verify_lease
@@ -89,6 +97,10 @@ PATH_LOSS_DOCUMENT_TYPE = "kval-path-loss-model/v1"
 #: Record type under which localisation results are written to the ledger, so
 #: the mobility model has a history of fixes to read back.
 EMITTER_RECORD_TYPE = "emitter_estimate"
+
+#: Signed document types for the uncrewed-platform controls.
+EMCON_DOCUMENT_TYPE = "kval-emcon-order/v1"
+C2_DOCUMENT_TYPE = "kval-c2-budget/v1"
 
 #: Records the memory audit examines. Bounded so the O(n^2) near-duplicate scan
 #: stays cheap on a node; the burst and duplicate patterns it looks for are
@@ -834,6 +846,141 @@ class CapabilityServices:
         return renew_under_partition(
             grant, attestations, certifier_roster, new_expiry=new_expiry, now=now
         )
+
+    # --- uncrewed-platform command link -------------------------------------------
+
+    def load_emcon_order(self) -> EmconOrder | None:
+        """Read the standing emission-control order, if the operator signed one.
+
+        Signed, because an unauthenticated EMCON order is a denial-of-service
+        primitive: anyone who can assert "you are silent" suppresses this
+        platform's lost-link response for as long as they like.
+        """
+        if self.config.emcon_order_path is None:
+            return None
+        payload, _hash = load_verified_document(
+            self.config.emcon_order_path,
+            self.config.catalog_public_key_path,
+            expected_type=EMCON_DOCUMENT_TYPE,
+        )
+        return EmconOrder.from_dict(payload)
+
+    def emcon_posture(self, *, now: datetime | None = None) -> dict[str, Any]:
+        """Where this platform sits on the emission-control spectrum."""
+        try:
+            order = self.load_emcon_order()
+        except Exception as exc:
+            # An unreadable order is not an order. Treating it as silence would
+            # let a corrupted file suppress the lost-link contingency.
+            return {
+                "available": False,
+                "reason": f"emission control order invalid: {exc}",
+                "silence_commanded": False,
+            }
+        result = assess_emcon(order, now=now).to_dict()
+        result["available"] = True
+        return result
+
+    def c2_status(
+        self,
+        *,
+        command_path: DirectionalHealth,
+        return_path: DirectionalHealth,
+        now: datetime | None = None,
+    ) -> dict[str, Any]:
+        """Assess the command link and declare the pre-planned contingency.
+
+        The emission posture is consulted first, and only ever to explain a
+        dark *return* path. A missing command path is a lost link whatever the
+        EMCON state, because nothing about a silence order stops an operator
+        transmitting to the vehicle.
+        """
+        if self.config.c2_budget_path is None:
+            return _unavailable(
+                "no C2 budget is provisioned; a command link with no declared budget "
+                "and no pre-planned contingency cannot be assessed"
+            )
+        try:
+            payload, budget_hash = load_verified_document(
+                self.config.c2_budget_path,
+                self.config.catalog_public_key_path,
+                expected_type=C2_DOCUMENT_TYPE,
+            )
+            budget = C2Budget.from_dict(payload)
+        except Exception as exc:
+            return {"available": False, "reason": f"C2 budget invalid: {exc}"}
+
+        posture = assess_emcon(self._emcon_or_none(), now=now)
+        monitor = self._c2_monitor(budget)
+        assessment = monitor.observe(
+            command_path=command_path,
+            return_path=return_path,
+            now=now or utc_now(),
+            emission_silence_commanded=posture.silence_commanded(),
+        )
+        result = assessment.to_dict()
+        result["available"] = True
+        result["budget"] = budget.to_dict()
+        result["budget_hash"] = budget_hash
+        result["emcon"] = posture.to_dict()
+        result["interoperability"] = InteroperabilityDeclaration().to_dict()
+        return result
+
+    def _emcon_or_none(self) -> EmconOrder | None:
+        try:
+            return self.load_emcon_order()
+        except Exception:
+            return None
+
+    def _c2_monitor(self, budget: C2Budget) -> C2LinkMonitor:
+        # One monitor per process: the contingency timers are the mechanism,
+        # and a fresh monitor each cycle would never accumulate elapsed time.
+        existing = getattr(self, "_c2_monitor_instance", None)
+        if existing is None or existing.budget != budget:
+            existing = C2LinkMonitor(budget)
+            self._c2_monitor_instance = existing
+        return existing
+
+    def report_interference(
+        self, band_id: str, *, victim_role: str = "payload", now: datetime | None = None
+    ) -> dict[str, Any]:
+        """Emit a JSIR-compatible interference report from corroborated evidence."""
+        current = now or utc_now()
+        fabric = self.aggregate_fleet(now=current)
+        if fabric.get("available") is not True:
+            return fabric
+
+        bands = {item["band_id"]: item for item in fabric.get("bands", [])}
+        band = bands.get(band_id)
+        if band is None:
+            return _unavailable(f"no fleet view for band {band_id!r}")
+
+        located = self.locate_emitter(band_id, now=current)
+        position = (
+            {
+                "latitude_deg": located["latitude_deg"],
+                "longitude_deg": located["longitude_deg"],
+                "uncertainty_radius_m": located["uncertainty_radius_m"],
+            }
+            if located.get("available") is True
+            else None
+        )
+        report = build_interference_report(
+            report_id=f"{self.config.node_id}-{band_id}-{int(current.timestamp())}",
+            observed_at=current,
+            reporting_node=self.config.node_id,
+            corroborating_nodes=band.get("reporting_nodes", []),
+            band_id=band_id,
+            centre_frequency_hz=int(band.get("centre_frequency_hz") or 0),
+            bandwidth_hz=int(band.get("bandwidth_hz") or 0),
+            victim_role=victim_role,
+            link_available=True,
+            noise_floor_excess_db=band.get("noise_floor_excess_db"),
+            estimated_position=position,
+        )
+        result = report.to_dict()
+        result["available"] = True
+        return result
 
     # --- cryptographic posture --------------------------------------------------
 

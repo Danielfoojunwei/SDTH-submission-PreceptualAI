@@ -69,6 +69,11 @@ class NodeConfig:
     #: already in the field unverifiable — a migration to plan, not a flag to
     #: be surprised by.
     require_cnsa_2_0: bool = False
+    #: Operator-signed emission-control order and command-link budget. Absent
+    #: means this node is not on an uncrewed platform, and the C2 assessment
+    #: reports unavailable rather than inventing a budget.
+    emcon_order_path: Path | None = None
+    c2_budget_path: Path | None = None
 
     @classmethod
     def load(cls, path: str | Path) -> "NodeConfig":
@@ -136,5 +141,7 @@ class NodeConfig:
             ),
             quorum_threshold=int(raw.get("quorum_threshold", 2)),
             require_cnsa_2_0=bool(raw.get("require_cnsa_2_0", False)),
+            emcon_order_path=_optional_path(raw, "emcon_order_path"),
+            c2_budget_path=_optional_path(raw, "c2_budget_path"),
         )
 

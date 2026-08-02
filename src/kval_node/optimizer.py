@@ -150,6 +150,8 @@ class ProfileOptimizer:
         *,
         degraded_band_ids: frozenset[str] = frozenset(),
         forecast_degrading_profiles: frozenset[str] = frozenset(),
+        role: str = "payload",
+        suppressed_roles: frozenset[str] = frozenset(),
     ) -> Recommendation:
         """Rank approved profiles.
 
@@ -163,11 +165,39 @@ class ProfileOptimizer:
         forecast penalty is the weaker of the two, because a prediction that
         could outrank measured evidence would let the node talk itself onto a
         link that has not demonstrated it works.
+
+        ``role`` confines ranking to one link role. This is a safety property,
+        not a filter for convenience: comparing a command link against a
+        payload link on one utility scale lets a high-value sensor downlink
+        outscore the link that steers the vehicle, and utility weights are
+        exactly the sort of thing that gets retuned for throughput by someone
+        who does not know that. Candidates of another role are refused with a
+        reason rather than silently dropped.
+
+        ``suppressed_roles`` comes from the emission-control posture. A role
+        the platform is ordered not to emit on has no eligible candidates at
+        all, which is different from having bad ones.
         """
         observations = {item.profile_id: item for item in snapshot.observations}
         objective = OBJECTIVES[service_class]
         scores: list[ScoredProfile] = []
+        if role in suppressed_roles:
+            return Recommendation(
+                selected_profile_id=None,
+                confidence=0.0,
+                scores=tuple(
+                    ScoredProfile(p.profile_id, -1.0, 0.0, {}, ("ROLE_SUPPRESSED_BY_EMISSION_CONTROL",))
+                    for p in catalog.profiles
+                    if p.link_role == role
+                ),
+                reasons=("EMISSION_CONTROL_SUPPRESSES_THIS_ROLE_SO_NO_LINK_IS_SELECTED",),
+            )
         for profile in catalog.profiles:
+            if profile.link_role != role:
+                scores.append(
+                    ScoredProfile(profile.profile_id, -1.0, 0.0, {}, ("DIFFERENT_LINK_ROLE",))
+                )
+                continue
             if service_class not in profile.allowed_service_classes:
                 scores.append(ScoredProfile(profile.profile_id, -1.0, 0.0, {}, ("SERVICE_CLASS_NOT_ALLOWED",)))
                 continue

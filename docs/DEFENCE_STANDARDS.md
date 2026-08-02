@@ -98,7 +98,110 @@ without a dependency.
 
 ---
 
-## 2. Electromagnetic spectrum operations
+## 2. Uncrewed systems: the command link is not one link among many
+
+**This is the finding that reframed the system.** Kval ranked every link on one
+utility scale — latency, loss, jitter, throughput, cost, energy — and took the
+best. For a fixed sensor that is right. For an autonomous uncrewed platform,
+air, ground, surface or subsurface, it is wrong in a way that is unsafe *and*
+non-compliant, and the reason is regulatory before it is technical.
+
+**Control and Non-Payload Communications is a protected, separately regulated
+class.** The C2 link carries what flies, drives or steers the platform. It has:
+
+| | |
+|---|---|
+| Dedicated spectrum | **5030–5091 MHz** terrestrial LOS (WRC-12), **960–977 MHz** L-band, FSS for BLOS |
+| Sized by ITU-R | 34 MHz terrestrial, 56 MHz satellite |
+| Its own MOPS | RTCA **DO-362** (terrestrial), **DO-377** (satellite) |
+| Its own radio standard | FAA **TSO-C213** |
+| Its own rule part | FCC **Part 88** (August 2024) |
+| Mandated loss behaviour | RTCA **DO-400**, ICAO contingency procedures |
+
+Payload video has none of that.
+
+### What is now built
+
+`c2link.py` makes three properties structural:
+
+**Ranking never crosses roles.** `Profile.link_role` is declared in the signed
+catalogue and the optimizer confines ranking to one role. Comparing a command
+link against a payload link on one utility scale lets a high-value sensor
+downlink outscore the link that steers the vehicle — and utility weights are
+exactly what gets retuned for throughput by someone who does not know that.
+The default role is `payload`, so **a link can never become safety-critical by
+omission**, and an undeclared link can never be selected as C2.
+
+**Loss is an event with a pre-planned response.** DO-400 requires a declared
+lost-link route, orbit points, altitudes and a flight-termination point.
+`ContingencyAction` is a closed vocabulary the *operator* fills in before the
+mission; the node selects nothing. Two timers separate confirmation from
+commitment, so one bad sample cannot commit the platform — a contingency
+triggered on a single observation is one an adversary fires with a single
+pulse. A declared contingency is not silently unwound by the link returning:
+the platform is executing a plan, and cancelling it automatically would leave
+it somewhere neither the plan nor the operator expects.
+
+**The budget is a floor, not a preference.** A C2 link outside its declared
+latency and loss budget is degraded even when it is the best available.
+"Best of a bad set" is how a vehicle ends up flying on a link that cannot
+command it.
+
+### The gap the civil standards do not cover
+
+Civil aviation has no reason to fall silent on purpose, so nothing in DO-400 or
+ICAO addresses this: **under emission control, a platform is *ordered* to stop
+transmitting, and to every lost-link detector ever built that is
+indistinguishable from jamming.**
+
+A vehicle that runs its lost-link contingency because it was obeying an EMCON
+order has been defeated by its own doctrine while the adversary did nothing.
+Worse, an adversary who jams during a known EMCON window gets a return-to-base
+or a self-termination for free.
+
+`emcon.py` and `c2link.py` resolve it directionally, and the asymmetry is the
+whole design:
+
+- **EMCON constrains what the *platform* emits. It says nothing about what the
+  *operator* emits.** An operator can transmit commands to a silent vehicle all
+  day. So a dark **return** path under commanded silence is compliance; a dark
+  **command** path is a lost link regardless of EMCON state. Jamming during an
+  EMCON window still reaches the contingency, and this is tested.
+- **Silence is bounded.** An order carries an expiry, and an expired order
+  stops suppressing — otherwise an adversary who jams the *lifting* order gets
+  indefinite suppression of the contingency.
+- **The order is signed.** An unauthenticated EMCON order is a denial-of-service
+  primitive: anyone who can assert "you are silent" suppresses the platform's
+  lost-link response for as long as they like.
+- **Every suppression is recorded**, so an operator reading the audit sees
+  which silences were doctrine and which were an adversary.
+
+EMCON levels are also encoded rather than labelled: each state names the link
+roles it suppresses, from housekeeping only, through payload, to total silence
+— and receive-only sensing continues at every level, because receiving emits
+nothing a silence order governs.
+
+### Interoperability, claimed honestly
+
+**STANAG 4586** defines five Levels of Interoperability, from indirect receipt
+of data (1) through payload control (3) and vehicle control (4) to full control
+including launch and recovery (5). **STANAG 4817** extends the framework to
+multi-domain UxV control across air, sea and subsurface.
+
+Kval declares **LOI 1** and says why: it selects and assures links, it does not
+control a vehicle or a payload, and LOI 4/5 require a control station this is
+not. Its domain-agnosticism across land, sea, air and subsurface is real — link
+selection does not care what the platform is — but that is a strength, not
+compliance with STANAG 4817.
+
+**Remaining gap.** No STANAG 4586 message-format bridge exists. A control
+station speaking 4586 cannot ingest Kval's output today without a translation
+layer, and building one from the abstract without the (controlled-distribution)
+message specification would be guesswork.
+
+---
+
+## 3. Electromagnetic spectrum operations
 
 **The standard.** NATO recognises the electromagnetic environment as an
 operational domain (MC 64/11), with the discipline named Electromagnetic
@@ -129,15 +232,21 @@ build if one appears.
   spectrum certification (in US practice, DD Form 1494) and host-nation
   coordination. `config/band-plans.json` cites civil allocations — FCC, ETSI,
   ITU — and has no military allocation or host-nation dimension.
-- **Interference reports are not in a recognised format.** Kval detects and
-  corroborates interference across nodes, which is genuinely the hard part, but
-  emits its own JSON. Joint Spectrum Interference Resolution (JSIR) reporting
-  under CJCSM 3320.01D has a defined format, and a report a spectrum manager
-  cannot ingest is a report that does not reach anyone.
+- **Interference reporting — now closed.** `interference.py` emits
+  JSIR-compatible fields per CJCSM 3320.01D: observer, time, band, centre
+  frequency, bandwidth, victim system role, and characterised operational
+  effect. Two things it deliberately refuses: it does not classify **intent**,
+  because nothing in a noise floor says whether a microwave oven, a faulty
+  amplifier or an adversary put it there; and it names no **source**, because
+  a position with an uncertainty radius is a place, not an actor. A corroborated
+  C2 victim is escalated above a payload one, since that is the report a
+  spectrum manager needs first.
+- **EMCON — now closed.** See §2. Modelled as ordered states with encoded
+  consequences, bounded in time, signed, and consumed by the lost-link logic.
 
 ---
 
-## 3. Open architecture — MOSA, SOSA, CMOSS
+## 4. Open architecture — MOSA, SOSA, CMOSS
 
 **The standard.** The US DoD mandates a **Modular Open Systems Approach**
 (MOSA) for major acquisitions. The aligned technical standards are **SOSA**
@@ -157,7 +266,7 @@ integration would be a port to a compliant card, not a rewrite.
 
 ---
 
-## 4. Autonomy and meaningful human control
+## 5. Autonomy and meaningful human control
 
 SDTH's Track C asks: *"Can we keep meaningful human judgment in the loop when
 autonomous warfare has already outrun human reaction time?"*
@@ -185,7 +294,7 @@ never approve a new one.
 
 ---
 
-## 5. Assurance and accreditation
+## 6. Assurance and accreditation
 
 Not claimed, and worth listing so the absence is deliberate rather than
 overlooked:
@@ -204,7 +313,7 @@ overlooked:
 
 ---
 
-## 6. Where the honest gaps are, ranked
+## 7. Where the honest gaps are, ranked
 
 Ordered by how much they would matter to a defence buyer, not by how hard they
 are:
@@ -218,10 +327,13 @@ are:
    requirement, above. The algorithm is right; the custody is not.
 3. **Unmeasured emissions.** MIL-STD-461 / STANAG 2319. A passive system that
    can be found by its own leakage fails at its primary claim.
-4. **No EMCON state model.** Doctrinally, emission control is a spectrum of
-   states, and the node cannot represent where it sits on it.
-5. **Interference reporting is not interoperable.** JSIR format under
-   CJCSM 3320.01D.
+4. **No STANAG 4586 message bridge.** A 4586 control station cannot ingest
+   Kval's output without a translation layer, and the message specification is
+   controlled-distribution. This is the clearest remaining interoperability
+   gap for a NATO-facing deployment.
+5. **C2 timing budgets are operator-declared, not measured against DO-362.**
+   The module enforces whatever floor the operator signs. It does not verify
+   that floor is airworthy for the platform, which is a certification activity.
 6. **No cross-node result on physically separate hardware.** Stated throughout
    this repository and repeated here because it remains the largest evidential
    gap: everything cross-node is verified in software.
@@ -250,4 +362,21 @@ are:
   ([defense-solutions.curtisswright.com](https://defense-solutions.curtisswright.com/resources/white-papers/what-is-mosa-sosa-cmoss))
 - US Army, *Adapting to Multi-Domain Battlefield: Developing Emissions Control
   SOP* ([army.mil](https://www.army.mil/article/284546/adapting_to_multi_domain_battlefield_developing_emissions_control_sop))
+- STANAG 4586, *Standard Interfaces of UAV Control System (UCS) for NATO UAV
+  Interoperability*
+  ([sto.nato.int](https://www.sto.nato.int/document/stanag-4586-standard-interfaces-of-ucs-for-nato-uav-interoperability/),
+  [publications.sto.nato.int](https://publications.sto.nato.int/publications/STO%20Educational%20Notes/STO-EN-SCI-271/EN-SCI-271-03.pdf))
+- STANAG 4817, multi-domain UxV control (air, sea, subsurface), via the
+  Fraunhofer INTERACT project report
+  ([iosb.fraunhofer.de](https://www.iosb.fraunhofer.de/content/dam/iosb/iosbtest/documents/projekte/interact/Interoperability%20of%20Armed%20Forces%20Unmanned%20Systems_korr.pdf))
+- NASA, *Control and Non-Payload Communications (CNPC) link*
+  ([ntrs.nasa.gov](https://ntrs.nasa.gov/api/citations/20170010707/downloads/20170010707.pdf));
+  FAA TSO-C213a draft
+  ([faa.gov](https://www.faa.gov/sites/faa.gov/files/2022-08/TSO_C213a_Draft_Public_Comment.pdf));
+  FCC Part 88 UAS spectrum
+  ([uavionix.com](https://uavionix.com/protected-c2-for-uas-part-1/))
+- FAA Notice JO 7110.724, *UAS Lost Link*
+  ([faa.gov](https://www.faa.gov/documentLibrary/media/Notice/N_JO_7110.724_5-2-9_UAS_Lost_Link.pdf));
+  RTCA DO-400 guidance on C2 link unavailability
+  ([unmannedairspace.info](https://www.unmannedairspace.info/latest-news-and-information/rtca-publishes-new-guidance-for-uas-in-case-command-and-control-link-becomes-unavailable/))
 - Singapore Defence Tech Hackathon 2026 ([luma.com](https://luma.com/sdth-2026))

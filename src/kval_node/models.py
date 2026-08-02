@@ -68,6 +68,11 @@ class Profile:
     #: can warn the optimizer off a contested band without the node guessing
     #: which frequencies a connection actually uses. Empty means "no spectrum
     #: evidence applies", which is the pre-existing behaviour.
+    #: What this link is *for*. Declared in the signed catalogue, never
+    #: inferred. The default is deliberately ``payload``: a command link must
+    #: be declared explicitly, so a profile can never become safety-critical by
+    #: omission — and an undeclared link can never be selected as C2.
+    link_role: str = "payload"
     spectrum_band_ids: frozenset[str] = frozenset()
 
     @classmethod
@@ -127,6 +132,9 @@ class Profile:
         band_ids = frozenset(str(value).strip() for value in raw.get("spectrum_band_ids", []))
         if any(not value or "REPLACE_" in value for value in band_ids):
             raise ValueError("spectrum_band_ids must contain provisioned band IDs")
+        link_role = str(raw.get("link_role", "payload")).strip().lower()
+        if link_role not in {"c2_cnpc", "payload", "bulk"}:
+            raise ValueError(f"unknown link_role {link_role!r}")
         return cls(
             profile_id=profile_id,
             access_type=access_type,
@@ -139,6 +147,7 @@ class Profile:
             maximum_switches_per_hour=maximum_switches,
             allowed_service_classes=classes,
             standards=standards,
+            link_role=link_role,
             spectrum_band_ids=band_ids,
         )
 
