@@ -552,42 +552,75 @@ def rain_coefficients(
     return k, alpha
 
 
+def _rain_exponent_terms(
+    frequencies: Sequence[float],
+    weights: Sequence[float] | None,
+    polarisation_tilt_deg: float,
+    path_elevation_deg: float,
+) -> tuple[float, float]:
+    """``(intercept, sensitivity)`` in ``n = intercept + sensitivity * log10 R``.
+
+    ITU-R P.838-3 makes ``log10 gamma = log10 k(f) + alpha(f) log10 R``, and a
+    least-squares slope is a *linear* functional of the fitted values, so the
+    slope of the model's own attenuation against ``log10 f`` decomposes into the
+    slope of ``log10 k`` plus ``log10 R`` times the slope of ``alpha``. Both
+    terms depend only on the frequencies and the weights, so the entire rain
+    family across every possible rain rate is two numbers.
+
+    That is what makes the rain test exact rather than a search, and it is what
+    makes the inversion closed form.
+    """
+    if len(frequencies) < 2:
+        raise WeatherModelError("at least two frequencies are needed for an exponent")
+    if weights is None:
+        weights = [1.0] * len(frequencies)
+    elif len(weights) != len(frequencies):
+        raise WeatherModelError("weights and frequencies must be the same length")
+    xs = [math.log10(frequency) for frequency in frequencies]
+    coefficients = [
+        rain_coefficients(
+            frequency,
+            polarisation_tilt_deg=polarisation_tilt_deg,
+            path_elevation_deg=path_elevation_deg,
+        )
+        for frequency in frequencies
+    ]
+    intercept, _ = weighted_slope(
+        xs, [math.log10(k) for k, _ in coefficients], weights
+    )
+    sensitivity, _ = weighted_slope(xs, [alpha for _, alpha in coefficients], weights)
+    if intercept is None or sensitivity is None:
+        raise WeatherModelError(
+            "the supplied frequencies carry no leverage on a frequency law"
+        )
+    return intercept, sensitivity
+
+
 def rain_exponent(
-    low_frequency_hz: float,
-    high_frequency_hz: float,
+    frequencies: Sequence[float],
     rain_rate_mm_per_h: float,
     *,
+    weights: Sequence[float] | None = None,
     polarisation_tilt_deg: float = DEFAULT_POLARISATION_TILT_DEG,
     path_elevation_deg: float = 0.0,
 ) -> float:
-    """Spectral exponent ITU-R P.838-3 predicts between two frequencies.
+    """Spectral exponent ITU-R P.838-3 predicts across a set of bands.
 
-    ``gamma = k(f) R**alpha(f)``, so the chord exponent between two frequencies
-    is exactly
+    ``weights`` are the measurement's own weights, so that the model is reduced
+    to a single exponent exactly the way the measurement was. With two
+    frequencies the weights cancel and this is the chord exponent
 
         ``n = [log10(k2/k1) + (alpha2 - alpha1) log10 R] / log10(f2/f1)``
 
-    which is *linear in* ``log10 R``. That linearity is why the rain test here
-    is sharp rather than a guess: it means one measured exponent picks out one
-    rain rate, and a rain rate outside anything rain comes at excludes rain.
+    which is *linear in* ``log10 R``. That linearity is why the rain test is
+    sharp rather than a guess: one measured exponent picks out one rain rate,
+    and a rain rate outside anything rain comes at excludes rain.
     """
-    if high_frequency_hz <= low_frequency_hz:
-        raise WeatherModelError("high_frequency_hz must exceed low_frequency_hz")
     rate = bounded_number(rain_rate_mm_per_h, "rain_rate_mm_per_h", 1e-6, 10_000.0)
-    k_low, alpha_low = rain_coefficients(
-        low_frequency_hz,
-        polarisation_tilt_deg=polarisation_tilt_deg,
-        path_elevation_deg=path_elevation_deg,
+    intercept, sensitivity = _rain_exponent_terms(
+        frequencies, weights, polarisation_tilt_deg, path_elevation_deg
     )
-    k_high, alpha_high = rain_coefficients(
-        high_frequency_hz,
-        polarisation_tilt_deg=polarisation_tilt_deg,
-        path_elevation_deg=path_elevation_deg,
-    )
-    span = math.log10(high_frequency_hz / low_frequency_hz)
-    return (
-        math.log10(k_high / k_low) + (alpha_high - alpha_low) * math.log10(rate)
-    ) / span
+    return intercept + sensitivity * math.log10(rate)
 
 
 @dataclass(frozen=True)
@@ -616,53 +649,44 @@ class ImpliedRainRate:
 
 def implied_rain_rate(
     exponent: float,
-    low_frequency_hz: float,
-    high_frequency_hz: float,
+    frequencies: Sequence[float],
     *,
+    weights: Sequence[float] | None = None,
     polarisation_tilt_deg: float = DEFAULT_POLARISATION_TILT_DEG,
     path_elevation_deg: float = 0.0,
 ) -> ImpliedRainRate:
     """Invert ITU-R P.838-3 for the rain rate implied by a measured exponent.
 
-    Refuses when ``alpha`` is too nearly equal at the two frequencies for the
-    exponent to carry rain-rate information at all: the inversion divides by
-    ``alpha_high - alpha_low``, and near zero that division turns ordinary
-    measurement scatter into an arbitrary rainfall figure. Between 10 and 40 GHz
-    the difference is around -0.2 per band pair and the inversion is well posed;
-    across a narrow pair inside a single band it is not.
-    """
-    if high_frequency_hz <= low_frequency_hz:
-        raise WeatherModelError("high_frequency_hz must exceed low_frequency_hz")
-    measured = require_finite(exponent, "exponent")
-    k_low, alpha_low = rain_coefficients(
-        low_frequency_hz,
-        polarisation_tilt_deg=polarisation_tilt_deg,
-        path_elevation_deg=path_elevation_deg,
-    )
-    k_high, alpha_high = rain_coefficients(
-        high_frequency_hz,
-        polarisation_tilt_deg=polarisation_tilt_deg,
-        path_elevation_deg=path_elevation_deg,
-    )
-    span = math.log10(high_frequency_hz / low_frequency_hz)
-    sensitivity = (alpha_high - alpha_low) / span
+    Conditional on the excess being rain at all, and independent of path length,
+    because path length is an additive constant in the logarithm and vanishes
+    from a slope. That is the unusual part: a passive receiver that knows
+    neither how far away the emitter is nor how much of the path is in the cell
+    can still say what rain rate the shape corresponds to.
 
-    # The exponent moves by ``sensitivity`` for every decade of rain rate. The
-    # smallest movement worth inverting is one that a decade of rain rate lifts
-    # clear of the exponent tolerance; below that, the whole plausible rainfall
-    # range maps into less than the measurement's own uncertainty.
+    Refuses when ``alpha`` barely changes across the supplied bands. The
+    inversion divides by that change, and near zero the division turns ordinary
+    measurement scatter into an arbitrary rainfall figure. The refusal bar is
+    the exponent tolerance itself: a decade of rain rate must move the model's
+    exponent by more than the largest standard error a verdict tolerates, or the
+    whole plausible rainfall range maps into less than the measurement's own
+    uncertainty and the answer would be arithmetic rather than evidence.
+    """
+    measured = require_finite(exponent, "exponent")
+    intercept, sensitivity = _rain_exponent_terms(
+        frequencies, weights, polarisation_tilt_deg, path_elevation_deg
+    )
     if abs(sensitivity) < MAX_EXPONENT_STANDARD_ERROR:
         return ImpliedRainRate(
             rain_rate_mm_per_h=None,
             plausible=False,
             sensitivity_per_decade=sensitivity,
             reasons=(
-                "ALPHA_BARELY_CHANGES_ACROSS_THIS_BAND_PAIR_SO_THE_EXPONENT_"
+                "ALPHA_BARELY_CHANGES_ACROSS_THESE_BANDS_SO_THE_EXPONENT_"
                 "CARRIES_NO_RAIN_RATE_INFORMATION",
             ),
         )
 
-    log_rate = (measured - math.log10(k_high / k_low) / span) / sensitivity
+    log_rate = (measured - intercept) / sensitivity
     if log_rate > 12.0 or log_rate < -12.0:
         # Exponentiating this would overflow or underflow to a number that looks
         # like a rainfall figure. It is not one.
@@ -749,24 +773,44 @@ def cloud_attenuation_coefficient(
 
 
 def cloud_exponent(
-    low_frequency_hz: float,
-    high_frequency_hz: float,
+    frequencies: Sequence[float],
     *,
+    weights: Sequence[float] | None = None,
     temperature_k: float = DEFAULT_CLOUD_TEMPERATURE_K,
 ) -> float:
-    """Spectral exponent ITU-R P.840-8 predicts between two frequencies.
+    """Spectral exponent ITU-R P.840-8 predicts across a set of bands.
 
     Independent of liquid water density, because ``gamma_c = K_l M`` is linear
     in ``M`` and a linear factor is a constant offset in the logarithm. That is
     what makes the cloud test strong: it needs no declared water content, only a
     temperature, and the exponent barely moves across the whole temperature
-    range anyway.
+    range anyway — between 10 and 20 GHz it runs from 1.82 at -20 C to 2.00 at
+    +40 C, against a rain window three times as wide.
+
+    As with rain, ``weights`` are the measurement's own, so that the model is
+    reduced to one exponent the same way the measurement was.
     """
-    if high_frequency_hz <= low_frequency_hz:
-        raise WeatherModelError("high_frequency_hz must exceed low_frequency_hz")
-    low = cloud_attenuation_coefficient(low_frequency_hz, temperature_k=temperature_k)
-    high = cloud_attenuation_coefficient(high_frequency_hz, temperature_k=temperature_k)
-    return math.log10(high / low) / math.log10(high_frequency_hz / low_frequency_hz)
+    if len(frequencies) < 2:
+        raise WeatherModelError("at least two frequencies are needed for an exponent")
+    if weights is None:
+        weights = [1.0] * len(frequencies)
+    elif len(weights) != len(frequencies):
+        raise WeatherModelError("weights and frequencies must be the same length")
+    slope, _ = weighted_slope(
+        [math.log10(frequency) for frequency in frequencies],
+        [
+            math.log10(
+                cloud_attenuation_coefficient(frequency, temperature_k=temperature_k)
+            )
+            for frequency in frequencies
+        ],
+        weights,
+    )
+    if slope is None:
+        raise WeatherModelError(
+            "the supplied frequencies carry no leverage on a frequency law"
+        )
+    return slope
 
 
 # ---------------------------------------------------------------------------
@@ -1604,11 +1648,11 @@ class WeatherDiscriminator:
         if signature.onset_seconds is None:
             reasons.append("ONSET_WAS_NOT_TIMED_SO_EVERY_TIME_CONSTANT_TEST_DECLINED")
 
-        span = self._span(signature)
-        implied = self._implied_rain(fit, span, declared)
+        moved = self._moved(signature)
+        implied = self._implied_rain(fit, moved, declared)
 
         findings = tuple(
-            self._finding(mechanism, signature, declared, fit, scintillation, span, implied)
+            self._finding(mechanism, signature, declared, fit, scintillation, moved, implied)
             for mechanism in MECHANISMS
         )
         if not any(item.finding == FINDING_CONSISTENT for item in findings):
@@ -1630,8 +1674,17 @@ class WeatherDiscriminator:
 
     # -- shared helpers -----------------------------------------------------
 
-    def _span(self, signature: WeatherSignature) -> tuple[float, float] | None:
-        """Lowest and highest measurably moved band, or ``None``."""
+    def _moved(
+        self, signature: WeatherSignature
+    ) -> tuple[tuple[float, ...], tuple[float, ...]] | None:
+        """Frequencies of the measurably moved bands, and the weight each carries.
+
+        The weights are the same ones the exponent fit used —
+        ``1 / sigma_y**2`` with ``sigma_y = uncertainty / (ln 10 * |excess|)``,
+        which reduces to a weight proportional to the square of the excess. They
+        travel with the frequencies so that every model window is collapsed to a
+        single exponent exactly the way the measurement was.
+        """
         moved = [
             band
             for band in signature.bands
@@ -1639,33 +1692,36 @@ class WeatherDiscriminator:
         ]
         if len(moved) < MIN_BANDS_FOR_EXPONENT:
             return None
-        frequencies = [band.frequency_hz for band in moved]
-        low, high = min(frequencies), max(frequencies)
-        if high <= low:
+        frequencies = tuple(band.frequency_hz for band in moved)
+        if max(frequencies) <= min(frequencies):
             return None
-        return low, high
+        weights = tuple(
+            (math.log(10.0) * abs(band.excess_db) / self.excess_uncertainty_db) ** 2
+            for band in moved
+        )
+        return frequencies, weights
 
     def _implied_rain(
         self,
         fit: SpectralFit,
-        span: tuple[float, float] | None,
+        moved: tuple[tuple[float, ...], tuple[float, ...]] | None,
         declared: DeclaredConditions,
     ) -> ImpliedRainRate | None:
         """Rain rate the measured exponent implies, when that is computable."""
-        if span is None or not fit.usable or fit.sense != SENSE_ATTENUATION:
-            return None
-        low, high = span
-        if not (
-            P838_MIN_FREQUENCY_HZ <= low
-            and high <= P838_MAX_FREQUENCY_HZ
-        ):
+        if moved is None or not fit.usable or fit.sense != SENSE_ATTENUATION:
             return None
         if fit.exponent is None:
             return None
+        frequencies, weights = moved
+        if (
+            min(frequencies) < P838_MIN_FREQUENCY_HZ
+            or max(frequencies) > P838_MAX_FREQUENCY_HZ
+        ):
+            return None
         return implied_rain_rate(
             fit.exponent,
-            low,
-            high,
+            frequencies,
+            weights=weights,
             polarisation_tilt_deg=declared.tilt_deg,
             path_elevation_deg=declared.elevation_deg,
         )
@@ -1696,7 +1752,7 @@ class WeatherDiscriminator:
         declared: DeclaredConditions,
         fit: SpectralFit,
         scintillation: SpectralFit,
-        span: tuple[float, float] | None,
+        moved: tuple[tuple[float, ...], tuple[float, ...]] | None,
         implied: ImpliedRainRate | None,
     ) -> MechanismFinding:
         handler = {
@@ -1711,7 +1767,7 @@ class WeatherDiscriminator:
             MECHANISM_WET_FOLIAGE: self._wet_foliage,
             MECHANISM_DUCTING: self._ducting,
         }[mechanism]
-        return handler(signature, declared, fit, scintillation, span, implied)
+        return handler(signature, declared, fit, scintillation, moved, implied)
 
     def _result(
         self,
@@ -1738,7 +1794,7 @@ class WeatherDiscriminator:
         declared: DeclaredConditions,
         fit: SpectralFit,
         scintillation: SpectralFit,
-        span: tuple[float, float] | None,
+        moved: tuple[tuple[float, ...], tuple[float, ...]] | None,
         implied: ImpliedRainRate | None,
     ) -> MechanismFinding:
         """Rain, tested by inverting ITU-R P.838-3 for the rate it would need."""
@@ -1772,13 +1828,14 @@ class WeatherDiscriminator:
                 )
             reasons.append("ONSET_IS_WITHIN_THE_MINUTES_TO_HOURS_RAIN_OCCUPIES")
 
-        if span is None:
+        if moved is None:
             return self._result(
                 MECHANISM_RAIN,
                 FINDING_INDETERMINATE,
                 reasons + ["TOO_FEW_MOVED_BANDS_TO_TEST_A_FREQUENCY_LAW"],
             )
-        low, high = span
+        frequencies, weights = moved
+        low, high = min(frequencies), max(frequencies)
         if low < P838_MIN_FREQUENCY_HZ or high > P838_MAX_FREQUENCY_HZ:
             return self._result(
                 MECHANISM_RAIN,
@@ -1798,28 +1855,25 @@ class WeatherDiscriminator:
             )
 
         if declared.rain_rate_mm_per_h is not None:
-            return self._declared_rate_rain(low, high, declared, fit, reasons)
+            return self._declared_rate_rain(frequencies, weights, declared, fit, reasons)
 
         # The chord exponent is linear in ``log10 R``, so the whole plausible
         # rainfall range maps onto the interval between its two endpoints and no
         # search is needed. Which endpoint is which depends on the band pair:
         # above about 5 GHz ``alpha`` falls with frequency and heavier rain
         # flattens the slope, below it the sign reverses.
-        endpoints = (
+        endpoints = tuple(
             rain_exponent(
-                low,
-                high,
+                frequencies,
+                rate,
+                weights=weights,
+                polarisation_tilt_deg=declared.tilt_deg,
+                path_elevation_deg=declared.elevation_deg,
+            )
+            for rate in (
                 MIN_PLAUSIBLE_RAIN_RATE_MM_PER_H,
-                polarisation_tilt_deg=declared.tilt_deg,
-                path_elevation_deg=declared.elevation_deg,
-            ),
-            rain_exponent(
-                low,
-                high,
                 MAX_PLAUSIBLE_RAIN_RATE_MM_PER_H,
-                polarisation_tilt_deg=declared.tilt_deg,
-                path_elevation_deg=declared.elevation_deg,
-            ),
+            )
         )
         window = (min(endpoints), max(endpoints))
         reasons.append(
@@ -1857,8 +1911,8 @@ class WeatherDiscriminator:
 
     def _declared_rate_rain(
         self,
-        low: float,
-        high: float,
+        frequencies: Sequence[float],
+        weights: Sequence[float],
         declared: DeclaredConditions,
         fit: SpectralFit,
         reasons: list[str],
@@ -1874,9 +1928,9 @@ class WeatherDiscriminator:
                 reasons + ["DECLARED_RAIN_RATE_IS_OUTSIDE_THE_RATES_RAIN_COMES_AT"],
             )
         predicted = rain_exponent(
-            low,
-            high,
+            frequencies,
             rate,
+            weights=weights,
             polarisation_tilt_deg=declared.tilt_deg,
             path_elevation_deg=declared.elevation_deg,
         )
@@ -1901,7 +1955,7 @@ class WeatherDiscriminator:
         declared: DeclaredConditions,
         fit: SpectralFit,
         scintillation: SpectralFit,
-        span: tuple[float, float] | None,
+        moved: tuple[tuple[float, ...], tuple[float, ...]] | None,
         implied: ImpliedRainRate | None,
     ) -> MechanismFinding:
         """Cloud and fog liquid water, tested against the ITU-R P.840 Rayleigh law."""
@@ -1936,13 +1990,14 @@ class WeatherDiscriminator:
                 )
             reasons.append("ONSET_IS_WITHIN_THE_HOURS_FOG_AND_CLOUD_OCCUPY")
 
-        if span is None:
+        if moved is None:
             return self._result(
                 MECHANISM_CLOUD_LIQUID_WATER,
                 FINDING_INDETERMINATE,
                 reasons + ["TOO_FEW_MOVED_BANDS_TO_TEST_A_FREQUENCY_LAW"],
             )
-        low, high = span
+        frequencies, weights = moved
+        low, high = min(frequencies), max(frequencies)
         if high > P840_MAX_FREQUENCY_HZ:
             return self._result(
                 MECHANISM_CLOUD_LIQUID_WATER,
@@ -1962,15 +2017,21 @@ class WeatherDiscriminator:
             )
 
         if declared.cloud_temperature_k is None:
-            cold = cloud_exponent(low, high, temperature_k=MIN_CLOUD_TEMPERATURE_K)
-            warm = cloud_exponent(low, high, temperature_k=MAX_CLOUD_TEMPERATURE_K)
+            cold = cloud_exponent(
+                frequencies, weights=weights, temperature_k=MIN_CLOUD_TEMPERATURE_K
+            )
+            warm = cloud_exponent(
+                frequencies, weights=weights, temperature_k=MAX_CLOUD_TEMPERATURE_K
+            )
             window = (min(cold, warm), max(cold, warm))
             reasons.append(
                 "CLOUD_TEMPERATURE_UNDECLARED_SO_THE_WINDOW_SPANS_SUPERCOOLED_TO_WARM"
             )
         else:
             predicted = cloud_exponent(
-                low, high, temperature_k=declared.cloud_temperature_k
+                frequencies,
+                weights=weights,
+                temperature_k=declared.cloud_temperature_k,
             )
             window = (predicted, predicted)
             reasons.append(
@@ -2032,7 +2093,7 @@ class WeatherDiscriminator:
         declared: DeclaredConditions,
         fit: SpectralFit,
         scintillation: SpectralFit,
-        span: tuple[float, float] | None,
+        moved: tuple[tuple[float, ...], tuple[float, ...]] | None,
         implied: ImpliedRainRate | None,
     ) -> MechanismFinding:
         """Wet snow in the melting layer — never separated from rain by slope.
@@ -2097,7 +2158,7 @@ class WeatherDiscriminator:
         declared: DeclaredConditions,
         fit: SpectralFit,
         scintillation: SpectralFit,
-        span: tuple[float, float] | None,
+        moved: tuple[tuple[float, ...], tuple[float, ...]] | None,
         implied: ImpliedRainRate | None,
     ) -> MechanismFinding:
         """Dry snow — identified by the *absence* of a fade during precipitation.
@@ -2158,7 +2219,7 @@ class WeatherDiscriminator:
         declared: DeclaredConditions,
         fit: SpectralFit,
         scintillation: SpectralFit,
-        span: tuple[float, float] | None,
+        moved: tuple[tuple[float, ...], tuple[float, ...]] | None,
         implied: ImpliedRainRate | None,
     ) -> MechanismFinding:
         """Water vapour — a standing offset, never a transition."""
@@ -2207,7 +2268,7 @@ class WeatherDiscriminator:
         declared: DeclaredConditions,
         fit: SpectralFit,
         scintillation: SpectralFit,
-        span: tuple[float, float] | None,
+        moved: tuple[tuple[float, ...], tuple[float, ...]] | None,
         implied: ImpliedRainRate | None,
     ) -> MechanismFinding:
         """Oxygen — a property of the band, and not weather at all."""
@@ -2253,7 +2314,7 @@ class WeatherDiscriminator:
         declared: DeclaredConditions,
         fit: SpectralFit,
         scintillation: SpectralFit,
-        span: tuple[float, float] | None,
+        moved: tuple[tuple[float, ...], tuple[float, ...]] | None,
         implied: ImpliedRainRate | None,
     ) -> MechanismFinding:
         """Scintillation — a variance signature, tested on sigma and not on depth."""
@@ -2398,7 +2459,7 @@ class WeatherDiscriminator:
         declared: DeclaredConditions,
         fit: SpectralFit,
         scintillation: SpectralFit,
-        span: tuple[float, float] | None,
+        moved: tuple[tuple[float, ...], tuple[float, ...]] | None,
         implied: ImpliedRainRate | None,
     ) -> MechanismFinding:
         """Sand and dust — no coefficient table was verifiable, so no law is asserted."""
@@ -2448,7 +2509,7 @@ class WeatherDiscriminator:
         declared: DeclaredConditions,
         fit: SpectralFit,
         scintillation: SpectralFit,
-        span: tuple[float, float] | None,
+        moved: tuple[tuple[float, ...], tuple[float, ...]] | None,
         implied: ImpliedRainRate | None,
     ) -> MechanismFinding:
         """Wet foliage — undetermined by construction.
@@ -2487,7 +2548,7 @@ class WeatherDiscriminator:
         declared: DeclaredConditions,
         fit: SpectralFit,
         scintillation: SpectralFit,
-        span: tuple[float, float] | None,
+        moved: tuple[tuple[float, ...], tuple[float, ...]] | None,
         implied: ImpliedRainRate | None,
     ) -> MechanismFinding:
         """Ducting — refractive, not absorptive, and the one mechanism that can enhance.
