@@ -2,10 +2,13 @@ from __future__ import annotations
 
 import argparse
 import json
+from pathlib import Path
 
 from .audit import AuditLedger
+from .capabilities import CapabilityServices
 from .config import NodeConfig
 from .hardware import verify_jetson_platform
+from .lease import LeaseAction
 from .service import KvalNode
 from .signing import load_verified_catalog
 
@@ -15,6 +18,20 @@ DEFAULT_CONFIG = "/etc/kval/node.json"
 
 def _print(value: object) -> None:
     print(json.dumps(value, indent=2, sort_keys=True, default=str))
+
+
+def _print_capability(result: dict[str, object]) -> None:
+    """Print a capability result and exit non-zero unless it genuinely passed.
+
+    A capability that is unavailable, unverified, or invalid must not look like
+    success to a shell, a systemd unit, or the HIL script.
+    """
+    _print(result)
+    if result.get("available") is not True:
+        raise SystemExit(3)
+    for key in ("verified", "valid"):
+        if key in result and result[key] is not True:
+            raise SystemExit(4)
 
 
 def _with_node(config_path: str, action: str, **kwargs: object) -> object:
@@ -57,6 +74,23 @@ def build_parser() -> argparse.ArgumentParser:
 
     verify_audit = subparsers.add_parser("verify-audit")
     verify_audit.add_argument("--config", default=DEFAULT_CONFIG)
+
+    spectrum = subparsers.add_parser("spectrum-scan")
+    spectrum.add_argument("--config", default=DEFAULT_CONFIG)
+
+    power = subparsers.add_parser("power-plan")
+    power.add_argument("--config", default=DEFAULT_CONFIG)
+    power.add_argument("--tegrastats-line", default=None)
+    power.add_argument("--current-nvpmodel-id", type=int, default=None)
+
+    transport = subparsers.add_parser("transport-preflight")
+    transport.add_argument("--config", default=DEFAULT_CONFIG)
+
+    lease = subparsers.add_parser("verify-lease")
+    lease.add_argument("--config", default=DEFAULT_CONFIG)
+    lease.add_argument("--lease", required=True)
+    lease.add_argument("--action", choices=[item.value for item in LeaseAction], default=None)
+    lease.add_argument("--redeem", action="store_true")
     return parser
 
 
@@ -92,6 +126,33 @@ def main() -> None:
         return
     if args.command == "hil-activate":
         _print(_with_node(args.config, "activate", profile_id=args.profile_id))
+        return
+    if args.command == "spectrum-scan":
+        _print_capability(CapabilityServices(NodeConfig.load(args.config)).sense_spectrum())
+        return
+    if args.command == "power-plan":
+        services = CapabilityServices(NodeConfig.load(args.config))
+        _print_capability(
+            services.plan_power(
+                tegrastats_line=args.tegrastats_line,
+                current_nvpmodel_id=args.current_nvpmodel_id,
+            )
+        )
+        return
+    if args.command == "transport-preflight":
+        _print_capability(CapabilityServices(NodeConfig.load(args.config)).transport_preflight())
+        return
+    if args.command == "verify-lease":
+        services = CapabilityServices(NodeConfig.load(args.config))
+        envelope = json.loads(Path(args.lease).read_text(encoding="utf-8"))
+        expected_action = LeaseAction(args.action) if args.action else None
+        _print_capability(
+            services.verify_lease_envelope(
+                envelope,
+                expected_action=expected_action,
+                redeem=args.redeem,
+            )
+        )
         return
     if args.command in {"once", "run"}:
         result = _with_node(args.config, args.command)

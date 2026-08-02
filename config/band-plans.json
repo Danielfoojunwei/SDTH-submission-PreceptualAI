@@ -1,0 +1,47 @@
+{
+  "_comment": "Regulatory band edges for passive sensing. Frequencies are real published allocations; see _sources. Occupancy and noise-floor values are NOT regulatory data - they are operator policy thresholds and are set separately by generate_spectrum_policy.py.",
+  "_sources": {
+    "itu_ism": "ITU Radio Regulations, Article 5, footnotes 5.138/5.150 (ISM designations)",
+    "fcc_part15_unii": "47 CFR 15.401-15.407 (U-NII bands); FCC 20-51 (6 GHz U-NII-5 through U-NII-8)",
+    "fcc_part15_902": "47 CFR 15.247 (902-928 MHz)",
+    "etsi_en_300_220": "ETSI EN 300 220 (SRD 25-1000 MHz, incl. 433.05-434.79 and 863-870 MHz)",
+    "etsi_en_301_893": "ETSI EN 301 893 (5 GHz RLAN)",
+    "etsi_en_303_687": "ETSI EN 303 687 (6 GHz RLAN, 5945-6425 MHz)"
+  },
+  "regions": {
+    "US": {
+      "description": "United States (FCC Part 15)",
+      "bands": [
+        {"band_id": "ism-902", "label": "ISM 902-928 MHz", "freq_low_hz": 902000000, "freq_high_hz": 928000000, "max_resolution_bandwidth_hz": 100000, "comms_candidate": false, "source": "fcc_part15_902"},
+        {"band_id": "ism-2g4", "label": "ISM 2.4 GHz", "freq_low_hz": 2400000000, "freq_high_hz": 2483500000, "max_resolution_bandwidth_hz": 1000000, "comms_candidate": true, "source": "itu_ism"},
+        {"band_id": "unii-1", "label": "U-NII-1 5.150-5.250 GHz", "freq_low_hz": 5150000000, "freq_high_hz": 5250000000, "max_resolution_bandwidth_hz": 2000000, "comms_candidate": true, "source": "fcc_part15_unii"},
+        {"band_id": "unii-2a", "label": "U-NII-2A 5.250-5.350 GHz (DFS)", "freq_low_hz": 5250000000, "freq_high_hz": 5350000000, "max_resolution_bandwidth_hz": 2000000, "comms_candidate": true, "source": "fcc_part15_unii"},
+        {"band_id": "unii-2c", "label": "U-NII-2C 5.470-5.725 GHz (DFS)", "freq_low_hz": 5470000000, "freq_high_hz": 5725000000, "max_resolution_bandwidth_hz": 2000000, "comms_candidate": true, "source": "fcc_part15_unii"},
+        {"band_id": "unii-3", "label": "U-NII-3 5.725-5.850 GHz", "freq_low_hz": 5725000000, "freq_high_hz": 5850000000, "max_resolution_bandwidth_hz": 2000000, "comms_candidate": true, "source": "fcc_part15_unii"},
+        {"band_id": "unii-5", "label": "U-NII-5 5.925-6.425 GHz", "freq_low_hz": 5925000000, "freq_high_hz": 6425000000, "max_resolution_bandwidth_hz": 4000000, "comms_candidate": true, "source": "fcc_part15_unii"},
+        {"band_id": "unii-6", "label": "U-NII-6 6.425-6.525 GHz", "freq_low_hz": 6425000000, "freq_high_hz": 6525000000, "max_resolution_bandwidth_hz": 4000000, "comms_candidate": true, "source": "fcc_part15_unii"},
+        {"band_id": "unii-7", "label": "U-NII-7 6.525-6.875 GHz", "freq_low_hz": 6525000000, "freq_high_hz": 6875000000, "max_resolution_bandwidth_hz": 4000000, "comms_candidate": true, "source": "fcc_part15_unii"},
+        {"band_id": "unii-8", "label": "U-NII-8 6.875-7.125 GHz", "freq_low_hz": 6875000000, "freq_high_hz": 7125000000, "max_resolution_bandwidth_hz": 4000000, "comms_candidate": true, "source": "fcc_part15_unii"}
+      ]
+    },
+    "EU": {
+      "description": "European Union / CEPT (ETSI harmonised)",
+      "bands": [
+        {"band_id": "srd-433", "label": "SRD 433.05-434.79 MHz", "freq_low_hz": 433050000, "freq_high_hz": 434790000, "max_resolution_bandwidth_hz": 50000, "comms_candidate": false, "source": "etsi_en_300_220"},
+        {"band_id": "srd-868", "label": "SRD 863-870 MHz", "freq_low_hz": 863000000, "freq_high_hz": 870000000, "max_resolution_bandwidth_hz": 50000, "comms_candidate": false, "source": "etsi_en_300_220"},
+        {"band_id": "ism-2g4", "label": "ISM 2.4 GHz", "freq_low_hz": 2400000000, "freq_high_hz": 2483500000, "max_resolution_bandwidth_hz": 1000000, "comms_candidate": true, "source": "itu_ism"},
+        {"band_id": "rlan-5150", "label": "RLAN 5.150-5.350 GHz", "freq_low_hz": 5150000000, "freq_high_hz": 5350000000, "max_resolution_bandwidth_hz": 2000000, "comms_candidate": true, "source": "etsi_en_301_893"},
+        {"band_id": "rlan-5470", "label": "RLAN 5.470-5.725 GHz (DFS)", "freq_low_hz": 5470000000, "freq_high_hz": 5725000000, "max_resolution_bandwidth_hz": 2000000, "comms_candidate": true, "source": "etsi_en_301_893"},
+        {"band_id": "rlan-5945", "label": "RLAN 5.945-6.425 GHz", "freq_low_hz": 5945000000, "freq_high_hz": 6425000000, "max_resolution_bandwidth_hz": 4000000, "comms_candidate": true, "source": "etsi_en_303_687"}
+      ]
+    },
+    "JP": {
+      "description": "Japan (MIC) - subset with the same ISM/RLAN edges as ITU Region 3 practice",
+      "bands": [
+        {"band_id": "ism-2g4", "label": "ISM 2.4 GHz", "freq_low_hz": 2400000000, "freq_high_hz": 2483500000, "max_resolution_bandwidth_hz": 1000000, "comms_candidate": true, "source": "itu_ism"},
+        {"band_id": "rlan-5150", "label": "RLAN 5.150-5.350 GHz", "freq_low_hz": 5150000000, "freq_high_hz": 5350000000, "max_resolution_bandwidth_hz": 2000000, "comms_candidate": true, "source": "etsi_en_301_893"},
+        {"band_id": "rlan-5470", "label": "RLAN 5.470-5.725 GHz (DFS)", "freq_low_hz": 5470000000, "freq_high_hz": 5725000000, "max_resolution_bandwidth_hz": 2000000, "comms_candidate": true, "source": "etsi_en_301_893"}
+      ]
+    }
+  }
+}

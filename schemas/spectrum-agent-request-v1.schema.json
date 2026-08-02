@@ -1,0 +1,21 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://preceptual.ai/kval/schemas/spectrum-agent-request-v1.schema.json",
+  "title": "Kval spectrum sensor adapter request",
+  "description": "A receive-only occupancy scan request over approved bands. Kval never sends a transmit, frequency, gain, or waveform command; mode is fixed to passive.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["operation", "mode", "policy_id", "region", "band_ids"],
+  "properties": {
+    "operation": {"const": "scan"},
+    "mode": {"const": "passive"},
+    "policy_id": {"type": "string", "minLength": 1},
+    "region": {"type": "string", "minLength": 1},
+    "band_ids": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {"type": "string", "minLength": 1}
+    }
+  }
+}

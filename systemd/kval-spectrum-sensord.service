@@ -1,0 +1,40 @@
+[Unit]
+Description=Kval receive-only spectrum sensor adapter
+Documentation=file:///opt/kval/docs/SPECTRUM_SENSING_FABRIC.md
+After=NetworkManager.service network-online.target
+Wants=NetworkManager.service
+
+[Service]
+Type=simple
+# --interface must name this node's real wireless interface. Add --no-sdr when
+# no RTL-SDR is attached, and --passive-scan-only to disable the active-probing
+# iw scan backend so only strictly passive measurement is used.
+ExecStart=/opt/kval/venv/bin/kval-spectrum-sensord \
+    --socket /run/kval-spectrum/sensor.sock \
+    --policy /etc/kval/spectrum-policy.signed.json \
+    --public-key /etc/kval/operator.public.pem \
+    --interface wlan0
+Restart=on-failure
+RestartSec=5
+User=root
+Group=root
+# The node client refuses any socket that is group- or world-writable.
+UMask=0077
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=true
+ProtectKernelTunables=true
+ProtectKernelModules=true
+ProtectControlGroups=true
+RestrictAddressFamilies=AF_UNIX AF_NETLINK
+# CAP_NET_ADMIN is required for nl80211 survey and scan requests. No capability
+# here permits transmission: the adapter has no transmit path.
+CapabilityBoundingSet=CAP_NET_ADMIN
+AmbientCapabilities=CAP_NET_ADMIN
+RuntimeDirectory=kval-spectrum
+RuntimeDirectoryMode=0750
+ReadWritePaths=/run/kval-spectrum
+
+[Install]
+WantedBy=multi-user.target

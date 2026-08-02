@@ -1,0 +1,70 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://preceptual.ai/kval/schemas/transport-policy-v1.schema.json",
+  "title": "Kval secure-transport policy payload",
+  "description": "Signed WireGuard/WPA3/nftables requirements. Carried inside a signed document envelope of document_type kval-transport-policy/v1. At least one section must be present.",
+  "type": "object",
+  "additionalProperties": true,
+  "required": ["policy_id", "created_at", "expires_at"],
+  "properties": {
+    "policy_id": {"type": "string", "minLength": 1},
+    "created_at": {"type": "string", "format": "date-time"},
+    "expires_at": {"type": "string", "format": "date-time"},
+    "wireguard": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["interface", "peers"],
+      "properties": {
+        "interface": {"type": "string", "minLength": 1},
+        "require_default_route": {"type": "boolean"},
+        "peers": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["public_key", "allowed_ips"],
+            "properties": {
+              "public_key": {"type": "string", "pattern": "^[A-Za-z0-9+/]{43}=$"},
+              "allowed_ips": {
+                "type": "array",
+                "minItems": 1,
+                "items": {"type": "string", "minLength": 1}
+              }
+            }
+          }
+        }
+      }
+    },
+    "wifi": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["required_key_mgmt"],
+      "properties": {
+        "required_key_mgmt": {
+          "type": "array",
+          "minItems": 1,
+          "items": {"enum": ["sae", "wpa-eap-suite-b-192"]}
+        },
+        "require_pmf": {"type": "boolean"},
+        "allowed_bssids": {"type": "array", "items": {"type": "string"}},
+        "eap": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "ca_cert_sha256": {"type": "string", "pattern": "^[0-9a-fA-F]{64}$"},
+            "server_domain": {"type": "string", "minLength": 1}
+          }
+        }
+      }
+    },
+    "nftables": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "expected_ruleset_sha256": {"type": "string", "pattern": "^[0-9a-fA-F]{64}$"},
+        "require_default_drop_output": {"type": "boolean"}
+      }
+    }
+  }
+}

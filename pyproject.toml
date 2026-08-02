@@ -4,8 +4,8 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "kval-spectravault-node"
-version = "0.2.0"
-description = "Policy-constrained adaptive connectivity node for NVIDIA Jetson Orin Nano"
+version = "0.3.0"
+description = "Policy-constrained adaptive connectivity and passive spectrum-sensing node for NVIDIA Jetson Orin Nano"
 readme = "README.md"
 requires-python = ">=3.12"
 license = { text = "Apache-2.0" }
@@ -14,6 +14,7 @@ dependencies = []
 
 [project.scripts]
 kval-node = "kval_node.cli:main"
+kval-spectrum-sensord = "kval_node.sensor_cli:main"
 
 [tool.setuptools.packages.find]
 where = ["src"]

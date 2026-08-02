@@ -1,0 +1,46 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://preceptual.ai/kval/schemas/spectrum-agent-v1.schema.json",
+  "title": "Kval spectrum sensor adapter response",
+  "description": "Passive occupancy observations returned by a root-owned spectrum sensor adapter. Every observation must be marked passive; Kval refuses any observation that is not.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema", "success", "observations"],
+  "properties": {
+    "schema": {"const": "kval-spectrum-agent/v1"},
+    "success": {"const": true},
+    "error": {"type": "string"},
+    "observations": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": true,
+        "required": [
+          "band_id",
+          "observed_at",
+          "source_adapter_id",
+          "conformance_hash",
+          "passive",
+          "occupancy_percent",
+          "noise_floor_dbm"
+        ],
+        "properties": {
+          "band_id": {"type": "string", "minLength": 1},
+          "observed_at": {"type": "string", "format": "date-time"},
+          "source_adapter_id": {"type": "string", "minLength": 1},
+          "conformance_hash": {"type": "string", "pattern": "^[0-9a-fA-F]{64}$"},
+          "passive": {"const": true},
+          "occupancy_percent": {"type": "number", "minimum": 0, "maximum": 100},
+          "noise_floor_dbm": {"type": "number", "minimum": -160, "maximum": 30},
+          "peak_power_dbm": {"type": ["number", "null"], "minimum": -160, "maximum": 60},
+          "detected_emitters": {"type": "integer", "minimum": 0},
+          "bearing_deg": {"type": ["number", "null"], "minimum": 0, "maximum": 360},
+          "bearing_confidence": {"type": ["number", "null"], "minimum": 0, "maximum": 1},
+          "quality": {"type": "number", "minimum": 0, "maximum": 1},
+          "errors": {"type": "array", "items": {"type": "string"}}
+        }
+      }
+    }
+  }
+}

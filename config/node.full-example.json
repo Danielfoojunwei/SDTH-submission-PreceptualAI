@@ -1,0 +1,24 @@
+{
+  "node_id": "vault-node-01",
+  "catalog_path": "/etc/kval/catalog.signed.json",
+  "catalog_public_key_path": "/etc/kval/operator.public.pem",
+  "audit_database_path": "/var/lib/kval/audit.db",
+  "latest_result_path": "/run/kval/latest.json",
+  "service_class": "critical_data",
+  "poll_interval_seconds": 2.0,
+  "observation_max_age_seconds": 8.0,
+  "minimum_confidence": 0.75,
+  "apply_network_changes": false,
+
+  "spectrum_policy_path": "/etc/kval/spectrum-policy.signed.json",
+  "spectrum_sensor_socket": "/run/kval-spectrum/sensor.sock",
+  "spectrum_scan_state_path": "/var/lib/kval/spectrum-scans.db",
+
+  "power_policy_path": "/etc/kval/power-policy.signed.json",
+
+  "transport_policy_path": "/etc/kval/transport-policy.signed.json",
+  "transport_wifi_connection_uuid": "REPLACE_WITH_REAL_WIFI_CONNECTION_UUID",
+
+  "lease_public_key_path": "/etc/kval/operator.public.pem",
+  "lease_nonce_database_path": "/var/lib/kval/lease-nonces.db"
+}

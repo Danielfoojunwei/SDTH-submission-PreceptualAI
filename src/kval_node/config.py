@@ -8,6 +8,13 @@ from typing import Any
 from .models import ServiceClass
 
 
+def _optional_path(raw: dict[str, Any], key: str) -> Path | None:
+    value = raw.get(key)
+    if value in (None, ""):
+        return None
+    return Path(str(value))
+
+
 @dataclass(frozen=True)
 class NodeConfig:
     node_id: str
@@ -20,6 +27,15 @@ class NodeConfig:
     observation_max_age_seconds: float
     minimum_confidence: float
     apply_network_changes: bool
+    # Optional capability policies (absent = capability not enabled on this node).
+    spectrum_policy_path: Path | None = None
+    spectrum_sensor_socket: Path | None = None
+    spectrum_scan_state_path: Path | None = None
+    power_policy_path: Path | None = None
+    transport_policy_path: Path | None = None
+    transport_wifi_connection_uuid: str | None = None
+    lease_public_key_path: Path | None = None
+    lease_nonce_database_path: Path | None = None
 
     @classmethod
     def load(cls, path: str | Path) -> "NodeConfig":
@@ -52,6 +68,8 @@ class NodeConfig:
         node_id = str(raw["node_id"]).strip()
         if not node_id:
             raise ValueError("node_id cannot be empty")
+        transport_wifi_uuid_raw = raw.get("transport_wifi_connection_uuid")
+        transport_wifi_uuid = str(transport_wifi_uuid_raw).strip() if transport_wifi_uuid_raw else ""
         return cls(
             node_id=node_id,
             catalog_path=Path(raw["catalog_path"]),
@@ -63,5 +81,13 @@ class NodeConfig:
             observation_max_age_seconds=age,
             minimum_confidence=confidence,
             apply_network_changes=bool(raw["apply_network_changes"]),
+            spectrum_policy_path=_optional_path(raw, "spectrum_policy_path"),
+            spectrum_sensor_socket=_optional_path(raw, "spectrum_sensor_socket"),
+            spectrum_scan_state_path=_optional_path(raw, "spectrum_scan_state_path"),
+            power_policy_path=_optional_path(raw, "power_policy_path"),
+            transport_policy_path=_optional_path(raw, "transport_policy_path"),
+            transport_wifi_connection_uuid=transport_wifi_uuid or None,
+            lease_public_key_path=_optional_path(raw, "lease_public_key_path"),
+            lease_nonce_database_path=_optional_path(raw, "lease_nonce_database_path"),
         )
 
