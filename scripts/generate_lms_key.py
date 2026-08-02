@@ -30,6 +30,7 @@ from kval_node.pqc import (  # noqa: E402
     LMS_SHA256_M32_H10,
     LMS_SHA256_M32_H15,
     generate_lms_key,
+    serialise_private_key,
 )
 
 HEIGHTS = {5: LMS_SHA256_M32_H5, 10: LMS_SHA256_M32_H10, 15: LMS_SHA256_M32_H15}
@@ -55,7 +56,10 @@ def main() -> int:
     # and chmod-ing after leaves a window where the seed is world-readable.
     descriptor = os.open(private_path, os.O_WRONLY | os.O_CREAT | os.O_EXCL, 0o600)
     with os.fdopen(descriptor, "w", encoding="utf-8") as handle:
-        handle.write(base64.b64encode(key.seed + key.identifier).decode("ascii") + "\n")
+        # Both type codes travel with the seed: without them nothing can
+        # rebuild the tree, and the earlier format produced a private key file
+        # no code in this repository could load.
+        handle.write(base64.b64encode(serialise_private_key(key)).decode("ascii") + "\n")
     public_path.write_text(base64.b64encode(public.to_bytes()).decode("ascii") + "\n", encoding="utf-8")
 
     print(f"key_id          : {public.key_id()}")

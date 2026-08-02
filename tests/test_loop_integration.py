@@ -12,7 +12,9 @@ Every method exercised here is the real production implementation.
 
 from __future__ import annotations
 
+import time
 import unittest
+from types import SimpleNamespace
 from datetime import datetime, timedelta, timezone
 
 from kval_node.models import (
@@ -74,11 +76,20 @@ def observation(profile_id: str, interface: str, rtt: float = 20.0) -> LinkObser
     )
 
 
-def bare_node() -> KvalNode:
+def bare_node(observation_max_age_seconds: float = 30.0) -> KvalNode:
     """A KvalNode without the Jetson platform gate, for helper-level tests."""
     node = object.__new__(KvalNode)
     node._link_machines = {}
-    node.fuser = MultimodalFuser(window_seconds=30.0)
+    node.fuser = MultimodalFuser(window_seconds=observation_max_age_seconds)
+    # Spectrum evidence is now carried across cycles where sensing is
+    # unavailable, so the helpers need the retention state and the age bound.
+    node._last_degraded_bands = frozenset()
+    node._degraded_until = None
+    node.config = SimpleNamespace(
+        node_id="test-node",
+        observation_max_age_seconds=observation_max_age_seconds,
+        link_role="payload",
+    )
     return node
 
 
@@ -157,8 +168,55 @@ class DegradedBandExtractionTests(unittest.TestCase):
         }
         self.assertEqual(self.node._degraded_band_ids(spectrum), frozenset())
 
-    def test_unavailable_sensing_degrades_nothing(self) -> None:
+    def test_unavailable_sensing_with_no_history_degrades_nothing(self) -> None:
         self.assertEqual(self.node._degraded_band_ids({"available": False, "reason": "x"}), frozenset())
+
+    def test_a_refused_scan_does_not_erase_what_the_last_scan_saw(self) -> None:
+        # The rate limiter refusing a scan is not evidence the band is clear.
+        # Treating them alike made the node re-select a link it had just judged
+        # jammed: with a 2 s poll against a 5 s minimum scan interval — the
+        # shipped example config — that happened two cycles in every three.
+        contested = {
+            "available": True,
+            "bands": [
+                {"band_id": "ism-2g4", "status": BandStatus.JAMMING_SUSPECTED.value,
+                 "confidence": 1.0}
+            ],
+        }
+        self.assertEqual(self.node._degraded_band_ids(contested), frozenset({"ism-2g4"}))
+        refused = {"available": False, "reason": "scan refused: below policy minimum"}
+        self.assertEqual(self.node._degraded_band_ids(refused), frozenset({"ism-2g4"}))
+
+    def test_retained_evidence_expires_rather_than_pinning_a_profile_forever(self) -> None:
+        node = bare_node(observation_max_age_seconds=0.05)
+        node._degraded_band_ids(
+            {
+                "available": True,
+                "bands": [
+                    {"band_id": "ism-2g4", "status": BandStatus.JAMMING_SUSPECTED.value,
+                     "confidence": 1.0}
+                ],
+            }
+        )
+        time.sleep(0.1)
+        self.assertEqual(
+            node._degraded_band_ids({"available": False, "reason": "x"}), frozenset()
+        )
+
+    def test_a_clear_scan_clears_the_retained_evidence(self) -> None:
+        self.node._degraded_band_ids(
+            {
+                "available": True,
+                "bands": [
+                    {"band_id": "ism-2g4", "status": BandStatus.JAMMING_SUSPECTED.value,
+                     "confidence": 1.0}
+                ],
+            }
+        )
+        self.node._degraded_band_ids({"available": True, "bands": []})
+        self.assertEqual(
+            self.node._degraded_band_ids({"available": False, "reason": "x"}), frozenset()
+        )
 
 
 class RecoveryLoopTests(unittest.TestCase):

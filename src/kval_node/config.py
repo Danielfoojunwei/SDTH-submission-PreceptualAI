@@ -8,6 +8,21 @@ from typing import Any
 from .models import ServiceClass
 
 
+#: Roles a node may be configured to select for. Kept in sync with
+#: ``c2link.LinkRole`` by the test suite rather than imported, so the config
+#: layer does not depend on the uncrewed-platform module.
+VALID_LINK_ROLES = frozenset({"c2_cnpc", "payload", "bulk"})
+
+
+def _link_role(raw: dict[str, Any]) -> str:
+    value = str(raw.get("link_role", "payload")).strip().lower()
+    if value not in VALID_LINK_ROLES:
+        raise ValueError(
+            f"link_role must be one of {sorted(VALID_LINK_ROLES)}, got {value!r}"
+        )
+    return value
+
+
 def _optional_path(raw: dict[str, Any], key: str) -> Path | None:
     value = raw.get(key)
     if value in (None, ""):
@@ -74,6 +89,15 @@ class NodeConfig:
     #: reports unavailable rather than inventing a budget.
     emcon_order_path: Path | None = None
     c2_budget_path: Path | None = None
+    #: Which link role this node's autonomous loop selects for. Ranking never
+    #: crosses roles, so a node whose mission is to hold the command link and
+    #: one whose mission is to move payload are different deployments — and
+    #: without this the loop could only ever pick a payload link, which made
+    #: a declared c2_cnpc profile permanently unselectable.
+    link_role: str = "payload"
+    #: CNSA 2.0 trust anchor. Provisioned alongside the Ed25519 one so a fleet
+    #: can migrate document by document rather than in a flag day.
+    lms_public_key_path: Path | None = None
 
     @classmethod
     def load(cls, path: str | Path) -> "NodeConfig":
@@ -143,5 +167,7 @@ class NodeConfig:
             require_cnsa_2_0=bool(raw.get("require_cnsa_2_0", False)),
             emcon_order_path=_optional_path(raw, "emcon_order_path"),
             c2_budget_path=_optional_path(raw, "c2_budget_path"),
+            link_role=_link_role(raw),
+            lms_public_key_path=_optional_path(raw, "lms_public_key_path"),
         )
 

@@ -150,6 +150,15 @@ def _standards_for(access_type: str, apn: str | None) -> dict[str, object]:
 
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(description="Build a Kval catalogue from real host connections")
+    parser.add_argument(
+        "--link-role",
+        choices=["c2_cnpc", "payload", "bulk"],
+        default="payload",
+        help=(
+            "role for the generated profiles. c2_cnpc marks a command link, "
+            "which is ranked separately and never traded against payload."
+        ),
+    )
     parser.add_argument("--probe-target", required=True,
                         help="reachable operator-controlled host each profile probes")
     parser.add_argument("--output", type=Path, required=True)
@@ -199,6 +208,12 @@ def main() -> None:
                 "maximum_switches_per_hour": _DEFAULT_SWITCHES[access_type],
                 "allowed_service_classes": classes,
                 "standards": standards,
+                # Emitted explicitly rather than left to the schema default, so
+                # an operator can see the field and change it. Without this in
+                # the generated catalogue the command-link role was undeclarable
+                # by any shipped tool, which made role segregation unusable in
+                # practice however correct the ranking code was.
+                "link_role": args.link_role,
             }
         )
 

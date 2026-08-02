@@ -13,10 +13,15 @@
       "energy_cost": 0.2,
       "minimum_dwell_seconds": 30,
       "maximum_switches_per_hour": 8,
-      "allowed_service_classes": ["critical_data", "telemetry", "bulk_data"],
+      "allowed_service_classes": [
+        "critical_data",
+        "telemetry",
+        "bulk_data"
+      ],
       "standards": {
         "required_identifiers": []
-      }
+      },
+      "link_role": "payload"
     },
     {
       "profile_id": "cellular-3g",
@@ -28,12 +33,17 @@
       "energy_cost": 0.4,
       "minimum_dwell_seconds": 60,
       "maximum_switches_per_hour": 6,
-      "allowed_service_classes": ["telemetry"],
+      "allowed_service_classes": [
+        "telemetry"
+      ],
       "standards": {
-        "required_identifiers": ["3gpp-ts-23.003"],
+        "required_identifiers": [
+          "3gpp-ts-23.003"
+        ],
         "required_rat": "utran",
         "dnn": "REPLACE_WITH_REAL_APN_OR_DNN"
-      }
+      },
+      "link_role": "payload"
     },
     {
       "profile_id": "cellular-4g",
@@ -45,12 +55,19 @@
       "energy_cost": 0.45,
       "minimum_dwell_seconds": 60,
       "maximum_switches_per_hour": 6,
-      "allowed_service_classes": ["critical_data", "telemetry", "bulk_data"],
+      "allowed_service_classes": [
+        "critical_data",
+        "telemetry",
+        "bulk_data"
+      ],
       "standards": {
-        "required_identifiers": ["3gpp-ts-23.003"],
+        "required_identifiers": [
+          "3gpp-ts-23.003"
+        ],
         "required_rat": "eutran",
         "dnn": "REPLACE_WITH_REAL_APN_OR_DNN"
-      }
+      },
+      "link_role": "payload"
     },
     {
       "profile_id": "cellular-5g",
@@ -62,15 +79,26 @@
       "energy_cost": 0.5,
       "minimum_dwell_seconds": 60,
       "maximum_switches_per_hour": 6,
-      "allowed_service_classes": ["critical_data", "telemetry", "bulk_data"],
+      "allowed_service_classes": [
+        "critical_data",
+        "telemetry",
+        "bulk_data"
+      ],
       "standards": {
-        "required_identifiers": ["3gpp-ts-23.003", "3gpp-release-18"],
+        "required_identifiers": [
+          "3gpp-ts-23.003",
+          "3gpp-release-18"
+        ],
         "required_rat": "nr",
         "minimum_3gpp_release": 18,
         "dnn": "REPLACE_WITH_REAL_DNN",
-        "s_nssai": {"sst": 1, "sd": "010203"},
+        "s_nssai": {
+          "sst": 1,
+          "sd": "010203"
+        },
         "capability_socket": "/run/kval-radio/cellular-5g.sock"
-      }
+      },
+      "link_role": "payload"
     },
     {
       "profile_id": "ntn-primary",
@@ -82,7 +110,10 @@
       "energy_cost": 0.7,
       "minimum_dwell_seconds": 120,
       "maximum_switches_per_hour": 4,
-      "allowed_service_classes": ["critical_data", "telemetry"],
+      "allowed_service_classes": [
+        "critical_data",
+        "telemetry"
+      ],
       "standards": {
         "required_identifiers": [
           "3gpp-release-18",
@@ -99,7 +130,8 @@
         "minimum_3gpp_release": 18,
         "capability_socket": "/run/kval-radio/ntn-primary.sock",
         "sdr_profile_id": "REPLACE_WITH_OPERATOR_APPROVED_SDR_PROFILE_ID"
-      }
+      },
+      "link_role": "payload"
     }
   ]
 }

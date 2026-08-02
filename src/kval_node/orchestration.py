@@ -241,9 +241,12 @@ class FleetLearning:
     ) -> tuple[list[FederatedUpdate], RecoveryCertificate]:
         remaining, certificate = certified_excision(updates, node_id)
         # A node removed from the fleet must also lose its standing, or it
-        # returns under the same reputation it had before it was excised.
-        self.reputation.record_round(agreed=[], diverged=[node_id])
-        self._save_reputation()
+        # returns under the same reputation it had before it was excised — but
+        # only if it was actually there. Demoting unconditionally meant a
+        # typo'd node ID silently degraded a healthy node that had done nothing.
+        if certificate.was_present:
+            self.reputation.record_round(agreed=[], diverged=[node_id])
+            self._save_reputation()
         return remaining, certificate
 
 

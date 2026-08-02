@@ -142,6 +142,33 @@ class ProfileOptimizer:
             reasons=tuple(scored_reasons),
         )
 
+    @staticmethod
+    def _empty_recommendation(
+        catalog: Catalog,
+        snapshot: TelemetrySnapshot,
+        service_class: ServiceClass,
+        *,
+        scores: tuple[ScoredProfile, ...],
+        reason_codes: tuple[str, ...],
+    ) -> Recommendation:
+        """A recommendation that selects nothing, built from the real dataclass.
+
+        Exists so an early exit cannot quietly diverge from ``Recommendation``'s
+        required fields — which is how the emission-control branch shipped with
+        a constructor call that could never have succeeded.
+        """
+        return Recommendation(
+            recommendation_id=str(uuid.uuid4()),
+            created_at=utc_now(),
+            catalog_version=catalog.version,
+            selected_profile_id=None,
+            current_profile_id=snapshot.current_profile_id,
+            service_class=service_class,
+            confidence=0.0,
+            scores=scores,
+            reason_codes=reason_codes,
+        )
+
     def recommend(
         self,
         catalog: Catalog,
@@ -182,15 +209,28 @@ class ProfileOptimizer:
         objective = OBJECTIVES[service_class]
         scores: list[ScoredProfile] = []
         if role in suppressed_roles:
-            return Recommendation(
-                selected_profile_id=None,
-                confidence=0.0,
+            # This branch had never executed: it built a Recommendation with a
+            # keyword the dataclass does not have and five required fields
+            # missing, so the first emission-control order would have crashed
+            # the cycle — failing *open into a crash* at exactly the moment the
+            # control exists for. Constructed through the same helper as every
+            # other exit now, so it cannot drift from the dataclass again.
+            return self._empty_recommendation(
+                catalog,
+                snapshot,
+                service_class,
                 scores=tuple(
-                    ScoredProfile(p.profile_id, -1.0, 0.0, {}, ("ROLE_SUPPRESSED_BY_EMISSION_CONTROL",))
-                    for p in catalog.profiles
-                    if p.link_role == role
+                    ScoredProfile(
+                        profile.profile_id,
+                        -1.0,
+                        0.0,
+                        {},
+                        ("ROLE_SUPPRESSED_BY_EMISSION_CONTROL",),
+                    )
+                    for profile in catalog.profiles
+                    if profile.link_role == role
                 ),
-                reasons=("EMISSION_CONTROL_SUPPRESSES_THIS_ROLE_SO_NO_LINK_IS_SELECTED",),
+                reason_codes=("EMISSION_CONTROL_SUPPRESSES_THIS_ROLE_SO_NO_LINK_IS_SELECTED",),
             )
         for profile in catalog.profiles:
             if profile.link_role != role:

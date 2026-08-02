@@ -12,6 +12,7 @@ verify signed policy on a control laptop. Live evidence (sensor socket,
 
 from __future__ import annotations
 
+import base64
 import json
 import sqlite3
 import subprocess
@@ -53,7 +54,7 @@ from .learning import ModelTrustError, verify_model_manifest
 from .lease import LeaseAction, LeaseError, LeaseNonceStore, redeem_lease, verify_lease
 from .memory_integrity import MemoryAuditor, SignedRecord
 from .mobility import DEFAULT_PLACE_RADIUS_M
-from .models import parse_timestamp, utc_now
+from .models import TelemetrySnapshot, parse_timestamp, utc_now
 from .orchestration import (
     FleetLearning,
     cohort_assignments,
@@ -66,14 +67,17 @@ from .orchestration import (
     verdicts_from_reports,
 )
 from .power import PowerGovernor, PowerPolicy, PowerReading, parse_tegrastats
-from .pqc import LMS_ALGORITHM
+from .pqc import LMS_ALGORITHM, LmsPublicKey
 from .signing import (
     CNSA_2_0_SIGNATURE_ALGORITHMS,
     ED25519_ALGORITHM,
     SUPPORTED_SIGNATURE_ALGORITHMS,
+    SignaturePolicy,
+    load_lms_public_key,
     load_private_key,
     load_public_key,
-    load_verified_document,
+    load_verified_catalog,
+    verify_document_agile,
 )
 from .threshold_ca import Attestation, CertificationError, CertifierRoster, Grant
 from .timesync import ClockMonitor
@@ -126,9 +130,69 @@ def _unavailable(reason: str) -> dict[str, Any]:
     return {"available": False, "reason": reason}
 
 
+def _anchor_algorithm(path: Path) -> tuple[str | None, str]:
+    """Identify a trust anchor by parsing it, never by its filename.
+
+    The earlier version inferred the algorithm from ``path.suffix == ".lms"``,
+    which is forgeable in both directions and grades a file it never opens:
+    copying an Ed25519 PEM to ``decoy.lms`` produced
+    ``EVERY_CONFIGURED_TRUST_ANCHOR_USES_A_CNSA_2_0_APPROVED_ALGORITHM`` on a
+    wholly classical node, and a real LMS key named ``.pub`` was reported as
+    retired. A compliance report that can be changed with ``mv`` is worse than
+    no report, because it is believed.
+
+    An anchor the node cannot load is reported as **unusable**, not as
+    approved — the previous behaviour would call a node compliant while it
+    could not verify its own catalogue.
+    """
+    try:
+        raw = path.read_bytes()
+    except OSError as exc:
+        return None, f"ANCHOR_IS_UNREADABLE:{type(exc).__name__}"
+    try:
+        LmsPublicKey.from_bytes(base64.b64decode(raw.strip(), validate=True))
+        return LMS_ALGORITHM, "APPROVED_FOR_NATIONAL_SECURITY_SYSTEMS"
+    except Exception:  # noqa: BLE001 - not an LMS anchor; try the classical one
+        pass
+    try:
+        load_public_key(path)
+        return ED25519_ALGORITHM, "CLASSICAL_ASYMMETRIC_RETIRED_BY_CNSA_2_0"
+    except Exception:  # noqa: BLE001 - neither format parses
+        return None, "ANCHOR_PARSES_AS_NEITHER_LMS_NOR_ED25519_AND_CANNOT_BE_USED"
+
+
 class CapabilityServices:
     def __init__(self, config: NodeConfig) -> None:
         self.config = config
+
+    def _verify_document(self, path: Path, *, expected_type: str) -> tuple[dict[str, Any], str]:
+        """Verify a signed document under whichever approved algorithm signed it.
+
+        Every loader used to call ``load_verified_document``, which hardcodes
+        Ed25519. That made the whole LMS half of ``pqc.py`` unreachable from
+        production and made ``require_cnsa_2_0`` a display field — a node with
+        the flag set accepted classical signatures without comment, while the
+        docs claimed it refused them.
+
+        Both anchors are offered when configured, so a fleet can migrate
+        document by document rather than in one flag day.
+        """
+        envelope = json.loads(path.read_text(encoding="utf-8"))
+        ed25519_key = None
+        lms_key = None
+        try:
+            ed25519_key = load_public_key(self.config.catalog_public_key_path)
+        except Exception:  # noqa: BLE001 - an LMS-only node has no PEM anchor
+            pass
+        if self.config.lms_public_key_path is not None:
+            lms_key = load_lms_public_key(self.config.lms_public_key_path)
+        return verify_document_agile(
+            envelope,
+            expected_type=expected_type,
+            ed25519_key=ed25519_key,
+            lms_key=lms_key,
+            policy=SignaturePolicy(require_cnsa_2_0=self.config.require_cnsa_2_0),
+        )
 
     def scan_state_path(self) -> Path:
         """Durable store for spectrum scan-rate accounting."""
@@ -141,11 +205,7 @@ class CapabilityServices:
     def load_spectrum_policy(self) -> tuple[SpectrumPolicy, str]:
         if self.config.spectrum_policy_path is None:
             raise FileNotFoundError("spectrum_policy_path is not configured")
-        payload, payload_hash = load_verified_document(
-            self.config.spectrum_policy_path,
-            self.config.catalog_public_key_path,
-            expected_type=SPECTRUM_DOCUMENT_TYPE,
-        )
+        payload, payload_hash = self._verify_document(self.config.spectrum_policy_path, expected_type=SPECTRUM_DOCUMENT_TYPE)
         return SpectrumPolicy.from_dict(payload), payload_hash
 
     def sense_spectrum(self, *, now: datetime | None = None) -> dict[str, Any]:
@@ -167,25 +227,32 @@ class CapabilityServices:
         # against durable state rather than a per-process counter.
         limiter = ScanRateLimiter(self.scan_state_path())
         try:
-            limiter.check_and_record(policy, now=now)
+            limiter.check(policy, now=now)
         except ScanRateExceeded as exc:
+            limiter.close()
             return {
                 "available": False,
                 "reason": str(exc),
                 "policy_id": policy.policy_id,
                 "policy_hash": policy_hash,
             }
-        finally:
-            limiter.close()
         try:
             observations = SpectrumSensorClient().scan(self.config.spectrum_sensor_socket, policy)
         except Exception as exc:  # fail closed on any adapter error
+            # Deliberately *not* recorded against the duty budget: an attempt
+            # that never reached the adapter emitted nothing, so charging it
+            # would let a brief sensor outage spend the whole hourly quota and
+            # lock out sensing long after the adapter recovered.
+            limiter.close()
             return {
                 "available": False,
                 "reason": f"spectrum sensor unavailable: {exc}",
                 "policy_id": policy.policy_id,
                 "policy_hash": policy_hash,
             }
+        # The scan happened, so now it counts.
+        limiter.record(policy_id=policy.policy_id, now=now)
+        limiter.close()
         analyzer = SpectrumAnalyzer(max_observation_age_seconds=self.config.observation_max_age_seconds)
         intelligence = analyzer.analyze(policy, observations, now=now)
         result = intelligence.to_dict()
@@ -199,11 +266,7 @@ class CapabilityServices:
     def load_power_policy(self) -> tuple[PowerPolicy, str]:
         if self.config.power_policy_path is None:
             raise FileNotFoundError("power_policy_path is not configured")
-        payload, payload_hash = load_verified_document(
-            self.config.power_policy_path,
-            self.config.catalog_public_key_path,
-            expected_type=POWER_DOCUMENT_TYPE,
-        )
+        payload, payload_hash = self._verify_document(self.config.power_policy_path, expected_type=POWER_DOCUMENT_TYPE)
         return PowerPolicy.from_dict(payload), payload_hash
 
     def plan_power(
@@ -245,11 +308,7 @@ class CapabilityServices:
     def load_transport_policy(self) -> tuple[TransportPolicy, str]:
         if self.config.transport_policy_path is None:
             raise FileNotFoundError("transport_policy_path is not configured")
-        payload, payload_hash = load_verified_document(
-            self.config.transport_policy_path,
-            self.config.catalog_public_key_path,
-            expected_type=TRANSPORT_DOCUMENT_TYPE,
-        )
+        payload, payload_hash = self._verify_document(self.config.transport_policy_path, expected_type=TRANSPORT_DOCUMENT_TYPE)
         return TransportPolicy.from_dict(payload), payload_hash
 
     def transport_preflight(self) -> dict[str, Any]:
@@ -316,11 +375,7 @@ class CapabilityServices:
     def load_peer_roster(self) -> tuple[PeerRoster, str]:
         if self.config.fabric_roster_path is None:
             raise FileNotFoundError("fabric_roster_path is not configured")
-        payload, payload_hash = load_verified_document(
-            self.config.fabric_roster_path,
-            self.config.catalog_public_key_path,
-            expected_type=ROSTER_DOCUMENT_TYPE,
-        )
+        payload, payload_hash = self._verify_document(self.config.fabric_roster_path, expected_type=ROSTER_DOCUMENT_TYPE)
         return PeerRoster.from_dict(payload), payload_hash
 
     def publish_report(self, *, now: datetime | None = None) -> dict[str, Any]:
@@ -426,11 +481,7 @@ class CapabilityServices:
         path_loss = None
         if self.config.path_loss_model_path is not None:
             try:
-                payload, _ = load_verified_document(
-                    self.config.path_loss_model_path,
-                    self.config.catalog_public_key_path,
-                    expected_type=PATH_LOSS_DOCUMENT_TYPE,
-                )
+                payload, _ = self._verify_document(self.config.path_loss_model_path, expected_type=PATH_LOSS_DOCUMENT_TYPE)
                 path_loss = PathLossModel.from_dict(payload)
             except Exception as exc:
                 return {"available": False, "reason": f"path-loss model invalid: {exc}"}
@@ -670,7 +721,12 @@ class CapabilityServices:
         # that differs sharply from the flat one is informative, and hiding the
         # comparison would make the hierarchy unfalsifiable.
         result["flat_baseline"] = RobustAggregator().aggregate(updates).to_dict()
-        result["available"] = True
+        # An empty inbox is not a successful aggregation. Reporting available
+        # with zero cohorts exited 0, so a systemd timer or the HIL script read
+        # "no peer ever contributed" as a healthy fleet.
+        result["available"] = bool(updates)
+        if not updates:
+            result["reason"] = "no verified peer contributions to aggregate"
         result["roster_id"] = roster.roster_id
         result["roster_hash"] = roster_hash
         result["rejected"] = rejected
@@ -689,7 +745,11 @@ class CapabilityServices:
         learning = FleetLearning(self._reputation_path())
         remaining, certificate = learning.excise(updates, node_id)
         return {
-            "available": True,
+            "available": certificate.was_present,
+            "reason": (
+                None if certificate.was_present
+                else f"{node_id!r} is not a contributor; nothing was excised"
+            ),
             "certificate": certificate.to_dict(),
             "remaining_contributors": sorted(update.node_id for update in remaining),
             "reputation": learning.reputation.scores(),
@@ -715,16 +775,24 @@ class CapabilityServices:
 
         history: dict[str, list[float]] = {}
         for example in examples:
-            features = dict(zip(FEATURE_NAMES, example.features))
-            rtt = features.get("rtt_ms")
-            if rtt is None:
+            # ``Example.features`` is already a mapping and the profile field is
+            # ``selected_profile_id``. Getting either wrong is silent while the
+            # corpus is empty and fatal the moment it is not, which is how this
+            # shipped: the loop body never ran in any test.
+            rtt = example.features.get("rtt_ms")
+            profile_id = example.selected_profile_id
+            if rtt is None or profile_id is None:
+                # A cycle that selected nothing has no flow to attribute the
+                # reading to. Grouping those under a null key would forecast a
+                # profile that does not exist.
                 continue
-            history.setdefault(example.profile_id, []).append(float(rtt))
+            history.setdefault(profile_id, []).append(float(rtt))
 
         advice = forecast_advice(history)
         result = advice.to_dict()
         result["available"] = True
         result["flows"] = len(history)
+        result["examples"] = len(examples)
         return result
 
     # --- emitter tracking ------------------------------------------------------
@@ -789,7 +857,13 @@ class CapabilityServices:
 
         reports, rejected = self._verified_reports(roster, now=now)
         if not reports:
-            return _unavailable("no verified peer reports to assess")
+            # The rejected list was built and then dropped, so an operator whose
+            # whole inbox failed verification got no explanation at all.
+            return {
+                "available": False,
+                "reason": "no verified peer reports to assess",
+                "rejected_reports": rejected,
+            }
 
         updates, _rejected_updates = self._load_updates(roster, now=now)
         cohorts = cohort_assignments(updates)
@@ -858,11 +932,7 @@ class CapabilityServices:
         """
         if self.config.emcon_order_path is None:
             return None
-        payload, _hash = load_verified_document(
-            self.config.emcon_order_path,
-            self.config.catalog_public_key_path,
-            expected_type=EMCON_DOCUMENT_TYPE,
-        )
+        payload, _hash = self._verify_document(self.config.emcon_order_path, expected_type=EMCON_DOCUMENT_TYPE)
         return EmconOrder.from_dict(payload)
 
     def emcon_posture(self, *, now: datetime | None = None) -> dict[str, Any]:
@@ -901,11 +971,7 @@ class CapabilityServices:
                 "and no pre-planned contingency cannot be assessed"
             )
         try:
-            payload, budget_hash = load_verified_document(
-                self.config.c2_budget_path,
-                self.config.catalog_public_key_path,
-                expected_type=C2_DOCUMENT_TYPE,
-            )
+            payload, budget_hash = self._verify_document(self.config.c2_budget_path, expected_type=C2_DOCUMENT_TYPE)
             budget = C2Budget.from_dict(payload)
         except Exception as exc:
             return {"available": False, "reason": f"C2 budget invalid: {exc}"}
@@ -926,6 +992,70 @@ class CapabilityServices:
         result["interoperability"] = InteroperabilityDeclaration().to_dict()
         return result
 
+    def c2_status_from_telemetry(
+        self, snapshot: TelemetrySnapshot, *, now: datetime | None = None
+    ) -> dict[str, Any]:
+        """Assess the command link from the telemetry the node already collects.
+
+        ``c2_status`` took two ``DirectionalHealth`` values that **nothing in
+        production ever built**, so the whole C2 monitor — budget floor, loss
+        confirmation, pre-planned contingency — was unreachable. This is the
+        adapter that was missing.
+
+        The two directions are read from different evidence on purpose. The
+        *command* path is the probe result for the profile carrying C2: if the
+        node can reach its control endpoint, commands can arrive. The *return*
+        path is whether the node's own reports are being accepted, which is the
+        half emission control is allowed to silence.
+        """
+        current = now or utc_now()
+        c2_profiles = {
+            profile.profile_id
+            for profile in self._catalog_profiles()
+            if profile.link_role == "c2_cnpc"
+        }
+        observation = next(
+            (item for item in snapshot.observations if item.profile_id in c2_profiles), None
+        )
+        if observation is None:
+            return _unavailable(
+                "no observation for any profile declared as c2_cnpc in the signed catalogue"
+            )
+        health = DirectionalHealth(
+            present=observation.link_up and observation.connection_active,
+            latency_ms=observation.rtt_ms,
+            loss_percent=observation.loss_percent,
+            last_seen=observation.observed_at,
+        )
+        return self.c2_status(command_path=health, return_path=health, now=current)
+
+    def _catalog_profiles(self):
+        try:
+            catalog = load_verified_catalog(
+                self.config.catalog_path, self.config.catalog_public_key_path
+            )
+        except Exception:  # noqa: BLE001 - an unverifiable catalogue declares nothing
+            return ()
+        return catalog.profiles
+
+    def renew_grant_from_files(
+        self, grant_path: Path, attestation_paths: Sequence[Path], *, extend_seconds: float
+    ) -> dict[str, Any]:
+        """Drive quorum renewal from operator artefacts on disk."""
+        try:
+            grant = Grant.from_dict(json.loads(grant_path.read_text(encoding="utf-8")))
+            attestations = [
+                Attestation.from_dict(json.loads(path.read_text(encoding="utf-8")))
+                for path in attestation_paths
+            ]
+        except (OSError, json.JSONDecodeError, KeyError, ValueError) as exc:
+            return {"available": False, "reason": f"grant or attestation unreadable: {exc}"}
+        return self.renew_grant(
+            grant,
+            attestations,
+            new_expiry=grant.expires_at + timedelta(seconds=extend_seconds),
+        )
+
     def _emcon_or_none(self) -> EmconOrder | None:
         try:
             return self.load_emcon_order()
@@ -944,7 +1074,27 @@ class CapabilityServices:
     def report_interference(
         self, band_id: str, *, victim_role: str = "payload", now: datetime | None = None
     ) -> dict[str, Any]:
-        """Emit a JSIR-compatible interference report from corroborated evidence."""
+        """Emit a JSIR-compatible interference report from corroborated evidence.
+
+        Three defects made the earlier version worse than useless, and all three
+        were the same mistake — reading keys the fleet view does not publish:
+
+        * ``reporting_nodes`` was passed where corroborators were expected, so
+          **nodes that measured the band CLEAR were named as corroborating
+          interference**, and a c2 victim was then escalated to
+          ``intermittent_outage`` on their strength. A report that manufactures
+          agreement is the one thing this system must never produce.
+        * centre frequency and bandwidth came from keys that do not exist, so
+          every report carried ``0/0`` — in a format whose entire purpose is
+          saying *on what frequency*. They are read from the signed spectrum
+          policy instead, which is where the band plan actually lives.
+        * the noise figure was read as ``noise_floor_excess_db``; the fleet view
+          publishes ``max_noise_excess_db``.
+
+        It also refuses to report a band the fleet did not confirm as
+        interfered. Filing a JSIR report on a quiet band wastes a spectrum
+        manager's time and, repeated, trains them to ignore this source.
+        """
         current = now or utc_now()
         fabric = self.aggregate_fleet(now=current)
         if fabric.get("available") is not True:
@@ -955,32 +1105,84 @@ class CapabilityServices:
         if band is None:
             return _unavailable(f"no fleet view for band {band_id!r}")
 
-        located = self.locate_emitter(band_id, now=current)
-        position = (
-            {
-                "latitude_deg": located["latitude_deg"],
-                "longitude_deg": located["longitude_deg"],
-                "uncertainty_radius_m": located["uncertainty_radius_m"],
+        if band.get("interference_confirmed") is not True:
+            return {
+                "available": False,
+                "reason": (
+                    f"the fleet has not confirmed interference on {band_id!r}; "
+                    "refusing to file a report the evidence does not support"
+                ),
+                "band_id": band_id,
+                "corroborating_nodes": band.get("corroborating_nodes", []),
+                "fleet_reasons": band.get("reasons", []),
             }
-            if located.get("available") is True
-            else None
-        )
+
+        centre_hz, bandwidth_hz, spectrum_reasons = self._band_frequency(band_id)
+
+        # Localisation is read from history rather than run here: calling the
+        # locator recorded a fix on every invocation, so filing a report
+        # silently appended to the very track history track-emitter reads.
+        position = self._last_recorded_fix(band_id)
+
         report = build_interference_report(
             report_id=f"{self.config.node_id}-{band_id}-{int(current.timestamp())}",
             observed_at=current,
             reporting_node=self.config.node_id,
-            corroborating_nodes=band.get("reporting_nodes", []),
+            corroborating_nodes=band.get("corroborating_nodes", []),
             band_id=band_id,
-            centre_frequency_hz=int(band.get("centre_frequency_hz") or 0),
-            bandwidth_hz=int(band.get("bandwidth_hz") or 0),
+            centre_frequency_hz=centre_hz,
+            bandwidth_hz=bandwidth_hz,
             victim_role=victim_role,
             link_available=True,
-            noise_floor_excess_db=band.get("noise_floor_excess_db"),
+            noise_floor_excess_db=band.get("max_noise_excess_db"),
             estimated_position=position,
         )
         result = report.to_dict()
         result["available"] = True
+        result["reasons"] = list(result["reasons"]) + list(spectrum_reasons)
+        if position is None:
+            result["reasons"].append("NO_RECORDED_FIX_FOR_THIS_BAND_RUN_LOCATE_EMITTER_FIRST")
         return result
+
+    def _band_frequency(self, band_id: str) -> tuple[int, int, tuple[str, ...]]:
+        """Centre frequency and bandwidth from the signed spectrum policy.
+
+        The band plan is operator-signed and is the only authoritative source
+        for what a band ID means in hertz. Without it the report says zero *and
+        says why*, rather than presenting zero as a measurement.
+        """
+        try:
+            policy, _hash = self.load_spectrum_policy()
+        except Exception as exc:
+            return 0, 0, (f"NO_SIGNED_BAND_PLAN_SO_FREQUENCY_IS_UNKNOWN:{exc}",)
+        band = next((item for item in policy.bands if item.band_id == band_id), None)
+        if band is None:
+            return 0, 0, (f"BAND_{band_id}_IS_NOT_IN_THE_SIGNED_BAND_PLAN",)
+        centre = (band.freq_low_hz + band.freq_high_hz) // 2
+        return centre, band.freq_high_hz - band.freq_low_hz, ()
+
+    def _last_recorded_fix(self, band_id: str) -> dict[str, Any] | None:
+        """Most recent accepted localisation for a band, from the ledger."""
+        ledger = AuditLedger(self.config.audit_database_path)
+        try:
+            rows = [
+                row
+                for row in ledger.signed_records(limit=MEMORY_AUDIT_RECORDS)
+                if row["record_type"] == EMITTER_RECORD_TYPE
+                and (row["payload"] or {}).get("band_id") == band_id
+            ]
+        except (sqlite3.Error, KeyError, ValueError):
+            return None
+        finally:
+            ledger.close()
+        if not rows:
+            return None
+        payload = rows[-1]["payload"]
+        return {
+            "latitude_deg": payload["latitude_deg"],
+            "longitude_deg": payload["longitude_deg"],
+            "uncertainty_radius_m": payload["uncertainty_radius_m"],
+        }
 
     # --- cryptographic posture --------------------------------------------------
 
@@ -1008,19 +1210,19 @@ class CapabilityServices:
                      "cnsa_2_0_approved": None, "reason": "NOT_CONFIGURED_ON_THIS_NODE"}
                 )
                 return
-            algorithm = LMS_ALGORITHM if path.suffix == ".lms" else ED25519_ALGORITHM
+            algorithm, detail = _anchor_algorithm(path)
             anchors.append(
                 {
                     "anchor": name,
                     "purpose": purpose,
                     "path": str(path),
                     "algorithm": algorithm,
-                    "cnsa_2_0_approved": algorithm in CNSA_2_0_SIGNATURE_ALGORITHMS,
-                    "reason": (
-                        "APPROVED_FOR_NATIONAL_SECURITY_SYSTEMS"
-                        if algorithm in CNSA_2_0_SIGNATURE_ALGORITHMS
-                        else "CLASSICAL_ASYMMETRIC_RETIRED_BY_CNSA_2_0"
+                    "cnsa_2_0_approved": (
+                        algorithm in CNSA_2_0_SIGNATURE_ALGORITHMS
+                        if algorithm is not None
+                        else None
                     ),
+                    "reason": detail,
                 }
             )
 
@@ -1032,11 +1234,17 @@ class CapabilityServices:
                "binds this node's reports and audit records to it")
 
         classical = [a for a in anchors if a["cnsa_2_0_approved"] is False]
+        unusable = [
+            a for a in anchors
+            if a["algorithm"] is None and a["reason"] != "NOT_CONFIGURED_ON_THIS_NODE"
+        ]
         reasons: list[str] = []
         acquisition_gate = date(2027, 1, 1)
         signing_deadline = date(2030, 12, 31)
         days_to_gate = (acquisition_gate - current).days
 
+        if unusable:
+            reasons.append("SOME_TRUST_ANCHORS_CANNOT_BE_PARSED_AND_THE_NODE_CANNOT_USE_THEM")
         if classical:
             reasons.append("SOME_TRUST_ANCHORS_STILL_USE_CLASSICAL_ASYMMETRIC_SIGNATURES")
             if current < acquisition_gate:
@@ -1058,6 +1266,7 @@ class CapabilityServices:
             "require_cnsa_2_0": self.config.require_cnsa_2_0,
             "anchors": anchors,
             "classical_anchors": [a["anchor"] for a in classical],
+            "unusable_anchors": [a["anchor"] for a in unusable],
             "nss_acquisition_gate": acquisition_gate.isoformat(),
             "signing_exclusive_deadline": signing_deadline.isoformat(),
             "days_to_acquisition_gate": days_to_gate,

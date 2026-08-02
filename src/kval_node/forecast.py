@@ -198,7 +198,11 @@ class Forecast:
             "samples": self.samples,
             "predicted": round(self.predicted, 6),
             "recent_mean": round(self.recent_mean, 6),
-            "mean_absolute_error": round(self.mean_absolute_error, 6),
+            "mean_absolute_error": (
+                round(self.mean_absolute_error, 6)
+                if math.isfinite(self.mean_absolute_error)
+                else None
+            ),
             "parameters": self.parameters.to_dict(),
             "degrading": self.degrading,
             "reasons": list(self.reasons),

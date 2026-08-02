@@ -203,7 +203,14 @@ class TrackPrediction:
             "longitude_deg": (
                 round(self.longitude_deg, 7) if self.longitude_deg is not None else None
             ),
-            "uncertainty_radius_m": round(self.uncertainty_radius_m, 2),
+            # ``null`` rather than ``Infinity``: a refusal has no radius, and
+            # RFC 8259 has no infinity literal, so emitting one made the whole
+            # document unparseable to a strict consumer.
+            "uncertainty_radius_m": (
+                round(self.uncertainty_radius_m, 2)
+                if math.isfinite(self.uncertainty_radius_m)
+                else None
+            ),
             "exploration_probability": round(self.exploration_probability, 4),
             "distinct_places": self.distinct_places,
             "method": self.method,

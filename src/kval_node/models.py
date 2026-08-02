@@ -153,6 +153,9 @@ class Profile:
 
     def to_public_dict(self) -> dict[str, Any]:
         return {
+            # Without this an operator running verify-catalog could not see
+            # which profile is the command link.
+            "link_role": self.link_role,
             "profile_id": self.profile_id,
             "access_type": self.access_type.value,
             "interface": self.interface,

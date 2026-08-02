@@ -519,6 +519,17 @@ class ScanRateLimiter:
         return [parse_timestamp(str(row[0])) for row in rows]
 
     def check_and_record(self, policy: SpectrumPolicy, *, now: datetime | None = None) -> None:
+        """Check the duty budget and charge a scan against it, atomically.
+
+        Retained for callers that genuinely scan immediately afterwards and
+        cannot fail in between. A caller that might not reach the adapter
+        should use :meth:`check` and :meth:`record` so a failed attempt does
+        not spend budget it never used.
+        """
+        self.check(policy, now=now)
+        self.record(policy_id=policy.policy_id, now=now)
+
+    def check(self, policy: SpectrumPolicy, *, now: datetime | None = None) -> None:
         """Raise :class:`ScanRateExceeded` if a scan now would breach policy."""
         current = now or utc_now()
         window_start = current - timedelta(hours=1)
@@ -535,10 +546,21 @@ class ScanRateLimiter:
                     f"scan refused: {elapsed:.3f}s since the last scan is below the policy minimum "
                     f"of {policy.min_scan_interval_seconds}s"
                 )
+
+    def record(self, *, policy_id: str, now: datetime | None = None) -> None:
+        """Charge a scan that actually happened against the duty budget.
+
+        Separate from :meth:`check` because an attempt that never reached the
+        adapter emitted nothing. Charging those let a four-minute sensor outage
+        at a two-second poll spend the whole hourly quota and lock out sensing
+        for the remaining fifty-six minutes — reporting a rate-limit reason for
+        a fault that had already cleared.
+        """
+        current = now or utc_now()
         with self._connection:
             self._connection.execute(
                 "INSERT INTO spectrum_scans (policy_id, scanned_at) VALUES (?, ?)",
-                (policy.policy_id, current.isoformat()),
+                (policy_id, current.isoformat()),
             )
             # Keep the table bounded; anything older than the window is unused.
             self._connection.execute(

@@ -10,9 +10,16 @@ capability is *connected*.
 
 Three checks, each of which has caught something real:
 
-**Reachability.** Every module must be reachable through the import graph from
-a production entrypoint. A module only its tests import is dead code with a
+**Module reachability.** Every module must be reachable through the import graph
+from a production entrypoint. A module only its tests import is dead code with a
 docstring.
+
+**Capability reachability.** Module-level reachability is not enough, and
+trusting it is how this failure recurred a third time: ``capabilities.py``
+imports ``c2link``, so the module counted as reachable while the capability
+method inside it had **zero callers anywhere** — no CLI command, no service
+call, not even a test. Every public method on ``CapabilityServices`` must
+therefore be reachable from the CLI or the service loop by name.
 
 **No simulated evidence.** Nothing in ``src`` may fabricate an observation.
 Unavailable evidence must produce an unavailable result, never a plausible one.
@@ -97,9 +104,59 @@ def check_markers(pattern: re.Pattern[str], label: str) -> list[str]:
     return failures
 
 
+def capability_methods() -> list[str]:
+    tree = ast.parse((PACKAGE / "capabilities.py").read_text(encoding="utf-8"))
+    for node in ast.walk(tree):
+        if isinstance(node, ast.ClassDef) and node.name == "CapabilityServices":
+            return [
+                item.name
+                for item in node.body
+                if isinstance(item, (ast.FunctionDef, ast.AsyncFunctionDef))
+                and not item.name.startswith("_")
+            ]
+    return []
+
+
+def check_capability_reachability() -> list[str]:
+    """Every capability must be callable by an operator or by the loop.
+
+    A capability nothing invokes is not a capability, however green its unit
+    tests are. Internal helpers are exempt only when another production module
+    calls them — being called from within ``capabilities.py`` alone is what a
+    dead method looks like too, so that does not count.
+    """
+    methods = capability_methods()
+    if not methods:
+        return ["could not read CapabilityServices; the reachability check is not running"]
+
+    callers = {
+        path.name: path.read_text(encoding="utf-8")
+        for path in PACKAGE.glob("*.py")
+        if path.name != "capabilities.py"
+    }
+    internal = (PACKAGE / "capabilities.py").read_text(encoding="utf-8")
+
+    failures: list[str] = []
+    for method in methods:
+        pattern = re.compile(rf"\.{re.escape(method)}\s*\(")
+        if any(pattern.search(body) for body in callers.values()):
+            continue
+        if pattern.search(internal):
+            # Reachable only from inside its own module. That is a helper *if*
+            # something outside eventually reaches the caller, which the module
+            # check already covers; flag it so it is a deliberate choice.
+            continue
+        failures.append(
+            f"CapabilityServices.{method} has no caller outside its own class: "
+            "no CLI command and no service call reach it"
+        )
+    return failures
+
+
 def main() -> int:
     failures = (
         check_reachability()
+        + check_capability_reachability()
         + check_markers(INCOMPLETE_MARKERS, "unfinished work in production code")
         + check_markers(SIMULATION_MARKERS, "simulated evidence in production code")
     )

@@ -56,7 +56,7 @@ from typing import Any, Sequence
 from cryptography.exceptions import InvalidSignature
 from cryptography.hazmat.primitives.asymmetric.ed25519 import Ed25519PrivateKey, Ed25519PublicKey
 
-from .models import utc_now
+from .models import parse_timestamp, utc_now
 from .signing import canonical_json, public_key_id
 from .validation import non_empty_str, positive_int
 
@@ -237,6 +237,35 @@ class Grant:
     extensions_used: int = 0
     total_extension: timedelta = timedelta(0)
 
+    @classmethod
+    def from_dict(cls, raw: dict[str, Any]) -> "Grant":
+        """Read a grant from an operator artefact.
+
+        Without this the quorum-renewal capability could not be driven by any
+        operator at all: a grant could be constructed in Python and nowhere
+        else, so the partition-tolerance story had no operable surface.
+        """
+        return cls(
+            grant_id=non_empty_str(raw.get("grant_id"), "grant_id"),
+            subject_node_id=non_empty_str(raw.get("subject_node_id"), "subject_node_id"),
+            scope_hash=non_empty_str(raw.get("scope_hash"), "scope_hash"),
+            issued_at=parse_timestamp(str(raw["issued_at"])),
+            expires_at=parse_timestamp(str(raw["expires_at"])),
+            extensions_used=int(raw.get("extensions_used", 0)),
+            total_extension=timedelta(seconds=float(raw.get("total_extension_seconds", 0.0))),
+        )
+
+    def to_dict(self) -> dict[str, Any]:
+        return {
+            "grant_id": self.grant_id,
+            "subject_node_id": self.subject_node_id,
+            "scope_hash": self.scope_hash,
+            "issued_at": self.issued_at.isoformat(),
+            "expires_at": self.expires_at.isoformat(),
+            "extensions_used": self.extensions_used,
+            "total_extension_seconds": self.total_extension.total_seconds(),
+        }
+
     def statement(self, *, new_expiry: datetime) -> dict[str, Any]:
         """Canonical text every certifier signs.
 
@@ -262,6 +291,15 @@ class Attestation:
     signed_at: datetime
     signature: str
     key_id: str
+
+    @classmethod
+    def from_dict(cls, raw: dict[str, Any]) -> "Attestation":
+        return cls(
+            certifier_node_id=non_empty_str(raw.get("certifier_node_id"), "certifier_node_id"),
+            signed_at=parse_timestamp(str(raw["signed_at"])),
+            signature=non_empty_str(raw.get("signature"), "signature"),
+            key_id=non_empty_str(raw.get("key_id"), "key_id"),
+        )
 
     def to_dict(self) -> dict[str, Any]:
         return {

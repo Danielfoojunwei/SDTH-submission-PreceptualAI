@@ -382,7 +382,24 @@ class LmsStateStore:
 
     def __init__(self, path: Path) -> None:
         self.path = path
-        self._high_water = self._read().get("next_index", 0)
+        # The high-water mark lives *beside* the state file, not inside it, and
+        # only ever moves forward. Reading it from the state file made rollback
+        # detection per-process: restoring a backup and restarting — which is
+        # the ordinary way this happens — reissued spent leaves in silence.
+        self.watermark_path = path.with_suffix(path.suffix + ".highwater")
+        self._high_water = max(
+            int(self._read().get("next_index", 0)), self._read_watermark()
+        )
+
+    def _read_watermark(self) -> int:
+        if not self.watermark_path.exists():
+            return 0
+        try:
+            return int(self.watermark_path.read_text(encoding="utf-8").strip() or 0)
+        except (OSError, ValueError) as exc:
+            raise PqcError(
+                f"LMS high-water mark at {self.watermark_path} is unreadable: {exc}"
+            ) from exc
 
     def _read(self) -> dict[str, Any]:
         if not self.path.exists():
@@ -412,9 +429,28 @@ class LmsStateStore:
                 f"every one of the {capacity} one-time keys in this tree has been used; "
                 "generate and distribute a new key rather than wrapping around"
             )
+        # Advance the monotonic mark first: if the process dies between the two
+        # writes the mark is ahead, which refuses a leaf, rather than behind,
+        # which would reissue one.
+        self._write_watermark(index + 1)
         self._write({"key_id": key_id, "next_index": index + 1, "capacity": capacity})
         self._high_water = index + 1
         return index
+
+    def _write_watermark(self, value: int) -> None:
+        self.watermark_path.parent.mkdir(parents=True, exist_ok=True)
+        temporary = self.watermark_path.with_suffix(".tmp")
+        descriptor = os.open(temporary, os.O_WRONLY | os.O_CREAT | os.O_TRUNC, 0o600)
+        with os.fdopen(descriptor, "w", encoding="utf-8") as handle:
+            handle.write(str(value))
+            handle.flush()
+            os.fsync(handle.fileno())
+        os.replace(temporary, self.watermark_path)
+        directory = os.open(self.watermark_path.parent, os.O_RDONLY)
+        try:
+            os.fsync(directory)
+        finally:
+            os.close(directory)
 
     def _write(self, payload: dict[str, Any]) -> None:
         """Atomically replace the state file, durably.
@@ -457,6 +493,33 @@ class LmsPrivateKey:
 
     def public_key(self) -> LmsPublicKey:
         return LmsPublicKey(self.lms_type, self.ots_type, self.identifier, self.nodes[1])
+
+
+def serialise_private_key(key: LmsPrivateKey) -> bytes:
+    """Seed, identifier and both type codes, so the key can be loaded back.
+
+    The generator previously wrote only ``seed || identifier``, recording
+    neither type code — so nothing could reconstruct the tree, and the shipped
+    key-generation script produced a file no code in this repository could
+    read. A private key you cannot load is not a key.
+    """
+    return u32(key.lms_type) + u32(key.ots_type) + key.identifier + key.seed
+
+
+def deserialise_private_key(raw: bytes) -> LmsPrivateKey:
+    """Rebuild a key, and its tree, from a serialised seed."""
+    if len(raw) != 4 + 4 + 16 + 32:
+        raise PqcError("LMS private key blob has the wrong length")
+    lms_type = int.from_bytes(raw[0:4], "big")
+    ots_type = int.from_bytes(raw[4:8], "big")
+    if lms_type not in _LMS_PARAMS:
+        raise PqcError(f"unsupported LMS type 0x{lms_type:08x}")
+    if ots_type not in _LMOTS_PARAMS:
+        raise PqcError(f"unsupported LM-OTS type 0x{ots_type:08x}")
+    identifier = raw[8:24]
+    seed = raw[24:56]
+    nodes = _build_tree(seed, identifier, lms_type, ots_type)
+    return LmsPrivateKey(seed, identifier, lms_type, ots_type, nodes)
 
 
 def generate_lms_key(

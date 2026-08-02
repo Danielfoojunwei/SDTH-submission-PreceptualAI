@@ -6,7 +6,7 @@ import os
 import signal
 import tempfile
 import time
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
 from cryptography.hazmat.primitives.asymmetric.ed25519 import Ed25519PrivateKey
@@ -81,7 +81,22 @@ class KvalNode:
         self.clock = ClockMonitor()
         self.fuser = MultimodalFuser(window_seconds=config.observation_max_age_seconds)
         self._link_machines: dict[str, LinkStateMachine] = {}
+        # Last contested-band evidence, carried across cycles where sensing was
+        # unavailable so a refused scan cannot look like an all-clear.
+        self._last_degraded_bands: frozenset[str] = frozenset()
+        self._degraded_until: datetime | None = None
         self._stop = False
+
+    def c2_status(self) -> dict[str, object]:
+        """Assess the command link using this process's long-lived monitor.
+
+        Must run inside ``KvalNode``: the CLI builds a fresh
+        ``CapabilityServices`` per invocation, so a command-shaped C2 check
+        would reset the contingency timers to zero every call and could never
+        declare a contingency at all.
+        """
+        snapshot = self.collector.collect(self.catalog)
+        return self.capabilities.c2_status_from_telemetry(snapshot)
 
     def close(self) -> None:
         self.audit.close()
@@ -108,6 +123,47 @@ class KvalNode:
         decision = self._machine_for(current_id).observe(observation, now=snapshot.observed_at)
         return {"available": True, "profile_id": current_id, **decision.to_dict()}
 
+    def _guarded(self, name: str, call, **kwargs) -> dict[str, object]:
+        """Run a capability so that its failure degrades the node, not kills it.
+
+        A capability that raises used to take the whole daemon down for good:
+        ``forecast_links`` referenced a field that does not exist, which was
+        invisible while the corpus was empty and fatal the moment it was not —
+        and because the ledger is durable, every restart died in the same place.
+        A resilient-communications node must lose the capability, not the loop.
+
+        The failure is recorded to the audit ledger rather than swallowed, so a
+        silently-degraded node is still a visibly-degraded node.
+        """
+        try:
+            return call(**kwargs)
+        except Exception as exc:  # noqa: BLE001 - a capability must never kill the loop
+            detail = {
+                "available": False,
+                "reason": f"capability raised {type(exc).__name__}: {exc}",
+                "capability": name,
+            }
+            try:
+                self.audit.append(self.config.node_id, "capability_failure", detail)
+            except Exception:  # noqa: BLE001 - never let auditing a fault raise a fault
+                pass
+            return detail
+
+    @staticmethod
+    def _suppressed_roles(emcon: dict[str, object]) -> frozenset[str]:
+        """Link roles the standing emission-control order forbids.
+
+        An unavailable posture suppresses nothing. Inventing suppression from
+        a missing or unreadable order would silence a platform nobody ordered
+        silent, which is a denial of service the node would inflict on itself.
+        """
+        if emcon.get("available") is not True:
+            return frozenset()
+        roles = emcon.get("suppressed_roles")
+        if not isinstance(roles, list):
+            return frozenset()
+        return frozenset(str(item) for item in roles)
+
     @staticmethod
     def _forecast_degrading(forecast: dict[str, object]) -> frozenset[str]:
         """Profiles the forecast expects to worsen, if forecasting ran at all."""
@@ -119,20 +175,40 @@ class KvalNode:
         return frozenset(str(item) for item in profiles)
 
     def _degraded_band_ids(self, spectrum: dict[str, object]) -> frozenset[str]:
-        """Bands the local sensor reports as contested, if sensing is available."""
+        """Bands the local sensor reports as contested, if sensing is available.
+
+        When sensing is unavailable this returns the *last* contested set rather
+        than an empty one. "Not allowed to scan yet" is not "nothing is
+        contested", and treating them alike made the node re-select a link it
+        had just judged jammed: the rate limiter refuses a scan, the evidence
+        vanishes, and the contested profile's penalty lifts. With a 2 s poll
+        against a 5 s minimum scan interval — the shipped example config —
+        that happened on two cycles in every three.
+
+        The retained set is bounded by the same observation-age rule the
+        analyzer uses, so stale evidence expires rather than pinning a profile
+        down forever.
+        """
         if spectrum.get("available") is not True:
+            if self._degraded_until is not None and utc_now() < self._degraded_until:
+                return self._last_degraded_bands
             return frozenset()
         contested = {BandStatus.JAMMING_SUSPECTED.value, BandStatus.ANOMALOUS.value}
         bands = spectrum.get("bands")
         if not isinstance(bands, list):
             return frozenset()
-        return frozenset(
+        current = frozenset(
             str(band.get("band_id"))
             for band in bands
             if isinstance(band, dict)
             and band.get("status") in contested
             and float(band.get("confidence") or 0.0) > 0.0
         )
+        self._last_degraded_bands = current
+        self._degraded_until = utc_now() + timedelta(
+            seconds=self.config.observation_max_age_seconds
+        )
+        return current
 
     def _fuse_state(
         self,
@@ -298,14 +374,21 @@ class KvalNode:
         # first and its verdict travels with the cycle.
         clock = self.clock.check(now=snapshot.observed_at).to_dict()
 
-        spectrum = self.capabilities.sense_spectrum(now=snapshot.observed_at)
-        power = self.capabilities.plan_power()
+        spectrum = self._guarded("spectrum", self.capabilities.sense_spectrum, now=snapshot.observed_at)
+        power = self._guarded("power", self.capabilities.plan_power)
         recovery = self._run_recovery(snapshot)
+
+        # Emission control decides which link roles may be used at all, so it
+        # is resolved before ranking rather than reported alongside it. This
+        # was previously CLI-only: a signed SILENT order sat on disk while the
+        # loop went on selecting a payload link.
+        emcon = self._guarded("emcon", self.capabilities.emcon_posture, now=snapshot.observed_at)
+        suppressed = self._suppressed_roles(emcon)
 
         degraded_bands = self._degraded_band_ids(spectrum)
         # A per-flow forecast over this node's own recorded history. It may
         # demote a link it expects to worsen, and can never promote one.
-        forecast = self.capabilities.forecast_links()
+        forecast = self._guarded("forecast", self.capabilities.forecast_links)
         forecast_degrading = self._forecast_degrading(forecast)
         recommendation = self.optimizer.recommend(
             self.catalog,
@@ -313,6 +396,8 @@ class KvalNode:
             self.config.service_class,
             degraded_band_ids=degraded_bands,
             forecast_degrading_profiles=forecast_degrading,
+            role=self.config.link_role,
+            suppressed_roles=suppressed,
         )
 
         fused = self._fuse_state(snapshot, spectrum, power, clock)
@@ -323,6 +408,9 @@ class KvalNode:
             "recovery": recovery,
             "state": fused,
             "forecast": forecast,
+            "emcon": emcon,
+            "link_role": self.config.link_role,
+            "suppressed_roles": sorted(suppressed),
             "degraded_band_ids": sorted(degraded_bands),
             "forecast_degrading_profiles": sorted(forecast_degrading),
         }

@@ -7,7 +7,7 @@ from pathlib import Path
 from .audit import AuditLedger
 from .capabilities import CapabilityServices
 from .config import NodeConfig
-from .dataset import FEATURE_NAMES, CorpusExporter, write_jsonl
+from .dataset import FEATURE_NAMES, CorpusExporter, DatasetError, write_jsonl
 from .hardware import verify_jetson_platform
 from .lease import LeaseAction
 from .service import KvalNode
@@ -18,7 +18,11 @@ DEFAULT_CONFIG = "/etc/kval/node.json"
 
 
 def _print(value: object) -> None:
-    print(json.dumps(value, indent=2, sort_keys=True, default=str))
+    # allow_nan=False: Python emits bare ``Infinity`` and ``NaN``, which RFC
+    # 8259 does not permit. Python and jq tolerate them; a Go or JavaScript
+    # consumer rejects the whole document. Refusals carry an infinite
+    # uncertainty radius, so this fired on every declined prediction.
+    print(json.dumps(value, indent=2, sort_keys=True, default=str, allow_nan=False))
 
 
 def _print_capability(result: dict[str, object]) -> None:
@@ -30,7 +34,10 @@ def _print_capability(result: dict[str, object]) -> None:
     _print(result)
     if result.get("available") is not True:
         raise SystemExit(3)
-    for key in ("verified", "valid"):
+    # Every verdict field a capability can fail on. ``audit-memory`` reports
+    # under ``trustworthy`` and exited 0 on a ledger it had just proven
+    # poisoned, because only ``verified`` and ``valid`` were checked here.
+    for key in ("verified", "valid", "trustworthy", "granted"):
         if key in result and result[key] is not True:
             raise SystemExit(4)
 
@@ -42,6 +49,8 @@ def _with_node(config_path: str, action: str, **kwargs: object) -> object:
             return node.run_once()
         if action == "benchmark":
             return node.benchmark_optimizer(int(kwargs["iterations"]))
+        if action == "c2-status":
+            return node.c2_status()
         if action == "activate":
             return node.activate_for_hil(str(kwargs["profile_id"]))
         if action == "run":
@@ -148,6 +157,15 @@ def build_parser() -> argparse.ArgumentParser:
     interference.add_argument("--victim-role", default="payload",
                               choices=["c2_cnpc", "payload", "bulk"])
 
+    c2 = subparsers.add_parser("c2-status")
+    c2.add_argument("--config", default=DEFAULT_CONFIG)
+
+    renew = subparsers.add_parser("renew-grant")
+    renew.add_argument("--config", default=DEFAULT_CONFIG)
+    renew.add_argument("--grant", required=True)
+    renew.add_argument("--attestation", action="append", default=[], required=True)
+    renew.add_argument("--extend-seconds", type=float, default=3600.0)
+
     crypto = subparsers.add_parser("crypto-posture")
     crypto.add_argument("--config", default=DEFAULT_CONFIG)
 
@@ -162,7 +180,16 @@ def build_parser() -> argparse.ArgumentParser:
 def main() -> None:
     args = build_parser().parse_args()
     if args.command == "preflight":
-        _print(verify_jetson_platform().to_dict())
+        # The one command whose job is reporting platform state must not answer
+        # with a traceback when the platform is wrong.
+        try:
+            report = verify_jetson_platform().to_dict()
+        except Exception as exc:  # noqa: BLE001 - report the refusal, do not raise it
+            _print({"supported": False, "reason": f"{type(exc).__name__}: {exc}"})
+            raise SystemExit(3) from None
+        _print(report)
+        if report.get("supported") is not True:
+            raise SystemExit(3)
         return
     if args.command == "verify-catalog":
         config = NodeConfig.load(args.config)
@@ -190,7 +217,12 @@ def main() -> None:
         _print(_with_node(args.config, "benchmark", iterations=args.iterations))
         return
     if args.command == "hil-activate":
-        _print(_with_node(args.config, "activate", profile_id=args.profile_id))
+        # Was _print, so a refused activation exited 0 and run_hil_validation.sh
+        # read it as a pass.
+        result = _with_node(args.config, "activate", profile_id=args.profile_id)
+        _print(result)
+        if isinstance(result, dict) and result.get("activation_error"):
+            raise SystemExit(4)
         return
     if args.command == "spectrum-scan":
         _print_capability(CapabilityServices(NodeConfig.load(args.config)).sense_spectrum())
@@ -217,7 +249,14 @@ def main() -> None:
     if args.command == "export-corpus":
         config = NodeConfig.load(args.config)
         exporter = CorpusExporter(config.audit_database_path, horizon_seconds=args.horizon_seconds)
-        examples, stats = exporter.export()
+        try:
+            examples, stats = exporter.export()
+        except DatasetError as exc:
+            # Every other corpus consumer refuses structurally; this one raised
+            # a traceback at a tampered ledger, which is the moment structure
+            # matters most.
+            _print_capability({"available": False, "reason": str(exc)})
+            return
         write_jsonl(examples, Path(args.output))
         _print({"output": args.output, "feature_names": list(FEATURE_NAMES), **stats.to_dict()})
         return
@@ -279,6 +318,19 @@ def main() -> None:
         services = CapabilityServices(NodeConfig.load(args.config))
         _print_capability(
             services.report_interference(args.band_id, victim_role=args.victim_role)
+        )
+        return
+    if args.command == "c2-status":
+        _print_capability(_with_node(args.config, "c2-status"))
+        return
+    if args.command == "renew-grant":
+        services = CapabilityServices(NodeConfig.load(args.config))
+        _print_capability(
+            services.renew_grant_from_files(
+                Path(args.grant),
+                [Path(item) for item in args.attestation],
+                extend_seconds=args.extend_seconds,
+            )
         )
         return
     if args.command == "crypto-posture":
