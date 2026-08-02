@@ -12,20 +12,31 @@ verify signed policy on a control laptop. Live evidence (sensor socket,
 
 from __future__ import annotations
 
+import json
 import subprocess
 from datetime import datetime
 from pathlib import Path
 from typing import Any
 
 from .config import NodeConfig
+from .fabric import (
+    FabricAggregator,
+    FabricError,
+    FabricReport,
+    PeerRoster,
+    sign_report,
+    verify_report,
+)
 from .lease import LeaseAction, LeaseError, LeaseNonceStore, redeem_lease, verify_lease
 from .models import utc_now
 from .power import PowerGovernor, PowerPolicy, PowerReading, parse_tegrastats
-from .signing import load_public_key, load_verified_document
+from .signing import load_private_key, load_public_key, load_verified_document
+from .timesync import ClockMonitor
 from .spectrum import (
     ScanRateExceeded,
     ScanRateLimiter,
     SpectrumAnalyzer,
+    SpectrumObservation,
     SpectrumPolicy,
     SpectrumSensorClient,
 )
@@ -34,6 +45,7 @@ from .transport_security import TransportPolicy, TransportVerifier
 SPECTRUM_DOCUMENT_TYPE = "kval-spectrum-policy/v1"
 POWER_DOCUMENT_TYPE = "kval-power-policy/v1"
 TRANSPORT_DOCUMENT_TYPE = "kval-transport-policy/v1"
+ROSTER_DOCUMENT_TYPE = "kval-peer-roster/v1"
 
 #: Lease actions governed by the signed power policy.
 _POWER_ACTIONS = frozenset(
@@ -193,6 +205,85 @@ class CapabilityServices:
         report["available"] = True
         report["policy_hash"] = policy_hash
         return report
+
+    # --- cross-node fabric ----------------------------------------------------
+
+    def load_peer_roster(self) -> tuple[PeerRoster, str]:
+        if self.config.fabric_roster_path is None:
+            raise FileNotFoundError("fabric_roster_path is not configured")
+        payload, payload_hash = load_verified_document(
+            self.config.fabric_roster_path,
+            self.config.catalog_public_key_path,
+            expected_type=ROSTER_DOCUMENT_TYPE,
+        )
+        return PeerRoster.from_dict(payload), payload_hash
+
+    def publish_report(self, *, now: datetime | None = None) -> dict[str, Any]:
+        """Sense locally and emit this node's signed report for its peers."""
+        if self.config.fabric_node_key_path is None:
+            return _unavailable("fabric publishing is not configured (no node key)")
+        spectrum = self.sense_spectrum(now=now)
+        if spectrum.get("available") is not True:
+            return {"available": False, "reason": f"cannot report: {spectrum.get('reason')}"}
+        try:
+            private_key = load_private_key(self.config.fabric_node_key_path)
+        except Exception as exc:
+            return {"available": False, "reason": f"fabric node key unusable: {exc}"}
+
+        clock = ClockMonitor().check(now=now)
+        policy, policy_hash = self.load_spectrum_policy()
+        intelligence = SpectrumAnalyzer(
+            max_observation_age_seconds=self.config.observation_max_age_seconds
+        ).analyze(
+            policy,
+            [SpectrumObservation.from_dict(item) for item in spectrum.get("observations", [])],
+            now=now,
+        )
+        report = FabricReport.from_intelligence(
+            intelligence,
+            node_id=self.config.node_id,
+            policy_hash=policy_hash,
+            clock_trusted=clock.trusted,
+        )
+        return {
+            "available": True,
+            "clock": clock.to_dict(),
+            "report": sign_report(report, private_key),
+        }
+
+    def aggregate_fleet(self, *, now: datetime | None = None) -> dict[str, Any]:
+        """Verify peer reports from the inbox and fuse them into a fleet view."""
+        if self.config.fabric_roster_path is None or self.config.fabric_inbox_path is None:
+            return _unavailable("fabric aggregation is not configured (roster and inbox required)")
+        try:
+            roster, roster_hash = self.load_peer_roster()
+        except Exception as exc:
+            return {"available": False, "reason": f"peer roster invalid: {exc}"}
+
+        inbox = self.config.fabric_inbox_path
+        candidates = sorted(inbox.glob("*.json")) if inbox.is_dir() else []
+        verified: list[FabricReport] = []
+        rejected: list[dict[str, str]] = []
+        for path in candidates:
+            try:
+                envelope = json.loads(path.read_text(encoding="utf-8"))
+                verified.append(verify_report(envelope, roster, now=now))
+            except (FabricError, json.JSONDecodeError, OSError) as exc:
+                # A bad report is dropped with a reason; it never degrades the
+                # view of the peers that did report correctly.
+                rejected.append({"source": path.name, "reason": str(exc)})
+
+        view = FabricAggregator().aggregate(
+            verified,
+            expected_nodes=frozenset(peer.node_id for peer in roster.peers) - {self.config.node_id},
+            now=now,
+        )
+        result = view.to_dict()
+        result["available"] = True
+        result["roster_id"] = roster.roster_id
+        result["roster_hash"] = roster_hash
+        result["rejected_reports"] = rejected
+        return result
 
     # --- leases ---------------------------------------------------------------
 

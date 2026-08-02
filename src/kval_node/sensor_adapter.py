@@ -388,6 +388,165 @@ class NmcliWifiBackend:
         return results
 
 
+# --- ModemManager (cellular bands, free on any node with a modem) ---------------
+
+
+@dataclass(frozen=True)
+class ServingCell:
+    freq_hz: int | None
+    rsrp_dbm: float | None
+    rsrq_db: float | None
+    sinr_db: float | None
+    technology: str | None
+
+
+def _first_number(value: Any) -> float | None:
+    """ModemManager renders numbers as strings, lists, or dicts by version."""
+    if value is None:
+        return None
+    if isinstance(value, dict):
+        value = value.get("value")
+    if isinstance(value, (list, tuple)):
+        value = value[0] if value else None
+    if value in (None, "--", ""):
+        return None
+    try:
+        return float(value)
+    except (TypeError, ValueError):
+        return None
+
+
+def parse_mmcli_signal(document: dict[str, Any]) -> ServingCell:
+    """Extract serving-cell measurements from ``mmcli -m <n> --signal-get -J``.
+
+    RSRP and RSRQ are genuine physical-layer measurements the modem reports for
+    the cell it is camped on. Unlike a Wi-Fi quality percentage they are already
+    in dBm/dB, so they can be used as real power figures.
+    """
+    modem = document.get("modem", {}) if isinstance(document, dict) else {}
+    signal = modem.get("signal", {}) if isinstance(modem, dict) else {}
+    technology = None
+    cell: dict[str, Any] = {}
+    for name in ("5g", "nr5g", "lte", "umts", "gsm", "cdma1x", "evdo"):
+        candidate = signal.get(name)
+        if isinstance(candidate, dict) and any(v not in (None, "--") for v in candidate.values()):
+            technology = name
+            cell = candidate
+            break
+    return ServingCell(
+        freq_hz=None,
+        rsrp_dbm=_first_number(cell.get("rsrp")),
+        rsrq_db=_first_number(cell.get("rsrq")),
+        sinr_db=_first_number(cell.get("snr") or cell.get("sinr")),
+        technology=technology,
+    )
+
+
+def parse_mmcli_location_frequency(document: dict[str, Any]) -> int | None:
+    """Extract the serving-cell centre frequency in Hz when the modem reports it."""
+    modem = document.get("modem", {}) if isinstance(document, dict) else {}
+    generic = modem.get("generic", {}) if isinstance(modem, dict) else {}
+    for key in ("earfcn", "nrarfcn", "arfcn", "frequency"):
+        value = _first_number(generic.get(key))
+        if value is not None and value > 1_000_000:
+            return int(value)
+    return None
+
+
+class ModemSignalBackend:
+    """Serving-cell RSRP/RSRQ/SINR from ModemManager.
+
+    This adds real measurements in the cellular bands to nodes that already have
+    a modem, without any extra hardware. It reports peak power (RSRP, a genuine
+    dBm figure) and a noise-floor estimate derived from RSRP and SINR, which is
+    a standard relation and is documented as an estimate rather than a direct
+    measurement. It never claims an occupancy figure, because a serving-cell
+    report says nothing about how busy the band is.
+    """
+
+    name = "modem-signal"
+
+    def available(self) -> bool:
+        try:
+            result = run_command(["mmcli", "-L", "-J"], timeout_seconds=5.0)
+        except CommandError:
+            return False
+        return result.returncode == 0
+
+    def _modems(self) -> list[str]:
+        result = run_command(["mmcli", "-L", "-J"], timeout_seconds=5.0)
+        if result.returncode != 0:
+            raise CommandError(result.stderr.strip() or "mmcli -L failed")
+        try:
+            listing = json.loads(result.stdout)
+        except json.JSONDecodeError as exc:
+            raise CommandError("mmcli returned malformed JSON") from exc
+        return [str(path) for path in listing.get("modem-list", [])]
+
+    def measure(self, bands: Sequence[SpectrumBand]) -> dict[str, BandMeasurement]:
+        try:
+            modems = self._modems()
+        except CommandError as exc:
+            return {
+                band.band_id: BandMeasurement(band.band_id, None, None, None, 0, 0.0, (), (str(exc),))
+                for band in bands
+            }
+        cells: list[tuple[ServingCell, int | None]] = []
+        for path in modems:
+            try:
+                # Enabling signal polling is a receive-only refresh of the
+                # modem's own measurement reporting; it transmits nothing.
+                run_command(["mmcli", "-m", path, "--signal-setup=5"], timeout_seconds=10.0)
+                signal_result = run_command(["mmcli", "-m", path, "--signal-get", "-J"], timeout_seconds=10.0)
+                info_result = run_command(["mmcli", "-m", path, "-J"], timeout_seconds=10.0)
+            except CommandError:
+                continue
+            if signal_result.returncode != 0:
+                continue
+            try:
+                signal_doc = json.loads(signal_result.stdout)
+                info_doc = json.loads(info_result.stdout) if info_result.returncode == 0 else {}
+            except json.JSONDecodeError:
+                continue
+            cells.append((parse_mmcli_signal(signal_doc), parse_mmcli_location_frequency(info_doc)))
+
+        results: dict[str, BandMeasurement] = {}
+        for band in bands:
+            in_band = [
+                cell
+                for cell, freq in cells
+                if freq is not None and band.freq_low_hz <= freq <= band.freq_high_hz
+            ]
+            if not in_band:
+                results[band.band_id] = BandMeasurement(
+                    band.band_id, None, None, None, 0, 0.0, (),
+                    (f"{self.name}: no serving cell reported inside this band",),
+                )
+                continue
+            rsrps = [cell.rsrp_dbm for cell in in_band if cell.rsrp_dbm is not None]
+            # Noise floor estimate: N = RSRP - SINR. Standard relation, but an
+            # estimate rather than a measured floor, so it is labelled as such.
+            floors = [
+                cell.rsrp_dbm - cell.sinr_db
+                for cell in in_band
+                if cell.rsrp_dbm is not None and cell.sinr_db is not None
+            ]
+            evidence_errors: tuple[str, ...] = ()
+            if floors:
+                evidence_errors = (f"{self.name}: noise floor is estimated as RSRP-SINR, not measured",)
+            results[band.band_id] = BandMeasurement(
+                band_id=band.band_id,
+                occupancy_percent=None,
+                noise_floor_dbm=(max(floors) if floors else None),
+                peak_power_dbm=(max(rsrps) if rsrps else None),
+                detected_emitters=len(in_band),
+                quality=1.0 if rsrps else 0.0,
+                sources=(self.name,),
+                errors=evidence_errors,
+            )
+        return results
+
+
 # --- rtl_power (real SDR power spectral density) --------------------------------
 
 
@@ -623,6 +782,7 @@ def build_backends(
     interface: str | None,
     enable_scan: bool = True,
     enable_sdr: bool = True,
+    enable_modem: bool = True,
 ) -> list[SensorBackend]:
     """Select the real backends actually present on this host.
 
@@ -646,4 +806,9 @@ def build_backends(
         sdr = RtlPowerBackend()
         if sdr.available():
             backends.append(sdr)
+    if enable_modem:
+        # Free cellular-band coverage on any node that already has a modem.
+        modem = ModemSignalBackend()
+        if modem.available():
+            backends.append(modem)
     return backends

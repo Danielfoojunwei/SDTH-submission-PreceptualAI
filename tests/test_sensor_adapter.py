@@ -21,6 +21,7 @@ from kval_node.sensor_adapter import (
     occupancy_from_sweep,
     parse_iw_scan,
     parse_iw_survey,
+    parse_mmcli_signal,
     parse_rtl_power_csv,
 )
 from kval_node.spectrum import SpectrumBand, SpectrumObservation, SpectrumPolicy
@@ -159,6 +160,50 @@ class RtlPowerParserTests(unittest.TestCase):
 
     def test_malformed_rows_are_skipped(self) -> None:
         self.assertEqual(parse_rtl_power_csv("not,a,valid,row\n"), [])
+
+
+MMCLI_SIGNAL_LTE = {
+    "modem": {
+        "signal": {
+            "lte": {"rsrp": "-95.00", "rsrq": "-11.00", "snr": "12.50", "rssi": "--"},
+            "5g": {"rsrp": "--", "rsrq": "--", "snr": "--"},
+            "umts": {"rscp": "--", "ecio": "--"},
+        }
+    }
+}
+
+MMCLI_SIGNAL_NR = {
+    "modem": {
+        "signal": {
+            "lte": {"rsrp": "--", "rsrq": "--", "snr": "--"},
+            "5g": {"rsrp": "-88.00", "rsrq": "-10.00", "snr": "18.00"},
+        }
+    }
+}
+
+
+class ModemSignalParserTests(unittest.TestCase):
+    def test_parses_lte_serving_cell(self) -> None:
+        cell = parse_mmcli_signal(MMCLI_SIGNAL_LTE)
+        self.assertEqual(cell.technology, "lte")
+        self.assertEqual(cell.rsrp_dbm, -95.0)
+        self.assertEqual(cell.rsrq_db, -11.0)
+        self.assertEqual(cell.sinr_db, 12.5)
+
+    def test_prefers_the_active_technology(self) -> None:
+        cell = parse_mmcli_signal(MMCLI_SIGNAL_NR)
+        self.assertEqual(cell.technology, "5g")
+        self.assertEqual(cell.rsrp_dbm, -88.0)
+
+    def test_placeholder_values_are_not_numbers(self) -> None:
+        empty = {"modem": {"signal": {"lte": {"rsrp": "--", "rsrq": "--", "snr": "--"}}}}
+        cell = parse_mmcli_signal(empty)
+        self.assertIsNone(cell.rsrp_dbm)
+        self.assertIsNone(cell.technology)
+
+    def test_missing_document_is_handled(self) -> None:
+        cell = parse_mmcli_signal({})
+        self.assertIsNone(cell.rsrp_dbm)
 
 
 class MergeTests(unittest.TestCase):

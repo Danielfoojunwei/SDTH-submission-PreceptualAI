@@ -7,6 +7,7 @@ from pathlib import Path
 from .audit import AuditLedger
 from .capabilities import CapabilityServices
 from .config import NodeConfig
+from .dataset import FEATURE_NAMES, CorpusExporter, write_jsonl
 from .hardware import verify_jetson_platform
 from .lease import LeaseAction
 from .service import KvalNode
@@ -86,6 +87,18 @@ def build_parser() -> argparse.ArgumentParser:
     transport = subparsers.add_parser("transport-preflight")
     transport.add_argument("--config", default=DEFAULT_CONFIG)
 
+    export = subparsers.add_parser("export-corpus")
+    export.add_argument("--config", default=DEFAULT_CONFIG)
+    export.add_argument("--output", required=True, help="JSONL destination")
+    export.add_argument("--horizon-seconds", type=float, default=60.0)
+
+    fabric_report = subparsers.add_parser("fabric-report")
+    fabric_report.add_argument("--config", default=DEFAULT_CONFIG)
+    fabric_report.add_argument("--output", default=None, help="write the signed report here")
+
+    fabric_view = subparsers.add_parser("fabric-view")
+    fabric_view.add_argument("--config", default=DEFAULT_CONFIG)
+
     lease = subparsers.add_parser("verify-lease")
     lease.add_argument("--config", default=DEFAULT_CONFIG)
     lease.add_argument("--lease", required=True)
@@ -141,6 +154,24 @@ def main() -> None:
         return
     if args.command == "transport-preflight":
         _print_capability(CapabilityServices(NodeConfig.load(args.config)).transport_preflight())
+        return
+    if args.command == "export-corpus":
+        config = NodeConfig.load(args.config)
+        exporter = CorpusExporter(config.audit_database_path, horizon_seconds=args.horizon_seconds)
+        examples, stats = exporter.export()
+        write_jsonl(examples, Path(args.output))
+        _print({"output": args.output, "feature_names": list(FEATURE_NAMES), **stats.to_dict()})
+        return
+    if args.command == "fabric-report":
+        result = CapabilityServices(NodeConfig.load(args.config)).publish_report()
+        if args.output and result.get("available") is True:
+            Path(args.output).write_text(
+                json.dumps(result["report"], indent=2, sort_keys=True) + "\n", encoding="utf-8"
+            )
+        _print_capability(result)
+        return
+    if args.command == "fabric-view":
+        _print_capability(CapabilityServices(NodeConfig.load(args.config)).aggregate_fleet())
         return
     if args.command == "verify-lease":
         services = CapabilityServices(NodeConfig.load(args.config))

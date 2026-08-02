@@ -32,6 +32,17 @@ Implemented production paths:
   (`kval-spectrum-sensord`) that measures the real RF environment via
   `iw survey`/`iw scan` and, when an RTL-SDR is attached, `rtl_power`. It
   refuses to start when no measurement backend exists.
+- **A closed decision loop**: `run_once` now observes, checks clock integrity,
+  senses spectrum, governs power, advances the recovery state machine, fuses
+  modalities with provenance, and ranks profiles — demoting (never promoting)
+  those whose operator-declared spectrum band is contested.
+- **Cross-node fabric**: nodes publish operator-signed spectrum reports; a vault
+  node verifies them against a signed roster and fuses them into a fleet view.
+  Unrostered authors are refused, and reports from an undisciplined clock are
+  excluded from corroboration.
+- **Training corpus exporter**: turns the audit ledger into labelled
+  (features, outcome) examples with no leakage, refusing to export from a ledger
+  whose hash chain does not verify.
 - **Real band-plan and catalogue data**: `config/band-plans.json` carries
   published FCC/ETSI/ITU allocations with per-band sources;
   `generate_spectrum_policy.py` and `generate_catalog.py` build policies and
@@ -71,8 +82,18 @@ Not claimed yet:
   ruleset on the physical node.
 - Power, energy-per-bit, or battery-life figures for any node or sub-node.
 - FHE on the Jetson. Private fleet coordination remains a separate service.
-- A separately packaged reduced wheel for low-compute sub-nodes. The supported
-  module boundary is documented; the packaging work is not done.
+- Multi-node geolocation (TDOA or RSSI multilateration). The fabric moves and
+  fuses reports, but turning those into a position needs per-node location and
+  calibrated timing; it would be dishonest to claim from occupancy alone.
+- Any cross-node result measured on physically separate hardware. The fabric is
+  verified in software only — signing, roster verification, refusal of
+  unrostered authors, quorum corroboration, and clock-gated correlation.
+- A trained model. The corpus exporter now produces the data a model would need;
+  training, evaluation, and promotion remain outside this repository.
+
+A separately packaged sub-node wheel turned out to be unnecessary: the thin
+modules and the capability entry point do not import the Jetson platform gate,
+so the same wheel already serves a sub-node. A test pins that boundary.
 
 There are no simulated telemetry providers or permissive production fallbacks.
 Missing hardware, unsigned policy, missing probes, an absent sensor adapter, or
@@ -240,6 +261,7 @@ tests.
 ## Documentation
 
 - [Architecture](docs/ARCHITECTURE.md)
+- [The closed loop and the cross-node fabric](docs/CLOSED_LOOP_AND_FABRIC.md)
 - [Spectrum-sensing fabric](docs/SPECTRUM_SENSING_FABRIC.md)
 - [Low-compute sub-nodes](docs/LOW_COMPUTE_SUBNODE.md)
 - [Learning in autonomous networks — problems first](docs/AUTONOMOUS_NETWORK_LEARNING.md)

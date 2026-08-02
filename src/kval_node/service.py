@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import hashlib
 import json
 import os
 import signal
@@ -9,20 +10,31 @@ from datetime import datetime, timezone
 from pathlib import Path
 
 from .audit import AuditLedger
+from .capabilities import CapabilityServices
 from .config import NodeConfig
 from .executor import NetworkManagerExecutor
 from .hardware import PlatformReport, verify_jetson_platform
 from .models import (
+    LinkObservation,
     Recommendation,
     ScoredProfile,
     ShieldAction,
     TelemetrySnapshot,
     utc_now,
 )
+from .multimodal import Modality, ModalityObservation, MultimodalFuser
 from .optimizer import ProfileOptimizer
 from .policy import SafetyShield
+from .recovery import LinkStateMachine, RecoveryAction
 from .signing import load_verified_catalog
+from .spectrum import BandStatus
 from .telemetry import TelemetryCollector
+from .timesync import ClockMonitor
+
+#: Provenance marker for observations Kval derived itself rather than received
+#: from a signed external adapter. It is a real digest of the deriving module's
+#: identity, so an auditor can tell locally-derived features from adapter ones.
+_LOCAL_PROVENANCE = hashlib.sha256(b"kval-node/service/local-derivation/v1").hexdigest()
 
 
 class KvalNode:
@@ -40,10 +52,139 @@ class KvalNode:
             minimum_confidence=config.minimum_confidence,
         )
         self.executor = NetworkManagerExecutor()
+        # Capability loops. Each is optional and fails closed when its signed
+        # policy or evidence is absent, so a node configured exactly as it was
+        # before this change behaves exactly as it did before this change.
+        self.capabilities = CapabilityServices(config)
+        self.clock = ClockMonitor()
+        self.fuser = MultimodalFuser(window_seconds=config.observation_max_age_seconds)
+        self._link_machines: dict[str, LinkStateMachine] = {}
         self._stop = False
 
     def close(self) -> None:
         self.audit.close()
+
+    # --- capability loops ----------------------------------------------------
+
+    def _machine_for(self, profile_id: str) -> LinkStateMachine:
+        machine = self._link_machines.get(profile_id)
+        if machine is None:
+            machine = LinkStateMachine()
+            self._link_machines[profile_id] = machine
+        return machine
+
+    def _run_recovery(self, snapshot: TelemetrySnapshot) -> dict[str, object]:
+        """Advance the link-health state machine for the profile in use."""
+        current_id = snapshot.current_profile_id
+        if current_id is None:
+            return {"available": False, "reason": "no current profile to track"}
+        observation = next(
+            (item for item in snapshot.observations if item.profile_id == current_id), None
+        )
+        if observation is None:
+            return {"available": False, "reason": "no observation for the current profile"}
+        decision = self._machine_for(current_id).observe(observation, now=snapshot.observed_at)
+        return {"available": True, "profile_id": current_id, **decision.to_dict()}
+
+    def _degraded_band_ids(self, spectrum: dict[str, object]) -> frozenset[str]:
+        """Bands the local sensor reports as contested, if sensing is available."""
+        if spectrum.get("available") is not True:
+            return frozenset()
+        contested = {BandStatus.JAMMING_SUSPECTED.value, BandStatus.ANOMALOUS.value}
+        bands = spectrum.get("bands")
+        if not isinstance(bands, list):
+            return frozenset()
+        return frozenset(
+            str(band.get("band_id"))
+            for band in bands
+            if isinstance(band, dict)
+            and band.get("status") in contested
+            and float(band.get("confidence") or 0.0) > 0.0
+        )
+
+    def _fuse_state(
+        self,
+        snapshot: TelemetrySnapshot,
+        spectrum: dict[str, object],
+        power: dict[str, object],
+        clock: dict[str, object],
+    ) -> dict[str, object]:
+        """Bind this cycle's modalities into one provenance-tagged state."""
+        observations: list[ModalityObservation] = []
+
+        best: LinkObservation | None = None
+        for item in snapshot.observations:
+            if item.confidence() > 0.0 and (best is None or item.confidence() > best.confidence()):
+                best = item
+        if best is not None:
+            observations.append(
+                ModalityObservation.create(
+                    Modality.NETWORK,
+                    source_id=f"telemetry:{best.profile_id}",
+                    observed_at=best.observed_at,
+                    features={
+                        "rtt_ms": best.rtt_ms or 0.0,
+                        "loss_percent": best.loss_percent or 0.0,
+                        "jitter_ms": best.jitter_ms or 0.0,
+                    },
+                    provenance_hash=_LOCAL_PROVENANCE,
+                    quality=best.confidence(),
+                )
+            )
+
+        if power.get("available") is True:
+            reading = power.get("reading")
+            recommendation = power.get("recommendation")
+            if isinstance(reading, dict) and isinstance(recommendation, dict):
+                features = {"max_inference_duty": float(recommendation.get("max_inference_duty") or 0.0)}
+                for key in ("cpu_temp_c", "gpu_temp_c", "junction_temp_c", "module_watts"):
+                    value = reading.get(key)
+                    if value is not None:
+                        features[key] = float(value)
+                observations.append(
+                    ModalityObservation.create(
+                        Modality.POWER,
+                        source_id=str(power.get("policy_id", "power")),
+                        observed_at=snapshot.observed_at,
+                        features=features,
+                        provenance_hash=str(power.get("policy_hash") or _LOCAL_PROVENANCE),
+                    )
+                )
+
+        if spectrum.get("available") is True:
+            bands = spectrum.get("bands")
+            band_list = bands if isinstance(bands, list) else []
+            observations.append(
+                ModalityObservation.create(
+                    Modality.SPECTRUM,
+                    source_id=str(spectrum.get("policy_id", "spectrum")),
+                    observed_at=snapshot.observed_at,
+                    features={
+                        "contested_bands": float(len(self._degraded_band_ids(spectrum))),
+                        "clear_comms_bands": float(len(spectrum.get("clear_comms_band_ids") or [])),
+                        "assessed_bands": float(len(band_list)),
+                    },
+                    provenance_hash=str(spectrum.get("policy_hash") or _LOCAL_PROVENANCE),
+                )
+            )
+
+        # Clock integrity is the security modality: an undisciplined clock is
+        # exactly the state in which freshness checks stop meaning anything.
+        observations.append(
+            ModalityObservation.create(
+                Modality.SECURITY,
+                source_id="clock-integrity",
+                observed_at=snapshot.observed_at,
+                features={
+                    "clock_trusted": 1.0 if clock.get("trusted") else 0.0,
+                    "observed_step_seconds": float(clock.get("observed_step_seconds") or 0.0),
+                },
+                provenance_hash=_LOCAL_PROVENANCE,
+                quality=1.0 if clock.get("trusted") else 0.0,
+            )
+        )
+
+        return self.fuser.fuse(observations, now=snapshot.observed_at).to_dict()
 
     def _write_latest(self, payload: dict[str, object]) -> None:
         destination = self.config.latest_result_path
@@ -68,6 +209,7 @@ class KvalNode:
         recommendation: Recommendation,
         *,
         apply_requested: bool,
+        capabilities: dict[str, object] | None = None,
     ) -> dict[str, object]:
         decision = self.shield.evaluate(recommendation, snapshot, apply_requested=apply_requested)
         activation: dict[str, object] | None = None
@@ -103,6 +245,7 @@ class KvalNode:
             "decision": decision.to_dict(),
             "activation": activation,
             "activation_error": activation_error,
+            "capabilities": capabilities or {},
         }
         record_hash = self.audit.append(self.config.node_id, "decision", payload)
         payload["audit_record_hash"] = record_hash
@@ -110,13 +253,59 @@ class KvalNode:
         return payload
 
     def run_once(self) -> dict[str, object]:
+        """One full cycle: observe -> sense -> govern -> fuse -> decide -> audit.
+
+        Each capability loop is optional and independently fail-closed. When a
+        capability is unconfigured it reports ``available: false`` with a reason
+        and contributes nothing to the decision, so the loop degrades to the
+        deterministic connectivity behaviour rather than stalling.
+        """
         snapshot = self.collector.collect(self.catalog)
-        recommendation = self.optimizer.recommend(self.catalog, snapshot, self.config.service_class)
-        return self._finish_cycle(
+
+        # Clock integrity gates everything that compares timestamps, so it runs
+        # first and its verdict travels with the cycle.
+        clock = self.clock.check(now=snapshot.observed_at).to_dict()
+
+        spectrum = self.capabilities.sense_spectrum(now=snapshot.observed_at)
+        power = self.capabilities.plan_power()
+        recovery = self._run_recovery(snapshot)
+
+        degraded_bands = self._degraded_band_ids(spectrum)
+        recommendation = self.optimizer.recommend(
+            self.catalog,
+            snapshot,
+            self.config.service_class,
+            degraded_band_ids=degraded_bands,
+        )
+
+        fused = self._fuse_state(snapshot, spectrum, power, clock)
+        capabilities: dict[str, object] = {
+            "clock": clock,
+            "spectrum": spectrum,
+            "power": power,
+            "recovery": recovery,
+            "state": fused,
+            "degraded_band_ids": sorted(degraded_bands),
+        }
+
+        # A recovery escalation is an operator matter, not something the node
+        # resolves by switching again; record it in its own audit entry so it is
+        # visible without reading every decision record.
+        if recovery.get("action") == RecoveryAction.ESCALATE.value:
+            self.audit.append(self.config.node_id, "escalation", recovery)
+
+        payload = self._finish_cycle(
             snapshot,
             recommendation,
             apply_requested=self.config.apply_network_changes,
+            capabilities=capabilities,
         )
+        # An activation is a link switch; the state machine must know so its
+        # flap ceiling reflects reality.
+        activation = payload.get("activation")
+        if isinstance(activation, dict) and activation.get("success") is True:
+            self._machine_for(str(activation.get("profile_id"))).record_switch(snapshot.observed_at)
+        return payload
 
     def activate_for_hil(self, profile_id: str) -> dict[str, object]:
         profile = self.catalog.by_id().get(profile_id)

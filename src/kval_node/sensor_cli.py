@@ -66,6 +66,7 @@ def build_parser() -> argparse.ArgumentParser:
         help="disable the active-probing iw scan backend; survey and SDR only",
     )
     parser.add_argument("--no-sdr", action="store_true", help="do not use an attached RTL-SDR")
+    parser.add_argument("--no-modem", action="store_true", help="do not use ModemManager serving-cell data")
     return parser
 
 
@@ -83,11 +84,13 @@ def main() -> None:
         interface=args.interface,
         enable_scan=not args.passive_scan_only,
         enable_sdr=not args.no_sdr,
+        enable_modem=not args.no_modem,
     )
     if not backends:
         raise SystemExit(
             "no real measurement backend is available (need iw/nmcli on a wireless "
-            "interface, or an attached RTL-SDR); refusing to serve observations"
+            "interface, an attached RTL-SDR, or a ModemManager modem); refusing to "
+            "serve observations"
         )
 
     adapter = SpectrumSensorAdapter(

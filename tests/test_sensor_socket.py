@@ -21,6 +21,7 @@ import unittest
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
+from kval_node.models import utc_now
 from kval_node.sensor_adapter import BandMeasurement, SpectrumSensorAdapter
 from kval_node.sensor_cli import _Handler, _Server
 from kval_node.spectrum import BandStatus, SpectrumAnalyzer, SpectrumPolicy, SpectrumSensorClient
@@ -114,7 +115,10 @@ class SensorSocketTests(unittest.TestCase):
         self.assertEqual(len(observations), 2)
         self.assertTrue(all(item.passive for item in observations))
 
-        intel = SpectrumAnalyzer().analyze(self.policy, observations, now=NOW)
+        # Analyse at the time the scan was actually taken. The adapter stamps
+        # observations with the real clock, so analysing at a fixed module-level
+        # timestamp would (correctly) have them discarded as future-dated.
+        intel = SpectrumAnalyzer().analyze(self.policy, observations, now=utc_now())
         by_band = {band.band_id: band for band in intel.bands}
         # 92% occupancy with a 15 dB noise-floor rise on 2.4 GHz.
         self.assertEqual(by_band["ism-2g4"].status, BandStatus.JAMMING_SUSPECTED)
@@ -131,7 +135,7 @@ class SensorSocketTests(unittest.TestCase):
         }
         path, _server = self._serve(measurements)
         observations = SpectrumSensorClient().scan(path, self.policy)
-        intel = SpectrumAnalyzer().analyze(self.policy, observations, now=NOW)
+        intel = SpectrumAnalyzer().analyze(self.policy, observations, now=utc_now())
         by_band = {band.band_id: band for band in intel.bands}
         self.assertEqual(by_band["ism-2g4"].status, BandStatus.INSUFFICIENT_EVIDENCE)
         self.assertNotIn("ism-2g4", intel.clear_comms_band_ids)

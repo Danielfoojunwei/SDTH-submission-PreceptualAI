@@ -36,6 +36,11 @@ class NodeConfig:
     transport_wifi_connection_uuid: str | None = None
     lease_public_key_path: Path | None = None
     lease_nonce_database_path: Path | None = None
+    # Cross-node fabric. The roster is operator-signed; the node key signs this
+    # node's own reports; the inbox is where verified peer reports are read from.
+    fabric_roster_path: Path | None = None
+    fabric_node_key_path: Path | None = None
+    fabric_inbox_path: Path | None = None
 
     @classmethod
     def load(cls, path: str | Path) -> "NodeConfig":
@@ -89,5 +94,8 @@ class NodeConfig:
             transport_wifi_connection_uuid=transport_wifi_uuid or None,
             lease_public_key_path=_optional_path(raw, "lease_public_key_path"),
             lease_nonce_database_path=_optional_path(raw, "lease_nonce_database_path"),
+            fabric_roster_path=_optional_path(raw, "fabric_roster_path"),
+            fabric_node_key_path=_optional_path(raw, "fabric_node_key_path"),
+            fabric_inbox_path=_optional_path(raw, "fabric_inbox_path"),
         )
 

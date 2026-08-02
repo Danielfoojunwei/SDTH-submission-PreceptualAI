@@ -18,9 +18,11 @@ sys.path.insert(0, str(PROJECT_ROOT / "src"))
 
 from kval_node.capabilities import (  # noqa: E402
     POWER_DOCUMENT_TYPE,
+    ROSTER_DOCUMENT_TYPE,
     SPECTRUM_DOCUMENT_TYPE,
     TRANSPORT_DOCUMENT_TYPE,
 )
+from kval_node.fabric import PeerRoster  # noqa: E402
 from kval_node.lease import sign_lease  # noqa: E402
 from kval_node.power import PowerPolicy  # noqa: E402
 from kval_node.signing import (  # noqa: E402
@@ -37,6 +39,7 @@ DOCUMENT_TYPES = {
     "spectrum": (SPECTRUM_DOCUMENT_TYPE, SpectrumPolicy.from_dict),
     "power": (POWER_DOCUMENT_TYPE, PowerPolicy.from_dict),
     "transport": (TRANSPORT_DOCUMENT_TYPE, TransportPolicy.from_dict),
+    "roster": (ROSTER_DOCUMENT_TYPE, PeerRoster.from_dict),
 }
 
 

@@ -64,8 +64,22 @@ OBJECTIVES: dict[ServiceClass, Objective] = {
 }
 
 
+#: Utility multiplier applied to a profile whose declared spectrum band is
+#: showing corroborated interference. Passive sensing is coarse, so it is given
+#: enough weight to break a near-tie and steer away from a contested band, but
+#: never enough to override complete live probe evidence on its own.
+SPECTRUM_DEGRADED_MULTIPLIER = 0.6
+
+
 class ProfileOptimizer:
-    """Transparent constrained optimizer over real observations."""
+    """Transparent constrained optimizer over real observations.
+
+    Spectrum evidence enters in exactly one direction: it can **demote** a
+    profile whose operator-declared band is contested. It can never promote one.
+    A band that merely looks quiet is not evidence that a link works — only the
+    live probe is — so sensing is allowed to warn us off a medium and nothing
+    more.
+    """
 
     @staticmethod
     def _score(
@@ -75,6 +89,7 @@ class ProfileOptimizer:
         energy_cost: float,
         is_current: bool,
         objective: Objective,
+        spectrum_degraded: bool = False,
     ) -> ScoredProfile:
         reasons: list[str] = []
         if not observation.interface_present:
@@ -103,12 +118,17 @@ class ProfileOptimizer:
         }
         utility = sum(components[name] * weight for name, weight in objective.weights.items())
         utility *= observation.confidence()
+        scored_reasons = ["LIVE_EVIDENCE_SCORED"]
+        if spectrum_degraded:
+            utility *= SPECTRUM_DEGRADED_MULTIPLIER
+            components["spectrum_penalty"] = SPECTRUM_DEGRADED_MULTIPLIER
+            scored_reasons.append("SPECTRUM_BAND_CONTESTED")
         return ScoredProfile(
             profile_id=observation.profile_id,
             utility=round(utility, 8),
             confidence=observation.confidence(),
             components={key: round(value, 8) for key, value in components.items()},
-            reasons=("LIVE_EVIDENCE_SCORED",),
+            reasons=tuple(scored_reasons),
         )
 
     def recommend(
@@ -116,7 +136,16 @@ class ProfileOptimizer:
         catalog: Catalog,
         snapshot: TelemetrySnapshot,
         service_class: ServiceClass,
+        *,
+        degraded_band_ids: frozenset[str] = frozenset(),
     ) -> Recommendation:
+        """Rank approved profiles.
+
+        ``degraded_band_ids`` names spectrum bands currently showing corroborated
+        interference. A profile that declared one of those bands in the signed
+        catalogue is demoted; profiles that declared no bands are unaffected, so
+        a node without spectrum sensing behaves exactly as before.
+        """
         observations = {item.profile_id: item for item in snapshot.observations}
         objective = OBJECTIVES[service_class]
         scores: list[ScoredProfile] = []
@@ -135,6 +164,7 @@ class ProfileOptimizer:
                     energy_cost=profile.energy_cost,
                     is_current=profile.profile_id == snapshot.current_profile_id,
                     objective=objective,
+                    spectrum_degraded=bool(profile.spectrum_band_ids & degraded_band_ids),
                 )
             )
 
