@@ -1,0 +1,58 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://preceptual.ai/kval/schemas/capability-lease-v1.schema.json",
+  "title": "Kval capability lease",
+  "description": "An operator-signed, single-use, expiring authorization for exactly one bounded action.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["algorithm", "key_id", "body", "signature"],
+  "properties": {
+    "algorithm": {"const": "Ed25519"},
+    "key_id": {"type": "string", "minLength": 1},
+    "signature": {"type": "string", "minLength": 1},
+    "body": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "lease_id",
+        "node_id",
+        "action",
+        "bounds",
+        "policy_hash",
+        "nonce",
+        "issued_at",
+        "expires_at",
+        "rollback_action",
+        "required_postcondition"
+      ],
+      "properties": {
+        "lease_id": {"type": "string", "minLength": 1},
+        "node_id": {"type": "string", "minLength": 1},
+        "action": {
+          "enum": [
+            "select_connectivity_profile",
+            "failover_connectivity",
+            "set_power_mode",
+            "set_inference_duty",
+            "set_scan_interval",
+            "set_telemetry_interval",
+            "set_qos_budget",
+            "activate_approved_spectrum_profile",
+            "quarantine_update"
+          ]
+        },
+        "bounds": {
+          "type": "object",
+          "minProperties": 1,
+          "additionalProperties": {"type": "number"}
+        },
+        "policy_hash": {"type": "string", "pattern": "^[0-9a-fA-F]{64}$"},
+        "nonce": {"type": "string", "minLength": 16, "maxLength": 128},
+        "issued_at": {"type": "string", "format": "date-time"},
+        "expires_at": {"type": "string", "format": "date-time"},
+        "rollback_action": {"type": "string", "minLength": 1},
+        "required_postcondition": {"type": "string", "minLength": 1}
+      }
+    }
+  }
+}

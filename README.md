@@ -3,11 +3,13 @@
 Kval is the Jetson Orin Nano edge node for SPECTRAVAULT. It observes real Linux
 network interfaces, measures real reachability, ranks only operator-approved
 connectivity profiles, applies deterministic safety rules, and can ask
-NetworkManager to activate an approved connection UUID.
+NetworkManager to activate an approved connection UUID. It also senses the radio
+spectrum **passively** and governs its own power and secure-transport boundary
+inside operator-signed limits.
 
 The supported access labels are WiFi, 3G, 4G, 5G, NTN, and Ethernet. Kval does
-not generate radio parameters, inspect packet contents, control a vehicle, or
-implement electronic-warfare functions.
+not generate radio parameters, transmit, jam, inspect packet contents, control a
+vehicle, or implement electronic-attack functions.
 
 ## Honest implementation status
 
@@ -17,28 +19,62 @@ Implemented production paths:
 - Live `ip`, NetworkManager, WiFi, ModemManager, and ICMP telemetry.
 - Multi-objective profile optimization from measured latency, loss, jitter,
   throughput, signal, monetary cost, energy cost, and switching cost.
-- Ed25519-signed profile catalogue with expiry checks.
+- Ed25519-signed profile catalogue with expiry checks, and a generic signed
+  policy-document envelope for spectrum, power, and transport policies.
 - Safety Shield with freshness, confidence, dwell-time, and switch-rate limits.
 - Real NetworkManager activation followed by UUID verification.
 - 3GPP DNN, S-NSSAI, RAT, Release 17/18 and NR-NTN policy vocabulary.
 - Fail-closed ETSI RRS, IEEE 1900.5, and ANSI/VITA 49.2 capability contract for
   standards-based SDR integrations.
+- **Passive spectrum-sensing fabric**: signed band allowlist, root-owned
+  receive-only sensor-adapter contract, and a deterministic analyzer producing
+  band availability, jamming *suspicion*, and emitter presence.
+- **Capability leases**: operator-signed, node-bound, single-use, expiring
+  authorization for each bounded action, with rollback and post-condition.
+- **Power governance**: signed thermal/battery/watt/duty policy, a real
+  `tegrastats` parser, and a governor with thermal hysteresis.
+- **Connectivity recovery**: link-health state machine with exponential backoff,
+  failover, and a flap ceiling that escalates instead of thrashing the radio.
+- **Multimodal state fusion** with per-modality provenance, quality, and
+  missingness, failing closed when a mandatory modality is stale or absent.
+- **Learning guardrails**: signed model-manifest contract, OOD/drift abstention,
+  CUSUM change-point detection, and a causal-attribution gate.
+- **Secure-transport verification**: WireGuard peer/AllowedIPs/handshake checks,
+  IPv4 **and** IPv6 default-route confinement, pinned nftables ruleset hash with
+  default-drop output, and WPA3-SAE / WPA3-Enterprise-192 with PMF required.
 - SQLite WAL audit ledger with a SHA-256 hash chain.
-- A systemd service, dependency installer, dependency cache, provisioning tool,
+- A systemd service, dependency installer, dependency cache, provisioning tools,
   and hardware-in-loop validation script.
 
 Not claimed yet:
 
 - Jetson latency numbers. They must be produced by the included HIL script on
   the physical board.
-- A trained GNN-DQN. No public author implementation or real Kval field trace
-  corpus is currently present. The runtime will not substitute random weights,
-  a synthetic model, or a pretend TensorRT result.
+- A trained GNN-DQN or any predictive model. No public author implementation or
+  real Kval field trace corpus is currently present. The runtime will not
+  substitute random weights, a synthetic model, or a pretend TensorRT result;
+  the learned path abstains until a signed model manifest verifies.
+- Spectrum sensitivity, false-alarm rate, or bearing accuracy. These belong to
+  the sensor adapter and must be measured with real hardware.
+- Transport preflight passes. They require real keys, UUIDs, BSSIDs, and a pinned
+  ruleset on the physical node.
+- Power, energy-per-bit, or battery-life figures for any node or sub-node.
 - FHE on the Jetson. Private fleet coordination remains a separate service.
+- A separately packaged reduced wheel for low-compute sub-nodes. The supported
+  module boundary is documented; the packaging work is not done.
 
 There are no simulated telemetry providers or permissive production fallbacks.
-Missing hardware, unsigned policy, missing probes, or failed activation cause a
-clear rejection.
+Missing hardware, unsigned policy, missing probes, an absent sensor adapter, or
+failed activation cause a clear rejection.
+
+## Scope boundary
+
+Kval is defensive. It has no transmit path, no jamming, no spoofing, no covert
+signalling, and no arbitrary RF control — and no capability lease can authorise
+one. Spectrum sensing is receive-only by construction: an observation that is not
+marked passive is refused. The offensive threats Kval is designed to *withstand*
+are catalogued in
+[the secure-transport and EW threat model](docs/SECURE_TRANSPORT_AND_EW_THREAT_MODEL.md).
 
 ## Hardware baseline
 
@@ -89,6 +125,34 @@ python3 scripts/provision_catalog.py \
    `operator.private.pem` off the node.
 5. Copy and edit `config/node.example.json` as `/etc/kval/node.json`.
 
+## Provision the optional capability policies
+
+Spectrum sensing, power governance, secure transport, and capability leases are
+each optional and off unless configured. Sign them on the operator machine:
+
+```bash
+python3 scripts/provision_policy.py spectrum \
+  --input config/spectrum-policy.template.json \
+  --private-key operator.private.pem --public-key operator.public.pem \
+  --output spectrum-policy.signed.json
+
+python3 scripts/provision_policy.py power    --input config/power-policy.template.json    ...
+python3 scripts/provision_policy.py transport --input config/transport-policy.template.json ...
+python3 scripts/provision_policy.py lease    --input lease.body.json                       ...
+```
+
+Then point `/etc/kval/node.json` at them — see `config/node.full-example.json`.
+Each capability fails closed when its policy is absent, expired, unsigned, or
+unverifiable:
+
+```bash
+kval-node spectrum-scan       --config /etc/kval/node.json
+kval-node power-plan          --config /etc/kval/node.json
+kval-node transport-preflight --config /etc/kval/node.json
+kval-node verify-lease        --config /etc/kval/node.json --lease lease.signed.json \
+                              --action set_power_mode --redeem
+```
+
 ## Validate before enabling switching
 
 ```bash
@@ -119,10 +183,19 @@ python3 -m compileall -q src tests scripts
 ```
 
 These tests exercise the pure optimizer, real Ed25519 implementation, catalogue
-validation, and real SQLite audit chain. They do not claim to be Jetson or radio
-hardware tests.
+and policy-document validation, capability leases and nonce replay refusal, the
+spectrum analyzer, the power governor, the recovery state machine, multimodal
+fusion, the learning guardrails, the transport-security parsers/verifiers, and
+the real SQLite audit chain. They do not claim to be Jetson or radio hardware
+tests.
 
-See [Jetson validation](docs/JETSON_VALIDATION.md) and
-[architecture](docs/ARCHITECTURE.md), plus the
-[standards interoperability contract](docs/STANDARDS_INTEROPERABILITY.md) and
-[dependency policy](docs/DEPENDENCIES.md).
+## Documentation
+
+- [Architecture](docs/ARCHITECTURE.md)
+- [Spectrum-sensing fabric](docs/SPECTRUM_SENSING_FABRIC.md)
+- [Low-compute sub-nodes](docs/LOW_COMPUTE_SUBNODE.md)
+- [Learning in autonomous networks — problems first](docs/AUTONOMOUS_NETWORK_LEARNING.md)
+- [Secure transport and the EW threat model](docs/SECURE_TRANSPORT_AND_EW_THREAT_MODEL.md)
+- [Standards interoperability contract](docs/STANDARDS_INTEROPERABILITY.md)
+- [Jetson validation](docs/JETSON_VALIDATION.md)
+- [Dependency policy](docs/DEPENDENCIES.md)

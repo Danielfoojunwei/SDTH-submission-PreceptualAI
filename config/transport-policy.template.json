@@ -1,0 +1,25 @@
+{
+  "policy_id": "transport-policy-example-v1",
+  "created_at": "2026-08-01T00:00:00+00:00",
+  "expires_at": "2026-09-01T00:00:00+00:00",
+  "wireguard": {
+    "interface": "wg0",
+    "require_default_route": true,
+    "peers": [
+      {
+        "public_key": "REPLACE_WITH_44CHAR_BASE64_WIREGUARD_PEER_PUBKEY=",
+        "allowed_ips": ["10.66.0.1/32", "fd66::1/128"]
+      }
+    ]
+  },
+  "wifi": {
+    "required_key_mgmt": ["sae"],
+    "require_pmf": true,
+    "allowed_bssids": [],
+    "eap": {}
+  },
+  "nftables": {
+    "expected_ruleset_sha256": "REPLACE_WITH_NORMALIZED_NFT_RULESET_SHA256_64_HEX_CHARACTERS_HERE00",
+    "require_default_drop_output": true
+  }
+}

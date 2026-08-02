@@ -137,3 +137,52 @@ def load_verified_catalog(catalog_path: Path, public_key_path: Path) -> Catalog:
     envelope = json.loads(catalog_path.read_text(encoding="utf-8"))
     return verify_catalog(envelope, load_public_key(public_key_path))
 
+
+def sign_document(document_type: str, payload: dict[str, Any], private_key: Ed25519PrivateKey) -> dict[str, Any]:
+    """Sign an arbitrary policy document (spectrum, power, transport) offline."""
+    if not document_type:
+        raise ValueError("document_type is required")
+    body = {"document_type": document_type, "payload": payload}
+    signature = private_key.sign(canonical_json(body))
+    return {
+        "algorithm": "Ed25519",
+        "key_id": public_key_id(private_key.public_key()),
+        "document_type": document_type,
+        "payload": payload,
+        "signature": base64.b64encode(signature).decode("ascii"),
+    }
+
+
+def verify_document(
+    envelope: dict[str, Any],
+    public_key: Ed25519PublicKey,
+    *,
+    expected_type: str,
+) -> tuple[dict[str, Any], str]:
+    """Verify a signed policy document and return ``(payload, payload_hash)``."""
+    if envelope.get("algorithm") != "Ed25519":
+        raise ValueError("unsupported document signature algorithm")
+    if envelope.get("key_id") != public_key_id(public_key):
+        raise ValueError("document key ID does not match the provisioned public key")
+    if envelope.get("document_type") != expected_type:
+        raise ValueError(f"expected a {expected_type} document")
+    payload = envelope.get("payload")
+    if not isinstance(payload, dict):
+        raise ValueError("document payload must be an object")
+    try:
+        signature = base64.b64decode(str(envelope["signature"]), validate=True)
+    except (KeyError, ValueError) as exc:
+        raise ValueError("document signature is missing or malformed") from exc
+    body = {"document_type": expected_type, "payload": payload}
+    encoded = canonical_json(body)
+    try:
+        public_key.verify(signature, encoded)
+    except InvalidSignature as exc:
+        raise ValueError("document signature verification failed") from exc
+    return payload, hashlib.sha256(canonical_json(payload)).hexdigest()
+
+
+def load_verified_document(path: Path, public_key_path: Path, *, expected_type: str) -> tuple[dict[str, Any], str]:
+    envelope = json.loads(path.read_text(encoding="utf-8"))
+    return verify_document(envelope, load_public_key(public_key_path), expected_type=expected_type)
+
