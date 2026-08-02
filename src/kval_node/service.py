@@ -463,7 +463,22 @@ class KvalNode:
         latencies_ms: list[float] = []
         for _ in range(iterations):
             started = time.perf_counter_ns()
-            recommendation = self.optimizer.recommend(self.catalog, snapshot, self.config.service_class)
+            # The node's real role, not the ``payload`` default. Without it a
+            # C2 node rejects every profile on DIFFERENT_LINK_ROLE before any
+            # scoring happens, so the benchmark times the rejection path and
+            # reports it as the decision cost — measured at 3.6x optimistic on
+            # a two-profile C2 catalogue. A timing figure quoted against a DO-362
+            # budget has to come from the path the node actually runs.
+            #
+            # Emission suppression is deliberately not applied: an active EMCON
+            # order short-circuits the optimizer, and a benchmark that silently
+            # measured the short-circuit would be the same mistake again.
+            recommendation = self.optimizer.recommend(
+                self.catalog,
+                snapshot,
+                self.config.service_class,
+                role=self.config.link_role,
+            )
             self.shield.evaluate(recommendation, snapshot, apply_requested=False)
             latencies_ms.append((time.perf_counter_ns() - started) / 1_000_000.0)
         ordered = sorted(latencies_ms)

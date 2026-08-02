@@ -153,10 +153,55 @@ def check_capability_reachability() -> list[str]:
     return failures
 
 
+def check_role_is_always_declared() -> list[str]:
+    """Every ranking call must state the node's link role.
+
+    ``ProfileOptimizer.recommend`` defaults ``role`` to ``payload`` so that a
+    link cannot become safety-critical by omission. That default is right at the
+    boundary and wrong at every call site inside the node, because a C2 node
+    that does not declare its role rejects every command profile on
+    ``DIFFERENT_LINK_ROLE`` before scoring anything.
+
+    ``benchmark_optimizer`` shipped exactly that way: it timed the rejection
+    path and reported it as the decision cost, 3.6x optimistic on a two-profile
+    C2 catalogue — a figure that would have been quoted against a DO-362 budget.
+    The main loop passed the role and the benchmark did not, which is invisible
+    in review and invisible to a green suite.
+    """
+    failures: list[str] = []
+    for path in sorted(PACKAGE.glob("*.py")):
+        tree = ast.parse(path.read_text(encoding="utf-8"))
+        for node in ast.walk(tree):
+            if not isinstance(node, ast.Call):
+                continue
+            func = node.func
+            if not isinstance(func, ast.Attribute) or func.attr != "recommend":
+                continue
+            # Only the profile optimizer; PowerGovernor.recommend is unrelated.
+            target = func.value
+            name = (
+                target.attr
+                if isinstance(target, ast.Attribute)
+                else target.id
+                if isinstance(target, ast.Name)
+                else ""
+            )
+            if name != "optimizer":
+                continue
+            if not any(keyword.arg == "role" for keyword in node.keywords):
+                failures.append(
+                    f"{path.name}:{node.lineno} optimizer.recommend() does not pass "
+                    "role=: it will silently rank as a payload node and reject "
+                    "every command profile"
+                )
+    return failures
+
+
 def main() -> int:
     failures = (
         check_reachability()
         + check_capability_reachability()
+        + check_role_is_always_declared()
         + check_markers(INCOMPLETE_MARKERS, "unfinished work in production code")
         + check_markers(SIMULATION_MARKERS, "simulated evidence in production code")
     )

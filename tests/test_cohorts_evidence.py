@@ -18,7 +18,7 @@ from kval_node.cohorts import (
     kmeans_cohorts,
 )
 from kval_node.dataset import FEATURE_NAMES
-from kval_node.evidence import BeliefMass, combine_pair, fuse
+from kval_node.evidence import _BUSY_STATUSES, _CLEAR_STATUSES, BeliefMass, combine_pair, fuse
 from kval_node.federated import FeatureStatistics, FederatedUpdate
 from kval_node.spectrum import BandStatus
 
@@ -260,6 +260,44 @@ class DempsterShaferTests(unittest.TestCase):
 
     def test_result_serializes(self) -> None:
         json.dumps(fuse([BeliefMass.from_status(BandStatus.CLEAR, 1.0)]).to_dict())
+
+
+class EveryBandStatusIsClassifiedTests(unittest.TestCase):
+    """No spectrum verdict may reach the fusion stage unclassified.
+
+    ``from_status`` ends in a fallthrough returning total ignorance, which is
+    the right default but the wrong failure mode: a ``BandStatus`` added later
+    and not sorted into busy or clear would contribute *no evidence at all* to
+    the fleet's fused belief, quietly weakening the very conclusion it should
+    have strengthened. Nothing in the type system prevents that, so it is
+    checked here — the fallthrough is currently unreachable and this is what
+    keeps it that way.
+    """
+
+    def test_no_status_falls_through_to_total_ignorance(self) -> None:
+        unclassified = set(BandStatus) - set(_BUSY_STATUSES) - set(_CLEAR_STATUSES)
+        unclassified.discard(BandStatus.INSUFFICIENT_EVIDENCE)
+        self.assertEqual(
+            unclassified,
+            set(),
+            "a BandStatus was added without deciding whether it is evidence of a "
+            "busy band or a usable one; it would silently contribute nothing",
+        )
+
+    def test_busy_and_clear_never_overlap(self) -> None:
+        self.assertEqual(set(_BUSY_STATUSES) & set(_CLEAR_STATUSES), set())
+
+    def test_every_status_produces_a_valid_mass_assignment(self) -> None:
+        for status in BandStatus:
+            with self.subTest(status=status.name):
+                mass = BeliefMass.from_status(status, 0.8)
+                self.assertAlmostEqual(mass.clear + mass.busy + mass.unknown, 1.0, places=6)
+
+    def test_insufficient_evidence_is_ignorance_not_a_clear_reading(self) -> None:
+        # The defect Dempster-Shafer was brought in to fix: a node that could
+        # not measure must not look like a node reporting quiet.
+        mass = BeliefMass.from_status(BandStatus.INSUFFICIENT_EVIDENCE, 1.0)
+        self.assertEqual((mass.clear, mass.busy, mass.unknown), (0.0, 0.0, 1.0))
 
 
 if __name__ == "__main__":
