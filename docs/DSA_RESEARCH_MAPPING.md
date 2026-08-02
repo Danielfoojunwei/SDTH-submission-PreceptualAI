@@ -24,6 +24,34 @@ hostile.
 Where a paper's core contribution is transmit-side, that is stated below and
 nothing is built.
 
+## Coverage against Bowen Shen's own publication list
+
+Checked against his Google Scholar profile (`user=9a_OyvEAAAAJ`, 18 works, 136
+citations, h-index 4). Of those 18:
+
+* **12 are mapped below** — the dynamic-spectrum-access line, including paper
+  #12, which this cross-check surfaced and the earlier searches had missed.
+* **1 is his master's thesis** (*Privacy-preserving resource management in LEO
+  satellite Internet-of-Things*, 2025), which aggregates the LEO papers already
+  mapped.
+* **1 is federated wireless traffic prediction** (ICAIIC 2025) — same theme as
+  #12; the per-flow mechanism implemented for #12 covers it, and no separate
+  claim is made.
+* **4 are outside this domain and nothing was built from them**: a low-cost
+  mobile manipulator (ICRAS 2021), encrypted-database search (ICISS 2023), a
+  certified LEO management system (ICISS 2024), and *MemMorph: Tool Hijacking
+  in LLM Agents via Memory Poisoning* (arXiv 2026).
+
+**MemMorph resolves an earlier ambiguity and is worth flagging.** A prior search
+could not determine whether its "Bowen Shen" was the same person; his own
+profile confirms it is. Its subject — poisoning an LLM agent's memory to hijack
+its tool use — is directly relevant to the threat surface of *this* system,
+which runs an agent that selects bounded actions. It is recorded here as a
+threat to design against, **not implemented**: the arXiv page returned HTTP 503
+and building from a title would be fabrication. Kval's existing mitigations
+that bear on it are the closed `LeaseAction` vocabulary, single-use leases, and
+the rule that no learned component may widen its own authority.
+
 ## Author disambiguation
 
 `Feng Li` and `Bowen Shen` are common names. The individuals here are
@@ -51,6 +79,7 @@ is relevant here.
 | 9 | **Federated DSA for LEO satellite IoT**, IEEE ICCT 2024, [10.1109/ICCT62411.2024.10946453](https://doi.org/10.1109/ICCT62411.2024.10946453) | Bi-level K-Means client clustering; federated PPO | **Partially implemented** — deterministic K-Means cohort clustering is in `cohorts.py`. Federated PPO is a policy learner for transmit-side allocation; not built. |
 | 10 | **LEO privacy-preserving framework**, IEEE MSN 2024, [10.1109/MSN63567.2024.00079](https://doi.org/10.1109/MSN63567.2024.00079) | Conference precursor of #8 | Covered by #8. |
 | 11 | **Dynamic spectrum optimisation for IoV with mobility prediction**, Wireless Personal Communications 137, 2024, [10.1007/s11277-024-11449-w](https://doi.org/10.1007/s11277-024-11449-w) | Deep-learning mobility prediction driving spectrum optimisation | **Not built.** Full text unavailable, and the optimisation half is transmit-side. Emitter-track prediction across fleet reports is a reasonable future analogue. |
+| 12 | **Network Traffic Prediction Using PSO-LightGBM-TM**, IEEE INFOCOM 2024 Workshops, [10.1109/INFOCOMWKSHPS61880.2024.10620828](https://doi.org/10.1109/INFOCOMWKSHPS61880.2024.10620828); journal version *Network traffic prediction based on PSO-LightGBM-TM*, Computer Networks, [10.1016/j.comnet.2024.110838](https://doi.org/10.1016/j.comnet.2024.110838) | Particle swarm optimisation tunes LightGBM parameters **per network flow**, so one model does not have to fit every flow. Reported to beat deep-learning baselines while being structurally simpler; evaluated on Abilene, GÉANT and CERNET | **Mechanism implemented, base learner deliberately not** — `forecast.py`. See below. |
 
 ### Two independent literature searches agree on a negative finding
 
@@ -89,6 +118,34 @@ capability leases are Kval's own, not theirs.
 | Liu, Jia, Na, Lu, **Li**, **Multi-Modal Cooperative Spectrum Sensing Based on Dempster-Shafer Fusion**, IEEE Access 6:199-208, 2018, [10.1109/ACCESS.2017.2761910](https://doi.org/10.1109/ACCESS.2017.2761910) | Per-node multi-detector fusion, then credibility-weighted Dempster-Shafer fusion across nodes, down-weighting malicious users | **Implemented** — `evidence.py`. See below. **Note: Lam and Shen are not authors on this paper.** |
 | Hua, Yin, Lu, Zhang, **Li**, **NLOS Identification and Positioning via Localization Residual**, Sensors 18(9):2991, 2018, [10.3390/s18092991](https://doi.org/10.3390/s18092991) | Residual-consistency test identifies and excludes non-line-of-sight anchors | **Partially implemented** — `geolocate.py` computes per-node residuals for trilateration. Residual-based NLOS *rejection* is not yet wired. |
 | **Li**, **Lam**, Li, Sheng, Hua, Wang, **Advances and Emerging Challenges in Cognitive IoT**, IEEE TII 16(8):5489-5496, 2020, [10.1109/TII.2019.2953246](https://doi.org/10.1109/TII.2019.2953246) | Survey; frames sensing / access / perceiving / self-learning | Conceptual framing only. |
+
+## Per-flow forecasting: the mechanism without the base learner
+
+Paper #12's contribution is not LightGBM. It is the argument that **a single
+model fitted across all flows is wrong** — flows differ — and that each flow
+deserves its own parameters, found by particle swarm optimisation. That
+transfers exactly: a Wi-Fi link, a cellular link and an NTN link have different
+latency regimes, and one shared smoothing constant fits none of them.
+
+`forecast.py` implements **their per-flow PSO tuning strategy over a different
+base learner**: a damped Holt linear-trend smoother, which is standard-library
+arithmetic. LightGBM is a PyPI package, and this repository has a deliberate
+no-PyPI-runtime-dependency policy (`docs/DEPENDENCIES.md`) — a node installs
+only from signed Ubuntu/NVIDIA repositories. Breaking that for a forecaster
+would be the wrong trade.
+
+Consequences to be clear about:
+
+* **None of their reported accuracy is inherited.** Different base learner,
+  different data. The forecaster's own fit error is reported with every result
+  so its quality is visible rather than assumed.
+* The forecaster is **descriptive, not a learned policy**: fitted on a
+  profile's own recent history at call time, holding no persistent weights,
+  requiring no signed model manifest. It can warn; it does not select profiles.
+  Selection stays with the deterministic optimizer and the Safety Shield.
+* PSO is **seeded deterministically**, not randomly. Every other decision this
+  node makes is reconstructable from its audit ledger; a forecast should be no
+  different.
 
 ## The single most valuable import: Dempster-Shafer fusion
 
