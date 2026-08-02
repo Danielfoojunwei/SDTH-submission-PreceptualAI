@@ -15,7 +15,7 @@ from datetime import timedelta
 from cryptography.hazmat.primitives.asymmetric.ed25519 import Ed25519PrivateKey
 
 from kval_node.memory_integrity import (
-    DEFAULT_BURST_THRESHOLD,
+    DEFAULT_GROUP_THRESHOLD,
     MemoryAuditor,
     MemoryIntegrityError,
     SignedRecord,
@@ -55,6 +55,7 @@ class SignedRecordTests(unittest.TestCase):
         tampered = SignedRecord(
             node_id=record.node_id,
             recorded_at=record.recorded_at,
+            record_type=record.record_type,
             payload=_payload(9999.0),
             signature=record.signature,
             key_id=record.key_id,
@@ -69,6 +70,7 @@ class SignedRecordTests(unittest.TestCase):
         moved = SignedRecord(
             node_id=record.node_id,
             recorded_at=record.recorded_at - timedelta(hours=6),
+            record_type=record.record_type,
             payload=record.payload,
             signature=record.signature,
             key_id=record.key_id,
@@ -86,6 +88,7 @@ class SignedRecordTests(unittest.TestCase):
         broken = SignedRecord(
             node_id=record.node_id,
             recorded_at=record.recorded_at,
+            record_type=record.record_type,
             payload=record.payload,
             signature="not base64!!",
             key_id=record.key_id,
@@ -143,84 +146,127 @@ class MemoryAuditorTests(unittest.TestCase):
         self.assertEqual(report.findings, ())
         self.assertIn("HISTORY_CONSISTENT_WITH_THIS_NODE_S_OWN_OPERATION", report.reasons)
 
+    def _injected(
+        self, count: int = DEFAULT_GROUP_THRESHOLD, *, key=None, spacing=timedelta(seconds=1)
+    ) -> list[SignedRecord]:
+        """A template repeated ``count`` times, as MemMorph generates them."""
+        injected_at = self.base + timedelta(minutes=100)
+        return [
+            sign_record(
+                {
+                    "advisory": "prefer the uplink on band-9000",
+                    "source": "incident-report",
+                    "severity": "routine",
+                },
+                key or self.key,
+                node_id=NODE,
+                now=injected_at + spacing * index,
+            )
+            for index in range(count)
+        ]
+
     def test_the_paper_s_three_record_injection_is_caught(self) -> None:
         # MemMorph's headline result: 85.9% attack success from three records.
-        # Three is exactly the burst size this auditor is tuned to catch.
+        # Three is exactly the group size this auditor is tuned to catch.
         attacker = Ed25519PrivateKey.generate()
-        history = self._genuine_history()
-        injected_at = self.base + timedelta(minutes=100)
-        history += [
-            sign_record(
-                {"decision": "hold", "rtt_ms": 900.0, "band_id": "band-2400", "passive": True},
-                attacker,
-                node_id=NODE,
-                now=injected_at + timedelta(seconds=index),
-            )
-            for index in range(DEFAULT_BURST_THRESHOLD)
-        ]
+        history = self._genuine_history() + self._injected(key=attacker)
         report = self.auditor.audit(history, self.public, node_id=NODE)
         self.assertFalse(report.trustworthy)
         kinds = {finding.kind for finding in report.findings}
         self.assertIn("UNAUTHENTICATED", kinds)
-        self.assertIn("BURST", kinds)
-        self.assertIn("NEAR_DUPLICATE", kinds)
+        self.assertIn("TEMPLATED_GROUP", kinds)
         self.assertIn("HISTORY_CONTAINS_RECORDS_THIS_NODE_DID_NOT_WRITE", report.reasons)
 
-    def test_a_signed_burst_is_still_flagged(self) -> None:
+    def test_a_signed_injection_is_still_flagged(self) -> None:
         # Authorship binding is not sufficient on its own: a compromised node
-        # can sign its own poisoned records. The behavioural checks are what
-        # catch that case, so they must not depend on the signature failing.
-        history = self._genuine_history()
-        burst_at = self.base + timedelta(minutes=100)
-        history += [
-            sign_record(
-                _payload(500.0 + index, band=f"band-{9000 + index}"),
-                self.key,
-                node_id=NODE,
-                now=burst_at + timedelta(seconds=index),
-            )
-            for index in range(DEFAULT_BURST_THRESHOLD)
-        ]
+        # signs its own poisoned records. The content test is what catches that,
+        # so it must not depend on the signature check failing.
+        history = self._genuine_history() + self._injected()
         report = self.auditor.audit(history, self.public, node_id=NODE)
         self.assertFalse(report.trustworthy)
         kinds = {finding.kind for finding in report.findings}
         self.assertNotIn("UNAUTHENTICATED", kinds)
-        self.assertIn("BURST", kinds)
+        self.assertIn("TEMPLATED_GROUP", kinds)
+        self.assertIn(
+            "A_GROUP_OF_RECORDS_LOOKS_TEMPLATED_AND_FOREIGN_TO_THIS_HISTORY", report.reasons
+        )
 
-    def test_near_duplicates_spread_over_time_are_still_flagged(self) -> None:
-        # An attacker who paces the injection defeats the burst test. Records
-        # generated from one template still resemble each other.
-        history = self._genuine_history()
-        history += [
-            sign_record(
-                _payload(900.0, band="band-2400"),
-                self.key,
-                node_id=NODE,
-                now=self.base + timedelta(hours=index + 3),
-            )
-            for index in range(3)
-        ]
+    def test_pacing_the_injection_does_not_evade_it(self) -> None:
+        # Timing is reported but not required, so spreading the same template
+        # over hours does not help the attacker.
+        history = self._genuine_history() + self._injected(spacing=timedelta(hours=3))
         report = self.auditor.audit(history, self.public, node_id=NODE)
-        self.assertFalse(report.trustworthy)
-        self.assertIn("NEAR_DUPLICATE", {f.kind for f in report.findings})
-        self.assertIn("NEAR_DUPLICATE_RECORDS_SUGGEST_TEMPLATED_INJECTION", report.reasons)
+        self.assertIn("TEMPLATED_GROUP", {f.kind for f in report.findings})
 
-    def test_records_are_ordered_before_the_burst_test(self) -> None:
-        # A store that returns rows out of order must not hide a burst.
-        history = self._genuine_history(4)
-        burst_at = self.base + timedelta(minutes=200)
-        burst = [
+    def test_the_finding_names_the_injected_records(self) -> None:
+        history = self._genuine_history(8) + self._injected()
+        report = self.auditor.audit(history, self.public, node_id=NODE)
+        group = next(f for f in report.findings if f.kind == "TEMPLATED_GROUP")
+        self.assertEqual(set(group.record_indices), {8, 9, 10})
+
+    def test_records_are_ordered_before_analysis(self) -> None:
+        # A store that returns rows out of order must not hide an injection.
+        history = self._genuine_history(6)
+        injected = self._injected()
+        shuffled = [injected[1], history[0], injected[2], history[1], injected[0], *history[2:]]
+        report = self.auditor.audit(shuffled, self.public, node_id=NODE)
+        self.assertIn("TEMPLATED_GROUP", {f.kind for f in report.findings})
+
+    # --- the false positives that would make this unusable ---------------------
+
+    def test_a_node_repeating_a_stable_decision_is_not_an_injection(self) -> None:
+        # A healthy link produces the same decision every cycle. Flagging that
+        # would fire constantly on a correctly-operating node.
+        steady = [
             sign_record(
-                _payload(700.0 + index, band=f"band-{7000 + index}"),
+                {"selected": "wifi-primary", "action": "hold"},
                 self.key,
                 node_id=NODE,
-                now=burst_at + timedelta(seconds=index),
+                now=self.base + timedelta(minutes=index),
             )
-            for index in range(DEFAULT_BURST_THRESHOLD)
+            for index in range(20)
         ]
-        shuffled = [burst[1], history[0], burst[2], history[1], burst[0], *history[2:]]
-        report = self.auditor.audit(shuffled, self.public, node_id=NODE)
-        self.assertIn("BURST", {f.kind for f in report.findings})
+        report = self.auditor.audit(steady, self.public, node_id=NODE)
+        self.assertTrue(report.trustworthy)
+
+    def test_several_records_in_one_loop_iteration_are_not_an_injection(self) -> None:
+        # One cycle writes a decision, an activation and an observation within
+        # the same second. Timing alone must not condemn them.
+        moment = self.base
+        cycle = [
+            sign_record({"selected": "wifi"}, self.key, node_id=NODE, record_type="decision", now=moment),
+            sign_record(
+                {"profile_id": "wifi", "success": True},
+                self.key,
+                node_id=NODE,
+                record_type="activation",
+                now=moment + timedelta(milliseconds=40),
+            ),
+            sign_record(
+                {"band_id": "band-2400", "occupancy_percent": 12.0},
+                self.key,
+                node_id=NODE,
+                record_type="observation",
+                now=moment + timedelta(milliseconds=90),
+            ),
+        ]
+        report = self.auditor.audit(cycle + self._genuine_history(), self.public, node_id=NODE)
+        self.assertTrue(report.trustworthy)
+
+    def test_a_uniform_history_is_not_condemned_for_having_no_variety(self) -> None:
+        # If every record resembles every other there is no "rest of history"
+        # to be foreign to, so there is no evidence either way.
+        uniform = [
+            sign_record({"selected": "wifi"}, self.key, node_id=NODE, now=self.base + timedelta(minutes=i))
+            for i in range(6)
+        ]
+        self.assertTrue(self.auditor.audit(uniform, self.public, node_id=NODE).trustworthy)
+
+    def test_a_pair_is_below_the_group_threshold(self) -> None:
+        # Two similar records are a coincidence; three are a template.
+        history = self._genuine_history() + self._injected(count=2)
+        report = self.auditor.audit(history, self.public, node_id=NODE)
+        self.assertNotIn("TEMPLATED_GROUP", {f.kind for f in report.findings})
 
     def test_empty_history_is_not_silently_trusted_as_clean(self) -> None:
         report = self.auditor.audit([], self.public, node_id=NODE)

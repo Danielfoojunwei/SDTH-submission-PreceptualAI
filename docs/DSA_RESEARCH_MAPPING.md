@@ -37,20 +37,59 @@ citations, h-index 4). Of those 18:
 * **1 is federated wireless traffic prediction** (ICAIIC 2025) — same theme as
   #12; the per-flow mechanism implemented for #12 covers it, and no separate
   claim is made.
-* **4 are outside this domain and nothing was built from them**: a low-cost
-  mobile manipulator (ICRAS 2021), encrypted-database search (ICISS 2023), a
-  certified LEO management system (ICISS 2024), and *MemMorph: Tool Hijacking
-  in LLM Agents via Memory Poisoning* (arXiv 2026).
+* **4 sit outside the DSA line.** One of them, *MemMorph: Tool Hijacking in
+  LLM Agents via Memory Poisoning* (arXiv 2026), is now implemented against —
+  see below. The other three remain unbuilt, with reasons rather than silence:
+  * *A low-cost mobile manipulator* (ICRAS 2021) — robotics. Nothing transfers
+    beyond the general framing of capable behaviour on cheap embedded hardware,
+    which is the sub-node premise this repository already had. Building
+    anything from it would be invention, not reproduction.
+  * *Encrypted-database search* (ICISS 2023) — searchable encryption over data
+    at rest. Genuinely adjacent to the captured-drone problem, and the custody
+    half of that problem is now answered by Shamir sharing in
+    `threshold_ca.py`, so a captured node's share yields nothing. Searchable
+    encryption itself is **not** built: every practical scheme leaks access and
+    search patterns, and adding that leakage to a fleet whose value depends on
+    siting discretion needs a threat analysis this repository has not done.
+  * *A certified LEO satellite management system* (ICISS 2024) — the
+    certification-under-partition idea it shares with the MANET papers is what
+    `threshold_ca.py` implements; the satellite management system itself is out
+    of scope.
 
-**MemMorph resolves an earlier ambiguity and is worth flagging.** A prior search
-could not determine whether its "Bowen Shen" was the same person; his own
+**MemMorph resolves an earlier ambiguity, and is now built against.** A prior
+search could not determine whether its "Bowen Shen" was the same person; his own
 profile confirms it is. Its subject — poisoning an LLM agent's memory to hijack
-its tool use — is directly relevant to the threat surface of *this* system,
-which runs an agent that selects bounded actions. It is recorded here as a
-threat to design against, **not implemented**: the arXiv page returned HTTP 503
-and building from a title would be fabrication. Kval's existing mitigations
-that bear on it are the closed `LeaseAction` vocabulary, single-use leases, and
-the rule that no learned component may widen its own authority.
+its tool use — lands directly on this system, which runs an agent that selects
+bounded actions from recorded history. An earlier revision of this document
+recorded it as a threat but not an implementation, because the arXiv page
+returned HTTP 503 and building from a title would have been fabrication. The
+abstract was subsequently retrieved and confirms the mechanism: records
+disguised as "technical facts, incident reports, and operational policies", up
+to **85.9% attack success from three injected records**, surviving three
+representative defences, with the paper concluding that memory-level integrity
+safeguards are needed.
+
+`memory_integrity.py` implements those safeguards, and `audit.py` now binds each
+ledger record to its author. The mapping is direct: Kval's long-term memory *is*
+the audit ledger, and `analysis.py` derives baselines from it, so appending a
+handful of plausible records shifts what the node believes normal is. The hash
+chain detects *modification* of history but not *appending* to it — a gap the
+`audit-memory` command now closes. Kval's pre-existing mitigations still apply:
+the closed `LeaseAction` vocabulary, single-use leases, and the rule that no
+learned component may widen its own authority.
+
+One design note worth recording, because the first attempt was wrong. An
+injection detector keyed on "records arriving close together" or "records
+resembling each other" fires constantly on a correct node: a healthy link
+produces the same decision every cycle, and one loop iteration writes several
+records within the same second. That version was caught by an end-to-end test
+against a real ledger before it shipped. The detector now requires a group to
+resemble **each other** *and* be distinct from **the rest of the history** —
+a template inserted into a history, rather than a system doing the same thing
+twice. Its honest limit is stated in the module: it catches an outsider
+injecting from a template, not a compromised node holding the signing key and
+writing poisoned records that resemble its own normal output. Bounded influence
+and fleet reputation are the backstop for that case.
 
 ## Author disambiguation
 
@@ -70,7 +109,7 @@ is relevant here.
 |---|---|---|---|
 | 1 | **Federated Deep RL for DSA**, IEEE TVT 71(7):7952-7956, 2022, [10.1109/TVT.2022.3166535](https://doi.org/10.1109/TVT.2022.3166535) | FL over edge nodes; cohorts of non-interfering users with similar conditions | **Implemented** — `cohorts.kmeans_cohorts` groups nodes by RF-environment similarity before aggregation. The DRL action-selection half is transmit-side; not built. |
 | 2 | **Hierarchical federated DRL for DSA**, Ad Hoc Networks 149:103257, 2023, [10.1016/j.adhoc.2023.103257](https://doi.org/10.1016/j.adhoc.2023.103257) | Hierarchical, personalised aggregation for heterogeneous devices | **Implemented** — `cohorts.HierarchicalAggregator` aggregates per cohort, then across cohorts, so a large cohort cannot outvote a small one node-by-node. |
-| 3 | **GNN + DQN for DSA**, Ad Hoc Networks 163:103596, 2024, [10.1016/j.adhoc.2024.103596](https://doi.org/10.1016/j.adhoc.2024.103596) | Graph model of the spectrum environment feeding a decision network | **Partially adapted** — the fleet is modelled as a graph for fusion purposes, but message-passing GNN inference is *not* implemented: no model ships, and the DQN half is transmit-side. See "Not built". |
+| 3 | **GNN + DQN for DSA**, Ad Hoc Networks 163:103596, 2024, [10.1016/j.adhoc.2024.103596](https://doi.org/10.1016/j.adhoc.2024.103596) | Graph model of the spectrum environment feeding a decision network | **Implemented, without the learned half** — `topology.py`. The fleet is a graph and evidence propagates over it by deterministic message passing, so a node whose radio is down inherits its neighbours' view. Belief weakens per hop by Shafer discounting and is attributed by shortest path to each original observer, so a cycle cannot amplify one observation. The GNN's *trained* weights and the DQN are not built: no model ships and the action half is transmit-side. |
 | 4 | **Improved FL for DSA**, JNCA 239:104189, 2025, [10.1016/j.jnca.2025.104189](https://doi.org/10.1016/j.jnca.2025.104189) | Not established — full text unavailable | **Nothing built.** The abstract could not be retrieved (publisher returns 403 to automated fetch). Implementing from a title would be guessing. |
 | 5 | **Swarm learning DSA**, IEEE IoT-J 12(18):37720-37733, 2025, [10.1109/JIOT.2025.3583710](https://doi.org/10.1109/JIOT.2025.3583710) | Decentralised P2P learning, no central aggregator; blockchain audit | **Adapted** — `HierarchicalAggregator.select_aggregator` rotates the aggregator role instead of fixing it, removing the single point of failure. The blockchain layer is **not** implemented; Kval already has a SHA-256 hash-chained audit ledger serving the same provenance purpose without a distributed consensus dependency. |
 | 6 | **Swarm DSA**, IEEE WCNC 2025, [10.1109/WCNC61545.2025.10978419](https://doi.org/10.1109/WCNC61545.2025.10978419) | Conference precursor of #5 | Covered by #5. |
@@ -78,7 +117,7 @@ is relevant here.
 | 8 | **Privacy-aware spectrum pricing & power control for LEO IoT**, IEEE TWC 24(11):9569-9584, 2025, [10.1109/TWC.2025.3574172](https://doi.org/10.1109/TWC.2025.3574172), preprint [arXiv:2407.00814](https://arxiv.org/abs/2407.00814) | Reputation-weighted selection of the aggregating node | **Implemented** — `cohorts.ReputationLedger`. Reputation is *earned* from agreement with the cohort, discounts a node's evidence weight, and selects the round's aggregator. Spectrum pricing and power control are transmit-side; not built. |
 | 9 | **Federated DSA for LEO satellite IoT**, IEEE ICCT 2024, [10.1109/ICCT62411.2024.10946453](https://doi.org/10.1109/ICCT62411.2024.10946453) | Bi-level K-Means client clustering; federated PPO | **Partially implemented** — deterministic K-Means cohort clustering is in `cohorts.py`. Federated PPO is a policy learner for transmit-side allocation; not built. |
 | 10 | **LEO privacy-preserving framework**, IEEE MSN 2024, [10.1109/MSN63567.2024.00079](https://doi.org/10.1109/MSN63567.2024.00079) | Conference precursor of #8 | Covered by #8. |
-| 11 | **Dynamic spectrum optimisation for IoV with mobility prediction**, Wireless Personal Communications 137, 2024, [10.1007/s11277-024-11449-w](https://doi.org/10.1007/s11277-024-11449-w) | Deep-learning mobility prediction driving spectrum optimisation | **Not built.** Full text unavailable, and the optimisation half is transmit-side. Emitter-track prediction across fleet reports is a reasonable future analogue. |
+| 11 | **Dynamic spectrum optimisation for IoV with mobility prediction**, Wireless Personal Communications 137, 2024, [10.1007/s11277-024-11449-w](https://doi.org/10.1007/s11277-024-11449-w) | Extends the **Exploration and Preferential Return** model to D-EPR, uses it to synthesise vehicle traces, trains an LSTM on those traces to predict node locations, then optimises spectrum reuse graph-theoretically | **Mobility model implemented, LSTM deliberately not** — `mobility.py`. Abstract retrieved on the second attempt (see below). EPR itself is implemented and applied to emitter tracks; the LSTM is skipped because in their pipeline EPR *is* the ground truth the network approximates, so shipping the approximation instead of the model would add a training dependency for a worse predictor. The optimisation half is transmit-side. |
 | 12 | **Network Traffic Prediction Using PSO-LightGBM-TM**, IEEE INFOCOM 2024 Workshops, [10.1109/INFOCOMWKSHPS61880.2024.10620828](https://doi.org/10.1109/INFOCOMWKSHPS61880.2024.10620828); journal version *Network traffic prediction based on PSO-LightGBM-TM*, Computer Networks, [10.1016/j.comnet.2024.110838](https://doi.org/10.1016/j.comnet.2024.110838) | Particle swarm optimisation tunes LightGBM parameters **per network flow**, so one model does not have to fit every flow. Reported to beat deep-learning baselines while being structurally simpler; evaluated on Abilene, GÉANT and CERNET | **Mechanism implemented, base learner deliberately not** — `forecast.py`. See below. |
 
 ### Two independent literature searches agree on a negative finding
@@ -123,9 +162,9 @@ sensing fleet than the spectrum-access line.
 | Zhao, Zhao, Yang, Wang, Wang, Lyu, Niyato, **Lam**, **Local Differential Privacy based Federated Learning for IoT**, IEEE IoT-J 2021, [arXiv:2004.08856](https://arxiv.org/abs/2004.08856) | Perturbs each participant's shared values *locally, before release*, via the Piecewise Mechanism and variants, so the aggregator never sees an individual's true contribution | **Implemented** — `privacy.py`. See below. |
 | Liu, Guo, **Lam**, Zhao, **Efficient Dropout-Resilient Aggregation**, IEEE TIFS 18:1839-1854, 2023, [10.1109/TIFS.2022.3163592](https://doi.org/10.1109/TIFS.2022.3163592) | Secure aggregation correct under mid-protocol dropout | **Property implemented, protocol not.** Aggregation tolerates nodes appearing/disappearing and features missing from individual updates, and is tested for it. Their cryptographic masking is not implemented — with LDP applied, statistics are no longer sensitive in transit, so the masking machinery has less to protect. |
 | **Lam** (first author), Mitra, Gondesen, Yi, **ANT-Centric IoT Security Reference Architecture**, IEEE IoT-J 9(8), 2022, [10.1109/JIOT.2021.3073734](https://doi.org/10.1109/JIOT.2021.3073734) | Security managed around critical activities within micro-perimeters | **Framing adopted.** Best published articulation — his own — of why receive-only should be structural rather than promised. Kval enforces exactly that: no transmit path exists and CI fails the build if one appears. |
-| **Toward Efficient and Certified Recovery From Poisoning Attacks in FL**, IEEE TIFS 2025, [arXiv:2401.08216](https://arxiv.org/abs/2401.08216); **Privacy-Preserving Federated Unlearning With Certified Client Removal**, TIFS 2025; **A Survey on Federated Unlearning**, ACM CSUR 2025, [arXiv:2310.20448](https://arxiv.org/abs/2310.20448) | Certified removal of a client's influence, and certified *recovery* after poisoning | **Partially covered.** `cohorts.excise_contributor` achieves exact removal, which is stronger than certified approximate removal — but only because aggregation here is over sufficient statistics rather than gradients. Their harder problem does not arise. Certified recovery of a *trained model* is not implemented; no model ships. |
-| **Effective Intrusion Detection in Heterogeneous IoT Networks via Ensemble Knowledge Distillation-Based FL**, IEEE ICC 2024, [arXiv:2401.11968](https://arxiv.org/abs/2401.11968) | Federated anomaly detection across heterogeneous edge nodes | **Not built.** The closest published analogue to federated anomaly detection across a sensing fleet, and a strong candidate for future work. Not implemented because it requires a trained model, and none ships. |
-| **Self-initialized Distributed Certificate Authority for MANET** (ISA 2009); **A robust certification service for highly dynamic MANET in emergency tasks**, Int. J. Communication Systems 2009, [10.1002/dac.1015](https://doi.org/10.1002/dac.1015) | Issuing and validating credentials among intermittently-connected wireless nodes with **no reachable central authority** | **Not built, and the most under-appreciated find.** This is prior art by him on exactly the partitioned-fleet problem: today a Kval sub-node that loses its operator link runs until its signed policy expires and then fails closed. Distributed certification would let a partition re-validate locally instead. A real gap, now with a citation attached. |
+| **Toward Efficient and Certified Recovery From Poisoning Attacks in FL**, IEEE TIFS 2025, [arXiv:2401.08216](https://arxiv.org/abs/2401.08216); **Privacy-Preserving Federated Unlearning With Certified Client Removal**, TIFS 2025; **A Survey on Federated Unlearning**, ACM CSUR 2025, [arXiv:2310.20448](https://arxiv.org/abs/2310.20448) | Certified removal of a client's influence, and certified *recovery* after poisoning, with a **bound** on residual influence | **Implemented, with a stronger guarantee** — `cohorts.certified_excision`. Their bound exists because gradient updates smear a client's contribution across every later round. Aggregating sufficient statistics makes removal **exact**, and the certificate proves it rather than asserting it: the recovered baseline is compared byte-for-byte against one built from a fleet the node never joined. Residual influence is zero, not merely bounded. Certified recovery of a *trained model* remains unimplemented; no model ships. |
+| **Effective Intrusion Detection in Heterogeneous IoT Networks via Ensemble Knowledge Distillation-Based FL**, IEEE ICC 2024, [arXiv:2401.11968](https://arxiv.org/abs/2401.11968) | Nodes are heterogeneous, so forcing one architecture on all of them fits none. Each keeps **its own** detector and the fleet shares *outputs* rather than *parameters* | **Architecture implemented, distillation not** — `intrusion.py`. Each node judges its readings against *its own* baseline, and the fleet combines verdicts. The distinction only a fleet can draw: one anomalous node is a local condition; the same anomaly across *different cohorts*, simultaneously, in the same direction, is not. Distillation machinery needs trained students and teachers; none ship. |
+| **Self-initialized Distributed Certificate Authority for MANET** (ISA 2009); **A robust certification service for highly dynamic MANET in emergency tasks**, Int. J. Communication Systems 2009, [10.1002/dac.1015](https://doi.org/10.1002/dac.1015) | Issuing and validating credentials among intermittently-connected wireless nodes with **no reachable central authority** | **Implemented, and narrowed on purpose** — `threshold_ca.py`. Was flagged here as the most under-appreciated find and a real gap: a sub-node that lost its operator link ran until its policy expired and then failed closed, so an adversary who cut the backhaul could disarm the fleet by waiting. Now `k` of `n` roster peers can attest to *extending an existing grant's lifetime* — never widening scope, never resurrecting a revocation, bounded per renewal and in total so an isolated partition winds down rather than running forever. Their threshold *signing* is deliberately not reproduced; see "Not built". Shamir `(k,n)` sharing over GF(2^8) is implemented for capture-resistant secret custody, verified against the FIPS-197 field vectors. |
 | Yang, Zhao, **Lam**, Xiong, Wu, Xiao, **Distributed DRL-Based Spectrum and Power Allocation for HetNets**, IEEE TWC 21(9), 2022, [10.1109/TWC.2022.3153175](https://doi.org/10.1109/TWC.2022.3153175) | Per-cell decisions from **locally observed information only**, with light coordination | **Framing adopted.** Evidence that local-observation autonomy plus light coordination converges — the degraded/partitioned-backhaul mode Kval already implements deterministically. The allocation half is transmit-side. |
 
 ### Local differential privacy: closing a threat this repository documented
@@ -165,7 +204,7 @@ Three things are stated plainly because they are real costs:
 | Paper | Mechanism | Status |
 |---|---|---|
 | Liu, Jia, Na, Lu, **Li**, **Multi-Modal Cooperative Spectrum Sensing Based on Dempster-Shafer Fusion**, IEEE Access 6:199-208, 2018, [10.1109/ACCESS.2017.2761910](https://doi.org/10.1109/ACCESS.2017.2761910) | Per-node multi-detector fusion, then credibility-weighted Dempster-Shafer fusion across nodes, down-weighting malicious users | **Implemented** — `evidence.py`. See below. **Note: Lam and Shen are not authors on this paper.** |
-| Hua, Yin, Lu, Zhang, **Li**, **NLOS Identification and Positioning via Localization Residual**, Sensors 18(9):2991, 2018, [10.3390/s18092991](https://doi.org/10.3390/s18092991) | Residual-consistency test identifies and excludes non-line-of-sight anchors | **Partially implemented** — `geolocate.py` computes per-node residuals for trilateration. Residual-based NLOS *rejection* is not yet wired. |
+| Hua, Yin, Lu, Zhang, **Li**, **NLOS Identification and Positioning via Localization Residual**, Sensors 18(9):2991, 2018, [10.3390/s18092991](https://doi.org/10.3390/s18092991) | Residual-consistency test identifies and excludes non-line-of-sight anchors | **Implemented** — `geolocate.py`. Was previously computing residuals without using them. The naive form does not work: judging each anchor by its own residual under the full solve fails because the solve is already dragged by the blocked anchor, so every anchor looks mildly wrong and none looks decisively wrong. The test now asks which single anchor, if removed, reconciles the rest, and requires a threefold improvement before blaming one. Sign is retained as evidence — obstruction can only lengthen an apparent range, so a *shorter*-than-implied reading is reported separately as a repeater, reflection or fabricated report. Two structural limits fell out and are enforced: three anchors always fit exactly, so a fleet of `n` survives at most `n-4` blocked nodes; and when no single removal reconciles the rest the estimate is refused rather than returned kilometres wrong. |
 | **Li**, **Lam**, Li, Sheng, Hua, Wang, **Advances and Emerging Challenges in Cognitive IoT**, IEEE TII 16(8):5489-5496, 2020, [10.1109/TII.2019.2953246](https://doi.org/10.1109/TII.2019.2953246) | Survey; frames sensing / access / perceiving / self-learning | Conceptual framing only. |
 
 ## Per-flow forecasting: the mechanism without the base learner
@@ -235,9 +274,19 @@ Two deliberate deviations from textbook Dempster-Shafer:
   transmit actions.
 * **Blockchain.** The audit ledger already provides tamper-evident provenance
   without a consensus protocol or its availability failure modes.
-* **GNN message passing.** Warrants a trained model, which does not exist here.
-* **Papers #4 and #11**, whose full texts could not be retrieved. Implementing
-  from a title would be fabrication.
+* **Learned GNN weights and the DQN.** The graph and its message passing are
+  now built (`topology.py`); the *trained* parts are not, and would need a
+  model that does not exist here.
+* **The LSTM in paper #11.** The EPR model it is trained to approximate is
+  implemented directly instead; see the row above.
+* **Paper #4**, whose full text could not be retrieved — the publisher returns
+  403 to automated fetch. Implementing from a title would be fabrication.
+* **Threshold signing.** Lam's MANET distributed-CA papers share the CA private
+  key across nodes so a quorum can mint new certificates. `threshold_ca.py`
+  deliberately does not reproduce that: distributing signing authority means a
+  quorum of *captured* nodes can issue credentials the operator never approved.
+  Quorum renewal gets the availability benefit without ever letting the fleet
+  grant itself something new.
 
 ## A threat their work implies
 
@@ -257,6 +306,22 @@ exactly.
 * The mechanisms are implemented and unit-tested; **none has been validated
   against the source papers' experimental results**, and no performance claim
   from those papers is inherited.
+* **NLOS rejection is verified against synthetic measurements generated from
+  the same path-loss model the locator inverts.** That is a fair test of the
+  residual logic — it recovers the true position to under a metre with one
+  anchor obstructed by 18 dB, and refuses when two are — but it is *not* a
+  measurement of real accuracy, which depends on multipath, antenna patterns
+  and calibration quality in the actual deployment.
+* **EPR is a population model applied to a single track.** Song et al. measured
+  it across many agents; using it to predict one emitter is a reasonable
+  extension, not a validated one. The predictor reports its exploration
+  probability and declines to name a place when exploration dominates, which
+  bounds the harm but does not make the extension rigorous.
+* **The fleet anomaly detector's false-alarm estimate assumes independent,
+  normally distributed features.** Real RF measurements are neither; they are
+  autocorrelated and cross-correlated, so the true rate is higher. The function
+  is exposed for setting thresholds deliberately and no detection result quotes
+  it.
 * Cohort clustering, reputation, and hierarchical aggregation are verified in
   software across simulated fleets. **No result has been measured across
   physically separate nodes.**

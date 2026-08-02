@@ -117,6 +117,12 @@ def build_parser() -> argparse.ArgumentParser:
     fed_agg = subparsers.add_parser("federated-aggregate")
     fed_agg.add_argument("--config", default=DEFAULT_CONFIG)
 
+    topology = subparsers.add_parser("fabric-topology")
+    topology.add_argument("--config", default=DEFAULT_CONFIG)
+
+    memory = subparsers.add_parser("audit-memory")
+    memory.add_argument("--config", default=DEFAULT_CONFIG)
+
     lease = subparsers.add_parser("verify-lease")
     lease.add_argument("--config", default=DEFAULT_CONFIG)
     lease.add_argument("--lease", required=True)
@@ -212,6 +218,12 @@ def main() -> None:
         return
     if args.command == "federated-aggregate":
         _print_capability(CapabilityServices(NodeConfig.load(args.config)).federated_aggregate())
+        return
+    if args.command == "fabric-topology":
+        _print_capability(CapabilityServices(NodeConfig.load(args.config)).fabric_topology())
+        return
+    if args.command == "audit-memory":
+        _print_capability(CapabilityServices(NodeConfig.load(args.config)).audit_memory())
         return
     if args.command == "verify-lease":
         services = CapabilityServices(NodeConfig.load(args.config))

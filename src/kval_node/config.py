@@ -49,6 +49,12 @@ class NodeConfig:
     #: distances from an assumed propagation model.
     path_loss_model_path: Path | None = None
     federated_inbox_path: Path | None = None
+    #: Range within which two positioned peers are treated as linked when
+    #: building the fabric graph. An operator-declared planning figure: it
+    #: assumes line of sight and says nothing about terrain, so a link that
+    #: does not carry traffic in practice belongs out of the roster rather
+    #: than inferred away here.
+    fabric_link_range_m: float = 2000.0
 
     @classmethod
     def load(cls, path: str | Path) -> "NodeConfig":
@@ -108,5 +114,6 @@ class NodeConfig:
             model_manifest_path=_optional_path(raw, "model_manifest_path"),
             path_loss_model_path=_optional_path(raw, "path_loss_model_path"),
             federated_inbox_path=_optional_path(raw, "federated_inbox_path"),
+            fabric_link_range_m=float(raw.get("fabric_link_range_m", 2000.0)),
         )
 

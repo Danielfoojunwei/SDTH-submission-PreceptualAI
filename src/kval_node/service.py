@@ -9,6 +9,8 @@ import time
 from datetime import datetime, timezone
 from pathlib import Path
 
+from cryptography.hazmat.primitives.asymmetric.ed25519 import Ed25519PrivateKey
+
 from .audit import AuditLedger
 from .capabilities import CapabilityServices
 from .config import NodeConfig
@@ -26,7 +28,7 @@ from .multimodal import Modality, ModalityObservation, MultimodalFuser
 from .optimizer import ProfileOptimizer
 from .policy import SafetyShield
 from .recovery import LinkStateMachine, RecoveryAction
-from .signing import load_verified_catalog
+from .signing import load_private_key, load_verified_catalog
 from .spectrum import BandStatus
 from .telemetry import TelemetryCollector
 from .timesync import ClockMonitor
@@ -37,12 +39,32 @@ from .timesync import ClockMonitor
 _LOCAL_PROVENANCE = hashlib.sha256(b"kval-node/service/local-derivation/v1").hexdigest()
 
 
+def _optional_node_key(config: NodeConfig) -> Ed25519PrivateKey | None:
+    """Load the node's signing key, or run unsigned rather than not at all.
+
+    A node without a fabric key is a valid deployment — a standalone node with
+    no peers. It loses authorship binding on its audit records, and the memory
+    audit reports that it is unavailable rather than passing vacuously.
+    """
+    if config.fabric_node_key_path is None:
+        return None
+    try:
+        return load_private_key(config.fabric_node_key_path)
+    except (OSError, ValueError, TypeError):
+        return None
+
+
 class KvalNode:
     def __init__(self, config: NodeConfig) -> None:
         self.config = config
         self.platform: PlatformReport = verify_jetson_platform()
         self.catalog = load_verified_catalog(config.catalog_path, config.catalog_public_key_path)
-        self.audit = AuditLedger(config.audit_database_path)
+        # The node key binds each audit record to its author. Without one the
+        # ledger still records and still hash-chains; it just cannot answer
+        # whether history was *appended* to, only whether it was rewritten.
+        self.audit = AuditLedger(
+            config.audit_database_path, signing_key=_optional_node_key(config)
+        )
         self.collector = TelemetryCollector()
         self.optimizer = ProfileOptimizer()
         self.shield = SafetyShield(

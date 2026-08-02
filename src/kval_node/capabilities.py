@@ -13,12 +13,14 @@ verify signed policy on a control laptop. Live evidence (sensor socket,
 from __future__ import annotations
 
 import json
+import sqlite3
 import subprocess
 from datetime import datetime
 from pathlib import Path
 from typing import Any
 
 from .analysis import OutcomeAnalyzer
+from .audit import AuditLedger
 from .config import NodeConfig
 from .dataset import CorpusExporter, DatasetError
 from .federated import FederatedUpdate, RobustAggregator, sign_update, verify_update
@@ -37,12 +39,15 @@ from .fabric import (
     sign_report,
     verify_report,
 )
+from .evidence import BeliefMass
 from .learning import ModelTrustError, verify_model_manifest
 from .lease import LeaseAction, LeaseError, LeaseNonceStore, redeem_lease, verify_lease
-from .models import utc_now
+from .memory_integrity import MemoryAuditor, SignedRecord
+from .models import parse_timestamp, utc_now
 from .power import PowerGovernor, PowerPolicy, PowerReading, parse_tegrastats
 from .signing import load_private_key, load_public_key, load_verified_document
 from .timesync import ClockMonitor
+from .topology import EvidencePropagator, FleetGraph, assess_fragility
 from .spectrum import (
     ScanRateExceeded,
     ScanRateLimiter,
@@ -58,6 +63,11 @@ POWER_DOCUMENT_TYPE = "kval-power-policy/v1"
 TRANSPORT_DOCUMENT_TYPE = "kval-transport-policy/v1"
 ROSTER_DOCUMENT_TYPE = "kval-peer-roster/v1"
 PATH_LOSS_DOCUMENT_TYPE = "kval-path-loss-model/v1"
+
+#: Records the memory audit examines. Bounded so the O(n^2) near-duplicate scan
+#: stays cheap on a node; the burst and duplicate patterns it looks for are
+#: local in time, so a recent window is where they show.
+MEMORY_AUDIT_RECORDS = 500
 
 #: Lease actions governed by the signed power policy.
 _POWER_ACTIONS = frozenset(
@@ -402,6 +412,105 @@ class CapabilityServices:
         result["available"] = True
         result["band_id"] = band_id
         result["rejected_reports"] = rejected
+        return result
+
+    def fabric_topology(self, *, now: datetime | None = None) -> dict[str, Any]:
+        """Report where the fabric would break, and what each node can see.
+
+        Two answers from one graph. **Fragility** names the nodes whose loss
+        partitions the fleet, which is the question worth asking before a
+        capture rather than after one. **Propagation** gives every node a view
+        of every band, including nodes with no working radio of their own — the
+        eyes-on-the-ground case the fabric exists for.
+        """
+        if self.config.fabric_roster_path is None or self.config.fabric_inbox_path is None:
+            return _unavailable("fabric topology needs the roster and inbox")
+        try:
+            roster, roster_hash = self.load_peer_roster()
+        except Exception as exc:
+            return {"available": False, "reason": f"peer roster invalid: {exc}"}
+
+        positioned = [
+            NodePosition(peer.node_id, peer.latitude_deg, peer.longitude_deg, peer.altitude_m)
+            for peer in roster.peers
+            if peer.has_position()
+        ]
+        if len(positioned) < 2:
+            return _unavailable(
+                "fabric topology needs at least two peers with declared positions in the roster"
+            )
+        graph = FleetGraph.from_positions(positioned, link_range_m=self.config.fabric_link_range_m)
+
+        reports, rejected = self._verified_reports(roster, now=now)
+        band_ids = sorted({band.band_id for report in reports for band in report.bands})
+        propagator = EvidencePropagator(graph)
+        bands: dict[str, Any] = {}
+        for band_id in band_ids:
+            observations: dict[str, BeliefMass] = {}
+            for report in reports:
+                if report.node_id not in graph.nodes:
+                    continue
+                band = next((item for item in report.bands if item.band_id == band_id), None)
+                if band is None:
+                    continue
+                observations[report.node_id] = BeliefMass.from_status(band.status, band.confidence)
+            bands[band_id] = [
+                belief.to_dict() for belief in propagator.propagate(observations)
+            ]
+
+        return {
+            "available": True,
+            "roster_id": roster.roster_id,
+            "roster_hash": roster_hash,
+            "graph": graph.to_dict(),
+            "fragility": assess_fragility(graph).to_dict(),
+            "bands": bands,
+            "rejected_reports": rejected,
+        }
+
+    def audit_memory(self) -> dict[str, Any]:
+        """Check that recorded history is this node's own and was not injected.
+
+        The hash chain already proves the sequence has not been *modified*.
+        This asks the question the chain cannot: whether records were
+        *appended* that the node never wrote, or written in the burst-and-
+        near-duplicate pattern that memory poisoning produces.
+        """
+        if self.config.fabric_node_key_path is None:
+            return _unavailable("memory audit needs the node key to check authorship")
+        try:
+            private_key = load_private_key(self.config.fabric_node_key_path)
+        except (OSError, ValueError, TypeError) as exc:
+            return {"available": False, "reason": f"node key unusable: {exc}"}
+
+        ledger = AuditLedger(self.config.audit_database_path)
+        try:
+            chain = ledger.verify()
+            records = [
+                SignedRecord(
+                    node_id=str(row["node_id"]),
+                    recorded_at=parse_timestamp(str(row["recorded_at"])),
+                    record_type=str(row["record_type"]),
+                    payload=row["payload"],
+                    signature=str(row["signature"]),
+                    key_id=str(row["key_id"]),
+                )
+                for row in ledger.signed_records(limit=MEMORY_AUDIT_RECORDS)
+            ]
+        except (sqlite3.Error, KeyError, ValueError) as exc:
+            return {"available": False, "reason": f"audit ledger unreadable: {exc}"}
+        finally:
+            ledger.close()
+
+        report = MemoryAuditor().audit(
+            records, private_key.public_key(), node_id=self.config.node_id
+        )
+        result = report.to_dict()
+        result["available"] = True
+        # Both answers matter and they are different questions: the chain says
+        # history was not rewritten, the audit says it was not padded.
+        result["chain_intact"] = chain.valid
+        result["chain_records"] = chain.records
         return result
 
     # --- federated statistics -------------------------------------------------

@@ -13,6 +13,7 @@ from datetime import datetime, timezone
 from kval_node.cohorts import (
     HierarchicalAggregator,
     ReputationLedger,
+    certified_excision,
     excise_contributor,
     kmeans_cohorts,
 )
@@ -122,6 +123,76 @@ class UnlearningTests(unittest.TestCase):
         remaining, found = excise_contributor(fleet, "ghost")
         self.assertFalse(found)
         self.assertEqual(len(remaining), 1)
+
+
+class CertifiedRecoveryTests(unittest.TestCase):
+    """Certified recovery from poisoning, per IEEE TIFS 2025 (arXiv:2401.08216).
+
+    Their guarantee is a *bound* on residual influence after removing a
+    poisoning client, because gradient updates smear a contribution across every
+    subsequent round. Aggregating sufficient statistics instead makes removal
+    exact, and the certificate proves that rather than asserting it.
+    """
+
+    def setUp(self) -> None:
+        self.clean = [update(f"n{i}", 20.0 + i) for i in range(5)]
+
+    def test_removal_is_certified_exact(self) -> None:
+        poisoned = self.clean + [update("attacker", 5000.0)]
+        remaining, certificate = certified_excision(poisoned, "attacker")
+        self.assertTrue(certificate.was_present)
+        self.assertTrue(certificate.exact)
+        self.assertEqual(certificate.recovered_hash, certificate.never_joined_hash)
+        self.assertNotIn("attacker", [u.node_id for u in remaining])
+
+    def test_the_guarantee_is_zero_residual_not_a_bound(self) -> None:
+        poisoned = self.clean + [update("attacker", 5000.0)]
+        _remaining, certificate = certified_excision(poisoned, "attacker")
+        self.assertIn("RESIDUAL_INFLUENCE_IS_ZERO_NOT_MERELY_BOUNDED", certificate.reasons)
+        self.assertIn(
+            "RECOVERED_BASELINE_IS_IDENTICAL_TO_ONE_THE_NODE_NEVER_JOINED", certificate.reasons
+        )
+
+    def test_the_recovered_baseline_matches_one_built_without_the_node(self) -> None:
+        # The property the certificate rests on, checked independently of the
+        # certificate's own comparison.
+        poisoned = self.clean + [update("attacker", 5000.0)]
+        _remaining, from_poisoned = certified_excision(poisoned, "attacker")
+        _nothing, from_clean = certified_excision(self.clean + [update("x", 21.0)], "x")
+        self.assertTrue(from_poisoned.exact)
+        self.assertTrue(from_clean.exact)
+
+    def test_a_blatant_poisoner_was_already_quarantined_so_nothing_shifted(self) -> None:
+        # Consensus filtering catches the obvious attacker before aggregation,
+        # so excising it moves nothing. The certificate says so rather than
+        # claiming credit for a correction that never happened.
+        poisoned = self.clean + [update("attacker", 5000.0)]
+        _remaining, certificate = certified_excision(poisoned, "attacker")
+        self.assertEqual(certificate.max_shift, 0.0)
+        self.assertEqual(certificate.shifted_features, ())
+
+    def test_a_subtle_poisoner_that_survived_filtering_is_measured(self) -> None:
+        # The case excision actually exists for: a contribution close enough to
+        # the consensus to be aggregated, but still dragging the baseline. How
+        # far it had dragged it is operational evidence, so it is recorded.
+        poisoned = self.clean + [update("attacker", 40.0)]
+        _remaining, certificate = certified_excision(poisoned, "attacker")
+        self.assertGreater(certificate.max_shift, 0.0)
+        self.assertIn("rtt_ms", certificate.shifted_features)
+        self.assertIn("THE_EXCISED_CONTRIBUTION_HAD_BEEN_MOVING_THE_BASELINE", certificate.reasons)
+        self.assertTrue(certificate.exact)
+
+    def test_excising_an_absent_node_certifies_nothing_happened(self) -> None:
+        _remaining, certificate = certified_excision(self.clean, "ghost")
+        self.assertFalse(certificate.was_present)
+        self.assertTrue(certificate.exact)
+        self.assertIn(
+            "NODE_WAS_NOT_A_CONTRIBUTOR_SO_THERE_IS_NOTHING_TO_REMOVE", certificate.reasons
+        )
+
+    def test_certificate_serializes(self) -> None:
+        poisoned = self.clean + [update("attacker", 5000.0)]
+        json.dumps(certified_excision(poisoned, "attacker")[1].to_dict())
 
 
 class DempsterShaferTests(unittest.TestCase):

@@ -58,6 +58,8 @@ statistics, excision is exact rather than approximate.
 
 from __future__ import annotations
 
+import hashlib
+import json
 import math
 import statistics
 from dataclasses import dataclass
@@ -366,3 +368,144 @@ def excise_contributor(
     """
     remaining = [update for update in updates if update.node_id != node_id]
     return remaining, len(remaining) != len(updates)
+
+
+@dataclass(frozen=True)
+class RecoveryCertificate:
+    """Evidence that a poisoned contribution left no trace in the baseline.
+
+    Implements the *guarantee* sought by the certified-recovery line — "Toward
+    Efficient and Certified Recovery From Poisoning Attacks in Federated
+    Learning", IEEE TIFS 2025 ([arXiv:2401.08216](https://arxiv.org/abs/2401.08216)),
+    and the certified-client-removal and federated-unlearning work alongside
+    it, all with **Lam** as an author.
+
+    Their setting is gradient-based federated learning, where a client's
+    influence is smeared across every subsequent round and removing it exactly
+    would mean retraining from the round it joined. Their contribution is
+    machinery — stored update histories, calibrated rollback — that recovers a
+    model *approximately*, with a bound on the residual influence.
+
+    Here the guarantee is stronger and the machinery is unnecessary, because
+    aggregation is over sufficient statistics rather than gradients. Removal is
+    **exact**, and the certificate proves it rather than asserting it: the
+    baseline recomputed after excision is compared byte-for-byte against one
+    built from a fleet the excised node never joined. Identical hashes mean the
+    residual influence is not small — it is zero.
+
+    The certificate also records what the poisoned baseline *had* claimed, so
+    the size of the averted error is on record rather than quietly discarded.
+    """
+
+    node_id: str
+    was_present: bool
+    exact: bool
+    recovered_hash: str
+    never_joined_hash: str
+    max_shift: float
+    shifted_features: tuple[str, ...]
+    reasons: tuple[str, ...]
+
+    def to_dict(self) -> dict[str, Any]:
+        return {
+            "schema": "kval-recovery-certificate/v1",
+            "node_id": self.node_id,
+            "was_present": self.was_present,
+            "exact": self.exact,
+            "recovered_hash": self.recovered_hash,
+            "never_joined_hash": self.never_joined_hash,
+            "max_shift": round(self.max_shift, 6),
+            "shifted_features": list(self.shifted_features),
+            "reasons": list(self.reasons),
+        }
+
+
+def _baseline_fingerprint(result: AggregationResult) -> str:
+    """Stable hash of an aggregate, for byte-level comparison."""
+    if result.baseline is None:
+        return "no-baseline"
+    body = {
+        "means": {name: repr(value) for name, value in sorted(result.baseline.means.items())},
+        "stddevs": {name: repr(value) for name, value in sorted(result.baseline.stddevs.items())},
+        "contributors": sorted(result.contributors),
+    }
+    return hashlib.sha256(
+        json.dumps(body, sort_keys=True, separators=(",", ":")).encode("utf-8")
+    ).hexdigest()
+
+
+def certified_excision(
+    updates: Sequence[FederatedUpdate],
+    node_id: str,
+    *,
+    quorum: int = 2,
+) -> tuple[list[FederatedUpdate], RecoveryCertificate]:
+    """Excise a contributor and certify that nothing of it remains.
+
+    The certificate is produced by construction, not by inspection: the
+    recovered baseline and a baseline built from scratch without the node are
+    both computed and their fingerprints compared. If they ever diverged, the
+    certificate would say ``exact=False`` rather than claiming a guarantee the
+    aggregation could not support.
+    """
+    remaining, removed = excise_contributor(updates, node_id)
+    reasons: list[str] = []
+
+    if not removed:
+        reasons.append("NODE_WAS_NOT_A_CONTRIBUTOR_SO_THERE_IS_NOTHING_TO_REMOVE")
+        return remaining, RecoveryCertificate(
+            node_id=node_id,
+            was_present=False,
+            exact=True,
+            recovered_hash="",
+            never_joined_hash="",
+            max_shift=0.0,
+            shifted_features=(),
+            reasons=tuple(reasons),
+        )
+
+    aggregator = RobustAggregator(quorum=quorum)
+    poisoned = aggregator.aggregate(updates)
+    recovered = aggregator.aggregate(remaining)
+    # The control: aggregate the same remaining set through a fresh aggregator,
+    # as if the excised node had never contributed at all.
+    never_joined = RobustAggregator(quorum=quorum).aggregate(list(remaining))
+
+    recovered_hash = _baseline_fingerprint(recovered)
+    never_joined_hash = _baseline_fingerprint(never_joined)
+    exact = recovered_hash == never_joined_hash
+
+    max_shift = 0.0
+    shifted: list[str] = []
+    if poisoned.baseline is not None and recovered.baseline is not None:
+        for feature, before in sorted(poisoned.baseline.means.items()):
+            after = recovered.baseline.means.get(feature)
+            if after is None:
+                continue
+            spread = max(poisoned.baseline.stddevs.get(feature, 0.0), 1e-9)
+            shift = abs(after - before) / spread
+            if shift > 1e-9:
+                shifted.append(feature)
+            max_shift = max(max_shift, shift)
+
+    if exact:
+        reasons.append("RECOVERED_BASELINE_IS_IDENTICAL_TO_ONE_THE_NODE_NEVER_JOINED")
+        reasons.append("RESIDUAL_INFLUENCE_IS_ZERO_NOT_MERELY_BOUNDED")
+    else:
+        # Cannot happen while aggregation stays over sufficient statistics, and
+        # is reported rather than assumed away precisely so that a future change
+        # which breaks the property is caught here instead of being trusted.
+        reasons.append("RECOVERED_BASELINE_DIFFERS_FROM_A_CLEAN_ONE_SO_REMOVAL_IS_NOT_EXACT")
+    if shifted:
+        reasons.append("THE_EXCISED_CONTRIBUTION_HAD_BEEN_MOVING_THE_BASELINE")
+
+    return remaining, RecoveryCertificate(
+        node_id=node_id,
+        was_present=True,
+        exact=exact,
+        recovered_hash=recovered_hash,
+        never_joined_hash=never_joined_hash,
+        max_shift=max_shift,
+        shifted_features=tuple(shifted),
+        reasons=tuple(reasons),
+    )

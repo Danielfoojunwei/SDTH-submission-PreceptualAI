@@ -27,10 +27,25 @@ Ed25519 signature over its canonical content, so an attacker with database
 write access but no node key cannot manufacture accepted history. The hash
 chain proves the sequence is intact; the signature proves who wrote each link.
 
-**Injection detection.** MemMorph's signature is a small burst of records that
-are individually plausible but collectively anomalous — unusually similar to
-each other, arriving unusually close together, and pulling a statistic in a
-consistent direction. All three are checked.
+**Injection detection.** MemMorph's records are individually plausible but
+collectively anomalous: generated from one template, so unusually similar to
+each other, and *unlike the history they were inserted into*.
+
+That last condition is what makes the test usable, and getting it wrong makes
+the detector worse than useless. A node's ledger is *supposed* to repeat — a
+link that stays healthy produces the same decision every cycle, and several
+records land within the same second of one loop iteration. A detector that
+flagged repetition, or flagged records arriving close together, would fire
+constantly on a correctly-operating node and be switched off within a day. So
+a group is flagged only when its members closely resemble **each other** and
+are clearly distinct from **everything else** — the signature of a template
+inserted into a history, rather than of a system doing the same thing twice.
+
+The honest limit: this catches an outsider injecting from a template. It does
+not catch a compromised node that holds the signing key and writes poisoned
+records resembling its own normal output. Nothing at this layer could. The
+backstop for that case is bounded influence, below, and reputation weighting
+across the fleet.
 
 **Bounded influence.** Even undetected, no small group of records may dominate
 a derived statistic. The influence cap is the same principle the federated
@@ -43,7 +58,7 @@ from __future__ import annotations
 import base64
 import statistics
 from dataclasses import dataclass
-from datetime import datetime, timedelta
+from datetime import datetime
 from typing import Any, Sequence
 
 from cryptography.exceptions import InvalidSignature
@@ -53,17 +68,20 @@ from .models import utc_now
 from .signing import canonical_json, public_key_id
 from .validation import bounded_number, non_empty_str
 
-#: Records arriving closer together than this are treated as one burst.
-DEFAULT_BURST_WINDOW_SECONDS = 5.0
-
-#: Burst size at or above which a group is flagged. MemMorph needs only three
-#: records, so the threshold is deliberately low.
-DEFAULT_BURST_THRESHOLD = 3
+#: Group size at or above which mutually near-duplicate records are treated as
+#: a templated injection. MemMorph needs only three records, so the threshold
+#: is deliberately low — which is affordable precisely because the group must
+#: also be distinct from the surrounding history.
+DEFAULT_GROUP_THRESHOLD = 3
 
 #: Similarity at or above which two records are treated as near-duplicates.
-#: Injected records tend to resemble each other because they are generated
-#: from one template to push one conclusion.
+#: Injected records resemble each other because one template generated them.
 DEFAULT_SIMILARITY_THRESHOLD = 0.9
+
+#: How much *less* similar a group must be to the rest of history than to
+#: itself before it counts as foreign. Without this margin the test fires on a
+#: node repeating a decision, which is what a healthy node does all day.
+DEFAULT_NOVELTY_MARGIN = 0.35
 
 #: Maximum share of a derived statistic any single record may account for.
 DEFAULT_MAX_SINGLE_INFLUENCE = 0.25
@@ -75,10 +93,17 @@ class MemoryIntegrityError(RuntimeError):
 
 @dataclass(frozen=True)
 class SignedRecord:
-    """A decision record bound to its author."""
+    """A decision record bound to its author.
+
+    ``record_type`` is inside the signed body, not merely alongside it. A
+    signature that covered only the payload would let an attacker relabel a
+    signed observation as, say, an activation, producing history the node never
+    wrote out of parts it did.
+    """
 
     node_id: str
     recorded_at: datetime
+    record_type: str
     payload: dict[str, Any]
     signature: str
     key_id: str
@@ -87,6 +112,7 @@ class SignedRecord:
         return {
             "node_id": self.node_id,
             "recorded_at": self.recorded_at.isoformat(),
+            "record_type": self.record_type,
             "payload": self.payload,
         }
 
@@ -99,18 +125,21 @@ def sign_record(
     private_key: Ed25519PrivateKey,
     *,
     node_id: str,
+    record_type: str = "decision",
     now: datetime | None = None,
 ) -> SignedRecord:
     recorded_at = now or utc_now()
     body = {
         "node_id": non_empty_str(node_id, "node_id"),
         "recorded_at": recorded_at.isoformat(),
+        "record_type": non_empty_str(record_type, "record_type"),
         "payload": payload,
     }
     signature = private_key.sign(canonical_json(body))
     return SignedRecord(
         node_id=body["node_id"],
         recorded_at=recorded_at,
+        record_type=body["record_type"],
         payload=payload,
         signature=base64.b64encode(signature).decode("ascii"),
         key_id=public_key_id(private_key.public_key()),
@@ -195,49 +224,81 @@ class MemoryAuditor:
     def __init__(
         self,
         *,
-        burst_window_seconds: float = DEFAULT_BURST_WINDOW_SECONDS,
-        burst_threshold: int = DEFAULT_BURST_THRESHOLD,
+        group_threshold: int = DEFAULT_GROUP_THRESHOLD,
         similarity_threshold: float = DEFAULT_SIMILARITY_THRESHOLD,
+        novelty_margin: float = DEFAULT_NOVELTY_MARGIN,
     ) -> None:
-        self.burst_window = timedelta(seconds=burst_window_seconds)
-        self.burst_threshold = max(2, burst_threshold)
+        self.group_threshold = max(2, group_threshold)
         self.similarity_threshold = bounded_number(
             similarity_threshold, "similarity_threshold", 0.0, 1.0
         )
+        self.novelty_margin = bounded_number(novelty_margin, "novelty_margin", 0.0, 1.0)
 
-    def _bursts(self, records: Sequence[SignedRecord]) -> list[InjectionFinding]:
-        findings: list[InjectionFinding] = []
-        start = 0
-        for index in range(len(records)):
-            while records[index].recorded_at - records[start].recorded_at > self.burst_window:
-                start += 1
-            span = index - start + 1
-            if span >= self.burst_threshold:
-                group = tuple(range(start, index + 1))
-                if not any(set(group) <= set(f.record_indices) for f in findings):
-                    findings = [f for f in findings if not set(f.record_indices) <= set(group)]
-                    findings.append(
-                        InjectionFinding(
-                            kind="BURST",
-                            record_indices=group,
-                            detail=f"{span} records within {self.burst_window.total_seconds()}s",
-                        )
-                    )
-        return findings
+    def _templated_groups(self, records: Sequence[SignedRecord]) -> list[InjectionFinding]:
+        """Groups of mutually near-duplicate records unlike the rest of history.
 
-    def _near_duplicates(self, records: Sequence[SignedRecord]) -> list[InjectionFinding]:
+        Both halves are required. Mutual similarity alone is satisfied by a
+        node repeating a stable decision; distinctness alone is satisfied by
+        any unusual event. Together they describe a template inserted into a
+        history that did not contain it.
+        """
+        count = len(records)
+        if count < self.group_threshold:
+            return []
+
+        similarity = [[0.0] * count for _ in range(count)]
+        for i in range(count):
+            for j in range(i + 1, count):
+                value = payload_similarity(records[i].payload, records[j].payload)
+                similarity[i][j] = similarity[j][i] = value
+
+        # Group members by mutual near-duplication. Transitive grouping is
+        # adequate here: a template produces one tight cluster, not a chain.
+        assigned: dict[int, int] = {}
+        groups: list[list[int]] = []
+        for i in range(count):
+            if i in assigned:
+                continue
+            members = [i]
+            assigned[i] = len(groups)
+            for j in range(i + 1, count):
+                if j not in assigned and similarity[i][j] >= self.similarity_threshold:
+                    members.append(j)
+                    assigned[j] = len(groups)
+            groups.append(members)
+
         findings: list[InjectionFinding] = []
-        for i in range(len(records)):
-            for j in range(i + 1, len(records)):
-                similarity = payload_similarity(records[i].payload, records[j].payload)
-                if similarity >= self.similarity_threshold:
-                    findings.append(
-                        InjectionFinding(
-                            kind="NEAR_DUPLICATE",
-                            record_indices=(i, j),
-                            detail=f"payload similarity {similarity:.3f}",
-                        )
-                    )
+        for members in groups:
+            if len(members) < self.group_threshold:
+                continue
+            outsiders = [index for index in range(count) if index not in members]
+            if not outsiders:
+                # Every record resembles every other: a node doing one thing
+                # consistently, which is not evidence of anything.
+                continue
+            internal = statistics.fmean(
+                similarity[a][b]
+                for position, a in enumerate(members)
+                for b in members[position + 1 :]
+            )
+            external = statistics.fmean(
+                similarity[a][b] for a in members for b in outsiders
+            )
+            if internal - external < self.novelty_margin:
+                continue
+            span = (
+                records[max(members)].recorded_at - records[min(members)].recorded_at
+            ).total_seconds()
+            findings.append(
+                InjectionFinding(
+                    kind="TEMPLATED_GROUP",
+                    record_indices=tuple(members),
+                    detail=(
+                        f"{len(members)} records with internal similarity {internal:.3f} "
+                        f"against {external:.3f} to the rest of history, spanning {span:.1f}s"
+                    ),
+                )
+            )
         return findings
 
     def audit(
@@ -250,7 +311,10 @@ class MemoryAuditor:
         findings: list[InjectionFinding] = []
         reasons: list[str] = []
 
-        for index, record in enumerate(records):
+        ordered = sorted(range(len(records)), key=lambda i: records[i].recorded_at)
+        chronological = [records[i] for i in ordered]
+
+        for index, record in enumerate(chronological):
             try:
                 verify_record(record, public_key, node_id=node_id)
             except MemoryIntegrityError as exc:
@@ -258,17 +322,12 @@ class MemoryAuditor:
                     InjectionFinding(kind="UNAUTHENTICATED", record_indices=(index,), detail=str(exc))
                 )
 
-        ordered = sorted(range(len(records)), key=lambda i: records[i].recorded_at)
-        chronological = [records[i] for i in ordered]
-        findings.extend(self._bursts(chronological))
-        findings.extend(self._near_duplicates(chronological))
+        findings.extend(self._templated_groups(chronological))
 
         if any(f.kind == "UNAUTHENTICATED" for f in findings):
             reasons.append("HISTORY_CONTAINS_RECORDS_THIS_NODE_DID_NOT_WRITE")
-        if any(f.kind == "BURST" for f in findings):
-            reasons.append("RECORDS_ARRIVED_IN_AN_IMPLAUSIBLE_BURST")
-        if any(f.kind == "NEAR_DUPLICATE" for f in findings):
-            reasons.append("NEAR_DUPLICATE_RECORDS_SUGGEST_TEMPLATED_INJECTION")
+        if any(f.kind == "TEMPLATED_GROUP" for f in findings):
+            reasons.append("A_GROUP_OF_RECORDS_LOOKS_TEMPLATED_AND_FOREIGN_TO_THIS_HISTORY")
         if not reasons:
             reasons.append("HISTORY_CONSISTENT_WITH_THIS_NODE_S_OWN_OPERATION")
 
