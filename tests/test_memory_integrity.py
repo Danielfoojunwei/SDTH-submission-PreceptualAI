@@ -285,7 +285,7 @@ class BoundedInfluenceTests(unittest.TestCase):
         verdict = bounded_influence([10.0, 10.5, 9.5, 10.2, 900.0])
         self.assertFalse(verdict.within_bound)
         self.assertEqual(verdict.most_influential_index, 4)
-        self.assertIn("A_SINGLE_RECORD_MOVES_THE_CONCLUSION_TOO_FAR", verdict.reasons)
+        self.assertGreater(verdict.disproportion, 5.0)
 
     def test_a_well_evidenced_conclusion_passes(self) -> None:
         verdict = bounded_influence([10.0, 11.0, 9.0, 10.5, 9.5, 10.2, 9.8, 10.1, 10.4, 9.7])
@@ -303,11 +303,73 @@ class BoundedInfluenceTests(unittest.TestCase):
         self.assertTrue(verdict.within_bound)
         self.assertEqual(verdict.max_influence, 0.0)
 
+    def test_the_bound_is_measured_against_a_typical_record_not_a_fixed_share(self) -> None:
+        # With ten records each legitimately carries about a tenth, so an
+        # absolute cap tight enough to catch poisoning in long history would
+        # condemn every short history. The ratio must be stable across length.
+        for count in (10, 40, 200):
+            verdict = bounded_influence([10.0 + (index % 7) * 0.3 for index in range(count)])
+            self.assertTrue(verdict.within_bound, f"clean {count}-record history was condemned")
+            self.assertLess(verdict.disproportion, 5.0)
+
+    def test_the_bound_does_not_depend_on_how_much_readings_naturally_vary(self) -> None:
+        # A node whose readings span a wide range is not more suspicious than
+        # one whose readings barely move.
+        tight = bounded_influence([10.0 + (i % 7) * 0.3 for i in range(50)])
+        wide = bounded_influence([10.0 + i * 3.0 for i in range(50)])
+        self.assertTrue(tight.within_bound)
+        self.assertTrue(wide.within_bound)
+
+    def test_a_group_injection_is_left_to_the_group_detector(self) -> None:
+        # Stated as a limit rather than papered over: remove one of three
+        # identical injected records and the other two still hold the mean, so
+        # a leave-one-out test is structurally blind to groups that are not
+        # also extreme. The templated-group detector covers that case.
+        subtle = [20.0 + (index % 5) for index in range(40)] + [26.0, 26.0, 26.0]
+        self.assertTrue(bounded_influence(subtle).within_bound)
+
     def test_influence_falls_as_evidence_grows(self) -> None:
         # The same outlier matters less when more genuine records surround it.
         small = bounded_influence([10.0, 10.0, 10.0, 40.0])
-        large = bounded_influence([10.0] * 40 + [40.0])
+        large = bounded_influence([10.0] * 40 + [12.0] * 5 + [40.0])
         self.assertLess(large.max_influence, small.max_influence)
+
+    def test_an_extreme_record_is_caught_at_any_history_length(self) -> None:
+        # Regression on a fail-open that made this defence inert. Normalising
+        # the leave-one-out shift by the spread of *all* values let the outlier
+        # inflate the denominator judging it, so the ratio converged to
+        # 1/sqrt(n-1): past seventeen records a single injected value of any
+        # magnitude sat inside the bound. Measuring against the spread of the
+        # records that remain removes the feedback.
+        for count in (5, 17, 25, 50, 200):
+            for magnitude in (1e3, 1e6, 1e12):
+                verdict = bounded_influence([20.0] * (count - 1) + [magnitude])
+                self.assertFalse(
+                    verdict.within_bound,
+                    f"a record of {magnitude:g} passed the bound among {count} records",
+                )
+
+    def test_a_realistic_clean_history_still_passes(self) -> None:
+        # The fix must not make the bound so strict that normal history fails,
+        # or it gets disabled and defends nothing.
+        self.assertTrue(bounded_influence([20.0 + (i % 7) for i in range(50)]).within_bound)
+
+    def test_the_memmorph_three_record_shape_is_caught(self) -> None:
+        # The paper's own attack size, injected into a clean history.
+        clean = [20.0 + (index % 7) * 0.3 for index in range(50)]
+        self.assertFalse(bounded_influence(clean + [900.0] * 3).within_bound)
+
+    def test_a_point_inside_a_wide_spread_is_not_an_outlier(self) -> None:
+        # A node whose readings genuinely vary must not be condemned for it.
+        wide = [20.0 + index * 3.0 for index in range(50)]
+        self.assertTrue(bounded_influence(wide + [180.0]).within_bound)
+
+    def test_one_disagreeing_record_among_identical_ones_is_total_influence(self) -> None:
+        # No spread among the rest means any disagreement is unbounded, which
+        # is the honest answer rather than a division by zero.
+        verdict = bounded_influence([5.0, 5.0, 5.0, 5.0, 900.0])
+        self.assertFalse(verdict.within_bound)
+        self.assertEqual(verdict.most_influential_index, 4)
 
     def test_verdict_serializes(self) -> None:
         json.dumps(bounded_influence([1.0, 2.0, 3.0, 4.0]).to_dict())

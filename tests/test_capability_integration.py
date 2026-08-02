@@ -306,3 +306,141 @@ class UnconfiguredNodeTests(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class ComposedPipelineTests(CapabilityIntegrationTests):
+    """The mechanisms reaching each other through a real configured node.
+
+    Same fixture as above — signed roster, node key, inbox, ledger on disk —
+    driven through the commands an operator actually runs.
+    """
+
+    def _publish_update(self, node_id: str, rtt_mean: float) -> None:
+        from kval_node.dataset import FEATURE_NAMES
+        from kval_node.federated import FeatureStatistics, FederatedUpdate, sign_update
+
+        stats = {name: FeatureStatistics(50, 0.0, 50.0) for name in FEATURE_NAMES}
+        stats["rtt_ms"] = FeatureStatistics(50, rtt_mean, 50 * (rtt_mean**2 + 100.0))
+        update = FederatedUpdate(node_id, NOW, 50, stats)
+        (self.federated_inbox / f"{node_id}.json").write_text(
+            json.dumps(sign_update(update, self.node_keys[node_id])), encoding="utf-8"
+        )
+
+    def setUp(self) -> None:
+        super().setUp()
+        self.federated_inbox = self.root / "federated"
+        self.federated_inbox.mkdir()
+        config = json.loads((self.root / "config.json").read_text(encoding="utf-8"))
+        config["federated_inbox_path"] = str(self.federated_inbox)
+        config["federated_privacy_epsilon"] = 8.0
+        (self.root / "config.json").write_text(json.dumps(config), encoding="utf-8")
+        self.services = CapabilityServices(NodeConfig.load(self.root / "config.json"))
+
+    def test_aggregation_runs_the_hierarchical_pipeline_not_a_flat_average(self) -> None:
+        for index, node in enumerate(("node-b", "node-c", "node-far")):
+            self._publish_update(node, 20.0 + index * 90.0)
+        result = self.services.federated_aggregate(now=NOW)
+        self.assertTrue(result["available"])
+        self.assertIn("cohorts", result)
+        self.assertIn(
+            "COHORTS_FORMED_BY_RF_ENVIRONMENT_NOT_BY_ADMINISTRATIVE_GROUPING", result["reasons"]
+        )
+
+    def test_the_flat_baseline_is_kept_so_the_hierarchy_stays_falsifiable(self) -> None:
+        for index, node in enumerate(("node-b", "node-c", "node-far")):
+            self._publish_update(node, 20.0 + index * 90.0)
+        result = self.services.federated_aggregate(now=NOW)
+        self.assertIn("flat_baseline", result)
+
+    def test_reputation_is_written_where_the_next_round_will_find_it(self) -> None:
+        for index, node in enumerate(("node-b", "node-c", "node-far")):
+            self._publish_update(node, 20.0 + index * 90.0)
+        self.services.federated_aggregate(now=NOW)
+        self.assertTrue((self.root / "fleet-reputation.json").exists())
+
+    def test_a_privatised_contribution_discloses_what_it_cost(self) -> None:
+        ledger = AuditLedger(
+            self.services.config.audit_database_path, signing_key=self.node_keys["node-a"]
+        )
+        try:
+            for index in range(6):
+                ledger.append("node-a", "decision", {"selected": f"profile-{index}"})
+        finally:
+            ledger.close()
+        result = self.services.federated_update(now=NOW)
+        if result["available"]:
+            self.assertIn("privacy", result)
+            self.assertIn(
+                "CONSENSUS_FILTERING_WILL_READ_THIS_NOISE_AS_DIVERGENCE",
+                result["privacy"]["reasons"],
+            )
+
+    def test_excision_is_reachable_and_certified(self) -> None:
+        for index, node in enumerate(("node-b", "node-c", "node-far")):
+            self._publish_update(node, 20.0 + index * 5.0)
+        result = self.services.excise_node("node-c", now=NOW)
+        self.assertTrue(result["available"])
+        self.assertTrue(result["certificate"]["exact"])
+        self.assertNotIn("node-c", result["remaining_contributors"])
+
+    def test_a_localisation_is_recorded_so_a_track_can_be_built(self) -> None:
+        # The composition: geolocate writes fixes, mobility reads them. Without
+        # the recording step the tracker has nothing and the pairing is fiction.
+        from kval_node.capabilities import EMITTER_RECORD_TYPE
+
+        self.services._record_fix(
+            {
+                "available": True,
+                "band_id": "ism-2g4",
+                "latitude_deg": 1.3010,
+                "longitude_deg": 103.8010,
+                "uncertainty_radius_m": 25.0,
+                "method": "trilateration",
+                "contributing_nodes": ["node-a", "node-b", "node-c"],
+            }
+        )
+        ledger = AuditLedger(self.services.config.audit_database_path)
+        try:
+            kinds = {row["record_type"] for row in ledger.signed_records()}
+        finally:
+            ledger.close()
+        self.assertIn(EMITTER_RECORD_TYPE, kinds)
+
+    def test_a_refused_localisation_never_becomes_a_track_point(self) -> None:
+        self.services._record_fix({"available": False, "reason": "collinear"})
+        result = self.services.track_emitter("ism-2g4")
+        self.assertFalse(result["available"])
+
+    def test_tracking_reads_back_the_fixes_localisation_wrote(self) -> None:
+        for index in range(6):
+            self.services._record_fix(
+                {
+                    "available": True,
+                    "band_id": "ism-2g4",
+                    "latitude_deg": 1.3010 + index * 0.0001,
+                    "longitude_deg": 103.8010,
+                    "uncertainty_radius_m": 25.0,
+                    "method": "trilateration",
+                    "contributing_nodes": ["node-a", "node-b", "node-c"],
+                }
+            )
+        result = self.services.track_emitter("ism-2g4")
+        self.assertTrue(result["available"])
+        self.assertEqual(result["fixes"], 6)
+        self.assertGreaterEqual(result["place_radius_m"], 50.0)
+
+    def test_fleet_detection_composes_reports_cohorts_and_reputation(self) -> None:
+        for node in ("node-b", "node-c", "node-far"):
+            self._publish(node, BandStatus.JAMMING_SUSPECTED)
+            self._publish_update(node, 20.0)
+        result = self.services.detect_fleet_anomaly(now=NOW)
+        self.assertTrue(result["available"])
+        self.assertIn("cohorts_assigned", result)
+        self.assertIn("verdicts", result)
+
+    def test_forecasting_is_reachable_and_bounded(self) -> None:
+        result = self.services.forecast_links()
+        if result["available"]:
+            self.assertIn(
+                "FORECAST_MAY_DEMOTE_A_PROFILE_AND_MAY_NEVER_PROMOTE_ONE", result["reasons"]
+            )

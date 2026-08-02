@@ -15,14 +15,14 @@ from __future__ import annotations
 import json
 import sqlite3
 import subprocess
-from datetime import datetime
+from datetime import datetime, timedelta
 from pathlib import Path
-from typing import Any
+from typing import Any, Sequence
 
 from .analysis import OutcomeAnalyzer
 from .audit import AuditLedger
 from .config import NodeConfig
-from .dataset import CorpusExporter, DatasetError
+from .dataset import FEATURE_NAMES, CorpusExporter, DatasetError
 from .federated import FederatedUpdate, RobustAggregator, sign_update, verify_update
 from .geolocate import (
     EmitterLocator,
@@ -40,12 +40,26 @@ from .fabric import (
     verify_report,
 )
 from .evidence import BeliefMass
+from .intrusion import NodeBaseline
 from .learning import ModelTrustError, verify_model_manifest
 from .lease import LeaseAction, LeaseError, LeaseNonceStore, redeem_lease, verify_lease
 from .memory_integrity import MemoryAuditor, SignedRecord
+from .mobility import DEFAULT_PLACE_RADIUS_M
 from .models import parse_timestamp, utc_now
+from .orchestration import (
+    FleetLearning,
+    cohort_assignments,
+    detect_fleet_event,
+    fixes_from_estimates,
+    forecast_advice,
+    predict_track,
+    privatise_update,
+    renew_under_partition,
+    verdicts_from_reports,
+)
 from .power import PowerGovernor, PowerPolicy, PowerReading, parse_tegrastats
 from .signing import load_private_key, load_public_key, load_verified_document
+from .threshold_ca import Attestation, CertificationError, CertifierRoster, Grant
 from .timesync import ClockMonitor
 from .topology import EvidencePropagator, FleetGraph, assess_fragility
 from .spectrum import (
@@ -63,6 +77,10 @@ POWER_DOCUMENT_TYPE = "kval-power-policy/v1"
 TRANSPORT_DOCUMENT_TYPE = "kval-transport-policy/v1"
 ROSTER_DOCUMENT_TYPE = "kval-peer-roster/v1"
 PATH_LOSS_DOCUMENT_TYPE = "kval-path-loss-model/v1"
+
+#: Record type under which localisation results are written to the ledger, so
+#: the mobility model has a history of fixes to read back.
+EMITTER_RECORD_TYPE = "emitter_estimate"
 
 #: Records the memory audit examines. Bounded so the O(n^2) near-duplicate scan
 #: stays cheap on a node; the burst and duplicate patterns it looks for are
@@ -412,7 +430,51 @@ class CapabilityServices:
         result["available"] = True
         result["band_id"] = band_id
         result["rejected_reports"] = rejected
+        self._record_fix(result)
         return result
+
+    def _record_fix(self, estimate: dict[str, Any]) -> None:
+        """Persist a successful estimate so a track can be built from fixes.
+
+        Only accepted estimates are written. A refusal is not a position, and
+        recording one would let the mobility model treat "we could not tell"
+        as a place the emitter had been.
+        """
+        if estimate.get("available") is not True:
+            return
+        ledger = AuditLedger(
+            self.config.audit_database_path, signing_key=self._optional_node_key()
+        )
+        try:
+            ledger.append(
+                self.config.node_id,
+                EMITTER_RECORD_TYPE,
+                {
+                    "available": True,
+                    "band_id": estimate["band_id"],
+                    "latitude_deg": estimate["latitude_deg"],
+                    "longitude_deg": estimate["longitude_deg"],
+                    "uncertainty_radius_m": estimate["uncertainty_radius_m"],
+                    "method": estimate["method"],
+                    "contributing_nodes": estimate["contributing_nodes"],
+                    "excluded": estimate.get("excluded", []),
+                },
+            )
+        except sqlite3.Error:
+            # A ledger that cannot be written is a recording failure, not a
+            # localisation failure: the estimate the caller asked for is still
+            # correct and is still returned.
+            pass
+        finally:
+            ledger.close()
+
+    def _optional_node_key(self):
+        if self.config.fabric_node_key_path is None:
+            return None
+        try:
+            return load_private_key(self.config.fabric_node_key_path)
+        except (OSError, ValueError, TypeError):
+            return None
 
     def fabric_topology(self, *, now: datetime | None = None) -> dict[str, Any]:
         """Report where the fabric would break, and what each node can see.
@@ -516,7 +578,13 @@ class CapabilityServices:
     # --- federated statistics -------------------------------------------------
 
     def federated_update(self, *, now: datetime | None = None) -> dict[str, Any]:
-        """Produce this node's signed contribution: statistics, never raw data."""
+        """Produce this node's signed contribution: statistics, never raw data.
+
+        When the operator has declared a privacy budget, the statistics are
+        perturbed **before** they leave the node, so the aggregator never sees
+        this node's exact means — which would encode where this sensor is and
+        what it can hear.
+        """
         if self.config.fabric_node_key_path is None:
             return _unavailable("federated contribution needs a fabric node key")
         try:
@@ -531,10 +599,43 @@ class CapabilityServices:
             private_key = load_private_key(self.config.fabric_node_key_path)
         except (FabricError, OSError, ValueError) as exc:
             return {"available": False, "reason": str(exc)}
-        return {"available": True, "update": sign_update(update, private_key)}
 
-    def federated_aggregate(self, *, now: datetime | None = None) -> dict[str, Any]:
-        """Combine peer contributions into a fleet baseline, robustly."""
+        released, disclosure = privatise_update(
+            update, epsilon=self.config.federated_privacy_epsilon
+        )
+        return {
+            "available": True,
+            "update": sign_update(released, private_key),
+            "privacy": disclosure.to_dict(),
+        }
+
+    def _reputation_path(self) -> Path:
+        return self.config.audit_database_path.parent / "fleet-reputation.json"
+
+    def _load_updates(
+        self, roster: PeerRoster, *, now: datetime | None
+    ) -> tuple[list[FederatedUpdate], list[dict[str, str]]]:
+        inbox = self.config.federated_inbox_path
+        updates: list[FederatedUpdate] = []
+        rejected: list[dict[str, str]] = []
+        for path in sorted(inbox.glob("*.json")) if inbox and inbox.is_dir() else []:
+            try:
+                updates.append(
+                    verify_update(json.loads(path.read_text(encoding="utf-8")), roster, now=now)
+                )
+            except (FabricError, json.JSONDecodeError, OSError) as exc:
+                rejected.append({"source": path.name, "reason": str(exc)})
+        return updates, rejected
+
+    def federated_aggregate(self, *, now: datetime | None = None, round_index: int = 0) -> dict[str, Any]:
+        """Combine peer contributions through the full federated pipeline.
+
+        Not a flat average of everything received. Contributions are clustered
+        by RF environment, aggregated within cohort, combined across cohorts so
+        a large cohort cannot outvote a small one, and weighted by reputation
+        that persists between rounds — with the aggregating node rotating so
+        none of them is a permanent target.
+        """
         if self.config.fabric_roster_path is None or self.config.federated_inbox_path is None:
             return _unavailable("federated aggregation needs the roster and a federated inbox")
         try:
@@ -542,21 +643,189 @@ class CapabilityServices:
         except Exception as exc:
             return {"available": False, "reason": f"peer roster invalid: {exc}"}
 
-        inbox = self.config.federated_inbox_path
-        updates: list[FederatedUpdate] = []
-        rejected: list[dict[str, str]] = []
-        for path in sorted(inbox.glob("*.json")) if inbox.is_dir() else []:
-            try:
-                updates.append(verify_update(json.loads(path.read_text(encoding="utf-8")), roster, now=now))
-            except (FabricError, json.JSONDecodeError, OSError) as exc:
-                rejected.append({"source": path.name, "reason": str(exc)})
-
-        result = RobustAggregator().aggregate(updates).to_dict()
+        updates, rejected = self._load_updates(roster, now=now)
+        learning = FleetLearning(self._reputation_path())
+        result = learning.aggregate(updates, round_index=round_index)
+        # The flat aggregate is retained alongside it: a hierarchical result
+        # that differs sharply from the flat one is informative, and hiding the
+        # comparison would make the hierarchy unfalsifiable.
+        result["flat_baseline"] = RobustAggregator().aggregate(updates).to_dict()
         result["available"] = True
         result["roster_id"] = roster.roster_id
         result["roster_hash"] = roster_hash
         result["rejected"] = rejected
         return result
+
+    def excise_node(self, node_id: str, *, now: datetime | None = None) -> dict[str, Any]:
+        """Remove a contributor and certify that nothing of it remains."""
+        if self.config.fabric_roster_path is None or self.config.federated_inbox_path is None:
+            return _unavailable("excision needs the roster and a federated inbox")
+        try:
+            roster, _hash = self.load_peer_roster()
+        except Exception as exc:
+            return {"available": False, "reason": f"peer roster invalid: {exc}"}
+
+        updates, rejected = self._load_updates(roster, now=now)
+        learning = FleetLearning(self._reputation_path())
+        remaining, certificate = learning.excise(updates, node_id)
+        return {
+            "available": True,
+            "certificate": certificate.to_dict(),
+            "remaining_contributors": sorted(update.node_id for update in remaining),
+            "reputation": learning.reputation.scores(),
+            "rejected": rejected,
+        }
+
+    # --- prediction that reaches a decision -----------------------------------
+
+    def forecast_links(self, *, horizon_multiplier: int = 24) -> dict[str, Any]:
+        """Forecast each link's near-term behaviour from recorded history.
+
+        The result is an instruction the optimizer honours: a profile forecast
+        to degrade is demoted. It can never be promoted on a forecast, so a
+        wrong prediction costs a ranking place rather than connectivity.
+        """
+        try:
+            examples, _stats = CorpusExporter(
+                self.config.audit_database_path,
+                horizon_seconds=self.config.observation_max_age_seconds * horizon_multiplier,
+            ).export()
+        except DatasetError as exc:
+            return {"available": False, "reason": str(exc)}
+
+        history: dict[str, list[float]] = {}
+        for example in examples:
+            features = dict(zip(FEATURE_NAMES, example.features))
+            rtt = features.get("rtt_ms")
+            if rtt is None:
+                continue
+            history.setdefault(example.profile_id, []).append(float(rtt))
+
+        advice = forecast_advice(history)
+        result = advice.to_dict()
+        result["available"] = True
+        result["flows"] = len(history)
+        return result
+
+    # --- emitter tracking ------------------------------------------------------
+
+    def track_emitter(
+        self, band_id: str, *, horizon_seconds: float = 600.0, now: datetime | None = None
+    ) -> dict[str, Any]:
+        """Predict where an emitter goes next, from its recorded fixes.
+
+        Reads the localisation results this node has already recorded. A
+        refused estimate never entered history, so a refusal cannot become a
+        track point.
+        """
+        ledger = AuditLedger(self.config.audit_database_path)
+        try:
+            records = [
+                row
+                for row in ledger.signed_records(limit=MEMORY_AUDIT_RECORDS)
+                if row["record_type"] == EMITTER_RECORD_TYPE
+                and (row["payload"] or {}).get("band_id") == band_id
+            ]
+        except (sqlite3.Error, KeyError, ValueError) as exc:
+            return {"available": False, "reason": f"audit ledger unreadable: {exc}"}
+        finally:
+            ledger.close()
+
+        fixes = fixes_from_estimates(records)
+        if not fixes:
+            return _unavailable(
+                f"no recorded emitter fixes for band {band_id!r}; run locate-emitter first"
+            )
+        # Tie the place radius to the accuracy that produced the fixes rather
+        # than guessing it: a tighter radius turns noise into a tour of places
+        # the emitter never visited.
+        radius = max(
+            DEFAULT_PLACE_RADIUS_M,
+            max(fix.uncertainty_radius_m for fix in fixes) * 2.0,
+        )
+        result = predict_track(
+            fixes, horizon=timedelta(seconds=horizon_seconds), place_radius_m=radius
+        )
+        result["available"] = True
+        result["band_id"] = band_id
+        return result
+
+    # --- fleet-level detection --------------------------------------------------
+
+    def detect_fleet_anomaly(self, *, now: datetime | None = None) -> dict[str, Any]:
+        """Ask whether several environments changed together beyond local cause.
+
+        Composes three mechanisms because none of them answers the question
+        alone: per-node detectors decide what is anomalous *for that node*,
+        cohort membership decides whether their agreement is meaningful, and
+        reputation decides whether the agreeing nodes carry any weight.
+        """
+        if self.config.fabric_roster_path is None or self.config.fabric_inbox_path is None:
+            return _unavailable("fleet detection needs the roster and inbox")
+        try:
+            roster, _hash = self.load_peer_roster()
+        except Exception as exc:
+            return {"available": False, "reason": f"peer roster invalid: {exc}"}
+
+        reports, rejected = self._verified_reports(roster, now=now)
+        if not reports:
+            return _unavailable("no verified peer reports to assess")
+
+        updates, _rejected_updates = self._load_updates(roster, now=now)
+        cohorts = cohort_assignments(updates)
+        baselines = {
+            update.node_id: NodeBaseline(
+                node_id=update.node_id,
+                samples=update.examples,
+                means={name: stat.mean for name, stat in update.statistics.items()},
+                stddevs={name: stat.stddev() for name, stat in update.statistics.items()},
+            )
+            for update in updates
+        }
+        verdicts = verdicts_from_reports(reports, baselines, cohorts)
+        reputation = FleetLearning(self._reputation_path()).reputation.scores()
+
+        result = detect_fleet_event(verdicts, reputation)
+        result["available"] = True
+        result["cohorts_assigned"] = cohorts
+        result["rejected_reports"] = rejected
+        return result
+
+    # --- certification under partition -------------------------------------------
+
+    def renew_grant(
+        self,
+        grant: Grant,
+        attestations: Sequence[Attestation],
+        *,
+        new_expiry: datetime,
+        now: datetime | None = None,
+    ) -> dict[str, Any]:
+        """Extend an expiring grant when the operator cannot be reached."""
+        if self.config.fabric_roster_path is None:
+            return _unavailable("quorum renewal needs the operator-signed roster")
+        try:
+            roster, _hash = self.load_peer_roster()
+        except Exception as exc:
+            return {"available": False, "reason": f"peer roster invalid: {exc}"}
+
+        certifiers = {
+            peer.node_id: peer.public_key
+            for peer in roster.peers
+            if peer.node_id != self.config.node_id
+        }
+        if len(certifiers) < self.config.quorum_threshold:
+            return _unavailable(
+                f"roster has {len(certifiers)} eligible certifiers, "
+                f"below the declared quorum of {self.config.quorum_threshold}"
+            )
+        try:
+            certifier_roster = CertifierRoster(certifiers, self.config.quorum_threshold)
+        except CertificationError as exc:
+            return {"available": False, "reason": str(exc)}
+        return renew_under_partition(
+            grant, attestations, certifier_roster, new_expiry=new_expiry, now=now
+        )
 
     # --- leases ---------------------------------------------------------------
 

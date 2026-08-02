@@ -55,6 +55,15 @@ class NodeConfig:
     #: does not carry traffic in practice belongs out of the roster rather
     #: than inferred away here.
     fabric_link_range_m: float = 2000.0
+    #: Per-release privacy budget for federated contributions. ``None`` means
+    #: exact means are released, which is the historical behaviour and leaks
+    #: what each sensor hears. Setting it trades aggregate accuracy for that
+    #: exposure, and the trade is reported on every release rather than assumed.
+    federated_privacy_epsilon: float | None = None
+    #: Roster peers that must attest before an expiring grant is extended under
+    #: partition. Operator-declared: a fleet that could pick its own quorum
+    #: could pick one.
+    quorum_threshold: int = 2
 
     @classmethod
     def load(cls, path: str | Path) -> "NodeConfig":
@@ -115,5 +124,11 @@ class NodeConfig:
             path_loss_model_path=_optional_path(raw, "path_loss_model_path"),
             federated_inbox_path=_optional_path(raw, "federated_inbox_path"),
             fabric_link_range_m=float(raw.get("fabric_link_range_m", 2000.0)),
+            federated_privacy_epsilon=(
+                float(raw["federated_privacy_epsilon"])
+                if raw.get("federated_privacy_epsilon") is not None
+                else None
+            ),
+            quorum_threshold=int(raw.get("quorum_threshold", 2)),
         )
 

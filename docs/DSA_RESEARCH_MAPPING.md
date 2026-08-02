@@ -301,6 +301,49 @@ of squares), never raw observations or per-node positions — and why
 `excise_contributor` exists, so a compromised or relocated node can be removed
 exactly.
 
+## How the mechanisms compose
+
+A mechanism nothing calls is a library, not a capability. This repository has
+twice shipped correct, tested, completely unreachable code — the first time
+spectrum, power, recovery, multimodal and clock integrity, the second time this
+entire research-derived tier. Both times the suite was green and the running
+node behaved exactly as it had before the code existed.
+`scripts/verify_integration.py` now fails the build when any module is
+unreachable from a production entrypoint, and CI runs it.
+
+`orchestration.py` is where the papers are made to work on each other. The
+compositions, not the individual mechanisms, are where the value is:
+
+| Composition | Papers involved | What none of them delivers alone |
+|---|---|---|
+| **Federated pipeline** — perturb locally, cluster by RF environment, aggregate within cohort, combine across cohorts, weight by persisted reputation, rotate the aggregator, excise with a certificate | IoT-J 2021, TVT 2022, ICCT 2024, Ad Hoc 2023, TWC 2025, IoT-J 2025, TIFS 2025, ICAIIC 2025 | Seven mechanisms in one path. Reputation now **persists between rounds** — without that a node that lied last round starts every round clean, which makes reputation decorative. |
+| **Forecast reaches a decision** | INFOCOM 2024 → `optimizer.py` | A forecast that reaches no decision is a report. A predicted degradation now demotes a link before it fails — and may only demote, never promote, with a weaker penalty than measured sensing, so a prediction can break a tie but never outrank evidence. |
+| **Localisation feeds tracking** | Sensors 2018 → ledger → WPC 2024 | One paper gives a point, the other needs a history of points. Accepted estimates are recorded; refusals are not, so "we could not tell" can never become a place the emitter has been. The place radius is tied to localisation uncertainty rather than guessed. |
+| **Detection is a fleet property** | ICC 2024 + TVT 2022 cohorts + TWC 2025 reputation | Per-node detectors say what is anomalous *for that node*; cohort membership decides whether their agreement means anything; reputation decides whether the agreeing nodes carry weight. |
+| **Integrity guards learning** | MemMorph → `analysis.py` | Baselines derive from the ledger, so injected records shift what "normal" means. A baseline is now built only from history that passes the memory audit and in which no single record carries disproportionate weight. |
+
+### A fail-open found by building the composition
+
+Wiring bounded influence into the learning path exposed that the check was
+inert. It normalised the leave-one-out shift by the standard deviation of
+**all** values — letting the outlier inflate the denominator judging it. The
+ratio then converges to `1/sqrt(n-1)` regardless of how extreme the record is,
+so **past seventeen records a single injected value of any magnitude — 10^12 —
+sat inside the bound**. The same feedback error the NLOS residual scale had.
+
+Two changes fixed it. The shift is measured against the spread of the records
+that *remain*, which the tested record cannot inflate. And the verdict rests on
+how the worst record compares to the **typical** record rather than on an
+absolute share, because an absolute share is not a defensible bar: with ten
+records every record legitimately carries about a tenth. Measured across
+history lengths from 5 to 200 and across tight and wide spreads, clean
+histories score 1.5–3.0 and a three-record injection scores 8–20.
+
+The residual limit is stated rather than papered over: leave-one-out is
+structurally blind to a *group* of injected records that cover for each other
+and are not individually extreme. That case is the templated-group detector's
+job, and the two are meant to be used together.
+
 ## Honest limits
 
 * The mechanisms are implemented and unit-tested; **none has been validated

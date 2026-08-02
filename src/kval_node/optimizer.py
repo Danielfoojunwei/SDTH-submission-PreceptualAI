@@ -70,6 +70,12 @@ OBJECTIVES: dict[ServiceClass, Objective] = {
 #: never enough to override complete live probe evidence on its own.
 SPECTRUM_DEGRADED_MULTIPLIER = 0.6
 
+#: Penalty applied to a profile a forecast expects to degrade. Weaker than the
+#: sensing penalty on purpose: sensing reports what *is* happening, a forecast
+#: reports what might. A prediction should be able to break a tie, not to
+#: overrule measured evidence.
+FORECAST_DEGRADED_MULTIPLIER = 0.85
+
 
 class ProfileOptimizer:
     """Transparent constrained optimizer over real observations.
@@ -90,6 +96,7 @@ class ProfileOptimizer:
         is_current: bool,
         objective: Objective,
         spectrum_degraded: bool = False,
+        forecast_degrading: bool = False,
     ) -> ScoredProfile:
         reasons: list[str] = []
         if not observation.interface_present:
@@ -123,6 +130,10 @@ class ProfileOptimizer:
             utility *= SPECTRUM_DEGRADED_MULTIPLIER
             components["spectrum_penalty"] = SPECTRUM_DEGRADED_MULTIPLIER
             scored_reasons.append("SPECTRUM_BAND_CONTESTED")
+        if forecast_degrading:
+            utility *= FORECAST_DEGRADED_MULTIPLIER
+            components["forecast_penalty"] = FORECAST_DEGRADED_MULTIPLIER
+            scored_reasons.append("FORECAST_EXPECTS_THIS_LINK_TO_DEGRADE")
         return ScoredProfile(
             profile_id=observation.profile_id,
             utility=round(utility, 8),
@@ -138,6 +149,7 @@ class ProfileOptimizer:
         service_class: ServiceClass,
         *,
         degraded_band_ids: frozenset[str] = frozenset(),
+        forecast_degrading_profiles: frozenset[str] = frozenset(),
     ) -> Recommendation:
         """Rank approved profiles.
 
@@ -145,6 +157,12 @@ class ProfileOptimizer:
         interference. A profile that declared one of those bands in the signed
         catalogue is demoted; profiles that declared no bands are unaffected, so
         a node without spectrum sensing behaves exactly as before.
+
+        ``forecast_degrading_profiles`` names links a per-flow forecast expects
+        to worsen. Both inputs may only **demote**. Neither may promote, and the
+        forecast penalty is the weaker of the two, because a prediction that
+        could outrank measured evidence would let the node talk itself onto a
+        link that has not demonstrated it works.
         """
         observations = {item.profile_id: item for item in snapshot.observations}
         objective = OBJECTIVES[service_class]
@@ -165,6 +183,7 @@ class ProfileOptimizer:
                     is_current=profile.profile_id == snapshot.current_profile_id,
                     objective=objective,
                     spectrum_degraded=bool(profile.spectrum_band_ids & degraded_band_ids),
+                    forecast_degrading=profile.profile_id in forecast_degrading_profiles,
                 )
             )
 

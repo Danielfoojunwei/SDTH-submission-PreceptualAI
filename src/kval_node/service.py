@@ -108,6 +108,16 @@ class KvalNode:
         decision = self._machine_for(current_id).observe(observation, now=snapshot.observed_at)
         return {"available": True, "profile_id": current_id, **decision.to_dict()}
 
+    @staticmethod
+    def _forecast_degrading(forecast: dict[str, object]) -> frozenset[str]:
+        """Profiles the forecast expects to worsen, if forecasting ran at all."""
+        if forecast.get("available") is not True:
+            return frozenset()
+        profiles = forecast.get("degrading_profiles")
+        if not isinstance(profiles, list):
+            return frozenset()
+        return frozenset(str(item) for item in profiles)
+
     def _degraded_band_ids(self, spectrum: dict[str, object]) -> frozenset[str]:
         """Bands the local sensor reports as contested, if sensing is available."""
         if spectrum.get("available") is not True:
@@ -293,11 +303,16 @@ class KvalNode:
         recovery = self._run_recovery(snapshot)
 
         degraded_bands = self._degraded_band_ids(spectrum)
+        # A per-flow forecast over this node's own recorded history. It may
+        # demote a link it expects to worsen, and can never promote one.
+        forecast = self.capabilities.forecast_links()
+        forecast_degrading = self._forecast_degrading(forecast)
         recommendation = self.optimizer.recommend(
             self.catalog,
             snapshot,
             self.config.service_class,
             degraded_band_ids=degraded_bands,
+            forecast_degrading_profiles=forecast_degrading,
         )
 
         fused = self._fuse_state(snapshot, spectrum, power, clock)
@@ -307,7 +322,9 @@ class KvalNode:
             "power": power,
             "recovery": recovery,
             "state": fused,
+            "forecast": forecast,
             "degraded_band_ids": sorted(degraded_bands),
+            "forecast_degrading_profiles": sorted(forecast_degrading),
         }
 
         # A recovery escalation is an operator matter, not something the node

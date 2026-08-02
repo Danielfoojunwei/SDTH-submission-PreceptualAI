@@ -56,6 +56,7 @@ overturn was never adequately evidenced.
 from __future__ import annotations
 
 import base64
+import math
 import statistics
 from dataclasses import dataclass
 from datetime import datetime
@@ -83,8 +84,14 @@ DEFAULT_SIMILARITY_THRESHOLD = 0.9
 #: node repeating a decision, which is what a healthy node does all day.
 DEFAULT_NOVELTY_MARGIN = 0.35
 
-#: Maximum share of a derived statistic any single record may account for.
-DEFAULT_MAX_SINGLE_INFLUENCE = 0.25
+#: How many times a typical record's influence one record may carry before it
+#: is treated as dominating the conclusion. Measured against the *median*
+#: record's influence rather than as an absolute share, because an absolute
+#: share is not a meaningful bar: with ten records every record legitimately
+#: carries about a tenth, so a fixed cap condemns healthy short histories and
+#: exonerates long poisoned ones. Clean histories measure 1.5–3 across every
+#: length and spread tested; a three-record injection measures 8–20.
+DEFAULT_MAX_DISPROPORTION = 5.0
 
 
 class MemoryIntegrityError(RuntimeError):
@@ -343,54 +350,108 @@ class MemoryAuditor:
 class InfluenceVerdict:
     within_bound: bool
     max_influence: float
+    disproportion: float
     most_influential_index: int | None
     reasons: tuple[str, ...]
 
     def to_dict(self) -> dict[str, Any]:
         return {
             "within_bound": self.within_bound,
-            "max_influence": round(self.max_influence, 6),
+            "max_influence": round(self.max_influence, 6)
+            if math.isfinite(self.max_influence)
+            else None,
+            "disproportion": round(self.disproportion, 6)
+            if math.isfinite(self.disproportion)
+            else None,
             "most_influential_index": self.most_influential_index,
             "reasons": list(self.reasons),
         }
 
 
+def _leave_one_out_influences(values: Sequence[float]) -> list[float]:
+    """Each record's leave-one-out shift, in units of the *remaining* spread.
+
+    Measuring against the remaining spread rather than the total spread is the
+    whole mechanism, not a detail. Normalising by the spread of *all* values
+    lets the record under test inflate the denominator judging it, and the
+    ratio then converges to ``1/sqrt(n-1)`` however extreme the record is: past
+    seventeen records a single injected value of any magnitude at all — 10^12 —
+    sat inside the old bound. That is the same feedback error the NLOS residual
+    scale had, and it made this defence inert exactly where a real ledger would
+    put it. The spread of the records that remain is something the tested
+    record cannot touch.
+    """
+    full_mean = statistics.fmean(values)
+    influences: list[float] = []
+    for index in range(len(values)):
+        without = list(values[:index]) + list(values[index + 1 :])
+        remaining_spread = statistics.pstdev(without)
+        shift = abs(statistics.fmean(without) - full_mean)
+        if remaining_spread <= 0.0:
+            # Every other record agrees exactly. Any disagreement from this one
+            # is then total, and any agreement is no influence at all.
+            influences.append(0.0 if shift <= 0.0 else math.inf)
+        else:
+            influences.append(shift / remaining_spread)
+    return influences
+
+
 def bounded_influence(
     values: Sequence[float],
     *,
-    max_single_influence: float = DEFAULT_MAX_SINGLE_INFLUENCE,
+    max_disproportion: float = DEFAULT_MAX_DISPROPORTION,
 ) -> InfluenceVerdict:
-    """Check that no single observation dominates the mean.
+    """Check that no single record carries a disproportionate share of the mean.
 
-    Influence is the leave-one-out shift in the mean, relative to the total
-    spread. A conclusion that one record can overturn was not adequately
-    evidenced — which is exactly the leverage MemMorph exploits by injecting
-    only a handful of records.
+    A conclusion one record can overturn was not adequately evidenced — exactly
+    the leverage MemMorph buys by injecting a handful of records.
+
+    The verdict rests on how the most influential record compares to the
+    **typical** record, not on an absolute share. An absolute cap has no
+    defensible value: with ten records every record legitimately carries about
+    a tenth, so any cap tight enough to catch poisoning in a long history
+    condemns every short one. The ratio is stable across history length and
+    across how much a node's readings naturally vary.
+
+    This bounds *single-record* influence and nothing more. A group of injected
+    records covers for each other under a leave-one-out test — remove one and
+    the rest still hold the mean — so groups are the templated-group detector's
+    job, not this one's. The two are meant to be used together.
     """
     if len(values) < 3:
         return InfluenceVerdict(
             within_bound=False,
-            max_influence=1.0,
+            max_influence=math.inf,
+            disproportion=math.inf,
             most_influential_index=None,
             reasons=("TOO_FEW_RECORDS_TO_BOUND_INFLUENCE",),
         )
-    full_mean = statistics.fmean(values)
-    spread = statistics.pstdev(values)
-    if spread <= 0.0:
-        return InfluenceVerdict(True, 0.0, None, ("NO_VARIANCE_SO_NO_RECORD_DOMINATES",))
 
-    worst_index = 0
-    worst = 0.0
-    for index in range(len(values)):
-        without = values[:index] + values[index + 1 :]
-        shift = abs(statistics.fmean(without) - full_mean) / spread
-        if shift > worst:
-            worst, worst_index = shift, index
+    influences = _leave_one_out_influences(values)
+    worst = max(influences)
+    worst_index = influences.index(worst)
+    typical = statistics.median(influences)
 
-    within = worst <= max_single_influence
+    if worst <= 0.0:
+        return InfluenceVerdict(
+            True, 0.0, 0.0, None, ("NO_VARIANCE_SO_NO_RECORD_DOMINATES",)
+        )
+    if typical <= 0.0:
+        # The typical record moves the mean not at all while one moves it: that
+        # record is carrying the conclusion by itself.
+        return InfluenceVerdict(
+            False,
+            worst,
+            math.inf,
+            worst_index,
+            ("ONE_RECORD_CARRIES_THE_CONCLUSION_AND_THE_REST_CARRY_NONE",),
+        )
+
+    disproportion = worst / typical
+    within = disproportion <= max_disproportion
     reasons = (
         ("NO_SINGLE_RECORD_DOMINATES",)
         if within
         else ("A_SINGLE_RECORD_MOVES_THE_CONCLUSION_TOO_FAR",)
     )
-    return InfluenceVerdict(within, worst, worst_index, reasons)
+    return InfluenceVerdict(within, worst, disproportion, worst_index, reasons)

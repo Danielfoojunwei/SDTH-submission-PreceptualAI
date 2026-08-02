@@ -116,12 +116,28 @@ def build_parser() -> argparse.ArgumentParser:
 
     fed_agg = subparsers.add_parser("federated-aggregate")
     fed_agg.add_argument("--config", default=DEFAULT_CONFIG)
+    fed_agg.add_argument("--round-index", type=int, default=0)
 
     topology = subparsers.add_parser("fabric-topology")
     topology.add_argument("--config", default=DEFAULT_CONFIG)
 
     memory = subparsers.add_parser("audit-memory")
     memory.add_argument("--config", default=DEFAULT_CONFIG)
+
+    forecast = subparsers.add_parser("forecast-links")
+    forecast.add_argument("--config", default=DEFAULT_CONFIG)
+
+    track = subparsers.add_parser("track-emitter")
+    track.add_argument("--config", default=DEFAULT_CONFIG)
+    track.add_argument("--band-id", required=True)
+    track.add_argument("--horizon-seconds", type=float, default=600.0)
+
+    anomaly = subparsers.add_parser("detect-fleet-anomaly")
+    anomaly.add_argument("--config", default=DEFAULT_CONFIG)
+
+    excise = subparsers.add_parser("excise-node")
+    excise.add_argument("--config", default=DEFAULT_CONFIG)
+    excise.add_argument("--node-id", required=True)
 
     lease = subparsers.add_parser("verify-lease")
     lease.add_argument("--config", default=DEFAULT_CONFIG)
@@ -217,13 +233,32 @@ def main() -> None:
         _print_capability(result)
         return
     if args.command == "federated-aggregate":
-        _print_capability(CapabilityServices(NodeConfig.load(args.config)).federated_aggregate())
+        _print_capability(
+            CapabilityServices(NodeConfig.load(args.config)).federated_aggregate(
+                round_index=args.round_index
+            )
+        )
         return
     if args.command == "fabric-topology":
         _print_capability(CapabilityServices(NodeConfig.load(args.config)).fabric_topology())
         return
     if args.command == "audit-memory":
         _print_capability(CapabilityServices(NodeConfig.load(args.config)).audit_memory())
+        return
+    if args.command == "forecast-links":
+        _print_capability(CapabilityServices(NodeConfig.load(args.config)).forecast_links())
+        return
+    if args.command == "track-emitter":
+        services = CapabilityServices(NodeConfig.load(args.config))
+        _print_capability(
+            services.track_emitter(args.band_id, horizon_seconds=args.horizon_seconds)
+        )
+        return
+    if args.command == "detect-fleet-anomaly":
+        _print_capability(CapabilityServices(NodeConfig.load(args.config)).detect_fleet_anomaly())
+        return
+    if args.command == "excise-node":
+        _print_capability(CapabilityServices(NodeConfig.load(args.config)).excise_node(args.node_id))
         return
     if args.command == "verify-lease":
         services = CapabilityServices(NodeConfig.load(args.config))
