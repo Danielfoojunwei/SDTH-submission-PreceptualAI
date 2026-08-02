@@ -267,3 +267,67 @@ class PerFlowForecaster:
     def fit_all(self, series_by_flow: dict[str, Sequence[float]], *, horizon: int = 1) -> list[Forecast]:
         """One tuned parameter set per flow — never one shared across flows."""
         return [self.fit(flow_id, series, horizon=horizon) for flow_id, series in sorted(series_by_flow.items())]
+
+
+# --- bounded advice to the optimizer ------------------------------------------
+#
+# This lives here rather than in ``orchestration`` because the autonomous loop
+# needs it and needs nothing else from that module. Importing it from there made
+# a node whose job is picking a link load cohort clustering, federated
+# aggregation, differential privacy, emitter localisation, mobility prediction
+# and threshold cryptography at startup — thirteen modules reached through one
+# function that depends on none of them.
+
+
+@dataclass(frozen=True)
+class ForecastAdvice:
+    """Profiles a forecast says to demote, and why."""
+
+    degrading_profiles: frozenset[str]
+    per_flow: tuple[dict[str, Any], ...]
+    reasons: tuple[str, ...]
+
+    def to_dict(self) -> dict[str, Any]:
+        return {
+            "schema": "kval-forecast-advice/v1",
+            "degrading_profiles": sorted(self.degrading_profiles),
+            "per_flow": list(self.per_flow),
+            "reasons": list(self.reasons),
+        }
+
+
+def forecast_advice(history: dict[str, Sequence[float]]) -> ForecastAdvice:
+    """Turn per-flow forecasts into a bounded instruction to the optimizer.
+
+    The bound matters more than the forecast. A prediction may **demote** a
+    profile and may never **promote** one, exactly as spectrum sensing may. A
+    mechanism that could promote on a prediction could talk the node onto a
+    link that has not yet demonstrated it works, and a wrong forecast would
+    then cost connectivity rather than merely cost a ranking place.
+    """
+    forecaster = PerFlowForecaster()
+    usable = {flow: list(values) for flow, values in history.items() if len(values) >= MIN_HISTORY}
+    # The bound is a property of the mechanism, not of this particular result,
+    # so it is stated on every advice including an empty one.
+    if not usable:
+        return ForecastAdvice(
+            frozenset(),
+            (),
+            (
+                "FORECAST_MAY_DEMOTE_A_PROFILE_AND_MAY_NEVER_PROMOTE_ONE",
+                f"NO_FLOW_HAS_THE_{MIN_HISTORY}_SAMPLES_A_FORECAST_NEEDS",
+            ),
+        )
+
+    results = forecaster.fit_all(usable)
+    degrading = frozenset(result.flow_id for result in results if result.degrading)
+    reasons = ["FORECAST_MAY_DEMOTE_A_PROFILE_AND_MAY_NEVER_PROMOTE_ONE"]
+    if degrading:
+        reasons.append("A_FORECAST_DEMOTION_IS_A_PREDICTION_NOT_AN_OBSERVED_FAILURE")
+    else:
+        reasons.append("NO_FLOW_IS_FORECAST_TO_DEGRADE")
+    return ForecastAdvice(
+        degrading_profiles=degrading,
+        per_flow=tuple(result.to_dict() for result in results),
+        reasons=tuple(reasons),
+    )

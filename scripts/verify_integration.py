@@ -42,7 +42,7 @@ PACKAGE = ROOT / "src" / "kval_node"
 #: Modules the operating system actually starts. Everything a node can do must
 #: be reachable from one of these.
 PRODUCTION_ENTRYPOINTS = frozenset(
-    {"service.py", "capabilities.py", "cli.py", "sensor_cli.py"}
+    {"service.py", "flight.py", "capabilities.py", "cli.py", "sensor_cli.py"}
 )
 
 #: Markers that mean a code path is not finished. ``REPLACE_`` is excluded
@@ -104,17 +104,27 @@ def check_markers(pattern: re.Pattern[str], label: str) -> list[str]:
     return failures
 
 
+#: Classes whose public methods are capabilities an operator or the loop can
+#: reach. ``FlightServices`` was split out of ``CapabilityServices`` so a flying
+#: node stops loading the operator tier; checking only the latter would have
+#: silently stopped covering the five methods the autonomous loop actually
+#: calls, which is the failure this whole script exists to catch.
+CAPABILITY_CLASSES = (("capabilities.py", "CapabilityServices"), ("flight.py", "FlightServices"))
+
+
 def capability_methods() -> list[str]:
-    tree = ast.parse((PACKAGE / "capabilities.py").read_text(encoding="utf-8"))
-    for node in ast.walk(tree):
-        if isinstance(node, ast.ClassDef) and node.name == "CapabilityServices":
-            return [
-                item.name
-                for item in node.body
-                if isinstance(item, (ast.FunctionDef, ast.AsyncFunctionDef))
-                and not item.name.startswith("_")
-            ]
-    return []
+    found: list[str] = []
+    for filename, class_name in CAPABILITY_CLASSES:
+        tree = ast.parse((PACKAGE / filename).read_text(encoding="utf-8"))
+        for node in ast.walk(tree):
+            if isinstance(node, ast.ClassDef) and node.name == class_name:
+                found.extend(
+                    item.name
+                    for item in node.body
+                    if isinstance(item, (ast.FunctionDef, ast.AsyncFunctionDef))
+                    and not item.name.startswith("_")
+                )
+    return found
 
 
 def check_capability_reachability() -> list[str]:
@@ -129,12 +139,15 @@ def check_capability_reachability() -> list[str]:
     if not methods:
         return ["could not read CapabilityServices; the reachability check is not running"]
 
+    owning = {filename for filename, _ in CAPABILITY_CLASSES}
     callers = {
         path.name: path.read_text(encoding="utf-8")
         for path in PACKAGE.glob("*.py")
-        if path.name != "capabilities.py"
+        if path.name not in owning
     }
-    internal = (PACKAGE / "capabilities.py").read_text(encoding="utf-8")
+    internal = "\n".join(
+        (PACKAGE / filename).read_text(encoding="utf-8") for filename in owning
+    )
 
     failures: list[str] = []
     for method in methods:

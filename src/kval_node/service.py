@@ -12,7 +12,7 @@ from pathlib import Path
 from cryptography.hazmat.primitives.asymmetric.ed25519 import Ed25519PrivateKey
 
 from .audit import AuditLedger
-from .capabilities import CapabilityServices
+from .flight import FlightServices
 from .config import NodeConfig
 from .executor import NetworkManagerExecutor
 from .hardware import PlatformReport, verify_jetson_platform
@@ -77,7 +77,10 @@ class KvalNode:
         # Capability loops. Each is optional and fails closed when its signed
         # policy or evidence is absent, so a node configured exactly as it was
         # before this change behaves exactly as it did before this change.
-        self.capabilities = CapabilityServices(config)
+        # The loop takes the flight tier only. Reaching the operator
+        # capabilities from here is what put 44 modules on a path that
+        # calls five methods.
+        self.capabilities = FlightServices(config)
         self.clock = ClockMonitor()
         self.fuser = MultimodalFuser(window_seconds=config.observation_max_age_seconds)
         self._link_machines: dict[str, LinkStateMachine] = {}
@@ -91,7 +94,7 @@ class KvalNode:
         """Assess the command link using this process's long-lived monitor.
 
         Must run inside ``KvalNode``: the CLI builds a fresh
-        ``CapabilityServices`` per invocation, so a command-shaped C2 check
+        ``FlightServices`` per invocation, so a command-shaped C2 check
         would reset the contingency timers to zero every call and could never
         declare a contingency at all.
         """
