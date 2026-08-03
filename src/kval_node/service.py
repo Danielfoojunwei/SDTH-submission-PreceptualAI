@@ -308,7 +308,7 @@ class KvalNode:
         return payload
 
     def run_once(self) -> dict[str, object]:
-        """One full cycle: observe -> sense -> govern -> fuse -> decide -> audit.
+        """One full cycle: observe -> govern -> place -> fuse -> decide -> audit.
 
         Each capability loop is optional and independently fail-closed. When a
         capability is unconfigured it reports ``available: false`` with a reason
