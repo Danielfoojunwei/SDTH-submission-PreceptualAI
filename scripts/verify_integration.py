@@ -296,11 +296,45 @@ def check_flight_tier_is_self_contained() -> list[str]:
     return sorted(set(failures))
 
 
+def check_simulator_is_not_reachable_from_production() -> list[str]:
+    """``sim/`` fabricates measurements, so ``src/`` must never be able to reach it.
+
+    The whole product claim is that a reported measurement was measured. A
+    validation harness that manufactures link readings is legitimate and useful,
+    and is also precisely the thing the simulation-marker guard exists to keep
+    out of production. Those two only coexist if the dependency runs one way.
+
+    ``sim`` imports ``kval_node`` freely — that is the point, it drives the real
+    decision code. The reverse is a build failure, and so is any import of a
+    simulator module by name, however it is spelled.
+    """
+    failures: list[str] = []
+    for path in sorted(PACKAGE.glob("*.py")):
+        tree = ast.parse(path.read_text(encoding="utf-8"))
+        for node in ast.walk(tree):
+            imported: list[str] = []
+            if isinstance(node, ast.Import):
+                imported = [alias.name for alias in node.names]
+            elif isinstance(node, ast.ImportFrom) and node.module:
+                imported = [node.module]
+            for name in imported:
+                if name == "sim" or name.startswith("sim."):
+                    failures.append(
+                        f"{path.name}:{node.lineno} imports {name!r}: production code "
+                        "cannot depend on the simulator, which fabricates measurements"
+                    )
+    sim_dir = ROOT / "sim"
+    if sim_dir.is_dir() and not (sim_dir / "__init__.py").exists():
+        failures.append("sim/ exists but has no __init__.py, so its boundary is undeclared")
+    return failures
+
+
 def main() -> int:
     failures = (
         check_reachability()
         + check_capability_reachability()
         + check_flight_tier_is_self_contained()
+        + check_simulator_is_not_reachable_from_production()
         + check_role_is_always_declared()
         + check_markers(INCOMPLETE_MARKERS, "unfinished work in production code")
         + check_markers(SIMULATION_MARKERS, "simulated evidence in production code")
