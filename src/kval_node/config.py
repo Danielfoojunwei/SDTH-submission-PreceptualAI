@@ -81,6 +81,10 @@ class NodeConfig:
     #: reports unavailable rather than inventing a budget.
     emcon_order_path: Path | None = None
     c2_budget_path: Path | None = None
+    #: Operator-signed statement of what this node must carry, and how many
+    #: distinct slices each flow must survive on. Absent means the node plans no
+    #: allocation: it will not invent its own entitlement.
+    flow_table_path: Path | None = None
     #: Which link role this node's autonomous loop selects for. Ranking never
     #: crosses roles, so a node whose mission is to hold the command link and
     #: one whose mission is to move payload are different deployments — and
@@ -154,6 +158,7 @@ class NodeConfig:
             require_cnsa_2_0=bool(raw.get("require_cnsa_2_0", False)),
             emcon_order_path=_optional_path(raw, "emcon_order_path"),
             c2_budget_path=_optional_path(raw, "c2_budget_path"),
+            flow_table_path=_optional_path(raw, "flow_table_path"),
             link_role=_link_role(raw),
             lms_public_key_path=_optional_path(raw, "lms_public_key_path"),
         )

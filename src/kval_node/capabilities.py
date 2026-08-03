@@ -23,8 +23,10 @@ from typing import Any, Sequence
 from .analysis import OutcomeAnalyzer
 from .audit import AuditLedger
 from .config import NodeConfig
+from .intrusion import LocalDetector, NodeBaseline
 from .flight import (
     C2_DOCUMENT_TYPE,
+    FLOW_DOCUMENT_TYPE,
     EMCON_DOCUMENT_TYPE,
     POWER_DOCUMENT_TYPE,
     FlightServices,
@@ -482,6 +484,38 @@ class CapabilityServices(FlightServices):
 
 
 
+
+    def assess_link_anomaly(self, *, now: datetime | None = None) -> dict[str, Any]:
+        """Is this node's link behaviour a departure from its own normal?
+
+        The per-node half of the ICC 2024 shape: each node judges its own
+        readings against its own history, because what counts as anomalous is a
+        property of where that node is sitting. It used to be fed band statuses
+        and noise floors; it is fed link measurements now, which is the evidence
+        that survived — and which is what a flow actually rides on.
+
+        Abstains rather than reassures when the baseline is too thin. A detector
+        with nothing to compare against reporting "not anomalous" is a fail-open,
+        and this one says it abstained instead.
+        """
+        try:
+            exporter = CorpusExporter(self.config.audit_database_path, node_id=self.config.node_id)
+            examples = exporter.examples()
+        except Exception as exc:
+            return {"available": False, "reason": f"corpus unavailable: {exc}"}
+        if len(examples) < 2:
+            return _unavailable("too little history to judge this node against itself")
+
+        history = [dict(example.features) for example in examples[:-1]]
+        latest = dict(examples[-1].features)
+        baseline = NodeBaseline.from_observations(self.config.node_id, history)
+        verdict = LocalDetector(baseline).judge(
+            latest, cohort_id=self.config.link_role, observed_at=now or utc_now()
+        )
+        result = verdict.to_dict()
+        result["available"] = True
+        result["baseline_samples"] = baseline.samples
+        return result
 
     def renew_grant_from_files(
         self, grant_path: Path, attestation_paths: Sequence[Path], *, extend_seconds: float

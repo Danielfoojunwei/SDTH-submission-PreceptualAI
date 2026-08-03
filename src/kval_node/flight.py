@@ -24,6 +24,7 @@ from datetime import datetime
 from pathlib import Path
 from typing import Any
 
+from .allocation import FlowTable, plan_allocation, slices_from_telemetry
 from .audit import AuditLedger
 from .c2link import (
     C2Budget,
@@ -50,6 +51,7 @@ from .signing import (
 POWER_DOCUMENT_TYPE = "kval-power-policy/v1"
 EMCON_DOCUMENT_TYPE = "kval-emcon-order/v1"
 C2_DOCUMENT_TYPE = "kval-c2-budget/v1"
+FLOW_DOCUMENT_TYPE = "kval-flow-table/v1"
 
 #: Lease actions governed by the signed power policy.
 _POWER_ACTIONS = frozenset(
@@ -198,6 +200,52 @@ class FlightServices:
 
     # --- emitter tracking ------------------------------------------------------
 
+
+    def load_flow_table(self) -> FlowTable:
+        if self.config.flow_table_path is None:
+            raise FileNotFoundError("flow_table_path is not configured")
+        payload, _hash = self._verify_document(
+            self.config.flow_table_path, expected_type=FLOW_DOCUMENT_TYPE
+        )
+        return FlowTable.from_dict(payload)
+
+    def plan_slices(
+        self, snapshot: TelemetrySnapshot, *, now: datetime | None = None
+    ) -> dict[str, Any]:
+        """Spread each declared flow across slices that survive one loss.
+
+        This is the decision the loop exists to make. Not *which* bearer is
+        best — committing a flow to one bearer is how a single jammer takes a
+        vehicle off the air — but how to carve the demand thinly enough, across
+        enough independent slices, that losing any one of them leaves the flow
+        still carried.
+        """
+        if self.config.flow_table_path is None:
+            return _unavailable("no flow table is provisioned; this node declares no demand")
+        try:
+            table = self.load_flow_table()
+        except Exception as exc:
+            return {"available": False, "reason": f"flow table invalid: {exc}"}
+        try:
+            catalog = load_verified_catalog(
+                self.config.catalog_path, self.config.catalog_public_key_path
+            )
+        except Exception as exc:
+            return {"available": False, "reason": f"catalogue unverifiable: {exc}"}
+
+        slices = slices_from_telemetry(catalog, snapshot)
+        if not slices:
+            return {
+                "available": False,
+                "reason": "no measured slice to place demand on",
+                "table_id": table.table_id,
+            }
+        plan = plan_allocation(list(table.demands), slices, now=now)
+        result = plan.to_dict()
+        result["available"] = True
+        result["table_id"] = table.table_id
+        result["slices"] = [item.to_dict() for item in slices]
+        return result
 
     def load_emcon_order(self) -> EmconOrder | None:
         """Read the standing emission-control order, if the operator signed one.

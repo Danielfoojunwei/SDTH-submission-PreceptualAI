@@ -16,10 +16,12 @@ from pathlib import Path
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(PROJECT_ROOT / "src"))
 
+from kval_node.allocation import FlowTable
 from kval_node.c2link import C2Budget
 from kval_node.emcon import EmconOrder
 from kval_node.capabilities import (  # noqa: E402
     C2_DOCUMENT_TYPE,
+    FLOW_DOCUMENT_TYPE,
     EMCON_DOCUMENT_TYPE,
     POWER_DOCUMENT_TYPE,
     ROSTER_DOCUMENT_TYPE,
@@ -46,6 +48,7 @@ DOCUMENT_TYPES = {
     # behind them were unusable however correct their code was.
     "emcon": (EMCON_DOCUMENT_TYPE, EmconOrder.from_dict),
     "c2-budget": (C2_DOCUMENT_TYPE, C2Budget.from_dict),
+    "flow-table": (FLOW_DOCUMENT_TYPE, FlowTable.from_dict),
 }
 
 

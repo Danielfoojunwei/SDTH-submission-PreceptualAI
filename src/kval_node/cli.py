@@ -7,6 +7,7 @@ from pathlib import Path
 from .audit import AuditLedger
 from .capabilities import CapabilityServices
 from .config import NodeConfig
+from .telemetry import TelemetryCollector
 from .dataset import FEATURE_NAMES, CorpusExporter, DatasetError, write_jsonl
 from .hardware import verify_jetson_platform
 from .lease import LeaseAction
@@ -136,6 +137,8 @@ def build_parser() -> argparse.ArgumentParser:
     excise.add_argument("--config", default=DEFAULT_CONFIG)
     excise.add_argument("--node-id", required=True)
 
+    subparsers.add_parser("plan-slices")
+    subparsers.add_parser("assess-link-anomaly")
     emcon = subparsers.add_parser("emcon-posture")
     emcon.add_argument("--config", default=DEFAULT_CONFIG)
 
@@ -267,6 +270,17 @@ def main() -> None:
         return
     if args.command == "excise-node":
         _print_capability(CapabilityServices(NodeConfig.load(args.config)).excise_node(args.node_id))
+        return
+    if args.command == "plan-slices":
+        config = NodeConfig.load(args.config)
+        services = CapabilityServices(config)
+        snapshot = TelemetryCollector().collect(
+            load_verified_catalog(config.catalog_path, config.catalog_public_key_path)
+        )
+        _print_capability(services.plan_slices(snapshot))
+        return
+    if args.command == "assess-link-anomaly":
+        _print_capability(CapabilityServices(NodeConfig.load(args.config)).assess_link_anomaly())
         return
     if args.command == "emcon-posture":
         _print_capability(CapabilityServices(NodeConfig.load(args.config)).emcon_posture())

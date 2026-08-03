@@ -123,7 +123,7 @@ class KvalNode:
         decision = self._machine_for(current_id).observe(observation, now=snapshot.observed_at)
         return {"available": True, "profile_id": current_id, **decision.to_dict()}
 
-    def _guarded(self, name: str, call, **kwargs) -> dict[str, object]:
+    def _guarded(self, name: str, call, *args, **kwargs) -> dict[str, object]:
         """Run a capability so that its failure degrades the node, not kills it.
 
         A capability that raises used to take the whole daemon down for good:
@@ -136,7 +136,7 @@ class KvalNode:
         silently-degraded node is still a visibly-degraded node.
         """
         try:
-            return call(**kwargs)
+            return call(*args, **kwargs)
         except Exception as exc:  # noqa: BLE001 - a capability must never kill the loop
             detail = {
                 "available": False,
@@ -344,8 +344,17 @@ class KvalNode:
             suppressed_roles=suppressed,
         )
 
+        # The allocation is the decision this loop exists to make. Ranking
+        # still runs, because a switch is still how a dead bearer is replaced,
+        # but a flow is carried by a spread of slices rather than by whichever
+        # single link ranked highest.
+        allocation = self._guarded(
+            "allocation", self.capabilities.plan_slices, snapshot, now=snapshot.observed_at
+        )
+
         fused = self._fuse_state(snapshot, power, clock)
         capabilities: dict[str, object] = {
+            "allocation": allocation,
             "clock": clock,
             "power": power,
             "recovery": recovery,
