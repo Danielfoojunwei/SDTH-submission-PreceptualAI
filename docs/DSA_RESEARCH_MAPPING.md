@@ -4,6 +4,19 @@ This records how the dynamic-spectrum-access research programme of **Feng Li**,
 **Bowen Shen** and **Prof. Kwok-Yan Lam** informs this system, mechanism by
 mechanism, with citations.
 
+## Status: several mechanisms below were removed
+
+Spectrum sensing and everything downstream of it — the band-report fabric,
+emitter localisation, mobility tracking, graph evidence propagation, and
+weather discrimination — were removed after this mapping was written. Rows
+citing `evidence.py`, `geolocate.py`, `topology.py` or `mobility.py` describe
+code that is **no longer in the tree**; each is marked **REMOVED** inline.
+
+They are left in the mapping rather than deleted from it because the mapping's
+purpose is to account for every work in the corpus, and "we built this and then
+took it out, for this reason" is a truthful accounting. It is not a claim about
+what ships. What ships is in `docs/PITCH.md`.
+
 ## Read this first: what "reproduce" can and cannot mean here
 
 **Their results are not reproduced, and nothing here should be read as
@@ -56,7 +69,7 @@ citations, h-index 4). Of those 18:
     `threshold_ca.py` implements; the satellite management system itself is out
     of scope.
 
-**MemMorph resolves an earlier ambiguity, and is now built against.** A prior
+**MemMorph resolves an earlier ambiguity, and is partly built against.** A prior
 search could not determine whether its "Bowen Shen" was the same person; his own
 profile confirms it is. Its subject — poisoning an LLM agent's memory to hijack
 its tool use — lands directly on this system, which runs an agent that selects
@@ -109,7 +122,7 @@ is relevant here.
 |---|---|---|---|
 | 1 | **Federated Deep RL for DSA**, IEEE TVT 71(7):7952-7956, 2022, [10.1109/TVT.2022.3166535](https://doi.org/10.1109/TVT.2022.3166535) | FL over edge nodes; cohorts of non-interfering users with similar conditions | **Implemented** — `cohorts.kmeans_cohorts` groups nodes by RF-environment similarity before aggregation. The DRL action-selection half is transmit-side; not built. |
 | 2 | **Hierarchical federated DRL for DSA**, Ad Hoc Networks 149:103257, 2023, [10.1016/j.adhoc.2023.103257](https://doi.org/10.1016/j.adhoc.2023.103257) | Hierarchical, personalised aggregation for heterogeneous devices | **Implemented** — `cohorts.HierarchicalAggregator` aggregates per cohort, then across cohorts, so a large cohort cannot outvote a small one node-by-node. |
-| 3 | **GNN + DQN for DSA**, Ad Hoc Networks 163:103596, 2024, [10.1016/j.adhoc.2024.103596](https://doi.org/10.1016/j.adhoc.2024.103596) | Graph model of the spectrum environment feeding a decision network | **Implemented, without the learned half** — `topology.py`. The fleet is a graph and evidence propagates over it by deterministic message passing, so a node whose radio is down inherits its neighbours' view. Belief weakens per hop by Shafer discounting and is attributed by shortest path to each original observer, so a cycle cannot amplify one observation. The GNN's *trained* weights and the DQN are not built: no model ships and the action half is transmit-side. |
+| 3 | **GNN + DQN for DSA**, Ad Hoc Networks 163:103596, 2024, [10.1016/j.adhoc.2024.103596](https://doi.org/10.1016/j.adhoc.2024.103596) | Graph model of the spectrum environment feeding a decision network | **REMOVED** — was `topology.py`, deleted with the sensing tier it propagated over. The fleet is a graph and evidence propagates over it by deterministic message passing, so a node whose radio is down inherits its neighbours' view. Belief weakens per hop by Shafer discounting and is attributed by shortest path to each original observer, so a cycle cannot amplify one observation. The GNN's *trained* weights and the DQN are not built: no model ships and the action half is transmit-side. |
 | 4 | **Improved FL for DSA**, JNCA 239:104189, 2025, [10.1016/j.jnca.2025.104189](https://doi.org/10.1016/j.jnca.2025.104189) | Not established — full text unavailable | **Nothing built.** The abstract could not be retrieved (publisher returns 403 to automated fetch). Implementing from a title would be guessing. |
 | 5 | **Swarm learning DSA**, IEEE IoT-J 12(18):37720-37733, 2025, [10.1109/JIOT.2025.3583710](https://doi.org/10.1109/JIOT.2025.3583710) | Decentralised P2P learning, no central aggregator; blockchain audit | **Adapted** — `HierarchicalAggregator.select_aggregator` rotates the aggregator role instead of fixing it, removing the single point of failure. The blockchain layer is **not** implemented; Kval already has a SHA-256 hash-chained audit ledger serving the same provenance purpose without a distributed consensus dependency. |
 | 6 | **Swarm DSA**, IEEE WCNC 2025, [10.1109/WCNC61545.2025.10978419](https://doi.org/10.1109/WCNC61545.2025.10978419) | Conference precursor of #5 | Covered by #5. |
@@ -203,8 +216,8 @@ Three things are stated plainly because they are real costs:
 
 | Paper | Mechanism | Status |
 |---|---|---|
-| Liu, Jia, Na, Lu, **Li**, **Multi-Modal Cooperative Spectrum Sensing Based on Dempster-Shafer Fusion**, IEEE Access 6:199-208, 2018, [10.1109/ACCESS.2017.2761910](https://doi.org/10.1109/ACCESS.2017.2761910) | Per-node multi-detector fusion, then credibility-weighted Dempster-Shafer fusion across nodes, down-weighting malicious users | **Implemented** — `evidence.py`. See below. **Note: Lam and Shen are not authors on this paper.** |
-| Hua, Yin, Lu, Zhang, **Li**, **NLOS Identification and Positioning via Localization Residual**, Sensors 18(9):2991, 2018, [10.3390/s18092991](https://doi.org/10.3390/s18092991) | Residual-consistency test identifies and excludes non-line-of-sight anchors | **Implemented** — `geolocate.py`. Was previously computing residuals without using them. The naive form does not work: judging each anchor by its own residual under the full solve fails because the solve is already dragged by the blocked anchor, so every anchor looks mildly wrong and none looks decisively wrong. The test now asks which single anchor, if removed, reconciles the rest, and requires a threefold improvement before blaming one. Sign is retained as evidence — obstruction can only lengthen an apparent range, so a *shorter*-than-implied reading is reported separately as a repeater, reflection or fabricated report. Two structural limits fell out and are enforced: three anchors always fit exactly, so a fleet of `n` survives at most `n-4` blocked nodes; and when no single removal reconciles the rest the estimate is refused rather than returned kilometres wrong. |
+| Liu, Jia, Na, Lu, **Li**, **Multi-Modal Cooperative Spectrum Sensing Based on Dempster-Shafer Fusion**, IEEE Access 6:199-208, 2018, [10.1109/ACCESS.2017.2761910](https://doi.org/10.1109/ACCESS.2017.2761910) | Per-node multi-detector fusion, then credibility-weighted Dempster-Shafer fusion across nodes, down-weighting malicious users | **REMOVED** — was `evidence.py`, deleted with the sensing tier it fused. See below. **Note: Lam and Shen are not authors on this paper.** |
+| Hua, Yin, Lu, Zhang, **Li**, **NLOS Identification and Positioning via Localization Residual**, Sensors 18(9):2991, 2018, [10.3390/s18092991](https://doi.org/10.3390/s18092991) | Residual-consistency test identifies and excludes non-line-of-sight anchors | **REMOVED** — was `geolocate.py`, deleted with the sensing tier. Was previously computing residuals without using them. The naive form does not work: judging each anchor by its own residual under the full solve fails because the solve is already dragged by the blocked anchor, so every anchor looks mildly wrong and none looks decisively wrong. The test now asks which single anchor, if removed, reconciles the rest, and requires a threefold improvement before blaming one. Sign is retained as evidence — obstruction can only lengthen an apparent range, so a *shorter*-than-implied reading is reported separately as a repeater, reflection or fabricated report. Two structural limits fell out and are enforced: three anchors always fit exactly, so a fleet of `n` survives at most `n-4` blocked nodes; and when no single removal reconciles the rest the estimate is refused rather than returned kilometres wrong. |
 | **Li**, **Lam**, Li, Sheng, Hua, Wang, **Advances and Emerging Challenges in Cognitive IoT**, IEEE TII 16(8):5489-5496, 2020, [10.1109/TII.2019.2953246](https://doi.org/10.1109/TII.2019.2953246) | Survey; frames sensing / access / perceiving / self-learning | Conceptual framing only. |
 
 ## Per-flow forecasting: the mechanism without the base learner
@@ -235,7 +248,14 @@ Consequences to be clear about:
   node makes is reconstructable from its audit ledger; a forecast should be no
   different.
 
-## The single most valuable import: Dempster-Shafer fusion
+## The single most valuable import: Dempster-Shafer fusion — REMOVED
+
+**This mechanism is no longer in the tree.** It fused per-band assessments
+across nodes, and both the bands and the cross-node reports are gone. The
+reasoning below is kept because the distinction it draws — measured-and-clear
+versus could-not-measure — is the one property most worth carrying into
+anything that replaces it, and because a fleet reasoning about self-reported
+platform health will need exactly it. The code, however, is deleted.
 
 The fabric's first aggregator counted votes. Counting cannot distinguish
 **"this node measured the band and found it clear"** from **"this node could
@@ -320,7 +340,7 @@ compositions, not the individual mechanisms, are where the value is:
 | **Forecast reaches a decision** | INFOCOM 2024 → `optimizer.py` | A forecast that reaches no decision is a report. A predicted degradation now demotes a link before it fails — and may only demote, never promote, with a weaker penalty than measured sensing, so a prediction can break a tie but never outrank evidence. |
 | **Localisation feeds tracking** | Sensors 2018 → ledger → WPC 2024 | One paper gives a point, the other needs a history of points. Accepted estimates are recorded; refusals are not, so "we could not tell" can never become a place the emitter has been. The place radius is tied to localisation uncertainty rather than guessed. |
 | **Detection is a fleet property** | ICC 2024 + TVT 2022 cohorts + TWC 2025 reputation | Per-node detectors say what is anomalous *for that node*; cohort membership decides whether their agreement means anything; reputation decides whether the agreeing nodes carry weight. |
-| **Integrity guards learning** | MemMorph → `analysis.py` | Baselines derive from the ledger, so injected records shift what "normal" means. A baseline is now built only from history that passes the memory audit and in which no single record carries disproportionate weight. |
+| **Integrity guards learning** | MemMorph → `analysis.py` | Baselines derive from the ledger, so injected records shift what "normal" means. A baseline is built only from history that passes the memory audit and in which no single record carries disproportionate weight. **The audit catches templated injection, not MemMorph's multi-style form** — three records disguised as a technical fact, an incident report and a policy are not similar to each other and never group. Bounded influence still limits what any one of them can move. |
 
 ### A fail-open found by building the composition
 

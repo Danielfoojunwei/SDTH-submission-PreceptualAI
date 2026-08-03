@@ -27,9 +27,10 @@ Ed25519 signature over its canonical content, so an attacker with database
 write access but no node key cannot manufacture accepted history. The hash
 chain proves the sequence is intact; the signature proves who wrote each link.
 
-**Injection detection.** MemMorph's records are individually plausible but
-collectively anomalous: generated from one template, so unusually similar to
-each other, and *unlike the history they were inserted into*.
+**Injection detection.** This detector catches *templated* injection: records
+individually plausible but collectively anomalous because they came from one
+template, so unusually similar to each other and *unlike the history they were
+inserted into*.
 
 That last condition is what makes the test usable, and getting it wrong makes
 the detector worse than useless. A node's ledger is *supposed* to repeat — a
@@ -46,6 +47,20 @@ not catch a compromised node that holds the signing key and writes poisoned
 records resembling its own normal output. Nothing at this layer could. The
 backstop for that case is bounded influence, below, and reputation weighting
 across the fleet.
+
+The larger limit, and the one this docstring previously got wrong by claiming
+the opposite: **it does not catch MemMorph as that paper describes it.**
+MemMorph's three records are "disguised as technical facts, incident reports,
+and operational policies" — three *deliberately different* kinds, whose force
+comes from appearing to corroborate one conclusion from independent
+directions. Records like that are not similar to each other, so
+``_templated_groups`` never groups them and nothing here fires. What is built
+is keyed on the signature of a weaker, single-style variant.
+
+Closing it needs a second arm keyed on the opposite signature — dissimilar
+records that nonetheless converge on one conclusion — a harder test than
+near-duplication, and not built. Until it is, this is a templated-injection
+detector, not a MemMorph defence.
 
 **Bounded influence.** Even undetected, no small group of records may dominate
 a derived statistic. The influence cap is the same principle the federated
@@ -83,9 +98,10 @@ DEFAULT_GROUP_THRESHOLD = 3
 #: intersection *and* adds two terms to the union. A record needs nineteen
 #: fields before one varying field still scores 0.9, and a decision record here
 #: has six. A templated injection whose records differ only in a sequence
-#: number scored 0.714 and never grouped at all: the detector for MemMorph
-#: could not see MemMorph. Measured, not reasoned — see the timing gate below
-#: for why lowering this is safe.
+#: number scored 0.714 and never grouped at all, so the detector could not see
+#: even a single-style templated injection. Measured, not reasoned — see the
+#: timing gate below for why lowering this is safe. Note this fixed the
+#: threshold, not the premise: multi-style injection still never groups.
 DEFAULT_SIMILARITY_THRESHOLD = 0.65
 
 #: How much faster than the node's own recording cadence a group must have been
@@ -262,7 +278,7 @@ class IntegrityReport:
 
 
 class MemoryAuditor:
-    """Detects the injection pattern MemMorph relies on."""
+    """Detects *templated* injection. Not MemMorph's multi-style form — see above."""
 
     def __init__(
         self,
