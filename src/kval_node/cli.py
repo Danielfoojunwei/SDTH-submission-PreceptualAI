@@ -85,8 +85,6 @@ def build_parser() -> argparse.ArgumentParser:
     verify_audit = subparsers.add_parser("verify-audit")
     verify_audit.add_argument("--config", default=DEFAULT_CONFIG)
 
-    spectrum = subparsers.add_parser("spectrum-scan")
-    spectrum.add_argument("--config", default=DEFAULT_CONFIG)
 
     power = subparsers.add_parser("power-plan")
     power.add_argument("--config", default=DEFAULT_CONFIG)
@@ -108,22 +106,10 @@ def build_parser() -> argparse.ArgumentParser:
     export.add_argument("--output", required=True, help="JSONL destination")
     export.add_argument("--horizon-seconds", type=float, default=60.0)
 
-    fabric_report = subparsers.add_parser("fabric-report")
-    fabric_report.add_argument("--config", default=DEFAULT_CONFIG)
-    fabric_report.add_argument("--output", default=None, help="write the signed report here")
 
-    fabric_view = subparsers.add_parser("fabric-view")
-    fabric_view.add_argument("--config", default=DEFAULT_CONFIG)
 
-    locate = subparsers.add_parser("locate-emitter")
-    locate.add_argument("--config", default=DEFAULT_CONFIG)
-    locate.add_argument("--band-id", required=True)
 
-    propagation = subparsers.add_parser("diagnose-propagation")
-    propagation.add_argument("--config", default=DEFAULT_CONFIG)
 
-    calibrate = subparsers.add_parser("calibrate-path-loss")
-    calibrate.add_argument("--config", default=DEFAULT_CONFIG)
 
     heterogeneity = subparsers.add_parser("fleet-heterogeneity")
     heterogeneity.add_argument("--config", default=DEFAULT_CONFIG)
@@ -136,8 +122,6 @@ def build_parser() -> argparse.ArgumentParser:
     fed_agg.add_argument("--config", default=DEFAULT_CONFIG)
     fed_agg.add_argument("--round-index", type=int, default=0)
 
-    topology = subparsers.add_parser("fabric-topology")
-    topology.add_argument("--config", default=DEFAULT_CONFIG)
 
     memory = subparsers.add_parser("audit-memory")
     memory.add_argument("--config", default=DEFAULT_CONFIG)
@@ -145,12 +129,7 @@ def build_parser() -> argparse.ArgumentParser:
     forecast = subparsers.add_parser("forecast-links")
     forecast.add_argument("--config", default=DEFAULT_CONFIG)
 
-    track = subparsers.add_parser("track-emitter")
-    track.add_argument("--config", default=DEFAULT_CONFIG)
-    track.add_argument("--band-id", required=True)
-    track.add_argument("--horizon-seconds", type=float, default=600.0)
 
-    anomaly = subparsers.add_parser("detect-fleet-anomaly")
     anomaly.add_argument("--config", default=DEFAULT_CONFIG)
 
     excise = subparsers.add_parser("excise-node")
@@ -160,11 +139,6 @@ def build_parser() -> argparse.ArgumentParser:
     emcon = subparsers.add_parser("emcon-posture")
     emcon.add_argument("--config", default=DEFAULT_CONFIG)
 
-    interference = subparsers.add_parser("report-interference")
-    interference.add_argument("--config", default=DEFAULT_CONFIG)
-    interference.add_argument("--band-id", required=True)
-    interference.add_argument("--victim-role", default="payload",
-                              choices=["c2_cnpc", "payload", "bulk"])
 
     c2 = subparsers.add_parser("c2-status")
     c2.add_argument("--config", default=DEFAULT_CONFIG)
@@ -233,9 +207,6 @@ def main() -> None:
         if isinstance(result, dict) and result.get("activation_error"):
             raise SystemExit(4)
         return
-    if args.command == "spectrum-scan":
-        _print_capability(CapabilityServices(NodeConfig.load(args.config)).sense_spectrum())
-        return
     if args.command == "power-plan":
         services = CapabilityServices(NodeConfig.load(args.config))
         _print_capability(
@@ -269,29 +240,6 @@ def main() -> None:
         write_jsonl(examples, Path(args.output))
         _print({"output": args.output, "feature_names": list(FEATURE_NAMES), **stats.to_dict()})
         return
-    if args.command == "fabric-report":
-        result = CapabilityServices(NodeConfig.load(args.config)).publish_report()
-        if args.output and result.get("available") is True:
-            Path(args.output).write_text(
-                json.dumps(result["report"], indent=2, sort_keys=True) + "\n", encoding="utf-8"
-            )
-        _print_capability(result)
-        return
-    if args.command == "fabric-view":
-        _print_capability(CapabilityServices(NodeConfig.load(args.config)).aggregate_fleet())
-        return
-    if args.command == "locate-emitter":
-        services = CapabilityServices(NodeConfig.load(args.config))
-        _print_capability(services.locate_emitter(args.band_id))
-        return
-    if args.command == "diagnose-propagation":
-        services = CapabilityServices(NodeConfig.load(args.config))
-        _print_capability(services.discriminate_propagation())
-        return
-    if args.command == "calibrate-path-loss":
-        services = CapabilityServices(NodeConfig.load(args.config))
-        _print_capability(services.calibrate_path_loss())
-        return
     if args.command == "fleet-heterogeneity":
         services = CapabilityServices(NodeConfig.load(args.config))
         _print_capability(services.assess_fleet_heterogeneity())
@@ -311,35 +259,17 @@ def main() -> None:
             )
         )
         return
-    if args.command == "fabric-topology":
-        _print_capability(CapabilityServices(NodeConfig.load(args.config)).fabric_topology())
-        return
     if args.command == "audit-memory":
         _print_capability(CapabilityServices(NodeConfig.load(args.config)).audit_memory())
         return
     if args.command == "forecast-links":
         _print_capability(CapabilityServices(NodeConfig.load(args.config)).forecast_links())
         return
-    if args.command == "track-emitter":
-        services = CapabilityServices(NodeConfig.load(args.config))
-        _print_capability(
-            services.track_emitter(args.band_id, horizon_seconds=args.horizon_seconds)
-        )
-        return
-    if args.command == "detect-fleet-anomaly":
-        _print_capability(CapabilityServices(NodeConfig.load(args.config)).detect_fleet_anomaly())
-        return
     if args.command == "excise-node":
         _print_capability(CapabilityServices(NodeConfig.load(args.config)).excise_node(args.node_id))
         return
     if args.command == "emcon-posture":
         _print_capability(CapabilityServices(NodeConfig.load(args.config)).emcon_posture())
-        return
-    if args.command == "report-interference":
-        services = CapabilityServices(NodeConfig.load(args.config))
-        _print_capability(
-            services.report_interference(args.band_id, victim_role=args.victim_role)
-        )
         return
     if args.command == "c2-status":
         _print_capability(_with_node(args.config, "c2-status"))

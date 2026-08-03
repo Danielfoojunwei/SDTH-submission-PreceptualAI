@@ -51,7 +51,6 @@ def decision_payload(
         "capabilities": {
             "clock": {"trusted": clock_trusted},
             "power": {"recommendation": {"max_inference_duty": 1.0}},
-            "degraded_band_ids": contested or [],
         },
     }
 
@@ -103,15 +102,14 @@ class CorpusExportTests(unittest.TestCase):
         exported = examples[0].to_dict()["features"]
         self.assertEqual(sorted(exported), sorted(FEATURE_NAMES))
 
-    def test_contested_bands_and_clock_reach_the_features(self) -> None:
+    def test_clock_trust_reaches_the_features(self) -> None:
         self._write(
             [
-                decision_payload(contested=["ism-2g4", "unii-1"], clock_trusted=False),
+                decision_payload(clock_trusted=False),
                 decision_payload(),
             ]
         )
         examples, _stats = CorpusExporter(self.path, horizon_seconds=3600.0).export()
-        self.assertEqual(examples[0].features["contested_band_count"], 2.0)
         self.assertEqual(examples[0].features["clock_trusted"], 0.0)
 
     def test_record_without_a_successor_is_dropped(self) -> None:

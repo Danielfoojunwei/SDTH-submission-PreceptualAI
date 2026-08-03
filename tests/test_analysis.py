@@ -54,7 +54,6 @@ def decision_payload(
         "capabilities": {
             "clock": {"trusted": True},
             "power": {"recommendation": {"max_inference_duty": 1.0}},
-            "degraded_band_ids": [],
         },
     }
 

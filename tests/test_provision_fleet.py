@@ -18,7 +18,7 @@ from datetime import timedelta
 from pathlib import Path
 
 from kval_node.capabilities import ROSTER_DOCUMENT_TYPE
-from kval_node.fabric import PeerRoster
+from kval_node.roster import PeerRoster
 from kval_node.models import utc_now
 from kval_node.signing import load_public_key, verify_document_agile
 

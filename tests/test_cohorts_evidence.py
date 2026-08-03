@@ -28,9 +28,7 @@ from kval_node.cohorts import (
     kmeans_cohorts,
 )
 from kval_node.dataset import FEATURE_NAMES
-from kval_node.evidence import _BUSY_STATUSES, _CLEAR_STATUSES, BeliefMass, combine_pair, fuse
 from kval_node.federated import FeatureStatistics, FederatedUpdate
-from kval_node.spectrum import BandStatus
 
 NOW = datetime.now(timezone.utc)
 
@@ -205,109 +203,8 @@ class CertifiedRecoveryTests(unittest.TestCase):
         json.dumps(certified_excision(poisoned, "attacker")[1].to_dict())
 
 
-class DempsterShaferTests(unittest.TestCase):
-    """The distinction vote-counting cannot express: ignorance is not disbelief."""
-
-    def test_blind_nodes_yield_ignorance_not_clear(self) -> None:
-        blind = [BeliefMass.from_status(BandStatus.INSUFFICIENT_EVIDENCE, 0.0) for _ in range(3)]
-        result = fuse(blind)
-        self.assertEqual(result.unknown, 1.0)
-        self.assertEqual(result.clear, 0.0)
-        self.assertEqual(result.busy, 0.0)
-        self.assertIn("NO_NODE_PRODUCED_COMMITTED_EVIDENCE", result.reasons)
-
-    def test_agreeing_nodes_produce_strong_belief(self) -> None:
-        result = fuse([BeliefMass.from_status(BandStatus.CLEAR, 1.0) for _ in range(3)])
-        self.assertGreater(result.clear, 0.99)
-        self.assertTrue(result.trustworthy)
-
-    def test_jamming_reports_accumulate(self) -> None:
-        result = fuse([BeliefMass.from_status(BandStatus.JAMMING_SUSPECTED, 1.0) for _ in range(3)])
-        self.assertGreater(result.busy, 0.99)
-
-    def test_irreconcilable_sources_are_flagged_not_normalised_away(self) -> None:
-        result = fuse(
-            [
-                BeliefMass.from_status(BandStatus.JAMMING_SUSPECTED, 1.0),
-                BeliefMass.from_status(BandStatus.CLEAR, 1.0),
-            ]
-        )
-        self.assertFalse(result.trustworthy)
-        self.assertIn("SOURCES_IRRECONCILABLY_CONFLICTED", result.reasons)
-
-    def test_credibility_discounts_an_untrusted_source(self) -> None:
-        # A low-credibility node claiming jamming cannot override a trusted
-        # node reporting clear — the SSDF defence.
-        result = fuse(
-            [
-                BeliefMass.from_status(BandStatus.JAMMING_SUSPECTED, 1.0, credibility=0.1),
-                BeliefMass.from_status(BandStatus.CLEAR, 1.0, credibility=1.0),
-            ]
-        )
-        self.assertGreater(result.clear, result.busy)
-
-    def test_low_confidence_commits_little_mass(self) -> None:
-        weak = BeliefMass.from_status(BandStatus.CLEAR, 0.1)
-        strong = BeliefMass.from_status(BandStatus.CLEAR, 1.0)
-        self.assertLess(weak.clear, strong.clear)
-        self.assertGreater(weak.unknown, strong.unknown)
-
-    def test_mass_always_sums_to_one(self) -> None:
-        for status in BandStatus:
-            for confidence in (0.0, 0.3, 1.0):
-                mass = BeliefMass.from_status(status, confidence)
-                self.assertAlmostEqual(mass.clear + mass.busy + mass.unknown, 1.0, places=9)
-
-    def test_total_conflict_returns_ignorance_not_a_division_error(self) -> None:
-        combined, conflict = combine_pair(BeliefMass(1.0, 0.0, 0.0), BeliefMass(0.0, 1.0, 0.0))
-        self.assertEqual(conflict, 1.0)
-        self.assertEqual(combined.unknown, 1.0)
-
-    def test_ignorance_is_the_identity_element(self) -> None:
-        evidence = BeliefMass.from_status(BandStatus.CLEAR, 0.8)
-        combined, _conflict = combine_pair(evidence, BeliefMass(0.0, 0.0, 1.0))
-        self.assertAlmostEqual(combined.clear, evidence.clear, places=9)
-
-    def test_result_serializes(self) -> None:
-        json.dumps(fuse([BeliefMass.from_status(BandStatus.CLEAR, 1.0)]).to_dict())
 
 
-class EveryBandStatusIsClassifiedTests(unittest.TestCase):
-    """No spectrum verdict may reach the fusion stage unclassified.
-
-    ``from_status`` ends in a fallthrough returning total ignorance, which is
-    the right default but the wrong failure mode: a ``BandStatus`` added later
-    and not sorted into busy or clear would contribute *no evidence at all* to
-    the fleet's fused belief, quietly weakening the very conclusion it should
-    have strengthened. Nothing in the type system prevents that, so it is
-    checked here — the fallthrough is currently unreachable and this is what
-    keeps it that way.
-    """
-
-    def test_no_status_falls_through_to_total_ignorance(self) -> None:
-        unclassified = set(BandStatus) - set(_BUSY_STATUSES) - set(_CLEAR_STATUSES)
-        unclassified.discard(BandStatus.INSUFFICIENT_EVIDENCE)
-        self.assertEqual(
-            unclassified,
-            set(),
-            "a BandStatus was added without deciding whether it is evidence of a "
-            "busy band or a usable one; it would silently contribute nothing",
-        )
-
-    def test_busy_and_clear_never_overlap(self) -> None:
-        self.assertEqual(set(_BUSY_STATUSES) & set(_CLEAR_STATUSES), set())
-
-    def test_every_status_produces_a_valid_mass_assignment(self) -> None:
-        for status in BandStatus:
-            with self.subTest(status=status.name):
-                mass = BeliefMass.from_status(status, 0.8)
-                self.assertAlmostEqual(mass.clear + mass.busy + mass.unknown, 1.0, places=6)
-
-    def test_insufficient_evidence_is_ignorance_not_a_clear_reading(self) -> None:
-        # The defect Dempster-Shafer was brought in to fix: a node that could
-        # not measure must not look like a node reporting quiet.
-        mass = BeliefMass.from_status(BandStatus.INSUFFICIENT_EVIDENCE, 1.0)
-        self.assertEqual((mass.clear, mass.busy, mass.unknown), (0.0, 0.0, 1.0))
 
 
 def swings_at(factor: float) -> dict[str, float]:
@@ -489,18 +386,18 @@ class FleetHeterogeneityTests(unittest.TestCase):
         # zero in deflates every score: here it would drop a heavy fleet into
         # the medium regime on the strength of a missing spectrum sensor.
         base = swings_at(1.6)
-        base["contested_band_count"] = 0.0
+        base["throughput_mbps"] = 0.0
         fleet = [
             env_node(
                 f"n{i}",
                 swings={**base, "rtt_ms": base["rtt_ms"] + 0.05 * i},
-                means={"rtt_ms": 20.0 + i, "contested_band_count": 0.0},
+                means={"rtt_ms": 20.0 + i, "throughput_mbps": 0.0},
             )
             for i in range(MIN_NODES_FOR_TIERS)
         ]
         result = assess_heterogeneity(fleet)
-        self.assertIn("contested_band_count", result.features_excluded)
-        self.assertNotIn("contested_band_count", result.features_used)
+        self.assertIn("throughput_mbps", result.features_excluded)
+        self.assertNotIn("throughput_mbps", result.features_used)
         self.assertEqual(result.regime, REGIME_HEAVY)
         # What counting the dead sensor as a calm one would have reported.
         diluted = result.score * math.sqrt(len(result.features_used) / len(HETEROGENEITY_FEATURES))

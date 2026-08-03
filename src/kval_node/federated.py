@@ -60,7 +60,7 @@ from cryptography.hazmat.primitives.asymmetric.ed25519 import Ed25519PrivateKey
 
 from .analysis import MIN_BASELINE_SAMPLES
 from .dataset import FEATURE_NAMES, Example
-from .fabric import FabricError, PeerRoster
+from .roster import PeerRoster, RosterError
 from .learning import FeatureBaseline
 from .models import parse_timestamp, utc_now
 from .signing import canonical_json, public_key_id
@@ -128,7 +128,7 @@ class FederatedUpdate:
     @classmethod
     def from_examples(cls, examples: Sequence[Example], *, node_id: str, now: datetime | None = None) -> "FederatedUpdate":
         if len(examples) < MIN_BASELINE_SAMPLES:
-            raise FabricError(
+            raise RosterError(
                 f"need at least {MIN_BASELINE_SAMPLES} local examples to contribute; got {len(examples)}"
             )
         stats: dict[str, FeatureStatistics] = {}
@@ -187,36 +187,36 @@ def verify_update(
 ) -> FederatedUpdate:
     current = now or utc_now()
     if envelope.get("algorithm") != "Ed25519":
-        raise FabricError("unsupported update signature algorithm")
+        raise RosterError("unsupported update signature algorithm")
     body = envelope.get("body")
     if not isinstance(body, dict) or body.get("schema") != UPDATE_SCHEMA:
-        raise FabricError("unsupported or malformed update body")
+        raise RosterError("unsupported or malformed update body")
     try:
         update = FederatedUpdate.from_dict(body)
     except (ValueError, KeyError, TypeError) as exc:
-        raise FabricError(f"update body is malformed: {exc}") from exc
+        raise RosterError(f"update body is malformed: {exc}") from exc
     if body != update.to_body():
-        raise FabricError("update body contains unauthenticated or non-canonical fields")
+        raise RosterError("update body contains unauthenticated or non-canonical fields")
 
     peer = roster.by_id().get(update.node_id)
     if peer is None:
-        raise FabricError(f"update author {update.node_id!r} is not on the signed roster")
+        raise RosterError(f"update author {update.node_id!r} is not on the signed roster")
     if envelope.get("key_id") != public_key_id(peer.public_key):
-        raise FabricError("update key ID does not match the roster entry for this node")
+        raise RosterError("update key ID does not match the roster entry for this node")
     try:
         signature = base64.b64decode(str(envelope["signature"]), validate=True)
     except (KeyError, ValueError) as exc:
-        raise FabricError("update signature is missing or malformed") from exc
+        raise RosterError("update signature is missing or malformed") from exc
     try:
         peer.public_key.verify(signature, canonical_json(update.to_body()))
     except InvalidSignature as exc:
-        raise FabricError("update signature verification failed") from exc
+        raise RosterError("update signature verification failed") from exc
 
     age = (current - update.produced_at).total_seconds()
     if age > max_age_seconds:
-        raise FabricError("update is older than the aggregation window")
+        raise RosterError("update is older than the aggregation window")
     if age < -1.0:
-        raise FabricError("update is dated in the future")
+        raise RosterError("update is dated in the future")
     return update
 
 

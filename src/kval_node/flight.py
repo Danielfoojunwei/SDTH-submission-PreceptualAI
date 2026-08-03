@@ -46,16 +46,7 @@ from .signing import (
     load_verified_catalog,
     verify_document_agile,
 )
-from .spectrum import (
-    ScanRateExceeded,
-    ScanRateLimiter,
-    SpectrumAnalyzer,
-    SpectrumObservation,
-    SpectrumPolicy,
-    SpectrumSensorClient,
-)
 
-SPECTRUM_DOCUMENT_TYPE = "kval-spectrum-policy/v1"
 POWER_DOCUMENT_TYPE = "kval-power-policy/v1"
 EMCON_DOCUMENT_TYPE = "kval-emcon-order/v1"
 C2_DOCUMENT_TYPE = "kval-c2-budget/v1"
@@ -115,74 +106,11 @@ class FlightServices:
         )
 
 
-    def scan_state_path(self) -> Path:
-        """Durable store for spectrum scan-rate accounting."""
-        if self.config.spectrum_scan_state_path is not None:
-            return self.config.spectrum_scan_state_path
-        return self.config.audit_database_path.parent / "spectrum-scans.db"
-
-    # --- spectrum -------------------------------------------------------------
 
 
-    def load_spectrum_policy(self) -> tuple[SpectrumPolicy, str]:
-        if self.config.spectrum_policy_path is None:
-            raise FileNotFoundError("spectrum_policy_path is not configured")
-        payload, payload_hash = self._verify_document(self.config.spectrum_policy_path, expected_type=SPECTRUM_DOCUMENT_TYPE)
-        return SpectrumPolicy.from_dict(payload), payload_hash
 
 
-    def sense_spectrum(self, *, now: datetime | None = None) -> dict[str, Any]:
-        if self.config.spectrum_policy_path is None:
-            return _unavailable("spectrum sensing is not configured on this node")
-        try:
-            policy, policy_hash = self.load_spectrum_policy()
-        except Exception as exc:
-            return {"available": False, "reason": f"spectrum policy invalid: {exc}"}
-        if self.config.spectrum_sensor_socket is None:
-            return {
-                "available": False,
-                "reason": "no spectrum sensor adapter socket configured",
-                "policy_id": policy.policy_id,
-                "policy_hash": policy_hash,
-            }
-        # Enforce the policy's scan duty limits before touching the adapter.
-        # These are emission-duty and energy controls, so they are checked
-        # against durable state rather than a per-process counter.
-        limiter = ScanRateLimiter(self.scan_state_path())
-        try:
-            limiter.check(policy, now=now)
-        except ScanRateExceeded as exc:
-            limiter.close()
-            return {
-                "available": False,
-                "reason": str(exc),
-                "policy_id": policy.policy_id,
-                "policy_hash": policy_hash,
-            }
-        try:
-            observations = SpectrumSensorClient().scan(self.config.spectrum_sensor_socket, policy)
-        except Exception as exc:  # fail closed on any adapter error
-            # Deliberately *not* recorded against the duty budget: an attempt
-            # that never reached the adapter emitted nothing, so charging it
-            # would let a brief sensor outage spend the whole hourly quota and
-            # lock out sensing long after the adapter recovered.
-            limiter.close()
-            return {
-                "available": False,
-                "reason": f"spectrum sensor unavailable: {exc}",
-                "policy_id": policy.policy_id,
-                "policy_hash": policy_hash,
-            }
-        # The scan happened, so now it counts.
-        limiter.record(policy_id=policy.policy_id, now=now)
-        limiter.close()
-        analyzer = SpectrumAnalyzer(max_observation_age_seconds=self.config.observation_max_age_seconds)
-        intelligence = analyzer.analyze(policy, observations, now=now)
-        result = intelligence.to_dict()
-        result["available"] = True
-        result["policy_hash"] = policy_hash
-        result["observations"] = [observation.to_dict() for observation in observations]
-        return result
+
 
     # --- power ----------------------------------------------------------------
 

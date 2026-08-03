@@ -18,17 +18,14 @@ sys.path.insert(0, str(PROJECT_ROOT / "src"))
 
 from kval_node.c2link import C2Budget
 from kval_node.emcon import EmconOrder
-from kval_node.geolocate import PathLossModel
 from kval_node.capabilities import (  # noqa: E402
     C2_DOCUMENT_TYPE,
     EMCON_DOCUMENT_TYPE,
-    PATH_LOSS_DOCUMENT_TYPE,
     POWER_DOCUMENT_TYPE,
     ROSTER_DOCUMENT_TYPE,
-    SPECTRUM_DOCUMENT_TYPE,
     TRANSPORT_DOCUMENT_TYPE,
 )
-from kval_node.fabric import PeerRoster  # noqa: E402
+from kval_node.roster import PeerRoster  # noqa: E402
 from kval_node.lease import sign_lease  # noqa: E402
 from kval_node.power import PowerPolicy  # noqa: E402
 from kval_node.signing import (  # noqa: E402
@@ -38,18 +35,15 @@ from kval_node.signing import (  # noqa: E402
     public_key_id,
     sign_document,
 )
-from kval_node.spectrum import SpectrumPolicy  # noqa: E402
 from kval_node.transport_security import TransportPolicy  # noqa: E402
 
 DOCUMENT_TYPES = {
-    "spectrum": (SPECTRUM_DOCUMENT_TYPE, SpectrumPolicy.from_dict),
     "power": (POWER_DOCUMENT_TYPE, PowerPolicy.from_dict),
     "transport": (TRANSPORT_DOCUMENT_TYPE, TransportPolicy.from_dict),
     "roster": (ROSTER_DOCUMENT_TYPE, PeerRoster.from_dict),
-    # These three had no provisioning path at all: the node read config keys
+    # These two had no provisioning path at all: the node read config keys
     # pointing at files no shipped tool could produce, so the capabilities
     # behind them were unusable however correct their code was.
-    "path-loss": (PATH_LOSS_DOCUMENT_TYPE, PathLossModel.from_dict),
     "emcon": (EMCON_DOCUMENT_TYPE, EmconOrder.from_dict),
     "c2-budget": (C2_DOCUMENT_TYPE, C2Budget.from_dict),
 }

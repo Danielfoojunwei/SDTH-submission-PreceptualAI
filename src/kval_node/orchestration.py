@@ -62,15 +62,10 @@ from .cohorts import (
     kmeans_cohorts,
 )
 from .dataset import Example
-from .evidence import BeliefMass
-from .fabric import FabricReport
 from .federated import FederatedUpdate
 from .forecast import MIN_HISTORY, ForecastAdvice, PerFlowForecaster, forecast_advice
-from .intrusion import FleetDetector, LocalDetector, LocalVerdict, NodeBaseline
 from .memory_integrity import bounded_influence
-from .mobility import Fix, TrackPredictor
 from .privacy import FeatureRange, LocalPrivatiser
-from .spectrum import BandStatus
 from .threshold_ca import Attestation, CertifierRoster, Grant, QuorumRenewer
 from .validation import bounded_number
 
@@ -83,7 +78,6 @@ DEFAULT_FEATURE_RANGES: dict[str, FeatureRange] = {
     "loss_percent": FeatureRange(0.0, 100.0),
     "jitter_ms": FeatureRange(0.0, 500.0),
     "signal_percent": FeatureRange(0.0, 100.0),
-    "contested_band_count": FeatureRange(0.0, 32.0),
 }
 
 #: Share of a feature's privacy budget spent protecting its mean, the rest
@@ -303,58 +297,11 @@ class FleetLearning:
 # --- localisation feeding track prediction -----------------------------------------
 
 
-def predict_track(
-    fixes: Sequence[Fix], *, horizon: timedelta, place_radius_m: float
-) -> dict[str, Any]:
-    """Predict an emitter's next position from a history of NLOS-rejected fixes.
-
-    The place radius is tied to localisation uncertainty rather than guessed:
-    two fixes are the same place when they are closer together than the
-    accuracy that produced them. Using a tighter radius would turn measurement
-    noise into a tour of imaginary locations.
-    """
-    predictor = TrackPredictor(place_radius_m=place_radius_m)
-    result = predictor.predict(fixes, horizon=horizon).to_dict()
-    result["place_radius_m"] = round(place_radius_m, 2)
-    result["fixes"] = len(fixes)
-    return result
 
 
-def fixes_from_estimates(records: Sequence[dict[str, Any]]) -> list[Fix]:
-    """Read past localisation results out of recorded history.
-
-    Estimates the locator refused are absent from history rather than recorded
-    as a position, so a refusal cannot become a track point.
-    """
-    fixes: list[Fix] = []
-    for row in records:
-        payload = row.get("payload") or {}
-        if payload.get("available") is not True:
-            continue
-        latitude = payload.get("latitude_deg")
-        longitude = payload.get("longitude_deg")
-        if latitude is None or longitude is None:
-            continue
-        from .models import parse_timestamp
-
-        fixes.append(
-            Fix(
-                observed_at=parse_timestamp(str(row["recorded_at"])),
-                latitude_deg=float(latitude),
-                longitude_deg=float(longitude),
-                uncertainty_radius_m=float(payload.get("uncertainty_radius_m") or 0.0),
-            )
-        )
-    return fixes
 
 
 # --- detection as a fleet property --------------------------------------------------
-
-#: Band statuses that count as an anomalous observation for a node.
-_ANOMALOUS_STATUSES = frozenset(
-    {BandStatus.JAMMING_SUSPECTED.value, BandStatus.ANOMALOUS.value}
-)
-
 
 def cohort_assignments(updates: Sequence[FederatedUpdate]) -> dict[str, str]:
     """Which RF-environment cohort each node belongs to.
@@ -370,72 +317,10 @@ def cohort_assignments(updates: Sequence[FederatedUpdate]) -> dict[str, str]:
     return assignments
 
 
-def verdicts_from_reports(
-    reports: Sequence[FabricReport],
-    baselines: dict[str, NodeBaseline],
-    cohorts: dict[str, str],
-) -> list[LocalVerdict]:
-    """Each node's own judgement of its own readings, per the ICC 2024 shape.
-
-    Where a node has a usable baseline of its own, its detector decides. Where
-    it does not, the band status it reported stands in — a weaker signal, and
-    one that carries no feature directions, so it can corroborate a detector's
-    finding but cannot manufacture one on its own.
-    """
-    from .intrusion import FeatureDeviation
-
-    verdicts: list[LocalVerdict] = []
-    for report in reports:
-        cohort = cohorts.get(report.node_id, "unassigned")
-        baseline = baselines.get(report.node_id)
-        if baseline is not None and baseline.usable():
-            reading = {
-                "contested_band_count": float(
-                    sum(1 for band in report.bands if band.status.value in _ANOMALOUS_STATUSES)
-                ),
-                "noise_floor_dbm": _mean_noise_excess(report),
-            }
-            verdicts.append(
-                LocalDetector(baseline).judge(
-                    reading, cohort_id=cohort, observed_at=report.produced_at
-                )
-            )
-            continue
-
-        anomalous = [band for band in report.bands if band.status.value in _ANOMALOUS_STATUSES]
-        verdicts.append(
-            LocalVerdict(
-                node_id=report.node_id,
-                cohort_id=cohort,
-                observed_at=report.produced_at,
-                anomalous=bool(anomalous),
-                deviations=tuple(
-                    FeatureDeviation(f"band:{band.band_id}", band.confidence, 1)
-                    for band in anomalous
-                ),
-                reasons=("NO_LOCAL_BASELINE_SO_THE_REPORTED_BAND_STATUS_STANDS_IN",),
-            )
-        )
-    return verdicts
 
 
-def _mean_noise_excess(report: FabricReport) -> float:
-    values = [
-        band.noise_floor_excess_db
-        for band in report.bands
-        if band.noise_floor_excess_db is not None
-    ]
-    return sum(values) / len(values) if values else 0.0
 
 
-def detect_fleet_event(
-    verdicts: Sequence[LocalVerdict], reputations: dict[str, float]
-) -> dict[str, Any]:
-    """Combine per-node verdicts, discounted by earned standing."""
-    finding = FleetDetector(reputations=reputations).assess(verdicts)
-    payload = finding.to_dict()
-    payload["verdicts"] = [verdict.to_dict() for verdict in verdicts]
-    return payload
 
 
 # --- integrity guarding the learning path -------------------------------------------
@@ -533,11 +418,3 @@ def renew_under_partition(
     return payload
 
 
-def propagated_to_belief(entry: dict[str, Any]) -> BeliefMass:
-    """Read a propagated-belief record back into a mass assignment."""
-    belief = entry.get("belief") or {}
-    return BeliefMass(
-        clear=float(belief.get("clear", 0.0)),
-        busy=float(belief.get("busy", 0.0)),
-        unknown=float(belief.get("unknown", 1.0)),
-    )

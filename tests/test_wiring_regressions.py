@@ -32,7 +32,6 @@ from kval_node.models import (
     TelemetrySnapshot,
 )
 from kval_node.optimizer import ProfileOptimizer
-from kval_node.spectrum import ScanRateExceeded, ScanRateLimiter, SpectrumPolicy
 
 NOW = datetime(2026, 8, 2, 12, 0, 0, tzinfo=timezone.utc)
 
@@ -182,69 +181,7 @@ class LinkRoleReachabilityTests(unittest.TestCase):
         self.assertEqual(profile.to_public_dict()["link_role"], "c2_cnpc")
 
 
-class ScanQuotaTests(unittest.TestCase):
-    """A failed scan used to spend duty budget it never used.
 
-    `check_and_record` ran before the adapter was contacted, so a four-minute
-    sensor outage at a two-second poll consumed all 120 hourly scans and locked
-    out sensing for the remaining fifty-six minutes — reporting a rate-limit
-    reason for a fault that had already cleared.
-    """
-
-    def setUp(self) -> None:
-        self._directory = tempfile.TemporaryDirectory()
-        self.limiter = ScanRateLimiter(Path(self._directory.name) / "scans.db")
-        self.policy = SpectrumPolicy.from_dict(
-            {
-                "policy_id": "p1",
-                "region": "US",
-                "created_at": (NOW - timedelta(minutes=1)).isoformat(),
-                "expires_at": (NOW + timedelta(days=1)).isoformat(),
-                "max_scans_per_hour": 3,
-                "min_scan_interval_seconds": 0.05,
-                "bands": [
-                    {
-                        "band_id": "b",
-                        "label": "b",
-                        "freq_low_hz": 1_000_000,
-                        "freq_high_hz": 2_000_000,
-                        "max_resolution_bandwidth_hz": 1000,
-                    }
-                ],
-            },
-            now=NOW,
-        )
-
-    def tearDown(self) -> None:
-        self.limiter.close()
-        self._directory.cleanup()
-
-    def test_checking_alone_does_not_spend_the_budget(self) -> None:
-        for _ in range(10):
-            self.limiter.check(self.policy, now=NOW)
-        self.limiter.check(self.policy, now=NOW)  # still permitted
-
-    def test_recording_spends_it(self) -> None:
-        for index in range(3):
-            self.limiter.check(self.policy, now=NOW + timedelta(seconds=index))
-            self.limiter.record(policy_id=self.policy.policy_id, now=NOW + timedelta(seconds=index))
-        with self.assertRaises(ScanRateExceeded):
-            self.limiter.check(self.policy, now=NOW + timedelta(seconds=4))
-
-    def test_a_recovered_adapter_is_not_locked_out_by_its_own_outage(self) -> None:
-        # The outage: ten attempts that never reached the adapter.
-        for index in range(10):
-            self.limiter.check(self.policy, now=NOW + timedelta(seconds=index))
-        # The adapter comes back and the budget is intact.
-        self.limiter.check(self.policy, now=NOW + timedelta(seconds=11))
-        self.limiter.record(policy_id=self.policy.policy_id, now=NOW + timedelta(seconds=11))
-
-    def test_check_and_record_still_works_for_callers_that_cannot_fail_between(self) -> None:
-        self.limiter.check_and_record(self.policy, now=NOW)
-        self.limiter.check_and_record(self.policy, now=NOW + timedelta(seconds=1))
-        self.limiter.check_and_record(self.policy, now=NOW + timedelta(seconds=2))
-        with self.assertRaises(ScanRateExceeded):
-            self.limiter.check_and_record(self.policy, now=NOW + timedelta(seconds=3))
 
 
 class JsonValidityTests(unittest.TestCase):
@@ -264,14 +201,6 @@ class JsonValidityTests(unittest.TestCase):
         with self.assertRaises(ValueError):
             cli._print({"uncertainty_radius_m": math.inf})
 
-    def test_a_refused_track_prediction_still_serialises(self) -> None:
-        from kval_node.mobility import Fix, TrackPredictor
-
-        result = TrackPredictor().predict(
-            [Fix(NOW, 1.30, 103.80, 10.0)], horizon=timedelta(minutes=5)
-        ).to_dict()
-        self.assertFalse(result["predicted"])
-        json.dumps(result, allow_nan=False)
 
 
 class ExitCodeContractTests(unittest.TestCase):

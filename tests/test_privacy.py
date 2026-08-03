@@ -39,14 +39,14 @@ from kval_node.privacy import (
 
 #: The features a node actually releases in production, so the allocation is
 #: exercised on the set that matters rather than a convenient one.
-RELEASED_FEATURES = ("rtt_ms", "loss_percent", "jitter_ms", "signal_percent", "contested_band_count")
+RELEASED_FEATURES = ("rtt_ms", "loss_percent", "jitter_ms", "signal_percent", "throughput_mbps")
 
 RELEASED_RANGES = {
     "rtt_ms": FeatureRange(0.0, 2000.0),
     "loss_percent": FeatureRange(0.0, 100.0),
     "jitter_ms": FeatureRange(0.0, 500.0),
     "signal_percent": FeatureRange(0.0, 100.0),
-    "contested_band_count": FeatureRange(0.0, 32.0),
+    "throughput_mbps": FeatureRange(0.0, 1000.0),
 }
 
 

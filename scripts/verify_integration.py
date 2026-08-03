@@ -43,7 +43,7 @@ PACKAGE = ROOT / "src" / "kval_node"
 #: Modules the operating system actually starts. Everything a node can do must
 #: be reachable from one of these.
 PRODUCTION_ENTRYPOINTS = frozenset(
-    {"service.py", "flight.py", "capabilities.py", "cli.py", "sensor_cli.py"}
+    {"service.py", "flight.py", "capabilities.py", "cli.py"}
 )
 
 #: Markers that mean a code path is not finished. ``REPLACE_`` is excluded

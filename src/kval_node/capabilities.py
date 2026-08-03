@@ -27,31 +27,12 @@ from .flight import (
     C2_DOCUMENT_TYPE,
     EMCON_DOCUMENT_TYPE,
     POWER_DOCUMENT_TYPE,
-    SPECTRUM_DOCUMENT_TYPE,
     FlightServices,
     _unavailable,
 )
 from .dataset import FEATURE_NAMES, CorpusExporter, DatasetError
+from .roster import PeerRoster, RosterError
 from .federated import FederatedUpdate, RobustAggregator, sign_update, verify_update
-from .geolocate import (
-    CalibrationObservation,
-    EmitterLocator,
-    GeolocationError,
-    NodePosition,
-    PathLossCalibrator,
-    PathLossModel,
-    SignalSighting,
-    SurveyedReference,
-)
-from .propagation import BandSeries, PropagationDiscriminator, name_weather_mechanisms
-from .fabric import (
-    FabricAggregator,
-    FabricError,
-    FabricReport,
-    PeerRoster,
-    sign_report,
-    verify_report,
-)
 from .c2link import (
     C2Budget,
     C2LinkMonitor,
@@ -59,26 +40,17 @@ from .c2link import (
     InteroperabilityDeclaration,
 )
 from .emcon import EmconOrder, assess_emcon
-from .evidence import BeliefMass
-from .interference import build_report as build_interference_report
-from .intrusion import NodeBaseline
 from .learning import ModelTrustError, verify_model_manifest
 from .lease import LeaseAction, LeaseError, LeaseNonceStore, redeem_lease, verify_lease
 from .memory_integrity import MemoryAuditor, SignedRecord
-from .mobility import DEFAULT_PLACE_RADIUS_M
 from .models import TelemetrySnapshot, parse_timestamp, utc_now
-from .climate import ClimateDeclaration
 from .cohorts import assess_heterogeneity
 from .orchestration import (
     FleetLearning,
     cohort_assignments,
-    detect_fleet_event,
-    fixes_from_estimates,
     forecast_advice,
-    predict_track,
     privatise_update,
     renew_under_partition,
-    verdicts_from_reports,
 )
 from .power import PowerGovernor, PowerPolicy, PowerReading, parse_tegrastats
 from .pqc import LMS_ALGORITHM, LmsPublicKey
@@ -95,33 +67,10 @@ from .signing import (
 )
 from .threshold_ca import Attestation, CertificationError, CertifierRoster, Grant
 from .timesync import ClockMonitor
-from .topology import EvidencePropagator, FleetGraph, assess_fragility
-from .spectrum import (
-    ScanRateExceeded,
-    ScanRateLimiter,
-    SpectrumAnalyzer,
-    SpectrumObservation,
-    SpectrumPolicy,
-    SpectrumSensorClient,
-)
 from .transport_security import TransportPolicy, TransportVerifier
 
 TRANSPORT_DOCUMENT_TYPE = "kval-transport-policy/v1"
 ROSTER_DOCUMENT_TYPE = "kval-peer-roster/v1"
-PATH_LOSS_DOCUMENT_TYPE = "kval-path-loss-model/v1"
-#: Operator-surveyed reference emitters the fleet may calibrate propagation
-#: against. Separate from the fitted model above: this is the *input* an
-#: operator vouches for, and it is signed because a node that could nominate
-#: its own references could fit any exponent it liked.
-PATH_LOSS_REFERENCE_DOCUMENT_TYPE = "kval-path-loss-references/v1"
-#: Operator-signed climate of the area of operations. Climatology, never
-#: weather: it says what is typical here in this season, not what is happening.
-CLIMATE_DOCUMENT_TYPE = "kval-climate-declaration/v1"
-
-#: Record type under which localisation results are written to the ledger, so
-#: the mobility model has a history of fixes to read back.
-EMITTER_RECORD_TYPE = "emitter_estimate"
-
 #: Signed document types for the uncrewed-platform controls.
 
 #: Records the memory audit examines. Bounded so the O(n^2) near-duplicate scan
@@ -253,166 +202,10 @@ class CapabilityServices(FlightServices):
         payload, payload_hash = self._verify_document(self.config.fabric_roster_path, expected_type=ROSTER_DOCUMENT_TYPE)
         return PeerRoster.from_dict(payload), payload_hash
 
-    def publish_report(self, *, now: datetime | None = None) -> dict[str, Any]:
-        """Sense locally and emit this node's signed report for its peers."""
-        if self.config.fabric_node_key_path is None:
-            return _unavailable("fabric publishing is not configured (no node key)")
-        spectrum = self.sense_spectrum(now=now)
-        if spectrum.get("available") is not True:
-            return {"available": False, "reason": f"cannot report: {spectrum.get('reason')}"}
-        try:
-            private_key = load_private_key(self.config.fabric_node_key_path)
-        except Exception as exc:
-            return {"available": False, "reason": f"fabric node key unusable: {exc}"}
 
-        clock = ClockMonitor().check(now=now)
-        policy, policy_hash = self.load_spectrum_policy()
-        intelligence = SpectrumAnalyzer(
-            max_observation_age_seconds=self.config.observation_max_age_seconds
-        ).analyze(
-            policy,
-            [SpectrumObservation.from_dict(item) for item in spectrum.get("observations", [])],
-            now=now,
-        )
-        report = FabricReport.from_intelligence(
-            intelligence,
-            node_id=self.config.node_id,
-            policy_hash=policy_hash,
-            clock_trusted=clock.trusted,
-        )
-        return {
-            "available": True,
-            "clock": clock.to_dict(),
-            "report": sign_report(report, private_key),
-        }
 
-    def aggregate_fleet(self, *, now: datetime | None = None) -> dict[str, Any]:
-        """Verify peer reports from the inbox and fuse them into a fleet view."""
-        if self.config.fabric_roster_path is None or self.config.fabric_inbox_path is None:
-            return _unavailable("fabric aggregation is not configured (roster and inbox required)")
-        try:
-            roster, roster_hash = self.load_peer_roster()
-        except Exception as exc:
-            return {"available": False, "reason": f"peer roster invalid: {exc}"}
 
-        inbox = self.config.fabric_inbox_path
-        candidates = sorted(inbox.glob("*.json")) if inbox.is_dir() else []
-        verified: list[FabricReport] = []
-        rejected: list[dict[str, str]] = []
-        for path in candidates:
-            try:
-                envelope = json.loads(path.read_text(encoding="utf-8"))
-                verified.append(verify_report(envelope, roster, now=now))
-            except (FabricError, json.JSONDecodeError, OSError) as exc:
-                # A bad report is dropped with a reason; it never degrades the
-                # view of the peers that did report correctly.
-                rejected.append({"source": path.name, "reason": str(exc)})
 
-        view = FabricAggregator().aggregate(
-            verified,
-            expected_nodes=frozenset(peer.node_id for peer in roster.peers) - {self.config.node_id},
-            now=now,
-        )
-        result = view.to_dict()
-        result["available"] = True
-        result["roster_id"] = roster.roster_id
-        result["roster_hash"] = roster_hash
-        result["rejected_reports"] = rejected
-        return result
-
-    def _verified_reports(self, roster: PeerRoster, *, now: datetime | None) -> tuple[list[FabricReport], list[dict[str, str]]]:
-        inbox = self.config.fabric_inbox_path
-        verified: list[FabricReport] = []
-        rejected: list[dict[str, str]] = []
-        for path in sorted(inbox.glob("*.json")) if inbox and inbox.is_dir() else []:
-            try:
-                verified.append(verify_report(json.loads(path.read_text(encoding="utf-8")), roster, now=now))
-            except (FabricError, json.JSONDecodeError, OSError) as exc:
-                rejected.append({"source": path.name, "reason": str(exc)})
-        return verified, rejected
-
-    def locate_emitter(self, band_id: str, *, now: datetime | None = None) -> dict[str, Any]:
-        """Estimate an emitter's position in one band from peer reports."""
-        if self.config.fabric_roster_path is None or self.config.fabric_inbox_path is None:
-            return _unavailable("emitter localisation needs the fabric roster and inbox")
-        try:
-            roster, _hash = self.load_peer_roster()
-        except Exception as exc:
-            return {"available": False, "reason": f"peer roster invalid: {exc}"}
-
-        reports, rejected = self._verified_reports(roster, now=now)
-        positions = [
-            NodePosition(peer.node_id, peer.latitude_deg, peer.longitude_deg, peer.altitude_m)
-            for peer in roster.peers
-            if peer.has_position()
-        ]
-        sightings: list[SignalSighting] = []
-        for report in reports:
-            band = next((item for item in report.bands if item.band_id == band_id), None)
-            if band is None or band.peak_power_dbm is None or band.confidence <= 0.0:
-                continue
-            sightings.append(SignalSighting(report.node_id, band.peak_power_dbm, report.clock_trusted))
-
-        path_loss = None
-        if self.config.path_loss_model_path is not None:
-            try:
-                payload, _ = self._verify_document(self.config.path_loss_model_path, expected_type=PATH_LOSS_DOCUMENT_TYPE)
-                path_loss = PathLossModel.from_dict(payload)
-            except Exception as exc:
-                return {"available": False, "reason": f"path-loss model invalid: {exc}"}
-
-        try:
-            estimate = EmitterLocator().locate(sightings, positions, path_loss=path_loss)
-        except GeolocationError as exc:
-            return {
-                "available": False,
-                "reason": str(exc),
-                "band_id": band_id,
-                "sightings": len(sightings),
-                "positioned_nodes": len(positions),
-                "rejected_reports": rejected,
-            }
-        result = estimate.to_dict()
-        result["available"] = True
-        result["band_id"] = band_id
-        result["rejected_reports"] = rejected
-        self._record_fix(result)
-        return result
-
-    def _record_fix(self, estimate: dict[str, Any]) -> None:
-        """Persist a successful estimate so a track can be built from fixes.
-
-        Only accepted estimates are written. A refusal is not a position, and
-        recording one would let the mobility model treat "we could not tell"
-        as a place the emitter had been.
-        """
-        if estimate.get("available") is not True:
-            return
-        ledger = AuditLedger(
-            self.config.audit_database_path, signing_key=self._optional_node_key()
-        )
-        try:
-            ledger.append(
-                self.config.node_id,
-                EMITTER_RECORD_TYPE,
-                {
-                    "available": True,
-                    "band_id": estimate["band_id"],
-                    "latitude_deg": estimate["latitude_deg"],
-                    "longitude_deg": estimate["longitude_deg"],
-                    "uncertainty_radius_m": estimate["uncertainty_radius_m"],
-                    "method": estimate["method"],
-                    "contributing_nodes": estimate["contributing_nodes"],
-                    "excluded": estimate.get("excluded", []),
-                },
-            )
-        except sqlite3.Error:
-            # A ledger that cannot be written is a recording failure, not a
-            # localisation failure: the estimate the caller asked for is still
-            # correct and is still returned.
-            pass
-        finally:
-            ledger.close()
 
     def _optional_node_key(self):
         if self.config.fabric_node_key_path is None:
@@ -422,59 +215,6 @@ class CapabilityServices(FlightServices):
         except (OSError, ValueError, TypeError):
             return None
 
-    def fabric_topology(self, *, now: datetime | None = None) -> dict[str, Any]:
-        """Report where the fabric would break, and what each node can see.
-
-        Two answers from one graph. **Fragility** names the nodes whose loss
-        partitions the fleet, which is the question worth asking before a
-        capture rather than after one. **Propagation** gives every node a view
-        of every band, including nodes with no working radio of their own — the
-        eyes-on-the-ground case the fabric exists for.
-        """
-        if self.config.fabric_roster_path is None or self.config.fabric_inbox_path is None:
-            return _unavailable("fabric topology needs the roster and inbox")
-        try:
-            roster, roster_hash = self.load_peer_roster()
-        except Exception as exc:
-            return {"available": False, "reason": f"peer roster invalid: {exc}"}
-
-        positioned = [
-            NodePosition(peer.node_id, peer.latitude_deg, peer.longitude_deg, peer.altitude_m)
-            for peer in roster.peers
-            if peer.has_position()
-        ]
-        if len(positioned) < 2:
-            return _unavailable(
-                "fabric topology needs at least two peers with declared positions in the roster"
-            )
-        graph = FleetGraph.from_positions(positioned, link_range_m=self.config.fabric_link_range_m)
-
-        reports, rejected = self._verified_reports(roster, now=now)
-        band_ids = sorted({band.band_id for report in reports for band in report.bands})
-        propagator = EvidencePropagator(graph)
-        bands: dict[str, Any] = {}
-        for band_id in band_ids:
-            observations: dict[str, BeliefMass] = {}
-            for report in reports:
-                if report.node_id not in graph.nodes:
-                    continue
-                band = next((item for item in report.bands if item.band_id == band_id), None)
-                if band is None:
-                    continue
-                observations[report.node_id] = BeliefMass.from_status(band.status, band.confidence)
-            bands[band_id] = [
-                belief.to_dict() for belief in propagator.propagate(observations)
-            ]
-
-        return {
-            "available": True,
-            "roster_id": roster.roster_id,
-            "roster_hash": roster_hash,
-            "graph": graph.to_dict(),
-            "fragility": assess_fragility(graph).to_dict(),
-            "bands": bands,
-            "rejected_reports": rejected,
-        }
 
     def audit_memory(self) -> dict[str, Any]:
         """Check that recorded history is this node's own and was not injected.
@@ -543,7 +283,7 @@ class CapabilityServices(FlightServices):
         try:
             update = FederatedUpdate.from_examples(examples, node_id=self.config.node_id, now=now)
             private_key = load_private_key(self.config.fabric_node_key_path)
-        except (FabricError, OSError, ValueError) as exc:
+        except (RosterError, OSError, ValueError) as exc:
             return {"available": False, "reason": str(exc)}
 
         released, disclosure = privatise_update(
@@ -569,7 +309,7 @@ class CapabilityServices(FlightServices):
                 updates.append(
                     verify_update(json.loads(path.read_text(encoding="utf-8")), roster, now=now)
                 )
-            except (FabricError, json.JSONDecodeError, OSError) as exc:
+            except (RosterError, json.JSONDecodeError, OSError) as exc:
                 rejected.append({"source": path.name, "reason": str(exc)})
         return updates, rejected
 
@@ -662,154 +402,7 @@ class CapabilityServices(FlightServices):
             observations.extend(spectrum.get("observations", []))
         return observations, None
 
-    def discriminate_propagation(self, *, now: datetime | None = None) -> dict[str, Any]:
-        """Say whether a band degraded by attenuation or by energy arriving in it.
 
-        This is the distinction an operator cannot make from a link going bad:
-        something between the platform and the emitter, or another emitter. It
-        names neither an actor nor an intent — ``interference.py`` already holds
-        that line and this holds it too. What it adds is the physical mechanism,
-        which is an observation about the channel rather than about anybody.
-        """
-        if self.config.spectrum_policy_path is None:
-            return _unavailable("propagation discrimination needs a signed spectrum policy")
-        try:
-            policy, policy_hash = self.load_spectrum_policy()
-        except Exception as exc:
-            return {"available": False, "reason": f"spectrum policy invalid: {exc}"}
-
-        recorded, failure = self._recorded_spectrum_observations()
-        if failure is not None:
-            return {"available": False, "reason": failure}
-
-        by_band: dict[str, list[SpectrumObservation]] = {}
-        for raw in recorded:
-            try:
-                observation = SpectrumObservation.from_dict(raw)
-            except (ValueError, KeyError, TypeError):
-                # A record the current parser refuses is not evidence. Skipping
-                # it keeps one malformed row from silencing the whole history.
-                continue
-            by_band.setdefault(observation.band_id, []).append(observation)
-
-        series = [
-            BandSeries(band, tuple(by_band[band.band_id]))
-            for band in policy.bands
-            if by_band.get(band.band_id)
-        ]
-        if not series:
-            return {
-                "available": False,
-                "reason": "no recorded spectrum observations for any policy band",
-                "policy_id": policy.policy_id,
-                "policy_hash": policy_hash,
-            }
-
-        verdicts = PropagationDiscriminator().discriminate_bands(series)
-        # Which attenuating mechanism, on the same evidence. Reported beside the
-        # verdicts rather than folded into them: "the path attenuated" is a
-        # measurement, "and it was probably rain" is an inference from a
-        # frequency law, and an operator should be able to see which is which.
-        declaration = None
-        if self.config.climate_declaration_path is not None:
-            try:
-                payload, _hash = self._verify_document(
-                    self.config.climate_declaration_path,
-                    expected_type=CLIMATE_DOCUMENT_TYPE,
-                )
-                declaration = ClimateDeclaration.from_dict(payload, now=now)
-            except Exception as exc:
-                # A bad declaration must not take the measurement down with it.
-                return {
-                    "available": True,
-                    "policy_id": policy.policy_id,
-                    "policy_hash": policy_hash,
-                    "bands_examined": len(series),
-                    "verdicts": [verdict.to_dict() for verdict in verdicts],
-                    "mechanisms": {
-                        "assessed": False,
-                        "reasons": [f"CLIMATE_DECLARATION_REFUSED:{exc}"],
-                    },
-                }
-        return {
-            "available": True,
-            "policy_id": policy.policy_id,
-            "policy_hash": policy_hash,
-            "bands_examined": len(series),
-            "verdicts": [verdict.to_dict() for verdict in verdicts],
-            "mechanisms": name_weather_mechanisms(verdicts, declaration=declaration, at=now),
-        }
-
-    def calibrate_path_loss(self, *, now: datetime | None = None) -> dict[str, Any]:
-        """Fit the propagation exponent from operator-surveyed reference emitters.
-
-        Replaces a constant an operator had to measure by hand with one the
-        fleet fits and re-fits as conditions change. The fitted exponent is
-        itself an environment measurement: free space sits near 2, outdoor
-        clutter around 3, heavy obstruction well above 4.
-
-        Only surveyed references may feed this. Fitting against an *estimated*
-        emitter position would fit the model to its own errors and every range
-        it later produced would be confidently wrong, so the calibrator refuses
-        derived positions by type, by document shape, and by survey uncertainty.
-        """
-        if self.config.path_loss_reference_path is None:
-            return _unavailable(
-                "path-loss calibration needs a signed set of surveyed reference emitters"
-            )
-        if self.config.fabric_roster_path is None:
-            return _unavailable("path-loss calibration needs the fabric roster for node positions")
-        try:
-            payload, document_hash = self._verify_document(
-                self.config.path_loss_reference_path, expected_type=PATH_LOSS_REFERENCE_DOCUMENT_TYPE
-            )
-            roster, _roster_hash = self.load_peer_roster()
-        except Exception as exc:
-            return {"available": False, "reason": f"calibration inputs invalid: {exc}"}
-
-        positions = {
-            peer.node_id: NodePosition(
-                peer.node_id, peer.latitude_deg, peer.longitude_deg, peer.altitude_m
-            )
-            for peer in roster.peers
-            if peer.has_position()
-        }
-        try:
-            reference = SurveyedReference.from_dict(payload["reference"])
-        except (KeyError, TypeError, ValueError) as exc:
-            return {"available": False, "reason": f"surveyed reference refused: {exc}"}
-
-        observations: list[CalibrationObservation] = []
-        unknown_nodes: list[str] = []
-        for raw in payload.get("measurements", []):
-            node_id = str(raw.get("node_id", ""))
-            position = positions.get(node_id)
-            if position is None:
-                unknown_nodes.append(node_id)
-                continue
-            try:
-                observations.append(
-                    CalibrationObservation(
-                        reference=reference,
-                        observer=position,
-                        received_dbm=float(raw["received_dbm"]),
-                    )
-                )
-            except (KeyError, TypeError, ValueError) as exc:
-                return {"available": False, "reason": f"calibration measurement refused: {exc}"}
-
-        fit = PathLossCalibrator().fit(observations)
-        result = {
-            "available": True,
-            "document_hash": document_hash,
-            "fit": fit.to_dict(),
-        }
-        if unknown_nodes:
-            # Named rather than dropped: a measurement from a node the roster
-            # does not position is a provisioning error, and silently fitting
-            # without it hides that the fleet is misconfigured.
-            result["measurements_from_unpositioned_nodes"] = sorted(set(unknown_nodes))
-        return result
 
     def assess_fleet_heterogeneity(self, *, now: datetime | None = None) -> dict[str, Any]:
         """Report how different the fleet's radio environments actually are.
@@ -845,93 +438,9 @@ class CapabilityServices(FlightServices):
             "assessment": assessment.to_dict(),
         }
 
-    def track_emitter(
-        self, band_id: str, *, horizon_seconds: float = 600.0, now: datetime | None = None
-    ) -> dict[str, Any]:
-        """Predict where an emitter goes next, from its recorded fixes.
-
-        Reads the localisation results this node has already recorded. A
-        refused estimate never entered history, so a refusal cannot become a
-        track point.
-        """
-        ledger = AuditLedger(self.config.audit_database_path)
-        try:
-            records = [
-                row
-                for row in ledger.signed_records(limit=MEMORY_AUDIT_RECORDS)
-                if row["record_type"] == EMITTER_RECORD_TYPE
-                and (row["payload"] or {}).get("band_id") == band_id
-            ]
-        except (sqlite3.Error, KeyError, ValueError) as exc:
-            return {"available": False, "reason": f"audit ledger unreadable: {exc}"}
-        finally:
-            ledger.close()
-
-        fixes = fixes_from_estimates(records)
-        if not fixes:
-            return _unavailable(
-                f"no recorded emitter fixes for band {band_id!r}; run locate-emitter first"
-            )
-        # Tie the place radius to the accuracy that produced the fixes rather
-        # than guessing it: a tighter radius turns noise into a tour of places
-        # the emitter never visited.
-        radius = max(
-            DEFAULT_PLACE_RADIUS_M,
-            max(fix.uncertainty_radius_m for fix in fixes) * 2.0,
-        )
-        result = predict_track(
-            fixes, horizon=timedelta(seconds=horizon_seconds), place_radius_m=radius
-        )
-        result["available"] = True
-        result["band_id"] = band_id
-        return result
 
     # --- fleet-level detection --------------------------------------------------
 
-    def detect_fleet_anomaly(self, *, now: datetime | None = None) -> dict[str, Any]:
-        """Ask whether several environments changed together beyond local cause.
-
-        Composes three mechanisms because none of them answers the question
-        alone: per-node detectors decide what is anomalous *for that node*,
-        cohort membership decides whether their agreement is meaningful, and
-        reputation decides whether the agreeing nodes carry any weight.
-        """
-        if self.config.fabric_roster_path is None or self.config.fabric_inbox_path is None:
-            return _unavailable("fleet detection needs the roster and inbox")
-        try:
-            roster, _hash = self.load_peer_roster()
-        except Exception as exc:
-            return {"available": False, "reason": f"peer roster invalid: {exc}"}
-
-        reports, rejected = self._verified_reports(roster, now=now)
-        if not reports:
-            # The rejected list was built and then dropped, so an operator whose
-            # whole inbox failed verification got no explanation at all.
-            return {
-                "available": False,
-                "reason": "no verified peer reports to assess",
-                "rejected_reports": rejected,
-            }
-
-        updates, _rejected_updates = self._load_updates(roster, now=now)
-        cohorts = cohort_assignments(updates)
-        baselines = {
-            update.node_id: NodeBaseline(
-                node_id=update.node_id,
-                samples=update.examples,
-                means={name: stat.mean for name, stat in update.statistics.items()},
-                stddevs={name: stat.stddev() for name, stat in update.statistics.items()},
-            )
-            for update in updates
-        }
-        verdicts = verdicts_from_reports(reports, baselines, cohorts)
-        reputation = FleetLearning(self._reputation_path()).reputation.scores()
-
-        result = detect_fleet_event(verdicts, reputation)
-        result["available"] = True
-        result["cohorts_assigned"] = cohorts
-        result["rejected_reports"] = rejected
-        return result
 
     # --- certification under partition -------------------------------------------
 
@@ -994,78 +503,6 @@ class CapabilityServices(FlightServices):
 
 
 
-    def report_interference(
-        self, band_id: str, *, victim_role: str = "payload", now: datetime | None = None
-    ) -> dict[str, Any]:
-        """Emit a JSIR-compatible interference report from corroborated evidence.
-
-        Three defects made the earlier version worse than useless, and all three
-        were the same mistake — reading keys the fleet view does not publish:
-
-        * ``reporting_nodes`` was passed where corroborators were expected, so
-          **nodes that measured the band CLEAR were named as corroborating
-          interference**, and a c2 victim was then escalated to
-          ``intermittent_outage`` on their strength. A report that manufactures
-          agreement is the one thing this system must never produce.
-        * centre frequency and bandwidth came from keys that do not exist, so
-          every report carried ``0/0`` — in a format whose entire purpose is
-          saying *on what frequency*. They are read from the signed spectrum
-          policy instead, which is where the band plan actually lives.
-        * the noise figure was read as ``noise_floor_excess_db``; the fleet view
-          publishes ``max_noise_excess_db``.
-
-        It also refuses to report a band the fleet did not confirm as
-        interfered. Filing a JSIR report on a quiet band wastes a spectrum
-        manager's time and, repeated, trains them to ignore this source.
-        """
-        current = now or utc_now()
-        fabric = self.aggregate_fleet(now=current)
-        if fabric.get("available") is not True:
-            return fabric
-
-        bands = {item["band_id"]: item for item in fabric.get("bands", [])}
-        band = bands.get(band_id)
-        if band is None:
-            return _unavailable(f"no fleet view for band {band_id!r}")
-
-        if band.get("interference_confirmed") is not True:
-            return {
-                "available": False,
-                "reason": (
-                    f"the fleet has not confirmed interference on {band_id!r}; "
-                    "refusing to file a report the evidence does not support"
-                ),
-                "band_id": band_id,
-                "corroborating_nodes": band.get("corroborating_nodes", []),
-                "fleet_reasons": band.get("reasons", []),
-            }
-
-        centre_hz, bandwidth_hz, spectrum_reasons = self._band_frequency(band_id)
-
-        # Localisation is read from history rather than run here: calling the
-        # locator recorded a fix on every invocation, so filing a report
-        # silently appended to the very track history track-emitter reads.
-        position = self._last_recorded_fix(band_id)
-
-        report = build_interference_report(
-            report_id=f"{self.config.node_id}-{band_id}-{int(current.timestamp())}",
-            observed_at=current,
-            reporting_node=self.config.node_id,
-            corroborating_nodes=band.get("corroborating_nodes", []),
-            band_id=band_id,
-            centre_frequency_hz=centre_hz,
-            bandwidth_hz=bandwidth_hz,
-            victim_role=victim_role,
-            link_available=True,
-            noise_floor_excess_db=band.get("max_noise_excess_db"),
-            estimated_position=position,
-        )
-        result = report.to_dict()
-        result["available"] = True
-        result["reasons"] = list(result["reasons"]) + list(spectrum_reasons)
-        if position is None:
-            result["reasons"].append("NO_RECORDED_FIX_FOR_THIS_BAND_RUN_LOCATE_EMITTER_FIRST")
-        return result
 
     def _band_frequency(self, band_id: str) -> tuple[int, int, tuple[str, ...]]:
         """Centre frequency and bandwidth from the signed spectrum policy.
@@ -1084,28 +521,6 @@ class CapabilityServices(FlightServices):
         centre = (band.freq_low_hz + band.freq_high_hz) // 2
         return centre, band.freq_high_hz - band.freq_low_hz, ()
 
-    def _last_recorded_fix(self, band_id: str) -> dict[str, Any] | None:
-        """Most recent accepted localisation for a band, from the ledger."""
-        ledger = AuditLedger(self.config.audit_database_path)
-        try:
-            rows = [
-                row
-                for row in ledger.signed_records(limit=MEMORY_AUDIT_RECORDS)
-                if row["record_type"] == EMITTER_RECORD_TYPE
-                and (row["payload"] or {}).get("band_id") == band_id
-            ]
-        except (sqlite3.Error, KeyError, ValueError):
-            return None
-        finally:
-            ledger.close()
-        if not rows:
-            return None
-        payload = rows[-1]["payload"]
-        return {
-            "latitude_deg": payload["latitude_deg"],
-            "longitude_deg": payload["longitude_deg"],
-            "uncertainty_radius_m": payload["uncertainty_radius_m"],
-        }
 
     # --- cryptographic posture --------------------------------------------------
 

@@ -29,7 +29,6 @@ from .optimizer import ProfileOptimizer
 from .policy import SafetyShield
 from .recovery import LinkStateMachine, RecoveryAction
 from .signing import load_private_key, load_verified_catalog
-from .spectrum import BandStatus
 from .telemetry import TelemetryCollector
 from .timesync import ClockMonitor
 
@@ -86,8 +85,6 @@ class KvalNode:
         self._link_machines: dict[str, LinkStateMachine] = {}
         # Last contested-band evidence, carried across cycles where sensing was
         # unavailable so a refused scan cannot look like an all-clear.
-        self._last_degraded_bands: frozenset[str] = frozenset()
-        self._degraded_until: datetime | None = None
         self._stop = False
 
     def c2_status(self) -> dict[str, object]:
@@ -177,46 +174,10 @@ class KvalNode:
             return frozenset()
         return frozenset(str(item) for item in profiles)
 
-    def _degraded_band_ids(self, spectrum: dict[str, object]) -> frozenset[str]:
-        """Bands the local sensor reports as contested, if sensing is available.
-
-        When sensing is unavailable this returns the *last* contested set rather
-        than an empty one. "Not allowed to scan yet" is not "nothing is
-        contested", and treating them alike made the node re-select a link it
-        had just judged jammed: the rate limiter refuses a scan, the evidence
-        vanishes, and the contested profile's penalty lifts. With a 2 s poll
-        against a 5 s minimum scan interval — the shipped example config —
-        that happened on two cycles in every three.
-
-        The retained set is bounded by the same observation-age rule the
-        analyzer uses, so stale evidence expires rather than pinning a profile
-        down forever.
-        """
-        if spectrum.get("available") is not True:
-            if self._degraded_until is not None and utc_now() < self._degraded_until:
-                return self._last_degraded_bands
-            return frozenset()
-        contested = {BandStatus.JAMMING_SUSPECTED.value, BandStatus.ANOMALOUS.value}
-        bands = spectrum.get("bands")
-        if not isinstance(bands, list):
-            return frozenset()
-        current = frozenset(
-            str(band.get("band_id"))
-            for band in bands
-            if isinstance(band, dict)
-            and band.get("status") in contested
-            and float(band.get("confidence") or 0.0) > 0.0
-        )
-        self._last_degraded_bands = current
-        self._degraded_until = utc_now() + timedelta(
-            seconds=self.config.observation_max_age_seconds
-        )
-        return current
 
     def _fuse_state(
         self,
         snapshot: TelemetrySnapshot,
-        spectrum: dict[str, object],
         power: dict[str, object],
         clock: dict[str, object],
     ) -> dict[str, object]:
@@ -261,23 +222,6 @@ class KvalNode:
                         provenance_hash=str(power.get("policy_hash") or _LOCAL_PROVENANCE),
                     )
                 )
-
-        if spectrum.get("available") is True:
-            bands = spectrum.get("bands")
-            band_list = bands if isinstance(bands, list) else []
-            observations.append(
-                ModalityObservation.create(
-                    Modality.SPECTRUM,
-                    source_id=str(spectrum.get("policy_id", "spectrum")),
-                    observed_at=snapshot.observed_at,
-                    features={
-                        "contested_bands": float(len(self._degraded_band_ids(spectrum))),
-                        "clear_comms_bands": float(len(spectrum.get("clear_comms_band_ids") or [])),
-                        "assessed_bands": float(len(band_list)),
-                    },
-                    provenance_hash=str(spectrum.get("policy_hash") or _LOCAL_PROVENANCE),
-                )
-            )
 
         # Clock integrity is the security modality: an undisciplined clock is
         # exactly the state in which freshness checks stop meaning anything.
@@ -377,7 +321,6 @@ class KvalNode:
         # first and its verdict travels with the cycle.
         clock = self.clock.check(now=snapshot.observed_at).to_dict()
 
-        spectrum = self._guarded("spectrum", self.capabilities.sense_spectrum, now=snapshot.observed_at)
         power = self._guarded("power", self.capabilities.plan_power)
         recovery = self._run_recovery(snapshot)
 
@@ -388,7 +331,6 @@ class KvalNode:
         emcon = self._guarded("emcon", self.capabilities.emcon_posture, now=snapshot.observed_at)
         suppressed = self._suppressed_roles(emcon)
 
-        degraded_bands = self._degraded_band_ids(spectrum)
         # A per-flow forecast over this node's own recorded history. It may
         # demote a link it expects to worsen, and can never promote one.
         forecast = self._guarded("forecast", self.capabilities.forecast_links)
@@ -397,16 +339,14 @@ class KvalNode:
             self.catalog,
             snapshot,
             self.config.service_class,
-            degraded_band_ids=degraded_bands,
             forecast_degrading_profiles=forecast_degrading,
             role=self.config.link_role,
             suppressed_roles=suppressed,
         )
 
-        fused = self._fuse_state(snapshot, spectrum, power, clock)
+        fused = self._fuse_state(snapshot, power, clock)
         capabilities: dict[str, object] = {
             "clock": clock,
-            "spectrum": spectrum,
             "power": power,
             "recovery": recovery,
             "state": fused,
@@ -414,7 +354,6 @@ class KvalNode:
             "emcon": emcon,
             "link_role": self.config.link_role,
             "suppressed_roles": sorted(suppressed),
-            "degraded_band_ids": sorted(degraded_bands),
             "forecast_degrading_profiles": sorted(forecast_degrading),
         }
 

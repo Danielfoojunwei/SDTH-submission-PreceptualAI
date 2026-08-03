@@ -41,38 +41,6 @@ jobs:
             echo 'a transmit or electronic-attack path appeared in src' >&2
             exit 1
           fi
-      - name: Confirm spectrum sensing stays receive-only
-        run: |
-          python - <<'PY'
-          import sys
-          sys.path.insert(0, "src")
-          from kval_node.spectrum import SpectrumObservation, SpectrumPolicy
-          from datetime import datetime, timedelta, timezone
-          now = datetime.now(timezone.utc)
-          base = {
-              "policy_id": "ci", "region": "CI",
-              "created_at": (now - timedelta(minutes=1)).isoformat(),
-              "expires_at": (now + timedelta(days=1)).isoformat(),
-              "bands": [{"band_id": "b", "label": "b", "freq_low_hz": 1_000_000,
-                         "freq_high_hz": 2_000_000, "max_resolution_bandwidth_hz": 1000}],
-          }
-          try:
-              SpectrumPolicy.from_dict({**base, "passive_only": False}, now=now)
-          except ValueError:
-              pass
-          else:
-              raise SystemExit("passive_only could be disabled")
-          try:
-              SpectrumObservation.from_dict({
-                  "band_id": "b", "observed_at": now.isoformat(),
-                  "source_adapter_id": "s", "conformance_hash": "a" * 64,
-                  "passive": False, "occupancy_percent": 1.0, "noise_floor_dbm": -95.0})
-          except ValueError:
-              pass
-          else:
-              raise SystemExit("a non-passive observation was accepted")
-          print("receive-only invariants hold")
-          PY
       - name: Confirm no lease action can transmit
         run: |
           python - <<'PY'

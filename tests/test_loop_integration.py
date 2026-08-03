@@ -26,10 +26,9 @@ from kval_node.models import (
     TelemetrySnapshot,
 )
 from kval_node.multimodal import Modality, MultimodalFuser
-from kval_node.optimizer import SPECTRUM_DEGRADED_MULTIPLIER, ProfileOptimizer
+from kval_node.optimizer import ProfileOptimizer
 from kval_node.recovery import RecoveryAction
 from kval_node.service import KvalNode
-from kval_node.spectrum import BandStatus
 from kval_node.standards import StandardsRequirement
 
 NOW = datetime.now(timezone.utc)
@@ -49,7 +48,6 @@ def profile(profile_id: str, uuid: str, interface: str, bands: list[str] | None 
             "maximum_switches_per_hour": 8,
             "allowed_service_classes": ["critical_data"],
             "standards": {"required_identifiers": []},
-            "spectrum_band_ids": bands or [],
         }
     )
 
@@ -114,25 +112,7 @@ class SpectrumInfluencesSelectionTests(unittest.TestCase):
         result = ProfileOptimizer().recommend(self.catalog, self.snapshot, ServiceClass.CRITICAL_DATA)
         self.assertEqual(result.selected_profile_id, "contested")
 
-    def test_contested_band_demotes_its_profile(self) -> None:
-        result = ProfileOptimizer().recommend(
-            self.catalog, self.snapshot, ServiceClass.CRITICAL_DATA,
-            degraded_band_ids=frozenset({"ism-2g4"}),
-        )
-        self.assertEqual(result.selected_profile_id, "clean")
-        demoted = next(score for score in result.scores if score.profile_id == "contested")
-        self.assertIn("SPECTRUM_BAND_CONTESTED", demoted.reasons)
-        self.assertEqual(demoted.components["spectrum_penalty"], SPECTRUM_DEGRADED_MULTIPLIER)
 
-    def test_a_profile_declaring_no_bands_is_unaffected(self) -> None:
-        plain = profile("plain", "33333333-3333-4333-8333-333333333333", "wlan2")
-        catalog = Catalog("v1", NOW - timedelta(minutes=1), NOW + timedelta(days=1), (plain,), "a" * 64, "key")
-        snapshot = TelemetrySnapshot(NOW, None, (observation("plain", "wlan2"),))
-        with_bands = ProfileOptimizer().recommend(
-            catalog, snapshot, ServiceClass.CRITICAL_DATA, degraded_band_ids=frozenset({"ism-2g4"})
-        )
-        without = ProfileOptimizer().recommend(catalog, snapshot, ServiceClass.CRITICAL_DATA)
-        self.assertEqual(with_bands.scores[0].utility, without.scores[0].utility)
 
     def test_spectrum_cannot_promote_a_profile_without_probe_evidence(self) -> None:
         # A link with no probe evidence stays ineligible no matter how quiet its
@@ -145,78 +125,9 @@ class SpectrumInfluencesSelectionTests(unittest.TestCase):
         self.assertIsNone(result.selected_profile_id)
 
 
-class DegradedBandExtractionTests(unittest.TestCase):
-    def setUp(self) -> None:
-        self.node = bare_node()
 
-    def test_contested_statuses_are_extracted(self) -> None:
-        spectrum = {
-            "available": True,
-            "bands": [
-                {"band_id": "a", "status": BandStatus.JAMMING_SUSPECTED.value, "confidence": 1.0},
-                {"band_id": "b", "status": BandStatus.ANOMALOUS.value, "confidence": 0.8},
-                {"band_id": "c", "status": BandStatus.CLEAR.value, "confidence": 1.0},
-                {"band_id": "d", "status": BandStatus.CONGESTED.value, "confidence": 1.0},
-            ],
-        }
-        self.assertEqual(self.node._degraded_band_ids(spectrum), frozenset({"a", "b"}))
 
-    def test_zero_confidence_is_not_evidence_of_interference(self) -> None:
-        spectrum = {
-            "available": True,
-            "bands": [{"band_id": "a", "status": BandStatus.JAMMING_SUSPECTED.value, "confidence": 0.0}],
-        }
-        self.assertEqual(self.node._degraded_band_ids(spectrum), frozenset())
 
-    def test_unavailable_sensing_with_no_history_degrades_nothing(self) -> None:
-        self.assertEqual(self.node._degraded_band_ids({"available": False, "reason": "x"}), frozenset())
-
-    def test_a_refused_scan_does_not_erase_what_the_last_scan_saw(self) -> None:
-        # The rate limiter refusing a scan is not evidence the band is clear.
-        # Treating them alike made the node re-select a link it had just judged
-        # jammed: with a 2 s poll against a 5 s minimum scan interval — the
-        # shipped example config — that happened two cycles in every three.
-        contested = {
-            "available": True,
-            "bands": [
-                {"band_id": "ism-2g4", "status": BandStatus.JAMMING_SUSPECTED.value,
-                 "confidence": 1.0}
-            ],
-        }
-        self.assertEqual(self.node._degraded_band_ids(contested), frozenset({"ism-2g4"}))
-        refused = {"available": False, "reason": "scan refused: below policy minimum"}
-        self.assertEqual(self.node._degraded_band_ids(refused), frozenset({"ism-2g4"}))
-
-    def test_retained_evidence_expires_rather_than_pinning_a_profile_forever(self) -> None:
-        node = bare_node(observation_max_age_seconds=0.05)
-        node._degraded_band_ids(
-            {
-                "available": True,
-                "bands": [
-                    {"band_id": "ism-2g4", "status": BandStatus.JAMMING_SUSPECTED.value,
-                     "confidence": 1.0}
-                ],
-            }
-        )
-        time.sleep(0.1)
-        self.assertEqual(
-            node._degraded_band_ids({"available": False, "reason": "x"}), frozenset()
-        )
-
-    def test_a_clear_scan_clears_the_retained_evidence(self) -> None:
-        self.node._degraded_band_ids(
-            {
-                "available": True,
-                "bands": [
-                    {"band_id": "ism-2g4", "status": BandStatus.JAMMING_SUSPECTED.value,
-                     "confidence": 1.0}
-                ],
-            }
-        )
-        self.node._degraded_band_ids({"available": True, "bands": []})
-        self.assertEqual(
-            self.node._degraded_band_ids({"available": False, "reason": "x"}), frozenset()
-        )
 
 
 class RecoveryLoopTests(unittest.TestCase):
@@ -254,35 +165,14 @@ class FusedStateTests(unittest.TestCase):
         self.snapshot = TelemetrySnapshot(NOW, "p", (observation("p", "wlan0"),))
 
     def test_network_and_security_modalities_are_always_present(self) -> None:
-        state = self.node._fuse_state(
-            self.snapshot, {"available": False}, {"available": False}, {"trusted": True}
+        state = self.node._fuse_state(self.snapshot, {"available": False}, {"trusted": True}
         )
         self.assertIn("network", state["present_modalities"])
         self.assertIn("security", state["present_modalities"])
 
-    def test_spectrum_and_power_join_when_available(self) -> None:
-        spectrum = {
-            "available": True,
-            "policy_id": "sp",
-            "policy_hash": "a" * 64,
-            "bands": [{"band_id": "a", "status": BandStatus.CLEAR.value, "confidence": 1.0}],
-            "clear_comms_band_ids": ["a"],
-        }
-        power = {
-            "available": True,
-            "policy_id": "pp",
-            "policy_hash": "b" * 64,
-            "reading": {"cpu_temp_c": 55.0, "module_watts": 8.0},
-            "recommendation": {"max_inference_duty": 1.0},
-        }
-        state = self.node._fuse_state(self.snapshot, spectrum, power, {"trusted": True})
-        self.assertIn("spectrum", state["present_modalities"])
-        self.assertIn("power", state["present_modalities"])
-        self.assertTrue(state["decision_ready"])
 
     def test_untrusted_clock_drops_the_security_modality_quality_to_zero(self) -> None:
-        state = self.node._fuse_state(
-            self.snapshot, {"available": False}, {"available": False},
+        state = self.node._fuse_state(self.snapshot, {"available": False},
             {"trusted": False, "observed_step_seconds": 900.0},
         )
         security = next(o for o in state["observations"] if o["modality"] == Modality.SECURITY.value)
@@ -303,17 +193,14 @@ class SubNodeBoundaryTests(unittest.TestCase):
         "kval_node.models",
         "kval_node.signing",
         "kval_node.lease",
-        "kval_node.spectrum",
         "kval_node.power",
         "kval_node.recovery",
         "kval_node.optimizer",
         "kval_node.policy",
         "kval_node.audit",
-        "kval_node.fabric",
         "kval_node.timesync",
         "kval_node.multimodal",
         "kval_node.dataset",
-        "kval_node.sensor_adapter",
         "kval_node.capabilities",
     )
 

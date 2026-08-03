@@ -45,7 +45,6 @@ FEATURE_NAMES: tuple[str, ...] = (
     "confidence",
     "candidate_count",
     "eligible_count",
-    "contested_band_count",
     "clock_trusted",
     "power_duty_limit",
     "is_current_profile",
@@ -141,7 +140,6 @@ def _features_from(payload: dict[str, Any]) -> tuple[str | None, dict[str, float
     clock = capabilities.get("clock") if isinstance(capabilities.get("clock"), dict) else {}
     power = capabilities.get("power") if isinstance(capabilities.get("power"), dict) else {}
     recommendation_power = power.get("recommendation") if isinstance(power.get("recommendation"), dict) else {}
-    degraded = capabilities.get("degraded_band_ids")
 
     telemetry = payload.get("telemetry") or {}
     current_profile = telemetry.get("current_profile_id") if isinstance(telemetry, dict) else None
@@ -155,7 +153,6 @@ def _features_from(payload: dict[str, Any]) -> tuple[str | None, dict[str, float
         "confidence": float(recommendation.get("confidence") or 0.0),
         "candidate_count": float(len(scores)),
         "eligible_count": float(sum(1 for s in scores if isinstance(s, dict) and float(s.get("utility", -1)) >= 0.0)),
-        "contested_band_count": float(len(degraded) if isinstance(degraded, list) else 0),
         "clock_trusted": 1.0 if clock.get("trusted") else 0.0,
         "power_duty_limit": float(recommendation_power.get("max_inference_duty") or 1.0),
         "is_current_profile": 1.0 if selected is not None and selected == current_profile else 0.0,

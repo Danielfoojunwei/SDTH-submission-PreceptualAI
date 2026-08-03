@@ -41,7 +41,7 @@ PROJECT_ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(PROJECT_ROOT / "src"))
 
 from kval_node.capabilities import ROSTER_DOCUMENT_TYPE  # noqa: E402
-from kval_node.fabric import PeerRoster  # noqa: E402
+from kval_node.roster import PeerRoster  # noqa: E402
 from kval_node.models import utc_now  # noqa: E402
 from kval_node.signing import (  # noqa: E402
     generate_operator_keypair,

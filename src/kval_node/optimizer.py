@@ -103,27 +103,20 @@ OBJECTIVES: dict[ServiceClass, Objective] = {
 }
 
 
-#: Utility multiplier applied to a profile whose declared spectrum band is
-#: showing corroborated interference. Passive sensing is coarse, so it is given
-#: enough weight to break a near-tie and steer away from a contested band, but
-#: never enough to override complete live probe evidence on its own.
-SPECTRUM_DEGRADED_MULTIPLIER = 0.6
-
-#: Penalty applied to a profile a forecast expects to degrade. Weaker than the
-#: sensing penalty on purpose: sensing reports what *is* happening, a forecast
-#: reports what might. A prediction should be able to break a tie, not to
-#: overrule measured evidence.
+#: Penalty applied to a profile a forecast expects to degrade. Deliberately
+#: mild: a forecast reports what *might* happen, while the probe reports what
+#: did. A prediction should be able to break a tie, never to overrule measured
+#: evidence.
 FORECAST_DEGRADED_MULTIPLIER = 0.85
 
 
 class ProfileOptimizer:
     """Transparent constrained optimizer over real observations.
 
-    Spectrum evidence enters in exactly one direction: it can **demote** a
-    profile whose operator-declared band is contested. It can never promote one.
-    A band that merely looks quiet is not evidence that a link works — only the
-    live probe is — so sensing is allowed to warn us off a medium and nothing
-    more.
+    Every input that is not a live probe enters in one direction only: it may
+    **demote** a profile, never promote one. Nothing that merely looks promising
+    is evidence that a link works — only the probe is — so a prediction is
+    allowed to warn us off a link and nothing more.
     """
 
     @staticmethod
@@ -134,7 +127,6 @@ class ProfileOptimizer:
         energy_cost: float,
         is_current: bool,
         objective: Objective,
-        spectrum_degraded: bool = False,
         forecast_degrading: bool = False,
     ) -> ScoredProfile:
         reasons: list[str] = []
@@ -165,10 +157,6 @@ class ProfileOptimizer:
         utility = sum(components[name] * weight for name, weight in objective.weights.items())
         utility *= observation.confidence()
         scored_reasons = ["LIVE_EVIDENCE_SCORED"]
-        if spectrum_degraded:
-            utility *= SPECTRUM_DEGRADED_MULTIPLIER
-            components["spectrum_penalty"] = SPECTRUM_DEGRADED_MULTIPLIER
-            scored_reasons.append("SPECTRUM_BAND_CONTESTED")
         if forecast_degrading:
             utility *= FORECAST_DEGRADED_MULTIPLIER
             components["forecast_penalty"] = FORECAST_DEGRADED_MULTIPLIER
@@ -214,23 +202,14 @@ class ProfileOptimizer:
         snapshot: TelemetrySnapshot,
         service_class: ServiceClass,
         *,
-        degraded_band_ids: frozenset[str] = frozenset(),
         forecast_degrading_profiles: frozenset[str] = frozenset(),
         role: str = "payload",
         suppressed_roles: frozenset[str] = frozenset(),
     ) -> Recommendation:
         """Rank approved profiles.
 
-        ``degraded_band_ids`` names spectrum bands this node's own sensing found
-        contested. Not corroborated: the loop passes the result of its local
-        ``sense_spectrum`` only, and no peer report reaches this parameter. A
-        profile that declared one of those bands in the signed catalogue is
-        demoted; profiles that declared no bands are unaffected, so a node
-        without spectrum sensing behaves exactly as before.
-
         ``forecast_degrading_profiles`` names links a per-flow forecast expects
-        to worsen. Both inputs may only **demote**. Neither may promote, and the
-        forecast penalty is the weaker of the two, because a prediction that
+        to worsen. It may only **demote**, never promote, because a prediction that
         could outrank measured evidence would let the node talk itself onto a
         link that has not demonstrated it works.
 
@@ -293,7 +272,6 @@ class ProfileOptimizer:
                     energy_cost=profile.energy_cost,
                     is_current=profile.profile_id == snapshot.current_profile_id,
                     objective=objective,
-                    spectrum_degraded=bool(profile.spectrum_band_ids & degraded_band_ids),
                     forecast_degrading=profile.profile_id in forecast_degrading_profiles,
                 )
             )

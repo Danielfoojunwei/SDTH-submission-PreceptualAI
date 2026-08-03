@@ -22,12 +22,9 @@ from cryptography.hazmat.primitives.asymmetric.ed25519 import Ed25519PrivateKey
 from kval_node.audit import AuditLedger
 from kval_node.capabilities import ROSTER_DOCUMENT_TYPE, CapabilityServices
 from kval_node.config import NodeConfig
-from kval_node.fabric import sign_report
 from kval_node.models import utc_now
 from kval_node.signing import sign_document
-from kval_node.spectrum import BandStatus
 
-from tests.test_fabric import report as build_report
 
 NOW = utc_now()
 
@@ -129,50 +126,13 @@ class CapabilityIntegrationTests(unittest.TestCase):
     def tearDown(self) -> None:
         self._directory.cleanup()
 
-    def _publish(self, node_id: str, status: BandStatus) -> None:
-        envelope = sign_report(
-            build_report(node_id, status=status, produced_at=NOW), self.node_keys[node_id]
-        )
-        (self.inbox / f"{node_id}.json").write_text(json.dumps(envelope), encoding="utf-8")
 
     # --- fabric topology -------------------------------------------------------
 
-    def test_topology_names_the_node_whose_loss_would_partition_the_fleet(self) -> None:
-        result = self.services.fabric_topology(now=NOW)
-        self.assertTrue(result["available"])
-        # node-c links a and b at 400 m range; a-b are ~220 m apart, so all
-        # three are mutually reachable and none is a hinge.
-        self.assertIn("node-far", result["fragility"]["isolated"])
-        self.assertIn(
-            "NODES_WITH_NO_LINKS_CANNOT_CONTRIBUTE_OR_INHERIT", result["fragility"]["reasons"]
-        )
 
-    def test_a_node_that_reported_nothing_still_inherits_a_view(self) -> None:
-        # The fabric's premise, end to end: node-b publishes an observation,
-        # node-c did not, and node-c still ends up with a belief.
-        self._publish("node-b", BandStatus.JAMMING_SUSPECTED)
-        result = self.services.fabric_topology(now=NOW)
-        beliefs = {item["node_id"]: item for item in result["bands"]["ism-2g4"]}
-        self.assertGreater(beliefs["node-c"]["belief"]["busy"], 0.0)
-        self.assertFalse(beliefs["node-c"]["first_hand"])
-        self.assertTrue(beliefs["node-b"]["first_hand"])
 
-    def test_the_isolated_node_inherits_nothing_rather_than_a_default(self) -> None:
-        self._publish("node-b", BandStatus.JAMMING_SUSPECTED)
-        result = self.services.fabric_topology(now=NOW)
-        beliefs = {item["node_id"]: item for item in result["bands"]["ism-2g4"]}
-        self.assertEqual(beliefs["node-far"]["belief"]["unknown"], 1.0)
-        self.assertEqual(beliefs["node-far"]["belief"]["clear"], 0.0)
 
-    def test_an_unsigned_report_in_the_inbox_is_rejected_not_used(self) -> None:
-        (self.inbox / "junk.json").write_text('{"not": "a report"}', encoding="utf-8")
-        result = self.services.fabric_topology(now=NOW)
-        self.assertTrue(result["available"])
-        self.assertEqual([item["source"] for item in result["rejected_reports"]], ["junk.json"])
 
-    def test_topology_serializes(self) -> None:
-        self._publish("node-b", BandStatus.CLEAR)
-        json.dumps(self.services.fabric_topology(now=NOW))
 
     # --- memory audit ----------------------------------------------------------
 
@@ -291,10 +251,6 @@ class UnconfiguredNodeTests(unittest.TestCase):
     def tearDown(self) -> None:
         self._directory.cleanup()
 
-    def test_topology_without_a_roster_is_unavailable(self) -> None:
-        result = self.services.fabric_topology()
-        self.assertFalse(result["available"])
-        self.assertIn("roster", result["reason"])
 
     def test_memory_audit_without_a_node_key_is_unavailable_not_passing(self) -> None:
         # Reporting "trustworthy" with no key to check against would be the
@@ -383,60 +339,9 @@ class ComposedPipelineTests(CapabilityIntegrationTests):
         self.assertTrue(result["certificate"]["exact"])
         self.assertNotIn("node-c", result["remaining_contributors"])
 
-    def test_a_localisation_is_recorded_so_a_track_can_be_built(self) -> None:
-        # The composition: geolocate writes fixes, mobility reads them. Without
-        # the recording step the tracker has nothing and the pairing is fiction.
-        from kval_node.capabilities import EMITTER_RECORD_TYPE
 
-        self.services._record_fix(
-            {
-                "available": True,
-                "band_id": "ism-2g4",
-                "latitude_deg": 1.3010,
-                "longitude_deg": 103.8010,
-                "uncertainty_radius_m": 25.0,
-                "method": "trilateration",
-                "contributing_nodes": ["node-a", "node-b", "node-c"],
-            }
-        )
-        ledger = AuditLedger(self.services.config.audit_database_path)
-        try:
-            kinds = {row["record_type"] for row in ledger.signed_records()}
-        finally:
-            ledger.close()
-        self.assertIn(EMITTER_RECORD_TYPE, kinds)
 
-    def test_a_refused_localisation_never_becomes_a_track_point(self) -> None:
-        self.services._record_fix({"available": False, "reason": "collinear"})
-        result = self.services.track_emitter("ism-2g4")
-        self.assertFalse(result["available"])
 
-    def test_tracking_reads_back_the_fixes_localisation_wrote(self) -> None:
-        for index in range(6):
-            self.services._record_fix(
-                {
-                    "available": True,
-                    "band_id": "ism-2g4",
-                    "latitude_deg": 1.3010 + index * 0.0001,
-                    "longitude_deg": 103.8010,
-                    "uncertainty_radius_m": 25.0,
-                    "method": "trilateration",
-                    "contributing_nodes": ["node-a", "node-b", "node-c"],
-                }
-            )
-        result = self.services.track_emitter("ism-2g4")
-        self.assertTrue(result["available"])
-        self.assertEqual(result["fixes"], 6)
-        self.assertGreaterEqual(result["place_radius_m"], 50.0)
-
-    def test_fleet_detection_composes_reports_cohorts_and_reputation(self) -> None:
-        for node in ("node-b", "node-c", "node-far"):
-            self._publish(node, BandStatus.JAMMING_SUSPECTED)
-            self._publish_update(node, 20.0)
-        result = self.services.detect_fleet_anomaly(now=NOW)
-        self.assertTrue(result["available"])
-        self.assertIn("cohorts_assigned", result)
-        self.assertIn("verdicts", result)
 
     def test_forecasting_is_reachable_and_bounded(self) -> None:
         result = self.services.forecast_links()

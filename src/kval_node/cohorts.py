@@ -95,7 +95,6 @@ ENVIRONMENT_FEATURES: tuple[str, ...] = (
     "loss_percent",
     "jitter_ms",
     "signal_percent",
-    "contested_band_count",
 )
 
 DEFAULT_MAX_COHORTS = 4
@@ -556,9 +555,6 @@ def certified_excision(
 #:     supervisory link is near-constant by design, so a swing in achieved rate
 #:     is a swing in what the link could carry. It remains the weakest of the
 #:     six and is deliberately not weighted above the others.
-#:   * ``contested_band_count`` — the only member sourced from the spectrum
-#:     sensor rather than the link, so it registers the environment changing
-#:     around the platform before the link has degraded.
 #:
 #: Excluded, with the reason each would corrupt the score:
 #:   * ``confidence`` — the recommender's belief in its own choice. A model
@@ -579,7 +575,6 @@ HETEROGENEITY_FEATURES: tuple[str, ...] = (
     "jitter_ms",
     "throughput_mbps",
     "signal_percent",
-    "contested_band_count",
 )
 
 #: Swing in each feature's own unit that counts as one step of environmental
@@ -612,7 +607,6 @@ REFERENCE_SWINGS: dict[str, float] = {
     "signal_percent": 15.0,
     #: One band flickering in and out of the degraded list is ordinary sensor
     #: churn. Two bands appearing and clearing is a different spectrum picture.
-    "contested_band_count": 2.0,
 }
 
 REGIME_LIGHT = "light"

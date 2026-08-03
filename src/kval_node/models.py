@@ -73,7 +73,6 @@ class Profile:
     #: be declared explicitly, so a profile can never become safety-critical by
     #: omission — and an undeclared link can never be selected as C2.
     link_role: str = "payload"
-    spectrum_band_ids: frozenset[str] = frozenset()
 
     @classmethod
     def from_dict(cls, raw: dict[str, Any]) -> "Profile":
@@ -129,9 +128,6 @@ class Profile:
                 raise ValueError(f"{access_type.value} profiles require a provisioned DNN/APN")
             if "3gpp-ts-23.003" not in {item.value for item in standards.required_identifiers}:
                 raise ValueError(f"{access_type.value} profiles must require 3gpp-ts-23.003")
-        band_ids = frozenset(str(value).strip() for value in raw.get("spectrum_band_ids", []))
-        if any(not value or "REPLACE_" in value for value in band_ids):
-            raise ValueError("spectrum_band_ids must contain provisioned band IDs")
         link_role = str(raw.get("link_role", "payload")).strip().lower()
         if link_role not in {"c2_cnpc", "payload", "bulk"}:
             raise ValueError(f"unknown link_role {link_role!r}")
@@ -148,7 +144,6 @@ class Profile:
             allowed_service_classes=classes,
             standards=standards,
             link_role=link_role,
-            spectrum_band_ids=band_ids,
         )
 
     def to_public_dict(self) -> dict[str, Any]:

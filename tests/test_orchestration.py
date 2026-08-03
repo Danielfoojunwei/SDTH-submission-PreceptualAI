@@ -18,23 +18,15 @@ from cryptography.hazmat.primitives.asymmetric.ed25519 import Ed25519PrivateKey
 
 from kval_node.dataset import FEATURE_NAMES, Example
 from kval_node.federated import FeatureStatistics, FederatedUpdate
-from kval_node.intrusion import NodeBaseline
-from kval_node.mobility import Fix
 from kval_node.orchestration import (
     DEFAULT_FEATURE_RANGES,
     FleetLearning,
     cohort_assignments,
-    detect_fleet_event,
-    fixes_from_estimates,
     forecast_advice,
-    predict_track,
     privatise_update,
     trusted_baseline,
-    verdicts_from_reports,
 )
-from kval_node.spectrum import BandStatus
 
-from tests.test_fabric import report as build_report
 
 NOW = datetime(2026, 7, 1, 12, 0, 0, tzinfo=timezone.utc)
 
@@ -182,65 +174,14 @@ class ForecastReachesADecisionTests(unittest.TestCase):
         advice = forecast_advice({"wifi": [1.0, 2.0]})
         self.assertEqual(advice.degrading_profiles, frozenset())
 
-    def test_a_forecast_demotion_is_weaker_than_measured_evidence(self) -> None:
-        # A prediction must be able to break a tie, never to overrule what the
-        # sensor actually measured.
-        from kval_node.optimizer import (
-            FORECAST_DEGRADED_MULTIPLIER,
-            SPECTRUM_DEGRADED_MULTIPLIER,
-        )
-
-        self.assertGreater(FORECAST_DEGRADED_MULTIPLIER, SPECTRUM_DEGRADED_MULTIPLIER)
 
     def test_advice_serializes(self) -> None:
         json.dumps(forecast_advice({"wifi": self.RISING}).to_dict())
 
 
-class LocalisationFeedsTrackingTests(unittest.TestCase):
-    """Sensors 2018 producing the history WPC 2024 consumes."""
 
-    def _record(self, minutes: float, latitude: float, *, available: bool = True) -> dict:
-        payload = {"available": available, "band_id": "b"}
-        if available:
-            payload |= {
-                "latitude_deg": latitude,
-                "longitude_deg": 103.8,
-                "uncertainty_radius_m": 30.0,
-            }
-        return {"recorded_at": (NOW + timedelta(minutes=minutes)).isoformat(), "payload": payload}
 
-    def test_recorded_estimates_become_track_fixes(self) -> None:
-        fixes = fixes_from_estimates([self._record(i, 1.30 + i * 0.001) for i in range(5)])
-        self.assertEqual(len(fixes), 5)
-        self.assertEqual(fixes[0].uncertainty_radius_m, 30.0)
 
-    def test_a_refused_estimate_never_becomes_a_track_point(self) -> None:
-        # "We could not tell" is not a place the emitter has been.
-        records = [self._record(0, 1.30), self._record(1, 0.0, available=False)]
-        self.assertEqual(len(fixes_from_estimates(records)), 1)
-
-    def test_the_place_radius_follows_localisation_uncertainty(self) -> None:
-        # A radius tighter than the accuracy that produced the fixes turns
-        # noise into a tour of places the emitter never visited.
-        jittering = [
-            Fix(NOW + timedelta(minutes=index), 1.3000 + 0.0001 * (index % 2), 103.8, 60.0)
-            for index in range(10)
-        ]
-        loose = predict_track(jittering, horizon=timedelta(minutes=5), place_radius_m=150.0)
-        tight = predict_track(jittering, horizon=timedelta(minutes=5), place_radius_m=1.0)
-        self.assertLess(loose["distinct_places"], tight["distinct_places"])
-
-    def test_a_track_predicts_or_declines_never_guesses(self) -> None:
-        fixes = [Fix(NOW + timedelta(minutes=i), 1.30, 103.8, 30.0) for i in range(6)]
-        result = predict_track(fixes, horizon=timedelta(minutes=5), place_radius_m=150.0)
-        if result["predicted"]:
-            self.assertIsNotNone(result["latitude_deg"])
-        else:
-            self.assertIsNone(result["latitude_deg"])
-
-    def test_result_serializes(self) -> None:
-        fixes = [Fix(NOW + timedelta(minutes=i), 1.30, 103.8, 30.0) for i in range(6)]
-        json.dumps(predict_track(fixes, horizon=timedelta(minutes=5), place_radius_m=150.0))
 
 
 class DetectionIsAFleetPropertyTests(unittest.TestCase):
@@ -260,52 +201,10 @@ class DetectionIsAFleetPropertyTests(unittest.TestCase):
         rural = {assignments[f"rural{i}"] for i in range(4)}
         self.assertEqual(urban & rural, set())
 
-    def test_a_node_without_a_baseline_still_contributes_its_band_status(self) -> None:
-        reports = [
-            build_report(f"n{i}", status=BandStatus.JAMMING_SUSPECTED, produced_at=NOW)
-            for i in range(3)
-        ]
-        verdicts = verdicts_from_reports(reports, {}, {"n0": "c1", "n1": "c2", "n2": "c3"})
-        self.assertTrue(all(v.anomalous for v in verdicts))
-        self.assertIn(
-            "NO_LOCAL_BASELINE_SO_THE_REPORTED_BAND_STATUS_STANDS_IN", verdicts[0].reasons
-        )
 
-    def test_correlated_anomalies_across_cohorts_become_an_event(self) -> None:
-        reports = [
-            build_report(f"n{i}", status=BandStatus.JAMMING_SUSPECTED, produced_at=NOW)
-            for i in range(3)
-        ]
-        verdicts = verdicts_from_reports(reports, {}, {"n0": "c1", "n1": "c2", "n2": "c3"})
-        finding = detect_fleet_event(verdicts, {})
-        self.assertTrue(finding["event"])
 
-    def test_a_clear_fleet_is_not_an_event(self) -> None:
-        reports = [
-            build_report(f"n{i}", status=BandStatus.CLEAR, produced_at=NOW) for i in range(3)
-        ]
-        verdicts = verdicts_from_reports(reports, {}, {"n0": "c1", "n1": "c2", "n2": "c3"})
-        self.assertFalse(detect_fleet_event(verdicts, {})["event"])
 
-    def test_reputation_gates_who_can_raise_a_fleet_finding(self) -> None:
-        reports = [
-            build_report(f"n{i}", status=BandStatus.JAMMING_SUSPECTED, produced_at=NOW)
-            for i in range(3)
-        ]
-        verdicts = verdicts_from_reports(reports, {}, {"n0": "c1", "n1": "c2", "n2": "c3"})
-        discredited = {"n0": 0.05, "n1": 0.05, "n2": 0.05}
-        self.assertFalse(detect_fleet_event(verdicts, discredited)["event"])
 
-    def test_a_node_with_its_own_baseline_uses_its_own_detector(self) -> None:
-        baseline = NodeBaseline(
-            node_id="n0",
-            samples=50,
-            means={"contested_band_count": 0.0, "noise_floor_dbm": 0.0},
-            stddevs={"contested_band_count": 0.2, "noise_floor_dbm": 1.0},
-        )
-        reports = [build_report("n0", status=BandStatus.JAMMING_SUSPECTED, produced_at=NOW)]
-        verdicts = verdicts_from_reports(reports, {"n0": baseline}, {"n0": "c1"})
-        self.assertIn("READINGS_DEPART_FROM_THIS_NODE_S_OWN_NORMAL", verdicts[0].reasons)
 
 
 class IntegrityGuardsLearningTests(unittest.TestCase):

@@ -31,7 +31,6 @@ class NodeConfigTests(unittest.TestCase):
             path = Path(directory) / "node.json"
             path.write_text(json.dumps(base_config()), encoding="utf-8")
             config = NodeConfig.load(path)
-            self.assertIsNone(config.spectrum_policy_path)
             self.assertIsNone(config.power_policy_path)
             self.assertIsNone(config.transport_policy_path)
             self.assertIsNone(config.lease_public_key_path)
@@ -40,8 +39,6 @@ class NodeConfigTests(unittest.TestCase):
         raw = base_config()
         raw.update(
             {
-                "spectrum_policy_path": "/etc/kval/spectrum.signed.json",
-                "spectrum_sensor_socket": "/run/kval-spectrum/sensor.sock",
                 "power_policy_path": "/etc/kval/power.signed.json",
                 "transport_policy_path": "/etc/kval/transport.signed.json",
                 "lease_public_key_path": "/etc/kval/operator.public.pem",
@@ -52,8 +49,6 @@ class NodeConfigTests(unittest.TestCase):
             path = Path(directory) / "node.json"
             path.write_text(json.dumps(raw), encoding="utf-8")
             config = NodeConfig.load(path)
-            self.assertEqual(config.spectrum_policy_path, Path("/etc/kval/spectrum.signed.json"))
-            self.assertEqual(config.spectrum_sensor_socket, Path("/run/kval-spectrum/sensor.sock"))
             self.assertEqual(config.lease_nonce_database_path, Path("/var/lib/kval/nonces.db"))
 
     def test_repository_example_configs_load(self) -> None:

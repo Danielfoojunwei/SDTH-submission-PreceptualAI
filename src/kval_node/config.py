@@ -43,9 +43,6 @@ class NodeConfig:
     minimum_confidence: float
     apply_network_changes: bool
     # Optional capability policies (absent = capability not enabled on this node).
-    spectrum_policy_path: Path | None = None
-    spectrum_sensor_socket: Path | None = None
-    spectrum_scan_state_path: Path | None = None
     power_policy_path: Path | None = None
     transport_policy_path: Path | None = None
     transport_wifi_connection_uuid: str | None = None
@@ -55,21 +52,9 @@ class NodeConfig:
     # node's own reports; the inbox is where verified peer reports are read from.
     fabric_roster_path: Path | None = None
     fabric_node_key_path: Path | None = None
-    fabric_inbox_path: Path | None = None
     #: Signed manifest for a candidate predictive model. Absent means the
     #: learned path is not present at all and the node stays deterministic.
     model_manifest_path: Path | None = None
-    #: Operator-calibrated path-loss parameters. Without them, emitter
-    #: localisation falls back to a weighted centroid rather than inventing
-    #: distances from an assumed propagation model.
-    path_loss_model_path: Path | None = None
-    #: Operator-surveyed reference emitters to fit propagation against. Absent
-    #: means the node keeps whatever operator-calibrated model it was given, or
-    #: none — it never fits against positions it estimated itself.
-    path_loss_reference_path: Path | None = None
-    #: Operator-signed climate of the area of operations. Absent means weather
-    #: mechanisms are judged on physics alone, which is the honest default.
-    climate_declaration_path: Path | None = None
     federated_inbox_path: Path | None = None
     #: Range within which two positioned peers are treated as linked when
     #: building the fabric graph. An operator-declared planning figure: it
@@ -150,9 +135,6 @@ class NodeConfig:
             observation_max_age_seconds=age,
             minimum_confidence=confidence,
             apply_network_changes=bool(raw["apply_network_changes"]),
-            spectrum_policy_path=_optional_path(raw, "spectrum_policy_path"),
-            spectrum_sensor_socket=_optional_path(raw, "spectrum_sensor_socket"),
-            spectrum_scan_state_path=_optional_path(raw, "spectrum_scan_state_path"),
             power_policy_path=_optional_path(raw, "power_policy_path"),
             transport_policy_path=_optional_path(raw, "transport_policy_path"),
             transport_wifi_connection_uuid=transport_wifi_uuid or None,
@@ -160,11 +142,7 @@ class NodeConfig:
             lease_nonce_database_path=_optional_path(raw, "lease_nonce_database_path"),
             fabric_roster_path=_optional_path(raw, "fabric_roster_path"),
             fabric_node_key_path=_optional_path(raw, "fabric_node_key_path"),
-            fabric_inbox_path=_optional_path(raw, "fabric_inbox_path"),
             model_manifest_path=_optional_path(raw, "model_manifest_path"),
-            path_loss_model_path=_optional_path(raw, "path_loss_model_path"),
-            path_loss_reference_path=_optional_path(raw, "path_loss_reference_path"),
-            climate_declaration_path=_optional_path(raw, "climate_declaration_path"),
             federated_inbox_path=_optional_path(raw, "federated_inbox_path"),
             fabric_link_range_m=float(raw.get("fabric_link_range_m", 2000.0)),
             federated_privacy_epsilon=(

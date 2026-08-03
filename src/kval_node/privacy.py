@@ -177,7 +177,6 @@ SITING_SENSITIVITY: dict[str, str] = {
     # water. What keeps it out of the top tier is that only the *count* leaves
     # the node: band identities would name the emitters overhead, and if this
     # fleet ever releases those they belong in the tier above.
-    "contested_band_count": SITING_LEAK_MODERATE,
     # How many provisioned links are actually usable is a coverage-map lookup.
     # A node that can use one profile of six is somewhere very different from
     # one that can use all six. Coarse — a small integer, floored and capped by

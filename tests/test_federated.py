@@ -9,7 +9,7 @@ from cryptography.hazmat.primitives import serialization
 from cryptography.hazmat.primitives.asymmetric.ed25519 import Ed25519PrivateKey
 
 from kval_node.dataset import FEATURE_NAMES
-from kval_node.fabric import FabricError, PeerRoster
+from kval_node.roster import PeerRoster, RosterError
 from kval_node.federated import (
     FeatureStatistics,
     FederatedUpdate,
@@ -78,25 +78,25 @@ class UpdateVerificationTests(unittest.TestCase):
     def test_unrostered_author_refused(self) -> None:
         stranger = Ed25519PrivateKey.generate()
         envelope = sign_update(update("node-z", 50.0), stranger)
-        with self.assertRaisesRegex(FabricError, "not on the signed roster"):
+        with self.assertRaisesRegex(RosterError, "not on the signed roster"):
             verify_update(envelope, self.roster, now=NOW)
 
     def test_impersonation_refused(self) -> None:
         stranger = Ed25519PrivateKey.generate()
         envelope = sign_update(update("node-a", 50.0), stranger)
-        with self.assertRaisesRegex(FabricError, "key ID does not match"):
+        with self.assertRaisesRegex(RosterError, "key ID does not match"):
             verify_update(envelope, self.roster, now=NOW)
 
     def test_tampered_statistics_refused(self) -> None:
         envelope = sign_update(update("node-a", 50.0), self.key)
         altered = copy.deepcopy(envelope)
         altered["body"]["statistics"]["rtt_ms"]["mean"] = 999.0
-        with self.assertRaisesRegex(FabricError, "signature verification failed"):
+        with self.assertRaisesRegex(RosterError, "signature verification failed"):
             verify_update(altered, self.roster, now=NOW)
 
     def test_stale_update_refused(self) -> None:
         old = FederatedUpdate("node-a", NOW - timedelta(days=30), 50, update("node-a", 50.0).statistics)
-        with self.assertRaisesRegex(FabricError, "older than the aggregation window"):
+        with self.assertRaisesRegex(RosterError, "older than the aggregation window"):
             verify_update(sign_update(old, self.key), self.roster, now=NOW)
 
 
