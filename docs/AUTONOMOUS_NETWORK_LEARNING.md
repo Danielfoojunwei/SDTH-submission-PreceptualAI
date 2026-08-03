@@ -159,7 +159,7 @@ abstains and the deterministic optimizer decides.
 **May control (only under signed policy + Safety Shield +, for actuation, a
 capability lease):** connection selection/failover; reconnect backoff; Wi-Fi and
 modem power-save; Jetson power mode from an allowlist; inference duty; telemetry
-and spectrum-scan intervals; queue/rate/service budgets; approved DNN/S-NSSAI
+and telemetry intervals; queue/rate/service budgets; approved DNN/S-NSSAI
 selection; candidate-model shadow/canary/rollback; local federated participation;
 quarantine recommendations.
 

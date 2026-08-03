@@ -1,6 +1,6 @@
 # Kval
 
-**Kval keeps an uncrewed vehicle's command link alive in contested spectrum —
+**Kval keeps an uncrewed vehicle's command link alive as its radios degrade —
 and refuses to act on evidence it doesn't have.**
 
 A Jetson-class box on the platform. It measures which radio links actually work,
@@ -12,24 +12,15 @@ It never transmits to do any of that.
 ## The problem
 
 An uncrewed vehicle — air, land or sea — carries several links: Wi-Fi, 4G/5G,
-satellite, Ethernet. In contested spectrum they degrade at different times, and
-some degrade because someone wants them to.
+satellite, Ethernet. They degrade at different times, and some degrade because
+someone wants them to.
 
 When the command link goes, the vehicle either flies on blind or turns for home.
 Both are mission failures, and an adversary only has to cause one of them.
 
 ## Three things that make this different
 
-### 1. It never transmits to sense
-
-Every measurement comes from listening. The build fails if a transmit path
-appears in the source, and an observation obtained by emitting is refused rather
-than used — passivity is derived from which sensor backends actually ran, not
-asserted by a flag.
-
-A sensor that emits to sense is a sensor that can be found.
-
-### 2. The command link is not tradeable
+### 1. The command link is not tradeable
 
 CNPC is a separately regulated class — ITU-R sets aside 5030–5091 MHz and
 960–977 MHz, with its own MOPS, radio standard and mandated loss behaviour.
@@ -39,7 +30,7 @@ Rank them on one scale and a camera downlink can outscore the link that steers
 the vehicle. Here, **ranking never crosses roles**, and a link cannot become
 safety-critical by omission — it has to be declared one in the signed catalogue.
 
-### 3. It knows ordered silence from jamming
+### 2. It knows ordered silence from jamming
 
 Under EMCON a platform is *told* to go dark. To every lost-link detector, that
 is indistinguishable from being jammed — so a vehicle that runs its contingency
@@ -60,20 +51,32 @@ order expired, still dark  →  suppression lifts
 No civil standard covers this, because civil aviation has no reason to fall
 silent on purpose.
 
+### 3. Nothing it cannot act on is in it
+
+The system used to carry a passive spectrum-sensing stack, a cross-node fabric
+built on band reports, and a weather-discrimination tier built on those
+observations — together larger than the decision they served, and none of it
+reaching the flying node's choice of link. It has been removed rather than
+carried.
+
+What is left is what the loop runs on: the link probes it measures itself.
+Degradation is detected the way the vehicle experiences it — latency, loss,
+jitter, throughput, signal — not inferred from an RF picture the decision never
+consulted.
+
 ---
 
 ## The discipline underneath
 
 One rule runs through everything: **the system refuses rather than guesses.**
 
-- Sensing can **demote** a link, never **promote** one. A quiet band is not
-  evidence a link works — only a live probe is. So a fleet cannot be *talked
-  into* a link.
-- **"Couldn't measure" is never reported as "it's clear."** Vote-counting can't
-  tell those apart, which made a fleet of blind nodes look like a fleet
-  reporting quiet. Fixed with evidence theory: blind nodes now return `unknown`.
-- **A position with an uncertainty radius is a place, not an actor.** Nothing
-  here names a source or an intent — a noise floor cannot tell you who, or why.
+- Anything that is not a live probe may **demote** a link, never **promote**
+  one. Nothing that merely looks promising is evidence that a link works. So a
+  node cannot be *talked into* a link.
+- A capability with missing evidence returns **unavailable**, never a plausible
+  answer. "Could not measure" is never reported as "it is fine."
+- Nothing names a source or an intent. A degraded link cannot tell you who, or
+  why.
 - Every answer carries the reasons it reached that answer and the sample count
   it rests on.
 
@@ -86,29 +89,28 @@ A system that always answers is a system whose answers mean nothing.
 The autonomous loop, on the platform, unattended:
 
 ```
-observe → clock integrity → sense spectrum → govern power → forecast
+observe → clock integrity → govern power → forecast degradation
   → recovery → rank profiles → fuse evidence → safety shield → act → audit
 ```
 
-**25 modules load on a flying node.** Everything else — the operator tools and
-the research tier — loads when a person asks for it, on a machine where a person
-is watching. That boundary is deliberate and enforced by the build.
+Everything else — the operator tools and the research tier — loads when a person
+asks for it, on a machine where a person is watching. That boundary is
+deliberate and enforced by the build.
 
 ---
 
 ## Depth, on request
 
 Behind the three claims sit implementations of published mechanisms, applied to
-a receive-only fleet. They are not the proposition; they are the answer to *how
+a receive-only node. They are not the proposition; they are the answer to *how
 do you know?*
 
 | Question | What answers it |
 |---|---|
-| How do you know the band is contested? | Passive occupancy + noise floor; peers corroborate over signed reports |
-| How do you trust a peer? | Operator-signed roster; undisciplined clocks count for presence, never for corroboration |
-| How do you know it's jamming and not weather? | Signal drops with a steady noise floor is attenuation; a rising floor is energy arriving. Weather mechanisms separate by frequency law |
-| Where is the emitter? | Multi-node localisation with NLOS rejection — and a refusal when no anchor removal reconciles the rest |
-| How does the fleet learn without pooling data? | Federated statistics, clustered by RF environment, perturbed locally before release |
+| How do you know a link is failing? | Live probes bound to the interface — latency, loss, jitter, throughput — scored against a service-class objective, with confidence zero if the interface is absent |
+| Why did it not switch? | Dwell, switch-rate and hysteresis gates in the Safety Shield, each with a named refusal code |
+| How does a fleet learn without pooling data? | Federated statistics, clustered by environment, perturbed locally before release |
+| What happens when the fleet is cut off? | k-of-n peers may extend an existing grant's life, never widen its scope and never undo a revocation — then it fails closed |
 | Will it still verify in 2030? | CNSA 2.0: LMS signatures per RFC 8554, pinned against the RFC's own test vector |
 
 Full mapping with DOIs in [`DSA_RESEARCH_MAPPING.md`](DSA_RESEARCH_MAPPING.md).
@@ -123,21 +125,21 @@ No transmit. No jamming or electronic attack. No packet inspection. No vehicle
 control — STANAG 4586 LOI 1: it selects and assures links, it does not fly
 anything. No intent attribution. No source naming.
 
+**No RF sensing.** It does not observe spectrum, locate emitters, or tell
+weather from jamming. It knows a link is bad because it measured that link.
+
 Zero runtime dependencies, so a fielded box has nothing to resolve.
 
 ## What is not yet proven
 
-Nothing cross-node has run on two physically separate machines. The provisioning
-and the adversarial verification exist and are tested; they have not been
-executed on two hosts, and the claim will be written to match whatever is
-actually run.
+No cross-node result on two physically separate machines. Peer identity and the
+federated tier are verified in one process; nothing has been run on two hosts.
 
-Emissions are unmeasured against MIL-STD-461 RE102. A passive node findable by
-its own leakage fails at its primary claim, and settling that needs a chamber.
-
-The weather discrimination is derived from published physics and exercised
-against constructed signatures. That tests the logic, not the calibration — no
-measured campaign data has been through it.
+Emissions are unmeasured against MIL-STD-461 RE102. Kval no longer senses, so
+the exposure is narrower than it was — but a box that leaks is still findable,
+and settling that needs a chamber.
 
 No model is trained. No FIPS-validated module, RMF package, or independent
-security assessment exists.
+security assessment exists. LMS key custody is a file, not a FIPS 140 Level 3
+module — the algorithm requirement of CNSA 2.0 met without the implementation
+profile of SP 800-208.

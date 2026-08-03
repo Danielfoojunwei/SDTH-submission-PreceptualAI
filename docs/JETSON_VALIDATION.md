@@ -34,7 +34,6 @@ Each is skipped when the capability is not configured, and never faked.
 | Gate | Passing condition |
 |---|---|
 | Power governance | `power-plan` reports `available: true` with a real `tegrastats` reading and a target `nvpmodel` id from the signed allowlist |
-| Spectrum sensing | `spectrum-scan` reports `available: true`, at least one band is not `INSUFFICIENT_EVIDENCE`, and **every** returned observation is `passive: true` |
 | Secure transport | `transport-preflight` reports `available: true`; with `KVAL_HIL_REQUIRE_TRANSPORT=YES` it must also report `verified: true` |
 | Capability lease | A signed lease redeems once and is refused on replay |
 

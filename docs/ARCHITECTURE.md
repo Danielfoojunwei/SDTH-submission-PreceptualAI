@@ -36,17 +36,13 @@ Four additional loops run alongside the connectivity loop. Each is optional, eac
 is governed by its own operator-signed policy, and each fails closed when that
 policy or its evidence is missing.
 
-1. **Passive spectrum sensing** (`spectrum.py`) — a signed band allowlist and a
-   root-owned, receive-only sensor adapter yield occupancy observations; a
-   deterministic analyzer produces band availability, jamming suspicion, and
-   emitter presence. See [the spectrum-sensing fabric](SPECTRUM_SENSING_FABRIC.md).
-2. **Power governance** (`power.py`) — a signed thermal/battery/watt/duty policy
+1. **Power governance** (`power.py`) — a signed thermal/battery/watt/duty policy
    and a governor with thermal hysteresis bound the node's power mode, inference
    duty, and scan/telemetry intervals.
-3. **Connectivity recovery** (`recovery.py`) — a link-health state machine with
+2. **Connectivity recovery** (`recovery.py`) — a link-health state machine with
    exponential backoff, failover, and a flap ceiling that escalates rather than
    thrashing the radio.
-4. **Secure-transport verification** (`transport_security.py`) — verifies the
+3. **Secure-transport verification** (`transport_security.py`) — verifies the
    WireGuard tunnel, both default routes, the nftables ruleset, and WPA3 link
    security against signed policy. See
    [the secure-transport and EW threat model](SECURE_TRANSPORT_AND_EW_THREAT_MODEL.md).
@@ -66,12 +62,9 @@ predictive model must pass. See
 - NetworkManager owns actual device configuration and activation.
 - Advanced 3GPP slicing and SDR profiles require a root-owned local standards
   agent that attests capability and confirms the exact approved profile.
-- Passive spectrum sensing requires a separate root-owned sensor adapter. Kval
-  verifies provenance and stays inside the signed band allowlist; the adapter
-  owns the radio and its regulatory compliance.
 - Kval can select only a catalogue UUID; it cannot construct arbitrary radio
   settings, and it has no transmit path at all.
-- Every actuation beyond passive observation requires an operator-signed,
+- Every actuation beyond local measurement requires an operator-signed,
   node-bound, single-use, expiring capability lease (`lease.py`). The closed
   `LeaseAction` set contains no action that transmits, alters trust anchors,
   deletes audit records, or widens the node's own authority.

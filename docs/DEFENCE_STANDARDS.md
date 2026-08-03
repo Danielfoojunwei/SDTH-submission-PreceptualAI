@@ -230,17 +230,16 @@ build if one appears.
   chamber, not a code change.
 - **No spectrum supportability record.** Fielded equipment normally carries
   spectrum certification (in US practice, DD Form 1494) and host-nation
-  coordination. `config/band-plans.json` cites civil allocations — FCC, ETSI,
-  ITU — and has no military allocation or host-nation dimension.
-- **Interference reporting — now closed.** `interference.py` emits
-  JSIR-compatible fields per CJCSM 3320.01D: observer, time, band, centre
-  frequency, bandwidth, victim system role, and characterised operational
-  effect. Two things it deliberately refuses: it does not classify **intent**,
-  because nothing in a noise floor says whether a microwave oven, a faulty
-  amplifier or an adversary put it there; and it names no **source**, because
-  a position with an uncertainty radius is a place, not an actor. A corroborated
-  C2 victim is escalated above a payload one, since that is the report a
-  spectrum manager needs first.
+  coordination. Kval no longer senses or reasons about bands at all, so it makes
+  no allocation claim to support — but the platform it rides on still needs one.
+- **No interference reporting.** A JSIR-compatible reporter per CJCSM 3320.01D
+  was built and has been removed along with the sensing tier that fed it: with
+  no occupancy or noise-floor measurement there is nothing to report. The
+  discipline it encoded is worth restating, because it constrains any future
+  version: never classify **intent**, since nothing in a noise floor says
+  whether a microwave oven, a faulty amplifier or an adversary put it there;
+  and never name a **source**, since a position with an uncertainty radius is a
+  place, not an actor.
 - **EMCON — now closed.** See §2. Modelled as ordered states with encoded
   consequences, bounded in time, signed, and consumed by the lost-link logic.
 

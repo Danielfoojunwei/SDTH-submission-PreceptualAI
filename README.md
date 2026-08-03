@@ -3,9 +3,14 @@
 Kval is the Jetson Orin Nano edge node for SPECTRAVAULT. It observes real Linux
 network interfaces, measures real reachability, ranks only operator-approved
 connectivity profiles, applies deterministic safety rules, and can ask
-NetworkManager to activate an approved connection UUID. It also senses the radio
-spectrum **passively** and governs its own power and secure-transport boundary
-inside operator-signed limits.
+NetworkManager to activate an approved connection UUID. It governs its own power
+and secure-transport boundary inside operator-signed limits.
+
+It does **not** sense the radio spectrum. That capability, and the cross-node
+fabric and weather-discrimination tiers built on it, were removed: together they
+outweighed the decision they served and never reached a flying node's choice of
+link. Kval detects degradation the way the vehicle experiences it — by probing
+its own links.
 
 The supported access labels are WiFi, 3G, 4G, 5G, NTN, and Ethernet. Kval does
 not generate radio parameters, transmit, jam, inspect packet contents, control a
@@ -20,26 +25,19 @@ Implemented production paths:
 - Multi-objective profile optimization from measured latency, loss, jitter,
   throughput, signal, monetary cost, energy cost, and switching cost.
 - Ed25519-signed profile catalogue with expiry checks, and a generic signed
-  policy-document envelope for spectrum, power, and transport policies.
+  policy-document envelope for power and transport policies.
 - Safety Shield with freshness, confidence, dwell-time, and switch-rate limits.
 - Real NetworkManager activation followed by UUID verification.
 - 3GPP DNN, S-NSSAI, RAT, Release 17/18 and NR-NTN policy vocabulary.
 - Fail-closed ETSI RRS, IEEE 1900.5, and ANSI/VITA 49.2 capability contract for
   standards-based SDR integrations.
-- **Passive spectrum-sensing fabric**: signed band allowlist, a deterministic
-  analyzer producing band availability, jamming *suspicion*, and emitter
-  presence, and a **working receive-only sensor adapter**
-  (`kval-spectrum-sensord`) that measures the real RF environment via
-  `iw survey`/`iw scan` and, when an RTL-SDR is attached, `rtl_power`. It
-  refuses to start when no measurement backend exists.
-- **A closed decision loop**: `run_once` now observes, checks clock integrity,
-  senses spectrum, governs power, advances the recovery state machine, fuses
-  modalities with provenance, and ranks profiles — demoting (never promoting)
-  those whose operator-declared spectrum band is contested.
-- **Cross-node fabric**: nodes publish operator-signed spectrum reports; a vault
-  node verifies them against a signed roster and fuses them into a fleet view.
-  Unrostered authors are refused, and reports from an undisciplined clock are
-  excluded from corroboration.
+- **A closed decision loop**: `run_once` observes, checks clock integrity,
+  governs power, forecasts degradation, advances the recovery state machine,
+  fuses modalities with provenance, ranks profiles within their link role, and
+  passes the Safety Shield before acting.
+- **Operator-signed peer identity**: a roster naming every node and its public
+  key, expiring, with key-ID binding. The federated tier admits a contribution
+  only from a node the operator vouched for.
 - **Training corpus exporter**: turns the audit ledger into labelled
   (features, outcome) examples with no leakage, refusing to export from a ledger
   whose hash chain does not verify.
@@ -47,11 +45,9 @@ Implemented production paths:
   latency and loss series, causal attribution for each profile switch (credited
   only if it clears both an effect size and a t statistic), and drift against a
   baseline built from the node's own history.
-- **Real band-plan and catalogue data**: `config/band-plans.json` carries
-  published FCC/ETSI/ITU allocations with per-band sources;
-  `generate_spectrum_policy.py` and `generate_catalog.py` build policies and
-  catalogues from those allocations and from the host's actual NetworkManager
-  connections, so a deployment needs no hand-edited placeholders.
+- **Real catalogue data**: `generate_catalog.py` builds catalogues from the
+  host's actual NetworkManager connections, so a deployment needs no
+  hand-edited placeholders.
 - **Capability leases**: operator-signed, node-bound, single-use, expiring
   authorization for each bounded action, with rollback and post-condition.
 - **Power governance**: signed thermal/battery/watt/duty policy, a real
@@ -86,12 +82,11 @@ Not claimed yet:
   ruleset on the physical node.
 - Power, energy-per-bit, or battery-life figures for any node or sub-node.
 - FHE on the Jetson. Private fleet coordination remains a separate service.
-- Multi-node geolocation (TDOA or RSSI multilateration). The fabric moves and
-  fuses reports, but turning those into a position needs per-node location and
-  calibrated timing; it would be dishonest to claim from occupancy alone.
-- Any cross-node result measured on physically separate hardware. The fabric is
-  verified in software only — signing, roster verification, refusal of
-  unrostered authors, quorum corroboration, and clock-gated correlation.
+- Any RF sensing at all: spectrum occupancy, emitter geolocation, jamming
+  detection, or weather-versus-interference discrimination. Removed, not
+  pending.
+- Any cross-node result measured on physically separate hardware. Peer identity
+  and the federated tier are verified in one process only.
 - A trained model. The corpus exporter now produces the data a model would need;
   training, evaluation, and promotion remain outside this repository.
 
@@ -100,15 +95,15 @@ modules and the capability entry point do not import the Jetson platform gate,
 so the same wheel already serves a sub-node. A test pins that boundary.
 
 There are no simulated telemetry providers or permissive production fallbacks.
-Missing hardware, unsigned policy, missing probes, an absent sensor adapter, or
-failed activation cause a clear rejection.
+Missing hardware, unsigned policy, missing probes, or failed activation cause a
+clear rejection.
 
 ## Scope boundary
 
 Kval is defensive. It has no transmit path, no jamming, no spoofing, no covert
 signalling, and no arbitrary RF control — and no capability lease can authorise
-one. Spectrum sensing is receive-only by construction: an observation that is not
-marked passive is refused. The offensive threats Kval is designed to *withstand*
+one. The node is receive-only by construction — there is no sensing stack left
+to emit from. The offensive threats Kval is designed to *withstand*
 are catalogued in
 [the secure-transport and EW threat model](docs/SECURE_TRANSPORT_AND_EW_THREAT_MODEL.md).
 
@@ -178,36 +173,13 @@ python3 scripts/provision_catalog.py \
 
 ## Provision the optional capability policies
 
-Spectrum sensing, power governance, secure transport, and capability leases are
-each optional and off unless configured. Sign them on the operator machine:
-
-Build the spectrum policy from real published band allocations rather than the
-example template — optionally calibrating thresholds from this host's own radio:
+Power governance, secure transport, and capability leases are each optional and
+off unless configured. Sign them on the operator machine:
 
 ```bash
-python3 scripts/generate_spectrum_policy.py --region US --output spectrum-policy.json
-# or, measuring the actual environment:
-python3 scripts/generate_spectrum_policy.py --region EU \
-  --calibrate-from-host --interface wlan0 --output spectrum-policy.json
-```
-
-Then sign each policy:
-
-```bash
-python3 scripts/provision_policy.py spectrum \
-  --input spectrum-policy.json \
-  --private-key operator.private.pem --public-key operator.public.pem \
-  --output spectrum-policy.signed.json
-
 python3 scripts/provision_policy.py power    --input config/power-policy.template.json    ...
 python3 scripts/provision_policy.py transport --input config/transport-policy.template.json ...
 python3 scripts/provision_policy.py lease    --input lease.body.json                       ...
-```
-
-Start the sensor daemon so `spectrum-scan` has a real measurement source:
-
-```bash
-sudo systemctl enable --now kval-spectrum-sensord    # edit --interface first
 ```
 
 Then point `/etc/kval/node.json` at them — see `config/node.full-example.json`.
@@ -215,7 +187,6 @@ Each capability fails closed when its policy is absent, expired, unsigned, or
 unverifiable:
 
 ```bash
-kval-node spectrum-scan       --config /etc/kval/node.json
 kval-node power-plan          --config /etc/kval/node.json
 kval-node transport-preflight --config /etc/kval/node.json
 kval-node verify-lease        --config /etc/kval/node.json --lease lease.signed.json \
@@ -265,8 +236,6 @@ tests.
 ## Documentation
 
 - [Architecture](docs/ARCHITECTURE.md)
-- [The closed loop and the cross-node fabric](docs/CLOSED_LOOP_AND_FABRIC.md)
-- [Spectrum-sensing fabric](docs/SPECTRUM_SENSING_FABRIC.md)
 - [Low-compute sub-nodes](docs/LOW_COMPUTE_SUBNODE.md)
 - [Learning in autonomous networks — problems first](docs/AUTONOMOUS_NETWORK_LEARNING.md)
 - [Secure transport and the EW threat model](docs/SECURE_TRANSPORT_AND_EW_THREAT_MODEL.md)
