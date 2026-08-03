@@ -2,18 +2,39 @@
 
 ## Fast local loop
 
-1. `TelemetryCollector` obtains interface, NetworkManager, WiFi, cellular, byte
+1. `ClockMonitor` runs first, because it gates everything that compares
+   timestamps. Its verdict travels with the cycle.
+2. `TelemetryCollector` obtains interface, NetworkManager, WiFi, cellular, byte
    counter, and probe measurements from the operating system.
-2. `ProfileOptimizer` removes profiles with missing mandatory evidence and
-   computes a normalized service utility.
+3. `PowerGovernor` bounds power mode and duty against signed policy;
+   `LinkStateMachine` advances link health; `assess_emcon` resolves which link
+   roles a standing emission-control order suppresses.
+4. `ProfileOptimizer` removes profiles with missing mandatory evidence and
+   computes a normalized service utility, **within one link role only**.
    Required 3GPP or SDR standards evidence is part of eligibility, not merely a
    score bonus.
-3. `SafetyShield` checks catalogue signature/expiry, observation freshness,
+5. **`plan_allocation` places each declared flow across slices.** This is the
+   decision the loop exists to make. Ranking still runs, because switching is
+   still how a dead bearer is replaced, but a flow is carried by a *spread* of
+   slices rather than committed to whichever single link ranked highest — and a
+   spread that could not survive losing its largest placement is refused rather
+   than delivered short. See `allocation.py`.
+6. `SafetyShield` checks catalogue signature/expiry, observation freshness,
    profile authorization, confidence, dwell time, and switching rate.
-4. `NetworkManagerExecutor` either records an advisory or activates the exact
+7. `NetworkManagerExecutor` either records an advisory or activates the exact
    approved connection UUID and confirms that it became active.
-5. `AuditLedger` persists input hashes, scores, decision, execution result, and
+8. `AuditLedger` persists input hashes, scores, decision, execution result, and
    previous-record hash.
+
+**What the loop no longer does.** It does not sense the radio spectrum. That
+stack, the cross-node band-report fabric, and the weather-discrimination tier
+built on both were removed: together they outweighed the decision they served
+and never reached a flying node's choice of link. Degradation is detected the
+way the vehicle experiences it — by probing the links themselves.
+
+**What the allocator does not do.** It computes a placement and the reasons for
+it. It does not move packets. Enforcement belongs to a data-plane component
+under an operator-signed lease, and no plan authorises anything on its own.
 
 The service writes its latest bounded result atomically to
 `/run/kval/latest.json`. No raw packets or application payloads enter Kval.

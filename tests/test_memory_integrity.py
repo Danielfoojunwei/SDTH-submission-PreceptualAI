@@ -10,12 +10,13 @@ from __future__ import annotations
 
 import json
 import unittest
-from datetime import timedelta
+from datetime import datetime, timedelta, timezone
 
 from cryptography.hazmat.primitives.asymmetric.ed25519 import Ed25519PrivateKey
 
 from kval_node.memory_integrity import (
     DEFAULT_GROUP_THRESHOLD,
+    DEFAULT_SIMILARITY_THRESHOLD,
     MemoryAuditor,
     MemoryIntegrityError,
     SignedRecord,
@@ -481,3 +482,120 @@ class CadenceSeparatesInjectionFromLinkChangeTests(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class ConvergentInjectionTests(unittest.TestCase):
+    """MemMorph's actual shape: dissimilar records agreeing on one conclusion.
+
+    The templated arm cannot see this and reported a poisoned ledger as
+    trustworthy. The paper's records are "disguised as technical facts,
+    incident reports, and operational policies" — three different kinds, whose
+    force is that they look like independent evidence converging. Mutual
+    similarity is designed out of the attack, so a detector keyed on it is
+    keyed on the wrong signature.
+    """
+
+    def setUp(self) -> None:
+        self.key = Ed25519PrivateKey.generate()
+        self.now = datetime(2026, 8, 3, 12, 0, 0, tzinfo=timezone.utc)
+        self.auditor = MemoryAuditor()
+
+    def record(self, payload, kind, offset):
+        return sign_record(
+            payload, self.key, node_id="node-a", record_type=kind,
+            now=self.now + timedelta(seconds=offset),
+        )
+
+    def history(self, count=12):
+        return [
+            self.record(
+                {"rtt_ms": 40.0 + (i % 3), "loss_percent": 1.0 + (i % 2) * 0.2,
+                 "selected": "link_a", "cycle": i},
+                "decision", i * 30,
+            )
+            for i in range(count)
+        ]
+
+    def memmorph(self, at):
+        # Three deliberately different kinds, sharing no template, all pushing
+        # rtt and loss the same way. This is the paper's construction.
+        return [
+            self.record(
+                {"rtt_ms": 900.0, "loss_percent": 40.0, "source": "telemetry-summary"},
+                "observation", at),
+            self.record(
+                {"rtt_ms": 850.0, "loss_percent": 38.0,
+                 "incident": "repeated timeout on link_a", "operator_note": "seen before"},
+                "escalation", at + 0.2),
+            self.record(
+                {"rtt_ms": 880.0, "loss_percent": 44.0, "recommendation": "prefer link_b",
+                 "rationale": "historical reliability", "author": "ops"},
+                "policy_note", at + 0.4),
+        ]
+
+    def test_dissimilar_records_converging_in_a_burst_are_caught(self) -> None:
+        records = self.history() + self.memmorph(12 * 30 + 1)
+        report = self.auditor.audit(records, self.key.public_key(), node_id="node-a")
+        self.assertFalse(report.trustworthy)
+        kinds = {finding.kind for finding in report.findings}
+        self.assertIn("CONVERGENT_GROUP", kinds)
+        self.assertIn(
+            "DISSIMILAR_RECORDS_PUSH_THE_SAME_CONCLUSION_OFF_THIS_NODE_S_CADENCE",
+            report.reasons,
+        )
+
+    def test_the_injected_records_are_the_ones_named(self) -> None:
+        records = self.history() + self.memmorph(12 * 30 + 1)
+        report = self.auditor.audit(records, self.key.public_key(), node_id="node-a")
+        finding = next(f for f in report.findings if f.kind == "CONVERGENT_GROUP")
+        self.assertEqual(set(finding.record_indices), {12, 13, 14})
+
+    def test_the_injected_records_are_not_similar_to_each_other(self) -> None:
+        # If they were, the templated arm would have caught them and this arm
+        # would be redundant. Pin that they genuinely are not.
+        inject = self.memmorph(0)
+        for i in range(len(inject)):
+            for j in range(i + 1, len(inject)):
+                self.assertLess(
+                    payload_similarity(inject[i].payload, inject[j].payload),
+                    DEFAULT_SIMILARITY_THRESHOLD,
+                )
+
+    def test_genuine_degradation_at_the_node_cadence_is_quiet(self) -> None:
+        # A node whose links really are getting worse produces records that all
+        # deviate the same way. Only the rate separates that from an insertion,
+        # and firing here would make the detector useless in the environment
+        # this system is built for.
+        degrading = [
+            self.record(
+                {"rtt_ms": 40.0 + i * 70, "loss_percent": 1.0 + i * 3.0,
+                 "selected": "link_a", "cycle": i},
+                "decision", i * 30)
+            for i in range(15)
+        ]
+        report = self.auditor.audit(degrading, self.key.public_key(), node_id="node-a")
+        self.assertTrue(report.trustworthy, [f.to_dict() for f in report.findings])
+
+    def test_a_healthy_repeating_node_is_quiet(self) -> None:
+        report = self.auditor.audit(self.history(14), self.key.public_key(), node_id="node-a")
+        self.assertTrue(report.trustworthy, [f.to_dict() for f in report.findings])
+
+    def test_agreement_on_a_single_field_is_not_convergence(self) -> None:
+        # One field agreeing is coincidence: any two records above the median
+        # "agree". The signal is several quantities pointing one way at once.
+        records = self.history() + [
+            self.record({"rtt_ms": 900.0, "source": "telemetry-summary"}, "observation", 361),
+            self.record({"rtt_ms": 850.0, "incident": "timeout", "note": "x"}, "escalation", 361.2),
+            self.record({"rtt_ms": 880.0, "recommendation": "b", "author": "ops"}, "policy_note", 361.4),
+        ]
+        report = self.auditor.audit(records, self.key.public_key(), node_id="node-a")
+        self.assertNotIn("CONVERGENT_GROUP", {f.kind for f in report.findings})
+
+    def test_records_disagreeing_in_direction_are_not_a_group(self) -> None:
+        records = self.history() + [
+            self.record({"rtt_ms": 900.0, "loss_percent": 40.0, "source": "s"}, "observation", 361),
+            self.record({"rtt_ms": 2.0, "loss_percent": 0.01, "incident": "i", "n": "x"}, "escalation", 361.2),
+            self.record({"rtt_ms": 880.0, "loss_percent": 0.02, "rec": "b", "author": "o"}, "policy_note", 361.4),
+        ]
+        report = self.auditor.audit(records, self.key.public_key(), node_id="node-a")
+        self.assertNotIn("CONVERGENT_GROUP", {f.kind for f in report.findings})

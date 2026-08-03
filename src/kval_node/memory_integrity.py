@@ -57,10 +57,19 @@ directions. Records like that are not similar to each other, so
 ``_templated_groups`` never groups them and nothing here fires. What is built
 is keyed on the signature of a weaker, single-style variant.
 
-Closing it needs a second arm keyed on the opposite signature — dissimilar
-records that nonetheless converge on one conclusion — a harder test than
-near-duplication, and not built. Until it is, this is a templated-injection
-detector, not a MemMorph defence.
+``_convergent_groups`` is the second arm, keyed on the opposite signature:
+records *dissimilar* to each other that deviate from the history's median in
+the same direction across several numeric fields at once, written off the
+node's cadence. Deviation is measured in median-absolute-deviation units, not
+standard deviations, because the injected records sit inside the sample whose
+spread is being measured and would inflate the very threshold meant to catch
+them.
+
+Both arms share the cadence gate, and for the same reason: a node whose
+environment genuinely degrades produces many records deviating the same way,
+and only the rate separates that from an insertion. The evasion is therefore
+also shared and equally stated — an attacker who holds the signing key and
+paces the injection to the node's own cadence defeats both.
 
 **Bounded influence.** Even undetected, no small group of records may dominate
 a derived statistic. The influence cap is the same principle the federated
@@ -135,6 +144,20 @@ DEFAULT_CADENCE_FACTOR = 4.0
 #: itself before it counts as foreign. Without this margin the test fires on a
 #: node repeating a decision, which is what a healthy node does all day.
 DEFAULT_NOVELTY_MARGIN = 0.35
+
+#: Fewest numeric fields on which a set of *dissimilar* records must all deviate
+#: the same way before their agreement counts as convergence rather than
+#: coincidence. With one field, any two records that happen to be above the
+#: median "agree"; the whole signal is that independent-looking evidence points
+#: one way across several quantities at once.
+DEFAULT_CONVERGENCE_FIELDS = 2
+
+#: How far from the median a field must sit, in units of the history's own
+#: median absolute deviation, before that record counts as pushing on it.
+#: Robust rather than a standard-deviation multiple, because the injected
+#: records are in the sample whose spread is being measured, and would inflate
+#: the very threshold meant to catch them.
+DEFAULT_CONVERGENCE_DEVIATION_MADS = 3.0
 
 #: How many times a typical record's influence one record may carry before it
 #: is treated as dominating the conclusion. Measured against the *median*
@@ -221,6 +244,26 @@ def verify_record(record: SignedRecord, public_key: Ed25519PublicKey, *, node_id
         raise MemoryIntegrityError("record signature verification failed") from exc
 
 
+def _flatten_payload(payload: dict[str, Any], prefix: str = "") -> dict[str, Any]:
+    """Flatten a payload to dotted keys, keeping values typed.
+
+    ``payload_similarity`` flattens to ``key=value`` *strings* because Jaccard
+    needs set members. The convergence arm needs the numbers themselves, and
+    both arms must read the same surface or a field could be invisible to one
+    and decisive to the other.
+    """
+    items: dict[str, Any] = {}
+    if isinstance(payload, dict):
+        for key, inner in payload.items():
+            items.update(_flatten_payload(inner, f"{prefix}.{key}"))
+    elif isinstance(payload, (list, tuple)):
+        for index, inner in enumerate(payload):
+            items.update(_flatten_payload(inner, f"{prefix}[{index}]"))
+    else:
+        items[prefix] = payload
+    return items
+
+
 def payload_similarity(first: dict[str, Any], second: dict[str, Any]) -> float:
     """Jaccard similarity over flattened key/value pairs.
 
@@ -285,10 +328,16 @@ class MemoryAuditor:
         *,
         group_threshold: int = DEFAULT_GROUP_THRESHOLD,
         similarity_threshold: float = DEFAULT_SIMILARITY_THRESHOLD,
+        convergence_fields: int = DEFAULT_CONVERGENCE_FIELDS,
+        convergence_deviation_mads: float = DEFAULT_CONVERGENCE_DEVIATION_MADS,
         novelty_margin: float = DEFAULT_NOVELTY_MARGIN,
         cadence_factor: float = DEFAULT_CADENCE_FACTOR,
     ) -> None:
         self.group_threshold = max(2, group_threshold)
+        self.convergence_fields = max(1, convergence_fields)
+        self.convergence_deviation_mads = bounded_number(
+            convergence_deviation_mads, "convergence_deviation_mads", 0.0, 100.0
+        )
         self.similarity_threshold = bounded_number(
             similarity_threshold, "similarity_threshold", 0.0, 1.0
         )
@@ -329,6 +378,154 @@ class MemoryAuditor:
         too_fast = internal * self.cadence_factor < cadence
         too_slow = internal > cadence * self.cadence_factor
         return too_fast or too_slow, internal, cadence
+
+    @staticmethod
+    def _numeric_fields(records: Sequence[SignedRecord]) -> dict[str, list[float | None]]:
+        """Numeric payload fields present in enough records to have a median.
+
+        Flattened one level, matching ``payload_similarity``'s view of a record,
+        so the two arms judge the same surface.
+        """
+        columns: dict[str, list[float | None]] = {}
+        names: set[str] = set()
+        for record in records:
+            for key, value in _flatten_payload(record.payload).items():
+                if isinstance(value, bool) or not isinstance(value, (int, float)):
+                    continue
+                if math.isfinite(float(value)):
+                    names.add(key)
+        for name in sorted(names):
+            column: list[float | None] = []
+            for record in records:
+                value = _flatten_payload(record.payload).get(name)
+                if isinstance(value, bool) or not isinstance(value, (int, float)):
+                    column.append(None)
+                elif math.isfinite(float(value)):
+                    column.append(float(value))
+                else:
+                    column.append(None)
+            if sum(1 for item in column if item is not None) >= 3:
+                columns[name] = column
+        return columns
+
+    def _convergent_groups(self, records: Sequence[SignedRecord]) -> list[InjectionFinding]:
+        """Records that do *not* resemble each other yet push the same conclusion.
+
+        This is the arm the templated test cannot cover, and the reason it is
+        needed is that MemMorph's own description is the opposite of a template:
+        three records "disguised as technical facts, incident reports, and
+        operational policies", whose persuasive force comes precisely from
+        looking like independent evidence converging on one answer. Mutual
+        similarity is not merely absent from that attack — it is designed out of
+        it, because three copies of the same claim are less convincing than
+        three different kinds of claim agreeing.
+
+        So the signature inverts. A group qualifies when its members are
+        *dissimilar* to each other, deviate from the history's median in the
+        *same direction* on several numeric fields at once, and were written off
+        the node's own recording cadence. All three are required, and the third
+        carries the same weight it does in the templated arm: a node whose
+        environment genuinely degrades produces many records deviating the same
+        way, and only the rate distinguishes that from an insertion.
+
+        Deviation is measured in median-absolute-deviation units rather than
+        standard deviations because the injected records sit inside the sample
+        whose spread is being measured. A standard deviation would be inflated
+        by the very records the test is looking for.
+        """
+        count = len(records)
+        if count < self.group_threshold + 2:
+            # Needs a surrounding history to have a median and a cadence at all.
+            return []
+
+        columns = self._numeric_fields(records)
+        if not columns:
+            return []
+
+        # Direction of each record's departure from the history's own median,
+        # per field, counted only when the departure is large in robust terms.
+        directions: list[dict[str, int]] = [{} for _ in range(count)]
+        for name, column in columns.items():
+            present = [value for value in column if value is not None]
+            if len(present) < 3:
+                continue
+            median = statistics.median(present)
+            spread = statistics.median([abs(value - median) for value in present])
+            if spread <= 0.0:
+                continue
+            floor = spread * self.convergence_deviation_mads
+            for index, value in enumerate(column):
+                if value is None:
+                    continue
+                delta = value - median
+                if abs(delta) >= floor:
+                    directions[index][name] = 1 if delta > 0 else -1
+
+        candidates = [i for i in range(count) if len(directions[i]) >= self.convergence_fields]
+        if len(candidates) < self.group_threshold:
+            return []
+
+        similarity: dict[tuple[int, int], float] = {}
+        for a_pos, i in enumerate(candidates):
+            for j in candidates[a_pos + 1 :]:
+                similarity[(i, j)] = payload_similarity(records[i].payload, records[j].payload)
+
+        findings: list[InjectionFinding] = []
+        used: set[int] = set()
+        for a_pos, seed in enumerate(candidates):
+            if seed in used:
+                continue
+            members = [seed]
+            for other in candidates[a_pos + 1 :]:
+                if other in used:
+                    continue
+                pair = similarity[(seed, other)]
+                if pair >= self.similarity_threshold:
+                    # Similar records are the *other* arm's business. Letting
+                    # them in here would double-report a template and would let
+                    # a healthy node's repeated decisions form a group.
+                    continue
+                agreed = [
+                    name
+                    for name, sign in directions[seed].items()
+                    if directions[other].get(name) == sign
+                ]
+                if len(agreed) >= self.convergence_fields:
+                    members.append(other)
+            if len(members) < self.group_threshold:
+                continue
+
+            shared = set(directions[members[0]])
+            for index in members[1:]:
+                shared &= {
+                    name for name, sign in directions[index].items()
+                    if directions[members[0]].get(name) == sign
+                }
+            if len(shared) < self.convergence_fields:
+                continue
+
+            outsiders = [index for index in range(count) if index not in members]
+            if not outsiders:
+                continue
+            off_cadence, group_gap, node_gap = self._written_off_the_node_s_cadence(
+                records, members, outsiders
+            )
+            if not off_cadence:
+                continue
+
+            used.update(members)
+            findings.append(
+                InjectionFinding(
+                    kind="CONVERGENT_GROUP",
+                    record_indices=tuple(members),
+                    detail=(
+                        f"{len(members)} mutually dissimilar records agree on "
+                        f"{sorted(shared)} against this history's median, written at "
+                        f"{group_gap:.3f}s spacing against a node cadence of {node_gap:.3f}s"
+                    ),
+                )
+            )
+        return findings
 
     def _templated_groups(self, records: Sequence[SignedRecord]) -> list[InjectionFinding]:
         """Groups of near-duplicate records, unlike the rest of history, written
@@ -434,11 +631,14 @@ class MemoryAuditor:
                 )
 
         findings.extend(self._templated_groups(chronological))
+        findings.extend(self._convergent_groups(chronological))
 
         if any(f.kind == "UNAUTHENTICATED" for f in findings):
             reasons.append("HISTORY_CONTAINS_RECORDS_THIS_NODE_DID_NOT_WRITE")
         if any(f.kind == "TEMPLATED_GROUP" for f in findings):
             reasons.append("A_GROUP_OF_RECORDS_LOOKS_TEMPLATED_AND_FOREIGN_TO_THIS_HISTORY")
+        if any(f.kind == "CONVERGENT_GROUP" for f in findings):
+            reasons.append("DISSIMILAR_RECORDS_PUSH_THE_SAME_CONCLUSION_OFF_THIS_NODE_S_CADENCE")
         if not reasons:
             reasons.append("HISTORY_CONSISTENT_WITH_THIS_NODE_S_OWN_OPERATION")
 

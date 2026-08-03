@@ -69,7 +69,7 @@ citations, h-index 4). Of those 18:
     `threshold_ca.py` implements; the satellite management system itself is out
     of scope.
 
-**MemMorph resolves an earlier ambiguity, and is partly built against.** A prior
+**MemMorph resolves an earlier ambiguity, and is built against on both of its shapes.** A prior
 search could not determine whether its "Bowen Shen" was the same person; his own
 profile confirms it is. Its subject — poisoning an LLM agent's memory to hijack
 its tool use — lands directly on this system, which runs an agent that selects
@@ -340,7 +340,7 @@ compositions, not the individual mechanisms, are where the value is:
 | **Forecast reaches a decision** | INFOCOM 2024 → `optimizer.py` | A forecast that reaches no decision is a report. A predicted degradation now demotes a link before it fails — and may only demote, never promote, with a weaker penalty than measured sensing, so a prediction can break a tie but never outrank evidence. |
 | **Localisation feeds tracking** | Sensors 2018 → ledger → WPC 2024 | One paper gives a point, the other needs a history of points. Accepted estimates are recorded; refusals are not, so "we could not tell" can never become a place the emitter has been. The place radius is tied to localisation uncertainty rather than guessed. |
 | **Detection is a fleet property** | ICC 2024 + TVT 2022 cohorts + TWC 2025 reputation | Per-node detectors say what is anomalous *for that node*; cohort membership decides whether their agreement means anything; reputation decides whether the agreeing nodes carry weight. |
-| **Integrity guards learning** | MemMorph → `analysis.py` | Baselines derive from the ledger, so injected records shift what "normal" means. A baseline is built only from history that passes the memory audit and in which no single record carries disproportionate weight. **The audit catches templated injection, not MemMorph's multi-style form** — three records disguised as a technical fact, an incident report and a policy are not similar to each other and never group. Bounded influence still limits what any one of them can move. |
+| **Integrity guards learning** | MemMorph → `analysis.py` | Baselines derive from the ledger, so injected records shift what "normal" means. A baseline is built only from history that passes the memory audit and in which no single record carries disproportionate weight. The audit has two arms: templated injection (records similar to each other, unlike the history) and **convergent injection** — records *dissimilar* to each other that deviate from the history's median in the same direction across several fields, which is MemMorph's actual construction, "technical facts, incident reports, and operational policies" agreeing. Both share a cadence gate, and both are defeated by an attacker who holds the signing key and paces the injection to the node's own rate. |
 
 ### A fail-open found by building the composition
 
