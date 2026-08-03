@@ -15,8 +15,20 @@ public keys had to be hand-authored with PEM blocks pasted into JSON.
 ## What this proves, and what it does not
 
 It proves that two nodes on separate machines exchange signed spectrum reports
-over a real network, that each verifies the other against an operator-signed
-roster, and that one node's measurement changes the other node's decision.
+over a real network, and that each verifies the other against an operator-signed
+roster — accepting a genuine report and refusing a tampered, replayed,
+off-roster or wrong-key one.
+
+It does **not** prove that one node's measurement changes the other node's
+decision, because no code path does that. The autonomous loop runs on
+`FlightServices`, which has no access to the fabric at all: `aggregate_fleet` is
+reachable only from the CLI, the `degraded_band_ids` that reach the optimizer
+come solely from this node's own `sense_spectrum`, and `FleetView`'s
+`fleet_clear_band_ids` has no production consumer. A peer's measurement reaches
+an operator's terminal and the JSIR interference report. It does not reach link
+selection. Wiring it there is a design decision — a peer report is weaker
+evidence than a live probe and would have to enter demote-only, below measured
+sensing — not a missing call.
 
 It does **not** prove RF performance. Occupancy comes from `iw dev <iface>
 survey dump` — the kernel's channel survey on the onboard Wi-Fi radio, which is
@@ -129,22 +141,31 @@ Nothing here fabricates evidence. The genuine report carries whatever the peer's
 sensor actually produced. What is constructed is the attacks, which is the one
 thing a security test has to manufacture to test at all.
 
-## 5. Show the measurement changing the decision
+## 5. Show the fused view, and where it stops
 
-The exchange is the mechanism; the point is the effect. With both nodes sensing,
-put a load on one band near node 02 only, and watch node 01's ranking move
-without node 01 having measured that band itself.
+With both nodes sensing, put a load on one band near node 02 only and run
+`kval-node fabric-view` on node 01. The band appears contested in the fused
+view, corroborated by a node that node 01 never measured for itself.
 
-Two properties to demonstrate deliberately, because both are counter-intuitive
-and both are load-bearing:
+Then look at node 01's `latest.json` and see that its **ranking has not moved**.
+That is not a misconfiguration to debug — it is where the fabric currently ends.
+The fused view is an operator artefact; the loop ranks on local sensing only.
+Demonstrate the stopping point deliberately, because a reader who assumes
+otherwise will believe the fleet is doing something it is not.
 
-- **Sensing demotes, never promotes.** A peer reporting a band clear does not
-  raise a profile's score. Only this node's own live probe can do that, so a
-  fleet cannot be talked into a link by peers alone.
+One property that *is* wired, and is counter-intuitive enough to show:
+
 - **A blind fleet reports `unknown`, not `clear`.** Stop sensing on both nodes
   and the fused belief goes to total ignorance. Vote-counting would have
   reported quiet, which is the defect Dempster-Shafer fusion was brought in to
   fix.
+
+And one that governs any future wiring:
+
+- **Sensing demotes, never promotes.** A band reported clear does not raise a
+  profile's score; only this node's own live probe can. So if peer evidence is
+  ever admitted to the decision, a fleet still cannot be talked onto a link by
+  peers alone.
 
 ## What remains open after this runs
 

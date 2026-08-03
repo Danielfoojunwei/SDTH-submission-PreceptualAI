@@ -31,6 +31,7 @@ mean a code path exists that does not do what its name says.
 from __future__ import annotations
 
 import ast
+import builtins
 import collections
 import pathlib
 import re
@@ -210,10 +211,96 @@ def check_role_is_always_declared() -> list[str]:
     return failures
 
 
+def check_flight_tier_is_self_contained() -> list[str]:
+    """Every member ``flight.py`` uses must exist on the class the loop runs.
+
+    ``service.py`` instantiates ``FlightServices``, not ``CapabilityServices``.
+    When the flight/operator split moved method *bodies* into the base class
+    but left the members those bodies call behind in the subclass, three of the
+    five capabilities the loop calls broke: ``emcon_posture`` degraded to
+    permanently-unavailable so a signed EMCON SILENT order stopped suppressing
+    any link role, ``plan_power`` raised ``NameError`` every cycle, and
+    ``c2_status_from_telemetry`` raised ``AttributeError``.
+
+    Neither the import-graph walk nor the 1,122 tests caught it: the edges were
+    all present, and no test ever instantiated ``FlightServices``. This is a
+    static check because the failure is static — a base class cannot borrow
+    from its subclass, and the loop never constructs the subclass.
+    """
+    module = ast.parse((PACKAGE / "flight.py").read_text(encoding="utf-8"))
+    provided: set[str] = set()
+    module_names: set[str] = set()
+    flight_class: ast.ClassDef | None = None
+    for node in module.body:
+        if isinstance(node, ast.ClassDef):
+            module_names.add(node.name)
+            if node.name == "FlightServices":
+                flight_class = node
+        elif isinstance(node, ast.FunctionDef):
+            module_names.add(node.name)
+        elif isinstance(node, (ast.Import, ast.ImportFrom)):
+            for alias in node.names:
+                module_names.add(alias.asname or alias.name.split(".")[0])
+        elif isinstance(node, ast.Assign):
+            for target in node.targets:
+                if isinstance(target, ast.Name):
+                    module_names.add(target.id)
+    if flight_class is None:
+        return ["flight.py no longer defines FlightServices"]
+    for item in flight_class.body:
+        if isinstance(item, (ast.FunctionDef, ast.AsyncFunctionDef)):
+            provided.add(item.name)
+        elif isinstance(item, ast.AnnAssign) and isinstance(item.target, ast.Name):
+            provided.add(item.target.id)
+
+    # Instance attributes bound anywhere in the class — ``self.config`` is set
+    # in ``__init__`` and read everywhere, so this must be class-wide rather
+    # than per-method or every reader looks like a defect.
+    provided |= {
+        node.attr
+        for node in ast.walk(flight_class)
+        if isinstance(node, ast.Attribute)
+        and isinstance(node.value, ast.Name)
+        and node.value.id == "self"
+        and isinstance(node.ctx, ast.Store)
+    }
+
+    failures: list[str] = []
+    for item in flight_class.body:
+        if not isinstance(item, (ast.FunctionDef, ast.AsyncFunctionDef)):
+            continue
+        for node in ast.walk(item):
+            if (
+                isinstance(node, ast.Attribute)
+                and isinstance(node.value, ast.Name)
+                and node.value.id == "self"
+                and isinstance(node.ctx, ast.Load)
+                and node.attr not in provided
+            ):
+                failures.append(
+                    f"flight.py: FlightServices.{item.name} uses self.{node.attr}, "
+                    "which FlightServices does not define — the loop constructs "
+                    "FlightServices, so this raises AttributeError in flight"
+                )
+            elif (
+                isinstance(node, ast.Call)
+                and isinstance(node.func, ast.Name)
+                and node.func.id not in module_names
+                and not hasattr(builtins, node.func.id)
+            ):
+                failures.append(
+                    f"flight.py: FlightServices.{item.name} calls {node.func.id}(), "
+                    "which is not defined or imported in flight.py — this raises "
+                    "NameError in flight"
+                )
+    return sorted(set(failures))
+
+
 def main() -> int:
     failures = (
         check_reachability()
         + check_capability_reachability()
+        + check_flight_tier_is_self_contained()
         + check_role_is_always_declared()
         + check_markers(INCOMPLETE_MARKERS, "unfinished work in production code")
         + check_markers(SIMULATION_MARKERS, "simulated evidence in production code")

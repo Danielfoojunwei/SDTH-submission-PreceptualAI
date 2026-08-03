@@ -504,3 +504,67 @@ class GrantSerialisationTests(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class FlightTierSelfContainmentTests(unittest.TestCase):
+    """The loop constructs ``FlightServices``; its methods must work on it.
+
+    The flight/operator split moved ``emcon_posture``, ``plan_power`` and
+    ``c2_status_from_telemetry`` into ``FlightServices`` but left four members
+    they call behind in ``CapabilityServices``. A base class cannot borrow from
+    its subclass, so all three broke in flight while every static check stayed
+    green:
+
+    * ``emcon_posture`` caught its own ``AttributeError`` and returned
+      ``available: False``, which ``_suppressed_roles`` treats as "no order" —
+      a signed EMCON SILENT order stopped suppressing any link role.
+    * ``plan_power`` raised ``NameError`` every cycle, so power governance was
+      permanently unavailable and ``power_duty_limit`` recorded 1.0.
+    * ``c2_status_from_telemetry`` raised ``AttributeError``.
+
+    Invisible because no test had ever instantiated ``FlightServices`` — the
+    suite exercised only the subclass the CLI builds — and because the
+    reachability guard checks that names have callers, never that a body
+    resolves.
+    """
+
+    def test_flight_services_defines_every_member_its_methods_call(self) -> None:
+        from kval_node.flight import FlightServices
+
+        for member in (
+            "load_emcon_order",
+            "_emcon_or_none",
+            "c2_status",
+            "_catalog_profiles",
+            "_c2_monitor",
+        ):
+            with self.subTest(member=member):
+                self.assertTrue(
+                    hasattr(FlightServices, member),
+                    f"FlightServices.{member} is missing: the loop constructs "
+                    "FlightServices, so calling it raises AttributeError in flight",
+                )
+
+    def test_tegrastats_reader_resolves_in_the_flight_module(self) -> None:
+        import kval_node.flight as flight
+
+        self.assertTrue(
+            hasattr(flight, "read_tegrastats_sample"),
+            "plan_power calls read_tegrastats_sample() as a bare global; if it is "
+            "not in flight.py's namespace the loop raises NameError every cycle",
+        )
+
+    def test_emcon_posture_reaches_the_order_loader_on_the_flight_tier(self) -> None:
+        from kval_node.flight import FlightServices
+
+        services = FlightServices.__new__(FlightServices)
+        services.config = SimpleNamespace(emcon_order_path=None)
+        posture = services.emcon_posture(now=NOW)
+        # No order configured is UNRESTRICTED and available. The regression
+        # returned available=False with an AttributeError in the reason, which
+        # _suppressed_roles cannot distinguish from "no order provisioned".
+        self.assertTrue(
+            posture.get("available"),
+            f"emcon_posture degraded on the flight tier: {posture.get('reason')!r}",
+        )
+        self.assertNotIn("attribute", str(posture.get("reason", "")).lower())

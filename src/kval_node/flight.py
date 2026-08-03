@@ -19,12 +19,18 @@ past it runs when an operator asks, on a machine where a person is watching.
 from __future__ import annotations
 
 import json
+import subprocess
 from datetime import datetime
 from pathlib import Path
 from typing import Any
 
 from .audit import AuditLedger
-from .c2link import C2Budget, C2LinkMonitor, DirectionalHealth
+from .c2link import (
+    C2Budget,
+    C2LinkMonitor,
+    DirectionalHealth,
+    InteroperabilityDeclaration,
+)
 from .config import NodeConfig
 from .dataset import FEATURE_NAMES, CorpusExporter, DatasetError
 from .emcon import EmconOrder, assess_emcon
@@ -37,6 +43,7 @@ from .signing import (
     SignaturePolicy,
     load_lms_public_key,
     load_public_key,
+    load_verified_catalog,
     verify_document_agile,
 )
 from .spectrum import (
@@ -264,6 +271,26 @@ class FlightServices:
     # --- emitter tracking ------------------------------------------------------
 
 
+    def load_emcon_order(self) -> EmconOrder | None:
+        """Read the standing emission-control order, if the operator signed one.
+
+        Signed, because an unauthenticated EMCON order is a denial-of-service
+        primitive: anyone who can assert "you are silent" suppresses this
+        platform's lost-link response for as long as they like.
+        """
+        if self.config.emcon_order_path is None:
+            return None
+        payload, _hash = self._verify_document(
+            self.config.emcon_order_path, expected_type=EMCON_DOCUMENT_TYPE
+        )
+        return EmconOrder.from_dict(payload)
+
+    def _emcon_or_none(self) -> EmconOrder | None:
+        try:
+            return self.load_emcon_order()
+        except Exception:
+            return None
+
     def emcon_posture(self, *, now: datetime | None = None) -> dict[str, Any]:
         """Where this platform sits on the emission-control spectrum."""
         try:
@@ -280,6 +307,67 @@ class FlightServices:
         result["available"] = True
         return result
 
+
+    def _catalog_profiles(self):
+        try:
+            catalog = load_verified_catalog(
+                self.config.catalog_path, self.config.catalog_public_key_path
+            )
+        except Exception:  # noqa: BLE001 - an unverifiable catalogue declares nothing
+            return ()
+        return catalog.profiles
+
+    def _c2_monitor(self, budget: C2Budget) -> C2LinkMonitor:
+        # One monitor per process: the contingency timers are the mechanism,
+        # and a fresh monitor each cycle would never accumulate elapsed time.
+        existing = getattr(self, "_c2_monitor_instance", None)
+        if existing is None or existing.budget != budget:
+            existing = C2LinkMonitor(budget)
+            self._c2_monitor_instance = existing
+        return existing
+
+    def c2_status(
+        self,
+        *,
+        command_path: DirectionalHealth,
+        return_path: DirectionalHealth,
+        now: datetime | None = None,
+    ) -> dict[str, Any]:
+        """Assess the command link and declare the pre-planned contingency.
+
+        The emission posture is consulted first, and only ever to explain a
+        dark *return* path. A missing command path is a lost link whatever the
+        EMCON state, because nothing about a silence order stops an operator
+        transmitting to the vehicle.
+        """
+        if self.config.c2_budget_path is None:
+            return _unavailable(
+                "no C2 budget is provisioned; a command link with no declared budget "
+                "and no pre-planned contingency cannot be assessed"
+            )
+        try:
+            payload, budget_hash = self._verify_document(
+                self.config.c2_budget_path, expected_type=C2_DOCUMENT_TYPE
+            )
+            budget = C2Budget.from_dict(payload)
+        except Exception as exc:
+            return {"available": False, "reason": f"C2 budget invalid: {exc}"}
+
+        posture = assess_emcon(self._emcon_or_none(), now=now)
+        monitor = self._c2_monitor(budget)
+        assessment = monitor.observe(
+            command_path=command_path,
+            return_path=return_path,
+            now=now or utc_now(),
+            emission_silence_commanded=posture.silence_commanded(),
+        )
+        result = assessment.to_dict()
+        result["available"] = True
+        result["budget"] = budget.to_dict()
+        result["budget_hash"] = budget_hash
+        result["emcon"] = posture.to_dict()
+        result["interoperability"] = InteroperabilityDeclaration().to_dict()
+        return result
 
     def c2_status_from_telemetry(
         self, snapshot: TelemetrySnapshot, *, now: datetime | None = None
@@ -319,3 +407,70 @@ class FlightServices:
         return self.c2_status(command_path=health, return_path=health, now=current)
 
 
+def read_tegrastats_sample(*, timeout_seconds: float = 3.0) -> str | None:
+    """Read a single ``tegrastats`` sample, or ``None`` if it cannot be read.
+
+    ``tegrastats`` streams forever, so we start it at a 1 s interval, take the
+    first complete line, and terminate it. Any failure (missing binary, no
+    output, permission) fails closed to ``None``.
+    """
+    try:
+        process = subprocess.Popen(
+            ["tegrastats", "--interval", "1000"],
+            stdout=subprocess.PIPE,
+            stderr=subprocess.DEVNULL,
+            text=True,
+        )
+    except (FileNotFoundError, OSError):
+        return None
+    try:
+        line = _read_line_with_timeout(process, timeout_seconds)
+        return (line.strip() or None) if line else None
+    finally:
+        process.terminate()
+        try:
+            process.wait(timeout=2.0)
+        except subprocess.TimeoutExpired:
+            process.kill()
+            process.wait(timeout=2.0)
+        if process.stdout is not None:
+            process.stdout.close()
+
+
+def _read_line_with_timeout(process: "subprocess.Popen[str]", timeout_seconds: float) -> str | None:
+    """Read one complete line within a real deadline.
+
+    ``select`` only reports that *some* bytes are ready; a blocking
+    ``readline()`` afterwards can still hang on a partial line. Read
+    byte-at-a-time against a monotonic deadline so the timeout is genuinely
+    enforced.
+    """
+    import os
+    import selectors
+    import time
+
+    stream = process.stdout
+    if stream is None:
+        return None
+    deadline = time.monotonic() + timeout_seconds
+    selector = selectors.DefaultSelector()
+    try:
+        selector.register(stream, selectors.EVENT_READ)
+    except (ValueError, OSError):
+        return None
+    buffer: list[str] = []
+    try:
+        while True:
+            remaining = deadline - time.monotonic()
+            if remaining <= 0:
+                return None
+            if not selector.select(remaining):
+                return None
+            chunk = os.read(stream.fileno(), 4096).decode("utf-8", errors="replace")
+            if not chunk:
+                return "".join(buffer) or None
+            buffer.append(chunk)
+            if "\n" in chunk:
+                return "".join(buffer).split("\n", 1)[0]
+    finally:
+        selector.close()

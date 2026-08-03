@@ -221,10 +221,12 @@ class ProfileOptimizer:
     ) -> Recommendation:
         """Rank approved profiles.
 
-        ``degraded_band_ids`` names spectrum bands currently showing corroborated
-        interference. A profile that declared one of those bands in the signed
-        catalogue is demoted; profiles that declared no bands are unaffected, so
-        a node without spectrum sensing behaves exactly as before.
+        ``degraded_band_ids`` names spectrum bands this node's own sensing found
+        contested. Not corroborated: the loop passes the result of its local
+        ``sense_spectrum`` only, and no peer report reaches this parameter. A
+        profile that declared one of those bands in the signed catalogue is
+        demoted; profiles that declared no bands are unaffected, so a node
+        without spectrum sensing behaves exactly as before.
 
         ``forecast_degrading_profiles`` names links a per-flow forecast expects
         to worsen. Both inputs may only **demote**. Neither may promote, and the

@@ -971,67 +971,8 @@ class CapabilityServices(FlightServices):
 
     # --- uncrewed-platform command link -------------------------------------------
 
-    def load_emcon_order(self) -> EmconOrder | None:
-        """Read the standing emission-control order, if the operator signed one.
 
-        Signed, because an unauthenticated EMCON order is a denial-of-service
-        primitive: anyone who can assert "you are silent" suppresses this
-        platform's lost-link response for as long as they like.
-        """
-        if self.config.emcon_order_path is None:
-            return None
-        payload, _hash = self._verify_document(self.config.emcon_order_path, expected_type=EMCON_DOCUMENT_TYPE)
-        return EmconOrder.from_dict(payload)
 
-    def c2_status(
-        self,
-        *,
-        command_path: DirectionalHealth,
-        return_path: DirectionalHealth,
-        now: datetime | None = None,
-    ) -> dict[str, Any]:
-        """Assess the command link and declare the pre-planned contingency.
-
-        The emission posture is consulted first, and only ever to explain a
-        dark *return* path. A missing command path is a lost link whatever the
-        EMCON state, because nothing about a silence order stops an operator
-        transmitting to the vehicle.
-        """
-        if self.config.c2_budget_path is None:
-            return _unavailable(
-                "no C2 budget is provisioned; a command link with no declared budget "
-                "and no pre-planned contingency cannot be assessed"
-            )
-        try:
-            payload, budget_hash = self._verify_document(self.config.c2_budget_path, expected_type=C2_DOCUMENT_TYPE)
-            budget = C2Budget.from_dict(payload)
-        except Exception as exc:
-            return {"available": False, "reason": f"C2 budget invalid: {exc}"}
-
-        posture = assess_emcon(self._emcon_or_none(), now=now)
-        monitor = self._c2_monitor(budget)
-        assessment = monitor.observe(
-            command_path=command_path,
-            return_path=return_path,
-            now=now or utc_now(),
-            emission_silence_commanded=posture.silence_commanded(),
-        )
-        result = assessment.to_dict()
-        result["available"] = True
-        result["budget"] = budget.to_dict()
-        result["budget_hash"] = budget_hash
-        result["emcon"] = posture.to_dict()
-        result["interoperability"] = InteroperabilityDeclaration().to_dict()
-        return result
-
-    def _catalog_profiles(self):
-        try:
-            catalog = load_verified_catalog(
-                self.config.catalog_path, self.config.catalog_public_key_path
-            )
-        except Exception:  # noqa: BLE001 - an unverifiable catalogue declares nothing
-            return ()
-        return catalog.profiles
 
     def renew_grant_from_files(
         self, grant_path: Path, attestation_paths: Sequence[Path], *, extend_seconds: float
@@ -1051,20 +992,7 @@ class CapabilityServices(FlightServices):
             new_expiry=grant.expires_at + timedelta(seconds=extend_seconds),
         )
 
-    def _emcon_or_none(self) -> EmconOrder | None:
-        try:
-            return self.load_emcon_order()
-        except Exception:
-            return None
 
-    def _c2_monitor(self, budget: C2Budget) -> C2LinkMonitor:
-        # One monitor per process: the contingency timers are the mechanism,
-        # and a fresh monitor each cycle would never accumulate elapsed time.
-        existing = getattr(self, "_c2_monitor_instance", None)
-        if existing is None or existing.budget != budget:
-            existing = C2LinkMonitor(budget)
-            self._c2_monitor_instance = existing
-        return existing
 
     def report_interference(
         self, band_id: str, *, victim_role: str = "payload", now: datetime | None = None
