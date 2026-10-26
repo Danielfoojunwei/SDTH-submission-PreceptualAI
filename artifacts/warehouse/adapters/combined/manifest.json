@@ -1,0 +1,15 @@
+{
+  "schema": "wirelessjev.readout.v1",
+  "base": {
+    "repo": "vllm-sr/d3-lite",
+    "revision": "03560c26f5199c3c04129a2ccb38960c913635e0"
+  },
+  "task": "fleet+warehouse/option_wise",
+  "weights_sha256": "37fe32698220c685be588000e6e92c848c33807d839525c376f8023287510604",
+  "dataset_sha256": "567502595b4718db8f24d76bf710d1dfd27d9070272fa131a2444f2e15986191",
+  "backbone_updated": false,
+  "teacher": "numerical oracle (no language-model teacher)",
+  "val_kl_before": 1.2163081960036204,
+  "val_kl_after": 0.3008586315581432,
+  "deployment_approved": false
+}

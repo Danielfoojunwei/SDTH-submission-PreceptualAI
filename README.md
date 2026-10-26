@@ -27,6 +27,32 @@ Every car is the same hardware as the existing SmartCar (`src/wirelessjev/hardwa
 
 How each Bowen Shen / Feng Li / Kwok-Yan Lam paper is used is in [docs/PAPER_MAP.md](docs/PAPER_MAP.md).
 
+## 100-robot AGV/AMR warehouse
+`twin/warehouse.py`:
+- 120 × 80 m racked hall, with rack loss per row crossed;
+- 16 dual-band ceiling AP sites on a fixed customer channel plan;
+- scanner-occupied channels;
+- 100 route-planned AMRs on the same SmartCar hardware.
+
+Plans are scored over the robots' planned positions for the next 20 s.
+
+```bash
+~/.local/bin/uv run python -m wirelessjev.bench_warehouse --scenes 50 --out artifacts/warehouse
+```
+```bash
+~/.local/bin/uv run python -m wirelessjev.closedloop --warehouse --total 600 --adapter artifacts/warehouse/adapters/warehouse --out artifacts/closedloop_warehouse.json
+```
+
+## Studio (front end)
+A static app in `studio/` that shows only the exported artifacts. Its sections are overview, fleet map replay, decisions, evidence, swarm & trust, execution, research map, and hardware & data.
+```bash
+~/.local/bin/uv run python -m wirelessjev.studio_data
+```
+```bash
+python3 -m http.server 8766 --bind 127.0.0.1 --directory studio
+```
+Then open http://localhost:8766.
+
 ## Run
 ```bash
 ~/.local/bin/uv run pytest -q tests

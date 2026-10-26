@@ -51,8 +51,9 @@ function overview() {
     k.push(kpi("Intent-flip (distilled)", pct(t.fleet_distilled.intent_flip.directionally_correct_flips), "choice changes the right way when only the mission text changes"));
   }
   if (w) {
-    const c = w.combined_on_warehouse || w.distilled_warehouse;
-    k.push(kpi("100-robot regret · best adapter", fmt(c.jev_regret), `MILP ${fmt(w.zero_shot_single_choice.baseline_milp_regret)} · legacy ${fmt(w.zero_shot_single_choice.baseline_legacy_regret)}`, "good"));
+    const cands = [["warehouse", w.distilled_warehouse], ["combined", w.combined_on_warehouse]].filter((x) => x[1]);
+    const [name, c] = cands.reduce((a, b) => (b[1].jev_regret < a[1].jev_regret ? b : a));
+    k.push(kpi(`100-robot regret · ${name} adapter`, fmt(c.jev_regret), `MILP ${fmt(w.zero_shot_single_choice.baseline_milp_regret)} · legacy ${fmt(w.zero_shot_single_choice.baseline_legacy_regret)}`, "good"));
   } else k.push(kpi("100-robot benchmark", "pending", "run bench_warehouse"));
   if (cl) k.push(kpi("10-car closed loop utility", fmt(cl.summary.wirelessjev.mean_utility, 2), `MILP ${fmt(cl.summary.milp.mean_utility, 2)} · legacy ${fmt(cl.summary.legacy.mean_utility, 2)}`));
   return `<h1>WirelessJEV workspace</h1>
@@ -229,8 +230,9 @@ function evidencePage() {
     const z = w.zero_shot_single_choice;
     const rows = [regretRows(z, "zero-shot single choice"), regretRows(w.zero_shot_optionwise, "zero-shot option-wise")];
     if (w.transfer_10car_adapter) rows.push(regretRows(w.transfer_10car_adapter, "10-car adapter, unchanged (transfer)"));
-    rows.push(regretRows(w.distilled_warehouse, "warehouse-distilled adapter"));
-    if (w.combined_on_warehouse) rows.push(regretRows(w.combined_on_warehouse, "combined adapter (both sites)", true));
+    const best = Math.min(w.distilled_warehouse.jev_regret, w.combined_on_warehouse?.jev_regret ?? Infinity);
+    rows.push(regretRows(w.distilled_warehouse, "warehouse-distilled adapter", w.distilled_warehouse.jev_regret === best));
+    if (w.combined_on_warehouse) rows.push(regretRows(w.combined_on_warehouse, "combined adapter (both sites)", w.combined_on_warehouse.jev_regret === best));
     ["milp", "legacy", "local_greedy", "coloring"].forEach((b) => rows.push([esc("Baseline: " + b), fmt(z[`baseline_${b}_regret`]), "—", "—", z.n_test_cases]));
     s += `<div class="card" style="margin-top:16px"><h3>100-robot warehouse · ${w.n_cases} decisions · route-aware oracle</h3><div class="sub">decision latency ${(w.latency_ms.optionwise_mean / 1000).toFixed(1)} s mean on ${esc(w.latency_ms.device)}</div>${table(["Policy", "Mean regret", "Top-1", "DEFER", "n"], rows)}${w.combined_on_10car ? `<p class="note">The combined adapter on the 10-car test split: regret ${fmt(w.combined_on_10car.jev_regret)}.</p>` : ""}</div>`;
   } else s += missing("100-robot warehouse benchmark", "uv run python -m wirelessjev.bench_warehouse --scenes 50");
@@ -308,7 +310,7 @@ document.getElementById("theme").onclick = () => {
   route();
 };
 
-fetch("data/bundle.json").then((r) => { if (!r.ok) throw new Error(`bundle.json: HTTP ${r.status}`); return r.json(); }).then((b) => {
+fetch("data/bundle.json", { cache: "no-store" }).then((r) => { if (!r.ok) throw new Error(`bundle.json: HTTP ${r.status}`); return r.json(); }).then((b) => {
   B = b;
   window.addEventListener("hashchange", route);
   route();
