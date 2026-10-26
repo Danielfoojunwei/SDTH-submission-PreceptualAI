@@ -169,7 +169,7 @@ function mountMap(runs, policy) {
   btn.onclick = () => {
     if (player) { clearInterval(player); player = null; btn.textContent = "▶ Play"; return; }
     btn.textContent = "❚❚ Pause";
-    player = setInterval(() => { k = (k + 1) % run.frames.length; draw(); }, 350);
+    player = setInterval(() => { k = (k + 1) % run.frames.length; draw(); }, matchMedia("(prefers-reduced-motion: reduce)").matches ? 900 : 350);
   };
   draw();
 }
@@ -310,7 +310,11 @@ document.getElementById("theme").onclick = () => {
   route();
 };
 
-fetch("data/bundle.json", { cache: "no-store" }).then((r) => { if (!r.ok) throw new Error(`bundle.json: HTTP ${r.status}`); return r.json(); }).then((b) => {
+const embedded = document.getElementById("bundle");
+const loadBundle = embedded
+  ? Promise.resolve().then(() => JSON.parse(embedded.textContent))
+  : fetch("data/bundle.json", { cache: "no-store" }).then((r) => { if (!r.ok) throw new Error(`bundle.json: HTTP ${r.status}`); return r.json(); });
+loadBundle.then((b) => {
   B = b;
   window.addEventListener("hashchange", route);
   route();
