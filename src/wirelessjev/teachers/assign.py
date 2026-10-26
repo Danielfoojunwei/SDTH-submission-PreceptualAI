@@ -130,27 +130,57 @@ def coloring_assignment(scene: Scene) -> dict[str, str]:
     return out
 
 
+def troubled_cars(scene: Scene, assoc: dict[str, str]) -> list[str]:
+    """Robots worth moving: under-served, weak, on a protected channel, or in
+    an overloaded contention domain."""
+    channels = _channels(scene)
+    ev = evaluate(scene, {"assoc": assoc, "channels": channels})
+    domains = scene.domains(channels)
+    hot = {ap for d, members in enumerate(domains) if ev.domain_load[d] > 0.9
+           for ap in members}
+    r = scene.radio()
+    out = []
+    for car in scene.cars:
+        ap_id = assoc[car.car_id]
+        weak = r.dl[r.car_index[car.car_id], r.ap_index[ap_id]] < -72.0
+        prot = scene.occupancy(scene.ap(ap_id), channels) > 0
+        if ev.satisfaction[car.car_id] < 0.98 or weak or prot or ap_id in hot:
+            out.append(car.car_id)
+    return out
+
+
 def local_search(scene: Scene, mission: Mission, start: dict[str, str],
-                 max_sweeps: int = 6) -> dict[str, str]:
+                 max_sweeps: int = 6, scorer=None, max_bss: int | None = None,
+                 focus: list[str] | None = None) -> dict[str, str]:
+    """First-improvement single-move hill climbing on the exact evaluator.
+
+    For large fleets pass focus=troubled_cars(...) and max_bss=4: only those
+    robots move, each among its strongest BSSIDs. scorer(assoc) defaults to
+    the snapshot mission utility; pass a horizon scorer for planned routes.
+    """
     channels = _channels(scene)
     n = len(scene.cars)
     current = dict(start)
-
-    def score(assoc):
-        return mission_utility(evaluate(scene, {"assoc": assoc,
-                                                "channels": channels}),
-                               mission, n)
-
-    best = score(current)
+    if scorer is None:
+        def scorer(assoc):
+            return mission_utility(evaluate(scene, {"assoc": assoc,
+                                                    "channels": channels}),
+                                   mission, n)
+    movable = [scene.car(c) for c in focus] if focus is not None else scene.cars
+    choices = {}
+    for car in movable:
+        vis = [ap.ap_id for ap, _ in scene.visible_aps(car)]
+        choices[car.car_id] = vis[:max_bss] if max_bss else vis
+    best = scorer(current)
     for _ in range(max_sweeps):
         improved = False
-        for car in scene.cars:
-            for ap_id in _visible_ids(scene, car):
+        for car in movable:
+            for ap_id in choices[car.car_id]:
                 if ap_id == current[car.car_id]:
                     continue
                 trial = dict(current)
                 trial[car.car_id] = ap_id
-                s = score(trial)
+                s = scorer(trial)
                 if s > best + 1e-9:
                     best, current, improved = s, trial, True
         if not improved:

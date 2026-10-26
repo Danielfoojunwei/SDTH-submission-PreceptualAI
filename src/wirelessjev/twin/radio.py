@@ -117,6 +117,34 @@ class AP:
     allowed_channels: tuple[int, ...] = ()
 
 
+class RadioCache:
+    """Per-snapshot propagation matrices (cars x BSSs, BSS x BSS)."""
+
+    def __init__(self, scene: "Scene"):
+        self.car_ids = [c.car_id for c in scene.cars]
+        self.ap_ids = [a.ap_id for a in scene.aps]
+        self.car_index = {c: i for i, c in enumerate(self.car_ids)}
+        self.ap_index = {a: j for j, a in enumerate(self.ap_ids)}
+        xs = np.array([c.x for c in scene.cars], dtype=float)
+        ys = np.array([c.y for c in scene.cars], dtype=float)
+        ax = np.array([a.x for a in scene.aps], dtype=float)
+        ay = np.array([a.y for a in scene.aps], dtype=float)
+        self.ap_tx = np.array([a.tx_power_dbm for a in scene.aps], dtype=float)
+        self.car_tx = np.array([c.tx_power_dbm for c in scene.cars], dtype=float)
+        self.band = np.array([a.band for a in scene.aps])
+        n, m = len(xs), len(ax)
+        pl = np.empty((n, m))
+        apap = np.empty((m, m))
+        for j, ap in enumerate(scene.aps):
+            pl[:, j] = scene._path_loss_vec(ap, xs, ys)
+            apap[j, :] = self.ap_tx[j] - scene._path_loss_vec(ap, ax, ay)
+        self.pl = pl
+        self.dl = self.ap_tx[None, :] - pl          # downlink RSSI at car
+        self.ul = self.car_tx[:, None] - pl          # uplink RSSI at AP
+        self.apap = apap                             # RSSI of AP j at AP k
+        self.noise = np.array([noise_dbm(b) for b in self.band])
+
+
 @dataclass
 class Scene:
     seed: int
@@ -127,49 +155,73 @@ class Scene:
     height_m: float = 25.0
     region: str = "R0"
     _shadow: dict = field(default_factory=dict, repr=False)
+    # Optional extra loss model (e.g. warehouse racks): f(ap, xs, ys) -> dB.
+    obstruction: object = field(default=None, repr=False)
+    # Optional mobility model (warehouse routes); advance() delegates to it.
+    mobility: object = field(default=None, repr=False)
+    _radio: object = field(default=None, repr=False)
+    _radio_key: object = field(default=None, repr=False)
 
     # --- propagation -----------------------------------------------------
-    def _shadowing_db(self, ap: AP, x: float, y: float) -> float:
+    def _shadow_params(self, ap: AP):
         key = ap.ap_id
         if key not in self._shadow:
             digest = hashlib.sha256(f"{self.seed}:{key}".encode()).digest()
             rng = np.random.default_rng(int.from_bytes(digest[:8], "big"))
             self._shadow[key] = (rng.uniform(0.08, 0.35, size=(4, 2)),
                                  rng.uniform(0, 2 * math.pi, size=4))
-        freqs, phases = self._shadow[key]
-        value = sum(math.sin(fx * x + fy * y + p)
-                    for (fx, fy), p in zip(freqs, phases))
+        return self._shadow[key]
+
+    def _shadowing_db(self, ap: AP, x: float, y: float) -> float:
+        return float(self._shadow_vec(ap, np.array([x]), np.array([y]))[0])
+
+    def _shadow_vec(self, ap: AP, xs: np.ndarray, ys: np.ndarray) -> np.ndarray:
+        freqs, phases = self._shadow_params(ap)
+        value = np.zeros_like(xs, dtype=float)
+        for (fx, fy), p in zip(freqs, phases):
+            value += np.sin(fx * xs + fy * ys + p)
         return 4.0 * value / math.sqrt(2.0)
 
+    def _path_loss_vec(self, ap: AP, xs: np.ndarray, ys: np.ndarray) -> np.ndarray:
+        d = np.maximum(1.0, np.hypot(ap.x - xs, ap.y - ys))
+        loss = BANDS[ap.band][0] + 33.0 * np.log10(d) + self._shadow_vec(ap, xs, ys)
+        if self.obstruction is not None:
+            loss = loss + self.obstruction(ap, xs, ys)
+        return loss
+
     def _path_loss(self, ap: AP, x: float, y: float) -> float:
-        d = max(1.0, math.hypot(ap.x - x, ap.y - y))
-        return BANDS[ap.band][0] + 33.0 * math.log10(d) + self._shadowing_db(ap, x, y)
+        return float(self._path_loss_vec(ap, np.array([x], dtype=float),
+                                         np.array([y], dtype=float))[0])
 
     def rssi_dbm(self, ap: AP, x: float, y: float) -> float:
         """Downlink RSSI at the car (what `iw scan` reports)."""
         return ap.tx_power_dbm - self._path_loss(ap, x, y)
 
     def uplink_rssi_dbm(self, car: Car, ap: AP) -> float:
-        return car.tx_power_dbm - self._path_loss(ap, car.x, car.y)
+        r = self.radio()
+        return float(r.ul[r.car_index[car.car_id], r.ap_index[ap.ap_id]])
+
+    def radio(self) -> RadioCache:
+        key = (tuple((c.car_id, c.x, c.y, c.tx_power_dbm) for c in self.cars),
+               tuple((a.ap_id, a.x, a.y, a.tx_power_dbm) for a in self.aps))
+        if self._radio is None or self._radio_key != key:
+            self._radio = RadioCache(self)
+            self._radio_key = key
+        return self._radio
 
     def ap(self, ap_id: str) -> AP:
-        for ap in self.aps:
-            if ap.ap_id == ap_id:
-                return ap
-        raise KeyError(ap_id)
+        return self.aps[self.radio().ap_index[ap_id]]
 
     def car(self, car_id: str) -> Car:
-        for car in self.cars:
-            if car.car_id == car_id:
-                return car
-        raise KeyError(car_id)
+        return self.cars[self.radio().car_index[car_id]]
 
     def occupancy(self, ap: AP, channels: dict[str, int]) -> float:
         return self.external_occupancy.get((ap.band, channels[ap.ap_id]), 0.0)
 
     # --- contention domains ------------------------------------------------
     def domains(self, channels: dict[str, int]) -> list[set[str]]:
-        ids = [ap.ap_id for ap in self.aps]
+        r = self.radio()
+        ids = r.ap_ids
         parent = {i: i for i in ids}
 
         def find(i):
@@ -178,11 +230,11 @@ class Scene:
                 i = parent[i]
             return i
 
-        for a in self.aps:
-            for b in self.aps:
+        for ja, a in enumerate(self.aps):
+            for jb, b in enumerate(self.aps):
                 if (a.ap_id < b.ap_id and a.band == b.band
                         and channels[a.ap_id] == channels[b.ap_id]
-                        and self.rssi_dbm(a, b.x, b.y) >= CS_THRESHOLD_DBM):
+                        and r.apap[ja, jb] >= CS_THRESHOLD_DBM):
                     parent[find(a.ap_id)] = find(b.ap_id)
         groups: dict[str, set[str]] = {}
         for i in ids:
@@ -194,36 +246,43 @@ class Scene:
                 domains: list[set[str]] | None = None) -> float:
         """Uplink SINR at the AP. Co-channel BSSs outside the AP's domain
         interfere in proportion to their airtime activity."""
-        ap = self.ap(ap_id)
-        signal_mw = 10 ** (self.uplink_rssi_dbm(car, ap) / 10)
-        noise_mw = 10 ** (noise_dbm(ap.band) / 10)
+        r = self.radio()
+        j = r.ap_index[ap_id]
+        ap = self.aps[j]
+        signal_mw = 10 ** (r.ul[r.car_index[car.car_id], j] / 10)
+        noise_mw = 10 ** (r.noise[j] / 10)
         domains = domains or self.domains(channels)
         same = next(d for d in domains if ap_id in d)
         interference_mw = 0.0
-        for other in self.aps:
+        for k, other in enumerate(self.aps):
             if (other.ap_id in same or other.band != ap.band
                     or channels[other.ap_id] != channels[ap_id]):
                 continue
-            interference_mw += activity.get(other.ap_id, 0.0) * 10 ** (
-                self.rssi_dbm(other, ap.x, ap.y) / 10)
+            interference_mw += activity.get(other.ap_id, 0.0) * 10 ** (r.apap[k, j] / 10)
         return 10 * math.log10(signal_mw / (noise_mw + interference_mw))
 
     def visible_aps(self, car: Car) -> list[tuple[AP, float]]:
         """What SmartCatScan would report: at most 8 BSSs above -90 dBm,
         strongest first."""
-        seen = [(ap, self.rssi_dbm(ap, car.x, car.y)) for ap in self.aps]
-        seen = [s for s in seen if s[1] >= -90.0]
-        seen.sort(key=lambda s: -s[1])
+        r = self.radio()
+        row = r.dl[r.car_index[car.car_id]]
+        order = np.argsort(-row, kind="stable")
+        seen = [(self.aps[j], float(row[j])) for j in order if row[j] >= -90.0]
         return seen[:RASPBOT.max_visible_aps]
 
     # --- evolution -----------------------------------------------------------
     def _copy(self, cars=None, aps=None) -> "Scene":
-        return Scene(self.seed, list(cars if cars is not None else self.cars),
-                     list(aps if aps is not None else self.aps),
-                     dict(self.external_occupancy), self.width_m,
-                     self.height_m, self.region, self._shadow)
+        out = Scene(self.seed, list(cars if cars is not None else self.cars),
+                    list(aps if aps is not None else self.aps),
+                    dict(self.external_occupancy), self.width_m,
+                    self.height_m, self.region, self._shadow, self.obstruction,
+                    self.mobility)
+        out._radio, out._radio_key = self._radio, self._radio_key  # revalidated by key
+        return out
 
     def advance(self, dt: float) -> "Scene":
+        if self.mobility is not None:
+            return self._copy(cars=self.mobility.advance(self.cars, dt))
         moved = []
         for c in self.cars:
             x, y, vx, vy = c.x + c.vx * dt, c.y + c.vy * dt, c.vx, c.vy

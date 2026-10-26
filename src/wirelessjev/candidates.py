@@ -21,10 +21,11 @@ import hashlib
 import random
 
 from .missions import MISSIONS, Mission
-from .oracle import Evaluation, evaluate, mission_utility
+from .oracle import (Evaluation, evaluate, future_link_losses,
+                     horizon_snapshots, horizon_utility, mission_utility)
 from .teachers.assign import (coloring_assignment, hungarian_access,
                               legacy_policy, local_greedy, local_search,
-                              milp_assignment)
+                              milp_assignment, troubled_cars)
 from .twin.radio import MAC_EFFICIENCY, Scene, phy_rate_mbps
 
 MAX_OPTIONS = 7          # plus DEFER
@@ -38,6 +39,7 @@ class Option:
     evaluation: Evaluation | None
     text: str = ""
     source: str = ""          # kept for audit only; never shown to the model
+    future_losses: int = 0    # robots losing a usable link on their route
 
     @property
     def is_defer(self) -> bool:
@@ -73,7 +75,8 @@ def hard_filter(scene: Scene, assoc: dict[str, str],
 
 def generate(scene: Scene, *, seed: int = 0,
              missions: dict[str, Mission] | None = None,
-             pinned: frozenset[str] = frozenset()) -> tuple[list[Option], list[dict]]:
+             pinned: frozenset[str] = frozenset(),
+             horizon: bool = True) -> tuple[list[Option], list[dict]]:
     """Return (options incl. DEFER, rejected) for one fleet snapshot.
 
     The same option set is produced regardless of which mission will be
@@ -84,10 +87,20 @@ def generate(scene: Scene, *, seed: int = 0,
     hold = {c.car_id: c.current_ap for c in scene.cars}
     proposals: list[tuple[str, dict]] = [("hold", hold),
                                          ("legacy", legacy_policy(scene))]
+    snaps = horizon_snapshots(scene) if horizon else []
+    large = len(scene.cars) > 20
     for m in missions.values():
         start = milp_assignment(scene, m)
         proposals.append((f"milp:{m.mission_id}", start))
-        proposals.append((f"ls:{m.mission_id}", local_search(scene, m, start)))
+        scorer = ((lambda a, m=m: horizon_utility(scene, snaps, a, m, channels))
+                  if snaps else None)
+        if large:
+            focus = [c for c in troubled_cars(scene, start) if c not in pinned]
+            best = local_search(scene, m, start, max_sweeps=3, scorer=scorer,
+                                max_bss=4, focus=focus)
+        else:
+            best = local_search(scene, m, start, scorer=scorer)
+        proposals.append((f"ls:{m.mission_id}", best))
     proposals += [("hungarian", hungarian_access(scene)),
                   ("coloring", coloring_assignment(scene)),
                   ("local_greedy", local_greedy(scene))]
@@ -120,16 +133,20 @@ def generate(scene: Scene, *, seed: int = 0,
     options = []
     for i, (source, assoc) in enumerate(chosen):
         ev = evaluate(scene, {"assoc": assoc, "channels": channels})
-        options.append(Option(f"P{i + 1}", assoc, ev, source=source))
+        opt = Option(f"P{i + 1}", assoc, ev, source=source)
+        opt.future_losses = future_link_losses(snaps, assoc) if snaps else 0
+        options.append(opt)
     if options:
-        _describe(scene, options)
+        _describe(scene, options, horizon=bool(snaps))
+    for o in options:
+        o.snaps = snaps
     options.append(Option(DEFER_ID, hold, None, source="defer",
                           text="Defer: keep every car's current BSSID and "
                                "escalate to the operator for review."))
     return options, rejected
 
 
-def _describe(scene: Scene, options: list[Option]) -> None:
+def _describe(scene: Scene, options: list[Option], horizon: bool = False) -> None:
     hold = {c.car_id: c.current_ap for c in scene.cars}
     critical_cars = [c for c in scene.cars if any(f.critical and f.name ==
                                                   "video_uplink" for f in c.flows)]
@@ -151,11 +168,16 @@ def _describe(scene: Scene, options: list[Option]) -> None:
                          f"their floor this period")
         else:
             parts.append("all critical floors met")
-        vids = []
-        for c in critical_cars:
-            vids.append(f"{c.car_id} video {round(100 * e.satisfaction[c.car_id])}%")
-        if vids:
-            parts.append("video service: " + ", ".join(vids))
+        if 0 < len(critical_cars) <= 4:
+            parts.append("video service: " + ", ".join(
+                f"{c.car_id} video {round(100 * e.satisfaction[c.car_id])}%"
+                for c in critical_cars))
+        elif critical_cars:
+            sat = {c.car_id: e.satisfaction[c.car_id] for c in critical_cars}
+            low = sorted((k for k, v in sat.items() if v < 0.9), key=sat.get)[:3]
+            parts.append(f"video service across {len(sat)} streaming cars: lowest "
+                         f"{round(100 * min(sat.values()))}%"
+                         + (f" ({', '.join(low)} below 90%)" if low else ", all at 90% or more"))
         demand = sum(c.demand_mbps for c in scene.cars)
         parts.append(f"fleet delivers {e.total_mbps:.0f} of {demand:.0f} Mbps "
                      f"({round(100 * e.U)}%)")
@@ -167,6 +189,9 @@ def _describe(scene: Scene, options: list[Option]) -> None:
                      f"protected neighbour equipment")
         level = "low" if e.W < 0.1 else "medium" if e.W < 0.5 else "high"
         parts.append(f"co-channel interference {level}")
+        if horizon:
+            parts.append(f"{opt.future_losses} car(s) lose a usable link within "
+                         f"20 s on their planned route")
         tags = []
         if e.total_mbps >= max_total - 1e-6:
             tags.append("most total data")
@@ -176,6 +201,8 @@ def _describe(scene: Scene, options: list[Option]) -> None:
             tags.append("best for the least-served car")
         if e.protected_hits <= min_prot:
             tags.append("least use of protected channels")
+        if horizon and opt.future_losses <= min(o.future_losses for o in options):
+            tags.append("fewest upcoming link losses")
         if tags:
             parts.append("relative: " + "; ".join(tags))
         opt.text = "; ".join(parts) + "."
@@ -186,8 +213,13 @@ def oracle_scores(scene: Scene, options: list[Option], mission: Mission) -> dict
     escalation cost (it delays any improvement)."""
     n = len(scene.cars)
     channels = {ap.ap_id: ap.channel for ap in scene.aps}
+    snaps = next((getattr(o, "snaps", []) for o in options if getattr(o, "snaps", [])), [])
     scores = {}
     for o in options:
-        ev = o.evaluation or evaluate(scene, {"assoc": o.assoc, "channels": channels})
-        scores[o.option_id] = mission_utility(ev, mission, n) - (0.05 if o.is_defer else 0.0)
+        if snaps:
+            u = horizon_utility(scene, snaps, o.assoc, mission, channels)
+        else:
+            ev = o.evaluation or evaluate(scene, {"assoc": o.assoc, "channels": channels})
+            u = mission_utility(ev, mission, n)
+        scores[o.option_id] = u - (0.05 if o.is_defer else 0.0)
     return scores

@@ -190,3 +190,21 @@ def test_consensus_gate_compares_against_live_release():
     assert sw.merge_round({"car-01": (torch.tensor([1.0]), 1)}, ["car-01"], validate).released
     worse = sw.merge_round({"car-01": (torch.tensor([2.0]), 1)}, ["car-01"], validate)
     assert not worse.released and float(sw.released_readout[0]) == 1.0
+
+
+def test_vectorised_evaluate_matches_reference():
+    from wirelessjev.oracle import evaluate_reference
+    for seed in range(8):
+        s = make_scene(seed)
+        rng = np.random.default_rng(seed)
+        for _ in range(3):
+            assoc = {c.car_id: str(rng.choice([ap.ap_id for ap, _ in s.visible_aps(c)]))
+                     for c in s.cars}
+            cfg = _cfg(s, assoc)
+            fast, ref = evaluate(s, cfg), evaluate_reference(s, cfg)
+            for key in ("total_mbps", "U", "V", "W", "B", "jain", "piecewise",
+                        "qos_margin", "pm1", "max_domain_load", "access_rate",
+                        "worst_critical_margin"):
+                assert getattr(fast, key) == pytest.approx(getattr(ref, key), rel=1e-9, abs=1e-9), key
+            for key in ("handovers", "critical_violations", "protected_hits", "retunes"):
+                assert getattr(fast, key) == getattr(ref, key), key

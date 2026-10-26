@@ -1,0 +1,138 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 900" font-family="-apple-system,Helvetica,Arial,sans-serif" font-size="13">
+  <rect width="1200" height="900" fill="#fbfaf7"/>
+  <defs>
+    <marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#555"/></marker>
+  </defs>
+  <style>
+    .box{stroke:#444;stroke-width:1.2;rx:8}
+    .t{font-weight:700;font-size:14px}
+    .s{fill:#444}
+    .l{stroke:#555;stroke-width:1.5;fill:none;marker-end:url(#a)}
+    .d{stroke:#999;stroke-width:1.2;fill:none;stroke-dasharray:5 4;marker-end:url(#a)}
+  </style>
+
+  <text x="600" y="34" text-anchor="middle" font-size="22" font-weight="700">WirelessJEV — system architecture</text>
+  <text x="600" y="56" text-anchor="middle" class="s">Mission text in → one complete fleet Wi‑Fi plan out (BSSID per robot) → verified execution on SmartCar hardware</text>
+
+  <!-- Inputs -->
+  <rect x="30" y="80" width="250" height="120" class="box" fill="#eef3f8"/>
+  <text x="45" y="102" class="t">Inputs</text>
+  <text x="45" y="124" class="s">• Mission intent (natural language)</text>
+  <text x="45" y="144" class="s">• Fleet state: positions, flows</text>
+  <text x="45" y="164" class="s">• Planned AMR routes (warehouse)</text>
+  <text x="45" y="184" class="s">• Scans/status (SmartCatScan)</text>
+
+  <!-- Digital twin -->
+  <rect x="320" y="80" width="400" height="120" class="box" fill="#eef7f1"/>
+  <text x="335" y="102" class="t">Digital twin  (twin/)</text>
+  <text x="335" y="124" class="s">radio.py: path loss, rate tables, airtime</text>
+  <text x="335" y="144" class="s">warehouse.py: racks, 32 BSSIDs, 100 AMRs</text>
+  <text x="335" y="164" class="s">mobility.py · observe.py {2,1,0,−1} state</text>
+  <text x="335" y="184" class="s">hardware.py: Raspbot + BE200, 4 s switch, ≤8 visible APs</text>
+
+  <!-- Oracle -->
+  <rect x="760" y="80" width="410" height="120" class="box" fill="#fff4e6"/>
+  <text x="775" y="102" class="t">Exact oracle  (oracle.py)</text>
+  <text x="775" y="124" class="s">evaluate(): Mbps, floors, Jain, airtime</text>
+  <text x="775" y="144" class="s">mission_utility(): hidden weights (B+αU−γW+βV)</text>
+  <text x="775" y="164" class="s">horizon_utility(): scored along planned routes</text>
+  <text x="775" y="184" class="s">Vectorised: 100 robots in ~1.5 ms</text>
+
+  <!-- Teachers -->
+  <rect x="30" y="250" width="380" height="150" class="box" fill="#f3eefa"/>
+  <text x="45" y="272" class="t">Teachers / baselines  (teachers/)</text>
+  <text x="45" y="294" class="s">• MILP joint planner (HiGHS)</text>
+  <text x="45" y="314" class="s">• Local search on exact oracle (troubled robots)</text>
+  <text x="45" y="334" class="s">• Hungarian access (ICCT 2024)</text>
+  <text x="45" y="354" class="s">• Graph‑colouring max‑min (WPC 2024)</text>
+  <text x="45" y="374" class="s">• Legacy SmartCar rule · admission price (TWC 2025)</text>
+
+  <!-- Candidates -->
+  <rect x="450" y="250" width="320" height="150" class="box" fill="#eef7f1"/>
+  <text x="465" y="272" class="t">Candidate generator</text>
+  <text x="465" y="294" class="s">dedupe → hard filters (visible, usable,</text>
+  <text x="465" y="314" class="s">power cap, quarantine pins)</text>
+  <text x="465" y="334" class="s">≤7 complete plans + DEFER</text>
+  <text x="465" y="354" class="s">each described as consequences,</text>
+  <text x="465" y="374" class="s">no source/mission labels shown</text>
+
+  <!-- Model -->
+  <rect x="810" y="250" width="360" height="150" class="box" fill="#e8f0ff"/>
+  <text x="825" y="272" class="t">System One  (policy.py)</text>
+  <text x="825" y="294" class="s">frozen vllm-sr/d3-lite @03560c2 (0.85B)</text>
+  <text x="825" y="314" class="s">option‑wise yes/no per plan → argmax P(yes)</text>
+  <text x="825" y="334" class="s">+ distilled readout vector u (1,024 params)</text>
+  <text x="825" y="354" class="s">rubric prompts · receipts with hashes</text>
+  <text x="825" y="374" class="s">~1–3 s (10 cars), ~4.4 s (100) on M5 GPU</text>
+
+  <!-- Distillation -->
+  <rect x="810" y="440" width="360" height="130" class="box" fill="#fff4e6"/>
+  <text x="825" y="462" class="t">Distillation  (distill.py)</text>
+  <text x="825" y="484" class="s">teacher = oracle softmax(utility/τ)</text>
+  <text x="825" y="504" class="s">listwise KL on captured hidden states</text>
+  <text x="825" y="524" class="s">backbone frozen · adapter + manifest</text>
+  <text x="825" y="544" class="s">MIA audit · region unlearning</text>
+
+  <!-- Swarm -->
+  <rect x="420" y="440" width="350" height="130" class="box" fill="#f3eefa"/>
+  <text x="435" y="462" class="t">Swarm layer  (swarm/)</text>
+  <text x="435" y="484" class="s">consensus: leader, FedAvg, validate vs live</text>
+  <text x="435" y="504" class="s">release, HMAC hash‑chained audit log</text>
+  <text x="435" y="524" class="s">reputation: power/access/lease → quarantine</text>
+  <text x="435" y="544" class="s">share: 80/20 priors · bi‑level k‑means</text>
+
+  <!-- Traffic -->
+  <rect x="30" y="440" width="350" height="130" class="box" fill="#e8f0ff"/>
+  <text x="45" y="462" class="t">Traffic intelligence  (traffic.py)</text>
+  <text x="45" y="484" class="s">d3-lite typed labels: trend/event/volatility</text>
+  <text x="45" y="504" class="s">(replaces LLaMA‑LoRA, IoT‑J 2025)</text>
+  <text x="45" y="524" class="s">frozen Chronos‑Bolt numeric forecast</text>
+  <text x="45" y="544" class="s">feeds mission/state context</text>
+
+  <!-- Execution -->
+  <rect x="320" y="620" width="560" height="120" class="box" fill="#eef3f8"/>
+  <text x="335" y="642" class="t">Execution  (execution.py · carlink.py · onecar.py)</text>
+  <text x="335" y="664" class="s">Transactions: PREPARED → ISSUED → COMMITTED | ABORTED | UNKNOWN</text>
+  <text x="335" y="684" class="s">Ledger reserves airtime · UNKNOWN never resent, reconciled by status</text>
+  <text x="335" y="704" class="s">SSH, pinned host key → SmartCarCmd.py JSON {status | connect}</text>
+  <text x="335" y="724" class="s">password injected only at send time · typed BSSID confirmation</text>
+
+  <!-- Car -->
+  <rect x="320" y="770" width="560" height="100" class="box" fill="#eaeaea"/>
+  <text x="335" y="792" class="t">Each robot (SmartCar.zip hardware)</text>
+  <text x="335" y="814" class="s">wlan0 brcmfmac: management hotspot 192.168.1.11 — never touched</text>
+  <text x="335" y="834" class="s">wlan1 Intel BE200: customer Wi‑Fi — only action = choose BSSID (nmcli)</text>
+  <text x="335" y="854" class="s">SmartCatScan.py scans → back to Inputs</text>
+
+  <!-- Bench -->
+  <rect x="920" y="620" width="250" height="250" class="box" fill="#fbf0f0"/>
+  <text x="935" y="642" class="t">Evaluation</text>
+  <text x="935" y="664" class="s">bench.py / bench_warehouse.py</text>
+  <text x="935" y="684" class="s">regret vs oracle, baselines</text>
+  <text x="935" y="704" class="s">intent‑flip, contention</text>
+  <text x="935" y="724" class="s">ablations, bias audit</text>
+  <text x="935" y="744" class="s">closedloop.py: shift sim,</text>
+  <text x="935" y="764" class="s">rogue robot, coordinator loss</text>
+  <text x="935" y="784" class="s">report.py → HTML</text>
+  <text x="935" y="814" font-weight="700">10‑car: regret 0.08</text>
+  <text x="935" y="834" class="s">vs MILP 0.215, legacy 1.30</text>
+
+  <!-- arrows -->
+  <path d="M280 140 L320 140" class="l"/>
+  <path d="M720 140 L760 140" class="l"/>
+  <path d="M220 200 L220 250" class="l"/>
+  <path d="M410 325 L450 325" class="l"/>
+  <path d="M770 325 L810 325" class="l"/>
+  <path d="M960 200 L960 225 L640 225 L640 250" class="d"/>
+  <path d="M1170 170 L1188 170 L1188 505 L1170 505" class="d"/>
+  <path d="M990 440 L990 402" class="l"/>
+  <path d="M810 505 L770 505" class="l"/>
+  <path d="M395 505 L405 505 L405 230 L230 230 L230 200" class="d"/>
+  <path d="M830 400 L830 420 L790 420 L790 600 L700 600 L700 618" class="l"/>
+  <path d="M600 740 L600 770" class="l"/>
+  <path d="M320 820 L15 820 L15 140 L30 140" class="d"/>
+  <path d="M880 680 L920 680" class="d"/>
+  <text x="1000" y="425" class="s" font-size="11">adapter</text>
+  <text x="710" y="595" class="s" font-size="11">chosen plan</text>
+  <text x="20" y="480" class="s" font-size="11" transform="rotate(-90 20 480)">scan / status feedback</text>
+</svg>

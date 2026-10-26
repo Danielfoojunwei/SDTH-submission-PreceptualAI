@@ -19,7 +19,8 @@ the decision slot, so realised mission utility can be compared step by step.
 from __future__ import annotations
 
 import argparse
-from dataclasses import replace
+from dataclasses import dataclass, field, replace
+from typing import Callable
 import json
 from pathlib import Path
 import time
@@ -40,12 +41,43 @@ from .twin.radio import DECISION_INTERVAL_S, MAC_EFFICIENCY, phy_rate_mbps
 STEP = DECISION_INTERVAL_S
 
 
-def mission_at(t: float, total: float):
-    return MISSIONS["protect_video"] if t < total / 2 else MISSIONS["convoy_continuity"]
+@dataclass
+class Scenario:
+    scene_fn: Callable = field(default=lambda seed: make_scene(seed, hotspot=True))
+    schedule: tuple = ((0.0, "protect_video"), (150.0, "convoy_continuity"))
+    missions: dict = field(default_factory=lambda: dict(MISSIONS))
+    bad_car: str = "car-10"
+    bad_from_s: float = 120.0
+    outage_s: tuple = (180.0, 210.0)
+    max_in_flight: int = 4
+    decide_every: int = 6            # policy steps (5 s) per fleet decision
 
 
-def run(policy: str, *, seed: int, total_s: float, engine=None, log=print) -> dict:
-    scene = make_scene(seed, hotspot=True)
+TEN_CAR = Scenario()
+
+
+def warehouse_scenario() -> Scenario:
+    from .missions import WAREHOUSE_MISSIONS
+    from .twin.warehouse import make_warehouse
+    return Scenario(scene_fn=make_warehouse,
+                    schedule=((0.0, "peak_picking"), (200.0, "teleop_assist"),
+                              (400.0, "map_rollout")),
+                    missions=dict(WAREHOUSE_MISSIONS), bad_car="amr-090",
+                    bad_from_s=300.0, outage_s=(450.0, 480.0), max_in_flight=12)
+
+
+def mission_at(t: float, sc: Scenario):
+    name = [m for start, m in sc.schedule if t >= start][-1]
+    return sc.missions[name]
+
+
+def run(policy: str, *, seed: int, total_s: float, engine=None, log=print,
+        scenario: Scenario | None = None, record: bool = False) -> dict:
+    """record=True also stores per-step replay frames (robot positions,
+    associations, satisfaction) and full decision details for the Studio."""
+    sc = scenario or TEN_CAR
+    scene = sc.scene_fn(seed)
+    frames = []
     channels = {a.ap_id: a.channel for a in scene.aps}
     domains = scene.domains(channels)
     domain_of = {ap: f"d{i}" for i, d in enumerate(domains) for ap in d}
@@ -54,19 +86,19 @@ def run(policy: str, *, seed: int, total_s: float, engine=None, log=print) -> di
     actual = {c.car_id: c.current_ap for c in scene.cars}
     transport = DryRunTransport(state=dict(actual), failure_rate=0.05,
                                 unknown_rate=0.05, seed=seed)
-    ledger = Ledger(budgets=budgets, max_in_flight=4)
+    ledger = Ledger(budgets=budgets, max_in_flight=sc.max_in_flight)
     rep = Reputation()
     timeline, decisions, txn_log = [], [], []
     n_steps = int(total_s / STEP)
-    decide_every = 6
+    decide_every = sc.decide_every
     for k in range(n_steps):
         t = k * STEP
-        mission = mission_at(t, total_s)
-        coordinator_up = not (180 <= t < 210)
+        mission = mission_at(t, sc)
+        coordinator_up = not (sc.outage_s[0] <= t < sc.outage_s[1])
 
-        # misbehaving car from t=120 s
-        if t >= 120:
-            scene = scene._copy(cars=[replace(c, tx_power_dbm=24.0) if c.car_id == "car-10"
+        # misbehaving car from bad_from_s
+        if t >= sc.bad_from_s:
+            scene = scene._copy(cars=[replace(c, tx_power_dbm=24.0) if c.car_id == sc.bad_car
                                       else c for c in scene.cars])
         for car in scene.cars:
             v = rep.check(car.car_id, tx_power_dbm=car.tx_power_dbm,
@@ -89,14 +121,28 @@ def run(policy: str, *, seed: int, total_s: float, engine=None, log=print) -> di
         if coordinator_up and k % decide_every == 0:
             started = time.perf_counter()
             if policy == "wirelessjev":
-                options, _ = generate(scene, seed=seed + k, pinned=pinned)
+                options, _ = generate(scene, seed=seed + k, pinned=pinned,
+                                      missions=sc.missions)
                 d = engine.score(scene, mission, options)
                 chosen = next(o for o in options if o.option_id == d.option_id)
                 target = None if chosen.is_defer else chosen.assoc
-                decisions.append({"t": t, "mission": mission.mission_id,
-                                  "choice": d.option_id, "source": chosen.source,
-                                  "latency_ms": round(d.latency_ms, 1),
-                                  "pinned": sorted(pinned)})
+                entry = {"t": t, "mission": mission.mission_id,
+                         "choice": d.option_id, "source": chosen.source,
+                         "latency_ms": round(d.latency_ms, 1),
+                         "pinned": sorted(pinned)}
+                if record:
+                    from .candidates import oracle_scores
+                    scores = oracle_scores(scene, options, mission)
+                    entry.update(
+                        intent=mission.intent,
+                        options=[{"id": o.option_id, "text": o.text,
+                                  "p_true": round(d.probabilities[o.option_id], 4),
+                                  "oracle": round(scores[o.option_id], 4),
+                                  "moves": sum(o.assoc[c] != actual[c] for c in actual)}
+                                 for o in options],
+                        oracle_best=max(scores, key=scores.get),
+                        regret=round(max(scores.values()) - scores[d.option_id], 4))
+                decisions.append(entry)
             elif policy == "milp":
                 target = milp_assignment(scene, mission)
                 target.update({c: actual[c] for c in pinned})
@@ -132,6 +178,17 @@ def run(policy: str, *, seed: int, total_s: float, engine=None, log=print) -> di
                          "critical_violations": ev.critical_violations,
                          "total_mbps": ev.total_mbps, "coordinator_up": coordinator_up,
                          "quarantined": sorted(pinned)})
+        if record:
+            r = scene.radio()
+            frames.append({
+                "t": t,
+                "xy": [[round(c.x, 1), round(c.y, 1)] for c in scene.cars],
+                "ap": [r.ap_index[new_assoc[c.car_id]] for c in scene.cars],
+                "rssi": [round(float(r.dl[i, r.ap_index[new_assoc[c.car_id]]]), 1)
+                         for i, c in enumerate(scene.cars)],
+                "sat": [round(ev.satisfaction[c.car_id], 2) for c in scene.cars],
+                "quarantined": sorted(pinned),
+            })
         scene = scene.with_associations(new_assoc).advance(STEP)
 
     outcomes = {}
@@ -140,12 +197,23 @@ def run(policy: str, *, seed: int, total_s: float, engine=None, log=print) -> di
     unknown_resent = sum(1 for car_id, req in transport.sent
                          if req["action"] == "connect") - sum(
         1 for x in txn_log if x["outcome"] not in ("NOT_ADMITTED",))
-    return {"policy": policy, "timeline": timeline, "decisions": decisions,
+    extra = {}
+    if record:
+        extra = {"frames": frames,
+                 "robots": [c.car_id for c in scene.cars],
+                 "aps": [{"id": a.ap_id, "x": a.x, "y": a.y, "band": a.band,
+                          "channel": a.channel, "site": a.site} for a in scene.aps],
+                 "occupied_channels": [[b, ch] for (b, ch), v in
+                                       scene.external_occupancy.items() if v > 0],
+                 "txn_log": txn_log}
+    return {**extra, "policy": policy, "timeline": timeline, "decisions": decisions,
             "transactions": outcomes, "connect_requests_sent": sum(
                 1 for _, r in transport.sent if r["action"] == "connect"),
             "connects_beyond_one_per_txn": unknown_resent,
             "mean_utility": float(np.mean([s["utility"] for s in timeline])),
             "total_handovers": int(sum(s["handovers"] for s in timeline)),
+            "mean_critical_violations": float(np.mean([s["critical_violations"]
+                                                       for s in timeline])),
             "critical_violation_steps": int(sum(s["critical_violations"] > 0
                                                 for s in timeline)),
             "final_reputation": {k: round(v, 3) for k, v in rep.scores.items()}}
@@ -157,13 +225,17 @@ def main():
     ap.add_argument("--seeds", type=int, nargs="+", default=[7001, 7002, 7003])
     ap.add_argument("--total", type=float, default=300.0)
     ap.add_argument("--out", default="artifacts/closedloop.json")
+    ap.add_argument("--warehouse", action="store_true",
+                    help="100-robot AMR warehouse shift instead of the 10-car scenario")
     args = ap.parse_args()
+    scenario = warehouse_scenario() if args.warehouse else TEN_CAR
     from .policy import WirelessJEV
     engine = WirelessJEV(adapter=args.adapter)
     results = []
     for seed in args.seeds:
         for policy in ("wirelessjev", "milp", "legacy"):
-            r = run(policy, seed=seed, total_s=args.total, engine=engine)
+            r = run(policy, seed=seed, total_s=args.total, engine=engine,
+                    scenario=scenario, record=(seed == args.seeds[0]))
             r["seed"] = seed
             results.append(r)
             print(f"seed {seed} {policy}: mean utility {r['mean_utility']:.3f}, "
@@ -175,6 +247,7 @@ def main():
             "mean_utility": float(np.mean([r["mean_utility"] for r in rs])),
             "total_handovers": int(sum(r["total_handovers"] for r in rs)),
             "critical_violation_steps": int(sum(r["critical_violation_steps"] for r in rs)),
+            "mean_critical_violations": float(np.mean([r["mean_critical_violations"] for r in rs])),
             "connects_beyond_one_per_txn": int(sum(r["connects_beyond_one_per_txn"] for r in rs)),
         }
     out = {"summary": summary, "adapter": args.adapter,

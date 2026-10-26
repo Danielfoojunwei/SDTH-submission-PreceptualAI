@@ -71,3 +71,39 @@ INTENT_FLIP_PAIRS = (
     ("protect_video", "fair_share"),
     ("spectrum_etiquette", "bulk_upload"),
 )
+
+
+# Warehouse (AGV/AMR) missions. amr-017 streams teleoperation video.
+WAREHOUSE_MISSIONS = {
+    "teleop_assist": Mission(
+        "teleop_assist",
+        "Robot amr-017 is under remote teleoperation. Keep amr-017's video "
+        "uplink at full rate even if other robots lose throughput.",
+        _w(focus=4.0, U=0.3, fair=0.0, ho=0.2), ("amr-017",)),
+    "peak_picking": Mission(
+        "peak_picking",
+        "Peak picking wave: robots are moving fast between aisles. Keep every "
+        "safety link up and avoid reconnections during the wave.",
+        _w(ho=4.0, viol=4.0, U=0.4, V=0.6)),
+    "map_rollout": Mission(
+        "map_rollout",
+        "A new site map is being pushed to all robots. Maximise the total data "
+        "the fleet delivers; brief reconnections are acceptable.",
+        _w(U=3.0, V=0.5, ho=0.1, fair=0.0)),
+    "shift_fairness": Mission(
+        "shift_fairness",
+        "Every robot has the same task load this shift. No robot may be "
+        "starved; share capacity evenly across the fleet.",
+        _w(fair=3.0, V=1.5, U=0.3)),
+    "scanner_coexistence": Mission(
+        "scanner_coexistence",
+        "Handheld barcode scanners share some channels. Keep robots off "
+        "scanner-occupied channels and keep co-channel interference low.",
+        _w(prot=5.0, W=2.0, B=1.5, U=0.5)),
+}
+
+WAREHOUSE_FLIP_PAIRS = (
+    ("peak_picking", "map_rollout"),
+    ("teleop_assist", "shift_fairness"),
+    ("scanner_coexistence", "map_rollout"),
+)

@@ -28,7 +28,9 @@ import torch
 from .candidates import DEFER_ID, generate, oracle_scores
 from .distill import (Example, accuracy, dataset_digest, distill, distill_listwise,
                       list_choices, list_membership_auc, save_adapter, soft_target)
-from .missions import INTENT_FLIP_PAIRS, MISSIONS
+from .missions import INTENT_FLIP_PAIRS, MISSIONS, WAREHOUSE_MISSIONS
+
+ALL_MISSIONS = {**MISSIONS, **WAREHOUSE_MISSIONS}
 from .oracle import evaluate, mission_utility
 from .policy import (FLEET_RUBRIC, MODEL_REPO, MODEL_REVISION, WirelessJEV,
                      fleet_state_text, score_options)
@@ -57,15 +59,18 @@ def _norm_regret(scores, choice):
 
 
 # --------------------------------------------------------------------------
-def run_fleet(engine: WirelessJEV, n_scenes: int, log) -> dict:
+def run_fleet(engine: WirelessJEV, n_scenes: int, log, *, scene_fn=None,
+              missions=None, seed0: int = 1000) -> dict:
+    scene_fn = scene_fn or make_scene
+    missions = missions or MISSIONS
     cases = []
     started = time.time()
     for i in range(n_scenes):
-        seed = 1000 + i
-        scene = make_scene(seed)
-        options, rejected = generate(scene, seed=seed)
+        seed = seed0 + i
+        scene = scene_fn(seed)
+        options, rejected = generate(scene, seed=seed, missions=missions)
         channels = {a.ap_id: a.channel for a in scene.aps}
-        for m in MISSIONS.values():
+        for m in missions.values():
             scores = oracle_scores(scene, options, m)
             state = fleet_state_text(scene, m)
             crit = _criteria(options)
@@ -86,14 +91,23 @@ def run_fleet(engine: WirelessJEV, n_scenes: int, log) -> dict:
                 "max_load": max(o.evaluation.max_domain_load for o in options
                                 if o.evaluation),
                 "baselines": {
-                    name: mission_utility(evaluate(scene, {
-                        "assoc": fn(scene, m), "channels": channels}), m, 10)
+                    name: _baseline_score(scene, options, fn(scene, m), m)
                     for name, fn in BASELINES.items()},
                 "n_rejected": len(rejected),
             })
         if (i + 1) % 5 == 0:
             log(f"fleet scenes {i + 1}/{n_scenes} ({time.time() - started:.0f} s)")
     return {"cases": cases}
+
+
+def _baseline_score(scene, options, assoc, mission) -> float:
+    """Baselines are scored with the same (horizon-aware) oracle as options."""
+    from .oracle import horizon_utility
+    snaps = next((getattr(o, "snaps", []) for o in options if getattr(o, "snaps", [])), [])
+    if snaps:
+        return horizon_utility(scene, snaps, assoc, mission)
+    return mission_utility(evaluate(scene, {"assoc": assoc, "channels": {
+        a.ap_id: a.channel for a in scene.aps}}), mission, len(scene.cars))
 
 
 def fleet_metrics(cases, choice_key="jev") -> dict:
@@ -116,7 +130,7 @@ def fleet_metrics(cases, choice_key="jev") -> dict:
         out[f"baseline_{name}_regret"] = float(np.mean(
             [best[c["case_id"]] - c["baselines"][name] for c in test]))
     per_mission = {}
-    for m in MISSIONS:
+    for m in sorted({c["mission"] for c in test}):
         sub = [c for c in test if c["mission"] == m]
         per_mission[m] = round(float(np.mean([regret(c, c[choice_key]) for c in sub])), 4)
     out["jev_regret_by_mission"] = per_mission
@@ -128,14 +142,16 @@ def fleet_metrics(cases, choice_key="jev") -> dict:
     return out
 
 
-def intent_flip(cases, choice_key="jev") -> dict:
+def intent_flip(cases, choice_key="jev", pairs=INTENT_FLIP_PAIRS) -> dict:
     by_scene = {}
     for c in cases:
         if c["split"] == "test":
             by_scene.setdefault(c["seed"], {})[c["mission"]] = c
     differ = flips = directional = total = 0
     for scene_cases in by_scene.values():
-        for a, b in INTENT_FLIP_PAIRS:
+        for a, b in pairs:
+            if a not in scene_cases or b not in scene_cases:
+                continue
             ca, cb = scene_cases[a], scene_cases[b]
             oa = max(ca["scores"], key=ca["scores"].get)
             ob = max(cb["scores"], key=cb["scores"].get)
@@ -162,7 +178,7 @@ def bias_audit(engine: WirelessJEV, cases, n: int, log) -> dict:
     order_same = length_flip = authority_flip = 0
     for c in test:
         crit = _criteria(c["options"])
-        state = fleet_state_text(c["scene"], MISSIONS[c["mission"]])
+        state = fleet_state_text(c["scene"], ALL_MISSIONS[c["mission"]])
         base = c["jev"]
         rev = dict(reversed(list(crit.items())))
         ch = score_options(engine, state, rev)[0]
@@ -207,7 +223,7 @@ def run_distillation(engine: WirelessJEV, cases, out_dir: Path, log) -> dict:
     # live check: the adapter in the real runtime must reproduce the choices
     engine.load_adapter(out_dir / "adapters" / "fleet")
     sample = test_cases[:10]
-    live = [engine.score(c["scene"], MISSIONS[c["mission"]], c["options"]).option_id
+    live = [engine.score(c["scene"], ALL_MISSIONS[c["mission"]], c["options"]).option_id
             for c in sample]
     engine.reset_readout()
     log("distillation done")
