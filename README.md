@@ -9,7 +9,7 @@ Every car is the same hardware as the existing SmartCar (`src/wirelessjev/hardwa
 - **Platform:** a Yahboom Raspbot on a Raspberry Pi.
 - **Management radio:** the onboard brcmfmac SDIO radio (`wlan0`) runs the management hotspot at 192.168.1.11. WirelessJEV never scans, selects or modifies it; SmartCarGuard owns its recovery.
 - **Customer radio:** an Intel BE200 on PCIe (`8086:272b`, `wlan1`). It is the only radio acted on, and the only action is choosing a BSSID.
-- **Wire format:** exactly the existing `SmartCarCmd.py` JSON: `status`, and `connect` with ssid/bssid/security (`execution.py`). Credentials stay on the car.
+- **Wire format:** exactly the existing `SmartCarCmd.py` JSON: `status`, and `connect` with ssid/bssid/security plus the Wi-Fi password, which SmartCarCmd requires, just as the PC app sends it. Plans, receipts and logs never contain the password; the real transport (`carlink.py`) injects it from the operator's WiFi.json at send time.
 - **Measured anchors:**
   - about 4 s per BSSID switch;
   - 5 s policy interval;
@@ -45,4 +45,4 @@ How each Bowen Shen / Feng Li / Kwok-Yan Lam paper is used is in [docs/PAPER_MAP
 - No motor, camera or navigation control: SmartCar.zip ships no such interface.
 - No OCUDU, 5G NR or custom-PHY execution. Those need Linux plus SDR hardware.
 - d3-lite takes about 1–3 s per decision on the M5 GPU. That suits the 5 s policy interval. Anything sub-10 ms stays conventional.
-- `SSHTransport` refuses to send until a car is explicitly enabled.
+- Real-car tooling: `python -m wirelessjev.onecar` (see [docs/ONE_CAR_TEST.md](docs/ONE_CAR_TEST.md)) does read-only status/scan and one operator-confirmed BSSID switch, with the host key pinned. The fleet `SSHTransport` in `execution.py` still refuses to send.

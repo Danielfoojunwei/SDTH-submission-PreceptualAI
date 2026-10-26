@@ -6,9 +6,10 @@ stdin, one JSON object per call:
     {"action": "status"}
     {"action": "connect", "ssid": ..., "bssid": ..., "security": ...}
 
-Credentials are never in the plan or the request built here: the on-car agent
-fills the password from its local WiFi.json, so model inputs and logs carry no
-secrets. SmartCarCmd itself re-checks interface roles (never the HOTPOT
+Credentials are never in the plan or the request built here. SmartCarCmd's
+connect does need the Wi-Fi password in the request (the PC app sends it from
+WiFi.json); the real transport (carlink.py) adds it only at send time, so
+model inputs, receipts and logs carry no secrets. SmartCarCmd itself re-checks interface roles (never the HOTPOT
 management radio, never 192.168.1.11), serialises radio access with a lock,
 and verifies SSID/BSSID after nmcli activation; this layer adds the fleet
 transaction semantics around it:
