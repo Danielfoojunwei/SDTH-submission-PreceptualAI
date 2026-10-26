@@ -148,7 +148,8 @@ class BatchEvaluator:
         code_val = np.where(ext, -1.0, np.where(shared, -0.5, 1.0))
         return {"B": code_val.mean(1), "U": U, "V": V, "W": W, "jain": jain,
                 "handovers": handovers, "viol": viol, "prot": ext.sum(1), "sat": sat,
-                "activity_in": activity}
+                "activity_in": activity, "sinr": sinr, "pos": pos, "cf": cf, "bf": bf,
+                "shared": shared, "ext": ext, "crit_need": crit_need, "be_need": be_need}
 
     def utility(self, A: np.ndarray, weights: dict, focus_idx: list[int] | None = None,
                 horizon_s: float = DECISION_HORIZON_S, warm: list | None = None,

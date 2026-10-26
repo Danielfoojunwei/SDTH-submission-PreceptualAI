@@ -187,7 +187,7 @@ def _flows(rng: np.random.Generator, index: int) -> tuple[Flow, ...]:
 
 
 def make_warehouse(seed: int, *, n_robots: int = 100, scanners: str = "normal",
-                   region: str | None = None) -> Scene:
+                   region: str | None = None, rack_scale: float = 1.0) -> Scene:
     rng = np.random.default_rng(seed)
     occupancy = {}
     busy = {"light": 0.15, "normal": 0.3, "heavy": 0.5}[scanners]
@@ -225,8 +225,10 @@ def make_warehouse(seed: int, *, n_robots: int = 100, scanners: str = "normal",
         mobility.assign(car, plan)
         cars.append(car)
 
+    obstruction = rack_obstruction if rack_scale == 1.0 else (
+        lambda ap, xs, ys: rack_scale * rack_obstruction(ap, xs, ys))
     scene = Scene(seed, cars, aps, occupancy, WIDTH, HEIGHT,
-                  region or f"W{seed % 4}", obstruction=rack_obstruction,
+                  region or f"W{seed % 4}", obstruction=obstruction,
                   mobility=mobility)
     # Stale legacy associations: chosen where each robot was some time ago,
     # kept unless the signal drops below -80 dBm.
@@ -237,7 +239,7 @@ def make_warehouse(seed: int, *, n_robots: int = 100, scanners: str = "normal",
         jx = float(np.clip(car.x + rng.normal(0, 12), 0, WIDTH))
         jy = float(np.clip(car.y + rng.normal(0, 8), 0, HEIGHT))
         old = Scene(seed, [replace(car, x=jx, y=jy)], aps, occupancy, WIDTH, HEIGHT,
-                    obstruction=rack_obstruction)
+                    obstruction=obstruction)
         old_vis = old.visible_aps(old.cars[0])
         choice = max(old_vis, key=lambda s: (s[0].priority, s[1]))[0].ap_id
         if choice not in {ap.ap_id for ap, _ in visible}:
