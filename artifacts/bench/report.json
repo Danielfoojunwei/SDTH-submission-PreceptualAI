@@ -1,0 +1,254 @@
+{
+  "model": {
+    "repo": "vllm-sr/d3-lite",
+    "revision": "03560c26f5199c3c04129a2ccb38960c913635e0",
+    "device": "mps",
+    "backbone_frozen": true
+  },
+  "hardware": "SmartCar.zip Raspbot: BE200 wlan1 client, brcmfmac wlan0 management (untouched); BSSID selection only",
+  "n_cases": 400,
+  "parity_err_max": 5.960464477539062e-07,
+  "fleet_zero_shot_optionwise": {
+    "n_test_cases": 80,
+    "jev_regret": 1.6995656457797863,
+    "jev_norm_regret": 0.39900525202761516,
+    "jev_top1": 0.0375,
+    "defer_rate": 0.9375,
+    "ablation_random_option_regret": 1.5014243857499725,
+    "ablation_first_option_regret": 1.4359802989319839,
+    "ablation_defer_regret": 1.7298793888751078,
+    "baseline_legacy_regret": 1.2995566097667317,
+    "baseline_strongest_rssi_regret": 4.04447349157732,
+    "baseline_random_regret": 3.710896835561708,
+    "baseline_local_greedy_regret": 1.7632503744024546,
+    "baseline_hungarian_regret": 3.4124215640008195,
+    "baseline_coloring_regret": 1.7627814782797189,
+    "baseline_milp_regret": 0.2151854739779205,
+    "jev_regret_by_mission": {
+      "protect_video": 2.0857,
+      "convoy_continuity": 0.6168,
+      "bulk_upload": 1.7162,
+      "fair_share": 1.8524,
+      "spectrum_etiquette": 2.2267
+    },
+    "regret_high_contention": 1.541911564664921,
+    "regret_low_contention": 1.8572197268946524
+  },
+  "intent_flip_zero_shot_optionwise": {
+    "pairs": 48,
+    "oracle_differs": 28,
+    "model_flips_when_oracle_differs": 0.03571428571428571,
+    "directionally_correct_flips": 0.0
+  },
+  "fleet_zero_shot_single_choice": {
+    "n_test_cases": 80,
+    "jev_regret": 0.7990893228105372,
+    "jev_norm_regret": 0.21641952039370388,
+    "jev_top1": 0.275,
+    "defer_rate": 0.2125,
+    "ablation_random_option_regret": 1.5014243857499725,
+    "ablation_first_option_regret": 1.4359802989319839,
+    "ablation_defer_regret": 1.7298793888751078,
+    "baseline_legacy_regret": 1.2995566097667317,
+    "baseline_strongest_rssi_regret": 4.04447349157732,
+    "baseline_random_regret": 3.710896835561708,
+    "baseline_local_greedy_regret": 1.7632503744024546,
+    "baseline_hungarian_regret": 3.4124215640008195,
+    "baseline_coloring_regret": 1.7627814782797189,
+    "baseline_milp_regret": 0.2151854739779205,
+    "jev_regret_by_mission": {
+      "protect_video": 0.4277,
+      "convoy_continuity": 0.4565,
+      "bulk_upload": 0.5481,
+      "fair_share": 0.6169,
+      "spectrum_etiquette": 1.9463
+    },
+    "regret_high_contention": 0.6225844672734736,
+    "regret_low_contention": 0.9755941783476008
+  },
+  "intent_flip_zero_shot_single_choice": {
+    "pairs": 48,
+    "oracle_differs": 28,
+    "model_flips_when_oracle_differs": 0.42857142857142855,
+    "directionally_correct_flips": 0.03571428571428571
+  },
+  "bias_audit": {
+    "n": 40,
+    "order_reversal_consistency": 1.0,
+    "length_padding_capture": 0.0,
+    "authority_wording_capture": 0.0,
+    "chance_capture": 0.17351190476190476
+  },
+  "fleet_distilled": {
+    "adapter_sha256": "9192349739512f7da8a86c7342a5cf561f69c967593e6969eeb3fe0d518aa21b",
+    "val_kl_before": 1.2742334637790917,
+    "val_kl_after": 0.34663392037618906,
+    "u_norm": 7.188392162322998,
+    "trainable_parameters": 1024,
+    "live_adapter_agreement": 1.0,
+    "metrics": {
+      "n_test_cases": 80,
+      "jev_regret": 0.08044290626559807,
+      "jev_norm_regret": 0.027612368509008882,
+      "jev_top1": 0.7,
+      "defer_rate": 0.05,
+      "ablation_random_option_regret": 1.5014243857499725,
+      "ablation_first_option_regret": 1.4359802989319839,
+      "ablation_defer_regret": 1.7298793888751078,
+      "baseline_legacy_regret": 1.2995566097667317,
+      "baseline_strongest_rssi_regret": 4.04447349157732,
+      "baseline_random_regret": 3.710896835561708,
+      "baseline_local_greedy_regret": 1.7632503744024546,
+      "baseline_hungarian_regret": 3.4124215640008195,
+      "baseline_coloring_regret": 1.7627814782797189,
+      "baseline_milp_regret": 0.2151854739779205,
+      "jev_regret_by_mission": {
+        "protect_video": 0.1091,
+        "convoy_continuity": 0.0,
+        "bulk_upload": 0.0284,
+        "fair_share": 0.1268,
+        "spectrum_etiquette": 0.138
+      },
+      "regret_high_contention": 0.13782046776175422,
+      "regret_low_contention": 0.023065344769441935
+    },
+    "intent_flip": {
+      "pairs": 48,
+      "oracle_differs": 28,
+      "model_flips_when_oracle_differs": 0.8214285714285714,
+      "directionally_correct_flips": 0.75
+    },
+    "mia_auc_base_readout": 0.5518229166666667,
+    "mia_auc_distilled": 0.54015625,
+    "mia_auc_region_before_unlearning": 0.5316666666666666,
+    "mia_auc_region_after_unlearning": 0.48333333333333334
+  },
+  "swarm": {
+    "round1": {
+      "released": true,
+      "leader": "car-01",
+      "participants": [
+        "car-01",
+        "car-02",
+        "car-03",
+        "car-04",
+        "car-05",
+        "car-06",
+        "car-07",
+        "car-08",
+        "car-09"
+      ],
+      "excluded_low_reputation": [
+        "car-10"
+      ],
+      "validation": {
+        "passed": true,
+        "val_regret": 0.27662181871655,
+        "live_val_regret": 1.570567358990146,
+        "base_val_regret": 1.570567358990146
+      }
+    },
+    "round2_poisoned_updates": {
+      "released": false,
+      "reason": "VALIDATION_FAILED",
+      "validation": {
+        "passed": false,
+        "val_regret": 0.4725826906581494,
+        "live_val_regret": 0.27662181871655,
+        "base_val_regret": 1.570567358990146
+      }
+    },
+    "log_entries": 12,
+    "log_verifies": true,
+    "reputation": {
+      "car-10": 0.2,
+      "car-01": 1.05,
+      "car-02": 1.05,
+      "car-03": 1.05,
+      "car-04": 1.05,
+      "car-05": 1.05,
+      "car-06": 1.05,
+      "car-07": 1.05,
+      "car-08": 1.05,
+      "car-09": 1.05
+    }
+  },
+  "traffic": {
+    "n": 150,
+    "label_accuracy": {
+      "jev_raw": {
+        "trend": 0.35333333333333333,
+        "event": 0.24666666666666667,
+        "volatility": 0.52
+      },
+      "jev_digest": {
+        "trend": 0.6466666666666666,
+        "event": 0.64,
+        "volatility": 0.5333333333333333
+      },
+      "rule": {
+        "trend": 0.7266666666666667,
+        "event": 0.76,
+        "volatility": 0.8866666666666667
+      }
+    },
+    "label_latency_ms_mean": 1030.4417100261587,
+    "label_distillation_test_accuracy": {
+      "trend": {
+        "base": 0.6333333333333333,
+        "distilled": 0.8333333333333334,
+        "rule": 0.7333333333333333
+      },
+      "event": {
+        "base": 0.5333333333333333,
+        "distilled": 0.5,
+        "rule": 0.6333333333333333
+      },
+      "volatility": {
+        "base": 0.3,
+        "distilled": 0.7666666666666667,
+        "rule": 0.8
+      }
+    },
+    "forecast_mae": {
+      "chronos_bolt_small": 3.3288347286680597,
+      "naive_last_value": 3.799855652062812
+    },
+    "residual_ablation_rmse": {
+      "none": 5.226922678128446,
+      "semantic_jev": 5.204366642767688,
+      "semantic_rule": 5.354865903550377,
+      "calendar": 5.3505605808147445,
+      "pca": 5.8878482239070555
+    },
+    "residual_note": "closed-form ridge residual (9 parameters) fitted only for this ablation; not deployed",
+    "chronos_robustness": {
+      "clean_rmse": 6.333310693493432,
+      "noise_10db": {
+        "rmse": 6.784136530095177,
+        "increase_pct": 7.118328129155326
+      },
+      "missing_10pct": {
+        "rmse": 6.375051601176683,
+        "increase_pct": 0.6590693194024716
+      },
+      "surge": {
+        "rmse": 18.173865029617307,
+        "increase_pct": 186.95678941328975
+      }
+    }
+  },
+  "admission": {
+    "n": 60,
+    "jev_local_direction_accuracy": 0.43333333333333335,
+    "demand_rule_accuracy": 0.18333333333333332,
+    "chance": 0.3333333333333333,
+    "source": "Shen, Lam, Li (arXiv 2407.00814) price-step formulation"
+  },
+  "latency_ms": {
+    "fleet_optionwise_mean": 2850.935326870531,
+    "fleet_optionwise_p90": 3619.6503585902974,
+    "device": "mps"
+  },
+  "wall_clock_s": 2603.219460964203
+}

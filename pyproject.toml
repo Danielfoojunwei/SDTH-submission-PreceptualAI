@@ -1,0 +1,26 @@
+[project]
+name = "wirelessjev"
+version = "0.1.0"
+description = "Add your description here"
+requires-python = ">=3.12"
+dependencies = [
+    "accelerate>=1.10",
+    "chronos-forecasting>=2.3.2",
+    "einops>=0.8.2",
+    "huggingface-hub>=1.0",
+    "numpy>=2.5.4",
+    "pillow>=13.0.0",
+    "pytest>=9.1.1",
+    "safetensors>=0.6",
+    "scipy>=1.18.1",
+    "torch>=2.8",
+    "torchvision>=0.29.1",
+    "transformers==5.17.0",
+]
+
+[project.scripts]
+wirelessjev = "wirelessjev:main"
+
+[build-system]
+requires = ["uv_build>=0.13.5,<0.14.0"]
+build-backend = "uv_build"
