@@ -80,6 +80,7 @@ def build() -> dict:
         "layout": layout,
         "bench_10car": _load("artifacts/bench/report.json"),
         "bench_warehouse": _load("artifacts/warehouse/report.json"),
+        "bench_intent": _load("artifacts/intent/report.json"),
         "closedloop_10car": _slim_closedloop(_load("artifacts/closedloop.json")),
         "closedloop_warehouse": _slim_closedloop(_load("artifacts/closedloop_warehouse.json")),
         "papers": _paper_map(),

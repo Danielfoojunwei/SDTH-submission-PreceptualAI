@@ -1,0 +1,54 @@
+{
+  "intent_level_accuracy": {
+    "train": {
+      "zero_shot": 0.28888888888888886,
+      "distilled": 0.762962962962963
+    },
+    "test": {
+      "zero_shot": 0.35555555555555557,
+      "distilled": 0.7111111111111111
+    },
+    "novel": {
+      "zero_shot": 0.28703703703703703,
+      "distilled": 0.6851851851851852
+    }
+  },
+  "intent_weight_mae": {
+    "zero_shot_test": 0.5059514552402398,
+    "zero_shot_novel": 0.5386269719958465,
+    "distilled_test": 0.32566506737516626,
+    "distilled_novel": 0.4309680911100888
+  },
+  "intent_read_latency_ms": 2485.75535211468,
+  "shortlist_regret": {
+    "old_optionwise_distilled": 0.11393218505119979,
+    "true_weights": 0.0,
+    "intent_zero_shot": 0.10409129932734959,
+    "intent_distilled": 0.005760082358210239,
+    "intent_distilled_heldout_paraphrase": 0.02658693648190339
+  },
+  "plan_regret_vs_best_known": {
+    "fast_true": 0.0010206104689751772,
+    "fast_intent_distilled": 0.016012479052372977,
+    "fast_intent_zero_shot": 0.11438564810294057,
+    "best_shortlist": 0.06477984077352039,
+    "milp": 0.2612418616248211,
+    "legacy": 0.5240314586347433,
+    "old_optionwise_choice": 0.1787120258247202
+  },
+  "n_decisions": 50,
+  "novel_mission_plan_regret": {
+    "fast_true": 0.0,
+    "fast_intent_distilled": 0.02760819907924934,
+    "fast_intent_zero_shot": 0.05691110720885645,
+    "milp": 0.3303378423653922,
+    "legacy": 0.3495093154809501
+  },
+  "latency_ms": {
+    "planner_setup_mean": 23.53958415798843,
+    "planner_search_mean": 110.51649416796863,
+    "planner_search_p90": 200.11299643665558,
+    "intent_read_once_per_mission": 2485.75535211468,
+    "previous_decision_total": 15000.0
+  }
+}

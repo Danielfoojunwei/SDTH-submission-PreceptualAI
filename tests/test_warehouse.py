@@ -70,3 +70,31 @@ def test_horizon_charges_handover_once():
     now = evaluate(s, {"assoc": moved, "channels": ch})
     assert now.handovers == 1
     assert horizon_utility(s, snaps, hold, m, ch) != horizon_utility(s, snaps, moved, m, ch)
+
+
+def test_batched_evaluator_equals_oracle():
+    from wirelessjev.fastplan import BatchEvaluator
+    s = make_warehouse(31)
+    snaps = horizon_snapshots(s)
+    ev = BatchEvaluator(s, snaps)
+    rng = np.random.default_rng(1)
+    A = np.stack([np.array([rng.choice(v) for v in ev.visible]) for _ in range(6)])
+    A[0] = ev.current
+    for m in WAREHOUSE_MISSIONS.values():
+        fi = [ev.car_ids.index(c) for c in m.focus_cars]
+        fast = ev.utility(A, m.weights, fi)
+        ref = [horizon_utility(s, snaps, ev.to_assoc(a), m) for a in A]
+        assert np.allclose(fast, ref, atol=1e-12)
+
+
+def test_fast_planner_is_exact_and_monotone():
+    from wirelessjev.fastplan import FastPlanner
+    s = make_warehouse(32)
+    m = WAREHOUSE_MISSIONS["map_rollout"]
+    fp = FastPlanner(s, pinned=frozenset({"amr-005"}))
+    start_u = horizon_utility(s, fp.snaps, fp.ev.to_assoc(fp.ev.current), m)
+    a, u, stats = fp.search(m.weights, m.focus_cars)
+    assert u == pytest.approx(horizon_utility(s, fp.snaps, fp.ev.to_assoc(a), m), abs=1e-12)
+    assert u >= start_u - 1e-12
+    assert a[fp.ev.car_ids.index("amr-005")] == fp.ev.current[fp.ev.car_ids.index("amr-005")]
+    assert stats["plans_evaluated"] > 0

@@ -50,7 +50,10 @@ function overview() {
     k.push(kpi("10-car regret · distilled WirelessJEV", fmt(d.jev_regret), `MILP ${fmt(z.baseline_milp_regret)} · legacy ${fmt(z.baseline_legacy_regret)} · ${d.n_test_cases} test decisions`, "good"));
     k.push(kpi("Intent-flip (distilled)", pct(t.fleet_distilled.intent_flip.directionally_correct_flips), "choice changes the right way when only the mission text changes"));
   }
-  if (w) {
+  if (B.bench_intent) {
+    const it = B.bench_intent;
+    k.push(kpi("100-robot plan gap · intent + fast planner", fmt(it.plan_regret_vs_best_known.fast_intent_distilled), `previous ${fmt(it.plan_regret_vs_best_known.old_optionwise_choice)} · MILP ${fmt(it.plan_regret_vs_best_known.milp)} · ${it.latency_ms.planner_search_mean.toFixed(0)} ms/decision`, "good"));
+  } else if (w) {
     const cands = [["warehouse", w.distilled_warehouse], ["combined", w.combined_on_warehouse]].filter((x) => x[1]);
     const [name, c] = cands.reduce((a, b) => (b[1].jev_regret < a[1].jev_regret ? b : a));
     k.push(kpi(`100-robot regret · ${name} adapter`, fmt(c.jev_regret), `MILP ${fmt(w.zero_shot_single_choice.baseline_milp_regret)} · legacy ${fmt(w.zero_shot_single_choice.baseline_legacy_regret)}`, "good"));
@@ -81,7 +84,7 @@ function mapPage() {
   const cl = B.closedloop_warehouse;
   const runs = (cl?.runs || []).filter((r) => r.frames);
   if (!runs.length) return `<h1>Fleet map</h1>` + missing("Warehouse replay", "uv run python -m wirelessjev.closedloop --warehouse --total 600 --out artifacts/closedloop_warehouse.json");
-  const pref = runs.find((r) => r.policy === "wirelessjev") || runs[0];
+  const pref = runs.find((r) => r.policy === "wirelessjev_fast") || runs.find((r) => r.policy === "wirelessjev") || runs[0];
   setTimeout(() => mountMap(runs, pref.policy), 0);
   return `<h1>Fleet map</h1>
   <p class="lede">Replay of a 10-minute warehouse shift in the twin: 100 robots on planned aisle routes, mission changes, a robot exceeding its power cap, and a 30 s coordinator outage. Click a robot to see its link.</p>
@@ -236,8 +239,18 @@ function evidencePage() {
     ["milp", "legacy", "local_greedy", "coloring"].forEach((b) => rows.push([esc("Baseline: " + b), fmt(z[`baseline_${b}_regret`]), "—", "—", z.n_test_cases]));
     s += `<div class="card" style="margin-top:16px"><h3>100-robot warehouse · ${w.n_cases} decisions · route-aware oracle</h3><div class="sub">decision latency ${(w.latency_ms.optionwise_mean / 1000).toFixed(1)} s mean on ${esc(w.latency_ms.device)}</div>${table(["Policy", "Mean regret", "Top-1", "DEFER", "n"], rows)}${w.combined_on_10car ? `<p class="note">The combined adapter on the 10-car test split: regret ${fmt(w.combined_on_10car.jev_regret)}.</p>` : ""}</div>`;
   } else s += missing("100-robot warehouse benchmark", "uv run python -m wirelessjev.bench_warehouse --scenes 50");
+  const it = B.bench_intent;
+  if (it) {
+    const sr = it.shortlist_regret, pr = it.plan_regret_vs_best_known, nv = it.novel_mission_plan_regret, la = it.intent_level_accuracy, lt = it.latency_ms;
+    s += `<div class="card" style="margin-top:16px"><h3>Intent-to-objective WirelessJEV · ${it.n_decisions} warehouse decisions</h3><div class="sub">d3-lite reads the mission into objective weights (once per mission); an exact batched planner optimises them every step.</div>
+      <div class="grid k3"><div>${table(["Shortlist regret", ""], [["option-wise distilled (previous)", fmt(sr.old_optionwise_distilled)], ["intent zero-shot", fmt(sr.intent_zero_shot)], ["intent distilled, held-out paraphrase", `<b class="good">${fmt(sr.intent_distilled_heldout_paraphrase)}</b>`], ["intent distilled, seen wording", fmt(sr.intent_distilled)]])}</div>
+      <div>${table(["Gap to best known plan", ""], [["fast planner, intent distilled", `<b class="good">${fmt(pr.fast_intent_distilled)}</b>`], ["fast planner, intent zero-shot", fmt(pr.fast_intent_zero_shot)], ["best shortlist option", fmt(pr.best_shortlist)], ["previous option-wise choice", fmt(pr.old_optionwise_choice)], ["MILP", fmt(pr.milp)], ["legacy", fmt(pr.legacy)]])}</div>
+      <div>${table(["Never-seen missions", ""], [["fast planner, intent distilled", `<b class="good">${fmt(nv.fast_intent_distilled)}</b>`], ["fast planner, intent zero-shot", fmt(nv.fast_intent_zero_shot)], ["MILP", fmt(nv.milp)], ["legacy", fmt(nv.legacy)]])}
+      <p class="note">Intent level accuracy: held-out ${pct(la.test.zero_shot)} → ${pct(la.test.distilled)}; novel ${pct(la.novel.zero_shot)} → ${pct(la.novel.distilled)}.</p></div></div>
+      <p class="note">Latency: planner ${lt.planner_setup_mean.toFixed(0)} ms setup + ${lt.planner_search_mean.toFixed(0)} ms search (p90 ${lt.planner_search_p90.toFixed(0)} ms) per decision; intent read ${(lt.intent_read_once_per_mission / 1000).toFixed(1)} s once per mission change; previously ~15 s per decision.</p></div>`;
+  }
   const cls = [["10-car (300 s)", B.closedloop_10car], ["warehouse shift (600 s)", B.closedloop_warehouse]].filter((x) => x[1]);
-  s += `<div class="card" style="margin-top:16px"><h3>Closed loop</h3>${table(["Scenario", "Policy", "Mean utility", "Handovers", "Connect resends"], cls.flatMap(([name, c]) => Object.entries(c.summary).map(([p, v]) => [esc(name), esc(p), fmt(v.mean_utility, 3), v.total_handovers, v.connects_beyond_one_per_txn ?? "—"])))}</div>`;
+  s += `<div class="card" style="margin-top:16px"><h3>Closed loop</h3>${table(["Scenario", "Policy", "Mean utility", "Handovers", "Critical violations / step", "Decision latency", "Connect resends"], cls.flatMap(([name, c]) => Object.entries(c.summary).sort((a, b) => b[1].mean_utility - a[1].mean_utility).map(([p, v]) => [esc(name), esc(p), fmt(v.mean_utility, 3), v.total_handovers, fmt(v.mean_critical_violations, 2), v.decision_latency_ms_mean ? (v.decision_latency_ms_mean >= 1000 ? (v.decision_latency_ms_mean / 1000).toFixed(1) + " s" : v.decision_latency_ms_mean.toFixed(0) + " ms") : "—", v.connects_beyond_one_per_txn ?? "—"])))}</div>`;
   return s;
 }
 

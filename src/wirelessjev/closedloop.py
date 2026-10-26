@@ -72,7 +72,8 @@ def mission_at(t: float, sc: Scenario):
 
 
 def run(policy: str, *, seed: int, total_s: float, engine=None, log=print,
-        scenario: Scenario | None = None, record: bool = False) -> dict:
+        scenario: Scenario | None = None, record: bool = False,
+        intent_reader=None) -> dict:
     """record=True also stores per-step replay frames (robot positions,
     associations, satisfaction) and full decision details for the Studio."""
     sc = scenario or TEN_CAR
@@ -118,7 +119,21 @@ def run(policy: str, *, seed: int, total_s: float, engine=None, log=print,
         scene = scene.with_associations(actual)
 
         target = None
-        if coordinator_up and k % decide_every == 0:
+        if coordinator_up and policy == "wirelessjev_fast":
+            # Intent read once per mission text (cached); plan every step.
+            from .fastplan import FastPlanner
+            reading = intent_reader.read(mission.intent)
+            started = time.perf_counter()
+            fp = FastPlanner(scene, pinned=pinned)
+            a, u, st = fp.search(reading.weights, reading.focus, starts=[fp.ev.current],
+                                 max_iter=60)
+            target = fp.ev.to_assoc(a)
+            decisions.append({"t": t, "mission": mission.mission_id,
+                              "latency_ms": round((time.perf_counter() - started) * 1000, 1),
+                              "intent_ms": round(reading.latency_ms, 1),
+                              "moves": int((a != fp.ev.current).sum()),
+                              "iterations": st["iterations"]})
+        elif coordinator_up and k % decide_every == 0:
             started = time.perf_counter()
             if policy == "wirelessjev":
                 options, _ = generate(scene, seed=seed + k, pinned=pinned,
@@ -227,21 +242,33 @@ def main():
     ap.add_argument("--out", default="artifacts/closedloop.json")
     ap.add_argument("--warehouse", action="store_true",
                     help="100-robot AMR warehouse shift instead of the 10-car scenario")
+    ap.add_argument("--policies", nargs="+", default=["wirelessjev", "milp", "legacy"])
+    ap.add_argument("--intent-adapter", default=None,
+                    help="distilled score readout for wirelessjev_fast")
     args = ap.parse_args()
     scenario = warehouse_scenario() if args.warehouse else TEN_CAR
     from .policy import WirelessJEV
-    engine = WirelessJEV(adapter=args.adapter)
+    engine = WirelessJEV(adapter=args.adapter if "wirelessjev" in args.policies else None)
+    intent_reader = None
+    if "wirelessjev_fast" in args.policies:
+        from .intent import IntentReader
+        readout = None
+        if args.intent_adapter:
+            from safetensors.torch import load_file
+            readout = load_file(str(Path(args.intent_adapter) / "readout.safetensors"))["readout"]
+        intent_reader = IntentReader(engine, readout=readout)
     results = []
     for seed in args.seeds:
-        for policy in ("wirelessjev", "milp", "legacy"):
+        for policy in args.policies:
             r = run(policy, seed=seed, total_s=args.total, engine=engine,
-                    scenario=scenario, record=(seed == args.seeds[0]))
+                    scenario=scenario, record=(seed == args.seeds[0]),
+                    intent_reader=intent_reader)
             r["seed"] = seed
             results.append(r)
             print(f"seed {seed} {policy}: mean utility {r['mean_utility']:.3f}, "
                   f"handovers {r['total_handovers']}, txns {r['transactions']}", flush=True)
     summary = {}
-    for policy in ("wirelessjev", "milp", "legacy"):
+    for policy in args.policies:
         rs = [r for r in results if r["policy"] == policy]
         summary[policy] = {
             "mean_utility": float(np.mean([r["mean_utility"] for r in rs])),
@@ -249,6 +276,9 @@ def main():
             "critical_violation_steps": int(sum(r["critical_violation_steps"] for r in rs)),
             "mean_critical_violations": float(np.mean([r["mean_critical_violations"] for r in rs])),
             "connects_beyond_one_per_txn": int(sum(r["connects_beyond_one_per_txn"] for r in rs)),
+            "decision_latency_ms_mean": float(np.mean([d["latency_ms"] for r in rs
+                                                       for d in r["decisions"]] or [0.0])),
+            "decisions": int(sum(len(r["decisions"]) for r in rs)),
         }
     out = {"summary": summary, "adapter": args.adapter,
            "hardware": RASPBOT.customer_radio, "runs": results}

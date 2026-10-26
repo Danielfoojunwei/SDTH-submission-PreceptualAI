@@ -43,6 +43,22 @@ Plans are scored over the robots' planned positions for the next 20 s.
 ~/.local/bin/uv run python -m wirelessjev.closedloop --warehouse --total 600 --adapter artifacts/warehouse/adapters/warehouse --out artifacts/closedloop_warehouse.json
 ```
 
+## Intent-to-objective WirelessJEV (fast loop)
+d3-lite reads the mission text into objective weights through typed score questions (`intent.py`). This happens once per mission change and is cached; the score readout is distilled.
+
+An exact batched planner (`fastplan.py`) then optimises those weights every step. It scores every robot × BSSID move in one batch (numpy or torch, CPU or GPU) and accepts only exactly verified moves.
+
+Results on the 100-robot warehouse:
+- **Plan gap to the best known plan:** 0.016, versus 0.179 for the previous option-wise choice.
+- **Held-out paraphrase shortlist regret:** 0.027.
+- **Decision latency:** about 134 ms, versus about 15 s before.
+```bash
+~/.local/bin/uv run python -m wirelessjev.bench_intent --out artifacts/intent
+```
+```bash
+~/.local/bin/uv run python -m wirelessjev.closedloop --warehouse --policies wirelessjev_fast --intent-adapter artifacts/intent/adapters/intent --out artifacts/closedloop_warehouse_fast.json
+```
+
 ## Studio (front end)
 A static app in `studio/` that shows only the exported artifacts. Its sections are overview, fleet map replay, decisions, evidence, swarm & trust, execution, research map, and hardware & data.
 ```bash
