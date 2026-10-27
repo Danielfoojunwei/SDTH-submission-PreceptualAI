@@ -159,6 +159,12 @@ class Scene:
     obstruction: object = field(default=None, repr=False)
     # Optional mobility model (warehouse routes); advance() delegates to it.
     mobility: object = field(default=None, repr=False)
+    # Propagation knobs (defaults reproduce the original model exactly):
+    # 10*n of the log-distance law, shadowing std in dB, AP mounting height
+    # above the client antenna (0 = 2-D distance).
+    pl_coef: float = 33.0
+    shadow_db: float = 4.0
+    ap_height_m: float = 0.0
     _radio: object = field(default=None, repr=False)
     _radio_key: object = field(default=None, repr=False)
 
@@ -180,11 +186,11 @@ class Scene:
         value = np.zeros_like(xs, dtype=float)
         for (fx, fy), p in zip(freqs, phases):
             value += np.sin(fx * xs + fy * ys + p)
-        return 4.0 * value / math.sqrt(2.0)
+        return self.shadow_db * value / math.sqrt(2.0)
 
     def _path_loss_vec(self, ap: AP, xs: np.ndarray, ys: np.ndarray) -> np.ndarray:
-        d = np.maximum(1.0, np.hypot(ap.x - xs, ap.y - ys))
-        loss = BANDS[ap.band][0] + 33.0 * np.log10(d) + self._shadow_vec(ap, xs, ys)
+        d = np.maximum(1.0, np.sqrt((ap.x - xs) ** 2 + (ap.y - ys) ** 2 + self.ap_height_m ** 2))
+        loss = BANDS[ap.band][0] + self.pl_coef * np.log10(d) + self._shadow_vec(ap, xs, ys)
         if self.obstruction is not None:
             loss = loss + self.obstruction(ap, xs, ys)
         return loss
@@ -276,7 +282,8 @@ class Scene:
                     list(aps if aps is not None else self.aps),
                     dict(self.external_occupancy), self.width_m,
                     self.height_m, self.region, self._shadow, self.obstruction,
-                    self.mobility)
+                    self.mobility, pl_coef=self.pl_coef, shadow_db=self.shadow_db,
+                    ap_height_m=self.ap_height_m)
         out._radio, out._radio_key = self._radio, self._radio_key  # revalidated by key
         return out
 

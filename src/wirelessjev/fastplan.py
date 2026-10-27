@@ -80,6 +80,15 @@ class BatchEvaluator:
             self.visible.append(np.array(vis, dtype=np.int64))
         self.t5, self.r5 = _TABLES["5g"]
         self.t2, self.r2 = _TABLES["2g"]
+        # Optional richer interference model (off by default):
+        #   ext_noise_mw  external (non-fleet) interference power at each AP
+        #   client_itf    uplink interference from co-channel *robots* (what an
+        #                 AP actually hears) instead of the AP-to-AP proxy
+        #   leak          (m, m) linear leakage factor between adjacent channels
+        self.ext_noise_mw = np.zeros(self.m)
+        self.client_itf = False
+        self.leak = np.zeros((self.m, self.m))
+        self.interferer = interferer
 
     # ---------------------------------------------------------------------
     def _snapshot_terms(self, A: np.ndarray, snap: Snapshot, charge_handover: bool,
@@ -88,15 +97,26 @@ class BatchEvaluator:
         B, n = A.shape
         rows = np.arange(n)[None, :]
         ul = snap.ul[rows, A]
-        nz = self.noise_mw[A]
+        nz = self.noise_mw[A] + self.ext_noise_mw[A]
         is5 = self.is5[A]
+        if self.client_itf:
+            ul_lin = 10 ** (snap.ul / 10)                                   # (n, m)
+            onehot = np.zeros((B, n, self.m))
+            np.put_along_axis(onehot, A[..., None], 1.0, axis=2)
+            per_ap = np.einsum("bnk,nj->bkj", onehot, ul_lin)              # sum over clients of AP k
+            cnt = onehot.sum(1)[..., None]
+            client_mw = per_ap / np.maximum(cnt, 1.0)                       # mean client power of k at j
+            coupling = client_mw * (self.interferer.astype(float) + self.leak)[None]
         dcar = self.dom_of_ap[A]
         flat_d = (np.arange(B)[:, None] * self.nd + dcar).ravel()
         flat_a = (np.arange(B)[:, None] * self.m + A).ravel()
         activity = (np.full((B, self.m), 0.5) if activity0 is None
                     else np.broadcast_to(activity0, (B, self.m)))
         for _ in range(iters):
-            interference = activity @ self.apap_mw
+            if self.client_itf:
+                interference = np.einsum("bk,bkj->bj", activity, coupling)
+            else:
+                interference = activity @ self.apap_mw
             itf = np.take_along_axis(interference, A, axis=1)
             sinr = ul - 10 * np.log10(nz + itf)
             i5 = np.searchsorted(self.t5, sinr, side="right") - 1
@@ -193,13 +213,19 @@ class FastPlanner:
     iteration evaluated as one batch; several starting plans."""
 
     def __init__(self, scene: Scene, *, horizon: bool = True, pinned=frozenset(),
-                 device: str | None = "cpu"):
+                 device: str | None = "cpu", evaluator: "BatchEvaluator | None" = None):
         """device: torch device for move screening ("cpu", "mps", "cuda"), or
         None to screen with numpy float64."""
         t0 = time.perf_counter()
-        self.snaps = horizon_snapshots(scene) if horizon else []
-        self.ev = BatchEvaluator(scene, self.snaps)
-        self.screen = TorchScreen(self.ev, device) if device else None
+        if evaluator is not None:
+            self.snaps, self.ev = [], evaluator
+        else:
+            self.snaps = horizon_snapshots(scene) if horizon else []
+            self.ev = BatchEvaluator(scene, self.snaps)
+        # The torch screen mirrors the default interference model only.
+        self.screen = (TorchScreen(self.ev, device)
+                       if device and not self.ev.client_itf and not self.ev.ext_noise_mw.any()
+                       else None)
         self.pinned = {self.ev.car_ids.index(c) for c in pinned if c in self.ev.car_ids}
         self.setup_ms = (time.perf_counter() - t0) * 1000
         moves = []

@@ -3,6 +3,7 @@
     preflight  offline checks: known_hosts pins 192.168.1.11, WiFi.json parses
     status     read-only: repeated {"action": "status"}
     scan       read-only: stream the existing SmartCatScan.py for N seconds
+    capabilities  read-only: what the BE200, its driver, nearby APs and Bluetooth support
     propose    local only: WirelessJEV scores the visible BSSIDs; sends nothing
     switch     the only mutation: one operator-confirmed BSSID connect
 
@@ -18,8 +19,9 @@ from pathlib import Path
 import sys
 import time
 
-from .carlink import (BSSID_RE, CarLink, OutcomeUnknown, RemoteRefused,
-                      known_hosts_has, load_wifi_json)
+from .carlink import (BSSID_RE, READONLY_COMMANDS, CarLink, OutcomeUnknown, RemoteRefused,
+                      ideas_enabled, known_hosts_has, load_wifi_json, run_readonly,
+                      summarise_capabilities)
 from .execution import redact
 
 LOG_DIR = Path("artifacts/onecar")
@@ -229,6 +231,29 @@ def cmd_switch(args, link=None, ask=input) -> int:
         link.close()
 
 
+def cmd_capabilities(args, link=None) -> int:
+    """Read-only: what the BE200, its driver, the APs and Bluetooth support."""
+    log = Log("capabilities")
+    link = link or _link(args)
+    raw = {}
+    try:
+        for key in READONLY_COMMANDS:
+            try:
+                raw[key] = run_readonly(link, key)
+            except Exception as exc:
+                raw[key] = ""
+                log.write("probe_error", probe=key, error=str(exc))
+    finally:
+        link.close()
+    summary = summarise_capabilities(raw)
+    log.write("capabilities", **summary)
+    log.write("ideas_enabled", **ideas_enabled(summary))
+    raw_path = log.path.with_suffix(".raw.txt")
+    raw_path.write_text("\n\n".join(f"### {k}\n{v}" for k, v in raw.items()))
+    log.write("raw_output_saved", path=str(raw_path))
+    return 0
+
+
 def main(argv=None) -> int:
     ap = argparse.ArgumentParser(description=__doc__,
                                  formatter_class=argparse.RawDescriptionHelpFormatter)
@@ -245,6 +270,8 @@ def main(argv=None) -> int:
     p.add_argument("--known-hosts", required=True)
     p.add_argument("--wifi-json", required=True)
     p.add_argument("--seconds", type=float, default=20.0)
+    p = sub.add_parser("capabilities")
+    p.add_argument("--known-hosts", required=True)
     p = sub.add_parser("propose")
     p.add_argument("--scan-log", required=True)
     p.add_argument("--mission", required=True)
@@ -259,7 +286,8 @@ def main(argv=None) -> int:
         print("switch needs an interactive terminal for the typed confirmation", file=sys.stderr)
         return 1
     return {"preflight": cmd_preflight, "status": cmd_status, "scan": cmd_scan,
-            "propose": cmd_propose, "switch": cmd_switch}[args.cmd](args)
+            "propose": cmd_propose, "switch": cmd_switch,
+            "capabilities": cmd_capabilities}[args.cmd](args)
 
 
 if __name__ == "__main__":

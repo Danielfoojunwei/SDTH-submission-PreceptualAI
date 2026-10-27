@@ -218,3 +218,84 @@ class CarLink:
         finally:
             channel.close()
         return events
+
+
+# --------------------------------------------------------------------------
+# Read-only capability probe. Only these fixed commands can run; nothing here
+# changes radio, network or system state. wlan0 (the HOTPOT management radio)
+# is never queried beyond what is needed to confirm roles.
+READONLY_COMMANDS = {
+    "kernel": "uname -r",
+    "iw_version": "iw --version",
+    "wlan1_info": "iw dev wlan1 info",
+    "wlan1_link": "iw dev wlan1 link",
+    "wlan1_driver": "readlink -f /sys/class/net/wlan1/device/driver",
+    "wlan1_pci": "cat /sys/class/net/wlan1/device/vendor /sys/class/net/wlan1/device/device",
+    "phy_info": "iw phy \"$(iw dev wlan1 info | awk '/wiphy/{print \"phy\"$2}')\" info",
+    "survey": "iw dev wlan1 survey dump",
+    "scan_cache": "sudo -n iw dev wlan1 scan dump",
+    "bluetooth": "bluetoothctl show 2>/dev/null || hciconfig -a 2>/dev/null || echo none",
+    "bt_list": "bluetoothctl list 2>/dev/null || echo none",
+}
+
+
+def run_readonly(link: "CarLink", key: str, timeout: float = 15.0) -> str:
+    if key not in READONLY_COMMANDS:
+        raise ValueError(f"not a read-only probe command: {key}")
+    if link.client is None:
+        raise ConnectionError("not connected")
+    stdin, stdout, stderr = link.client.exec_command(READONLY_COMMANDS[key], timeout=timeout)
+    stdin.close()
+    out = stdout.read().decode("utf-8", errors="replace")
+    return out
+
+
+def summarise_capabilities(raw: dict[str, str]) -> dict:
+    """Turn probe output into the facts that decide which ideas the car supports."""
+    phy = raw.get("phy_info", "")
+    scan = raw.get("scan_cache", "")
+    survey = raw.get("survey", "")
+    bt = raw.get("bluetooth", "")
+    freqs = [float(f) for f in re.findall(r"\*\s+(\d{4}(?:\.\d+)?)\s+MHz", phy)]
+    disabled = set(float(f) for f in re.findall(r"\*\s+(\d{4}(?:\.\d+)?)\s+MHz[^\n]*disabled", phy))
+    usable = [f for f in freqs if f not in disabled]
+    ap_blocks = re.split(r"\nBSS ", "\n" + scan)[1:]
+    ap_ftm = sum("FTM Responder" in b or "FTM responder" in b for b in ap_blocks)
+    ap_he = sum("HE capabilities" in b for b in ap_blocks)
+    ap_eht = sum("EHT capabilities" in b for b in ap_blocks)
+    ap_6g = sum(any(5925 <= float(f) <= 7125 for f in re.findall(r"freq: (\d+(?:\.\d+)?)", b))
+                for b in ap_blocks)
+    busy_entries = len(re.findall(r"channel busy time", survey))
+    return {
+        "wifi7_eht_client": "EHT" in phy,
+        "wifi6_he_client": "HE PHY" in phy or "HE Iftypes" in phy,
+        "band_6ghz_usable": any(5925 <= f <= 7125 for f in usable),
+        "multi_link_mlo": bool(re.search(r"\bMLO\b|multi-link|MLD", phy, re.I)),
+        "ftm_initiator": bool(re.search(r"FTM_INITIATOR|ftm initiator|FTM initiator|"
+                                        r"Peer measurement", phy, re.I)),
+        "ftm_responder_feature": "FTM_RESPONDER" in phy or "ENABLE_FTM_RESPONDER" in phy,
+        "survey_busy_time": busy_entries > 0,
+        "survey_channels_reported": busy_entries,
+        "aps_in_scan_cache": len(ap_blocks),
+        "aps_advertising_ftm_responder": ap_ftm,
+        "aps_wifi6": ap_he, "aps_wifi7": ap_eht, "aps_on_6ghz": ap_6g,
+        "bluetooth_controller": "Controller" in bt or "BD Address" in bt,
+        "bluetooth_le": bool(re.search(r"\bLE\b|Low Energy|BR/EDR/LE|le-only", bt)),
+        "driver": raw.get("wlan1_driver", "").strip().rsplit("/", 1)[-1],
+        "pci_id": " ".join(raw.get("wlan1_pci", "").split()),
+        "kernel": raw.get("kernel", "").strip(),
+    }
+
+
+IDEA_REQUIREMENTS = {
+    "attenuation from ranging (FTM)": ("ftm_initiator", "aps_advertising_ftm_responder"),
+    "robots as spectrum sensors (busy time)": ("survey_busy_time",),
+    "Bluetooth heartbeat relay during reconnects": ("bluetooth_controller", "bluetooth_le"),
+    "no-outage switching (Wi-Fi 7 multi-link)": ("multi_link_mlo", "aps_wifi7"),
+    "6 GHz channels": ("band_6ghz_usable", "aps_on_6ghz"),
+}
+
+
+def ideas_enabled(summary: dict) -> dict:
+    return {idea: all(bool(summary.get(k)) for k in keys)
+            for idea, keys in IDEA_REQUIREMENTS.items()}

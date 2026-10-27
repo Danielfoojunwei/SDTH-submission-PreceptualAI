@@ -204,3 +204,96 @@ def test_dropped_channel_is_unknown_and_never_resent(env):
 def test_wifi_profile_repr_hides_password(env):
     _, wifi, _ = env
     assert WIFI_PW not in repr(load_wifi_json(wifi))
+
+
+PHY_OUT = """Wiphy phy1
+	Band 1:
+		Frequencies:
+			* 2412.0 MHz [1] (22.0 dBm)
+	Band 2:
+		HE PHY Capabilities: (0x0c3f)
+		Frequencies:
+			* 5180.0 MHz [36] (22.0 dBm)
+	Band 4:
+		EHT Iftypes: managed
+		Frequencies:
+			* 5955.0 MHz [1] (disabled)
+			* 6035.0 MHz [17] (12.0 dBm)
+	Supported extended features:
+		* [ FTM_RESPONDER ]: FTM responder
+	Peer measurement:
+		FTM: initiator
+"""
+SCAN_OUT = """BSS aa:bb:cc:dd:ee:01(on wlan1)
+	freq: 5200
+	HE capabilities:
+	Extended capabilities:
+		 * FTM Responder
+BSS aa:bb:cc:dd:ee:02(on wlan1)
+	freq: 2437
+"""
+SURVEY_OUT = """Survey data from wlan1
+	frequency:			5200 MHz [in use]
+	channel active time:		100 ms
+	channel busy time:		23 ms
+Survey data from wlan1
+	frequency:			5180 MHz
+	channel busy time:		5 ms
+"""
+BT_OUT = "Controller 2C:CF:67:00:00:01 (public)\n\tPowered: yes\n\tRoles: central\n\tSupportedSettings: le bredr\n\tLE\n"
+
+
+class ProbeClient:
+    def __init__(self):
+        self.commands = []
+
+    def exec_command(self, cmd, timeout=None):
+        self.commands.append(cmd)
+        from wirelessjev.carlink import READONLY_COMMANDS as R
+        table = {R["phy_info"]: PHY_OUT, R["scan_cache"]: SCAN_OUT, R["survey"]: SURVEY_OUT,
+                 R["bluetooth"]: BT_OUT, R["wlan1_driver"]: "/sys/bus/pci/drivers/iwlwifi\n",
+                 R["wlan1_pci"]: "0x8086\n0x272b\n", R["kernel"]: "6.6.51+rpt-rpi-2712\n"}
+        out = table.get(cmd, "")
+
+        class S:
+            def __init__(self, data): self.data = data.encode()
+            def read(self): return self.data
+            def close(self): pass
+        return S(""), S(out), S("")
+
+    def close(self):
+        pass
+
+
+def test_capability_probe_is_whitelisted_and_parses(env):
+    from wirelessjev.carlink import (READONLY_COMMANDS, ideas_enabled, run_readonly,
+                                     summarise_capabilities)
+    kh, _, tmp = env
+    client = ProbeClient()
+    link = CarLink(kh, lambda: "x", client_factory=lambda: client)
+    link.client = client
+    with pytest.raises(ValueError):
+        run_readonly(link, "reboot")
+    raw = {k: run_readonly(link, k) for k in READONLY_COMMANDS}
+    assert set(client.commands) == set(READONLY_COMMANDS.values())
+    for cmd in client.commands:            # nothing that changes state
+        assert not any(w in cmd for w in ("connect", "set ", " up", " down", "rescan", "trigger", "nmcli"))
+        assert "wlan0" not in cmd
+    s = summarise_capabilities(raw)
+    assert s["wifi7_eht_client"] and s["wifi6_he_client"] and s["band_6ghz_usable"]
+    assert s["ftm_initiator"] and s["aps_advertising_ftm_responder"] == 1
+    assert s["survey_busy_time"] and s["survey_channels_reported"] == 2
+    assert s["bluetooth_controller"] and s["bluetooth_le"]
+    assert s["driver"] == "iwlwifi" and s["pci_id"] == "0x8086 0x272b"
+    ideas = ideas_enabled(s)
+    assert ideas["attenuation from ranging (FTM)"] and not ideas["no-outage switching (Wi-Fi 7 multi-link)"]
+
+
+def test_capabilities_command_logs_without_secrets(env):
+    kh, _, tmp = env
+    client = ProbeClient()
+    link = CarLink(kh, lambda: "x", client_factory=lambda: client)
+    link.client = client
+    assert onecar.cmd_capabilities(Args(), link=link) == 0
+    logs = _logs(tmp)
+    assert '"ideas_enabled"' in logs and "password" not in logs

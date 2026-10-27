@@ -52,6 +52,20 @@ It runs 10 `{"action":"status"}` calls about 1 s apart.
 
 **Abort** on any `INTERFACE_UNSAFE`, a host-key mismatch, or a sudo/permission error.
 
+### 1b. Read-only capability probe (no radio change)
+```bash
+~/.local/bin/uv run python -m wirelessjev.onecar capabilities --known-hosts ~/smartcar_known_hosts
+```
+This runs only a fixed whitelist of query commands over the pinned SSH session (`iw` phy/info/link/survey, the existing scan *cache* rather than a new scan, the driver/PCI ID, `bluetoothctl show`). It never queries the `wlan0` hotspot radio and changes nothing.
+
+It reports:
+- **Client radio:** Wi-Fi 6/7 support, usable 6 GHz channels, multi-link support, and FTM ranging (initiator).
+- **Scanning:** whether per-channel busy time is available.
+- **Nearby APs:** how many advertise FTM responder, Wi-Fi 6/7 or 6 GHz.
+- **Bluetooth:** whether a controller with Low Energy is present.
+
+It then lists which ideas the hardware enables: attenuation from ranging, spectrum sensing, a Bluetooth heartbeat relay during reconnects, no-outage multi-link switching, and 6 GHz. Raw output is saved next to the log for checking.
+
 ### 2. Read-only scan (no radio change)
 ```bash
 ~/.local/bin/uv run python -m wirelessjev.onecar scan --known-hosts ~/smartcar_known_hosts --wifi-json ~/WiFi.json --seconds 20
