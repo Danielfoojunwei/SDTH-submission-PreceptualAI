@@ -1,4 +1,9 @@
-# WirelessJEV — milestone 1
+# WirelessJEV
+
+Source: [Danielfoojunwei/SDTH-submission-PreceptualAI](https://github.com/Danielfoojunwei/SDTH-submission-PreceptualAI).
+Current experiment status and restart prerequisites are in [docs/HANDOFF.md](docs/HANDOFF.md).
+The restored didjital R6.1 reference and its executed software checks are
+documented in [docs/R6_COMPATIBILITY.md](docs/R6_COMPATIBILITY.md).
 
 Mission-conditioned Wi-Fi coordination for a 10-car Raspbot fleet. A frozen open System One model chooses the fleet plan. Exact numerical oracles teach and score it. A swarm protocol shares what the cars learn.
 
@@ -37,10 +42,10 @@ How each Bowen Shen / Feng Li / Kwok-Yan Lam paper is used is in [docs/PAPER_MAP
 Plans are scored over the robots' planned positions for the next 20 s.
 
 ```bash
-~/.local/bin/uv run python -m wirelessjev.bench_warehouse --scenes 50 --out artifacts/warehouse
+uv run --frozen python -m wirelessjev.bench_warehouse --scenes 50 --out artifacts/warehouse
 ```
 ```bash
-~/.local/bin/uv run python -m wirelessjev.closedloop --warehouse --total 600 --adapter artifacts/warehouse/adapters/warehouse --out artifacts/closedloop_warehouse.json
+uv run --frozen python -m wirelessjev.closedloop --warehouse --total 600 --adapter artifacts/warehouse/adapters/warehouse --out artifacts/closedloop_warehouse.json
 ```
 
 ## Intent-to-objective WirelessJEV (fast loop)
@@ -53,34 +58,148 @@ Results on the 100-robot warehouse:
 - **Held-out paraphrase shortlist regret:** 0.027.
 - **Decision latency:** about 134 ms, versus about 15 s before.
 ```bash
-~/.local/bin/uv run python -m wirelessjev.bench_intent --out artifacts/intent
+uv run --frozen python -m wirelessjev.bench_intent --out artifacts/intent
 ```
 ```bash
-~/.local/bin/uv run python -m wirelessjev.closedloop --warehouse --policies wirelessjev_fast --intent-adapter artifacts/intent/adapters/intent --out artifacts/closedloop_warehouse_fast.json
+uv run --frozen python -m wirelessjev.closedloop --warehouse --policies wirelessjev_fast --intent-adapter artifacts/intent/adapters/intent --out artifacts/closedloop_warehouse_fast.json
+```
+
+## Development setup
+
+Use Python 3.12 and `uv sync --frozen` to install the locked dependencies.
+The test suite and digital-twin baseline simulations run on CPU without model
+downloads or physical cars:
+
+```bash
+HF_HUB_OFFLINE=1 OMP_NUM_THREADS=2 OPENBLAS_NUM_THREADS=2 uv run --frozen pytest -q tests
+node --test tests/studio_results.test.mjs
+```
+
+Model benchmarks additionally download the pinned d3-lite runtime/weights and,
+where used, Chronos-Bolt. Their original Mac latencies do not describe this
+CPU cloud worker. Real-car commands require separate hardware access.
+
+## RadioJEV E1–E5 status
+
+E1 native-radio LoRA completed with held-out regret **0.093 ± 0.022** (200
+cases), new-mission regret **0.074 ± 0.020** (240 cases), and about **3.35–3.99 s**
+per decision. This does not establish an advantage over intent reading plus
+exact planning. The separate intent benchmark above is stronger; a paired E1
+intent baseline is still pending. The numeric-only arm has no new-mission test.
+
+The interrupted `radio_frozen` arm must restart. E1 intent, E2, E3 and E4/E5
+remain pending. Preview the remaining stages without starting model work:
+
+```bash
+bash artifacts/radiojev/run_all.sh --dry-run
+```
+
+The runner skips the completed LoRA arm and smoke tests, preserves checkpoints
+and stops on failures. Before the full run, restore the completed
+`artifacts/radiojev/ckpt_radio_lora.pt` from the original Mac: E2 requires it,
+and Git contains its report but not its weights. See the handoff for the model
+download and compute prerequisites.
+
+For a complete fresh run, including regeneration of missing LoRA weights, use
+the portable controller with a separate output directory:
+
+```bash
+uv run --frozen python scripts/train_radiojev.py --run-dir /workspace/training/radiojev/full --plan
+uv run --frozen python scripts/train_radiojev.py --run-dir /workspace/training/radiojev/full
+```
+
+It caches each prepared scene, retains completed stages and prevents duplicate
+controllers. The current cloud run is already active under the original local
+launcher; do not launch a second controller against it. An interrupted arm
+restarts its training; optimizer/epoch continuation is not implemented.
+
+## E7 environment learning
+
+The original report had an accuracy regression: audible-path RMSE rose from
+4.98 dB after one minute to 7.90 dB after fifteen minutes. The corrected scan
+uses the weakest reported signal as the censoring bound when eight scan slots
+are full, and −90 dBm only for the detection floor. The fitter now uses a
+censored Gaussian likelihood instead of invented point measurements, with
+inverse-sampling weights for thinned non-reports.
+
+The original evidence is preserved in `artifacts/envlearn/report.json`.
+Corrected results are written separately to `artifacts/envlearn_corrected/`:
+
+```bash
+OMP_NUM_THREADS=1 OPENBLAS_NUM_THREADS=1 MKL_NUM_THREADS=1 uv run --frozen python -m wirelessjev.envlearn --envs 15 --workers 4 --out artifacts/envlearn_corrected
+```
+
+The report separates audible, inaudible and all-path RMSE. Map accuracy and
+plan gap are distinct metrics; additional driving need not help every
+environment. Weakly observed distant paths remain a limitation, and the truth
+planner uses local search rather than a proven optimum.
+
+Completed corrected sweep: **15 environments × 5 missions**, using the same
+environment seeds as the historical report. Mean per-environment audible RMSE:
+
+| Survey budget | Historical pipeline | Corrected pipeline | Corrected plan gap |
+|---|---:|---:|---:|
+| 1 minute | 4.98 dB | 4.04 dB | 0.202 |
+| 5 minutes | 6.19 dB | 3.95 dB | 0.182 |
+| 15 minutes | 7.90 dB | 3.99 dB | 0.159 |
+
+The large historical regression is removed, but the corrected sweep **does
+not establish monotonic improvement with more data**: 5 of 15 environments
+still have higher audible RMSE at 15 minutes than at 1 minute. The 15-minute
+model's currently inaudible-path RMSE is **15.03 dB**, and all-path RMSE is
+**12.23 dB**. Currently inaudible paths (truth RSSI < −90 dBm) comprise 63.3%
+of evaluated links; this is not a measurement of the fraction never heard
+during the survey. The 5-minute pessimistic planner's plan gap is 0.144;
+its RMSE includes its uncertainty margin and is not the posterior-mean error.
+
+A separate **map-only calibration study** uses 15 new environment seeds
+(15–29), comparing matched surveys at every budget. Censored global calibration
+with nominal rack geometry lowers inaudible-path RMSE from **18.14 / 16.10 /
+15.71 dB** to **14.86 / 13.78 / 14.23 dB** at 1 / 5 / 15 minutes. At 15 minutes,
+audible-path error is essentially unchanged (3.96 → 3.94 dB). The inaudible-path
+error improves in all 15 environments, but remains large. This study does not
+validate downstream plan quality or real-site performance, so the default
+planner is unchanged. Full results and exploratory paired confidence intervals
+are in `artifacts/envlearn_calibration/report.json`.
+
+```bash
+OMP_NUM_THREADS=1 OPENBLAS_NUM_THREADS=1 MKL_NUM_THREADS=1 uv run --frozen python docs/experiments/e7_calibration_study.py --out artifacts/new_calibration_study
 ```
 
 ## Studio (front end)
-A static app in `studio/` that shows only the exported artifacts. Its sections are overview, fleet map replay, decisions, evidence, swarm & trust, execution, research map, and hardware & data.
+A static app in `studio/` that shows only the exported artifacts, including E1 status and E7's corrected and historical evidence. Its sections are overview, fleet map replay, decisions, evidence, swarm & trust, execution, research map, and hardware & data.
 ```bash
-~/.local/bin/uv run python -m wirelessjev.studio_data
+uv run --frozen python -m wirelessjev.studio_data
 ```
 ```bash
 python3 -m http.server 8766 --bind 127.0.0.1 --directory studio
 ```
-Then open http://localhost:8766.
+On a local machine, open port 8766 in a browser. Cloud onboarding validates
+the server with local HTTP requests. `python3 studio/build_artifact.py` builds
+`studio/dist/wirelessjev-studio.html`; updating the external Claude artifact
+requires separate access and publication.
+
+To include the active run's completed results and epoch-validation snapshot:
+
+```bash
+uv run --frozen python -m wirelessjev.studio_data --run-dir /workspace/training/radiojev/full
+```
+
+This keeps published benchmark results separate and marks stopped processes
+when exported on the training machine.
 
 ## Run
 ```bash
-~/.local/bin/uv run pytest -q tests
+uv run --frozen pytest -q tests
 ```
 ```bash
-~/.local/bin/uv run python -m wirelessjev.bench --scenes 80 --out artifacts/bench
+uv run --frozen python -m wirelessjev.bench --scenes 80 --out artifacts/bench
 ```
 ```bash
-~/.local/bin/uv run python -m wirelessjev.closedloop --adapter artifacts/bench/adapters/fleet
+uv run --frozen python -m wirelessjev.closedloop --adapter artifacts/bench/adapters/fleet
 ```
 ```bash
-~/.local/bin/uv run python -m wirelessjev.report
+uv run --frozen python -m wirelessjev.report
 ```
 
 ## Boundaries

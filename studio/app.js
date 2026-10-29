@@ -210,6 +210,67 @@ function decisionsPage() {
 function regretRows(m, label, hl) {
   return { hl, cells: [esc(label), `<b>${fmt(m.jev_regret)}</b>`, pct(m.jev_top1), pct(m.defer_rate), m.n_test_cases] };
 }
+function researchResults() {
+  let html = "";
+  const run = B.training_run;
+  if (run) {
+    html += `<div class="card" style="margin-top:16px"><h3>Full RadioJEV rerun · ${esc(run.status)}</h3>
+      <p class="sub">Seed ${esc(run.seed)} · snapshot at bundle export, not a live monitor. Historical results below remain separate from this rerun.</p>
+      ${table(["Stage", "Status", "Epochs recorded", "Best validation regret", "Completed held-out result"],
+        Object.entries(run.stages).map(([name, stage]) => {
+          const history = stage.history || [], result = run.results[name];
+          const best = history.length ? Math.min(...history.map((entry) => entry.val_regret)) : undefined;
+          return [esc(name), esc(stage.status === "pending" ? "queued" : stage.status),
+            history.length ? history[history.length - 1].epoch : "—", fmt(best),
+            result?.test?.n ? `${fmt(result.test.regret)} (n=${result.test.n})` : result ? "available" : "pending"];
+        }))}
+      <p class="note">Validation progress is not a held-out test result. Only completed stages contribute new test metrics; an interrupted process is marked interrupted when exported on the training machine.</p></div>`;
+  }
+  const radio = B.radiojev || {};
+  const arms = [["e1_radio_lora", "RadioJEV LoRA"], ["e1_radio_frozen", "RadioJEV frozen"],
+    ["e1_intent", "Intent baseline"], ["e1_no_llm", "Numeric encoder (no LLM)"]];
+  if (arms.some(([key]) => radio[key])) {
+    html += `<div class="card" style="margin-top:16px"><h3>Published RadioJEV E1 · native radio inputs</h3>${table(
+      ["Arm", "Held-out regret ± 95% CI", "n", "New-mission regret ± 95% CI", "n", "Held-out latency"],
+      arms.map(([key, label]) => {
+        const r = radio[key];
+        if (!r) return [esc(label), "pending", "—", "pending", "—", "—"];
+        const interval = (m) => m?.n ? `${fmt(m.regret)} ± ${fmt(m.regret_ci95)}` : "not evaluated";
+        return [esc(label), interval(r.test), r.test?.n ?? "—", interval(r.novel), r.novel?.n ?? "—",
+          r.test?.n ? `${fmt(r.test.latency_ms, 0)} ms` : "—"];
+      }))}<p class="note">E1 LoRA is a completed exploratory result, not evidence that native radio inputs beat intent + planning. The separate intent benchmark reports shortlist regret 0.027 at about 134 ms per re-plan; it is not a paired E1 comparison. The numeric-only arm has no new-mission evaluation. Latencies are from the original experiment machine.</p>
+      ${table(["Remaining experiment", "Status"], [["e2_radio_q", "E2 radio Q"], ["e2_e1_zero", "E2 E1 zero-shot"],
+        ["e2_intent", "E2 intent"], ["e3", "E3 multitask"], ["e45", "E4/E5 swarm + unlearning"]]
+        .map(([key, label]) => [label, radio[key] ? "result available" : "pending"]))}</div>`;
+  }
+  const env = B.envlearn;
+  if (env) {
+    const s = env.summary;
+    const corrected = env.method === "measured-top8-censored-gaussian-v2";
+    html += `<div class="card" style="margin-top:16px"><h3>E7 · learning the radio environment</h3>
+      <p class="sub">${s.n_envs} synthetic environments · ${corrected ? "corrected scan censoring and Gaussian likelihood" : "legacy pipeline; censoring defect known"}. RMSE is evaluated on audible paths (truth RSSI ≥ −90 dBm); robust RMSE includes the pessimistic planning margin.</p>
+      ${table(["Planner belief", "Audible RMSE (dB)", "Unheard RMSE (dB)", "Plan gap to truth search"],
+        Object.keys(s.map_rmse_db).map((name) => [esc(name), fmt(s.map_rmse_db[name], 2),
+          fmt(s.map_rmse_unheard_db?.[name], 2), fmt(s.regret_vs_truth_oracle[name])]))}
+      <p class="note">The truth planner uses local search, not a proven global optimum. Lower plan gap does not establish lower map error. Unheard paths remain weakly constrained; these simulation results do not calibrate a real site.</p>`;
+    if (corrected && B.envlearn_legacy) {
+      const old = B.envlearn_legacy.summary.map_rmse_db;
+      html += `<p class="note">Historical audible RMSE with the defective pipeline: ${fmt(old.learned_1min, 2)} dB at 1 minute → ${fmt(old.learned_15min, 2)} dB at 15 minutes. The original report is retained separately.</p>`;
+    }
+    html += "</div>";
+  }
+  const calibration = B.envlearn_calibration;
+  if (calibration) {
+    html += `<div class="card" style="margin-top:16px"><h3>E7 calibration study · new environments</h3>
+      <p class="sub">${calibration.seeds.length} new environment seeds · matched surveys · map error only. Global censored calibration with nominal rack geometry is compared with E7 v2; it does not replace the default planner.</p>
+      ${table(["Survey budget", "V2 audible RMSE", "Candidate audible RMSE", "V2 inaudible RMSE", "Candidate inaudible RMSE"],
+        Object.entries(calibration.summary).map(([budget, results]) => [
+          `${esc(budget)} min`, fmt(results.v2.audible, 2), fmt(results.geometry_censored.audible, 2),
+          fmt(results.v2.inaudible, 2), fmt(results.geometry_censored.inaudible, 2)]))}
+      <p class="note">Known AP positions/powers/height and nominal floor layout are inputs; hidden walls, materials and truth coefficients are not fitted from the evaluator. Improved map RMSE does not establish a better plan, a real-site calibration, or monotonic improvement with more data.</p></div>`;
+  }
+  return html;
+}
 function evidencePage() {
   const t = B.bench_10car, w = B.bench_warehouse;
   let s = `<h1>Evidence</h1><p class="lede">Held-out benchmark results. Regret = gap to the best option under the exact oracle (lower is better). Every WirelessJEV number comes from executing the pinned model; parity between the captured features and the model's own probabilities is checked on every case.</p>`;
@@ -249,6 +310,7 @@ function evidencePage() {
       <p class="note">Intent level accuracy: held-out ${pct(la.test.zero_shot)} → ${pct(la.test.distilled)}; novel ${pct(la.novel.zero_shot)} → ${pct(la.novel.distilled)}.</p></div></div>
       <p class="note">Latency: planner ${lt.planner_setup_mean.toFixed(0)} ms setup + ${lt.planner_search_mean.toFixed(0)} ms search (p90 ${lt.planner_search_p90.toFixed(0)} ms) per decision; intent read ${(lt.intent_read_once_per_mission / 1000).toFixed(1)} s once per mission change; previously ~15 s per decision.</p></div>`;
   }
+  s += researchResults();
   const cls = [["10-car (300 s)", B.closedloop_10car], ["warehouse shift (600 s)", B.closedloop_warehouse]].filter((x) => x[1]);
   s += `<div class="card" style="margin-top:16px"><h3>Closed loop</h3>${table(["Scenario", "Policy", "Mean utility", "Handovers", "Critical violations / step", "Decision latency", "Connect resends"], cls.flatMap(([name, c]) => Object.entries(c.summary).sort((a, b) => b[1].mean_utility - a[1].mean_utility).map(([p, v]) => [esc(name), esc(p), fmt(v.mean_utility, 3), v.total_handovers, fmt(v.mean_critical_violations, 2), v.decision_latency_ms_mean ? (v.decision_latency_ms_mean >= 1000 ? (v.decision_latency_ms_mean / 1000).toFixed(1) + " s" : v.decision_latency_ms_mean.toFixed(0) + " ms") : "—", v.connects_beyond_one_per_txn ?? "—"])))}</div>`;
   return s;

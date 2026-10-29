@@ -67,6 +67,49 @@ The search can't prove that nothing else exists. The field moved fast in October
   - torch CPU vs MPS vs numpy batching.
 
 ## What reviewers will require before submission
+The exploratory **RadioJEV E1 native-input LoRA** result is complete: held-out
+regret 0.0928 ± 0.0222 (200 cases), new-mission regret 0.0744 ± 0.0196 (240 cases),
+and 3.35–3.99 s per decision on the original Mac. These results do not establish
+superiority to the intent-reader + planner. The separate shortlist benchmark's
+0.027 regret and 134 ms re-plan latency are not a paired E1 baseline; the E1
+intent arm and the remaining E1–E5 experiments are pending. Keep native-input
+representation learning an exploratory result, not a principal paper claim.
+
+**E7 environment learning** also needs careful qualification. The historical
+15-environment report reduced mean plan gap from 1.239 (legacy) to 0.174
+(15-minute learned map), but audible-path RMSE increased from 4.98 to 7.90 dB.
+This is not evidence that more data improves signal prediction. The original
+scan censoring forced omitted APs below −90 dBm even when the eight-result cap
+caused their omission; the fitter then treated inequalities as point samples.
+The corrected pipeline uses measured top-eight scans, Gaussian censored-data
+likelihoods and inverse-sampling weights. Its separately rerun evidence is in
+`artifacts/envlearn_corrected/report.json`, with the original report retained.
+Audible-path, inaudible-path and all-path errors must be reported separately;
+in particular, improvements on audible links do not validate weakly measured
+interference paths. Plan gap is relative to a truth-model local search, not a
+certified optimum. All E7 results remain synthetic, with no field calibration.
+
+The corrected **15-environment × 5-mission sweep** completed with audible-path
+RMSE 4.04 / 3.95 / 3.99 dB at the 1 / 5 / 15-minute survey budgets. Mean plan
+gap is 0.202 / 0.182 / 0.159; the 5-minute pessimistic planner reaches 0.144.
+This removes the severe historical accuracy regression but does not establish
+monotonic learning: 5 of 15 environments still worsen from 1 to 15 minutes.
+The 15-minute model's inaudible-path RMSE is 15.03 dB (all paths: 12.23 dB).
+These paths are defined by current truth RSSI below −90 dBm, not by absence
+from every survey scan. Do not generalise audible-path accuracy to distant
+interference links or claim that additional driving always improves the map.
+
+An additional **map-only study on 15 new seeds (15–29)** compares the corrected
+v2 calibration with a censored global loss-law fit that uses nominal rack
+geometry. Inaudible-path RMSE falls from 18.14 / 16.10 / 15.71 dB to 14.86 /
+13.78 / 14.23 dB for 1 / 5 / 15-minute budgets, with nearly unchanged audible
+error at 15 minutes (3.96 → 3.94 dB). All 15 environments improve on the
+inaudible subset. The 15-minute paired mean improvement is 1.48 dB, with an
+exploratory, unadjusted 95% paired t interval of [0.98, 1.99] dB. This is an
+extrapolation improvement under known layout assumptions, not a downstream
+planning result or a fix for unobserved walls/interference. It remains an
+optional study implementation; the default planner is unchanged.
+
 1. **Baselines we have not run:**
    - a generative LLM emitting the weight vector at the same backbone size (Qwen3.5-0.8B/4B instruct, JSON output; the Wadayama/ParetoChat setup);
    - Ohori-style per-robot predictive AP selection;
