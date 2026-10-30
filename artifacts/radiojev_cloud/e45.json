@@ -1,0 +1,78 @@
+{
+  "init_per_site": {
+    "S1_normal": 0.18336779592380528,
+    "S2_heavy_scanners": 0.1725696867280009,
+    "S3_dense_racks": 0.15253948878263873,
+    "S4_light_racks": 0.1832906190439201
+  },
+  "local": {
+    "per_site": {
+      "S1_normal": 0.2022730345654236,
+      "S2_heavy_scanners": 0.18752979534073555,
+      "S3_dense_racks": 0.15966573074769339,
+      "S4_light_racks": 0.1783486410776866
+    },
+    "mean": 0.1819543004328848,
+    "worst": 0.2022730345654236,
+    "rounds": [],
+    "log_verifies": true
+  },
+  "fedavg_all": {
+    "per_site": {
+      "S1_normal": 0.1774150611212591,
+      "S2_heavy_scanners": 0.1599161216869969,
+      "S3_dense_racks": 0.15293999578587436,
+      "S4_light_racks": 0.22195261092696067
+    },
+    "mean": 0.17805594738027275,
+    "worst": 0.22195261092696067,
+    "rounds": [],
+    "log_verifies": true
+  },
+  "swarm_pers": {
+    "per_site": {
+      "S1_normal": 0.2022730345654236,
+      "S2_heavy_scanners": 0.18752979534073555,
+      "S3_dense_racks": 0.15966573074769339,
+      "S4_light_racks": 0.1783486410776866
+    },
+    "mean": 0.1819543004328848,
+    "worst": 0.2022730345654236,
+    "rounds": [
+      {
+        "round": 1,
+        "released": false,
+        "passed": false,
+        "val_regret": 0.1822495831268708,
+        "live_val_regret": 0.16801839848342864
+      },
+      {
+        "round": 2,
+        "released": false,
+        "passed": false,
+        "val_regret": 0.17367707119285272,
+        "live_val_regret": 0.16594492849851414
+      },
+      {
+        "round": 3,
+        "released": false,
+        "passed": false,
+        "val_regret": 0.17793215177759308,
+        "live_val_regret": 0.16262740755652277
+      }
+    ],
+    "log_verifies": true
+  },
+  "e5": {
+    "forgotten_site": "S2_heavy_scanners",
+    "mia_auc_before": 0.6166666666666667,
+    "mia_auc_exact_retrain": 0.6230555555555556,
+    "mia_auc_gated_distill": 0.6488888888888888,
+    "mia_auc_never_trained": 0.6230555555555556,
+    "retained_regret_before": 0.18009580213026788,
+    "retained_regret_exact": 0.1961691995718161,
+    "retained_regret_distill": 0.2067781744168052,
+    "cost_s_exact": 8478.73585319519,
+    "cost_s_distill": 1687.7087140083313
+  }
+}

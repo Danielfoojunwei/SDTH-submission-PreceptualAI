@@ -179,28 +179,31 @@ class Survey:
     cbound: list = field(default_factory=list)
     link: list = field(default_factory=list)      # (x, y, ap, sinr_floor_db)
     busy: dict = field(default_factory=dict)      # (band, ch) -> [fractions]
+    censor_weight: float = 1.0   # inverse sampling fraction for thinned non-reports
 
 
 def drive_and_survey(scene, spec: EnvSpec, minutes: float, rng) -> tuple:
     """Advance the fleet `minutes` along its routes; record what robots report."""
-    sv = Survey()
+    sv = Survey(censor_weight=3.0)
     steps = int(minutes * 60 / 5)
     leak = None
     for k in range(steps):
         r = scene.radio()
         for i, car in enumerate(scene.cars):
             row = r.dl[i]
-            top = np.argsort(-row)[:8]
+            # Rank the measured scan, not the hidden noiseless signal. Only
+            # then is an omitted BSSID censored below the weakest report.
+            measured = row + rng.normal(0, spec.fading_db, size=len(row))
+            measured -= (rng.random(len(row)) < spec.blockage_p) * spec.blockage_db
+            top = np.argsort(-measured)[:8]
             heard = []
             for j in top:
-                meas = row[j] + rng.normal(0, spec.fading_db)
-                if rng.random() < spec.blockage_p:
-                    meas -= spec.blockage_db
+                meas = measured[j]
                 if meas >= -90:
                     sv.x.append(car.x); sv.y.append(car.y); sv.ap.append(int(j))
                     sv.rssi.append(float(np.round(meas)))
                     heard.append((int(j), meas))
-            bound = min([m for _, m in heard] + [-90.0]) if len(heard) == 8 else -90.0
+            bound = min(m for _, m in heard) if len(heard) == 8 else -90.0
             heard_ids = {j for j, _ in heard}
             if k % 3 == 0:                      # thin the bounds; they are many
                 for j in range(len(scene.aps)):
@@ -290,23 +293,43 @@ class RadioMap:
             Ainv = np.linalg.inv(A)
             w = Ainv @ Phi.T @ r / self.sn2
             if self.cens is not None:
-                # Tobit-style refinement: bounds that the current mean violates
-                # become observations at (bound - 3 dB) with wider noise.
+                # Censored Gaussian likelihood P(noisy RSSI <= bound). A
+                # non-report is an inequality, not a sample at bound - 3 dB:
+                # fabricated point samples bias the map as surveys grow.
                 cx, cy, ca, cb = self.cens
                 cs = ca == j
                 if cs.any():
+                    from scipy.linalg import solve_triangular
+                    from scipy.optimize import minimize
+                    from scipy.special import log_ndtr
+
                     Pc = self.feats(cx[cs], cy[cs])
                     prior_c = self.prior_dl(j, cx[cs], cy[cs])
-                    for _ in range(3):
-                        pred = prior_c + Pc @ w
-                        viol = pred > cb[cs]
-                        if not viol.any():
-                            break
-                        Pv, tv = Pc[viol], (cb[cs][viol] - 3.0) - prior_c[viol]
-                        sc2 = self.sn2 * 4
-                        A2 = A + Pv.T @ Pv / sc2
-                        Ainv = np.linalg.inv(A2)
-                        w = Ainv @ (Phi.T @ r / self.sn2 + Pv.T @ tv / sc2)
+                    sigma = math.sqrt(self.sn2)
+                    # Whiten by the detected-data posterior for a well-scaled
+                    # convex optimisation, including poorly covered features.
+                    L = np.linalg.cholesky(A)
+                    Q = solve_triangular(L, Pc.T, lower=True).T / sigma
+                    z0 = (cb[cs] - prior_c - Pc @ w) / sigma
+
+                    def objective(delta):
+                        z = z0 - Q @ delta
+                        logcdf = log_ndtr(z)
+                        mills = np.exp(-0.5 * z ** 2 - 0.5 * np.log(2 * np.pi) - logcdf)
+                        return (0.5 * delta @ delta - sv.censor_weight * logcdf.sum(),
+                                delta + sv.censor_weight * Q.T @ mills)
+
+                    result = minimize(objective, np.zeros(len(w)), jac=True,
+                                      method="L-BFGS-B",
+                                      options={"maxiter": 200, "ftol": 1e-10, "gtol": 1e-6})
+                    if not result.success:
+                        raise RuntimeError(f"censored radio-map fit failed: {result.message}")
+                    w += solve_triangular(L.T, result.x, lower=False)
+                    z = z0 - Q @ result.x
+                    mills = np.exp(-0.5 * z ** 2 - 0.5 * np.log(2 * np.pi) - log_ndtr(z))
+                    curvature = sv.censor_weight * np.maximum(mills * (mills + z), 0.0)
+                    precision = A + (Pc.T * curvature) @ Pc / sigma ** 2
+                    Ainv = np.linalg.inv(precision)
             self.post[j] = (w, Ainv)
 
     def predict(self, xs, ys):
@@ -383,9 +406,12 @@ def belief_evaluator(truth_ev: BatchEvaluator, scene, spec: EnvSpec, sv: Survey 
 
 
 # ------------------------------------------------------------------ experiment
-def map_error(truth_ev, belief_ev):
+def map_error(truth_ev, belief_ev, *, subset="audible"):
     t, b = truth_ev.snaps[0].dl, belief_ev.snaps[0].dl
-    mask = t >= -90
+    mask = {"audible": t >= -90, "unheard": t < -90,
+            "all": np.ones(t.shape, dtype=bool)}[subset]
+    if not mask.any():
+        return None
     return float(np.sqrt(np.mean((t[mask] - b[mask]) ** 2)))
 
 
@@ -408,7 +434,8 @@ def run_env(seed: int, budgets=(1, 5, 15), log=print) -> dict:
                      sv_all.cx[-nc:] if nc else [], sv_all.cy[-nc:] if nc else [],
                      sv_all.cap[-nc:] if nc else [], sv_all.cbound[-nc:] if nc else [],
                      sv_all.link[-int(len(sv_all.link) * frac):],
-                     {k: v[-max(1, int(len(v) * frac)):] for k, v in sv_all.busy.items()})
+                     {k: v[-max(1, int(len(v) * frac)):] for k, v in sv_all.busy.items()},
+                     censor_weight=sv_all.censor_weight)
         methods[f"learned_{b}min"] = belief_evaluator(truth, scene, spec, sub, "learned")
         if b == 5:
             methods["robust_5min"] = belief_evaluator(truth, scene, spec, sub, "learned", kappa=1.0)
@@ -416,6 +443,9 @@ def run_env(seed: int, budgets=(1, 5, 15), log=print) -> dict:
                                   "ap_height": spec.ap_height, "walls": len(spec.walls) // 2,
                                   "interferers": len(spec.interferers), "blockage_p": spec.blockage_p},
            "map_rmse_db": {k: map_error(truth, ev) for k, ev in methods.items()},
+           "map_rmse_all_db": {k: map_error(truth, ev, subset="all") for k, ev in methods.items()},
+           "map_rmse_unheard_db": {k: map_error(truth, ev, subset="unheard") for k, ev in methods.items()},
+           "unheard_link_fraction": float(np.mean(truth.snaps[0].dl < -90)),
            "missions": {}}
     for mid, m in WAREHOUSE_MISSIONS.items():
         focus = [truth.car_ids.index(c) for c in m.focus_cars if c in truth.car_ids]
@@ -451,18 +481,50 @@ def summarise(envs: list[dict]) -> dict:
         "share_of_legacy_gap_closed": {k: float(np.mean(v)) for k, v in closed.items()},
         "map_rmse_db": {k: float(np.mean([e["map_rmse_db"][k] for e in envs]))
                         for k in envs[0]["map_rmse_db"]},
+        "map_rmse_all_db": {k: float(np.mean([e["map_rmse_all_db"][k] for e in envs]))
+                            for k in envs[0]["map_rmse_db"]},
+        "map_rmse_unheard_db": {
+            k: float(np.mean(values)) if values else None
+            for k in envs[0]["map_rmse_db"]
+            for values in [[e["map_rmse_unheard_db"][k] for e in envs
+                            if e["map_rmse_unheard_db"][k] is not None]]},
+        "unheard_link_fraction": float(np.mean([e["unheard_link_fraction"] for e in envs])),
     }
 
 
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--envs", type=int, default=15)
+    ap.add_argument("--out", type=Path, default=OUT,
+                    help="output directory; use a new directory to preserve previous evidence")
+    ap.add_argument("--workers", type=int, default=1,
+                    help="independent environment processes (limit BLAS threads when using several)")
     args = ap.parse_args()
-    OUT.mkdir(parents=True, exist_ok=True)
+    if args.envs < 1 or args.workers < 1:
+        ap.error("--envs and --workers must be positive")
+    args.out.mkdir(parents=True, exist_ok=True)
     log = lambda m: print(f"[{time.strftime('%H:%M:%S')}] {m}", flush=True)
-    envs = [run_env(s, log=log) for s in range(args.envs)]
-    report = {"summary": summarise(envs), "environments": envs}
-    (OUT / "report.json").write_text(json.dumps(report, indent=2, default=float))
+    if args.workers == 1:
+        envs = []
+        for seed in range(args.envs):
+            result = run_env(seed, log=log)
+            (args.out / f"environment_{seed}.json").write_text(json.dumps(result, indent=2))
+            envs.append(result)
+    else:
+        from concurrent.futures import ProcessPoolExecutor, as_completed
+        results = {}
+        with ProcessPoolExecutor(max_workers=min(args.workers, args.envs)) as pool:
+            futures = [pool.submit(run_env, seed) for seed in range(args.envs)]
+            for future in as_completed(futures):
+                result = future.result()
+                seed = result["seed"]
+                (args.out / f"environment_{seed}.json").write_text(json.dumps(result, indent=2))
+                results[seed] = result
+                log(f"completed {len(results)}/{args.envs} environments")
+        envs = [results[seed] for seed in range(args.envs)]
+    report = {"method": "measured-top8-censored-gaussian-v2", "budgets_min": [1, 5, 15],
+              "summary": summarise(envs), "environments": envs}
+    (args.out / "report.json").write_text(json.dumps(report, indent=2, default=float))
     log(json.dumps(report["summary"], indent=2))
 
 

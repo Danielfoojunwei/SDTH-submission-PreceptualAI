@@ -1,0 +1,24 @@
+{
+  "started_at": "2026-10-30T01:28:06.732564+00:00",
+  "git_head": "ca1ef6b4bac49f225ac09dea2b624368ad2f896c",
+  "stage": "e45",
+  "seed": 0,
+  "smoke": false,
+  "source_sha256": {
+    "src/wirelessjev/radiojev/__init__.py": "e238002ac0eef5eea7df5097967d5899100a5b2c0c93188473ce2357d27c8780",
+    "src/wirelessjev/radiojev/candidates.py": "b056be01cec0847c67793573a791f4974fcf8ff9e5c739a337693789f6af32c4",
+    "src/wirelessjev/radiojev/data.py": "c3e0bef67c8fc33a743da0362ad2770c9db5e233253f86a399e35a069d0ff50e",
+    "src/wirelessjev/radiojev/dsa.py": "012891943e2f96c05aeb35ac0d3fcf5e09d7182ad7d9806e49c57d68a2e1a0c9",
+    "src/wirelessjev/radiojev/e1.py": "a45205043d43b0b0c13fb45a08a9001f9e6ec9e564722027f330bdbc1aa3e974",
+    "src/wirelessjev/radiojev/e2.py": "e2bcff4bb31c324b28d2cf488f16db7bfba7cf133f200389df75f444e95ca6e5",
+    "src/wirelessjev/radiojev/e3.py": "57116f555c6ccb0853fd914805dafa43d7b03ba444ade7ada7b44dade00a24ce",
+    "src/wirelessjev/radiojev/e45.py": "fa2c6ac41d4dafc2afbaeefa39742a71e2fe1368f60213fb2d8db7c6696c37bc",
+    "src/wirelessjev/radiojev/encoder.py": "48e8513681523f54defd5260bda0f4616f683c824e50bc4ec0d2f55f54a535f3",
+    "src/wirelessjev/radiojev/features.py": "2e22153c1c3348f35f3b550851fd2c452d6745f5be0adbcd8a608c394d5ce0f3",
+    "src/wirelessjev/radiojev/nonlinear.py": "6bd048c0ee8ab58e880d61cb033b566bce64e9602b671c1d7137b89e85002b11",
+    "src/wirelessjev/radiojev/trainable.py": "8793096d23577ebca39d370b161d602950792673554d648f2561fce271511d0a",
+    "scripts/train_radiojev.py": "68c3b4feb56c7cb362db3334c3bccdce2d717f84e022a81f602edb9d9ae0edb5"
+  },
+  "e3_checkpoint_sha256": "b6314aef11e8af383b654947f50818bf43a4b8f5daa1f04c1cf46c53f6fbce24",
+  "reason": "Retry after fixing the E3/E2 checkpoint-format handoff; no E4/E5 training had started before the failed attempt."
+}

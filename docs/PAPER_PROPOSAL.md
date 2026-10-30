@@ -1,5 +1,10 @@
 # Paper proposal
 
+The warehouse-connectivity E1–E5 and corrected E7 experiments are complete
+for one synthetic training seed. E6 is excluded. The consolidated results and completion status
+are in `docs/WAREHOUSE_RESULTS.md`. Broader foundation-model, PHY, robotics
+and space directions are deferred.
+
 ## Working title
 **Typed Intent, Exact Plans: Frozen System-One Decision Models as Objective Readers for Route-Aware Wi-Fi Association of Robot Fleets**
 
@@ -67,6 +72,94 @@ The search can't prove that nothing else exists. The field moved fast in October
   - torch CPU vs MPS vs numpy batching.
 
 ## What reviewers will require before submission
+The cloud **RadioJEV E1** evaluation now includes the paired intent baseline.
+Native-input LoRA reaches held-out regret 0.1068 ± 0.0240 (200 cases) and
+new-mission regret 0.0721 ± 0.0136 (240 cases), versus intent + planning's
+0.0140 ± 0.0066 and 0.0251 ± 0.0074. CPU latency is 4.31 s for LoRA versus
+468 ms for intent. Frozen native inputs reach 0.1069 ± 0.0228 / 0.0837 ± 0.0194.
+The observed E1 result favours intent + planning. The original Mac LoRA result
+(0.0928 ± 0.0222 / 0.0744 ± 0.0196) remains separately preserved; the earlier
+shortlist benchmark is also a separate experiment.
+
+In **E2**, radio-Q reaches normalized regret 0.1170 ± 0.0370 on held-out
+missions and 0.0779 ± 0.0253 on new missions (120 cases each). Intent reaches
+0.1987 ± 0.0461 / 0.3482 ± 0.0674; E1 zero-shot reaches 0.2905 ± 0.0594 /
+0.3288 ± 0.0693. Radio-Q takes 6.42 s per held-out decision versus intent's
+591 ms. E1 and E2 use different regret definitions. These are one-seed runs;
+95% intervals describe evaluation cases, not variation across training seeds.
+Raw results and provenance are in `artifacts/radiojev_cloud/`; the consolidated
+E1–E5 completion record is in `docs/WAREHOUSE_RESULTS.md`. Keep native-input representation learning
+an exploratory result rather than a principal paper claim.
+
+The **mission-capability router** design in `docs/ROUTER_EXPERIMENT.md` is
+deferred; it contributes
+no measured result to this paper. E2 compares RadioJEV against the current fixed-weight intent reader;
+it does not show superiority to a planner with explicit constraints or a
+structured mission parser. Its "nonlinear" mission set also includes a
+linear safety penalty and a spatial mean expressible through a focus set.
+The move budget is implemented as a soft penalty, and the video threshold
+uses a horizon-averaged minimum. State these actual semantics before making
+claims about hard constraints, lexicographic priorities or mission classes.
+
+E3 provides mixed evidence: association normalized regret improves from
+0.1170 to 0.1046, and DSA greedy reward is 1.000 over a single 500-step episode
+(MLP baselines: 0.263 / 0.384). Traffic accuracy after training is only
+0.369 / 0.231 / 0.338, below the rule baselines of 0.708 / 0.738 / 0.923.
+Admission accuracy is 100%, but all 106 training and 54 test cases have the
+"lower" label. A constant prediction also reaches 100%; the result is not
+evidence of learning a general admission policy. The raw report is retained
+alongside the reproducible label audit; a new dataset must be separately
+versioned rather than replacing this evidence.
+Independent training seeds and additional DSA layouts remain necessary.
+
+**E4/E5 are complete but do not support a swarm or unlearning advantage.**
+E4 mean normalized regret is 0.1820 for local-only training, 0.1781 for
+FedAvg and 0.1820 for personalised swarm, versus 0.1729 for the initial E3
+model. FedAvg's worst-site regret is 0.2220, versus local/swarm's 0.2023.
+All three shared merge proposals failed validation; the swarm matched local
+training and its shared component incorporated no E4 site updates.
+Consequently E5 does not test removal of an accepted site contribution from
+that shared model. Retained-data distillation raised membership-attack AUC
+from 0.6167 to 0.6489 and retained normalized regret from 0.1801 to 0.2068.
+Retraining without the site yielded AUC 0.6231 (identical to the initial-model
+baseline) and retained regret 0.1962. These results do not establish forgetting;
+they must remain negative/limited evidence in the paper.
+
+**E7 environment learning** also needs careful qualification. The historical
+15-environment report reduced mean plan gap from 1.239 (legacy) to 0.174
+(15-minute learned map), but audible-path RMSE increased from 4.98 to 7.90 dB.
+This is not evidence that more data improves signal prediction. The original
+scan censoring forced omitted APs below −90 dBm even when the eight-result cap
+caused their omission; the fitter then treated inequalities as point samples.
+The corrected pipeline uses measured top-eight scans, Gaussian censored-data
+likelihoods and inverse-sampling weights. Its separately rerun evidence is in
+`artifacts/envlearn_corrected/report.json`, with the original report retained.
+Audible-path, inaudible-path and all-path errors must be reported separately;
+in particular, improvements on audible links do not validate weakly measured
+interference paths. Plan gap is relative to a truth-model local search, not a
+certified optimum. All E7 results remain synthetic, with no field calibration.
+
+The corrected **15-environment × 5-mission sweep** completed with audible-path
+RMSE 4.04 / 3.95 / 3.99 dB at the 1 / 5 / 15-minute survey budgets. Mean plan
+gap is 0.202 / 0.182 / 0.159; the 5-minute pessimistic planner reaches 0.144.
+This removes the severe historical accuracy regression but does not establish
+monotonic learning: 5 of 15 environments still worsen from 1 to 15 minutes.
+The 15-minute model's inaudible-path RMSE is 15.03 dB (all paths: 12.23 dB).
+These paths are defined by current truth RSSI below −90 dBm, not by absence
+from every survey scan. Do not generalise audible-path accuracy to distant
+interference links or claim that additional driving always improves the map.
+
+An additional **map-only study on 15 new seeds (15–29)** compares the corrected
+v2 calibration with a censored global loss-law fit that uses nominal rack
+geometry. Inaudible-path RMSE falls from 18.14 / 16.10 / 15.71 dB to 14.86 /
+13.78 / 14.23 dB for 1 / 5 / 15-minute budgets, with nearly unchanged audible
+error at 15 minutes (3.96 → 3.94 dB). All 15 environments improve on the
+inaudible subset. The 15-minute paired mean improvement is 1.48 dB, with an
+exploratory, unadjusted 95% paired t interval of [0.98, 1.99] dB. This is an
+extrapolation improvement under known layout assumptions, not a downstream
+planning result or a fix for unobserved walls/interference. It remains an
+optional study implementation; the default planner is unchanged.
+
 1. **Baselines we have not run:**
    - a generative LLM emitting the weight vector at the same backbone size (Qwen3.5-0.8B/4B instruct, JSON output; the Wadayama/ParetoChat setup);
    - Ohori-style per-robot predictive AP selection;

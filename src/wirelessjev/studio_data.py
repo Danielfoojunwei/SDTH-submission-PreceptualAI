@@ -9,8 +9,11 @@ filled with placeholder numbers.
 """
 from __future__ import annotations
 
+import argparse
 from dataclasses import asdict
+from datetime import datetime, timezone
 import json
+import math
 from pathlib import Path
 import re
 import time
@@ -21,6 +24,8 @@ from .policy import MODEL_REPO, MODEL_REVISION
 from .twin import warehouse as W
 
 ROOT = Path(__file__).resolve().parents[2]
+RADIOJEV_STAGES = ("e1_no_llm", "e1_radio_lora", "e1_radio_frozen", "e1_intent",
+                   "e2_radio_q", "e2_e1_zero", "e2_intent", "e3", "e45")
 
 
 def _load(rel: str):
@@ -61,7 +66,59 @@ def _slim_closedloop(cl: dict | None) -> dict | None:
     return {"summary": cl["summary"], "runs": runs, "provisional": cl.get("provisional")}
 
 
-def build() -> dict:
+def _training_process_alive(pid, run_dir: Path) -> bool | None:
+    if not Path("/proc").exists():
+        return None
+    if not isinstance(pid, int) or pid < 1:
+        return False
+    try:
+        command = Path(f"/proc/{pid}/cmdline").read_bytes()
+    except (FileNotFoundError, ProcessLookupError):
+        return False
+    return (any(script in command for script in (b"radiojev_train_all.py", b"train_radiojev.py"))
+            and str(run_dir.resolve()).encode() in command)
+
+
+def training_snapshot(run_dir: Path) -> dict:
+    """Export only validated stage results and a point-in-time progress view."""
+    state = json.loads((run_dir / "status.json").read_text())
+    if state.get("smoke") is not False:
+        raise ValueError("Only full training runs may be exported")
+    stages, results = {}, {}
+    for name in RADIOJEV_STAGES:
+        entry = state.get("stages", {}).get(name, {"status": "pending"})
+        status = entry["status"]
+        if status == "running" and _training_process_alive(entry.get("pid"), run_dir) is False:
+            status = "interrupted"
+        stage = {"status": status}
+        if status == "completed":
+            result = json.loads((run_dir / f"{name}.json").read_text())
+            if not isinstance(result, dict) or not result:
+                raise ValueError(f"Invalid completed training result: {name}")
+            results[name] = result
+        log = run_dir / f"{name}.log"
+        if log.exists():
+            history = []
+            pattern = r"epoch (\d+) train KL ([\d.eE+-]+) val regret ([\d.eE+-]+)"
+            for epoch, loss, regret in re.findall(pattern, log.read_text(errors="replace")):
+                if math.isfinite(float(loss)) and math.isfinite(float(regret)):
+                    if history and int(epoch) <= history[-1]["epoch"]:
+                        history = []  # A restarted arm appended a new attempt.
+                    history.append({"epoch": int(epoch), "train_kl": float(loss),
+                                    "val_regret": float(regret)})
+            if history:
+                stage["history"] = history
+        stages[name] = stage
+    interrupted = (any(s["status"] == "interrupted" for s in stages.values())
+                   or (state["status"] == "running" and
+                       _training_process_alive(state.get("pid"), run_dir) is False))
+    return {"captured_at": datetime.now(timezone.utc).isoformat(),
+            "status": "interrupted" if interrupted
+            else state["status"], "seed": state.get("seed"), "stages": stages,
+            "results": results, "snapshot": True}
+
+
+def build(run_dir: Path | None = None) -> dict:
     layout = {
         "width": W.WIDTH, "height": W.HEIGHT, "rack_rows": list(W.RACK_ROWS),
         "rack_segments": [list(s) for s in W.RACK_SEGMENTS],
@@ -81,6 +138,16 @@ def build() -> dict:
         "bench_10car": _load("artifacts/bench/report.json"),
         "bench_warehouse": _load("artifacts/warehouse/report.json"),
         "bench_intent": _load("artifacts/intent/report.json"),
+        "envlearn": (_load("artifacts/envlearn_corrected/report.json")
+                     or _load("artifacts/envlearn/report.json")),
+        "envlearn_legacy": _load("artifacts/envlearn/report.json"),
+        "envlearn_calibration": _load("artifacts/envlearn_calibration/report.json"),
+        "radiojev": {name: _load(f"artifacts/radiojev/{name}.json") for name in (
+            "e1_radio_lora", "e1_radio_frozen", "e1_intent", "e1_no_llm",
+            "e2_radio_q", "e2_e1_zero", "e2_intent", "e3", "e45")},
+        "radiojev_audits": {"e3": _load("artifacts/radiojev_cloud/e3_label_audit.json")},
+        "training_run": (training_snapshot(run_dir) if run_dir
+                         else _load("artifacts/radiojev_cloud/snapshot.json")),
         "closedloop_10car": _slim_closedloop(_load("artifacts/closedloop.json")),
         "closedloop_warehouse": _slim_closedloop(_load("artifacts/closedloop_warehouse.json")),
         "papers": _paper_map(),
@@ -108,9 +175,12 @@ def build() -> dict:
 
 
 def main():
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--run-dir", type=Path, help="include a snapshot of a full training run")
+    args = parser.parse_args()
     out = ROOT / "studio" / "data" / "bundle.json"
     out.parent.mkdir(parents=True, exist_ok=True)
-    bundle = build()
+    bundle = build(args.run_dir)
     out.write_text(json.dumps(bundle, separators=(",", ":"), default=float))
     missing = [k for k in ("bench_10car", "bench_warehouse", "closedloop_10car",
                            "closedloop_warehouse") if bundle[k] is None]

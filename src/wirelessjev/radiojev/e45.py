@@ -93,10 +93,13 @@ class Bank:
     """Holds the shared model; swaps per-site state in and out."""
 
     def __init__(self, engine):
-        self.mt = MultiTask(engine, OUT / "ckpt_e3.pt" if (OUT / "ckpt_e3.pt").exists() else OUT / "ckpt_radio_q.pt")
         e3 = OUT / "ckpt_e3.pt"
+        # MultiTask's warm-start loader accepts an E2 association checkpoint.
+        # A complete E3 checkpoint has all heads and all 20 readout rows, and
+        # is restored below instead of passing it through the E2 loader.
+        self.mt = MultiTask(engine, None if e3.exists() else OUT / "ckpt_radio_q.pt")
         if e3.exists():
-            ck = torch.load(e3)
+            ck = torch.load(e3, map_location="cpu", weights_only=True)
             self.mt.heads.load_state_dict({k: v for k, v in ck["heads"].items()})
             self.mt.heads.to(self.mt.m.device)
             load_lora_state(self.mt.m.lora_layers, ck["lora"])
