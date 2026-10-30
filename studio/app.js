@@ -215,7 +215,7 @@ function researchResults() {
   const run = B.training_run;
   if (run) {
     html += `<div class="card" style="margin-top:16px"><h3>Full RadioJEV rerun · ${esc(run.status)}</h3>
-      <p class="sub">Seed ${esc(run.seed)} · snapshot at bundle export, not a live monitor. Historical results below remain separate from this rerun.</p>
+      <p class="sub">Seed ${esc(run.seed)} · snapshot ${run.captured_at ? esc(run.captured_at) : "at bundle export"}, not a live monitor. Historical results below remain separate from this rerun.</p>
       ${table(["Stage", "Status", "Epochs recorded", "Best validation regret", "Completed held-out result"],
         Object.entries(run.stages).map(([name, stage]) => {
           const history = stage.history || [], result = run.results[name];
@@ -260,6 +260,21 @@ function researchResults() {
       ])}
       <p class="note">Mixed multitask evidence: traffic accuracy remains below the rules on all three questions. DSA uses one 500-step evaluation episode; these results use one training seed.</p>
       ${admission ? `<p class="note">Admission label audit: ${admission.n} test cases; majority-class accuracy ${pct(admission.majority_accuracy)}.${Object.keys(admission.labels).length === 1 ? " All test cases share one label, so 100% accuracy does not establish admission-policy generalisation." : ""}</p>` : ""}</div>`;
+  }
+  const sites = run?.results?.e45 || radio.e45;
+  if (sites) {
+    const e5 = sites.e5;
+    html += `<div class="card" style="margin-top:16px"><h3>RadioJEV E4/E5 · warehouse sites</h3>
+      ${table(["E4 arm", "Mean normalized regret", "Worst site", "Signed log verifies"],
+        ["local", "fedavg_all", "swarm_pers"].map((arm) => [esc(arm), fmt(sites[arm].mean),
+          fmt(sites[arm].worst), sites[arm].log_verifies ? "yes" : "no"]))}
+      <p class="sub">E5 forgotten site: ${esc(e5.forgotten_site)}</p>
+      ${table(["State", "Membership-inference AUC", "Retained normalized regret"], [
+        ["Before", fmt(e5.mia_auc_before), fmt(e5.retained_regret_before)],
+        ["Retrain without site", fmt(e5.mia_auc_exact_retrain), fmt(e5.retained_regret_exact)],
+        ["Retained-data distillation", fmt(e5.mia_auc_gated_distill), fmt(e5.retained_regret_distill)],
+        ["Initial model", fmt(e5.mia_auc_never_trained), "—"]])}
+      <p class="note">Synthetic, single-seed evidence. AUC tests one membership attack and does not certify deletion. Distillation has no separate final release gate; the historical report field names are retained. The experiment targets the shared component and reuses retained-site personal states for its retained-service evaluation.</p></div>`;
   }
   const env = B.envlearn;
   if (env) {

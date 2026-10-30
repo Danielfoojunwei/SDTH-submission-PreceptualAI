@@ -73,3 +73,16 @@ test('completed E3 displays mixed results and the admission label audit', () => 
   assert.match(html, /54 test cases/);
   assert.match(html, /does not establish admission-policy generalisation/);
 });
+
+test('completed E4/E5 shows measured results without certifying deletion', () => {
+  const arm = {mean: 0.2, worst: 0.3, log_verifies: true};
+  const e45 = {local: arm, fedavg_all: arm, swarm_pers: arm,
+    e5: {forgotten_site: 'S2_heavy_scanners', mia_auc_before: 0.6,
+      mia_auc_exact_retrain: 0.5, mia_auc_gated_distill: 0.52, mia_auc_never_trained: 0.5,
+      retained_regret_before: 0.2, retained_regret_exact: 0.25, retained_regret_distill: 0.23}};
+  const html = render({radiojev: {e45}});
+  assert.match(html, /RadioJEV E4\/E5/);
+  assert.match(html, /0\.520/);
+  assert.match(html, /does not certify deletion/);
+  assert.match(html, /no separate final release gate/);
+});

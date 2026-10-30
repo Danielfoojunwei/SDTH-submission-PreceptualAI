@@ -11,6 +11,7 @@ from __future__ import annotations
 
 import argparse
 from dataclasses import asdict
+from datetime import datetime, timezone
 import json
 import math
 from pathlib import Path
@@ -111,7 +112,8 @@ def training_snapshot(run_dir: Path) -> dict:
     interrupted = (any(s["status"] == "interrupted" for s in stages.values())
                    or (state["status"] == "running" and
                        _training_process_alive(state.get("pid"), run_dir) is False))
-    return {"status": "interrupted" if interrupted
+    return {"captured_at": datetime.now(timezone.utc).isoformat(),
+            "status": "interrupted" if interrupted
             else state["status"], "seed": state.get("seed"), "stages": stages,
             "results": results, "snapshot": True}
 
@@ -144,7 +146,8 @@ def build(run_dir: Path | None = None) -> dict:
             "e1_radio_lora", "e1_radio_frozen", "e1_intent", "e1_no_llm",
             "e2_radio_q", "e2_e1_zero", "e2_intent", "e3", "e45")},
         "radiojev_audits": {"e3": _load("artifacts/radiojev_cloud/e3_label_audit.json")},
-        "training_run": training_snapshot(run_dir) if run_dir else None,
+        "training_run": (training_snapshot(run_dir) if run_dir
+                         else _load("artifacts/radiojev_cloud/snapshot.json")),
         "closedloop_10car": _slim_closedloop(_load("artifacts/closedloop.json")),
         "closedloop_warehouse": _slim_closedloop(_load("artifacts/closedloop_warehouse.json")),
         "papers": _paper_map(),

@@ -1,5 +1,10 @@
 # Paper proposal
 
+Current scope: finish the warehouse-connectivity E1–E5 and corrected E7
+experiments. E6 is excluded. The consolidated results and completion status
+are in `docs/WAREHOUSE_RESULTS.md`. Broader foundation-model, PHY, robotics
+and space directions are deferred.
+
 ## Working title
 **Typed Intent, Exact Plans: Frozen System-One Decision Models as Objective Readers for Route-Aware Wi-Fi Association of Robot Fleets**
 
@@ -82,13 +87,13 @@ missions and 0.0779 ± 0.0253 on new missions (120 cases each). Intent reaches
 0.3288 ± 0.0693. Radio-Q takes 6.42 s per held-out decision versus intent's
 591 ms. E1 and E2 use different regret definitions. These are one-seed runs;
 95% intervals describe evaluation cases, not variation across training seeds.
-Raw results and provenance are in `artifacts/radiojev_cloud/`. E3 is complete
-and E4/E5 is running. Keep native-input representation learning
+Raw results and provenance are in `artifacts/radiojev_cloud/`; the consolidated
+E1–E5 completion record is in `docs/WAREHOUSE_RESULTS.md`. Keep native-input representation learning
 an exploratory result rather than a principal paper claim.
 
-The E1/E2 split motivates testing a **mission-capability router**, with the
-design in `docs/ROUTER_EXPERIMENT.md`. This is a hypothesis, not a completed
-result. E2 compares RadioJEV against the current fixed-weight intent reader;
+The **mission-capability router** design in `docs/ROUTER_EXPERIMENT.md` is
+deferred until the specified warehouse experiments are complete; it contributes
+no measured result to this paper. E2 compares RadioJEV against the current fixed-weight intent reader;
 it does not show superiority to a planner with explicit constraints or a
 structured mission parser. Its "nonlinear" mission set also includes a
 linear safety penalty and a spatial mean expressible through a focus set.

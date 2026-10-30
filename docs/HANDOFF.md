@@ -6,6 +6,13 @@ The cloud development environment has Python 3.12, locked dependencies and a
 CPU-only test/simulation workflow. See Git history and the associated review
 branch for commit/push status; external publications are tracked separately.
 
+## Active completion scope
+
+The user returned the scope to warehouse connectivity: finish WirelessJEV and
+RadioJEV E1–E5 and corrected E7. E6 remains excluded. Router, E8, JEPA/world
+models, general robotics, custom PHY and satellite work are deferred.
+`docs/WAREHOUSE_RESULTS.md` is the consolidated completion/result record.
+
 ## E7 environment learning
 
 Two censoring defects were identified in `src/wirelessjev/envlearn.py`:
@@ -84,12 +91,13 @@ preserves checkpoints, waits for competing jobs and stops on the first error.
 An optional positional argument selects the competing-job `pgrep` pattern.
 Read logs under `artifacts/radiojev/`; logs and data caches remain ignored.
 
-**Full rerun now active:** the user authorized all training, including
+**Full rerun:** the user authorized all training, including
 regenerating the missing LoRA checkpoint. The isolated run directory is
 `/workspace/training/radiojev/full`; inspect its `status.json`, per-stage logs
-and `manifest.json`. All 330 E1/E2/E4-E5 scenes are prepared. Eight of nine
-controller stages have completed: all E1/E2 arms and E3. E3's completed report
-is archived; E4/E5 is running. The four completed radio checkpoints were loaded
+and `manifest.json`. All 330 E1/E2/E4-E5 scenes are prepared. Completed stages
+are tracked in `status.json` and the consolidated warehouse results. At the
+scope-reset checkpoint, E1–E3 were complete and E4/E5's local arm had finished;
+the remaining comparisons were running. The four E1–E3 radio checkpoints were loaded
 and checked for finite tensors. Completed reports and hashes are archived in
 `artifacts/radiojev_cloud/`.
 The model downloaded and loaded successfully after network access changed;
@@ -100,7 +108,7 @@ The original controller stopped when E4/E5 passed an E3 `heads` checkpoint to
 the E2 `encoder` warm-start loader. `Bank` now initialises the multitask model
 without an E2 warm start when E3 exists, then restores all E3 heads, LoRA and
 20 readout rows. Three regression cases cover E3 with/without an older E2
-checkpoint and the E2-only fallback. The full suite has 56 Python tests.
+checkpoint and the E2-only fallback.
 The failed attempt was preserved under the run directory's `attempts/` and
 the remaining stage resumed with the versioned `scripts/train_radiojev.py`.
 Its source hashes and predecessor checkpoint are recorded separately in
@@ -113,6 +121,17 @@ an interrupted arm restarts because optimizer/epoch continuation is not
 implemented. Results in the new run directory do not overwrite the published
 reports until explicitly validated/promoted.
 
+The independent `scripts/finalize_radiojev.py --run-dir <run> --watch` validates
+all nine completed controller stages, full evaluation counts, finite report
+metrics, E4 signed logs, checkpoint tensors and recorded training-source hashes.
+It preserves archived raw reports, generates `docs/WAREHOUSE_RESULTS.md`, saves
+an exportable cloud snapshot and rebuilds Studio. It never starts or changes
+training. With `--publish-branch codex/e7-censoring-training-progress`, it commits
+and pushes only validated generated evidence on that existing branch, provided
+the checkout is clean. It never merges. Inspect `finalization_status.json` and
+`finalizer.log` under the run directory. A stopped worker or failed validation
+is reported as failure rather than completion.
+
 E3 association normalized regret improved from 0.1170 to 0.1046. DSA greedy
 reward is 1.000 in one 500-step evaluation episode; MLP baselines reach
 0.263 / 0.384. Traffic accuracy falls below the rule baselines on all three
@@ -123,8 +142,8 @@ answer and does not establish admission-policy generalisation. The audit is
 retained in `artifacts/radiojev_cloud/e3_label_audit.json`, reproduced by
 `docs/experiments/e3_label_audit.py`. A separately versioned admission dataset
 with meaningful class coverage is needed before a learning claim.
-Router evaluation and independent training seeds
-remain outstanding; `docs/ROUTER_EXPERIMENT.md` documents the proposed design.
+Independent training seeds remain necessary for stronger paper claims.
+The router design in `docs/ROUTER_EXPERIMENT.md` is deferred.
 
 ## Studio and paper
 

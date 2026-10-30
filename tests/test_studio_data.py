@@ -29,6 +29,15 @@ def test_export_falls_back_to_historical_e7_without_inventing_results(monkeypatc
     assert all(value is None for value in bundle["radiojev"].values())
 
 
+def test_archived_cloud_snapshot_survives_export_without_the_training_machine(monkeypatch):
+    snapshot = {"status": "completed", "snapshot": True, "stages": {},
+                "results": {"e45": {"local": {"mean": 0.2}}}}
+    monkeypatch.setattr(studio_data, "_load", {"artifacts/radiojev_cloud/snapshot.json": snapshot}.get)
+    bundle = studio_data.build()
+    assert bundle["training_run"] is snapshot
+    assert bundle["radiojev"]["e45"] is None
+
+
 def test_training_snapshot_keeps_partial_validation_out_of_test_results(tmp_path, monkeypatch):
     state = {"status": "running", "pid": 10, "smoke": False, "seed": 0, "stages": {
         "e1_no_llm": {"status": "completed"}, "e1_radio_lora": {"status": "running", "pid": 11}}}
