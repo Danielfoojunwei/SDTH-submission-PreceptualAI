@@ -245,6 +245,22 @@ function researchResults() {
         ["e2_intent", "E2 intent"], ["e3", "E3 multitask"], ["e45", "E4/E5 swarm + unlearning"]]
         .map(([key, label]) => [label, radio[key] ? "result available" : "pending"]))}</div>`;
   }
+  const multitask = run?.results?.e3 || radio.e3;
+  if (multitask) {
+    const before = multitask.shared_before, after = multitask.shared_after;
+    const admission = B.radiojev_audits?.e3?.admission?.test;
+    html += `<div class="card" style="margin-top:16px"><h3>RadioJEV E3 · multitask result</h3>
+      ${table(["Task and metric", "Before E3", "After E3", "Baseline"], [
+        ["Association normalized regret ↓", fmt(before.assoc_norm_regret), fmt(after.assoc_norm_regret), "—"],
+        ["DSA greedy reward ↑", "—", fmt(multitask.dsa_radiojev.greedy_mean_reward),
+          `MLP 1,500 / 20,000 steps: ${fmt(multitask.dsa_baselines.ddqn_mlp_1500_steps.greedy_mean_reward)} / ${fmt(multitask.dsa_baselines.ddqn_mlp_20000_steps.greedy_mean_reward)}`],
+        ["Admission accuracy ↑", pct(before.admission_acc), pct(after.admission_acc), `rule: ${pct(multitask.admission_rule_acc)}`],
+        ...["trend", "event", "volatility"].map((key) => [`Traffic ${key} accuracy ↑`,
+          pct(before.traffic_acc[key]), pct(after.traffic_acc[key]), `rule: ${pct(multitask.traffic_rule_acc[key])}`])
+      ])}
+      <p class="note">Mixed multitask evidence: traffic accuracy remains below the rules on all three questions. DSA uses one 500-step evaluation episode; these results use one training seed.</p>
+      ${admission ? `<p class="note">Admission label audit: ${admission.n} test cases; majority-class accuracy ${pct(admission.majority_accuracy)}.${Object.keys(admission.labels).length === 1 ? " All test cases share one label, so 100% accuracy does not establish admission-policy generalisation." : ""}</p>` : ""}</div>`;
+  }
   const env = B.envlearn;
   if (env) {
     const s = env.summary;

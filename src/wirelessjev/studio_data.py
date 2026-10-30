@@ -143,6 +143,7 @@ def build(run_dir: Path | None = None) -> dict:
         "radiojev": {name: _load(f"artifacts/radiojev/{name}.json") for name in (
             "e1_radio_lora", "e1_radio_frozen", "e1_intent", "e1_no_llm",
             "e2_radio_q", "e2_e1_zero", "e2_intent", "e3", "e45")},
+        "radiojev_audits": {"e3": _load("artifacts/radiojev_cloud/e3_label_audit.json")},
         "training_run": training_snapshot(run_dir) if run_dir else None,
         "closedloop_10car": _slim_closedloop(_load("artifacts/closedloop.json")),
         "closedloop_warehouse": _slim_closedloop(_load("artifacts/closedloop_warehouse.json")),

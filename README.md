@@ -81,8 +81,8 @@ CPU cloud worker. Real-car commands require separate hardware access.
 
 ## RadioJEV E1–E5 status
 
-The cloud full run has completed all E1 and E2 arms (seven of nine controller
-stages). E3 multitask is active; E4/E5 swarm and unlearning are queued. Raw
+The cloud full run has completed all E1/E2 arms and E3 (eight of nine controller
+stages). E4/E5 swarm and unlearning are running after a checkpoint-loader fix. Raw
 completed reports, source provenance and checkpoint hashes are retained in
 [artifacts/radiojev_cloud](artifacts/radiojev_cloud/README.md).
 
@@ -101,6 +101,20 @@ and **0.078 ± 0.025** on new missions (120 cases each), versus intent's
 0.329 ± 0.069. E2 uses a different metric from E1; its CPU decision latency
 is 6.42 s for radio-Q versus 591 ms for intent. This is one training seed,
 with intervals over evaluation cases rather than independent training runs.
+
+E3 reduces association normalized regret from 0.1170 to 0.1046. Its DSA
+greedy reward is 1.000 over one 500-step evaluation episode, versus 0.263 /
+0.384 for the 1,500 / 20,000-step MLP baselines. Traffic accuracy is
+0.369 / 0.231 / 0.338 (trend / event / volatility), below the corresponding
+rule baselines of 0.708 / 0.738 / 0.923. This is mixed multitask evidence,
+not a claim of general improvement across tasks. Admission's 100% accuracy
+matches a constant prediction: all 106 training and 54 test labels are "lower".
+
+The E1/E2 split motivates a router experiment, but does not yet validate one.
+E2 tests the existing weight-based reader, not a planner with explicit mission
+constraints. Its mission implementations mix thresholds, soft penalties and
+spatial predicates. See [docs/ROUTER_EXPERIMENT.md](docs/ROUTER_EXPERIMENT.md)
+for the proposed comparison and required stronger baseline.
 
 The original Mac LoRA result (0.093 ± 0.022 held-out, 0.074 ± 0.020 new-mission,
 3.35–3.99 s per decision) remains unchanged in `artifacts/radiojev/`.
@@ -126,9 +140,10 @@ uv run --frozen python scripts/train_radiojev.py --run-dir /workspace/training/r
 ```
 
 It caches each prepared scene, retains completed stages and prevents duplicate
-controllers. The current cloud run is already active under the original local
-launcher; do not launch a second controller against it. An interrupted arm
-restarts its training; optimizer/epoch continuation is not implemented.
+controllers. The cloud run resumed E4/E5 under the versioned controller after
+the original launcher stopped; do not launch a second controller against it.
+An interrupted arm restarts its training; optimizer/epoch continuation is not
+implemented.
 
 ## E7 environment learning
 

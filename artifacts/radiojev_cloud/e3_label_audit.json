@@ -1,0 +1,94 @@
+{
+  "admission": {
+    "train": {
+      "n": 106,
+      "labels": {
+        "lower": 106
+      },
+      "majority_accuracy": 1.0
+    },
+    "test": {
+      "n": 54,
+      "labels": {
+        "lower": 54
+      },
+      "majority_accuracy": 1.0
+    }
+  },
+  "traffic": {
+    "trend": {
+      "train": {
+        "n": 195,
+        "labels": {
+          "upward": 51,
+          "stable": 74,
+          "downward": 70
+        },
+        "training_majority_label": "stable",
+        "training_majority_accuracy": 0.37948717948717947
+      },
+      "test": {
+        "n": 65,
+        "labels": {
+          "downward": 26,
+          "upward": 16,
+          "stable": 23
+        },
+        "training_majority_label": "stable",
+        "training_majority_accuracy": 0.35384615384615387
+      }
+    },
+    "event": {
+      "train": {
+        "n": 195,
+        "labels": {
+          "burst": 39,
+          "anomaly": 40,
+          "scheduled": 42,
+          "none": 74
+        },
+        "training_majority_label": "none",
+        "training_majority_accuracy": 0.37948717948717947
+      },
+      "test": {
+        "n": 65,
+        "labels": {
+          "burst": 11,
+          "none": 29,
+          "scheduled": 15,
+          "anomaly": 10
+        },
+        "training_majority_label": "none",
+        "training_majority_accuracy": 0.4461538461538462
+      }
+    },
+    "volatility": {
+      "train": {
+        "n": 195,
+        "labels": {
+          "low": 70,
+          "high": 59,
+          "medium": 66
+        },
+        "training_majority_label": "low",
+        "training_majority_accuracy": 0.358974358974359
+      },
+      "test": {
+        "n": 65,
+        "labels": {
+          "low": 22,
+          "high": 26,
+          "medium": 17
+        },
+        "training_majority_label": "low",
+        "training_majority_accuracy": 0.3384615384615385
+      }
+    }
+  },
+  "method": "reconstruct-e3-label-splits-v1",
+  "admission_seed_start": 60000,
+  "admission_samples": 160,
+  "traffic_seed": 11,
+  "traffic_windows": 260,
+  "e3_source_sha256": "57116f555c6ccb0853fd914805dafa43d7b03ba444ade7ada7b44dade00a24ce"
+}

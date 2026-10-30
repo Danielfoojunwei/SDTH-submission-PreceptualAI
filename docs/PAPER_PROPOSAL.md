@@ -82,9 +82,30 @@ missions and 0.0779 ± 0.0253 on new missions (120 cases each). Intent reaches
 0.3288 ± 0.0693. Radio-Q takes 6.42 s per held-out decision versus intent's
 591 ms. E1 and E2 use different regret definitions. These are one-seed runs;
 95% intervals describe evaluation cases, not variation across training seeds.
-Raw results and provenance are in `artifacts/radiojev_cloud/`. E3 evaluation
-is active and E4/E5 remains queued. Keep native-input representation learning
+Raw results and provenance are in `artifacts/radiojev_cloud/`. E3 is complete
+and E4/E5 is running. Keep native-input representation learning
 an exploratory result rather than a principal paper claim.
+
+The E1/E2 split motivates testing a **mission-capability router**, with the
+design in `docs/ROUTER_EXPERIMENT.md`. This is a hypothesis, not a completed
+result. E2 compares RadioJEV against the current fixed-weight intent reader;
+it does not show superiority to a planner with explicit constraints or a
+structured mission parser. Its "nonlinear" mission set also includes a
+linear safety penalty and a spatial mean expressible through a focus set.
+The move budget is implemented as a soft penalty, and the video threshold
+uses a horizon-averaged minimum. State these actual semantics before making
+claims about hard constraints, lexicographic priorities or mission classes.
+
+E3 provides mixed evidence: association normalized regret improves from
+0.1170 to 0.1046, and DSA greedy reward is 1.000 over a single 500-step episode
+(MLP baselines: 0.263 / 0.384). Traffic accuracy after training is only
+0.369 / 0.231 / 0.338, below the rule baselines of 0.708 / 0.738 / 0.923.
+Admission accuracy is 100%, but all 106 training and 54 test cases have the
+"lower" label. A constant prediction also reaches 100%; the result is not
+evidence of learning a general admission policy. The raw report is retained
+alongside the reproducible label audit; a new dataset must be separately
+versioned rather than replacing this evidence.
+Independent training seeds and additional DSA layouts remain necessary.
 
 **E7 environment learning** also needs careful qualification. The historical
 15-environment report reduced mean plan gap from 1.239 (legacy) to 0.174

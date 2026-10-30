@@ -6,7 +6,6 @@
   "smoke": false,
   "run_complete": false,
   "pending_stages": [
-    "e3",
     "e45"
   ],
   "completed_stages": {
@@ -51,6 +50,12 @@
       "started_at": "2026-10-29T16:21:36.526846+00:00",
       "returncode": 0,
       "finished_at": "2026-10-29T16:23:38.575787+00:00"
+    },
+    "e3": {
+      "status": "completed",
+      "started_at": "2026-10-29T16:23:39.003517+00:00",
+      "returncode": 0,
+      "finished_at": "2026-10-30T01:22:21.883149+00:00"
     }
   },
   "result_sha256": {
@@ -60,7 +65,8 @@
     "e1_intent.json": "f5eea4afa6a90abb6a4b3a9cafcca6f960df4544a887a8298c2a700bedda2976",
     "e2_radio_q.json": "72c294652b4edbdf0217bc800dc64214ecff6207b7ae8874ca8099dae3ff8206",
     "e2_e1_zero.json": "59e4ffbe591853a7ca4835634986e9a864616fdcd87c8fe1b661d9548faf0c2d",
-    "e2_intent.json": "b34dc61d4129f85afdbf888f628b2e62189c1bcdbcdbd1ba0e91902c210bf3b8"
+    "e2_intent.json": "b34dc61d4129f85afdbf888f628b2e62189c1bcdbcdbd1ba0e91902c210bf3b8",
+    "e3.json": "8ddf64ac78686fff06095ed7021e1744cb5bbd9732a09ece86b7a95391a2ebeb"
   },
   "verified_checkpoints": {
     "ckpt_radio_lora.pt": {
@@ -77,6 +83,11 @@
       "sha256": "2465fa1956f1eceb2283650125bf07c160ce6e5a7662e701fc89565e00c5b6c8",
       "bytes": 8349919,
       "finite_tensors": 150
+    },
+    "ckpt_e3.pt": {
+      "sha256": "b6314aef11e8af383b654947f50818bf43a4b8f5daa1f04c1cf46c53f6fbce24",
+      "bytes": 10259873,
+      "finite_tensors": 175
     }
   },
   "run_manifest": {
@@ -143,5 +154,10 @@
     "original_results_preserved": true,
     "smoke": false,
     "seed": 0
+  },
+  "latest_exported_at": "2026-10-30T01:28:55.173288+00:00",
+  "source_verification_note": "At the initial export, all 12 RadioJEV files matched the original run manifest. The completed E3 stage also used those original sources. E4/E5 was subsequently restarted after a checkpoint-loader fix to e45.py; its separate resume provenance records the changed source and versioned controller.",
+  "audit_sha256": {
+    "e3_label_audit.json": "456408d535b18f91185ba27e45e28801b59236cc4c4ccc6865ccc0dd7ec70390"
   }
 }

@@ -87,22 +87,44 @@ Read logs under `artifacts/radiojev/`; logs and data caches remain ignored.
 **Full rerun now active:** the user authorized all training, including
 regenerating the missing LoRA checkpoint. The isolated run directory is
 `/workspace/training/radiojev/full`; inspect its `status.json`, per-stage logs
-and `manifest.json`. All 330 E1/E2/E4-E5 scenes are prepared. Seven of nine
-controller stages have completed: all E1 and E2 arms. E3 finished its 600
-supervised and 1,500 RL training steps and is evaluating; E4/E5 is queued.
-The three completed radio checkpoints were loaded and checked for finite
-tensors. Completed reports and hashes are archived in `artifacts/radiojev_cloud/`.
+and `manifest.json`. All 330 E1/E2/E4-E5 scenes are prepared. Eight of nine
+controller stages have completed: all E1/E2 arms and E3. E3's completed report
+is archived; E4/E5 is running. The four completed radio checkpoints were loaded
+and checked for finite tensors. Completed reports and hashes are archived in
+`artifacts/radiojev_cloud/`.
 The model downloaded and loaded successfully after network access changed;
 no Hugging Face token is required for the public model. The worker has no GPU.
 The old Mac estimate of 1–2 days does not estimate cloud CPU runtime.
 
-The existing job uses the original local controller and must not be restarted
-just to adopt a new launcher. Future full runs can use the versioned
+The original controller stopped when E4/E5 passed an E3 `heads` checkpoint to
+the E2 `encoder` warm-start loader. `Bank` now initialises the multitask model
+without an E2 warm start when E3 exists, then restores all E3 heads, LoRA and
+20 readout rows. Three regression cases cover E3 with/without an older E2
+checkpoint and the E2-only fallback. The full suite has 56 Python tests.
+The failed attempt was preserved under the run directory's `attempts/` and
+the remaining stage resumed with the versioned `scripts/train_radiojev.py`.
+Its source hashes and predecessor checkpoint are recorded separately in
+`artifacts/radiojev_cloud/e45_resume_provenance.json`.
+
+Do not restart a healthy job. Future full runs can use the versioned
 `scripts/train_radiojev.py --run-dir <new-or-stopped-run-directory>`.
 Its lock prevents duplicate controllers. Completed scenes/stages are retained;
 an interrupted arm restarts because optimizer/epoch continuation is not
 implemented. Results in the new run directory do not overwrite the published
 reports until explicitly validated/promoted.
+
+E3 association normalized regret improved from 0.1170 to 0.1046. DSA greedy
+reward is 1.000 in one 500-step evaluation episode; MLP baselines reach
+0.263 / 0.384. Traffic accuracy falls below the rule baselines on all three
+questions. Keep these mixed results separate; one episode does not establish
+cross-layout DSA robustness. The admission label audit found only "lower"
+labels in all 106 training and 54 test cases; 100% accuracy matches a constant
+answer and does not establish admission-policy generalisation. The audit is
+retained in `artifacts/radiojev_cloud/e3_label_audit.json`, reproduced by
+`docs/experiments/e3_label_audit.py`. A separately versioned admission dataset
+with meaningful class coverage is needed before a learning claim.
+Router evaluation and independent training seeds
+remain outstanding; `docs/ROUTER_EXPERIMENT.md` documents the proposed design.
 
 ## Studio and paper
 

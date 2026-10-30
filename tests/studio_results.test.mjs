@@ -61,3 +61,15 @@ test('held-out calibration results retain their map-only scope', () => {
   assert.match(html, /map error only/);
   assert.match(html, /does not replace the default planner/);
 });
+
+test('completed E3 displays mixed results and the admission label audit', () => {
+  const e3 = JSON.parse(readFileSync(new URL('../artifacts/radiojev_cloud/e3.json', import.meta.url)));
+  const audit = JSON.parse(readFileSync(new URL('../artifacts/radiojev_cloud/e3_label_audit.json', import.meta.url)));
+  const html = render({radiojev: {e3}, radiojev_audits: {e3: audit}});
+  assert.match(html, /RadioJEV E3 · multitask result/);
+  assert.match(html, /0\.105/);
+  assert.match(html, /traffic accuracy remains below the rules/);
+  assert.match(html, /one 500-step evaluation episode/);
+  assert.match(html, /54 test cases/);
+  assert.match(html, /does not establish admission-policy generalisation/);
+});
