@@ -1,6 +1,6 @@
 # Proposed mission-capability router experiment
 
-Status: deferred; the current milestone is completing warehouse E1–E5 and E7.
+Status: deferred; the warehouse E1–E5 run and corrected E7 are complete.
 This remains a design document; no router has been trained or evaluated. The current
 E1/E2 results motivate this experiment but do not establish a router benefit.
 

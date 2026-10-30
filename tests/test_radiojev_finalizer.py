@@ -141,6 +141,8 @@ def test_watcher_accepts_worker_exit_when_parent_records_completion(tmp_path, mo
     monkeypatch.setattr(sys, "argv", ["finalize_radiojev.py", "--run-dir", str(tmp_path), "--watch"])
     assert finalizer.main() == 0
     assert json.loads((tmp_path / "finalization_status.json").read_text())["status"] == "completed"
+    health = json.loads((tmp_path / "health.json").read_text())
+    assert health["health"] == "completed" and health["active_stages"] == []
 
 
 def test_watcher_reports_a_stopped_run_without_publishing(tmp_path, monkeypatch):
@@ -154,3 +156,5 @@ def test_watcher_reports_a_stopped_run_without_publishing(tmp_path, monkeypatch)
     with pytest.raises(ValueError, match="Training process stopped"):
         finalizer.main()
     assert json.loads((tmp_path / "finalization_status.json").read_text())["status"] == "failed"
+    health = json.loads((tmp_path / "health.json").read_text())
+    assert health["health"] == "attention_required" and health["training_status"] == "running"

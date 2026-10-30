@@ -274,7 +274,8 @@ function researchResults() {
         ["Retrain without site", fmt(e5.mia_auc_exact_retrain), fmt(e5.retained_regret_exact)],
         ["Retained-data distillation", fmt(e5.mia_auc_gated_distill), fmt(e5.retained_regret_distill)],
         ["Initial model", fmt(e5.mia_auc_never_trained), "—"]])}
-      <p class="note">Synthetic, single-seed evidence. AUC tests one membership attack and does not certify deletion. Distillation has no separate final release gate; the historical report field names are retained. The experiment targets the shared component and reuses retained-site personal states for its retained-service evaluation.</p></div>`;
+      <p class="note">Synthetic, single-seed evidence. AUC tests one membership attack and does not certify deletion. Distillation has no separate final release gate; the historical report field names are retained. The experiment targets the shared component and reuses retained-site personal states for its retained-service evaluation.</p>
+      ${sites.swarm_pers.rounds?.length && !sites.swarm_pers.rounds.some((row) => row.released) ? `<p class="note">No shared merge was accepted in E4. E5 therefore does not demonstrate removing an accepted site update from the shared model.</p>` : ""}</div>`;
   }
   const env = B.envlearn;
   if (env) {

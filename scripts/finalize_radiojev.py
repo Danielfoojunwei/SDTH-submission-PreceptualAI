@@ -35,6 +35,22 @@ def write_json(path, value):
     temp.replace(path)
 
 
+def record_progress(run, value, state=None):
+    """Keep the health summary in sync with authoritative finalization state."""
+    write_json(run / "finalization_status.json", value)
+    state = state or {}
+    phases = {"waiting_for_training": "running", "validating": "validating",
+              "completed": "completed", "failed": "attention_required"}
+    write_json(run / "health.json", {
+        "checked_at": now(), "health": phases[value["status"]],
+        "training_status": state.get("status", "unknown"),
+        "completed_stages": value.get("validated_stages", [name for name, entry in state.get("stages", {}).items()
+                                                             if entry["status"] == "completed"]),
+        "active_stages": value.get("active_stages", []),
+        "finalizer": {key: value[key] for key in ("status", "pid", "reason", "published_branch", "git_head") if key in value},
+        "scope": "warehouse E1-E5 and corrected E7; E6 excluded; extensions deferred"})
+
+
 def sha(path):
     return hashlib.sha256(path.read_bytes()).hexdigest()
 
@@ -182,6 +198,12 @@ def render_results(reports, env, audit, complete):
         for site in SITES:
             values = [r["init_per_site"][site]] + [r[a]["per_site"][site] for a in ("local", "fedavg_all", "swarm_pers")]
             lines.append("| " + site + " | " + " | ".join(f"{v:.4f}" for v in values) + " |")
+        rounds = r["swarm_pers"]["rounds"]
+        if rounds and not any(row["released"] for row in rounds):
+            lines += ["", "All proposed E4 shared merges were rejected. The shared model incorporated no "
+                      "site updates in these rounds, and personalised swarm equals local-only training. "
+                      "Consequently E5 does not demonstrate removing an accepted site's contribution "
+                      "from that shared model."]
         e5 = r["e5"]
         lines += ["", f"Forgotten site: {e5['forgotten_site']}.", "",
                   "| State | Membership-inference AUC | Retained normalized regret |", "|---|---|---|"]
@@ -304,15 +326,15 @@ def main():
     run = args.run_dir.resolve()
     lock = (run / "finalizer.lock").open("a")
     fcntl.flock(lock, fcntl.LOCK_EX | fcntl.LOCK_NB)
-    progress = run / "finalization_status.json"
+    state = None
     try:
         transitions = 0
         while True:
             state = json.loads((run / "status.json").read_text())
             if state["status"] == "completed":
-                write_json(progress, {"status": "validating", "pid": os.getpid(), "checked_at": now()})
+                record_progress(run, {"status": "validating", "pid": os.getpid(), "checked_at": now()}, state)
                 result = finalise(ROOT, run, state, args.publish_branch)
-                write_json(progress, result)
+                record_progress(run, result, state)
                 print(json.dumps(result), flush=True)
                 return 0
             require(args.watch and state["status"] == "running", f"Training is {state['status']}; not finalised")
@@ -336,11 +358,11 @@ def main():
             waiting = {"status": "waiting_for_training", "pid": os.getpid(), "checked_at": now(),
                        "completed_stages": [n for n, e in state["stages"].items() if e["status"] == "completed"],
                        "active_stages": active}
-            write_json(progress, waiting)
+            record_progress(run, waiting, state)
             print(json.dumps(waiting), flush=True)
             time.sleep(args.poll_seconds)
     except Exception as error:
-        write_json(progress, {"status": "failed", "checked_at": now(), "reason": str(error)})
+        record_progress(run, {"status": "failed", "checked_at": now(), "reason": str(error)}, state)
         raise
 
 

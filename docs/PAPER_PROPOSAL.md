@@ -1,7 +1,7 @@
 # Paper proposal
 
-Current scope: finish the warehouse-connectivity E1–E5 and corrected E7
-experiments. E6 is excluded. The consolidated results and completion status
+The warehouse-connectivity E1–E5 and corrected E7 experiments are complete
+for one synthetic training seed. E6 is excluded. The consolidated results and completion status
 are in `docs/WAREHOUSE_RESULTS.md`. Broader foundation-model, PHY, robotics
 and space directions are deferred.
 
@@ -92,7 +92,7 @@ E1–E5 completion record is in `docs/WAREHOUSE_RESULTS.md`. Keep native-input r
 an exploratory result rather than a principal paper claim.
 
 The **mission-capability router** design in `docs/ROUTER_EXPERIMENT.md` is
-deferred until the specified warehouse experiments are complete; it contributes
+deferred; it contributes
 no measured result to this paper. E2 compares RadioJEV against the current fixed-weight intent reader;
 it does not show superiority to a planner with explicit constraints or a
 structured mission parser. Its "nonlinear" mission set also includes a
@@ -111,6 +111,19 @@ evidence of learning a general admission policy. The raw report is retained
 alongside the reproducible label audit; a new dataset must be separately
 versioned rather than replacing this evidence.
 Independent training seeds and additional DSA layouts remain necessary.
+
+**E4/E5 are complete but do not support a swarm or unlearning advantage.**
+E4 mean normalized regret is 0.1820 for local-only training, 0.1781 for
+FedAvg and 0.1820 for personalised swarm, versus 0.1729 for the initial E3
+model. FedAvg's worst-site regret is 0.2220, versus local/swarm's 0.2023.
+All three shared merge proposals failed validation; the swarm matched local
+training and its shared component incorporated no E4 site updates.
+Consequently E5 does not test removal of an accepted site contribution from
+that shared model. Retained-data distillation raised membership-attack AUC
+from 0.6167 to 0.6489 and retained normalized regret from 0.1801 to 0.2068.
+Retraining without the site yielded AUC 0.6231 (identical to the initial-model
+baseline) and retained regret 0.1962. These results do not establish forgetting;
+they must remain negative/limited evidence in the paper.
 
 **E7 environment learning** also needs careful qualification. The historical
 15-environment report reduced mean plan gap from 1.239 (legacy) to 0.174

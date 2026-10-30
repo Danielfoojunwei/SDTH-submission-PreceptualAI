@@ -5,7 +5,7 @@ Current experiment status and restart prerequisites are in [docs/HANDOFF.md](doc
 The restored didjital R6.1 reference and its executed software checks are
 documented in [docs/R6_COMPATIBILITY.md](docs/R6_COMPATIBILITY.md).
 
-The active milestone is **warehouse connectivity: WirelessJEV/RadioJEV E1–E5
+The completed milestone is **warehouse connectivity: WirelessJEV/RadioJEV E1–E5
 and corrected E7**. E6 remains excluded. Router, E8, JEPA/world-model,
 general-robotics, custom-PHY and satellite extensions are deferred. See the
 consolidated [warehouse results](docs/WAREHOUSE_RESULTS.md) for completion status.
@@ -86,8 +86,9 @@ CPU cloud worker. Real-car commands require separate hardware access.
 
 ## RadioJEV E1–E5 status
 
-The full cloud run covers all E1/E2 arms, E3 multitask, and E4/E5 site adaptation
-and forgetting. Its validated completion status and complete comparisons are
+The full cloud run **completed all nine controller stages**: all E1/E2 arms,
+E3 multitask, and E4/E5 site adaptation and forgetting. Corrected E7 is also
+complete; E6 remains excluded. The validated completion status and comparisons are
 recorded in [docs/WAREHOUSE_RESULTS.md](docs/WAREHOUSE_RESULTS.md). Raw
 completed reports, source provenance and checkpoint hashes are retained in
 [artifacts/radiojev_cloud](artifacts/radiojev_cloud/README.md).
@@ -116,10 +117,17 @@ rule baselines of 0.708 / 0.738 / 0.923. This is mixed multitask evidence,
 not a claim of general improvement across tasks. Admission's 100% accuracy
 matches a constant prediction: all 106 training and 54 test labels are "lower".
 
+E4 mean normalized regret is 0.1820 (local), 0.1781 (FedAvg) and 0.1820
+(personalised swarm), versus 0.1729 for the initial E3 model. All three shared
+merges were rejected; swarm therefore matches local-only training. E5 does
+not demonstrate forgetting: its shared model had accepted no site updates,
+and retained-data distillation increased attack AUC from 0.6167 to 0.6489
+while worsening retained regret from 0.1801 to 0.2068. These negative results
+remain part of the archived evidence.
+
 E2 tests the existing weight-based reader, not a planner with explicit mission
 constraints. Its mission implementations mix thresholds, soft penalties and
-spatial predicates. The separate router proposal is deferred while the
-specified warehouse runs are completed.
+spatial predicates. The separate router proposal remains deferred.
 
 The original Mac LoRA result (0.093 ± 0.022 held-out, 0.074 ± 0.020 new-mission,
 3.35–3.99 s per decision) remains unchanged in `artifacts/radiojev/`.
@@ -145,13 +153,13 @@ uv run --frozen python scripts/train_radiojev.py --run-dir /workspace/training/r
 ```
 
 It caches each prepared scene, retains completed stages and prevents duplicate
-controllers. The cloud run resumed E4/E5 under the versioned controller after
-the original launcher stopped; do not launch a second controller against it.
+controllers. The completed cloud run resumed E4/E5 under the versioned
+controller after the original launcher stopped. Do not restart completed work.
 An interrupted arm restarts its training; optimizer/epoch continuation is not
 implemented.
 
-To finish report validation, archive all completed stages and rebuild Studio
-when the active controller completes, run the independent finalizer:
+For future runs, the independent finalizer waits for training completion,
+validates and archives all stages, and rebuilds Studio:
 
 ```bash
 uv run --frozen python scripts/finalize_radiojev.py --run-dir /workspace/training/radiojev/full --watch

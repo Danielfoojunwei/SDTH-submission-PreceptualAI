@@ -76,7 +76,7 @@ test('completed E3 displays mixed results and the admission label audit', () => 
 
 test('completed E4/E5 shows measured results without certifying deletion', () => {
   const arm = {mean: 0.2, worst: 0.3, log_verifies: true};
-  const e45 = {local: arm, fedavg_all: arm, swarm_pers: arm,
+  const e45 = {local: arm, fedavg_all: arm, swarm_pers: {...arm, rounds: [{released: false}]},
     e5: {forgotten_site: 'S2_heavy_scanners', mia_auc_before: 0.6,
       mia_auc_exact_retrain: 0.5, mia_auc_gated_distill: 0.52, mia_auc_never_trained: 0.5,
       retained_regret_before: 0.2, retained_regret_exact: 0.25, retained_regret_distill: 0.23}};
@@ -85,4 +85,5 @@ test('completed E4/E5 shows measured results without certifying deletion', () =>
   assert.match(html, /0\.520/);
   assert.match(html, /does not certify deletion/);
   assert.match(html, /no separate final release gate/);
+  assert.match(html, /No shared merge was accepted in E4/);
 });

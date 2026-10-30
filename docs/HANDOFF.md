@@ -13,6 +13,13 @@ RadioJEV E1–E5 and corrected E7. E6 remains excluded. Router, E8, JEPA/world
 models, general robotics, custom PHY and satellite work are deferred.
 `docs/WAREHOUSE_RESULTS.md` is the consolidated completion/result record.
 
+**Completed:** all nine E1–E5 controller stages, validation, report archiving,
+Studio rebuild and review-branch push finished on 30 October 2026 at 20:16
+Singapore time. The automated archive commit is `bc63d21`; no training worker
+needs restarting. Corrected E7 is complete. Only the specified one-seed
+synthetic run is complete; independent seeds and physical qualification remain
+separate work.
+
 ## E7 environment learning
 
 Two censoring defects were identified in `src/wirelessjev/envlearn.py`:
@@ -97,7 +104,8 @@ regenerating the missing LoRA checkpoint. The isolated run directory is
 and `manifest.json`. All 330 E1/E2/E4-E5 scenes are prepared. Completed stages
 are tracked in `status.json` and the consolidated warehouse results. At the
 scope-reset checkpoint, E1–E3 were complete and E4/E5's local arm had finished;
-the remaining comparisons were running. The four E1–E3 radio checkpoints were loaded
+the remaining comparisons were running. Those comparisons have now completed.
+The four E1–E3 radio checkpoints were loaded
 and checked for finite tensors. Completed reports and hashes are archived in
 `artifacts/radiojev_cloud/`.
 The model downloaded and loaded successfully after network access changed;
@@ -144,6 +152,15 @@ retained in `artifacts/radiojev_cloud/e3_label_audit.json`, reproduced by
 with meaningful class coverage is needed before a learning claim.
 Independent training seeds remain necessary for stronger paper claims.
 The router design in `docs/ROUTER_EXPERIMENT.md` is deferred.
+
+E4's local / FedAvg / personalised-swarm mean normalized regrets are
+0.1820 / 0.1781 / 0.1820. All three shared merges were rejected, so the shared
+model accepted no E4 site contributions. E5 cannot establish removal of an
+accepted contribution from that shared model. Its retained-data distillation
+also increased attack AUC (0.6167 → 0.6489) and retained regret
+(0.1801 → 0.2068). Preserve the negative result; do not claim validated
+unlearning. Full per-site comparisons and the retraining baseline are in
+`docs/WAREHOUSE_RESULTS.md`.
 
 ## Studio and paper
 

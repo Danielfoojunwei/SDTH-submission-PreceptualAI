@@ -1,6 +1,6 @@
 # Warehouse connectivity results
 
-Snapshot: 2026-10-30T12:16:05.012571+00:00 (UTC).
+Snapshot: 2026-10-30T16:58:09.495382+00:00 (UTC).
 
 Scope: WirelessJEV and RadioJEV warehouse connectivity, E1–E5 and E7. E6 is excluded. Router, E8, foundation-model, custom-PHY and space extensions are deferred.
 
@@ -55,6 +55,8 @@ Admission labels: train {'lower': 106} (n=106), test {'lower': 54} (n=54). Test 
 | S2_heavy_scanners | 0.1726 | 0.1875 | 0.1599 | 0.1875 |
 | S3_dense_racks | 0.1525 | 0.1597 | 0.1529 | 0.1597 |
 | S4_light_racks | 0.1833 | 0.1783 | 0.2220 | 0.1783 |
+
+All proposed E4 shared merges were rejected. The shared model incorporated no site updates in these rounds, and personalised swarm equals local-only training. Consequently E5 does not demonstrate removing an accepted site's contribution from that shared model.
 
 Forgotten site: S2_heavy_scanners.
 
