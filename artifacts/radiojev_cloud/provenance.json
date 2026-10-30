@@ -4,10 +4,8 @@
   "device": "CPU",
   "seed": 0,
   "smoke": false,
-  "run_complete": false,
-  "pending_stages": [
-    "e45"
-  ],
+  "run_complete": true,
+  "pending_stages": [],
   "completed_stages": {
     "e1_no_llm": {
       "status": "completed",
@@ -56,6 +54,12 @@
       "started_at": "2026-10-29T16:23:39.003517+00:00",
       "returncode": 0,
       "finished_at": "2026-10-30T01:22:21.883149+00:00"
+    },
+    "e45": {
+      "status": "completed",
+      "started_at": "2026-10-30T01:28:08.763941+00:00",
+      "returncode": 0,
+      "finished_at": "2026-10-30T12:15:06.808492+00:00"
     }
   },
   "result_sha256": {
@@ -66,7 +70,8 @@
     "e2_radio_q.json": "72c294652b4edbdf0217bc800dc64214ecff6207b7ae8874ca8099dae3ff8206",
     "e2_e1_zero.json": "59e4ffbe591853a7ca4835634986e9a864616fdcd87c8fe1b661d9548faf0c2d",
     "e2_intent.json": "b34dc61d4129f85afdbf888f628b2e62189c1bcdbcdbd1ba0e91902c210bf3b8",
-    "e3.json": "8ddf64ac78686fff06095ed7021e1744cb5bbd9732a09ece86b7a95391a2ebeb"
+    "e3.json": "8ddf64ac78686fff06095ed7021e1744cb5bbd9732a09ece86b7a95391a2ebeb",
+    "e45.json": "e883d8ed6c16a160aef13f7ed9574b0fa6aa9ca5b2c146e2e9412be9532e5868"
   },
   "verified_checkpoints": {
     "ckpt_radio_lora.pt": {
@@ -155,9 +160,10 @@
     "smoke": false,
     "seed": 0
   },
-  "latest_exported_at": "2026-10-30T01:28:55.173288+00:00",
+  "latest_exported_at": "2026-10-30T12:16:05.009487+00:00",
   "source_verification_note": "At the initial export, all 12 RadioJEV files matched the original run manifest. The completed E3 stage also used those original sources. E4/E5 was subsequently restarted after a checkpoint-loader fix to e45.py; its separate resume provenance records the changed source and versioned controller.",
   "audit_sha256": {
     "e3_label_audit.json": "456408d535b18f91185ba27e45e28801b59236cc4c4ccc6865ccc0dd7ec70390"
-  }
+  },
+  "finalizer_sha256": "dd96743bdc5b1c660c33b0548e4b05dd34b2d4432a70070f3e93c73324c7e5e9"
 }

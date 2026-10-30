@@ -1,10 +1,10 @@
 # Warehouse connectivity results
 
-Snapshot: 2026-10-30T04:30:02.477461+00:00 (UTC).
+Snapshot: 2026-10-30T12:16:05.012571+00:00 (UTC).
 
 Scope: WirelessJEV and RadioJEV warehouse connectivity, E1–E5 and E7. E6 is excluded. Router, E8, foundation-model, custom-PHY and space extensions are deferred.
 
-E1–E3 are complete. E4/E5 is still running; partial log output is not a completed result.
+All nine E1–E5 controller stages completed and passed report/checkpoint validation.
 
 These are synthetic, single-training-seed results. Case-level confidence intervals do not measure independent-training variation or scene clustering. No physical-car trial is claimed.
 
@@ -43,7 +43,31 @@ Admission labels: train {'lower': 106} (n=106), test {'lower': 54} (n=54). Test 
 
 ## E4/E5: site adaptation and forgetting
 
-Pending completion. No complete E4/E5 comparison is available yet.
+| Arm | Mean normalized regret | Worst site | Signed log verifies |
+|---|---|---|---|
+| local | 0.1820 | 0.2023 | True |
+| fedavg_all | 0.1781 | 0.2220 | True |
+| swarm_pers | 0.1820 | 0.2023 | True |
+
+| Site | Initial E3 | Local | FedAvg | Personalised swarm |
+|---|---|---|---|---|
+| S1_normal | 0.1834 | 0.2023 | 0.1774 | 0.2023 |
+| S2_heavy_scanners | 0.1726 | 0.1875 | 0.1599 | 0.1875 |
+| S3_dense_racks | 0.1525 | 0.1597 | 0.1529 | 0.1597 |
+| S4_light_racks | 0.1833 | 0.1783 | 0.2220 | 0.1783 |
+
+Forgotten site: S2_heavy_scanners.
+
+| State | Membership-inference AUC | Retained normalized regret |
+|---|---|---|
+| Before | 0.6167 | 0.1801 |
+| Retrain without site | 0.6231 | 0.1962 |
+| Retained-data distillation | 0.6489 | 0.2068 |
+| Initial model | 0.6231 | — |
+
+Elapsed costs: retraining 8478.7 s; distillation 1687.7 s.
+
+AUC measures one loss-based membership attack, not certified data deletion. The historical `gated_distill` field names are preserved; the implemented student distils retained-site outputs without a separate final release gate. E5's stated scope is the shared component; personalised retained-site states are reused for its retained-service evaluation.
 
 ## E7: corrected environment learning
 
