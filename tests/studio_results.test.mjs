@@ -38,11 +38,14 @@ test('E7 distinguishes corrected and historical evidence', () => {
 test('training snapshot distinguishes validation progress from completed test results', () => {
   const html = render({training_run: {status: 'running', seed: 0, stages: {
     e1_no_llm: {status: 'completed'}, e1_radio_lora: {status: 'running', history: [
-      {epoch: 1, val_regret: 0.23}, {epoch: 2, val_regret: 0.1347}]}, e3: {status: 'pending'}},
-    results: {e1_no_llm: {test: {n: 200, regret: 0.001}}}}});
+      {epoch: 1, val_regret: 0.23}, {epoch: 2, val_regret: 0.1347}]},
+    e2_radio_q: {status: 'completed'}, e3: {status: 'pending'}},
+    results: {e1_no_llm: {test: {n: 200, regret: 0.001}},
+      e2_radio_q: {test: {n: 120, norm_regret: 0.117}}}}});
   assert.match(html, /Full RadioJEV rerun/);
   assert.match(html, /0\.135/);
   assert.match(html, /0\.001 \(n=200\)/);
+  assert.match(html, /0\.117 normalized regret \(n=120\)/);
   assert.match(html, /queued/);
   assert.match(html, /not a live monitor/);
   assert.match(html, /Validation progress is not a held-out test result/);

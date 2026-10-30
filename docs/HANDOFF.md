@@ -60,14 +60,17 @@ study and regression tests. The original E1 LoRA and E7 reports remain unchanged
 - The numeric-only E1 result is also retained in `e1_no_llm.json`. It has no
   new-mission evaluation. Its small known-mission regret is not evidence of
   language generalisation.
-- **Restart required:** E1 `radio_frozen`, stopped without a completed report.
-- **Pending:** E1 `intent`; E2 `radio_q`, `e1_zero`, `intent`; E3 multitask;
-  E4/E5 swarm and unlearning. E6 remains excluded.
+- Those files describe the historical Mac run. The separate cloud run has
+  completed all E1 and E2 arms, including the previously interrupted frozen
+  arm and paired intent baseline. E6 remains excluded.
 
-The separate intent-reader + planner benchmark remains the stronger practical
-result: held-out shortlist regret 0.027 and about 134 ms per re-plan. This is
-not a paired E1 comparison; E1's intent baseline is still pending. Do not
-claim that native radio inputs outperform intent reading plus exact planning.
+The new paired E1 intent baseline has held-out / new-mission regret
+0.0140 ± 0.0066 / 0.0251 ± 0.0074, versus LoRA's 0.1068 ± 0.0240 /
+0.0721 ± 0.0136. E2 radio-Q reaches normalized regret 0.1170 ± 0.0370 /
+0.0779 ± 0.0253 versus intent's 0.1987 ± 0.0461 / 0.3482 ± 0.0674.
+Do not compare E1 regret with E2 normalized regret directly. These are
+single-seed results, with confidence intervals over evaluation cases.
+See `artifacts/radiojev_cloud/README.md` for the full tables and provenance.
 
 The resume runner is portable Bash and resolves the checkout from its own path:
 
@@ -84,8 +87,11 @@ Read logs under `artifacts/radiojev/`; logs and data caches remain ignored.
 **Full rerun now active:** the user authorized all training, including
 regenerating the missing LoRA checkpoint. The isolated run directory is
 `/workspace/training/radiojev/full`; inspect its `status.json`, per-stage logs
-and `manifest.json`. All 330 E1/E2/E4-E5 scenes are prepared, and the new E1
-numeric-only arm completed. LoRA training is active; later stages are queued.
+and `manifest.json`. All 330 E1/E2/E4-E5 scenes are prepared. Seven of nine
+controller stages have completed: all E1 and E2 arms. E3 finished its 600
+supervised and 1,500 RL training steps and is evaluating; E4/E5 is queued.
+The three completed radio checkpoints were loaded and checked for finite
+tensors. Completed reports and hashes are archived in `artifacts/radiojev_cloud/`.
 The model downloaded and loaded successfully after network access changed;
 no Hugging Face token is required for the public model. The worker has no GPU.
 The old Mac estimate of 1–2 days does not estimate cloud CPU runtime.

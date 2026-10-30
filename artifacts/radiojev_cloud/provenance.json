@@ -1,0 +1,147 @@
+{
+  "exported_at": "2026-10-30T01:17:01.144004+00:00",
+  "evidence_class": "digital twin (synthetic)",
+  "device": "CPU",
+  "seed": 0,
+  "smoke": false,
+  "run_complete": false,
+  "pending_stages": [
+    "e3",
+    "e45"
+  ],
+  "completed_stages": {
+    "e1_no_llm": {
+      "status": "completed",
+      "started_at": "2026-10-29T00:38:38.645051+00:00",
+      "returncode": 0,
+      "finished_at": "2026-10-29T00:42:02.394485+00:00"
+    },
+    "e1_radio_lora": {
+      "status": "completed",
+      "started_at": "2026-10-29T02:12:50.615715+00:00",
+      "returncode": 0,
+      "finished_at": "2026-10-29T06:15:50.919256+00:00"
+    },
+    "e1_radio_frozen": {
+      "status": "completed",
+      "started_at": "2026-10-29T06:15:51.354324+00:00",
+      "returncode": 0,
+      "finished_at": "2026-10-29T09:58:49.795926+00:00"
+    },
+    "e1_intent": {
+      "status": "completed",
+      "started_at": "2026-10-29T09:58:50.263283+00:00",
+      "returncode": 0,
+      "finished_at": "2026-10-29T10:01:52.986159+00:00"
+    },
+    "e2_radio_q": {
+      "status": "completed",
+      "started_at": "2026-10-29T10:01:53.486512+00:00",
+      "returncode": 0,
+      "finished_at": "2026-10-29T15:51:39.867478+00:00"
+    },
+    "e2_e1_zero": {
+      "status": "completed",
+      "started_at": "2026-10-29T15:51:40.364352+00:00",
+      "returncode": 0,
+      "finished_at": "2026-10-29T16:21:36.031087+00:00"
+    },
+    "e2_intent": {
+      "status": "completed",
+      "started_at": "2026-10-29T16:21:36.526846+00:00",
+      "returncode": 0,
+      "finished_at": "2026-10-29T16:23:38.575787+00:00"
+    }
+  },
+  "result_sha256": {
+    "e1_no_llm.json": "62903803d408becf9dbc5d9309066ad59d681f25e46a29ec7eb91ad6da62bde0",
+    "e1_radio_lora.json": "851eaf851c0eeb9b04c4dc12271233f8b83b90bd03adda5f83bb856f5a127ffa",
+    "e1_radio_frozen.json": "b474b072540a1533a50f70372647f41e27b3660e022c2e679db50d6668836529",
+    "e1_intent.json": "f5eea4afa6a90abb6a4b3a9cafcca6f960df4544a887a8298c2a700bedda2976",
+    "e2_radio_q.json": "72c294652b4edbdf0217bc800dc64214ecff6207b7ae8874ca8099dae3ff8206",
+    "e2_e1_zero.json": "59e4ffbe591853a7ca4835634986e9a864616fdcd87c8fe1b661d9548faf0c2d",
+    "e2_intent.json": "b34dc61d4129f85afdbf888f628b2e62189c1bcdbcdbd1ba0e91902c210bf3b8"
+  },
+  "verified_checkpoints": {
+    "ckpt_radio_lora.pt": {
+      "sha256": "aee31bbdeb4d2513210950056de540f13d766779e03accee2b48750bfca8acff",
+      "bytes": 8349363,
+      "finite_tensors": 150
+    },
+    "ckpt_radio_frozen.pt": {
+      "sha256": "2bb5defb81d851508b6371115a5ca2659c31be879ce7658818a4fd4712cd3b29",
+      "bytes": 1096469,
+      "finite_tensors": 26
+    },
+    "ckpt_radio_q.pt": {
+      "sha256": "2465fa1956f1eceb2283650125bf07c160ce6e5a7662e701fc89565e00c5b6c8",
+      "bytes": 8349919,
+      "finite_tensors": 150
+    }
+  },
+  "run_manifest": {
+    "git_head": "3c5ce3ff346745b7f0c99ceab8e182ed76866314",
+    "python": "3.12.14",
+    "packages": {
+      "torch": "2.14.1",
+      "numpy": "2.5.4",
+      "scipy": "1.18.1",
+      "transformers": "5.17.0",
+      "huggingface-hub": "1.33.0"
+    },
+    "source_sha256": {
+      "src/wirelessjev/__init__.py": "9de4c26c80cb8486e41247d8c368ecf06d389b142e67fd2af666a788eab32830",
+      "src/wirelessjev/bench.py": "8e38662c5cb1acf59df05c84a3af8941860c4cec60ab222a255966dbe1d72b40",
+      "src/wirelessjev/bench_intent.py": "be7f7e9ccee79e9bbee08f51a14c3ccbe6d4fdc7dc4c1d82b020684f22c881d4",
+      "src/wirelessjev/bench_warehouse.py": "6c7940203255fa97e59d6e2c15a27596ba425821232d1b57892fecbfa128dbcb",
+      "src/wirelessjev/candidates.py": "a30bc2526056d71acec5954936e0eebc894b47fa830ef9b7192d473fbb78dfe2",
+      "src/wirelessjev/carlink.py": "80dbf32d3cdde0154712376023af5e01d80eea23b4d6bd38a669b30f8c7a4216",
+      "src/wirelessjev/closedloop.py": "9ad3093a2c2670a0033f5deb16c898f91e24b195be09a19a025727d3b9aa6e3b",
+      "src/wirelessjev/distill.py": "432d9623f2ffa0d48eb632c1ab99fcdc6b2acf42b9fce7752f96a9e8435511e8",
+      "src/wirelessjev/envlearn.py": "4d0de308eb42eb962b9d685c928fb422532db6de3062c99a0112bd63f60f380e",
+      "src/wirelessjev/execution.py": "e21ec87f3c544db76868536e15145d0d37c0f8e327d7d901ab32971b59e0c0f3",
+      "src/wirelessjev/fastplan.py": "c1817fe342150bb93f67c3664d795ddc5b79bf57d50e53febfd1aaddd41be17b",
+      "src/wirelessjev/hardware.py": "d325d5b32f83251cd82db2bffd7a2ee08dba0c0425843669d306569dba9a0176",
+      "src/wirelessjev/intent.py": "eb244d5c0438378c11c973fe00582c1012bf040270afe74e756a2ce24b13b5b7",
+      "src/wirelessjev/mission_texts.py": "88b1f0a32561aac0672083c8fa4f02eda81acd58b3b34ae86ea452c1d17a7d8c",
+      "src/wirelessjev/missions.py": "5907a2f265d12504718497c288a201aeffcadaace354bfb504dc167b47f99a5a",
+      "src/wirelessjev/onecar.py": "873a3879d4fd5f6e6142eb6c8ea18fa95097d436fadd2a3f509b8dc248804034",
+      "src/wirelessjev/oracle.py": "8c1eee49fbe1da75b77ef7a838e2680f39b56cc5560e6db7c0075752904b896c",
+      "src/wirelessjev/policy.py": "9440f4566adf5124cb98fa2b46f21f9dfb9721595dc044c09bdddc577b09f649",
+      "src/wirelessjev/radiojev/__init__.py": "e238002ac0eef5eea7df5097967d5899100a5b2c0c93188473ce2357d27c8780",
+      "src/wirelessjev/radiojev/candidates.py": "b056be01cec0847c67793573a791f4974fcf8ff9e5c739a337693789f6af32c4",
+      "src/wirelessjev/radiojev/data.py": "c3e0bef67c8fc33a743da0362ad2770c9db5e233253f86a399e35a069d0ff50e",
+      "src/wirelessjev/radiojev/dsa.py": "012891943e2f96c05aeb35ac0d3fcf5e09d7182ad7d9806e49c57d68a2e1a0c9",
+      "src/wirelessjev/radiojev/e1.py": "a45205043d43b0b0c13fb45a08a9001f9e6ec9e564722027f330bdbc1aa3e974",
+      "src/wirelessjev/radiojev/e2.py": "e2bcff4bb31c324b28d2cf488f16db7bfba7cf133f200389df75f444e95ca6e5",
+      "src/wirelessjev/radiojev/e3.py": "57116f555c6ccb0853fd914805dafa43d7b03ba444ade7ada7b44dade00a24ce",
+      "src/wirelessjev/radiojev/e45.py": "6d751ee64ed66267e2c395b49b4d21bbdddd9c579b6057b1622b4b12a87859ed",
+      "src/wirelessjev/radiojev/encoder.py": "48e8513681523f54defd5260bda0f4616f683c824e50bc4ec0d2f55f54a535f3",
+      "src/wirelessjev/radiojev/features.py": "2e22153c1c3348f35f3b550851fd2c452d6745f5be0adbcd8a608c394d5ce0f3",
+      "src/wirelessjev/radiojev/nonlinear.py": "6bd048c0ee8ab58e880d61cb033b566bce64e9602b671c1d7137b89e85002b11",
+      "src/wirelessjev/radiojev/trainable.py": "8793096d23577ebca39d370b161d602950792673554d648f2561fce271511d0a",
+      "src/wirelessjev/report.py": "9e33c0ad3dbe0e324169bd4850c174ce6d9c4897b787d1dcc718ff7bf3af80fe",
+      "src/wirelessjev/studio_data.py": "25564c86947d16312d89c1f887d0148efcb3e97e218753b7c2dd4e7ab6cf7e51",
+      "src/wirelessjev/swarm/__init__.py": "483d61a0c4bfb2c21fc60233d0dd35bc5e11464d7044a4477288fa6b80fd757a",
+      "src/wirelessjev/swarm/consensus.py": "3d371cd12adbdd353c9e7d04b2aa2ea23dba554b4c7cad169a1b8335dc21c3eb",
+      "src/wirelessjev/swarm/reputation.py": "bad7930df1a3695b7dd42cf3f5a15f4330d5ca59432959f68d29eb915d035436",
+      "src/wirelessjev/swarm/share.py": "5527d60ff0f6d732aed84a2ba51130fdf342ae3b6d8db022b0b78c29435f0785",
+      "src/wirelessjev/teachers/__init__.py": "e9f701c8779e2fce3264abd77aa3d95866d9267fbf48ce1bc4cc2066b707d33b",
+      "src/wirelessjev/teachers/admission.py": "de24c43f172d13954eadda0f95d2e329bf586853922d6dbcec5d6f6cfc4960ba",
+      "src/wirelessjev/teachers/assign.py": "94a2bbdce47d74e67b4dd79c6d4b64257891e4c0a3664bf2ae39c466f29ec272",
+      "src/wirelessjev/teachers/joint_planner.py": "cf5566fbf7046b5c5480ce810b3db74149fec65279240002dd811308068b9de4",
+      "src/wirelessjev/traffic.py": "7760f52814520fe6d4e5a455e4a9f57e3ef549ce4edd2cabb5951bfc6109c0c7",
+      "src/wirelessjev/twin/__init__.py": "03b8031c41ba5f0df979d296e4e5bb6edb424db60c9deca33615576fdeb409d3",
+      "src/wirelessjev/twin/mobility.py": "42eb4168219b425e1aa86969c69a4329c544ee3fc2e2596c877ec1550d1c20c6",
+      "src/wirelessjev/twin/observe.py": "02212e7f48a394ce9e46dfb98e980756118d01cf1a59f67b79e0ac76a00422ff",
+      "src/wirelessjev/twin/radio.py": "ab3ddb214de721b259b8bf0da2d204677810ce99290290e03302ab4533cf437a",
+      "src/wirelessjev/twin/warehouse.py": "d5a61736973e0499cf17c928a7fc13bbd4bb83329e6f828ac7243c844f7e3f61",
+      "pyproject.toml": "e6cad4e28fa035478ce7e1d7de546f174da1d545e2a532590ade3e737dd9dda0",
+      "uv.lock": "dd0b59bdafa8182d670e7390071362cea78ea0fe48d7c7c20165bd6527155a42"
+    },
+    "controller_sha256": "4c1c2a5094252bd39b93c2df8ca68265d534897894f40daa2759f1205fb7184d",
+    "original_results_preserved": true,
+    "smoke": false,
+    "seed": 0
+  }
+}

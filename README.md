@@ -81,14 +81,31 @@ CPU cloud worker. Real-car commands require separate hardware access.
 
 ## RadioJEV E1–E5 status
 
-E1 native-radio LoRA completed with held-out regret **0.093 ± 0.022** (200
-cases), new-mission regret **0.074 ± 0.020** (240 cases), and about **3.35–3.99 s**
-per decision. This does not establish an advantage over intent reading plus
-exact planning. The separate intent benchmark above is stronger; a paired E1
-intent baseline is still pending. The numeric-only arm has no new-mission test.
+The cloud full run has completed all E1 and E2 arms (seven of nine controller
+stages). E3 multitask is active; E4/E5 swarm and unlearning are queued. Raw
+completed reports, source provenance and checkpoint hashes are retained in
+[artifacts/radiojev_cloud](artifacts/radiojev_cloud/README.md).
 
-The interrupted `radio_frozen` arm must restart. E1 intent, E2, E3 and E4/E5
-remain pending. Preview the remaining stages without starting model work:
+| E1 arm | Held-out regret ± 95% CI (n=200) | New-mission regret ± 95% CI (n=240) | CPU latency |
+|---|---|---|---|
+| Native-radio LoRA | 0.107 ± 0.024 | 0.072 ± 0.014 | 4.31 s |
+| Native-radio frozen | 0.107 ± 0.023 | 0.084 ± 0.019 | 4.62 s |
+| Intent + planner | 0.014 ± 0.007 | 0.025 ± 0.007 | 468 ms |
+| Numeric encoder | 0.00042 ± 0.00018 | Not evaluated | 2.15 ms |
+
+Intent + planning has lower observed regret than both native-radio arms in
+this paired E1 evaluation. The numeric-only arm has no new-mission evaluation.
+E2 radio-Q reaches normalized regret **0.117 ± 0.037** on held-out missions
+and **0.078 ± 0.025** on new missions (120 cases each), versus intent's
+0.199 ± 0.046 / 0.348 ± 0.067 and E1 zero-shot's 0.291 ± 0.059 /
+0.329 ± 0.069. E2 uses a different metric from E1; its CPU decision latency
+is 6.42 s for radio-Q versus 591 ms for intent. This is one training seed,
+with intervals over evaluation cases rather than independent training runs.
+
+The original Mac LoRA result (0.093 ± 0.022 held-out, 0.074 ± 0.020 new-mission,
+3.35–3.99 s per decision) remains unchanged in `artifacts/radiojev/`.
+That directory's runner can resume the original run once its missing checkpoint
+is restored. Preview it without starting model work:
 
 ```bash
 bash artifacts/radiojev/run_all.sh --dry-run

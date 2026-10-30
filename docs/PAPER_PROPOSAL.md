@@ -67,13 +67,24 @@ The search can't prove that nothing else exists. The field moved fast in October
   - torch CPU vs MPS vs numpy batching.
 
 ## What reviewers will require before submission
-The exploratory **RadioJEV E1 native-input LoRA** result is complete: held-out
-regret 0.0928 ± 0.0222 (200 cases), new-mission regret 0.0744 ± 0.0196 (240 cases),
-and 3.35–3.99 s per decision on the original Mac. These results do not establish
-superiority to the intent-reader + planner. The separate shortlist benchmark's
-0.027 regret and 134 ms re-plan latency are not a paired E1 baseline; the E1
-intent arm and the remaining E1–E5 experiments are pending. Keep native-input
-representation learning an exploratory result, not a principal paper claim.
+The cloud **RadioJEV E1** evaluation now includes the paired intent baseline.
+Native-input LoRA reaches held-out regret 0.1068 ± 0.0240 (200 cases) and
+new-mission regret 0.0721 ± 0.0136 (240 cases), versus intent + planning's
+0.0140 ± 0.0066 and 0.0251 ± 0.0074. CPU latency is 4.31 s for LoRA versus
+468 ms for intent. Frozen native inputs reach 0.1069 ± 0.0228 / 0.0837 ± 0.0194.
+The observed E1 result favours intent + planning. The original Mac LoRA result
+(0.0928 ± 0.0222 / 0.0744 ± 0.0196) remains separately preserved; the earlier
+shortlist benchmark is also a separate experiment.
+
+In **E2**, radio-Q reaches normalized regret 0.1170 ± 0.0370 on held-out
+missions and 0.0779 ± 0.0253 on new missions (120 cases each). Intent reaches
+0.1987 ± 0.0461 / 0.3482 ± 0.0674; E1 zero-shot reaches 0.2905 ± 0.0594 /
+0.3288 ± 0.0693. Radio-Q takes 6.42 s per held-out decision versus intent's
+591 ms. E1 and E2 use different regret definitions. These are one-seed runs;
+95% intervals describe evaluation cases, not variation across training seeds.
+Raw results and provenance are in `artifacts/radiojev_cloud/`. E3 evaluation
+is active and E4/E5 remains queued. Keep native-input representation learning
+an exploratory result rather than a principal paper claim.
 
 **E7 environment learning** also needs careful qualification. The historical
 15-environment report reduced mean plan gap from 1.239 (legacy) to 0.174

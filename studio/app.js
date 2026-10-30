@@ -220,9 +220,11 @@ function researchResults() {
         Object.entries(run.stages).map(([name, stage]) => {
           const history = stage.history || [], result = run.results[name];
           const best = history.length ? Math.min(...history.map((entry) => entry.val_regret)) : undefined;
+          const metric = result?.test?.regret ?? result?.test?.norm_regret;
+          const normalized = result?.test?.norm_regret != null ? " normalized regret" : "";
           return [esc(name), esc(stage.status === "pending" ? "queued" : stage.status),
             history.length ? history[history.length - 1].epoch : "—", fmt(best),
-            result?.test?.n ? `${fmt(result.test.regret)} (n=${result.test.n})` : result ? "available" : "pending"];
+            result?.test?.n && metric != null ? `${fmt(metric)}${normalized} (n=${result.test.n})` : result ? "available" : "pending"];
         }))}
       <p class="note">Validation progress is not a held-out test result. Only completed stages contribute new test metrics; an interrupted process is marked interrupted when exported on the training machine.</p></div>`;
   }
