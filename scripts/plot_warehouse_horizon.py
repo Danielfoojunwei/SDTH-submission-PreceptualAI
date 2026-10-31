@@ -38,7 +38,11 @@ def main():
     axes[1].grid(axis='x', alpha=.2)
     fig.suptitle('Simulated 100-robot warehouse · three model seeds × three environments', fontsize=11)
     fig.savefig(args.archive/'forecast_and_control.png', dpi=180)
-    fig.savefig(args.archive/'forecast_and_control.svg')
+    vector = args.archive/'forecast_and_control.svg'
+    fig.savefig(vector)
+    # Matplotlib emits trailing spaces in SVG path data; keep tracked exports
+    # clean without changing the plotted values or geometry.
+    vector.write_text('\n'.join(line.rstrip() for line in vector.read_text().splitlines())+'\n')
     plt.close(fig)
     print('Exported forecast_and_control.png and .svg from archived observations')
 
