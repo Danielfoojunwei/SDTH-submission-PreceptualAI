@@ -6,6 +6,60 @@ The cloud development environment has Python 3.12, locked dependencies and a
 CPU-only test/simulation workflow. See Git history and the associated review
 branch for commit/push status; external publications are tracked separately.
 
+## Compositional mission and radio audit
+
+The user's pasted six-direction request is mapped to executed evidence and
+remaining acceptance boundaries in `WAREHOUSE_SCOPE_CHECKLIST.md`. The v3
+protocol/results are in `WAREHOUSE_V3.md` and `WAREHOUSE_V3_RESULTS.md`.
+All controller data remains simulated; actual pretrained inference and native
+packet programs executed. The default proposal interface uses the complete
+controlled grammar and numerical planning. Neural verification/scoring is
+explicit and never sends a car command.
+
+Retained completed runs are under `/workspace/training/`:
+
+- `warehouse-v3`: twelve compact models, three seeds per architecture, four
+  transfer domains; all model/test selection receipts retained.
+- `warehouse-v3-packets-matched`: 48 native runs, 40 unique input/seed/RTS
+  conditions. Fixed channels, matched NIST/VHT80/HT20/two-stream powers/profile,
+  actual counters/deadlines; eight-second route prefix, assumed switch muting.
+- `warehouse-v3-hidden-matched`: six constructed two-client native runs.
+- `warehouse-v3-sensing-corrected`: sensing with real simulated previous-service
+  counters and an explicit distinction between no scan and unheard APs.
+- `warehouse-v3-studies`: completed shared/federation/removal stage. Its idle
+  obsolete packet dependency was superseded; this root is not labelled a full
+  three-stage completion. The sensing pilot was superseded separately.
+- `warehouse-v3-packet-learning-unconditional` and `warehouse-v3-packet-calibration`:
+  all time bins included; actual late-arrival-event calibration, not loss risk.
+- `warehouse-v3-generative` and `warehouse-v3-schema-audit`: actual Qwen outputs,
+  strict and default-aware schema audits; no label-guided repair.
+- `warehouse-v3-clauses`: actual d3 clause verification on twelve fresh canonical
+  statements, designed after the whole-family gate answered only four of ten.
+- `warehouse-v3-ranker` and `warehouse-v3-ranker-record-audit`: full-priority
+  group-aware text/no-text heads on fresh environments. The first raw case
+  field `gold_choice` was an indicator; the fixed-model audit recovers actual
+  indices and verifies all quality fields unchanged. Both versions are retained.
+- `warehouse-v3-frontier-matched` and `warehouse-v3-cost-audit`: actual semantic,
+  int8 and routing comparisons, per-domain complete local cost and crossed
+  model-seed/environment intervals on frozen models.
+
+Do not restart completed training. Superseded 20-MHz/one-stream packet runs,
+conditional-on-arrival packet learning and reset-counter sensing are diagnostic
+pilots, not completed matched primary evidence. Source/receipt lineage explains
+the corrections. The native two-to-four-worker operational retry preserves
+completed cases; physical inputs, seeds and binary remain unchanged.
+
+Forecasting and native-event prediction improve in some comparisons; masked
+and JEPA-style pretraining do not consistently beat scratch. Cached text does
+not establish a general advantage. Pooled/FedAvg release gates reject all
+candidates, and approximate removal differs from clean retraining. Retain the
+negative outcomes. Historical large-model E1–E5 still have one training seed.
+
+No physical car or network credential changed. Switch duration remains an
+assumption; stage capture and field qualification need real hardware. Both JEVs
+remain Wi-Fi-specific. External Claude publication and environment publication
+remain separate from verified local serving and saved configuration drafts.
+
 ## Route-aware horizon continuation
 
 The subsequent "continue building" request adds the protocol in

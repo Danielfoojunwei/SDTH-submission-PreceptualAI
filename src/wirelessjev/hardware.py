@@ -43,7 +43,7 @@ class CarHardware:
     scan_period_s: float = 5.0
     ap_max_age_s: float = 15.0
     status_period_s: float = 0.5
-    connect_latency_s: float = 4.0             # measured, request -> verified
+    connect_latency_s: float = 4.0             # reported anchor; unmeasured in these cloud studies
     weak_signal_dbm: float = -80.0             # legacy reconnect threshold
     policy_interval_s: float = 5.0             # legacy AlgorithmInterval
     gateway_rtt_ms: float = 5.5

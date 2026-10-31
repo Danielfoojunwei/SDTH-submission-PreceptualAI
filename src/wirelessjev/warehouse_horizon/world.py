@@ -7,7 +7,7 @@ previous realised interval. Future labels are built at this boundary only.
 from __future__ import annotations
 
 from copy import deepcopy
-from dataclasses import dataclass, field
+from dataclasses import dataclass, field, replace
 
 import numpy as np
 
@@ -54,8 +54,14 @@ class Frame:
 
 
 class World:
-    def __init__(self, seed, *, n=100, steps=126, domain='train'):
-        scene, spec = make_environment(seed, n, domain)
+    def __init__(self, seed, *, n=100, steps=126, domain='train', environment_seed=None, bulk_scale=1.):
+        scene, spec = make_environment(seed, n, domain, environment_seed=environment_seed)
+        if not np.isfinite(bulk_scale) or bulk_scale <= 0:
+            raise ValueError('A positive finite traffic scale is required')
+        if bulk_scale != 1.:
+            scene = replace(scene, cars=[replace(car, flows=tuple(
+                flow if flow.critical else replace(flow, demand_mbps=flow.demand_mbps*bulk_scale)
+                for flow in car.flows)) for car in scene.cars], _radio=None, _radio_key=None)
         blockage_rng = np.random.default_rng(seed+4_000_000)
         self.seed, self.frames = seed, []
         for _ in range(steps):

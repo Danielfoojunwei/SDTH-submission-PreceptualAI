@@ -1,0 +1,25 @@
+# Requested warehouse research: implementation and acceptance
+
+This maps the user's pasted six-direction plan to executed work. "Executed"
+does not mean a learned method won or a physical release is qualified. Current
+results are in `WAREHOUSE_V3_RESULTS.md`; historical evidence stays separate.
+
+| Requested direction | Concrete implementation and evidence | Acceptance boundary |
+|---|---|---|
+| Rich typed missions | Complete budgets, robot/role/zone groups, thresholds, per-offset floors, observed conditions and lexicographic priorities; default compiler and actual optional d3 clause verification; proposal CLI | Canonical grammar only. Whole-family d3 failed on composites; the new clause audit uses fresh statements. Infeasibility is within searched candidates. |
+| Strong common-candidate comparison and router | Numerical evaluator, learned consequences, cached-semantic heads, full-priority group-aware rankers, text ablation, actual int8 and validation-only latency-weighted routing | Offline comparison does not qualify learned control. Routing must improve measured quality/cost rather than merely abstain. |
+| Temporal sensed-input RadioJEV | Twelve independently trained compact models; capped RSSI histories, busy time, public routes, measured-simulation previous service and numerical uncertainty; masked/JEPA pretraining ablations | Predictions are trained on simulations. Pretraining does not consistently beat scratch. No LWM/video checkpoint transfer is claimed. |
+| Retry/queue/service distributions and event risk | Actual ns-3 retry, queue, busy and endpoint counters; six unconditional next-second event/throughput models; validation-only temperature scaling and crossed scene/seed intervals | Event is a late received critical packet, not loss or switch success. Empty-arrival bins are included and do not imply healthy service. |
+| E7 decision-aware sensing | Six corrected survey environments; passive/uniform/decision-aware queries, equal extra-scan budgets, explicit scan availability, cost sensitivities and downstream service/violation metrics | Scan costs are assumed. The acquisition is a heuristic and does not consistently dominate uniform sampling; inaudible paths remain difficult. |
+| Individual and worst-served robots | Per-robot native service, critical misses, silence and first packet; worst-decile metrics; original complete horizon replays; hard-floor refusals | A fleet average does not prove all 100 robots improve. No physical safety guarantee or arbitrary infeasibility certificate is provided. |
+| Realistic Wi-Fi | Existing executed Sionna/NIST studies; new 48 native executions/40 unique conditions with moving routes, matched VHT80/HT20/two streams/powers, WMM, bursts, RTS/CTS; six constructed hidden-transmitter runs | Propagation lacks rack/material calibration. Eight-second prefix and assumed application muting do not emulate real authentication/DHCP. |
+| Accuracy–compute–transfer frontier | Three checkpoint chains per architecture; layout/traffic/200-robot shifts; cached versus first-use language costs; complete local pipeline cost by domain; actual Qwen generation and quantization | Shared scenes are clustered, not counted as independent fleets. Fixed building dimensions remain. General foundation-model or matched-capability orders-of-magnitude claims are unproved. |
+| E3 redesign | Completed v2 all-label admission data, three-seed shared/separate task models, real Chronos and strong traffic rules | Coverage is repaired; model superiority is not assumed. Historical constant-label results are retained as limited evidence. |
+| E4 redesign | Initial/local/actual FedAvg/pooled specialist comparisons with strict per-site and aggregate release checks across three chains | All new gates reject; no rejected update is deployed or presented as a successful release. |
+| E5 meaningful removal | A shared research model actually incorporates the forgotten site; approximate removal versus retained-site retraining and three attacks | Approximate removal does not equal clean retraining. The shared target was an unconditional research candidate, not an accepted production model; no certified deletion claim. |
+| Measured handover and hardware grounding | Clock-aware stage-event validator and endpoint/byte checks; existing one-car capability/preflight workflow | **Pending real access:** actual on-car stage capture, authentication/IP/first packet, switch distribution, scan cost, RF calibration and one-/small-/100-car trials. No missing event is imputed. |
+| Studio, documentation, reproducibility | Rebuilt local bundle/standalone, verified compressed raw reports, source capsules, finite checkpoints, fixed report/schema issues and preserved superseded pilots | External Claude publication remains pending. Environment draft saving does not publish a snapshot. |
+
+The implementation is Wi-Fi-specific. Mission/service abstractions can support
+future adapters, but 5G, LTE, Bluetooth, satellite work and E6 are not added by
+this campaign. See `PROTOCOL_BOUNDARY.md`.

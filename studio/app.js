@@ -212,6 +212,28 @@ function regretRows(m, label, hl) {
 }
 function researchResults() {
   let html = "";
+  const audit = B.warehouse_v3;
+  if (audit) {
+    html += `<div class="card" style="margin-top:16px"><h3>Compositional missions and radio representations</h3>
+      <p class="sub">Wi-Fi warehouse simulation · three independently trained seeds per compact architecture · held-out layout, traffic and fleet-size regimes.</p>
+      ${table(["Domain", "Radio model", "Service RMSE ↓", "Proposal coverage", "False feasibility, all cases ↓"],
+        audit.core_models.map((r) => [esc(r.domain), esc(r.model), fmt(r.service_rmse), pct(r.proposal_coverage), pct(r.false_feasible_fraction)]))}
+      <p class="note">Whole-mission d3 family gate: ${audit.d3_answered}/${audit.d3_total} answered. A separately designed clause reader answered ${audit.clause_reader_answered}/${audit.clause_reader_total} fresh canonical statements. These are different small text sets. The complete controlled grammar is the default; answer probabilities are not physical-risk probabilities.</p>
+      <p class="note">Forecast gains do not establish better control. Predicted floors can defer; candidate-set infeasibility is not global infeasibility. The full-priority text/no-text graph scorers use separate fresh environments; offline ranking is not a release qualification.</p></div>
+      <div class="card" style="margin-top:16px"><h3>Native moving Wi-Fi audit</h3>
+      <p class="sub">${audit.native_executions} actual native executions · ${audit.unique_native_conditions} distinct input/seed/RTS conditions · three held-out test scenes. The learned policy uses one predeclared model seed.</p>
+      ${table(["Policy", "RTS/CTS", "Service ↑", "Worst decile ↑", "Critical deadline misses ↓"],
+        audit.native_packet_audit.map((r) => [esc(r.policy), r.rts_cts ? "on" : "off", fmt(r.mean_service),
+          fmt(r.worst_decile_service), pct(r.critical_deadline_miss_fraction_generated)]))}
+      <p class="note">Matched NIST/VHT80/HT20/two-stream profile; eight-second route prefix with assumed switch muting. Rack/material calibration, real authentication and hardware qualification remain absent. Deadlines count actual generated packets; ungenerated muted demand is charged through service. Repeated identical inputs are not independent fleets.</p>
+      <p class="note">Pooled shared gates: ${audit.pooled_gates_accepted}/3 accepted. FedAvg gates: ${audit.federation_gates_accepted}/3 accepted. Approximate removal equals clean retraining in ${audit.approximate_removal_equals_retrain}/3 seeds; attack diagnostics do not certify deletion.</p>
+      ${table(["Observed packet-event predictor", "Late-event Brier ↓", "ECE ↓", "Throughput MAE (Mbps) ↓"], [
+        ["persistence", fmt(audit.packet_persistence.late_arrival_risk.brier), fmt(audit.packet_persistence.late_arrival_risk.ece), fmt(audit.packet_persistence.throughput_mae_mbps)],
+        ...audit.packet_predictors.map((r) => [esc(r.model), fmt(r.calibrated_late_event_brier), fmt(r.calibrated_late_event_ece), fmt(r.throughput_mae_mbps)])])}
+      <p class="note">Packet probabilities concern a late received critical packet in the next second. No-arrival bins are included; this is not packet-loss probability. Calibration uses validation data only, with three held-out native scenes.</p>
+      ${audit.packet_event_discrimination_testable ? "" : '<p class="note">The packet-event holdout lacks both labels, so it cannot establish event discrimination.</p>'}
+      <p class="note">The implementation remains Wi-Fi-specific. No physical-car, protocol-agnostic, foundation-model or SOTA claim is established.</p></div>`;
+  }
   const horizon = B.warehouse_horizon;
   if (horizon) {
     html += `<div class="card" style="margin-top:16px"><h3>Thirty-second route-aware planning</h3>

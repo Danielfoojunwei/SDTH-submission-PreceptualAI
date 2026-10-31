@@ -20,3 +20,17 @@ error counts, bounded batches and a provenance-bearing JSON report. Its
 
 LWM and V-JEPA are research references. No LWM or V-JEPA checkpoint is
 represented as downloaded, adapted or evaluated by these modules.
+
+The separate v3 module `warehouse_v3/jepa.py` adapts the normalised power loss
+and EMA update from MIT-licensed V-JEPA 2 training code. Its attribution,
+upstream revision and original source hashes are in `vjepa2/SOURCE.json`, with
+the complete licence in `vjepa2/LICENSE`. New small wireless encoders execute
+that recipe; no pretrained video checkpoint is used. LWM's reviewed model
+repository declares no reuse licence, so its code and weights are not copied.
+
+`ns3/warehouse-contracts.cc` extends the existing GPL adaptation with committed
+routes, exact endpoint packet delays/deadlines, observed retry/queue/busy
+counters, bursty background traffic and paired RTS/CTS. Its matched profile
+uses NIST errors, VHT80/HT20, two streams and public AP/client powers. Primary
+channels stay fixed. It still lacks rack/material calibration and emulates
+switch cost by declared application muting rather than authentication/DHCP.

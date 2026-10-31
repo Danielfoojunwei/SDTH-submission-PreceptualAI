@@ -1,0 +1,24 @@
+{
+  "source_sha256": {
+    "scripts/benchmark_warehouse_clauses.py": "1191de220d3bbba0eae0ef5e096b9ca136a5e17f53c3d6547ec1bbed230e466f",
+    "src/wirelessjev/warehouse_v3/clauses.py": "463f793b25f35ae2192dfeba67eb841d80ca2e80b0afc10cba270566b7af156e",
+    "src/wirelessjev/warehouse_v3/missions.py": "746a331ec22b66870bd3693eb8c8f00447ad038f9b08176d1836dfafdf871e8a",
+    "src/wirelessjev/policy.py": "9440f4566adf5124cb98fa2b46f21f9dfb9721595dc044c09bdddc577b09f649"
+  },
+  "designed_after_whole_family_reader_failure": true,
+  "evaluation_texts_sealed_before_execution": [
+    "Switch at most 3 robots; require service >= 40% for robots [amr-001, amr-017] at every offset; minimise critical violations; then maximise throughput.",
+    "Switch at most 7 robots; require service >= 25% for teleoperated robots at every offset; minimise switches; then maximise throughput.",
+    "Switch at most 9 robots; require service >= 65% for video robots at every offset; maximise worst-served 15% service; then minimise switches.",
+    "Switch at most 6 robots; if any teleoperated robot has observed service < 35%, prioritise that group; minimise switches; then maximise throughput.",
+    "Switch at most 11 robots; if any video robot has observed service < 55%, prioritise that group; minimise critical violations; then maximise throughput.",
+    "Switch at most 4 robots; maximise service for robots with x >= 35 m; then minimise switches.",
+    "Switch at most 2 robots; maximise service for robots with y < 25 m; then maximise throughput.",
+    "Switch at most 0 robots; maximise worst-served 5% service; then minimise critical violations.",
+    "Switch at most 10 robots; require service >= 15% for robots with y >= 30 m at every offset; maximise throughput.",
+    "Switch at most 1 robots; require service >= 5% for all robots at every offset; minimise switches; then maximise throughput.",
+    "Switch at most 13 robots; minimise critical violations; then maximise throughput.",
+    "Switch at most 14 robots; maximise service for robots [amr-002, amr-099]; then minimise switches."
+  ],
+  "created_at": "2026-10-31T03:35:52.135602+00:00"
+}

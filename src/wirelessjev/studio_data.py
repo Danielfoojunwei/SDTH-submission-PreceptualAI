@@ -151,6 +151,7 @@ def build(run_dir: Path | None = None) -> dict:
         "warehouse_v2": _load("artifacts/warehouse_v2/snapshot.json"),
         "warehouse_horizon": _load("artifacts/warehouse_horizon/snapshot.json"),
         "warehouse_horizon_selector": _load("artifacts/warehouse_horizon/selector/snapshot.json"),
+        "warehouse_v3": _load("artifacts/warehouse_v3/snapshot.json"),
         "closedloop_10car": _slim_closedloop(_load("artifacts/closedloop.json")),
         "closedloop_warehouse": _slim_closedloop(_load("artifacts/closedloop_warehouse.json")),
         "papers": _paper_map(),

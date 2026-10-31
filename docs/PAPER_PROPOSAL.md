@@ -6,6 +6,24 @@ are in `docs/WAREHOUSE_RESULTS.md`. The subsequently authorised warehouse v2
 campaign is described below; general foundation-model, custom on-air PHY,
 robotics and space extensions remain deferred.
 
+## Compositional-mission and radio audit
+
+The separately versioned v3 protocol and results are in `WAREHOUSE_V3.md` and
+`WAREHOUSE_V3_RESULTS.md`. It adds complete composite contracts, group-aware
+full-priority scoring, actual masked/JEPA-style training, scene-disjoint packet
+telemetry prediction and a matched-profile native Wi-Fi audit. It does not
+turn previous exploratory results into a foundation-model claim.
+
+Keep four distinctions explicit: a compiler's canonical-language correctness
+versus neural interpretation coverage; offline forecast error versus control
+quality; critical-rate proxies versus measured simulator endpoint deadlines;
+and an assumed application mute versus actual Wi-Fi authentication. The
+whole-family reader failures, superseded PHY pilot, negative pretraining
+comparisons and rejected shared releases remain evidence. Approximate
+unlearning is compared with actual retained-data retraining, not presented as
+certified erasure. Physical-car qualification remains a prerequisite for fleet
+deployment claims, and the implementation remains Wi-Fi-specific.
+
 ## Thirty-second horizon evidence
 
 The separate protocol in `WAREHOUSE_HORIZON.md` uses six route-conditioned
@@ -56,7 +74,7 @@ Warehouse robot fleets change BSSID roughly once every few seconds across the fl
 We study how to put a frozen, low-latency typed decision model (a "System One" model: d3-lite, 0.85B parameters) in that loop. Recent work finds such models unreliable as direct numerical optimisers and proposes, without evaluating it, a hierarchy in which the model steers an optimiser. We build and evaluate that hierarchy for client-side BSSID association of 100 AMRs on fixed customer infrastructure:
 
 - The model answers nine typed score questions, framed relative to normal operations, that map the mission text to the weight vector of a multi-term objective.
-- An exact batched planner then optimises this objective over the robots' planned positions, with the measured reconnect cost charged once.
+- An exact batched planner then optimises this objective over the robots' planned positions, with the assumed reconnect cost charged once; physical timing calibration remains pending.
 - Only the model's answer-code readout is distilled, from exact oracles; the backbone stays frozen and no language-model teacher is used.
 
 **Results.** On held-out scenes and reworded missions:
@@ -77,7 +95,7 @@ In a 10-minute closed-loop shift the system delivers 27% more mission utility th
 | **A frozen typed decision model emits a continuous weight vector, via relative-scale score questions, consumed by an exact optimiser; evaluated by plan regret, held-out paraphrases and never-seen missions** | **Appears new** | 2610.04345 proposes the hierarchy (Sec. III-C) without evaluating it; 2609.23136 uses discrete policy fields and a heuristic xApp |
 | **Controlled within-model contrast:** same frozen model, same scenes, choosing plans directly vs reading the objective | **Appears new** | none found |
 | **Readout-only distillation of a frozen decision model from exact-oracle / known-weight labels (no LLM teacher)** | **Appears new** | decision heads with LoRA (2610.17205); generic frozen probes with LLM labels |
-| **Fleet-level, client-side-only association scored over known planned trajectories, with a once-charged measured reconnect cost** | **Appears new** | single-AGV LSTM AP selection (Ohori et al., Sensors 2023); digital-twin roaming needing AP cooperation (WiTwin 2404.18313; WifiRoam 2026); forecast-based cellular association (2301.09294); SDN Wi-Fi Odin/OpenSDWN; Bejerano et al. (MobiCom 2004) |
+| **Fleet-level, client-side-only association scored over known planned trajectories, with a once-charged assumed reconnect cost** | **Appears new** | single-AGV LSTM AP selection (Ohori et al., Sensors 2023); digital-twin roaming needing AP cooperation (WiTwin 2404.18313; WifiRoam 2026); forecast-based cellular association (2301.09294); SDN Wi-Fi Odin/OpenSDWN; Bejerano et al. (MobiCom 2004) |
 | Batched exact neighbourhood evaluation (~110 ms per 100-robot re-plan) | **New as an application**, not as an algorithm | GPU local search (Luong et al. 2009); Sionna / Sionna SYS |
 | Swarm release gated against the live model; reputation quarantine | **Not new** as a technique | champion-challenger MLOps; incumbent fallback (2609.13714); reputation FL (IEEE IoT-J 9428537); Li/Shen/Lam swarm DSA |
 | Public AMR association benchmark (planned trajectories + oracles + missions) | **Appears new** | none found; nearest are CRAWDAD robot RSSI sets and the WifiRoam simulator |
@@ -85,7 +103,7 @@ In a 10-minute closed-loop shift the system delivers 27% more mission utility th
 The search can't prove that nothing else exists. The field moved fast in October 2026, and listings after about 20 October may be under-indexed. The claims above are scoped so each one stands even if a near neighbour turns up.
 
 ## Contributions (as the paper would state them)
-1. **Problem.** Route-aware, client-side Wi-Fi association for robot fleets on infrastructure the operator does not control, formalised with known planned positions, a measured reconnect cost and contention with priority classes.
+1. **Problem.** Route-aware, client-side Wi-Fi association for robot fleets on infrastructure the operator does not control, formalised with known planned positions, an assumed reconnect cost and contention with priority classes. Actual switch-stage calibration remains required.
 2. **Method.** A frozen System One model acts as the *objective reader*: relative-scale typed score questions turn the mission into weights, cached per mission. An exact batched planner then optimises; its batch evaluator is verified against the reference evaluator to 1e-15.
 3. **Adaptation.** Readout-only distillation from exact oracles, with the backbone frozen. Accuracy on reworded missions rises from 36% to 71% and on never-seen missions from 29% to 69%, from a 5×1024-parameter change.
 4. **Evidence.**

@@ -1,0 +1,74 @@
+{
+  "seed": 1,
+  "arm": "graph_masked",
+  "pretraining": [
+    {
+      "epoch": 1,
+      "loss": 0.18436494738691384,
+      "updates": 360
+    },
+    {
+      "epoch": 2,
+      "loss": 0.1401633522990677,
+      "updates": 360
+    },
+    {
+      "epoch": 3,
+      "loss": 0.1306359300803807,
+      "updates": 360
+    },
+    {
+      "epoch": 4,
+      "loss": 0.12536376621574163,
+      "updates": 360
+    }
+  ],
+  "supervised": [
+    {
+      "epoch": 1,
+      "train_loss": 1.0831991796692213,
+      "validation_loss": 0.7643034073213736
+    },
+    {
+      "epoch": 2,
+      "train_loss": 0.8116742318703069,
+      "validation_loss": 0.6666877960165342
+    },
+    {
+      "epoch": 3,
+      "train_loss": 0.7444141608145501,
+      "validation_loss": 0.6362975507974624
+    },
+    {
+      "epoch": 4,
+      "train_loss": 0.7190569072961808,
+      "validation_loss": 0.6210548999408881
+    },
+    {
+      "epoch": 5,
+      "train_loss": 0.7018580424288908,
+      "validation_loss": 0.6023730047047138
+    },
+    {
+      "epoch": 6,
+      "train_loss": 0.6901507911582788,
+      "validation_loss": 0.5946939048667749
+    },
+    {
+      "epoch": 7,
+      "train_loss": 0.6790703320668803,
+      "validation_loss": 0.5866325303912163
+    },
+    {
+      "epoch": 8,
+      "train_loss": 0.6727485078076522,
+      "validation_loss": 0.5809679011503855
+    }
+  ],
+  "parameters": 45010,
+  "checkpoint_sha256": "2beee64a5c080002753dd09f3bece2ee4f2021660a510f53532a868ec239fe12",
+  "elapsed_s": 35.24247163200198,
+  "pretraining_uses_teacher_labels": false,
+  "pretraining_observations_from": "training_scenes_only",
+  "source": "actual_simulation_training"
+}

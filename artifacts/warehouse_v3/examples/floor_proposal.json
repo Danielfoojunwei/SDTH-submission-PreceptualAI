@@ -1,0 +1,131 @@
+{
+  "schema": "wirelessjev.compositional_plan.v1",
+  "proposal_only": true,
+  "actuation_performed": false,
+  "contract": {
+    "max_moves": 12,
+    "floors": [
+      {
+        "group": {
+          "kind": "teleoperated",
+          "ids": [],
+          "axis": null,
+          "direction": null,
+          "boundary_m": null
+        },
+        "fraction": 0.3
+      }
+    ],
+    "priorities": [
+      {
+        "kind": "min_switches",
+        "group": {
+          "kind": "all",
+          "ids": [],
+          "axis": null,
+          "direction": null,
+          "boundary_m": null
+        },
+        "fraction": 0.1
+      },
+      {
+        "kind": "throughput",
+        "group": {
+          "kind": "all",
+          "ids": [],
+          "axis": null,
+          "direction": null,
+          "boundary_m": null
+        },
+        "fraction": 0.1
+      }
+    ],
+    "conditional_floor": null
+  },
+  "reader": {
+    "reader": "complete_controlled_language",
+    "model_executed": false,
+    "clauses": [
+      {
+        "text": "switch at most 12 robots",
+        "choice": "switch_budget",
+        "expected_compiled_type": "switch_budget",
+        "answer_probabilities": null,
+        "cached": false,
+        "model_executed": false
+      },
+      {
+        "text": "require service >= 30% for teleoperated robots at every offset",
+        "choice": "service_floor",
+        "expected_compiled_type": "service_floor",
+        "answer_probabilities": null,
+        "cached": false,
+        "model_executed": false
+      },
+      {
+        "text": "minimise switches",
+        "choice": "min_switches",
+        "expected_compiled_type": "min_switches",
+        "answer_probabilities": null,
+        "cached": false,
+        "model_executed": false
+      },
+      {
+        "text": "then maximise throughput",
+        "choice": "throughput",
+        "expected_compiled_type": "throughput",
+        "answer_probabilities": null,
+        "cached": false,
+        "model_executed": false
+      }
+    ],
+    "probabilities_are_physical_risk": false,
+    "unrestricted_language_supported": false,
+    "latency_ms": 0.42646299698390067,
+    "model": {
+      "repo": "vllm-sr/d3-lite",
+      "revision": "03560c26f5199c3c04129a2ccb38960c913635e0"
+    }
+  },
+  "decision": {
+    "choice": null,
+    "status": "infeasible_within_candidates",
+    "globally_infeasible": false,
+    "feasible_candidates": 0,
+    "conditional_priority_active": false,
+    "maximum_service_shortfall_by_candidate": [
+      0.3,
+      0.3,
+      0.3,
+      0.3,
+      0.3,
+      0.3,
+      0.3,
+      0.3,
+      0.3,
+      0.3,
+      0.3,
+      0.3,
+      0.3,
+      0.3,
+      0.3,
+      0.3,
+      0.3,
+      0.3,
+      0.3,
+      0.3
+    ],
+    "group_membership_time": "decision_start",
+    "evaluated_candidates": 54,
+    "feasibility_basis": "numerical_forecast_with_validation_marginal_margin",
+    "physical_safety_guarantee": false
+  },
+  "assignments": null,
+  "forecast": null,
+  "selection_sha256": "23cbb86221fee156cad659eec9f9d8a02ad67bdebd6afc028f1c834ce300b764",
+  "observation_sha256": "38e09cabb0ad9cd8ad1866b2bc9be03984b665ee5859413902076e8acc87b9d0",
+  "input_origin_authenticated": false,
+  "input_source_self_reported": "simulation",
+  "local_total_ms": 194.51963400206296,
+  "hardware_qualified": false
+}

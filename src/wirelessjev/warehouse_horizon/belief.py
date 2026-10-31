@@ -72,16 +72,19 @@ def scan_belief(obs, aps):
     precision = np.full(nominal.shape, 1/64.)
     weighted = nominal/64.
     H = len(obs['history'])
+    available = np.asarray(obs.get('scan_available', np.ones((H, len(now)), dtype=bool)))
+    if available.shape != (H, len(now)) or not np.isin(available, [0, 1]).all():
+        raise ValueError('Scan availability must identify actually collected robot scans')
     for step, scan in enumerate(obs['history']):
         age = (H-1-step)*5.
-        valid = scan[..., 1] > 0
+        valid = (scan[..., 1] > 0) & available[step, :, None].astype(bool)
         translated = scan[..., 0]*30.-80.+nominal-nominal_dl(aps, obs['past_xy'][step])
         weight = valid/(9.+.04*age**2)
         precision += weight
         weighted += translated*weight
     variance = 1./precision
     mean = weighted*variance
-    omitted = obs['history'][-1, :, :, 1] == 0
+    omitted = (obs['history'][-1, :, :, 1] == 0) & available[-1, :, None].astype(bool)
     bound = obs['history'][-1, :, :, 2]*30.-80.
     noise = np.sqrt(variance+9.)
     z = (bound-mean)/noise

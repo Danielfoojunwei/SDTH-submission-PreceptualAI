@@ -1,0 +1,17 @@
+{
+  "stages": {
+    "sensing": {
+      "state": "completed",
+      "sha256": "7cb4828fb941017855aa0719a0e48bc006241178cb327e6193af52edf0852108"
+    },
+    "adaptation": {
+      "state": "completed",
+      "sha256": "a465de537bca220884e24361256e09d35fa07081c08881e83f2b4173af697ccc"
+    }
+  },
+  "state": "superseded_after_two_completed_studies",
+  "pid": 58634,
+  "stage": "adaptation",
+  "reason": "Idle packet-learning dependency moved to the corrected PHY audit; sensing/adaptation results retained unchanged",
+  "packet_learning_replacement": "/workspace/training/warehouse-v3-packet-learning"
+}

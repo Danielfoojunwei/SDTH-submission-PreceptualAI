@@ -26,7 +26,22 @@ limit; unconstrained roaming performs better on service in the original
 horizon holdout. Read the [full results](docs/WAREHOUSE_HORIZON_RESULTS.md)
 and [prospective selector audit](docs/WAREHOUSE_HORIZON_SELECTOR.md).
 
-Mission-conditioned Wi-Fi coordination for a 10-car Raspbot fleet. A frozen open System One model chooses the fleet plan. Exact numerical oracles teach and score it. A swarm protocol shares what the cars learn.
+The [compositional mission and radio audit](docs/WAREHOUSE_V3.md) adds hard
+per-offset floors, explicit groups, conditional and lexicographic priorities,
+masked/JEPA-style pretraining, a full-priority cached-mission scorer, measured
+native packet events and a complete local cost frontier. Canonical missions
+use a complete compiler by default; actual neural clause verification is
+available explicitly. The [v3 results](docs/WAREHOUSE_V3_RESULTS.md) preserve
+the failed gates and separate simulations from hardware measurements.
+Both implementations currently target Wi-Fi; [protocol-independent adapters
+are not implemented](docs/PROTOCOL_BOUNDARY.md).
+
+WirelessJEV turns warehouse missions into typed constraints and priorities for
+planning. RadioJEV learns radio consequences from observations and proposed
+actions. The current proposal path uses the complete controlled language and
+numerical belief by default; actual System One verification and learned scorers
+are explicit research options. The original ten-car prototype and subsequent
+100-/200-robot warehouse experiments run in simulation.
 
 Milestone 1 runs entirely in a digital twin. Nothing here touches a car, a radio or a network.
 
@@ -36,8 +51,8 @@ Every car is the same hardware as the existing SmartCar (`src/wirelessjev/hardwa
 - **Management radio:** the onboard brcmfmac SDIO radio (`wlan0`) runs the management hotspot at 192.168.1.11. WirelessJEV never scans, selects or modifies it; SmartCarGuard owns its recovery.
 - **Customer radio:** an Intel BE200 on PCIe (`8086:272b`, `wlan1`). It is the only radio acted on, and the only action is choosing a BSSID.
 - **Wire format:** exactly the existing `SmartCarCmd.py` JSON: `status`, and `connect` with ssid/bssid/security plus the Wi-Fi password, which SmartCarCmd requires, just as the PC app sends it. Plans, receipts and logs never contain the password; the real transport (`carlink.py`) injects it from the operator's WiFi.json at send time.
-- **Measured anchors:**
-  - about 4 s per BSSID switch;
+- **Target settings and reported anchors:**
+  - an assumed 4 s per BSSID switch, pending physical stage measurements;
   - 5 s policy interval;
   - -80 dBm legacy reconnect threshold;
   - VHT 80 MHz with 2 spatial streams;

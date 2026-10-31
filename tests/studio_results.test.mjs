@@ -35,6 +35,17 @@ test('horizon results retain budget context and rejected learned branches', () =
   assert.match(html, /interface writes proposals only/);
 });
 
+test('v3 displays actual contract and packet evidence without cross-protocol claims', () => {
+  const report = JSON.parse(readFileSync(new URL('../artifacts/warehouse_v3/snapshot.json', import.meta.url)));
+  const html = render({warehouse_v3: report});
+  assert.match(html, /Compositional missions and radio representations/);
+  assert.match(html, /Native moving Wi-Fi audit/);
+  assert.match(html, /eight-second route prefix/);
+  assert.match(html, /different small text sets/);
+  assert.match(html, /implementation remains Wi-Fi-specific/);
+  assert.match(html, /attack diagnostics do not certify deletion/);
+});
+
 test('E1 displays real confidence intervals and pending stages', () => {
   const lora = JSON.parse(readFileSync(new URL('../artifacts/radiojev/e1_radio_lora.json', import.meta.url)));
   const noLlm = JSON.parse(readFileSync(new URL('../artifacts/radiojev/e1_no_llm.json', import.meta.url)));
