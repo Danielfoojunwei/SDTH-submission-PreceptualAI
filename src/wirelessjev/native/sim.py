@@ -1,0 +1,446 @@
+"""Cross-layer slot simulator (10 ms) with legacy, 802.11r, default multi-link
+and the native WirelessJEV + RadioJEV stack.
+
+Layers modelled per slot:
+- L1/L2: per-MCS packet success from ns-3 curves; STR dual-link halves each
+  link's streams (1SS, -3 dB); 6 GHz uses double rate at 160 MHz.
+- L3: airtime shared within contention domains after external occupancy,
+  priority control > video > bulk.
+- L4: multi-link device per site: EMLSR (one active link) or STR (two).
+- L5: roams with explicit outage (legacy 4 s, 802.11r 60 ms, pre-keyed 30 ms);
+  link switches inside one multi-link AP cost nothing.
+- L6-L8: IP retention is part of the roam cost; data timing defers bulk when
+  the route forecast says the link is about to improve.
+Hidden from every policy: fading (Nakagami m=2 per 100 ms block per link)
+and blockage (-15 dB on all links of one robot-site path).
+"""
+from __future__ import annotations
+
+from dataclasses import dataclass, field, replace
+import math
+
+import numpy as np
+
+from .phy import LinkCurves
+from .world import BANDS, HORIZONS, NOISE_DBM, POS_DT, World
+
+SLOT = 0.01
+CONTROL_BITS = 600 * 8
+CONTROL_PERIOD = 5           # slots (20 Hz)
+CONTROL_DEADLINE = 5         # slots (50 ms)
+VIDEO_DEADLINE = 15          # slots (150 ms)
+MAC_EFF = 0.6
+FRAME_OVERHEAD_S = 100e-6
+ATTEMPTS_PER_SLOT = 3
+BLOCK_SLOTS = 10             # fading block 100 ms
+BLOCKAGE_DB = 15.0
+BLOCKAGE_RATE_PER_MIN = 1.5  # per robot, spread over its sites
+BLOCKAGE_MEAN_S = 2.0
+FADE_M = 2
+BULK_BUFFER_S = 20.0       # map uploads queue on the robot; deferral sends later
+
+
+@dataclass(frozen=True)
+class Policy:
+    name: str
+    kind: str                     # legacy | mlo_default | native
+    roam_cost_s: float = 4.0
+    scan_period_s: float = 5.0    # background scans (outage SCAN_S each)
+    # native components
+    route_forecast: bool = True
+    duplication: bool = True
+    predictive_mcs: bool = True
+    planned_roam: bool = True
+    stagger: bool = True
+    data_timing: bool = True
+    reflex: bool = True
+    layered: bool = False
+    layered_gain_db: float = 4.0
+    risk_threshold: float = 0.05
+    static_split: bool = False    # mlo_split: control pinned to 2.4 GHz
+
+
+SCAN_S = 0.03
+
+
+def policies(roam_cost_legacy=4.0):
+    native = Policy("native", "native", roam_cost_s=0.03, scan_period_s=30.0)
+    out = [Policy("legacy", "legacy", roam_cost_s=roam_cost_legacy),
+           Policy("ft11r", "legacy", roam_cost_s=0.06),
+           Policy("mlo_default", "mlo_default", roam_cost_s=0.06),
+           Policy("mlo_split", "mlo_default", roam_cost_s=0.06, static_split=True),
+           native]
+    for comp in ("route_forecast", "duplication", "predictive_mcs", "planned_roam",
+                 "stagger", "data_timing", "reflex"):
+        p = replace(native, name=f"native-no_{comp}", **{comp: False})
+        if comp == "planned_roam":
+            p = replace(p, roam_cost_s=0.06, scan_period_s=5.0)
+        out.append(p)
+    out.append(replace(native, name="native_layered", layered=True))
+    return out
+
+
+def _mcs_for(curves, band, snr, target=None):
+    """Reactive/predictive MCS: highest MCS whose 90%-success threshold is
+    below `snr`; with target, the highest whose curve meets target at snr."""
+    th = curves.threshold_db(band, 0.9 if target is None else target)
+    idx = np.searchsorted(th, snr, side="right") - 1
+    return np.clip(idx, 0, len(th) - 1)
+
+
+def _chain(curves, links, mcss, snr_eff, str_mode):
+    """Retry chain within one slot: attempt a uses link links[:, a] at MCS
+    mcss[:, a]. Returns (success in slot, expected airtime fraction)."""
+    n, k = links.shape
+    p = np.zeros((n, k))
+    t = np.zeros((n, k))
+    half = np.where(str_mode, 0.5, 1.0)
+    for a in range(k):
+        for b in range(3):
+            sel = links[:, a] == b
+            if not sel.any():
+                continue
+            mm = mcss[sel, a]
+            p[sel, a] = curves.success(BANDS[b], mm, snr_eff[sel, b])
+            t[sel, a] = (CONTROL_BITS / (curves.rates(BANDS[b])[mm] * half[sel] * 1e6)
+                         + FRAME_OVERHEAD_S) / SLOT
+    reach = np.cumprod(np.concatenate([np.ones((n, 1)), 1 - p[:, :-1]], axis=1), axis=1)
+    return 1 - np.prod(1 - p, axis=1), (reach * t).sum(1)
+
+
+def _mrr_chain(link, mcs, ar):
+    """Minstrel-style multi-rate retry on one link: MCS, MCS-2, MCS0."""
+    m = np.stack([mcs[b] for b in range(3)], 1)[ar, link]
+    links = np.stack([link, link, link], 1)
+    return links, np.stack([m, np.maximum(m - 2, 0), np.zeros_like(m)], 1)
+
+
+def simulate(world: World, policy: Policy, *, seed: int = 0, curves: LinkCurves | None = None,
+             duration_s: float | None = None, blockage_rate: float = BLOCKAGE_RATE_PER_MIN) -> dict:
+    curves = curves or LinkCurves()
+    rng = np.random.default_rng(1_000_003 * (world.seed + 1) + seed)   # same draws for all policies
+    n, s = world.n, world.sites.shape[0]
+    duration = duration_s or world.duration_s
+    n_slots = int(round(duration / SLOT))
+    slots_per_pos = int(round(POS_DT / SLOT))
+    slots_per_dec = 100
+    rates = {b: curves.rates(b) for b in BANDS}
+    th90 = {b: curves.threshold_db(b, 0.9) for b in BANDS}
+    th99 = {b: curves.threshold_db(b, 0.99) for b in BANDS}
+    n_dom = len(world.avail)
+    ar = np.arange(n)
+
+    # Hidden processes, identical across policies (own RNG streams).
+    hid = np.random.default_rng(77 + world.seed)
+    n_blocks = n_slots // BLOCK_SLOTS + 1
+    fade_db = 10 * np.log10(hid.gamma(FADE_M, 1 / FADE_M, size=(n_blocks, n, s, 3))).astype(np.float32)
+    p_on = blockage_rate / 60 * (BLOCK_SLOTS * SLOT) / 4   # ~4 relevant sites
+    p_off = (BLOCK_SLOTS * SLOT) / BLOCKAGE_MEAN_S
+    blocked = np.zeros((n_blocks, n, s), dtype=bool)
+    state = np.zeros((n, s), dtype=bool)
+    for k in range(n_blocks):
+        u = hid.random((n, s))
+        state = np.where(state, u > p_off, u < p_on)
+        blocked[k] = state
+    scan_phase = hid.integers(0, 10_000, size=n)
+
+    def true_snr(k_slot, sites_idx=None):
+        kp = min(k_slot // slots_per_pos, world.snr.shape[0] - 1)
+        kb = k_slot // BLOCK_SLOTS
+        base = world.snr[kp] + fade_db[kb] - BLOCKAGE_DB * blocked[kb][..., None]
+        return base if sites_idx is None else base[ar, sites_idx]      # (N,3)
+
+    def rssi_dl(k_slot):
+        kp = min(k_slot // slots_per_pos, world.snr.shape[0] - 1)
+        kb = k_slot // BLOCK_SLOTS
+        return world.rssi_dl[kp] + fade_db[kb] - BLOCKAGE_DB * blocked[kb][..., None]
+
+    # --- per-robot state ----------------------------------------------------
+    k0 = 0
+    init = rssi_dl(0)
+    site = np.argmax(init[:, :, 1], axis=1)                 # start on best 5 GHz site
+    band_single = np.full(n, 1)                              # legacy BSS band
+    outage_until = np.zeros(n, dtype=int)
+    ctrl_link = np.full(n, 1)
+    second_link = np.full(n, -1)                             # STR partner (-1 = EMLSR)
+    bulk_link = np.full(n, 1)
+    mcs = {b: np.zeros(n, dtype=int) for b in range(3)}
+    meas = true_snr(0, site)                                 # last measured SNR per link
+    bulk_cap = np.ones(n)
+    backlog = np.zeros(n)
+    roams = np.zeros(n, dtype=int)
+    last_scan = None
+
+    # traffic state
+    ctrl_age = np.full(n, -1)                                # -1 = no pending packet
+    ctrl_sent = ctrl_missed = 0
+    ctrl_miss_r = np.zeros(n)
+    ctrl_total_r = np.zeros(n)
+    gap_cur = np.zeros(n)
+    gap_max = np.zeros(n)
+    vq = np.zeros((n, VIDEO_DEADLINE))                       # video bits by age
+    video_gen = video_ok = 0.0
+    video_gen_r = np.zeros(n)
+    video_ok_r = np.zeros(n)
+    bulk_bits_r = np.zeros(n)
+    airtime_used = 0.0
+    dup_slots = 0
+    has_video = world.video_mbps > 0
+
+    roam_log = []
+    ctrl_down = ctrl_fail = ctrl_congested = 0
+
+    for k in range(n_slots):
+        # ---------------- measurements (lagged by one fading block) --------
+        if k % BLOCK_SLOTS == 0:
+            meas = true_snr(max(0, k - BLOCK_SLOTS), site)
+            for b in range(3):
+                band = BANDS[b]
+                m = meas[:, b] - (3.0 if policy.kind != "legacy" else 0.0) * (second_link >= 0)
+                mcs[b] = _mcs_for(curves, band, m - 2.0)          # Minstrel-like backoff
+
+        # ---------------- decisions -------------------------------------------
+        if policy.kind in ("legacy", "mlo_default") and k % slots_per_dec == 0:
+            r = rssi_dl(max(0, k - BLOCK_SLOTS))                  # (N,S,3)
+            if policy.kind == "legacy":
+                cur = r[ar, site, band_single]
+                cand = np.maximum(r[:, :, 1] + 5.0, r[:, :, 0])   # band steering prefers 5 GHz
+                best_site = np.argmax(cand, axis=1)
+                best_band = np.where(r[ar, best_site, 1] + 5.0 >= r[ar, best_site, 0], 1, 0)
+                gain = r[ar, best_site, best_band] - cur
+                go = (cur < -75.0) & (gain >= 8.0) & (outage_until <= k)
+                band_single = np.where(go, best_band, band_single)
+                ctrl_link = band_single.copy()
+                bulk_link = band_single.copy()
+            else:
+                cur = r[ar, site].max(axis=1)
+                best_site = np.argmax(r.max(axis=2), axis=1)
+                gain = r[ar, best_site].max(axis=1) - cur
+                go = (cur < -75.0) & (gain >= 8.0) & (outage_until <= k)
+            for i in np.nonzero(go & (best_site != site))[0]:
+                site[i] = best_site[i]
+                outage_until[i] = k + int(round(policy.roam_cost_s / SLOT))
+                roams[i] += 1
+                roam_log.append(k)
+
+        if policy.kind == "mlo_default" and k % BLOCK_SLOTS == 0:
+            tput = np.stack([curves.rates(BANDS[b])[mcs[b]] *
+                             curves.success(BANDS[b], mcs[b], meas[:, b]) for b in range(3)], 1)
+            ctrl_link = np.argmax(tput, axis=1)                    # EMLSR on best lagged throughput
+            bulk_link = ctrl_link.copy()
+            if policy.static_split:
+                ctrl_link = np.zeros(n, dtype=int)
+
+        if policy.kind == "native" and k % slots_per_dec == 0:
+            d = min(k // slots_per_dec, world.forecast.shape[0] - 1)
+            fc = world.forecast[d]                                 # (N,H,S,3)
+            if not policy.route_forecast:
+                fc = np.repeat(fc[:, :1], len(HORIZONS), axis=1)
+            sig = 5.0                                              # unforecast fading/blockage spread
+            # Roam planning over 30 s: mean best-link SNR, load-aware.
+            if policy.planned_roam:
+                # Lookahead scales with switching cost: with ~30 ms pre-keyed
+                # roams only the next few seconds matter.
+                w = np.array([1, 1, 1, 1, 1, 1, 0, 0, 0], dtype=float)
+                score = (fc.max(axis=3) * w[None, :, None]).sum(1) / w.sum()   # (N,S)
+                load = np.bincount(site, minlength=s).astype(float)
+                score = score - 0.15 * load[None, :]
+                best = np.argmax(score, axis=1)
+                gain = score[ar, best] - score[ar, site]
+                go = (gain >= 5.0) & (best != site) & (outage_until <= k)
+                budget = {}
+                for i in np.nonzero(go)[0]:
+                    if policy.stagger and budget.get(best[i], 0) >= 2:
+                        continue
+                    budget[best[i]] = budget.get(best[i], 0) + 1
+                    site[i] = best[i]
+                    outage_until[i] = k + int(round(policy.roam_cost_s / SLOT))
+                    roams[i] += 1
+                    roam_log.append(k)
+            else:
+                r = rssi_dl(max(0, k - BLOCK_SLOTS))
+                cur = r[ar, site].max(axis=1)
+                best_site = np.argmax(r.max(axis=2), axis=1)
+                gain = r[ar, best_site].max(axis=1) - cur
+                go = (cur < -75.0) & (gain >= 8.0) & (outage_until <= k)
+                for i in np.nonzero(go & (best_site != site))[0]:
+                    site[i] = best_site[i]
+                    outage_until[i] = k + int(round(policy.roam_cost_s / SLOT))
+                    roams[i] += 1
+                    roam_log.append(k)
+            # Control link: highest predicted 5 s minimum on the current site.
+            near = fc[:, :6][ar, :, site]                          # (N,6,3)
+            if policy.route_forecast:   # map bias cancels in the change along the route
+                near = meas[:, None, :] + (near - near[:, :1])
+            else:
+                near = np.repeat(meas[:, None, :], 6, axis=1)
+            pmin = near.min(axis=1)                                # (N,3)
+            ctrl_link = np.argmax(pmin, axis=1)
+            th_ctrl = np.array([th99[b][0] for b in BANDS])        # control at MCS0
+            margin = pmin - th_ctrl[None, :]
+            risk = 0.5 * (1 - np.vectorize(math.erf)(margin / (sig * math.sqrt(2))))
+            primary_risk = risk[ar, ctrl_link]
+            if policy.duplication:
+                order = np.argsort(-margin, axis=1)
+                second_link = np.where(primary_risk > policy.risk_threshold, order[:, 1], -1)
+            else:
+                second_link = np.full(n, -1)
+            # Data timing: defer bulk if the link improves by > 6 dB within 5 s.
+            if policy.data_timing:
+                now_best = near[:, 0].max(axis=1)
+                later_best = near[:, 1:].max(axis=(1, 2))
+                bulk_cap = np.where(later_best - now_best > 6.0, 0.0, 1.0)
+            fc_now = fc[:, 0][ar, site]                            # (N,3)
+            fc_next = fc[:, 1][ar, site]
+            native_delta = (fc_next - fc_now)                      # dB per second along route
+
+        if policy.kind == "native" and k % BLOCK_SLOTS == 0:
+            # Route-as-pilot: lagged measurement + route-predicted change.
+            est = meas.copy()
+            if policy.route_forecast and policy.predictive_mcs:
+                est = est + native_delta * (BLOCK_SLOTS * SLOT)
+            for b in range(3):
+                band = BANDS[b]
+                e = est[:, b] - 3.0 * (second_link >= 0)
+                if policy.predictive_mcs:
+                    mcs[b] = _mcs_for(curves, band, e - 2.0)
+                else:
+                    mcs[b] = _mcs_for(curves, band, meas[:, b] - 2.0 - 3.0 * (second_link >= 0))
+            tput = np.stack([curves.rates(BANDS[b])[mcs[b]] *
+                             curves.success(BANDS[b], mcs[b], est[:, b]) for b in range(3)], 1)
+            bulk_link = np.argmax(tput, axis=1)                    # TTLM: bulk on the fast link
+            if policy.reflex:
+                margin_now = est - np.array([th99[b][0] for b in BANDS])[None, :]
+                ctrl_link = np.where(margin_now[ar, ctrl_link] < 3.0,
+                                     np.argmax(margin_now, axis=1), ctrl_link)
+
+        # ---------------- scans ------------------------------------------------
+        scanning = ((k + scan_phase) % int(round(policy.scan_period_s / SLOT))) < int(round(SCAN_S / SLOT))
+        up = (outage_until <= k) & ~scanning
+
+        # ---------------- traffic arrivals -------------------------------------
+        new_ctrl = ((k + scan_phase) % CONTROL_PERIOD) == 0
+        if new_ctrl.any():
+            stale = new_ctrl & (ctrl_age >= 0)                    # previous not delivered
+            ctrl_missed += int(stale.sum())
+            ctrl_miss_r += stale
+            ctrl_age = np.where(new_ctrl, 0, ctrl_age)
+            ctrl_sent += int(new_ctrl.sum())
+            ctrl_total_r += new_ctrl
+        vq = np.roll(vq, 1, axis=1)
+        expired = vq[:, 0].copy()
+        vq[:, 0] = world.video_mbps * 1e6 * SLOT
+        video_gen += float(vq[:, 0].sum())
+        video_gen_r += vq[:, 0]
+
+        # ---------------- PHY per robot-link -----------------------------------
+        snr_now = true_snr(k, site)                               # (N,3)
+        str_mode = second_link >= 0
+        snr_eff = snr_now - 3.0 * str_mode[:, None]
+        p_link = np.zeros((n, 3))
+        rate = np.zeros((n, 3))
+        for b in range(3):
+            band = BANDS[b]
+            p_link[:, b] = curves.success(band, mcs[b], snr_eff[:, b])
+            rate[:, b] = rates[band][mcs[b]] * np.where(str_mode, 0.5, 1.0)
+        doms = world.domain[site]                                  # (N,3)
+
+        # control: attempts on ctrl link (+ second link in STR)
+        pend = (ctrl_age >= 0) & up
+        ctrl_down += int(((ctrl_age >= 0) & ~up).sum())
+        links, mcss = _mrr_chain(ctrl_link, mcs, ar)
+        if policy.kind == "native" and policy.reflex:
+            # Cross-link retry: second attempt on the other (bulk) link, so
+            # one band's fade does not take out the retry chain.
+            other = np.where(bulk_link != ctrl_link, bulk_link, (ctrl_link + 1) % 3)
+            links[:, 1] = other
+            mcss[:, 1] = 0
+        ok1, air1 = _chain(curves, links, mcss, snr_eff, str_mode)
+        if policy.layered:
+            # First attempt rides the base layer of a bulk frame (no own
+            # access). Sionna's gain is relative to 16-QAM r=1/2 time
+            # sharing, i.e. Wi-Fi MCS 3; failures fall back to normal retries.
+            lay = snr_eff[ar, bulk_link] + policy.layered_gain_db
+            pl = np.zeros(n)
+            for b in range(3):
+                sel = bulk_link == b
+                if sel.any():
+                    pl[sel] = curves.success(BANDS[b], np.full(sel.sum(), 3), lay[sel])
+            ok1 = 1 - (1 - pl) * (1 - ok1)
+            air1 = (1 - pl) * air1
+        sl = np.maximum(second_link, 0)
+        l2, m2 = _mrr_chain(sl, mcs, ar)
+        ok2, air2 = _chain(curves, l2, m2, snr_eff, str_mode)
+        ok2 = np.where(str_mode, ok2, 0.0)
+        ok = 1 - (1 - ok1) * (1 - ok2)
+        air_ctrl = np.zeros(n_dom)
+        np.add.at(air_ctrl, doms[ar, ctrl_link], pend * air1)
+        np.add.at(air_ctrl, doms[ar, sl], pend * str_mode * air2)
+        dup_slots += int((pend & str_mode).sum())
+        scale_c = np.minimum(1.0, world.avail / np.maximum(air_ctrl, 1e-12))
+        grant_c = scale_c[doms[ar, ctrl_link]]
+        delivered = pend & (rng.random(n) < ok * grant_c)
+        ctrl_fail += int((pend & ~delivered).sum())
+        ctrl_congested += int((pend & (grant_c < 1)).sum())
+        ctrl_age = np.where(delivered, -1, np.where(ctrl_age >= 0, ctrl_age + 1, -1))
+        late = ctrl_age >= CONTROL_DEADLINE
+        ctrl_missed += int(late.sum())
+        ctrl_miss_r += late
+        ctrl_age = np.where(late, -1, ctrl_age)
+        gap_cur = np.where(delivered, 0, gap_cur + 1)
+        gap_max = np.maximum(gap_max, gap_cur)
+        left = world.avail - np.minimum(air_ctrl, world.avail)
+
+        # video then bulk on the bulk link (the better link when in STR)
+        bl = np.where(str_mode & (p_link[ar, np.maximum(second_link, 0)] * rate[ar, np.maximum(second_link, 0)]
+                                  > p_link[ar, bulk_link] * rate[ar, bulk_link]),
+                      np.maximum(second_link, 0), bulk_link)
+        good = rate[ar, bl] * 1e6 * MAC_EFF * p_link[ar, bl] * SLOT  # bits per full slot
+        dv = doms[ar, bl]
+        vneed = np.where(up & (good > 0), vq.sum(1) / np.maximum(good, 1e-9), 0.0)
+        need_v = np.bincount(dv, weights=vneed, minlength=n_dom)
+        sv = np.minimum(1.0, left / np.maximum(need_v, 1e-12))
+        vair = vneed * sv[dv]
+        vbits = vair * good
+        # drain video oldest first
+        remaining = vbits.copy()
+        for age in range(VIDEO_DEADLINE - 1, -1, -1):
+            take = np.minimum(vq[:, age], remaining)
+            vq[:, age] -= take
+            remaining -= take
+        video_ok += float(vbits.sum() - remaining.sum())
+        video_ok_r += vbits - remaining
+        used_v = np.bincount(dv, weights=vair, minlength=n_dom)
+        left2 = np.maximum(0.0, left - used_v)
+        backlog = np.minimum(backlog + world.bulk_mbps * 1e6 * SLOT, world.bulk_mbps * 1e6 * BULK_BUFFER_S)
+        send = backlog * np.where(bulk_cap < 1.0, 0.0, 1.0)
+        bneed = np.where(up & (good > 0), send / np.maximum(good, 1e-9), 0.0)
+        need_b = np.bincount(dv, weights=bneed, minlength=n_dom)
+        sb = np.minimum(1.0, left2 / np.maximum(need_b, 1e-12))
+        bair = bneed * sb[dv]
+        sent = np.minimum(bair * good, backlog)
+        backlog -= sent
+        bulk_bits_r += sent
+        airtime_used += float(air_ctrl.sum() + used_v.sum() + bair.sum())
+
+    ctrl_frac_r = ctrl_miss_r / np.maximum(ctrl_total_r, 1)
+    order = np.sort(ctrl_frac_r)
+    worst = order[-max(1, n // 10):]
+    vr = has_video
+    return {
+        "policy": policy.name, "scene": world.seed, "sigma_map": world.sigma_map,
+        "blind_world": world.blind, "blockage_rate_per_min": blockage_rate,
+        "duration_s": duration,
+        "control_miss": ctrl_missed / max(ctrl_sent, 1),
+        "control_miss_worst_decile": float(worst.mean()),
+        "control_gap_p99_ms": float(np.percentile(gap_max, 99) * SLOT * 1000),
+        "video_on_time": video_ok / max(video_gen, 1e-9),
+        "video_on_time_worst_robot": float((video_ok_r[vr] / np.maximum(video_gen_r[vr], 1e-9)).min())
+        if vr.any() else None,
+        "bulk_mbps": float(bulk_bits_r.sum() / duration / 1e6),
+        "airtime_domain_sum": airtime_used / n_slots,
+        "ctrl_pending_slots_down": ctrl_down, "ctrl_failed_attempt_slots": ctrl_fail,
+        "ctrl_congested_slots": ctrl_congested,
+        "dup_fraction": dup_slots / max(n_slots * n, 1),
+        "roams": int(roams.sum()),
+    }
