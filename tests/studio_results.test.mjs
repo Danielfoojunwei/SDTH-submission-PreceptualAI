@@ -13,6 +13,16 @@ test('missing results stay missing', () => {
   assert.equal(render({}), '');
 });
 
+test('warehouse v2 displays actual archived results with their limits', () => {
+  const report = JSON.parse(readFileSync(new URL('../artifacts/warehouse_v2/snapshot.json', import.meta.url)));
+  const html = render({warehouse_v2: report});
+  assert.match(html, /Three compact-model training seeds/);
+  assert.match(html, /instant_mlp/);
+  assert.match(html, /strongest_scan/);
+  assert.match(html, /No physical-car result or SOTA claim is established/);
+  assert.match(html, /does not establish benefit to every robot/);
+});
+
 test('E1 displays real confidence intervals and pending stages', () => {
   const lora = JSON.parse(readFileSync(new URL('../artifacts/radiojev/e1_radio_lora.json', import.meta.url)));
   const noLlm = JSON.parse(readFileSync(new URL('../artifacts/radiojev/e1_no_llm.json', import.meta.url)));

@@ -1,0 +1,169 @@
+{
+  "source": "simulation_and_real_model_simulator_execution",
+  "training_seeds": [
+    0,
+    1,
+    2
+  ],
+  "core_models": [
+    {
+      "split": "test",
+      "arm": "instant_mlp",
+      "regret_seeds": [
+        0.06215965506738558,
+        0.03856116449848438,
+        0.05050981048003046
+      ],
+      "mean_regret": 0.05041021001530014,
+      "service_rmse": 0.25467040728686896
+    },
+    {
+      "split": "test",
+      "arm": "temporal_graph",
+      "regret_seeds": [
+        0.06021097338008177,
+        0.06776002588513722,
+        0.06817968837438254
+      ],
+      "mean_regret": 0.06538356254653384,
+      "service_rmse": 0.25190521537101646
+    },
+    {
+      "split": "test",
+      "arm": "semantic_graph",
+      "regret_seeds": [
+        0.2252792315759709,
+        0.13327905835000292,
+        0.21616368642688388
+      ],
+      "mean_regret": 0.19157399211761925,
+      "service_rmse": 0.2568417701819776
+    },
+    {
+      "split": "shift",
+      "arm": "instant_mlp",
+      "regret_seeds": [
+        0.07673514748069002,
+        0.0721055178510604,
+        0.07673514748069002
+      ],
+      "mean_regret": 0.07519193760414682,
+      "service_rmse": 0.23852733745407786
+    },
+    {
+      "split": "shift",
+      "arm": "temporal_graph",
+      "regret_seeds": [
+        0.07921936471389206,
+        0.09800042186467359,
+        0.09088426126196235
+      ],
+      "mean_regret": 0.08936801594684267,
+      "service_rmse": 0.23493892611258504
+    },
+    {
+      "split": "shift",
+      "arm": "semantic_graph",
+      "regret_seeds": [
+        0.2082769282705491,
+        0.11517650456279094,
+        0.18455995545695178
+      ],
+      "mean_regret": 0.16933779609676394,
+      "service_rmse": 0.24029447878994872
+    },
+    {
+      "split": "fleet200",
+      "arm": "instant_mlp",
+      "regret_seeds": [
+        0.026360131965096418,
+        0.026360131965096418,
+        0.026360131965096418
+      ],
+      "mean_regret": 0.026360131965096418,
+      "service_rmse": 0.25136367309937896
+    },
+    {
+      "split": "fleet200",
+      "arm": "temporal_graph",
+      "regret_seeds": [
+        0.03556036452560134,
+        0.03556036452560134,
+        0.030930734895971708
+      ],
+      "mean_regret": 0.03401715464905813,
+      "service_rmse": 0.2454558403672848
+    },
+    {
+      "split": "fleet200",
+      "arm": "semantic_graph",
+      "regret_seeds": [
+        0.13862088472254713,
+        0.04075751580509219,
+        0.10180247845243157
+      ],
+      "mean_regret": 0.09372695966002363,
+      "service_rmse": 0.2520204737688897
+    }
+  ],
+  "prospective_closedloop": [
+    {
+      "policy": "stay",
+      "mean_service": 0.2031408809719195,
+      "worst_decile_mean_service": 0.027461134738028012,
+      "reconnections": 0,
+      "critical_violation_robot_steps": 8808
+    },
+    {
+      "policy": "legacy_hysteresis",
+      "mean_service": 0.5137175421279307,
+      "worst_decile_mean_service": 0.33102738294827533,
+      "reconnections": 892,
+      "critical_violation_robot_steps": 3753.3333333333335
+    },
+    {
+      "policy": "strongest_scan",
+      "mean_service": 0.5430253850884194,
+      "worst_decile_mean_service": 0.4004743937674185,
+      "reconnections": 1569.6666666666667,
+      "critical_violation_robot_steps": 3750.3333333333335
+    },
+    {
+      "policy": "observed_load_balance",
+      "mean_service": 0.4663460520689368,
+      "worst_decile_mean_service": 0.3158929377197893,
+      "reconnections": 1730,
+      "critical_violation_robot_steps": 5585.333333333333
+    },
+    {
+      "policy": "instant_mlp",
+      "mean_service": 0.24943591758440392,
+      "worst_decile_mean_service": 0.075355513432885,
+      "reconnections": 141.33333333333334,
+      "critical_violation_robot_steps": 8049.333333333333
+    },
+    {
+      "policy": "temporal_graph",
+      "mean_service": 0.2351946796856993,
+      "worst_decile_mean_service": 0.04609634285771182,
+      "reconnections": 86,
+      "critical_violation_robot_steps": 8342.666666666666
+    },
+    {
+      "policy": "factorized_mlp",
+      "mean_service": 0.5500704232231385,
+      "worst_decile_mean_service": 0.4111182408945875,
+      "reconnections": 1644,
+      "critical_violation_robot_steps": 3983
+    },
+    {
+      "policy": "factorized_graph",
+      "mean_service": 0.5430253850884194,
+      "worst_decile_mean_service": 0.4004743937674185,
+      "reconnections": 1569.6666666666667,
+      "critical_violation_robot_steps": 3750.3333333333335
+    }
+  ],
+  "hardware_experiments_executed": false,
+  "sota_established": false
+}

@@ -5,10 +5,15 @@ Current experiment status and restart prerequisites are in [docs/HANDOFF.md](doc
 The restored didjital R6.1 reference and its executed software checks are
 documented in [docs/R6_COMPATIBILITY.md](docs/R6_COMPATIBILITY.md).
 
-The completed milestone is **warehouse connectivity: WirelessJEV/RadioJEV E1–E5
-and corrected E7**. E6 remains excluded. Router, E8, JEPA/world-model,
-general-robotics, custom-PHY and satellite extensions are deferred. See the
-consolidated [warehouse results](docs/WAREHOUSE_RESULTS.md) for completion status.
+The original completed milestone is **warehouse connectivity: WirelessJEV/RadioJEV
+E1–E5 and corrected E7**; its [results](docs/WAREHOUSE_RESULTS.md) are preserved.
+The new [warehouse v2 campaign](docs/WAREHOUSE_V2.md) adds structured missions,
+sensed-input temporal models, three independent compact-model seeds, active
+sensing, site adaptation/removal, real pretrained baselines, and executed
+Sionna/ns-3 PHY/MAC studies. See [v2 findings](docs/WAREHOUSE_V2_RESULTS.md).
+E6, general robotics, custom on-air waveforms and satellite work remain excluded.
+Physical-car qualification remains pending; no foundation-model or SOTA claim
+follows from these experiments.
 
 Mission-conditioned Wi-Fi coordination for a 10-car Raspbot fleet. A frozen open System One model chooses the fleet plan. Exact numerical oracles teach and score it. A swarm protocol shares what the cars learn.
 

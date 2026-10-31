@@ -1,0 +1,2254 @@
+{
+  "source": "closed_loop_warehouse_simulation",
+  "records": [
+    {
+      "source": "closed_loop_warehouse_simulation",
+      "seed": 131000,
+      "policy": "strongest_scan",
+      "duration_s": 600,
+      "robots": 100,
+      "decision_interval_s": 30,
+      "assumed_switch_interruption_s": 4.0,
+      "metrics": {
+        "mean_service": 0.6064669154859352,
+        "worst_decile_mean_service": 0.4498254814234895,
+        "worst_robot_mean_service": 0.3587818626291405,
+        "critical_violation_robot_steps": 3885,
+        "reconnections": 1560,
+        "per_robot": {
+          "amr-001": {
+            "mean_service": 0.47751629837092696,
+            "critical_violation_steps": 40,
+            "longest_critical_violation_s": 40.0,
+            "reconnections": 16
+          },
+          "amr-002": {
+            "mean_service": 0.4315194025386741,
+            "critical_violation_steps": 56,
+            "longest_critical_violation_s": 40.0,
+            "reconnections": 17
+          },
+          "amr-003": {
+            "mean_service": 0.6665010906197588,
+            "critical_violation_steps": 36,
+            "longest_critical_violation_s": 35.0,
+            "reconnections": 17
+          },
+          "amr-004": {
+            "mean_service": 0.6710478529002618,
+            "critical_violation_steps": 33,
+            "longest_critical_violation_s": 25.0,
+            "reconnections": 18
+          },
+          "amr-005": {
+            "mean_service": 0.5454026530798444,
+            "critical_violation_steps": 51,
+            "longest_critical_violation_s": 50.0,
+            "reconnections": 17
+          },
+          "amr-006": {
+            "mean_service": 0.4545815799088016,
+            "critical_violation_steps": 59,
+            "longest_critical_violation_s": 60.0,
+            "reconnections": 17
+          },
+          "amr-007": {
+            "mean_service": 0.3587818626291405,
+            "critical_violation_steps": 64,
+            "longest_critical_violation_s": 40.0,
+            "reconnections": 17
+          },
+          "amr-008": {
+            "mean_service": 0.7363511694174184,
+            "critical_violation_steps": 29,
+            "longest_critical_violation_s": 30.0,
+            "reconnections": 13
+          },
+          "amr-009": {
+            "mean_service": 0.6801985884872267,
+            "critical_violation_steps": 35,
+            "longest_critical_violation_s": 50.0,
+            "reconnections": 15
+          },
+          "amr-010": {
+            "mean_service": 0.6326099224783689,
+            "critical_violation_steps": 40,
+            "longest_critical_violation_s": 25.0,
+            "reconnections": 18
+          },
+          "amr-011": {
+            "mean_service": 0.6661403991961424,
+            "critical_violation_steps": 32,
+            "longest_critical_violation_s": 40.0,
+            "reconnections": 16
+          },
+          "amr-012": {
+            "mean_service": 0.6850406674711021,
+            "critical_violation_steps": 36,
+            "longest_critical_violation_s": 25.0,
+            "reconnections": 17
+          },
+          "amr-013": {
+            "mean_service": 0.6156772986176781,
+            "critical_violation_steps": 37,
+            "longest_critical_violation_s": 35.0,
+            "reconnections": 15
+          },
+          "amr-014": {
+            "mean_service": 0.3781663979038491,
+            "critical_violation_steps": 54,
+            "longest_critical_violation_s": 40.0,
+            "reconnections": 16
+          },
+          "amr-015": {
+            "mean_service": 0.7170618356275945,
+            "critical_violation_steps": 30,
+            "longest_critical_violation_s": 40.0,
+            "reconnections": 15
+          },
+          "amr-016": {
+            "mean_service": 0.532571197956816,
+            "critical_violation_steps": 30,
+            "longest_critical_violation_s": 25.0,
+            "reconnections": 14
+          },
+          "amr-017": {
+            "mean_service": 0.5406362043717813,
+            "critical_violation_steps": 42,
+            "longest_critical_violation_s": 50.0,
+            "reconnections": 16
+          },
+          "amr-018": {
+            "mean_service": 0.5875742557496504,
+            "critical_violation_steps": 48,
+            "longest_critical_violation_s": 45.0,
+            "reconnections": 17
+          },
+          "amr-019": {
+            "mean_service": 0.6601679829507142,
+            "critical_violation_steps": 33,
+            "longest_critical_violation_s": 25.0,
+            "reconnections": 13
+          },
+          "amr-020": {
+            "mean_service": 0.674707166857861,
+            "critical_violation_steps": 31,
+            "longest_critical_violation_s": 25.0,
+            "reconnections": 17
+          },
+          "amr-021": {
+            "mean_service": 0.4694942035608516,
+            "critical_violation_steps": 50,
+            "longest_critical_violation_s": 35.0,
+            "reconnections": 20
+          },
+          "amr-022": {
+            "mean_service": 0.5694533706050452,
+            "critical_violation_steps": 44,
+            "longest_critical_violation_s": 35.0,
+            "reconnections": 17
+          },
+          "amr-023": {
+            "mean_service": 0.5518940915488245,
+            "critical_violation_steps": 48,
+            "longest_critical_violation_s": 55.0,
+            "reconnections": 17
+          },
+          "amr-024": {
+            "mean_service": 0.6113926025412276,
+            "critical_violation_steps": 36,
+            "longest_critical_violation_s": 25.0,
+            "reconnections": 16
+          },
+          "amr-025": {
+            "mean_service": 0.603434256583882,
+            "critical_violation_steps": 40,
+            "longest_critical_violation_s": 35.0,
+            "reconnections": 18
+          },
+          "amr-026": {
+            "mean_service": 0.5784789590784144,
+            "critical_violation_steps": 31,
+            "longest_critical_violation_s": 20.0,
+            "reconnections": 15
+          },
+          "amr-027": {
+            "mean_service": 0.6635637652277784,
+            "critical_violation_steps": 28,
+            "longest_critical_violation_s": 25.0,
+            "reconnections": 13
+          },
+          "amr-028": {
+            "mean_service": 0.4637729898163822,
+            "critical_violation_steps": 55,
+            "longest_critical_violation_s": 65.0,
+            "reconnections": 18
+          },
+          "amr-029": {
+            "mean_service": 0.7596051577905275,
+            "critical_violation_steps": 23,
+            "longest_critical_violation_s": 35.0,
+            "reconnections": 13
+          },
+          "amr-030": {
+            "mean_service": 0.6415336611950299,
+            "critical_violation_steps": 30,
+            "longest_critical_violation_s": 20.0,
+            "reconnections": 14
+          },
+          "amr-031": {
+            "mean_service": 0.6470308306929504,
+            "critical_violation_steps": 35,
+            "longest_critical_violation_s": 20.0,
+            "reconnections": 17
+          },
+          "amr-032": {
+            "mean_service": 0.7827002015142515,
+            "critical_violation_steps": 25,
+            "longest_critical_violation_s": 35.0,
+            "reconnections": 15
+          },
+          "amr-033": {
+            "mean_service": 0.7309060002440997,
+            "critical_violation_steps": 29,
+            "longest_critical_violation_s": 25.0,
+            "reconnections": 12
+          },
+          "amr-034": {
+            "mean_service": 0.5270246410403757,
+            "critical_violation_steps": 50,
+            "longest_critical_violation_s": 45.0,
+            "reconnections": 16
+          },
+          "amr-035": {
+            "mean_service": 0.6783845961907217,
+            "critical_violation_steps": 41,
+            "longest_critical_violation_s": 40.0,
+            "reconnections": 17
+          },
+          "amr-036": {
+            "mean_service": 0.5724390633582079,
+            "critical_violation_steps": 37,
+            "longest_critical_violation_s": 25.0,
+            "reconnections": 16
+          },
+          "amr-037": {
+            "mean_service": 0.5927605773130211,
+            "critical_violation_steps": 38,
+            "longest_critical_violation_s": 55.0,
+            "reconnections": 15
+          },
+          "amr-038": {
+            "mean_service": 0.5113686389661912,
+            "critical_violation_steps": 51,
+            "longest_critical_violation_s": 40.0,
+            "reconnections": 16
+          },
+          "amr-039": {
+            "mean_service": 0.5221258311595542,
+            "critical_violation_steps": 46,
+            "longest_critical_violation_s": 40.0,
+            "reconnections": 16
+          },
+          "amr-040": {
+            "mean_service": 0.538023605649884,
+            "critical_violation_steps": 48,
+            "longest_critical_violation_s": 35.0,
+            "reconnections": 16
+          },
+          "amr-041": {
+            "mean_service": 0.6272562686424514,
+            "critical_violation_steps": 40,
+            "longest_critical_violation_s": 25.0,
+            "reconnections": 16
+          },
+          "amr-042": {
+            "mean_service": 0.5409570773224178,
+            "critical_violation_steps": 46,
+            "longest_critical_violation_s": 55.0,
+            "reconnections": 16
+          },
+          "amr-043": {
+            "mean_service": 0.5371873632881986,
+            "critical_violation_steps": 38,
+            "longest_critical_violation_s": 50.0,
+            "reconnections": 17
+          },
+          "amr-044": {
+            "mean_service": 0.614373817624991,
+            "critical_violation_steps": 47,
+            "longest_critical_violation_s": 35.0,
+            "reconnections": 16
+          },
+          "amr-045": {
+            "mean_service": 0.677952981504817,
+            "critical_violation_steps": 28,
+            "longest_critical_violation_s": 20.0,
+            "reconnections": 14
+          },
+          "amr-046": {
+            "mean_service": 0.5364109399836872,
+            "critical_violation_steps": 50,
+            "longest_critical_violation_s": 50.0,
+            "reconnections": 18
+          },
+          "amr-047": {
+            "mean_service": 0.5667390894217491,
+            "critical_violation_steps": 43,
+            "longest_critical_violation_s": 35.0,
+            "reconnections": 15
+          },
+          "amr-048": {
+            "mean_service": 0.6559625188456644,
+            "critical_violation_steps": 40,
+            "longest_critical_violation_s": 40.0,
+            "reconnections": 17
+          },
+          "amr-049": {
+            "mean_service": 0.45676208944432395,
+            "critical_violation_steps": 48,
+            "longest_critical_violation_s": 65.0,
+            "reconnections": 13
+          },
+          "amr-050": {
+            "mean_service": 0.5805416821866257,
+            "critical_violation_steps": 47,
+            "longest_critical_violation_s": 55.0,
+            "reconnections": 16
+          },
+          "amr-051": {
+            "mean_service": 0.5474982232039041,
+            "critical_violation_steps": 38,
+            "longest_critical_violation_s": 35.0,
+            "reconnections": 15
+          },
+          "amr-052": {
+            "mean_service": 0.6071235040287004,
+            "critical_violation_steps": 45,
+            "longest_critical_violation_s": 40.0,
+            "reconnections": 15
+          },
+          "amr-053": {
+            "mean_service": 0.6018957017008812,
+            "critical_violation_steps": 38,
+            "longest_critical_violation_s": 40.0,
+            "reconnections": 15
+          },
+          "amr-054": {
+            "mean_service": 0.6166985527358514,
+            "critical_violation_steps": 37,
+            "longest_critical_violation_s": 35.0,
+            "reconnections": 16
+          },
+          "amr-055": {
+            "mean_service": 0.706117760221465,
+            "critical_violation_steps": 26,
+            "longest_critical_violation_s": 15.0,
+            "reconnections": 14
+          },
+          "amr-056": {
+            "mean_service": 0.7570923533800796,
+            "critical_violation_steps": 25,
+            "longest_critical_violation_s": 20.0,
+            "reconnections": 12
+          },
+          "amr-057": {
+            "mean_service": 0.7163476114774411,
+            "critical_violation_steps": 26,
+            "longest_critical_violation_s": 20.0,
+            "reconnections": 15
+          },
+          "amr-058": {
+            "mean_service": 0.7214029383890798,
+            "critical_violation_steps": 29,
+            "longest_critical_violation_s": 35.0,
+            "reconnections": 17
+          },
+          "amr-059": {
+            "mean_service": 0.5538351287443017,
+            "critical_violation_steps": 45,
+            "longest_critical_violation_s": 45.0,
+            "reconnections": 16
+          },
+          "amr-060": {
+            "mean_service": 0.6239965677492572,
+            "critical_violation_steps": 44,
+            "longest_critical_violation_s": 45.0,
+            "reconnections": 17
+          },
+          "amr-061": {
+            "mean_service": 0.5101704071374876,
+            "critical_violation_steps": 54,
+            "longest_critical_violation_s": 55.0,
+            "reconnections": 15
+          },
+          "amr-062": {
+            "mean_service": 0.6521301226120412,
+            "critical_violation_steps": 46,
+            "longest_critical_violation_s": 55.0,
+            "reconnections": 16
+          },
+          "amr-063": {
+            "mean_service": 0.5737393630724974,
+            "critical_violation_steps": 39,
+            "longest_critical_violation_s": 35.0,
+            "reconnections": 16
+          },
+          "amr-064": {
+            "mean_service": 0.5725211770427475,
+            "critical_violation_steps": 43,
+            "longest_critical_violation_s": 35.0,
+            "reconnections": 16
+          },
+          "amr-065": {
+            "mean_service": 0.6550913741262615,
+            "critical_violation_steps": 35,
+            "longest_critical_violation_s": 25.0,
+            "reconnections": 14
+          },
+          "amr-066": {
+            "mean_service": 0.5850204374137674,
+            "critical_violation_steps": 42,
+            "longest_critical_violation_s": 65.0,
+            "reconnections": 17
+          },
+          "amr-067": {
+            "mean_service": 0.5251480780446457,
+            "critical_violation_steps": 49,
+            "longest_critical_violation_s": 55.0,
+            "reconnections": 14
+          },
+          "amr-068": {
+            "mean_service": 0.655251100472846,
+            "critical_violation_steps": 30,
+            "longest_critical_violation_s": 30.0,
+            "reconnections": 14
+          },
+          "amr-069": {
+            "mean_service": 0.7219682248015453,
+            "critical_violation_steps": 27,
+            "longest_critical_violation_s": 30.0,
+            "reconnections": 13
+          },
+          "amr-070": {
+            "mean_service": 0.5857067902502152,
+            "critical_violation_steps": 41,
+            "longest_critical_violation_s": 25.0,
+            "reconnections": 14
+          },
+          "amr-071": {
+            "mean_service": 0.6303077290259788,
+            "critical_violation_steps": 40,
+            "longest_critical_violation_s": 50.0,
+            "reconnections": 12
+          },
+          "amr-072": {
+            "mean_service": 0.600568725248536,
+            "critical_violation_steps": 38,
+            "longest_critical_violation_s": 50.0,
+            "reconnections": 16
+          },
+          "amr-073": {
+            "mean_service": 0.6689589878785921,
+            "critical_violation_steps": 31,
+            "longest_critical_violation_s": 50.0,
+            "reconnections": 13
+          },
+          "amr-074": {
+            "mean_service": 0.6051816729532339,
+            "critical_violation_steps": 34,
+            "longest_critical_violation_s": 20.0,
+            "reconnections": 16
+          },
+          "amr-075": {
+            "mean_service": 0.6202934354994458,
+            "critical_violation_steps": 35,
+            "longest_critical_violation_s": 55.0,
+            "reconnections": 14
+          },
+          "amr-076": {
+            "mean_service": 0.6299662849509287,
+            "critical_violation_steps": 31,
+            "longest_critical_violation_s": 20.0,
+            "reconnections": 15
+          },
+          "amr-077": {
+            "mean_service": 0.5905156877949025,
+            "critical_violation_steps": 38,
+            "longest_critical_violation_s": 25.0,
+            "reconnections": 16
+          },
+          "amr-078": {
+            "mean_service": 0.508195836315338,
+            "critical_violation_steps": 50,
+            "longest_critical_violation_s": 70.0,
+            "reconnections": 19
+          },
+          "amr-079": {
+            "mean_service": 0.6908640211948824,
+            "critical_violation_steps": 34,
+            "longest_critical_violation_s": 25.0,
+            "reconnections": 15
+          },
+          "amr-080": {
+            "mean_service": 0.6583491102134923,
+            "critical_violation_steps": 32,
+            "longest_critical_violation_s": 25.0,
+            "reconnections": 14
+          },
+          "amr-081": {
+            "mean_service": 0.7098490401286986,
+            "critical_violation_steps": 32,
+            "longest_critical_violation_s": 35.0,
+            "reconnections": 14
+          },
+          "amr-082": {
+            "mean_service": 0.683306159473898,
+            "critical_violation_steps": 35,
+            "longest_critical_violation_s": 35.0,
+            "reconnections": 17
+          },
+          "amr-083": {
+            "mean_service": 0.5730737020951515,
+            "critical_violation_steps": 42,
+            "longest_critical_violation_s": 35.0,
+            "reconnections": 15
+          },
+          "amr-084": {
+            "mean_service": 0.6724863600610888,
+            "critical_violation_steps": 29,
+            "longest_critical_violation_s": 30.0,
+            "reconnections": 15
+          },
+          "amr-085": {
+            "mean_service": 0.5312714651373137,
+            "critical_violation_steps": 48,
+            "longest_critical_violation_s": 40.0,
+            "reconnections": 20
+          },
+          "amr-086": {
+            "mean_service": 0.689481162692742,
+            "critical_violation_steps": 36,
+            "longest_critical_violation_s": 65.0,
+            "reconnections": 16
+          },
+          "amr-087": {
+            "mean_service": 0.5360278467006092,
+            "critical_violation_steps": 41,
+            "longest_critical_violation_s": 40.0,
+            "reconnections": 15
+          },
+          "amr-088": {
+            "mean_service": 0.7012873378183101,
+            "critical_violation_steps": 22,
+            "longest_critical_violation_s": 15.0,
+            "reconnections": 14
+          },
+          "amr-089": {
+            "mean_service": 0.6160400424593447,
+            "critical_violation_steps": 38,
+            "longest_critical_violation_s": 35.0,
+            "reconnections": 14
+          },
+          "amr-090": {
+            "mean_service": 0.61951720184953,
+            "critical_violation_steps": 39,
+            "longest_critical_violation_s": 35.0,
+            "reconnections": 17
+          },
+          "amr-091": {
+            "mean_service": 0.695504030994024,
+            "critical_violation_steps": 37,
+            "longest_critical_violation_s": 25.0,
+            "reconnections": 17
+          },
+          "amr-092": {
+            "mean_service": 0.6152336114527813,
+            "critical_violation_steps": 39,
+            "longest_critical_violation_s": 40.0,
+            "reconnections": 17
+          },
+          "amr-093": {
+            "mean_service": 0.6531024095468895,
+            "critical_violation_steps": 33,
+            "longest_critical_violation_s": 35.0,
+            "reconnections": 16
+          },
+          "amr-094": {
+            "mean_service": 0.7121096987030886,
+            "critical_violation_steps": 26,
+            "longest_critical_violation_s": 25.0,
+            "reconnections": 13
+          },
+          "amr-095": {
+            "mean_service": 0.5985695231199503,
+            "critical_violation_steps": 36,
+            "longest_critical_violation_s": 25.0,
+            "reconnections": 15
+          },
+          "amr-096": {
+            "mean_service": 0.5754508622555307,
+            "critical_violation_steps": 36,
+            "longest_critical_violation_s": 30.0,
+            "reconnections": 15
+          },
+          "amr-097": {
+            "mean_service": 0.49946415374660674,
+            "critical_violation_steps": 51,
+            "longest_critical_violation_s": 35.0,
+            "reconnections": 17
+          },
+          "amr-098": {
+            "mean_service": 0.5491043879177722,
+            "critical_violation_steps": 49,
+            "longest_critical_violation_s": 55.0,
+            "reconnections": 16
+          },
+          "amr-099": {
+            "mean_service": 0.5687884212386186,
+            "critical_violation_steps": 36,
+            "longest_critical_violation_s": 25.0,
+            "reconnections": 17
+          },
+          "amr-100": {
+            "mean_service": 0.6332825240454765,
+            "critical_violation_steps": 30,
+            "longest_critical_violation_s": 20.0,
+            "reconnections": 13
+          }
+        }
+      },
+      "decisions": [
+        {
+          "time_s": 15,
+          "choice": 1,
+          "moves": 38,
+          "compute_ms": 1.6714399971533567
+        },
+        {
+          "time_s": 45,
+          "choice": 1,
+          "moves": 90,
+          "compute_ms": 3.601628999604145
+        },
+        {
+          "time_s": 75,
+          "choice": 1,
+          "moves": 86,
+          "compute_ms": 1.0686010027711745
+        },
+        {
+          "time_s": 105,
+          "choice": 1,
+          "moves": 77,
+          "compute_ms": 0.7675769993511494
+        },
+        {
+          "time_s": 135,
+          "choice": 1,
+          "moves": 80,
+          "compute_ms": 0.7553290015493985
+        },
+        {
+          "time_s": 165,
+          "choice": 1,
+          "moves": 81,
+          "compute_ms": 0.9876689982775133
+        },
+        {
+          "time_s": 195,
+          "choice": 1,
+          "moves": 83,
+          "compute_ms": 1.1330779998388607
+        },
+        {
+          "time_s": 225,
+          "choice": 1,
+          "moves": 78,
+          "compute_ms": 3.9373889994749334
+        },
+        {
+          "time_s": 255,
+          "choice": 1,
+          "moves": 80,
+          "compute_ms": 0.7212900018203072
+        },
+        {
+          "time_s": 285,
+          "choice": 1,
+          "moves": 70,
+          "compute_ms": 0.9311609974247403
+        },
+        {
+          "time_s": 315,
+          "choice": 1,
+          "moves": 86,
+          "compute_ms": 0.8188300016627181
+        },
+        {
+          "time_s": 345,
+          "choice": 1,
+          "moves": 82,
+          "compute_ms": 1.0250349987472873
+        },
+        {
+          "time_s": 375,
+          "choice": 1,
+          "moves": 79,
+          "compute_ms": 1.2247590020706411
+        },
+        {
+          "time_s": 405,
+          "choice": 1,
+          "moves": 80,
+          "compute_ms": 0.9226089969160967
+        },
+        {
+          "time_s": 435,
+          "choice": 1,
+          "moves": 80,
+          "compute_ms": 0.8365020003111567
+        },
+        {
+          "time_s": 465,
+          "choice": 1,
+          "moves": 81,
+          "compute_ms": 0.7325650003622286
+        },
+        {
+          "time_s": 495,
+          "choice": 1,
+          "moves": 80,
+          "compute_ms": 0.7265960011864081
+        },
+        {
+          "time_s": 525,
+          "choice": 1,
+          "moves": 80,
+          "compute_ms": 1.11968899727799
+        },
+        {
+          "time_s": 555,
+          "choice": 1,
+          "moves": 77,
+          "compute_ms": 1.1996199973509647
+        },
+        {
+          "time_s": 585,
+          "choice": 1,
+          "moves": 72,
+          "compute_ms": 1.324859000305878
+        }
+      ],
+      "compute_ms_mean": 1.2753113496728474,
+      "compute_ms_p95": 3.618416999597685,
+      "limits": [
+        "Sensor collection is simulated and scan interruption is not charged in this rollout",
+        "Gaussian scan noise and stochastic blockage; no real vehicle or network transport",
+        "Learned models predict 5 s outcomes while decisions are held for 30 s; horizon mismatch is explicit",
+        "Objective is fleet delivered data, not the original language-mission schedule"
+      ]
+    },
+    {
+      "source": "closed_loop_warehouse_simulation",
+      "seed": 131001,
+      "policy": "strongest_scan",
+      "duration_s": 600,
+      "robots": 100,
+      "decision_interval_s": 30,
+      "assumed_switch_interruption_s": 4.0,
+      "metrics": {
+        "mean_service": 0.4171461830596463,
+        "worst_decile_mean_service": 0.28674101869604685,
+        "worst_robot_mean_service": 0.24311346875003487,
+        "critical_violation_robot_steps": 3915,
+        "reconnections": 1551,
+        "per_robot": {
+          "amr-001": {
+            "mean_service": 0.3765783728380313,
+            "critical_violation_steps": 32,
+            "longest_critical_violation_s": 65.0,
+            "reconnections": 13
+          },
+          "amr-002": {
+            "mean_service": 0.3625627402586353,
+            "critical_violation_steps": 44,
+            "longest_critical_violation_s": 85.0,
+            "reconnections": 15
+          },
+          "amr-003": {
+            "mean_service": 0.42923973938799687,
+            "critical_violation_steps": 41,
+            "longest_critical_violation_s": 35.0,
+            "reconnections": 18
+          },
+          "amr-004": {
+            "mean_service": 0.37166002303801154,
+            "critical_violation_steps": 49,
+            "longest_critical_violation_s": 45.0,
+            "reconnections": 13
+          },
+          "amr-005": {
+            "mean_service": 0.35571459125993304,
+            "critical_violation_steps": 49,
+            "longest_critical_violation_s": 95.0,
+            "reconnections": 15
+          },
+          "amr-006": {
+            "mean_service": 0.3572931215295946,
+            "critical_violation_steps": 48,
+            "longest_critical_violation_s": 50.0,
+            "reconnections": 17
+          },
+          "amr-007": {
+            "mean_service": 0.5086274281190655,
+            "critical_violation_steps": 22,
+            "longest_critical_violation_s": 25.0,
+            "reconnections": 14
+          },
+          "amr-008": {
+            "mean_service": 0.42277171451265205,
+            "critical_violation_steps": 41,
+            "longest_critical_violation_s": 45.0,
+            "reconnections": 13
+          },
+          "amr-009": {
+            "mean_service": 0.4487922203463489,
+            "critical_violation_steps": 23,
+            "longest_critical_violation_s": 15.0,
+            "reconnections": 16
+          },
+          "amr-010": {
+            "mean_service": 0.39103110278564207,
+            "critical_violation_steps": 47,
+            "longest_critical_violation_s": 50.0,
+            "reconnections": 19
+          },
+          "amr-011": {
+            "mean_service": 0.25617034935796856,
+            "critical_violation_steps": 47,
+            "longest_critical_violation_s": 70.0,
+            "reconnections": 13
+          },
+          "amr-012": {
+            "mean_service": 0.6083004269804354,
+            "critical_violation_steps": 29,
+            "longest_critical_violation_s": 20.0,
+            "reconnections": 16
+          },
+          "amr-013": {
+            "mean_service": 0.4396878858041139,
+            "critical_violation_steps": 42,
+            "longest_critical_violation_s": 30.0,
+            "reconnections": 17
+          },
+          "amr-014": {
+            "mean_service": 0.35696223266571553,
+            "critical_violation_steps": 50,
+            "longest_critical_violation_s": 85.0,
+            "reconnections": 16
+          },
+          "amr-015": {
+            "mean_service": 0.36064584284777956,
+            "critical_violation_steps": 53,
+            "longest_critical_violation_s": 100.0,
+            "reconnections": 15
+          },
+          "amr-016": {
+            "mean_service": 0.5070095335279433,
+            "critical_violation_steps": 41,
+            "longest_critical_violation_s": 35.0,
+            "reconnections": 15
+          },
+          "amr-017": {
+            "mean_service": 0.48500838755023756,
+            "critical_violation_steps": 23,
+            "longest_critical_violation_s": 40.0,
+            "reconnections": 12
+          },
+          "amr-018": {
+            "mean_service": 0.501385652738096,
+            "critical_violation_steps": 24,
+            "longest_critical_violation_s": 35.0,
+            "reconnections": 13
+          },
+          "amr-019": {
+            "mean_service": 0.42862230243135413,
+            "critical_violation_steps": 28,
+            "longest_critical_violation_s": 20.0,
+            "reconnections": 17
+          },
+          "amr-020": {
+            "mean_service": 0.3547581400780472,
+            "critical_violation_steps": 40,
+            "longest_critical_violation_s": 35.0,
+            "reconnections": 18
+          },
+          "amr-021": {
+            "mean_service": 0.5013376565806259,
+            "critical_violation_steps": 30,
+            "longest_critical_violation_s": 60.0,
+            "reconnections": 13
+          },
+          "amr-022": {
+            "mean_service": 0.2698857140291171,
+            "critical_violation_steps": 50,
+            "longest_critical_violation_s": 65.0,
+            "reconnections": 12
+          },
+          "amr-023": {
+            "mean_service": 0.40514150784014347,
+            "critical_violation_steps": 46,
+            "longest_critical_violation_s": 35.0,
+            "reconnections": 17
+          },
+          "amr-024": {
+            "mean_service": 0.35046610592200905,
+            "critical_violation_steps": 32,
+            "longest_critical_violation_s": 35.0,
+            "reconnections": 16
+          },
+          "amr-025": {
+            "mean_service": 0.3572776672622288,
+            "critical_violation_steps": 57,
+            "longest_critical_violation_s": 125.0,
+            "reconnections": 16
+          },
+          "amr-026": {
+            "mean_service": 0.3395252975938988,
+            "critical_violation_steps": 43,
+            "longest_critical_violation_s": 65.0,
+            "reconnections": 14
+          },
+          "amr-027": {
+            "mean_service": 0.4717918950947407,
+            "critical_violation_steps": 38,
+            "longest_critical_violation_s": 35.0,
+            "reconnections": 18
+          },
+          "amr-028": {
+            "mean_service": 0.34348796047405333,
+            "critical_violation_steps": 41,
+            "longest_critical_violation_s": 60.0,
+            "reconnections": 13
+          },
+          "amr-029": {
+            "mean_service": 0.46213755762968056,
+            "critical_violation_steps": 31,
+            "longest_critical_violation_s": 35.0,
+            "reconnections": 16
+          },
+          "amr-030": {
+            "mean_service": 0.329194075329892,
+            "critical_violation_steps": 40,
+            "longest_critical_violation_s": 65.0,
+            "reconnections": 18
+          },
+          "amr-031": {
+            "mean_service": 0.4142403327603835,
+            "critical_violation_steps": 36,
+            "longest_critical_violation_s": 35.0,
+            "reconnections": 18
+          },
+          "amr-032": {
+            "mean_service": 0.5705079386095816,
+            "critical_violation_steps": 40,
+            "longest_critical_violation_s": 45.0,
+            "reconnections": 16
+          },
+          "amr-033": {
+            "mean_service": 0.34803730986768694,
+            "critical_violation_steps": 43,
+            "longest_critical_violation_s": 45.0,
+            "reconnections": 18
+          },
+          "amr-034": {
+            "mean_service": 0.3366060208537586,
+            "critical_violation_steps": 32,
+            "longest_critical_violation_s": 35.0,
+            "reconnections": 17
+          },
+          "amr-035": {
+            "mean_service": 0.3334451623194748,
+            "critical_violation_steps": 40,
+            "longest_critical_violation_s": 35.0,
+            "reconnections": 19
+          },
+          "amr-036": {
+            "mean_service": 0.3482204466081256,
+            "critical_violation_steps": 45,
+            "longest_critical_violation_s": 65.0,
+            "reconnections": 17
+          },
+          "amr-037": {
+            "mean_service": 0.6447836958346844,
+            "critical_violation_steps": 29,
+            "longest_critical_violation_s": 35.0,
+            "reconnections": 14
+          },
+          "amr-038": {
+            "mean_service": 0.4119594914353015,
+            "critical_violation_steps": 41,
+            "longest_critical_violation_s": 35.0,
+            "reconnections": 16
+          },
+          "amr-039": {
+            "mean_service": 0.3704272859730704,
+            "critical_violation_steps": 53,
+            "longest_critical_violation_s": 130.0,
+            "reconnections": 15
+          },
+          "amr-040": {
+            "mean_service": 0.4103637886341659,
+            "critical_violation_steps": 41,
+            "longest_critical_violation_s": 55.0,
+            "reconnections": 13
+          },
+          "amr-041": {
+            "mean_service": 0.41291448548164256,
+            "critical_violation_steps": 32,
+            "longest_critical_violation_s": 35.0,
+            "reconnections": 16
+          },
+          "amr-042": {
+            "mean_service": 0.48016572063259666,
+            "critical_violation_steps": 39,
+            "longest_critical_violation_s": 95.0,
+            "reconnections": 16
+          },
+          "amr-043": {
+            "mean_service": 0.45710213716628967,
+            "critical_violation_steps": 42,
+            "longest_critical_violation_s": 65.0,
+            "reconnections": 14
+          },
+          "amr-044": {
+            "mean_service": 0.47158664969028113,
+            "critical_violation_steps": 30,
+            "longest_critical_violation_s": 35.0,
+            "reconnections": 15
+          },
+          "amr-045": {
+            "mean_service": 0.4575747530523801,
+            "critical_violation_steps": 48,
+            "longest_critical_violation_s": 35.0,
+            "reconnections": 16
+          },
+          "amr-046": {
+            "mean_service": 0.3317038002467442,
+            "critical_violation_steps": 59,
+            "longest_critical_violation_s": 125.0,
+            "reconnections": 13
+          },
+          "amr-047": {
+            "mean_service": 0.31772554551403415,
+            "critical_violation_steps": 45,
+            "longest_critical_violation_s": 45.0,
+            "reconnections": 17
+          },
+          "amr-048": {
+            "mean_service": 0.4253598813196454,
+            "critical_violation_steps": 32,
+            "longest_critical_violation_s": 35.0,
+            "reconnections": 17
+          },
+          "amr-049": {
+            "mean_service": 0.30113975063528975,
+            "critical_violation_steps": 54,
+            "longest_critical_violation_s": 125.0,
+            "reconnections": 15
+          },
+          "amr-050": {
+            "mean_service": 0.3730762490353671,
+            "critical_violation_steps": 41,
+            "longest_critical_violation_s": 45.0,
+            "reconnections": 17
+          },
+          "amr-051": {
+            "mean_service": 0.3928561475774958,
+            "critical_violation_steps": 42,
+            "longest_critical_violation_s": 25.0,
+            "reconnections": 18
+          },
+          "amr-052": {
+            "mean_service": 0.31443169156294637,
+            "critical_violation_steps": 45,
+            "longest_critical_violation_s": 65.0,
+            "reconnections": 14
+          },
+          "amr-053": {
+            "mean_service": 0.39707121000772577,
+            "critical_violation_steps": 49,
+            "longest_critical_violation_s": 65.0,
+            "reconnections": 18
+          },
+          "amr-054": {
+            "mean_service": 0.4851681752209528,
+            "critical_violation_steps": 24,
+            "longest_critical_violation_s": 35.0,
+            "reconnections": 14
+          },
+          "amr-055": {
+            "mean_service": 0.3390785947224373,
+            "critical_violation_steps": 47,
+            "longest_critical_violation_s": 55.0,
+            "reconnections": 17
+          },
+          "amr-056": {
+            "mean_service": 0.4155862596558627,
+            "critical_violation_steps": 46,
+            "longest_critical_violation_s": 35.0,
+            "reconnections": 17
+          },
+          "amr-057": {
+            "mean_service": 0.3524603043783969,
+            "critical_violation_steps": 42,
+            "longest_critical_violation_s": 25.0,
+            "reconnections": 17
+          },
+          "amr-058": {
+            "mean_service": 0.37320042659169744,
+            "critical_violation_steps": 38,
+            "longest_critical_violation_s": 45.0,
+            "reconnections": 14
+          },
+          "amr-059": {
+            "mean_service": 0.4326699462434395,
+            "critical_violation_steps": 21,
+            "longest_critical_violation_s": 25.0,
+            "reconnections": 13
+          },
+          "amr-060": {
+            "mean_service": 0.4148798815744924,
+            "critical_violation_steps": 49,
+            "longest_critical_violation_s": 65.0,
+            "reconnections": 17
+          },
+          "amr-061": {
+            "mean_service": 0.4797735949238039,
+            "critical_violation_steps": 31,
+            "longest_critical_violation_s": 25.0,
+            "reconnections": 17
+          },
+          "amr-062": {
+            "mean_service": 0.3901709506486221,
+            "critical_violation_steps": 43,
+            "longest_critical_violation_s": 45.0,
+            "reconnections": 18
+          },
+          "amr-063": {
+            "mean_service": 0.4413388036055739,
+            "critical_violation_steps": 32,
+            "longest_critical_violation_s": 25.0,
+            "reconnections": 15
+          },
+          "amr-064": {
+            "mean_service": 0.2712329012387957,
+            "critical_violation_steps": 34,
+            "longest_critical_violation_s": 45.0,
+            "reconnections": 13
+          },
+          "amr-065": {
+            "mean_service": 0.5199455040731502,
+            "critical_violation_steps": 34,
+            "longest_critical_violation_s": 60.0,
+            "reconnections": 15
+          },
+          "amr-066": {
+            "mean_service": 0.39599493052714624,
+            "critical_violation_steps": 27,
+            "longest_critical_violation_s": 25.0,
+            "reconnections": 13
+          },
+          "amr-067": {
+            "mean_service": 0.45454450615242936,
+            "critical_violation_steps": 47,
+            "longest_critical_violation_s": 105.0,
+            "reconnections": 16
+          },
+          "amr-068": {
+            "mean_service": 0.3901071666040175,
+            "critical_violation_steps": 39,
+            "longest_critical_violation_s": 35.0,
+            "reconnections": 17
+          },
+          "amr-069": {
+            "mean_service": 0.45606257148940343,
+            "critical_violation_steps": 33,
+            "longest_critical_violation_s": 35.0,
+            "reconnections": 15
+          },
+          "amr-070": {
+            "mean_service": 0.5159799528484733,
+            "critical_violation_steps": 40,
+            "longest_critical_violation_s": 35.0,
+            "reconnections": 16
+          },
+          "amr-071": {
+            "mean_service": 0.47879121195256696,
+            "critical_violation_steps": 33,
+            "longest_critical_violation_s": 35.0,
+            "reconnections": 16
+          },
+          "amr-072": {
+            "mean_service": 0.24311346875003487,
+            "critical_violation_steps": 34,
+            "longest_critical_violation_s": 35.0,
+            "reconnections": 15
+          },
+          "amr-073": {
+            "mean_service": 0.4870123586267413,
+            "critical_violation_steps": 30,
+            "longest_critical_violation_s": 35.0,
+            "reconnections": 16
+          },
+          "amr-074": {
+            "mean_service": 0.3257785712609026,
+            "critical_violation_steps": 35,
+            "longest_critical_violation_s": 25.0,
+            "reconnections": 15
+          },
+          "amr-075": {
+            "mean_service": 0.48705722301176707,
+            "critical_violation_steps": 42,
+            "longest_critical_violation_s": 65.0,
+            "reconnections": 18
+          },
+          "amr-076": {
+            "mean_service": 0.4879384510511538,
+            "critical_violation_steps": 31,
+            "longest_critical_violation_s": 65.0,
+            "reconnections": 13
+          },
+          "amr-077": {
+            "mean_service": 0.40139425845336046,
+            "critical_violation_steps": 51,
+            "longest_critical_violation_s": 50.0,
+            "reconnections": 17
+          },
+          "amr-078": {
+            "mean_service": 0.517654092095746,
+            "critical_violation_steps": 62,
+            "longest_critical_violation_s": 95.0,
+            "reconnections": 16
+          },
+          "amr-079": {
+            "mean_service": 0.5637018376694004,
+            "critical_violation_steps": 25,
+            "longest_critical_violation_s": 35.0,
+            "reconnections": 13
+          },
+          "amr-080": {
+            "mean_service": 0.6112047780593141,
+            "critical_violation_steps": 22,
+            "longest_critical_violation_s": 30.0,
+            "reconnections": 15
+          },
+          "amr-081": {
+            "mean_service": 0.332622619144461,
+            "critical_violation_steps": 40,
+            "longest_critical_violation_s": 50.0,
+            "reconnections": 15
+          },
+          "amr-082": {
+            "mean_service": 0.28648650301685,
+            "critical_violation_steps": 42,
+            "longest_critical_violation_s": 50.0,
+            "reconnections": 14
+          },
+          "amr-083": {
+            "mean_service": 0.4466653424106959,
+            "critical_violation_steps": 50,
+            "longest_critical_violation_s": 65.0,
+            "reconnections": 16
+          },
+          "amr-084": {
+            "mean_service": 0.4515875042165763,
+            "critical_violation_steps": 35,
+            "longest_critical_violation_s": 35.0,
+            "reconnections": 14
+          },
+          "amr-085": {
+            "mean_service": 0.5496150603060342,
+            "critical_violation_steps": 24,
+            "longest_critical_violation_s": 20.0,
+            "reconnections": 14
+          },
+          "amr-086": {
+            "mean_service": 0.5180780298564961,
+            "critical_violation_steps": 33,
+            "longest_critical_violation_s": 35.0,
+            "reconnections": 16
+          },
+          "amr-087": {
+            "mean_service": 0.44307647133490313,
+            "critical_violation_steps": 33,
+            "longest_critical_violation_s": 35.0,
+            "reconnections": 14
+          },
+          "amr-088": {
+            "mean_service": 0.3206147441810042,
+            "critical_violation_steps": 45,
+            "longest_critical_violation_s": 65.0,
+            "reconnections": 14
+          },
+          "amr-089": {
+            "mean_service": 0.2866095186744273,
+            "critical_violation_steps": 63,
+            "longest_critical_violation_s": 95.0,
+            "reconnections": 13
+          },
+          "amr-090": {
+            "mean_service": 0.4228856091899501,
+            "critical_violation_steps": 38,
+            "longest_critical_violation_s": 35.0,
+            "reconnections": 17
+          },
+          "amr-091": {
+            "mean_service": 0.34854866808133583,
+            "critical_violation_steps": 53,
+            "longest_critical_violation_s": 60.0,
+            "reconnections": 14
+          },
+          "amr-092": {
+            "mean_service": 0.4275097620956437,
+            "critical_violation_steps": 38,
+            "longest_critical_violation_s": 35.0,
+            "reconnections": 15
+          },
+          "amr-093": {
+            "mean_service": 0.37955529689588,
+            "critical_violation_steps": 41,
+            "longest_critical_violation_s": 35.0,
+            "reconnections": 16
+          },
+          "amr-094": {
+            "mean_service": 0.5172352579491172,
+            "critical_violation_steps": 31,
+            "longest_critical_violation_s": 35.0,
+            "reconnections": 15
+          },
+          "amr-095": {
+            "mean_service": 0.47842787907024836,
+            "critical_violation_steps": 33,
+            "longest_critical_violation_s": 35.0,
+            "reconnections": 15
+          },
+          "amr-096": {
+            "mean_service": 0.4065088758624579,
+            "critical_violation_steps": 30,
+            "longest_critical_violation_s": 25.0,
+            "reconnections": 19
+          },
+          "amr-097": {
+            "mean_service": 0.520660727521544,
+            "critical_violation_steps": 34,
+            "longest_critical_violation_s": 35.0,
+            "reconnections": 19
+          },
+          "amr-098": {
+            "mean_service": 0.4543306967134185,
+            "critical_violation_steps": 38,
+            "longest_critical_violation_s": 35.0,
+            "reconnections": 16
+          },
+          "amr-099": {
+            "mean_service": 0.44895248975585894,
+            "critical_violation_steps": 45,
+            "longest_critical_violation_s": 35.0,
+            "reconnections": 15
+          },
+          "amr-100": {
+            "mean_service": 0.46843978762536803,
+            "critical_violation_steps": 38,
+            "longest_critical_violation_s": 35.0,
+            "reconnections": 15
+          }
+        }
+      },
+      "decisions": [
+        {
+          "time_s": 15,
+          "choice": 1,
+          "moves": 56,
+          "compute_ms": 1.2720289996650536
+        },
+        {
+          "time_s": 45,
+          "choice": 1,
+          "moves": 89,
+          "compute_ms": 1.2191400019219145
+        },
+        {
+          "time_s": 75,
+          "choice": 1,
+          "moves": 82,
+          "compute_ms": 0.7481590000679716
+        },
+        {
+          "time_s": 105,
+          "choice": 1,
+          "moves": 76,
+          "compute_ms": 1.3412640000751708
+        },
+        {
+          "time_s": 135,
+          "choice": 1,
+          "moves": 79,
+          "compute_ms": 0.8300929985125549
+        },
+        {
+          "time_s": 165,
+          "choice": 1,
+          "moves": 80,
+          "compute_ms": 0.7303620004677214
+        },
+        {
+          "time_s": 195,
+          "choice": 1,
+          "moves": 74,
+          "compute_ms": 0.7499619969166815
+        },
+        {
+          "time_s": 225,
+          "choice": 1,
+          "moves": 80,
+          "compute_ms": 1.0532589985814411
+        },
+        {
+          "time_s": 255,
+          "choice": 1,
+          "moves": 76,
+          "compute_ms": 0.7699010020587593
+        },
+        {
+          "time_s": 285,
+          "choice": 1,
+          "moves": 80,
+          "compute_ms": 1.3344629987841472
+        },
+        {
+          "time_s": 315,
+          "choice": 1,
+          "moves": 75,
+          "compute_ms": 0.7504319983127061
+        },
+        {
+          "time_s": 345,
+          "choice": 1,
+          "moves": 77,
+          "compute_ms": 1.3580190025095362
+        },
+        {
+          "time_s": 375,
+          "choice": 1,
+          "moves": 82,
+          "compute_ms": 1.420833999873139
+        },
+        {
+          "time_s": 405,
+          "choice": 1,
+          "moves": 82,
+          "compute_ms": 0.7239629994728602
+        },
+        {
+          "time_s": 435,
+          "choice": 1,
+          "moves": 83,
+          "compute_ms": 0.7344080004259013
+        },
+        {
+          "time_s": 465,
+          "choice": 1,
+          "moves": 73,
+          "compute_ms": 0.8477289993606973
+        },
+        {
+          "time_s": 495,
+          "choice": 1,
+          "moves": 74,
+          "compute_ms": 0.7636730006197467
+        },
+        {
+          "time_s": 525,
+          "choice": 1,
+          "moves": 82,
+          "compute_ms": 0.7788850016368087
+        },
+        {
+          "time_s": 555,
+          "choice": 1,
+          "moves": 80,
+          "compute_ms": 0.7370929997705389
+        },
+        {
+          "time_s": 585,
+          "choice": 1,
+          "moves": 71,
+          "compute_ms": 0.7281190009962302
+        }
+      ],
+      "compute_ms_mean": 0.944589350001479,
+      "compute_ms_p95": 1.3611597523777164,
+      "limits": [
+        "Sensor collection is simulated and scan interruption is not charged in this rollout",
+        "Gaussian scan noise and stochastic blockage; no real vehicle or network transport",
+        "Learned models predict 5 s outcomes while decisions are held for 30 s; horizon mismatch is explicit",
+        "Objective is fleet delivered data, not the original language-mission schedule"
+      ]
+    },
+    {
+      "source": "closed_loop_warehouse_simulation",
+      "seed": 131002,
+      "policy": "strongest_scan",
+      "duration_s": 600,
+      "robots": 100,
+      "decision_interval_s": 30,
+      "assumed_switch_interruption_s": 4.0,
+      "metrics": {
+        "mean_service": 0.6054630567196765,
+        "worst_decile_mean_service": 0.4648566811827191,
+        "worst_robot_mean_service": 0.44195697541933665,
+        "critical_violation_robot_steps": 3451,
+        "reconnections": 1598,
+        "per_robot": {
+          "amr-001": {
+            "mean_service": 0.6414710389750876,
+            "critical_violation_steps": 30,
+            "longest_critical_violation_s": 20.0,
+            "reconnections": 14
+          },
+          "amr-002": {
+            "mean_service": 0.5634045031357335,
+            "critical_violation_steps": 32,
+            "longest_critical_violation_s": 20.0,
+            "reconnections": 15
+          },
+          "amr-003": {
+            "mean_service": 0.5792371475135207,
+            "critical_violation_steps": 28,
+            "longest_critical_violation_s": 20.0,
+            "reconnections": 14
+          },
+          "amr-004": {
+            "mean_service": 0.6129498719945533,
+            "critical_violation_steps": 35,
+            "longest_critical_violation_s": 25.0,
+            "reconnections": 14
+          },
+          "amr-005": {
+            "mean_service": 0.5156953092783672,
+            "critical_violation_steps": 44,
+            "longest_critical_violation_s": 45.0,
+            "reconnections": 18
+          },
+          "amr-006": {
+            "mean_service": 0.6204112636479977,
+            "critical_violation_steps": 29,
+            "longest_critical_violation_s": 15.0,
+            "reconnections": 15
+          },
+          "amr-007": {
+            "mean_service": 0.7293287968460065,
+            "critical_violation_steps": 30,
+            "longest_critical_violation_s": 15.0,
+            "reconnections": 14
+          },
+          "amr-008": {
+            "mean_service": 0.5761082503879557,
+            "critical_violation_steps": 36,
+            "longest_critical_violation_s": 30.0,
+            "reconnections": 15
+          },
+          "amr-009": {
+            "mean_service": 0.5131053663399342,
+            "critical_violation_steps": 38,
+            "longest_critical_violation_s": 35.0,
+            "reconnections": 17
+          },
+          "amr-010": {
+            "mean_service": 0.6648663756000782,
+            "critical_violation_steps": 32,
+            "longest_critical_violation_s": 20.0,
+            "reconnections": 15
+          },
+          "amr-011": {
+            "mean_service": 0.5081652052082762,
+            "critical_violation_steps": 35,
+            "longest_critical_violation_s": 40.0,
+            "reconnections": 18
+          },
+          "amr-012": {
+            "mean_service": 0.7409387418460965,
+            "critical_violation_steps": 29,
+            "longest_critical_violation_s": 25.0,
+            "reconnections": 17
+          },
+          "amr-013": {
+            "mean_service": 0.6559174570420317,
+            "critical_violation_steps": 40,
+            "longest_critical_violation_s": 25.0,
+            "reconnections": 16
+          },
+          "amr-014": {
+            "mean_service": 0.6188263211750485,
+            "critical_violation_steps": 29,
+            "longest_critical_violation_s": 20.0,
+            "reconnections": 18
+          },
+          "amr-015": {
+            "mean_service": 0.4692902124310115,
+            "critical_violation_steps": 41,
+            "longest_critical_violation_s": 40.0,
+            "reconnections": 15
+          },
+          "amr-016": {
+            "mean_service": 0.7553760213512896,
+            "critical_violation_steps": 18,
+            "longest_critical_violation_s": 10.0,
+            "reconnections": 14
+          },
+          "amr-017": {
+            "mean_service": 0.6374630855848442,
+            "critical_violation_steps": 34,
+            "longest_critical_violation_s": 35.0,
+            "reconnections": 17
+          },
+          "amr-018": {
+            "mean_service": 0.7284830014807658,
+            "critical_violation_steps": 22,
+            "longest_critical_violation_s": 15.0,
+            "reconnections": 15
+          },
+          "amr-019": {
+            "mean_service": 0.6295274607840106,
+            "critical_violation_steps": 34,
+            "longest_critical_violation_s": 20.0,
+            "reconnections": 16
+          },
+          "amr-020": {
+            "mean_service": 0.6694557509065583,
+            "critical_violation_steps": 35,
+            "longest_critical_violation_s": 20.0,
+            "reconnections": 17
+          },
+          "amr-021": {
+            "mean_service": 0.5958402513247345,
+            "critical_violation_steps": 43,
+            "longest_critical_violation_s": 30.0,
+            "reconnections": 18
+          },
+          "amr-022": {
+            "mean_service": 0.6979051618492383,
+            "critical_violation_steps": 28,
+            "longest_critical_violation_s": 25.0,
+            "reconnections": 12
+          },
+          "amr-023": {
+            "mean_service": 0.6155244034444308,
+            "critical_violation_steps": 36,
+            "longest_critical_violation_s": 40.0,
+            "reconnections": 19
+          },
+          "amr-024": {
+            "mean_service": 0.49704130493779847,
+            "critical_violation_steps": 43,
+            "longest_critical_violation_s": 35.0,
+            "reconnections": 16
+          },
+          "amr-025": {
+            "mean_service": 0.5126892477285901,
+            "critical_violation_steps": 42,
+            "longest_critical_violation_s": 40.0,
+            "reconnections": 14
+          },
+          "amr-026": {
+            "mean_service": 0.5436064055374293,
+            "critical_violation_steps": 43,
+            "longest_critical_violation_s": 35.0,
+            "reconnections": 18
+          },
+          "amr-027": {
+            "mean_service": 0.4949341729864969,
+            "critical_violation_steps": 43,
+            "longest_critical_violation_s": 35.0,
+            "reconnections": 16
+          },
+          "amr-028": {
+            "mean_service": 0.6385744024016822,
+            "critical_violation_steps": 27,
+            "longest_critical_violation_s": 20.0,
+            "reconnections": 18
+          },
+          "amr-029": {
+            "mean_service": 0.5463122535389869,
+            "critical_violation_steps": 45,
+            "longest_critical_violation_s": 50.0,
+            "reconnections": 16
+          },
+          "amr-030": {
+            "mean_service": 0.4527556733030791,
+            "critical_violation_steps": 40,
+            "longest_critical_violation_s": 25.0,
+            "reconnections": 17
+          },
+          "amr-031": {
+            "mean_service": 0.6151252801838545,
+            "critical_violation_steps": 33,
+            "longest_critical_violation_s": 35.0,
+            "reconnections": 15
+          },
+          "amr-032": {
+            "mean_service": 0.5886518542136733,
+            "critical_violation_steps": 38,
+            "longest_critical_violation_s": 15.0,
+            "reconnections": 17
+          },
+          "amr-033": {
+            "mean_service": 0.5942234558455961,
+            "critical_violation_steps": 44,
+            "longest_critical_violation_s": 30.0,
+            "reconnections": 14
+          },
+          "amr-034": {
+            "mean_service": 0.7019760043452531,
+            "critical_violation_steps": 31,
+            "longest_critical_violation_s": 25.0,
+            "reconnections": 17
+          },
+          "amr-035": {
+            "mean_service": 0.4587425665552246,
+            "critical_violation_steps": 41,
+            "longest_critical_violation_s": 35.0,
+            "reconnections": 16
+          },
+          "amr-036": {
+            "mean_service": 0.6822285217534874,
+            "critical_violation_steps": 31,
+            "longest_critical_violation_s": 35.0,
+            "reconnections": 17
+          },
+          "amr-037": {
+            "mean_service": 0.48800599362865327,
+            "critical_violation_steps": 40,
+            "longest_critical_violation_s": 30.0,
+            "reconnections": 17
+          },
+          "amr-038": {
+            "mean_service": 0.66795990158235,
+            "critical_violation_steps": 27,
+            "longest_critical_violation_s": 25.0,
+            "reconnections": 15
+          },
+          "amr-039": {
+            "mean_service": 0.7122120018823086,
+            "critical_violation_steps": 31,
+            "longest_critical_violation_s": 25.0,
+            "reconnections": 18
+          },
+          "amr-040": {
+            "mean_service": 0.45418569428909067,
+            "critical_violation_steps": 18,
+            "longest_critical_violation_s": 30.0,
+            "reconnections": 9
+          },
+          "amr-041": {
+            "mean_service": 0.44195697541933665,
+            "critical_violation_steps": 40,
+            "longest_critical_violation_s": 25.0,
+            "reconnections": 16
+          },
+          "amr-042": {
+            "mean_service": 0.7642823952832792,
+            "critical_violation_steps": 25,
+            "longest_critical_violation_s": 20.0,
+            "reconnections": 14
+          },
+          "amr-043": {
+            "mean_service": 0.6283098232895482,
+            "critical_violation_steps": 38,
+            "longest_critical_violation_s": 20.0,
+            "reconnections": 18
+          },
+          "amr-044": {
+            "mean_service": 0.6027969059233971,
+            "critical_violation_steps": 31,
+            "longest_critical_violation_s": 20.0,
+            "reconnections": 15
+          },
+          "amr-045": {
+            "mean_service": 0.5603572144375352,
+            "critical_violation_steps": 38,
+            "longest_critical_violation_s": 25.0,
+            "reconnections": 19
+          },
+          "amr-046": {
+            "mean_service": 0.5188463889555145,
+            "critical_violation_steps": 43,
+            "longest_critical_violation_s": 50.0,
+            "reconnections": 19
+          },
+          "amr-047": {
+            "mean_service": 0.6723690216157279,
+            "critical_violation_steps": 30,
+            "longest_critical_violation_s": 25.0,
+            "reconnections": 17
+          },
+          "amr-048": {
+            "mean_service": 0.5720075729740842,
+            "critical_violation_steps": 36,
+            "longest_critical_violation_s": 25.0,
+            "reconnections": 16
+          },
+          "amr-049": {
+            "mean_service": 0.5893046648417589,
+            "critical_violation_steps": 44,
+            "longest_critical_violation_s": 20.0,
+            "reconnections": 17
+          },
+          "amr-050": {
+            "mean_service": 0.45465610827694874,
+            "critical_violation_steps": 56,
+            "longest_critical_violation_s": 65.0,
+            "reconnections": 17
+          },
+          "amr-051": {
+            "mean_service": 0.5984436202433336,
+            "critical_violation_steps": 43,
+            "longest_critical_violation_s": 20.0,
+            "reconnections": 18
+          },
+          "amr-052": {
+            "mean_service": 0.6857193958750417,
+            "critical_violation_steps": 27,
+            "longest_critical_violation_s": 10.0,
+            "reconnections": 16
+          },
+          "amr-053": {
+            "mean_service": 0.5626374346747756,
+            "critical_violation_steps": 38,
+            "longest_critical_violation_s": 30.0,
+            "reconnections": 16
+          },
+          "amr-054": {
+            "mean_service": 0.5331913804488791,
+            "critical_violation_steps": 43,
+            "longest_critical_violation_s": 25.0,
+            "reconnections": 17
+          },
+          "amr-055": {
+            "mean_service": 0.5372635658001388,
+            "critical_violation_steps": 34,
+            "longest_critical_violation_s": 25.0,
+            "reconnections": 17
+          },
+          "amr-056": {
+            "mean_service": 0.7593716945930425,
+            "critical_violation_steps": 22,
+            "longest_critical_violation_s": 15.0,
+            "reconnections": 16
+          },
+          "amr-057": {
+            "mean_service": 0.5134983416553767,
+            "critical_violation_steps": 40,
+            "longest_critical_violation_s": 25.0,
+            "reconnections": 17
+          },
+          "amr-058": {
+            "mean_service": 0.616094016551848,
+            "critical_violation_steps": 37,
+            "longest_critical_violation_s": 25.0,
+            "reconnections": 16
+          },
+          "amr-059": {
+            "mean_service": 0.6180847312888813,
+            "critical_violation_steps": 36,
+            "longest_critical_violation_s": 20.0,
+            "reconnections": 16
+          },
+          "amr-060": {
+            "mean_service": 0.6693221087943271,
+            "critical_violation_steps": 28,
+            "longest_critical_violation_s": 20.0,
+            "reconnections": 12
+          },
+          "amr-061": {
+            "mean_service": 0.7166794734597725,
+            "critical_violation_steps": 25,
+            "longest_critical_violation_s": 20.0,
+            "reconnections": 12
+          },
+          "amr-062": {
+            "mean_service": 0.4733563912142305,
+            "critical_violation_steps": 39,
+            "longest_critical_violation_s": 25.0,
+            "reconnections": 15
+          },
+          "amr-063": {
+            "mean_service": 0.6454310968097888,
+            "critical_violation_steps": 36,
+            "longest_critical_violation_s": 35.0,
+            "reconnections": 15
+          },
+          "amr-064": {
+            "mean_service": 0.7516266410939265,
+            "critical_violation_steps": 16,
+            "longest_critical_violation_s": 15.0,
+            "reconnections": 13
+          },
+          "amr-065": {
+            "mean_service": 0.6218198007458721,
+            "critical_violation_steps": 36,
+            "longest_critical_violation_s": 25.0,
+            "reconnections": 19
+          },
+          "amr-066": {
+            "mean_service": 0.6136294828210179,
+            "critical_violation_steps": 39,
+            "longest_critical_violation_s": 25.0,
+            "reconnections": 18
+          },
+          "amr-067": {
+            "mean_service": 0.571010347320135,
+            "critical_violation_steps": 30,
+            "longest_critical_violation_s": 20.0,
+            "reconnections": 15
+          },
+          "amr-068": {
+            "mean_service": 0.6803959220182941,
+            "critical_violation_steps": 27,
+            "longest_critical_violation_s": 35.0,
+            "reconnections": 18
+          },
+          "amr-069": {
+            "mean_service": 0.5342652187462062,
+            "critical_violation_steps": 31,
+            "longest_critical_violation_s": 35.0,
+            "reconnections": 14
+          },
+          "amr-070": {
+            "mean_service": 0.6921249936261502,
+            "critical_violation_steps": 19,
+            "longest_critical_violation_s": 15.0,
+            "reconnections": 13
+          },
+          "amr-071": {
+            "mean_service": 0.5126406762415534,
+            "critical_violation_steps": 44,
+            "longest_critical_violation_s": 30.0,
+            "reconnections": 15
+          },
+          "amr-072": {
+            "mean_service": 0.6401414228329115,
+            "critical_violation_steps": 33,
+            "longest_critical_violation_s": 20.0,
+            "reconnections": 14
+          },
+          "amr-073": {
+            "mean_service": 0.6141550665978184,
+            "critical_violation_steps": 34,
+            "longest_critical_violation_s": 35.0,
+            "reconnections": 15
+          },
+          "amr-074": {
+            "mean_service": 0.530376771237199,
+            "critical_violation_steps": 46,
+            "longest_critical_violation_s": 50.0,
+            "reconnections": 16
+          },
+          "amr-075": {
+            "mean_service": 0.46876125477436886,
+            "critical_violation_steps": 47,
+            "longest_critical_violation_s": 35.0,
+            "reconnections": 17
+          },
+          "amr-076": {
+            "mean_service": 0.5761582889216827,
+            "critical_violation_steps": 35,
+            "longest_critical_violation_s": 25.0,
+            "reconnections": 18
+          },
+          "amr-077": {
+            "mean_service": 0.7075175234133166,
+            "critical_violation_steps": 29,
+            "longest_critical_violation_s": 10.0,
+            "reconnections": 19
+          },
+          "amr-078": {
+            "mean_service": 0.8164049933489508,
+            "critical_violation_steps": 25,
+            "longest_critical_violation_s": 20.0,
+            "reconnections": 18
+          },
+          "amr-079": {
+            "mean_service": 0.6242715693176405,
+            "critical_violation_steps": 38,
+            "longest_critical_violation_s": 40.0,
+            "reconnections": 18
+          },
+          "amr-080": {
+            "mean_service": 0.5339636258127994,
+            "critical_violation_steps": 48,
+            "longest_critical_violation_s": 35.0,
+            "reconnections": 17
+          },
+          "amr-081": {
+            "mean_service": 0.668193500150228,
+            "critical_violation_steps": 30,
+            "longest_critical_violation_s": 35.0,
+            "reconnections": 17
+          },
+          "amr-082": {
+            "mean_service": 0.55738403710836,
+            "critical_violation_steps": 32,
+            "longest_critical_violation_s": 20.0,
+            "reconnections": 16
+          },
+          "amr-083": {
+            "mean_service": 0.5990195532421144,
+            "critical_violation_steps": 32,
+            "longest_critical_violation_s": 25.0,
+            "reconnections": 13
+          },
+          "amr-084": {
+            "mean_service": 0.7358825577582178,
+            "critical_violation_steps": 25,
+            "longest_critical_violation_s": 20.0,
+            "reconnections": 17
+          },
+          "amr-085": {
+            "mean_service": 0.5663094747903835,
+            "critical_violation_steps": 31,
+            "longest_critical_violation_s": 25.0,
+            "reconnections": 13
+          },
+          "amr-086": {
+            "mean_service": 0.697484316946608,
+            "critical_violation_steps": 23,
+            "longest_critical_violation_s": 15.0,
+            "reconnections": 14
+          },
+          "amr-087": {
+            "mean_service": 0.5761795652515276,
+            "critical_violation_steps": 42,
+            "longest_critical_violation_s": 50.0,
+            "reconnections": 16
+          },
+          "amr-088": {
+            "mean_service": 0.6209513372142724,
+            "critical_violation_steps": 40,
+            "longest_critical_violation_s": 25.0,
+            "reconnections": 17
+          },
+          "amr-089": {
+            "mean_service": 0.7061836392871778,
+            "critical_violation_steps": 23,
+            "longest_critical_violation_s": 20.0,
+            "reconnections": 15
+          },
+          "amr-090": {
+            "mean_service": 0.7314748527368751,
+            "critical_violation_steps": 29,
+            "longest_critical_violation_s": 25.0,
+            "reconnections": 19
+          },
+          "amr-091": {
+            "mean_service": 0.623229606094654,
+            "critical_violation_steps": 27,
+            "longest_critical_violation_s": 20.0,
+            "reconnections": 17
+          },
+          "amr-092": {
+            "mean_service": 0.4924045235805473,
+            "critical_violation_steps": 50,
+            "longest_critical_violation_s": 45.0,
+            "reconnections": 17
+          },
+          "amr-093": {
+            "mean_service": 0.6154908486651807,
+            "critical_violation_steps": 26,
+            "longest_critical_violation_s": 25.0,
+            "reconnections": 12
+          },
+          "amr-094": {
+            "mean_service": 0.4868559419352468,
+            "critical_violation_steps": 45,
+            "longest_critical_violation_s": 25.0,
+            "reconnections": 18
+          },
+          "amr-095": {
+            "mean_service": 0.6177455256635436,
+            "critical_violation_steps": 23,
+            "longest_critical_violation_s": 30.0,
+            "reconnections": 11
+          },
+          "amr-096": {
+            "mean_service": 0.6890662763925339,
+            "critical_violation_steps": 37,
+            "longest_critical_violation_s": 30.0,
+            "reconnections": 18
+          },
+          "amr-097": {
+            "mean_service": 0.6864023479415927,
+            "critical_violation_steps": 31,
+            "longest_critical_violation_s": 25.0,
+            "reconnections": 17
+          },
+          "amr-098": {
+            "mean_service": 0.5372089992821844,
+            "critical_violation_steps": 37,
+            "longest_critical_violation_s": 35.0,
+            "reconnections": 16
+          },
+          "amr-099": {
+            "mean_service": 0.6284949315345834,
+            "critical_violation_steps": 38,
+            "longest_critical_violation_s": 35.0,
+            "reconnections": 16
+          },
+          "amr-100": {
+            "mean_service": 0.49858418223428036,
+            "critical_violation_steps": 49,
+            "longest_critical_violation_s": 30.0,
+            "reconnections": 18
+          }
+        }
+      },
+      "decisions": [
+        {
+          "time_s": 15,
+          "choice": 1,
+          "moves": 54,
+          "compute_ms": 0.8138789999065921
+        },
+        {
+          "time_s": 45,
+          "choice": 1,
+          "moves": 87,
+          "compute_ms": 0.7862660022510681
+        },
+        {
+          "time_s": 75,
+          "choice": 1,
+          "moves": 86,
+          "compute_ms": 0.841068998852279
+        },
+        {
+          "time_s": 105,
+          "choice": 1,
+          "moves": 81,
+          "compute_ms": 1.0237650021736044
+        },
+        {
+          "time_s": 135,
+          "choice": 1,
+          "moves": 77,
+          "compute_ms": 0.7597670010000002
+        },
+        {
+          "time_s": 165,
+          "choice": 1,
+          "moves": 90,
+          "compute_ms": 0.7360810013778973
+        },
+        {
+          "time_s": 195,
+          "choice": 1,
+          "moves": 83,
+          "compute_ms": 0.7436930027324706
+        },
+        {
+          "time_s": 225,
+          "choice": 1,
+          "moves": 80,
+          "compute_ms": 1.1996499997621868
+        },
+        {
+          "time_s": 255,
+          "choice": 1,
+          "moves": 83,
+          "compute_ms": 0.7457960018655285
+        },
+        {
+          "time_s": 285,
+          "choice": 1,
+          "moves": 76,
+          "compute_ms": 0.9403989970451221
+        },
+        {
+          "time_s": 315,
+          "choice": 1,
+          "moves": 81,
+          "compute_ms": 1.2999919999856502
+        },
+        {
+          "time_s": 345,
+          "choice": 1,
+          "moves": 82,
+          "compute_ms": 0.706356000591768
+        },
+        {
+          "time_s": 375,
+          "choice": 1,
+          "moves": 81,
+          "compute_ms": 0.9221510008501355
+        },
+        {
+          "time_s": 405,
+          "choice": 1,
+          "moves": 79,
+          "compute_ms": 1.2460510006349068
+        },
+        {
+          "time_s": 435,
+          "choice": 1,
+          "moves": 79,
+          "compute_ms": 1.1466800024209078
+        },
+        {
+          "time_s": 465,
+          "choice": 1,
+          "moves": 82,
+          "compute_ms": 0.7316539995372295
+        },
+        {
+          "time_s": 495,
+          "choice": 1,
+          "moves": 84,
+          "compute_ms": 1.3021139966440387
+        },
+        {
+          "time_s": 525,
+          "choice": 1,
+          "moves": 76,
+          "compute_ms": 1.0807099970406853
+        },
+        {
+          "time_s": 555,
+          "choice": 1,
+          "moves": 79,
+          "compute_ms": 1.302746000874322
+        },
+        {
+          "time_s": 585,
+          "choice": 1,
+          "moves": 78,
+          "compute_ms": 0.7158999978855718
+        }
+      ],
+      "compute_ms_mean": 0.9522359501715982,
+      "compute_ms_p95": 1.3021455968555529,
+      "limits": [
+        "Sensor collection is simulated and scan interruption is not charged in this rollout",
+        "Gaussian scan noise and stochastic blockage; no real vehicle or network transport",
+        "Learned models predict 5 s outcomes while decisions are held for 30 s; horizon mismatch is explicit",
+        "Objective is fleet delivered data, not the original language-mission schedule"
+      ]
+    }
+  ],
+  "source_sha256": {
+    "scripts/benchmark_warehouse_strongest.py": "f367c8b46733689095e70371c09a5e1b2fce4dc6414bb5b841bacbd047b0d6d8",
+    "src/wirelessjev/warehouse_v2/closedloop.py": "d89903a7292206c1c744860b8b19a33bac97c2c8698a194a4199a18339532fb4"
+  },
+  "note": "Additional fixed-policy baseline; existing prospective model reports are preserved"
+}

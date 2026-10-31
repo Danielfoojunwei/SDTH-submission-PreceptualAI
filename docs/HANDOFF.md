@@ -6,7 +6,25 @@ The cloud development environment has Python 3.12, locked dependencies and a
 CPU-only test/simulation workflow. See Git history and the associated review
 branch for commit/push status; external publications are tracked separately.
 
-## Active completion scope
+## Warehouse v2 continuation
+
+The user subsequently authorised all six warehouse research directions and
+requested actual dependencies and execution. The v2 source, protocols and
+reproduction commands are in `docs/WAREHOUSE_V2.md`; interpreted results are in
+`docs/WAREHOUSE_V2_RESULTS.md`. This continuation uses the separate branch
+`codex/warehouse-v2-research`, preserving the original review branch below.
+The implementation adapts pinned ns-3 examples, executes Sionna, and runs real
+d3-lite, Qwen3.5-0.8B and Chronos-Bolt weights. It does not reproduce ANSpect
+proprietary code or use physical SmartCar measurements. Hardware requirements
+are in `docs/WAREHOUSE_HARDWARE_DATA.md`.
+
+Workspace runs are under `/workspace/training/warehouse-v2-{core,studies,factorized,generative}`.
+Use their status/receipts, archived report hashes and exact source snapshots
+before resuming anything; completed compact-model training should not restart.
+The historical large-model experiments still have one training seed. Three
+new compact-model seeds must not be reported as three original E1–E5 runs.
+
+## Original completion scope
 
 The user returned the scope to warehouse connectivity: finish WirelessJEV and
 RadioJEV E1–E5 and corrected E7. E6 remains excluded. Router, E8, JEPA/world

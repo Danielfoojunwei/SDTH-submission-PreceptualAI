@@ -14,6 +14,7 @@ dependencies = [
     "pytest>=9.1.1",
     "safetensors>=0.6",
     "scipy>=1.18.1",
+    "sionna==2.2.0",
     "torch>=2.8",
     "torchvision>=0.29.1",
     "transformers==5.17.0",
@@ -28,5 +29,7 @@ build-backend = "uv_build"
 
 [dependency-groups]
 dev = [
+    "cmake==4.4.4",
     "matplotlib>=3.11.2",
+    "ninja==1.13.2",
 ]

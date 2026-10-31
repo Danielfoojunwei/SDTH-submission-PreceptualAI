@@ -2,8 +2,29 @@
 
 The warehouse-connectivity E1–E5 and corrected E7 experiments are complete
 for one synthetic training seed. E6 is excluded. The consolidated results and completion status
-are in `docs/WAREHOUSE_RESULTS.md`. Broader foundation-model, PHY, robotics
-and space directions are deferred.
+are in `docs/WAREHOUSE_RESULTS.md`. The subsequently authorised warehouse v2
+campaign is described below; general foundation-model, custom on-air PHY,
+robotics and space extensions remain deferred.
+
+## Subsequent warehouse v2 evidence
+
+The user later authorised a separate warehouse research campaign, documented
+in `WAREHOUSE_V2.md` and `WAREHOUSE_V2_RESULTS.md`. It changes how the historical
+E2 comparison should be interpreted: a structured controlled-language reader
+and the existing numerical candidate evaluator solve this narrow historical
+mission set at zero candidate regret; the actual d3 family reader also reaches
+zero regret on answered cases, with incomplete new-mission coverage. The E2
+RadioJEV result therefore establishes superiority to the original fixed-weight
+interface, not to structured numerical planning.
+
+The v2 sensed-input and compact multitask models have three training seeds;
+the original native-radio backbone adaptations do not. The first v2 learned
+controllers fail closed-loop qualification, and their separately recorded
+handover-factorization correction is compared against the strongest-scan
+baseline on new rollout seeds. Neither greater model complexity nor better
+fleet mean service alone establishes an advantage. All v2 studies remain
+simulations/model inference, not physical-car or general foundation-model
+evidence. Keep these protocols distinct from the paper's original experiments.
 
 ## Working title
 **Typed Intent, Exact Plans: Frozen System-One Decision Models as Objective Readers for Route-Aware Wi-Fi Association of Robot Fleets**

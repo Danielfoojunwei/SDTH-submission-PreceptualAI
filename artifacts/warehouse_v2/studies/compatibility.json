@@ -1,0 +1,4434 @@
+{
+  "source": "historical_e2_simulation_replay_with_new_readers",
+  "semantics": "historical_e2_soft",
+  "summary": {
+    "controlled_language": {
+      "test": {
+        "n": 120,
+        "answered": 120,
+        "coverage": 1.0,
+        "norm_regret_answered": {
+          "mean": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ],
+          "clusters": 20,
+          "method": "scene_cluster_percentile_bootstrap"
+        }
+      },
+      "novel": {
+        "n": 120,
+        "answered": 120,
+        "coverage": 1.0,
+        "norm_regret_answered": {
+          "mean": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ],
+          "clusters": 20,
+          "method": "scene_cluster_percentile_bootstrap"
+        }
+      }
+    },
+    "d3_typed_family": {
+      "test": {
+        "n": 120,
+        "answered": 120,
+        "coverage": 1.0,
+        "norm_regret_answered": {
+          "mean": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ],
+          "clusters": 20,
+          "method": "scene_cluster_percentile_bootstrap"
+        }
+      },
+      "novel": {
+        "n": 120,
+        "answered": 100,
+        "coverage": 0.8333333333333334,
+        "norm_regret_answered": {
+          "mean": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ],
+          "clusters": 20,
+          "method": "scene_cluster_percentile_bootstrap"
+        }
+      }
+    }
+  },
+  "records": [
+    {
+      "scene": 53000,
+      "split": "test",
+      "text": "First guarantee each video stream 90% of its rate, then make the allocation as fair as possible.",
+      "reader": "controlled_language",
+      "choice": 5,
+      "norm_regret": 0.0,
+      "parse_and_select_ms": 0.787911001680186
+    },
+    {
+      "scene": 53000,
+      "split": "test",
+      "text": "First guarantee each video stream 90% of its rate, then make the allocation as fair as possible.",
+      "reader": "d3_typed_family",
+      "model_executed": true,
+      "choice": 5,
+      "norm_regret": 0.0
+    },
+    {
+      "scene": 53000,
+      "split": "test",
+      "text": "You may move up to 5 robots to new access points; use them to maximise fleet throughput.",
+      "reader": "controlled_language",
+      "choice": 0,
+      "norm_regret": 0.0,
+      "parse_and_select_ms": 0.19389600129215978
+    },
+    {
+      "scene": 53000,
+      "split": "test",
+      "text": "You may move up to 5 robots to new access points; use them to maximise fleet throughput.",
+      "reader": "d3_typed_family",
+      "model_executed": true,
+      "choice": 0,
+      "norm_regret": 0.0
+    },
+    {
+      "scene": 53000,
+      "split": "test",
+      "text": "The front half of the hall is where the work is today: serve those robots best.",
+      "reader": "controlled_language",
+      "choice": 5,
+      "norm_regret": 0.0,
+      "parse_and_select_ms": 0.17419599680579267
+    },
+    {
+      "scene": 53000,
+      "split": "test",
+      "text": "The front half of the hall is where the work is today: serve those robots best.",
+      "reader": "d3_typed_family",
+      "model_executed": true,
+      "choice": 5,
+      "norm_regret": 0.0
+    },
+    {
+      "scene": 53000,
+      "split": "test",
+      "text": "Today the work is in the back half of the hall: serve those robots best.",
+      "reader": "controlled_language",
+      "choice": 7,
+      "norm_regret": 0.0,
+      "parse_and_select_ms": 0.053361000027507544
+    },
+    {
+      "scene": 53000,
+      "split": "test",
+      "text": "Today the work is in the back half of the hall: serve those robots best.",
+      "reader": "d3_typed_family",
+      "model_executed": true,
+      "choice": 7,
+      "norm_regret": 0.0
+    },
+    {
+      "scene": 53000,
+      "split": "test",
+      "text": "Focus entirely on the least-served robot in the fleet.",
+      "reader": "controlled_language",
+      "choice": 2,
+      "norm_regret": 0.0,
+      "parse_and_select_ms": 0.03543399725458585
+    },
+    {
+      "scene": 53000,
+      "split": "test",
+      "text": "Focus entirely on the least-served robot in the fleet.",
+      "reader": "d3_typed_family",
+      "model_executed": true,
+      "choice": 2,
+      "norm_regret": 0.0
+    },
+    {
+      "scene": 53000,
+      "split": "test",
+      "text": "Keep all safety links above their floors before anything else, then deliver as much data as possible.",
+      "reader": "controlled_language",
+      "choice": 1,
+      "norm_regret": 0.0,
+      "parse_and_select_ms": 0.45071700151311234
+    },
+    {
+      "scene": 53000,
+      "split": "test",
+      "text": "Keep all safety links above their floors before anything else, then deliver as much data as possible.",
+      "reader": "d3_typed_family",
+      "model_executed": true,
+      "choice": 1,
+      "norm_regret": 0.0
+    },
+    {
+      "scene": 53000,
+      "split": "novel",
+      "text": "Each video robot must keep at least 80% of its rate; after that, be as fair as possible.",
+      "reader": "controlled_language",
+      "choice": 5,
+      "norm_regret": 0.0,
+      "parse_and_select_ms": 0.07163000191212632
+    },
+    {
+      "scene": 53000,
+      "split": "novel",
+      "text": "Each video robot must keep at least 80% of its rate; after that, be as fair as possible.",
+      "reader": "d3_typed_family",
+      "model_executed": true,
+      "choice": 5,
+      "norm_regret": 0.0
+    },
+    {
+      "scene": 53000,
+      "split": "novel",
+      "text": "Guarantee video streams 80% of their rate, then share the rest evenly.",
+      "reader": "controlled_language",
+      "choice": 5,
+      "norm_regret": 0.0,
+      "parse_and_select_ms": 0.045969998609507456
+    },
+    {
+      "scene": 53000,
+      "split": "novel",
+      "text": "Guarantee video streams 80% of their rate, then share the rest evenly.",
+      "reader": "d3_typed_family",
+      "model_executed": true,
+      "choice": 5,
+      "norm_regret": 0.0
+    },
+    {
+      "scene": 53000,
+      "split": "novel",
+      "text": "Reconnect at most 2 robots this round; within that, maximise total data.",
+      "reader": "controlled_language",
+      "choice": 6,
+      "norm_regret": 0.0,
+      "parse_and_select_ms": 0.03871900116791949
+    },
+    {
+      "scene": 53000,
+      "split": "novel",
+      "text": "Reconnect at most 2 robots this round; within that, maximise total data.",
+      "reader": "d3_typed_family",
+      "model_executed": true,
+      "choice": null,
+      "norm_regret": null,
+      "status": "deferred",
+      "error": "The semantic reader abstained"
+    },
+    {
+      "scene": 53000,
+      "split": "novel",
+      "text": "Only two BSSID switches are allowed. Get the most data inside that budget.",
+      "reader": "controlled_language",
+      "choice": 6,
+      "norm_regret": 0.0,
+      "parse_and_select_ms": 0.03445200127316639
+    },
+    {
+      "scene": 53000,
+      "split": "novel",
+      "text": "Only two BSSID switches are allowed. Get the most data inside that budget.",
+      "reader": "d3_typed_family",
+      "model_executed": true,
+      "choice": 6,
+      "norm_regret": 0.0
+    },
+    {
+      "scene": 53000,
+      "split": "novel",
+      "text": "Robots in the left half of the hall (x below 60 m) matter most; maximise their service.",
+      "reader": "controlled_language",
+      "choice": 7,
+      "norm_regret": 0.0,
+      "parse_and_select_ms": 0.05717699968954548
+    },
+    {
+      "scene": 53000,
+      "split": "novel",
+      "text": "Robots in the left half of the hall (x below 60 m) matter most; maximise their service.",
+      "reader": "d3_typed_family",
+      "model_executed": true,
+      "choice": 7,
+      "norm_regret": 0.0
+    },
+    {
+      "scene": 53000,
+      "split": "novel",
+      "text": "Prioritise robots working on the left side of the warehouse, the first 60 metres.",
+      "reader": "controlled_language",
+      "choice": 7,
+      "norm_regret": 0.0,
+      "parse_and_select_ms": 0.05237000004854053
+    },
+    {
+      "scene": 53000,
+      "split": "novel",
+      "text": "Prioritise robots working on the left side of the warehouse, the first 60 metres.",
+      "reader": "d3_typed_family",
+      "model_executed": true,
+      "choice": 7,
+      "norm_regret": 0.0
+    },
+    {
+      "scene": 53001,
+      "split": "test",
+      "text": "First guarantee each video stream 90% of its rate, then make the allocation as fair as possible.",
+      "reader": "controlled_language",
+      "choice": 7,
+      "norm_regret": 0.0,
+      "parse_and_select_ms": 0.10913699952652678
+    },
+    {
+      "scene": 53001,
+      "split": "test",
+      "text": "First guarantee each video stream 90% of its rate, then make the allocation as fair as possible.",
+      "reader": "d3_typed_family",
+      "model_executed": true,
+      "choice": 7,
+      "norm_regret": 0.0
+    },
+    {
+      "scene": 53001,
+      "split": "test",
+      "text": "You may move up to 5 robots to new access points; use them to maximise fleet throughput.",
+      "reader": "controlled_language",
+      "choice": 4,
+      "norm_regret": 0.0,
+      "parse_and_select_ms": 0.04552899918053299
+    },
+    {
+      "scene": 53001,
+      "split": "test",
+      "text": "You may move up to 5 robots to new access points; use them to maximise fleet throughput.",
+      "reader": "d3_typed_family",
+      "model_executed": true,
+      "choice": 4,
+      "norm_regret": 0.0
+    },
+    {
+      "scene": 53001,
+      "split": "test",
+      "text": "The front half of the hall is where the work is today: serve those robots best.",
+      "reader": "controlled_language",
+      "choice": 2,
+      "norm_regret": 0.0,
+      "parse_and_select_ms": 0.06246500197448768
+    },
+    {
+      "scene": 53001,
+      "split": "test",
+      "text": "The front half of the hall is where the work is today: serve those robots best.",
+      "reader": "d3_typed_family",
+      "model_executed": true,
+      "choice": 2,
+      "norm_regret": 0.0
+    },
+    {
+      "scene": 53001,
+      "split": "test",
+      "text": "Today the work is in the back half of the hall: serve those robots best.",
+      "reader": "controlled_language",
+      "choice": 7,
+      "norm_regret": 0.0,
+      "parse_and_select_ms": 0.06069300070521422
+    },
+    {
+      "scene": 53001,
+      "split": "test",
+      "text": "Today the work is in the back half of the hall: serve those robots best.",
+      "reader": "d3_typed_family",
+      "model_executed": true,
+      "choice": 7,
+      "norm_regret": 0.0
+    },
+    {
+      "scene": 53001,
+      "split": "test",
+      "text": "Focus entirely on the least-served robot in the fleet.",
+      "reader": "controlled_language",
+      "choice": 1,
+      "norm_regret": 0.0,
+      "parse_and_select_ms": 0.03452199962339364
+    },
+    {
+      "scene": 53001,
+      "split": "test",
+      "text": "Focus entirely on the least-served robot in the fleet.",
+      "reader": "d3_typed_family",
+      "model_executed": true,
+      "choice": 1,
+      "norm_regret": 0.0
+    },
+    {
+      "scene": 53001,
+      "split": "test",
+      "text": "Keep all safety links above their floors before anything else, then deliver as much data as possible.",
+      "reader": "controlled_language",
+      "choice": 5,
+      "norm_regret": 0.0,
+      "parse_and_select_ms": 0.03485300112515688
+    },
+    {
+      "scene": 53001,
+      "split": "test",
+      "text": "Keep all safety links above their floors before anything else, then deliver as much data as possible.",
+      "reader": "d3_typed_family",
+      "model_executed": true,
+      "choice": 5,
+      "norm_regret": 0.0
+    },
+    {
+      "scene": 53001,
+      "split": "novel",
+      "text": "Each video robot must keep at least 80% of its rate; after that, be as fair as possible.",
+      "reader": "controlled_language",
+      "choice": 7,
+      "norm_regret": 0.0,
+      "parse_and_select_ms": 0.04653100040741265
+    },
+    {
+      "scene": 53001,
+      "split": "novel",
+      "text": "Each video robot must keep at least 80% of its rate; after that, be as fair as possible.",
+      "reader": "d3_typed_family",
+      "model_executed": true,
+      "choice": 7,
+      "norm_regret": 0.0
+    },
+    {
+      "scene": 53001,
+      "split": "novel",
+      "text": "Guarantee video streams 80% of their rate, then share the rest evenly.",
+      "reader": "controlled_language",
+      "choice": 7,
+      "norm_regret": 0.0,
+      "parse_and_select_ms": 0.03855900285998359
+    },
+    {
+      "scene": 53001,
+      "split": "novel",
+      "text": "Guarantee video streams 80% of their rate, then share the rest evenly.",
+      "reader": "d3_typed_family",
+      "model_executed": true,
+      "choice": 7,
+      "norm_regret": 0.0
+    },
+    {
+      "scene": 53001,
+      "split": "novel",
+      "text": "Reconnect at most 2 robots this round; within that, maximise total data.",
+      "reader": "controlled_language",
+      "choice": 6,
+      "norm_regret": 0.0,
+      "parse_and_select_ms": 0.06813399886596017
+    },
+    {
+      "scene": 53001,
+      "split": "novel",
+      "text": "Reconnect at most 2 robots this round; within that, maximise total data.",
+      "reader": "d3_typed_family",
+      "model_executed": true,
+      "choice": null,
+      "norm_regret": null,
+      "status": "deferred",
+      "error": "The semantic reader abstained"
+    },
+    {
+      "scene": 53001,
+      "split": "novel",
+      "text": "Only two BSSID switches are allowed. Get the most data inside that budget.",
+      "reader": "controlled_language",
+      "choice": 6,
+      "norm_regret": 0.0,
+      "parse_and_select_ms": 0.0332000017806422
+    },
+    {
+      "scene": 53001,
+      "split": "novel",
+      "text": "Only two BSSID switches are allowed. Get the most data inside that budget.",
+      "reader": "d3_typed_family",
+      "model_executed": true,
+      "choice": 6,
+      "norm_regret": 0.0
+    },
+    {
+      "scene": 53001,
+      "split": "novel",
+      "text": "Robots in the left half of the hall (x below 60 m) matter most; maximise their service.",
+      "reader": "controlled_language",
+      "choice": 1,
+      "norm_regret": 0.0,
+      "parse_and_select_ms": 0.057697998272487894
+    },
+    {
+      "scene": 53001,
+      "split": "novel",
+      "text": "Robots in the left half of the hall (x below 60 m) matter most; maximise their service.",
+      "reader": "d3_typed_family",
+      "model_executed": true,
+      "choice": 1,
+      "norm_regret": 0.0
+    },
+    {
+      "scene": 53001,
+      "split": "novel",
+      "text": "Prioritise robots working on the left side of the warehouse, the first 60 metres.",
+      "reader": "controlled_language",
+      "choice": 1,
+      "norm_regret": 0.0,
+      "parse_and_select_ms": 0.0492349972773809
+    },
+    {
+      "scene": 53001,
+      "split": "novel",
+      "text": "Prioritise robots working on the left side of the warehouse, the first 60 metres.",
+      "reader": "d3_typed_family",
+      "model_executed": true,
+      "choice": 1,
+      "norm_regret": 0.0
+    },
+    {
+      "scene": 53002,
+      "split": "test",
+      "text": "First guarantee each video stream 90% of its rate, then make the allocation as fair as possible.",
+      "reader": "controlled_language",
+      "choice": 7,
+      "norm_regret": 0.0,
+      "parse_and_select_ms": 0.11661800090223551
+    },
+    {
+      "scene": 53002,
+      "split": "test",
+      "text": "First guarantee each video stream 90% of its rate, then make the allocation as fair as possible.",
+      "reader": "d3_typed_family",
+      "model_executed": true,
+      "choice": 7,
+      "norm_regret": 0.0
+    },
+    {
+      "scene": 53002,
+      "split": "test",
+      "text": "You may move up to 5 robots to new access points; use them to maximise fleet throughput.",
+      "reader": "controlled_language",
+      "choice": 3,
+      "norm_regret": 0.0,
+      "parse_and_select_ms": 0.04874400110566057
+    },
+    {
+      "scene": 53002,
+      "split": "test",
+      "text": "You may move up to 5 robots to new access points; use them to maximise fleet throughput.",
+      "reader": "d3_typed_family",
+      "model_executed": true,
+      "choice": 3,
+      "norm_regret": 0.0
+    },
+    {
+      "scene": 53002,
+      "split": "test",
+      "text": "The front half of the hall is where the work is today: serve those robots best.",
+      "reader": "controlled_language",
+      "choice": 1,
+      "norm_regret": 0.0,
+      "parse_and_select_ms": 0.1601839976501651
+    },
+    {
+      "scene": 53002,
+      "split": "test",
+      "text": "The front half of the hall is where the work is today: serve those robots best.",
+      "reader": "d3_typed_family",
+      "model_executed": true,
+      "choice": 1,
+      "norm_regret": 0.0
+    },
+    {
+      "scene": 53002,
+      "split": "test",
+      "text": "Today the work is in the back half of the hall: serve those robots best.",
+      "reader": "controlled_language",
+      "choice": 6,
+      "norm_regret": 0.0,
+      "parse_and_select_ms": 0.06945499990251847
+    },
+    {
+      "scene": 53002,
+      "split": "test",
+      "text": "Today the work is in the back half of the hall: serve those robots best.",
+      "reader": "d3_typed_family",
+      "model_executed": true,
+      "choice": 6,
+      "norm_regret": 0.0
+    },
+    {
+      "scene": 53002,
+      "split": "test",
+      "text": "Focus entirely on the least-served robot in the fleet.",
+      "reader": "controlled_language",
+      "choice": 1,
+      "norm_regret": 0.0,
+      "parse_and_select_ms": 0.036756002373294905
+    },
+    {
+      "scene": 53002,
+      "split": "test",
+      "text": "Focus entirely on the least-served robot in the fleet.",
+      "reader": "d3_typed_family",
+      "model_executed": true,
+      "choice": 1,
+      "norm_regret": 0.0
+    },
+    {
+      "scene": 53002,
+      "split": "test",
+      "text": "Keep all safety links above their floors before anything else, then deliver as much data as possible.",
+      "reader": "controlled_language",
+      "choice": 8,
+      "norm_regret": 0.0,
+      "parse_and_select_ms": 0.036525001632981
+    },
+    {
+      "scene": 53002,
+      "split": "test",
+      "text": "Keep all safety links above their floors before anything else, then deliver as much data as possible.",
+      "reader": "d3_typed_family",
+      "model_executed": true,
+      "choice": 8,
+      "norm_regret": 0.0
+    },
+    {
+      "scene": 53002,
+      "split": "novel",
+      "text": "Each video robot must keep at least 80% of its rate; after that, be as fair as possible.",
+      "reader": "controlled_language",
+      "choice": 7,
+      "norm_regret": 0.0,
+      "parse_and_select_ms": 0.05027699808124453
+    },
+    {
+      "scene": 53002,
+      "split": "novel",
+      "text": "Each video robot must keep at least 80% of its rate; after that, be as fair as possible.",
+      "reader": "d3_typed_family",
+      "model_executed": true,
+      "choice": 7,
+      "norm_regret": 0.0
+    },
+    {
+      "scene": 53002,
+      "split": "novel",
+      "text": "Guarantee video streams 80% of their rate, then share the rest evenly.",
+      "reader": "controlled_language",
+      "choice": 7,
+      "norm_regret": 0.0,
+      "parse_and_select_ms": 0.040901999454945326
+    },
+    {
+      "scene": 53002,
+      "split": "novel",
+      "text": "Guarantee video streams 80% of their rate, then share the rest evenly.",
+      "reader": "d3_typed_family",
+      "model_executed": true,
+      "choice": 7,
+      "norm_regret": 0.0
+    },
+    {
+      "scene": 53002,
+      "split": "novel",
+      "text": "Reconnect at most 2 robots this round; within that, maximise total data.",
+      "reader": "controlled_language",
+      "choice": 3,
+      "norm_regret": 0.0,
+      "parse_and_select_ms": 0.03619500057538971
+    },
+    {
+      "scene": 53002,
+      "split": "novel",
+      "text": "Reconnect at most 2 robots this round; within that, maximise total data.",
+      "reader": "d3_typed_family",
+      "model_executed": true,
+      "choice": null,
+      "norm_regret": null,
+      "status": "deferred",
+      "error": "The semantic reader abstained"
+    },
+    {
+      "scene": 53002,
+      "split": "novel",
+      "text": "Only two BSSID switches are allowed. Get the most data inside that budget.",
+      "reader": "controlled_language",
+      "choice": 3,
+      "norm_regret": 0.0,
+      "parse_and_select_ms": 0.033049997000489384
+    },
+    {
+      "scene": 53002,
+      "split": "novel",
+      "text": "Only two BSSID switches are allowed. Get the most data inside that budget.",
+      "reader": "d3_typed_family",
+      "model_executed": true,
+      "choice": 3,
+      "norm_regret": 0.0
+    },
+    {
+      "scene": 53002,
+      "split": "novel",
+      "text": "Robots in the left half of the hall (x below 60 m) matter most; maximise their service.",
+      "reader": "controlled_language",
+      "choice": 7,
+      "norm_regret": 0.0,
+      "parse_and_select_ms": 0.05415200212155469
+    },
+    {
+      "scene": 53002,
+      "split": "novel",
+      "text": "Robots in the left half of the hall (x below 60 m) matter most; maximise their service.",
+      "reader": "d3_typed_family",
+      "model_executed": true,
+      "choice": 7,
+      "norm_regret": 0.0
+    },
+    {
+      "scene": 53002,
+      "split": "novel",
+      "text": "Prioritise robots working on the left side of the warehouse, the first 60 metres.",
+      "reader": "controlled_language",
+      "choice": 7,
+      "norm_regret": 0.0,
+      "parse_and_select_ms": 0.051007002184633166
+    },
+    {
+      "scene": 53002,
+      "split": "novel",
+      "text": "Prioritise robots working on the left side of the warehouse, the first 60 metres.",
+      "reader": "d3_typed_family",
+      "model_executed": true,
+      "choice": 7,
+      "norm_regret": 0.0
+    },
+    {
+      "scene": 53003,
+      "split": "test",
+      "text": "First guarantee each video stream 90% of its rate, then make the allocation as fair as possible.",
+      "reader": "controlled_language",
+      "choice": 7,
+      "norm_regret": 0.0,
+      "parse_and_select_ms": 0.11467399963294156
+    },
+    {
+      "scene": 53003,
+      "split": "test",
+      "text": "First guarantee each video stream 90% of its rate, then make the allocation as fair as possible.",
+      "reader": "d3_typed_family",
+      "model_executed": true,
+      "choice": 7,
+      "norm_regret": 0.0
+    },
+    {
+      "scene": 53003,
+      "split": "test",
+      "text": "You may move up to 5 robots to new access points; use them to maximise fleet throughput.",
+      "reader": "controlled_language",
+      "choice": 5,
+      "norm_regret": 0.0,
+      "parse_and_select_ms": 0.04707199695985764
+    },
+    {
+      "scene": 53003,
+      "split": "test",
+      "text": "You may move up to 5 robots to new access points; use them to maximise fleet throughput.",
+      "reader": "d3_typed_family",
+      "model_executed": true,
+      "choice": 5,
+      "norm_regret": 0.0
+    },
+    {
+      "scene": 53003,
+      "split": "test",
+      "text": "The front half of the hall is where the work is today: serve those robots best.",
+      "reader": "controlled_language",
+      "choice": 4,
+      "norm_regret": 0.0,
+      "parse_and_select_ms": 0.0626459986960981
+    },
+    {
+      "scene": 53003,
+      "split": "test",
+      "text": "The front half of the hall is where the work is today: serve those robots best.",
+      "reader": "d3_typed_family",
+      "model_executed": true,
+      "choice": 4,
+      "norm_regret": 0.0
+    },
+    {
+      "scene": 53003,
+      "split": "test",
+      "text": "Today the work is in the back half of the hall: serve those robots best.",
+      "reader": "controlled_language",
+      "choice": 3,
+      "norm_regret": 0.0,
+      "parse_and_select_ms": 0.05067699748906307
+    },
+    {
+      "scene": 53003,
+      "split": "test",
+      "text": "Today the work is in the back half of the hall: serve those robots best.",
+      "reader": "d3_typed_family",
+      "model_executed": true,
+      "choice": 3,
+      "norm_regret": 0.0
+    },
+    {
+      "scene": 53003,
+      "split": "test",
+      "text": "Focus entirely on the least-served robot in the fleet.",
+      "reader": "controlled_language",
+      "choice": 3,
+      "norm_regret": 0.0,
+      "parse_and_select_ms": 0.03282999750808813
+    },
+    {
+      "scene": 53003,
+      "split": "test",
+      "text": "Focus entirely on the least-served robot in the fleet.",
+      "reader": "d3_typed_family",
+      "model_executed": true,
+      "choice": 3,
+      "norm_regret": 0.0
+    },
+    {
+      "scene": 53003,
+      "split": "test",
+      "text": "Keep all safety links above their floors before anything else, then deliver as much data as possible.",
+      "reader": "controlled_language",
+      "choice": 1,
+      "norm_regret": 0.0,
+      "parse_and_select_ms": 0.034943997889058664
+    },
+    {
+      "scene": 53003,
+      "split": "test",
+      "text": "Keep all safety links above their floors before anything else, then deliver as much data as possible.",
+      "reader": "d3_typed_family",
+      "model_executed": true,
+      "choice": 1,
+      "norm_regret": 0.0
+    },
+    {
+      "scene": 53003,
+      "split": "novel",
+      "text": "Each video robot must keep at least 80% of its rate; after that, be as fair as possible.",
+      "reader": "controlled_language",
+      "choice": 7,
+      "norm_regret": 0.0,
+      "parse_and_select_ms": 0.04572000034386292
+    },
+    {
+      "scene": 53003,
+      "split": "novel",
+      "text": "Each video robot must keep at least 80% of its rate; after that, be as fair as possible.",
+      "reader": "d3_typed_family",
+      "model_executed": true,
+      "choice": 7,
+      "norm_regret": 0.0
+    },
+    {
+      "scene": 53003,
+      "split": "novel",
+      "text": "Guarantee video streams 80% of their rate, then share the rest evenly.",
+      "reader": "controlled_language",
+      "choice": 7,
+      "norm_regret": 0.0,
+      "parse_and_select_ms": 0.07122799797798507
+    },
+    {
+      "scene": 53003,
+      "split": "novel",
+      "text": "Guarantee video streams 80% of their rate, then share the rest evenly.",
+      "reader": "d3_typed_family",
+      "model_executed": true,
+      "choice": 7,
+      "norm_regret": 0.0
+    },
+    {
+      "scene": 53003,
+      "split": "novel",
+      "text": "Reconnect at most 2 robots this round; within that, maximise total data.",
+      "reader": "controlled_language",
+      "choice": 5,
+      "norm_regret": 0.0,
+      "parse_and_select_ms": 0.03708599979290739
+    },
+    {
+      "scene": 53003,
+      "split": "novel",
+      "text": "Reconnect at most 2 robots this round; within that, maximise total data.",
+      "reader": "d3_typed_family",
+      "model_executed": true,
+      "choice": null,
+      "norm_regret": null,
+      "status": "deferred",
+      "error": "The semantic reader abstained"
+    },
+    {
+      "scene": 53003,
+      "split": "novel",
+      "text": "Only two BSSID switches are allowed. Get the most data inside that budget.",
+      "reader": "controlled_language",
+      "choice": 5,
+      "norm_regret": 0.0,
+      "parse_and_select_ms": 0.036475001252256334
+    },
+    {
+      "scene": 53003,
+      "split": "novel",
+      "text": "Only two BSSID switches are allowed. Get the most data inside that budget.",
+      "reader": "d3_typed_family",
+      "model_executed": true,
+      "choice": 5,
+      "norm_regret": 0.0
+    },
+    {
+      "scene": 53003,
+      "split": "novel",
+      "text": "Robots in the left half of the hall (x below 60 m) matter most; maximise their service.",
+      "reader": "controlled_language",
+      "choice": 7,
+      "norm_regret": 0.0,
+      "parse_and_select_ms": 0.057337998441653326
+    },
+    {
+      "scene": 53003,
+      "split": "novel",
+      "text": "Robots in the left half of the hall (x below 60 m) matter most; maximise their service.",
+      "reader": "d3_typed_family",
+      "model_executed": true,
+      "choice": 7,
+      "norm_regret": 0.0
+    },
+    {
+      "scene": 53003,
+      "split": "novel",
+      "text": "Prioritise robots working on the left side of the warehouse, the first 60 metres.",
+      "reader": "controlled_language",
+      "choice": 7,
+      "norm_regret": 0.0,
+      "parse_and_select_ms": 0.05170900112716481
+    },
+    {
+      "scene": 53003,
+      "split": "novel",
+      "text": "Prioritise robots working on the left side of the warehouse, the first 60 metres.",
+      "reader": "d3_typed_family",
+      "model_executed": true,
+      "choice": 7,
+      "norm_regret": 0.0
+    },
+    {
+      "scene": 53004,
+      "split": "test",
+      "text": "First guarantee each video stream 90% of its rate, then make the allocation as fair as possible.",
+      "reader": "controlled_language",
+      "choice": 9,
+      "norm_regret": 0.0,
+      "parse_and_select_ms": 0.16207700173254125
+    },
+    {
+      "scene": 53004,
+      "split": "test",
+      "text": "First guarantee each video stream 90% of its rate, then make the allocation as fair as possible.",
+      "reader": "d3_typed_family",
+      "model_executed": true,
+      "choice": 9,
+      "norm_regret": 0.0
+    },
+    {
+      "scene": 53004,
+      "split": "test",
+      "text": "You may move up to 5 robots to new access points; use them to maximise fleet throughput.",
+      "reader": "controlled_language",
+      "choice": 8,
+      "norm_regret": 0.0,
+      "parse_and_select_ms": 0.04705199899035506
+    },
+    {
+      "scene": 53004,
+      "split": "test",
+      "text": "You may move up to 5 robots to new access points; use them to maximise fleet throughput.",
+      "reader": "d3_typed_family",
+      "model_executed": true,
+      "choice": 8,
+      "norm_regret": 0.0
+    },
+    {
+      "scene": 53004,
+      "split": "test",
+      "text": "The front half of the hall is where the work is today: serve those robots best.",
+      "reader": "controlled_language",
+      "choice": 7,
+      "norm_regret": 0.0,
+      "parse_and_select_ms": 0.06234499960555695
+    },
+    {
+      "scene": 53004,
+      "split": "test",
+      "text": "The front half of the hall is where the work is today: serve those robots best.",
+      "reader": "d3_typed_family",
+      "model_executed": true,
+      "choice": 7,
+      "norm_regret": 0.0
+    },
+    {
+      "scene": 53004,
+      "split": "test",
+      "text": "Today the work is in the back half of the hall: serve those robots best.",
+      "reader": "controlled_language",
+      "choice": 9,
+      "norm_regret": 0.0,
+      "parse_and_select_ms": 0.0504870004078839
+    },
+    {
+      "scene": 53004,
+      "split": "test",
+      "text": "Today the work is in the back half of the hall: serve those robots best.",
+      "reader": "d3_typed_family",
+      "model_executed": true,
+      "choice": 9,
+      "norm_regret": 0.0
+    },
+    {
+      "scene": 53004,
+      "split": "test",
+      "text": "Focus entirely on the least-served robot in the fleet.",
+      "reader": "controlled_language",
+      "choice": 0,
+      "norm_regret": 0.0,
+      "parse_and_select_ms": 0.033090000215452164
+    },
+    {
+      "scene": 53004,
+      "split": "test",
+      "text": "Focus entirely on the least-served robot in the fleet.",
+      "reader": "d3_typed_family",
+      "model_executed": true,
+      "choice": 0,
+      "norm_regret": 0.0
+    },
+    {
+      "scene": 53004,
+      "split": "test",
+      "text": "Keep all safety links above their floors before anything else, then deliver as much data as possible.",
+      "reader": "controlled_language",
+      "choice": 8,
+      "norm_regret": 0.0,
+      "parse_and_select_ms": 0.03534400093485601
+    },
+    {
+      "scene": 53004,
+      "split": "test",
+      "text": "Keep all safety links above their floors before anything else, then deliver as much data as possible.",
+      "reader": "d3_typed_family",
+      "model_executed": true,
+      "choice": 8,
+      "norm_regret": 0.0
+    },
+    {
+      "scene": 53004,
+      "split": "novel",
+      "text": "Each video robot must keep at least 80% of its rate; after that, be as fair as possible.",
+      "reader": "controlled_language",
+      "choice": 9,
+      "norm_regret": 0.0,
+      "parse_and_select_ms": 0.04721199729829095
+    },
+    {
+      "scene": 53004,
+      "split": "novel",
+      "text": "Each video robot must keep at least 80% of its rate; after that, be as fair as possible.",
+      "reader": "d3_typed_family",
+      "model_executed": true,
+      "choice": 9,
+      "norm_regret": 0.0
+    },
+    {
+      "scene": 53004,
+      "split": "novel",
+      "text": "Guarantee video streams 80% of their rate, then share the rest evenly.",
+      "reader": "controlled_language",
+      "choice": 9,
+      "norm_regret": 0.0,
+      "parse_and_select_ms": 0.03959000241593458
+    },
+    {
+      "scene": 53004,
+      "split": "novel",
+      "text": "Guarantee video streams 80% of their rate, then share the rest evenly.",
+      "reader": "d3_typed_family",
+      "model_executed": true,
+      "choice": 9,
+      "norm_regret": 0.0
+    },
+    {
+      "scene": 53004,
+      "split": "novel",
+      "text": "Reconnect at most 2 robots this round; within that, maximise total data.",
+      "reader": "controlled_language",
+      "choice": 5,
+      "norm_regret": 0.0,
+      "parse_and_select_ms": 0.033992000680882484
+    },
+    {
+      "scene": 53004,
+      "split": "novel",
+      "text": "Reconnect at most 2 robots this round; within that, maximise total data.",
+      "reader": "d3_typed_family",
+      "model_executed": true,
+      "choice": null,
+      "norm_regret": null,
+      "status": "deferred",
+      "error": "The semantic reader abstained"
+    },
+    {
+      "scene": 53004,
+      "split": "novel",
+      "text": "Only two BSSID switches are allowed. Get the most data inside that budget.",
+      "reader": "controlled_language",
+      "choice": 5,
+      "norm_regret": 0.0,
+      "parse_and_select_ms": 0.03269999797339551
+    },
+    {
+      "scene": 53004,
+      "split": "novel",
+      "text": "Only two BSSID switches are allowed. Get the most data inside that budget.",
+      "reader": "d3_typed_family",
+      "model_executed": true,
+      "choice": 5,
+      "norm_regret": 0.0
+    },
+    {
+      "scene": 53004,
+      "split": "novel",
+      "text": "Robots in the left half of the hall (x below 60 m) matter most; maximise their service.",
+      "reader": "controlled_language",
+      "choice": 9,
+      "norm_regret": 0.0,
+      "parse_and_select_ms": 0.05630599844153039
+    },
+    {
+      "scene": 53004,
+      "split": "novel",
+      "text": "Robots in the left half of the hall (x below 60 m) matter most; maximise their service.",
+      "reader": "d3_typed_family",
+      "model_executed": true,
+      "choice": 9,
+      "norm_regret": 0.0
+    },
+    {
+      "scene": 53004,
+      "split": "novel",
+      "text": "Prioritise robots working on the left side of the warehouse, the first 60 metres.",
+      "reader": "controlled_language",
+      "choice": 9,
+      "norm_regret": 0.0,
+      "parse_and_select_ms": 0.062355000409297645
+    },
+    {
+      "scene": 53004,
+      "split": "novel",
+      "text": "Prioritise robots working on the left side of the warehouse, the first 60 metres.",
+      "reader": "d3_typed_family",
+      "model_executed": true,
+      "choice": 9,
+      "norm_regret": 0.0
+    },
+    {
+      "scene": 53005,
+      "split": "test",
+      "text": "First guarantee each video stream 90% of its rate, then make the allocation as fair as possible.",
+      "reader": "controlled_language",
+      "choice": 7,
+      "norm_regret": 0.0,
+      "parse_and_select_ms": 0.12265500117791817
+    },
+    {
+      "scene": 53005,
+      "split": "test",
+      "text": "First guarantee each video stream 90% of its rate, then make the allocation as fair as possible.",
+      "reader": "d3_typed_family",
+      "model_executed": true,
+      "choice": 7,
+      "norm_regret": 0.0
+    },
+    {
+      "scene": 53005,
+      "split": "test",
+      "text": "You may move up to 5 robots to new access points; use them to maximise fleet throughput.",
+      "reader": "controlled_language",
+      "choice": 0,
+      "norm_regret": 0.0,
+      "parse_and_select_ms": 0.04465700112632476
+    },
+    {
+      "scene": 53005,
+      "split": "test",
+      "text": "You may move up to 5 robots to new access points; use them to maximise fleet throughput.",
+      "reader": "d3_typed_family",
+      "model_executed": true,
+      "choice": 0,
+      "norm_regret": 0.0
+    },
+    {
+      "scene": 53005,
+      "split": "test",
+      "text": "The front half of the hall is where the work is today: serve those robots best.",
+      "reader": "controlled_language",
+      "choice": 7,
+      "norm_regret": 0.0,
+      "parse_and_select_ms": 0.05981000140309334
+    },
+    {
+      "scene": 53005,
+      "split": "test",
+      "text": "The front half of the hall is where the work is today: serve those robots best.",
+      "reader": "d3_typed_family",
+      "model_executed": true,
+      "choice": 7,
+      "norm_regret": 0.0
+    },
+    {
+      "scene": 53005,
+      "split": "test",
+      "text": "Today the work is in the back half of the hall: serve those robots best.",
+      "reader": "controlled_language",
+      "choice": 2,
+      "norm_regret": 0.0,
+      "parse_and_select_ms": 0.0498650006193202
+    },
+    {
+      "scene": 53005,
+      "split": "test",
+      "text": "Today the work is in the back half of the hall: serve those robots best.",
+      "reader": "d3_typed_family",
+      "model_executed": true,
+      "choice": 2,
+      "norm_regret": 0.0
+    },
+    {
+      "scene": 53005,
+      "split": "test",
+      "text": "Focus entirely on the least-served robot in the fleet.",
+      "reader": "controlled_language",
+      "choice": 6,
+      "norm_regret": 0.0,
+      "parse_and_select_ms": 0.04124100087210536
+    },
+    {
+      "scene": 53005,
+      "split": "test",
+      "text": "Focus entirely on the least-served robot in the fleet.",
+      "reader": "d3_typed_family",
+      "model_executed": true,
+      "choice": 6,
+      "norm_regret": 0.0
+    },
+    {
+      "scene": 53005,
+      "split": "test",
+      "text": "Keep all safety links above their floors before anything else, then deliver as much data as possible.",
+      "reader": "controlled_language",
+      "choice": 0,
+      "norm_regret": 0.0,
+      "parse_and_select_ms": 0.035123000998282805
+    },
+    {
+      "scene": 53005,
+      "split": "test",
+      "text": "Keep all safety links above their floors before anything else, then deliver as much data as possible.",
+      "reader": "d3_typed_family",
+      "model_executed": true,
+      "choice": 0,
+      "norm_regret": 0.0
+    },
+    {
+      "scene": 53005,
+      "split": "novel",
+      "text": "Each video robot must keep at least 80% of its rate; after that, be as fair as possible.",
+      "reader": "controlled_language",
+      "choice": 7,
+      "norm_regret": 0.0,
+      "parse_and_select_ms": 0.046680001105414703
+    },
+    {
+      "scene": 53005,
+      "split": "novel",
+      "text": "Each video robot must keep at least 80% of its rate; after that, be as fair as possible.",
+      "reader": "d3_typed_family",
+      "model_executed": true,
+      "choice": 7,
+      "norm_regret": 0.0
+    },
+    {
+      "scene": 53005,
+      "split": "novel",
+      "text": "Guarantee video streams 80% of their rate, then share the rest evenly.",
+      "reader": "controlled_language",
+      "choice": 7,
+      "norm_regret": 0.0,
+      "parse_and_select_ms": 0.03735599966603331
+    },
+    {
+      "scene": 53005,
+      "split": "novel",
+      "text": "Guarantee video streams 80% of their rate, then share the rest evenly.",
+      "reader": "d3_typed_family",
+      "model_executed": true,
+      "choice": 7,
+      "norm_regret": 0.0
+    },
+    {
+      "scene": 53005,
+      "split": "novel",
+      "text": "Reconnect at most 2 robots this round; within that, maximise total data.",
+      "reader": "controlled_language",
+      "choice": 1,
+      "norm_regret": 0.0,
+      "parse_and_select_ms": 0.03256900163250975
+    },
+    {
+      "scene": 53005,
+      "split": "novel",
+      "text": "Reconnect at most 2 robots this round; within that, maximise total data.",
+      "reader": "d3_typed_family",
+      "model_executed": true,
+      "choice": null,
+      "norm_regret": null,
+      "status": "deferred",
+      "error": "The semantic reader abstained"
+    },
+    {
+      "scene": 53005,
+      "split": "novel",
+      "text": "Only two BSSID switches are allowed. Get the most data inside that budget.",
+      "reader": "controlled_language",
+      "choice": 1,
+      "norm_regret": 0.0,
+      "parse_and_select_ms": 0.031056999432621524
+    },
+    {
+      "scene": 53005,
+      "split": "novel",
+      "text": "Only two BSSID switches are allowed. Get the most data inside that budget.",
+      "reader": "d3_typed_family",
+      "model_executed": true,
+      "choice": 1,
+      "norm_regret": 0.0
+    },
+    {
+      "scene": 53005,
+      "split": "novel",
+      "text": "Robots in the left half of the hall (x below 60 m) matter most; maximise their service.",
+      "reader": "controlled_language",
+      "choice": 6,
+      "norm_regret": 0.0,
+      "parse_and_select_ms": 0.05063600110588595
+    },
+    {
+      "scene": 53005,
+      "split": "novel",
+      "text": "Robots in the left half of the hall (x below 60 m) matter most; maximise their service.",
+      "reader": "d3_typed_family",
+      "model_executed": true,
+      "choice": 6,
+      "norm_regret": 0.0
+    },
+    {
+      "scene": 53005,
+      "split": "novel",
+      "text": "Prioritise robots working on the left side of the warehouse, the first 60 metres.",
+      "reader": "controlled_language",
+      "choice": 6,
+      "norm_regret": 0.0,
+      "parse_and_select_ms": 0.04771200110553764
+    },
+    {
+      "scene": 53005,
+      "split": "novel",
+      "text": "Prioritise robots working on the left side of the warehouse, the first 60 metres.",
+      "reader": "d3_typed_family",
+      "model_executed": true,
+      "choice": 6,
+      "norm_regret": 0.0
+    },
+    {
+      "scene": 53006,
+      "split": "test",
+      "text": "First guarantee each video stream 90% of its rate, then make the allocation as fair as possible.",
+      "reader": "controlled_language",
+      "choice": 2,
+      "norm_regret": 0.0,
+      "parse_and_select_ms": 0.10992099851137027
+    },
+    {
+      "scene": 53006,
+      "split": "test",
+      "text": "First guarantee each video stream 90% of its rate, then make the allocation as fair as possible.",
+      "reader": "d3_typed_family",
+      "model_executed": true,
+      "choice": 2,
+      "norm_regret": 0.0
+    },
+    {
+      "scene": 53006,
+      "split": "test",
+      "text": "You may move up to 5 robots to new access points; use them to maximise fleet throughput.",
+      "reader": "controlled_language",
+      "choice": 9,
+      "norm_regret": 0.0,
+      "parse_and_select_ms": 0.0517209991812706
+    },
+    {
+      "scene": 53006,
+      "split": "test",
+      "text": "You may move up to 5 robots to new access points; use them to maximise fleet throughput.",
+      "reader": "d3_typed_family",
+      "model_executed": true,
+      "choice": 9,
+      "norm_regret": 0.0
+    },
+    {
+      "scene": 53006,
+      "split": "test",
+      "text": "The front half of the hall is where the work is today: serve those robots best.",
+      "reader": "controlled_language",
+      "choice": 2,
+      "norm_regret": 0.0,
+      "parse_and_select_ms": 0.06264800322242081
+    },
+    {
+      "scene": 53006,
+      "split": "test",
+      "text": "The front half of the hall is where the work is today: serve those robots best.",
+      "reader": "d3_typed_family",
+      "model_executed": true,
+      "choice": 2,
+      "norm_regret": 0.0
+    },
+    {
+      "scene": 53006,
+      "split": "test",
+      "text": "Today the work is in the back half of the hall: serve those robots best.",
+      "reader": "controlled_language",
+      "choice": 1,
+      "norm_regret": 0.0,
+      "parse_and_select_ms": 0.04977800199412741
+    },
+    {
+      "scene": 53006,
+      "split": "test",
+      "text": "Today the work is in the back half of the hall: serve those robots best.",
+      "reader": "d3_typed_family",
+      "model_executed": true,
+      "choice": 1,
+      "norm_regret": 0.0
+    },
+    {
+      "scene": 53006,
+      "split": "test",
+      "text": "Focus entirely on the least-served robot in the fleet.",
+      "reader": "controlled_language",
+      "choice": 1,
+      "norm_regret": 0.0,
+      "parse_and_select_ms": 0.034114000300178304
+    },
+    {
+      "scene": 53006,
+      "split": "test",
+      "text": "Focus entirely on the least-served robot in the fleet.",
+      "reader": "d3_typed_family",
+      "model_executed": true,
+      "choice": 1,
+      "norm_regret": 0.0
+    },
+    {
+      "scene": 53006,
+      "split": "test",
+      "text": "Keep all safety links above their floors before anything else, then deliver as much data as possible.",
+      "reader": "controlled_language",
+      "choice": 9,
+      "norm_regret": 0.0,
+      "parse_and_select_ms": 0.035836001188727096
+    },
+    {
+      "scene": 53006,
+      "split": "test",
+      "text": "Keep all safety links above their floors before anything else, then deliver as much data as possible.",
+      "reader": "d3_typed_family",
+      "model_executed": true,
+      "choice": 9,
+      "norm_regret": 0.0
+    },
+    {
+      "scene": 53006,
+      "split": "novel",
+      "text": "Each video robot must keep at least 80% of its rate; after that, be as fair as possible.",
+      "reader": "controlled_language",
+      "choice": 2,
+      "norm_regret": 0.0,
+      "parse_and_select_ms": 0.0463619981019292
+    },
+    {
+      "scene": 53006,
+      "split": "novel",
+      "text": "Each video robot must keep at least 80% of its rate; after that, be as fair as possible.",
+      "reader": "d3_typed_family",
+      "model_executed": true,
+      "choice": 2,
+      "norm_regret": 0.0
+    },
+    {
+      "scene": 53006,
+      "split": "novel",
+      "text": "Guarantee video streams 80% of their rate, then share the rest evenly.",
+      "reader": "controlled_language",
+      "choice": 2,
+      "norm_regret": 0.0,
+      "parse_and_select_ms": 0.038559999666176736
+    },
+    {
+      "scene": 53006,
+      "split": "novel",
+      "text": "Guarantee video streams 80% of their rate, then share the rest evenly.",
+      "reader": "d3_typed_family",
+      "model_executed": true,
+      "choice": 2,
+      "norm_regret": 0.0
+    },
+    {
+      "scene": 53006,
+      "split": "novel",
+      "text": "Reconnect at most 2 robots this round; within that, maximise total data.",
+      "reader": "controlled_language",
+      "choice": 6,
+      "norm_regret": 0.0,
+      "parse_and_select_ms": 0.061956001445651054
+    },
+    {
+      "scene": 53006,
+      "split": "novel",
+      "text": "Reconnect at most 2 robots this round; within that, maximise total data.",
+      "reader": "d3_typed_family",
+      "model_executed": true,
+      "choice": null,
+      "norm_regret": null,
+      "status": "deferred",
+      "error": "The semantic reader abstained"
+    },
+    {
+      "scene": 53006,
+      "split": "novel",
+      "text": "Only two BSSID switches are allowed. Get the most data inside that budget.",
+      "reader": "controlled_language",
+      "choice": 6,
+      "norm_regret": 0.0,
+      "parse_and_select_ms": 0.03298100273241289
+    },
+    {
+      "scene": 53006,
+      "split": "novel",
+      "text": "Only two BSSID switches are allowed. Get the most data inside that budget.",
+      "reader": "d3_typed_family",
+      "model_executed": true,
+      "choice": 6,
+      "norm_regret": 0.0
+    },
+    {
+      "scene": 53006,
+      "split": "novel",
+      "text": "Robots in the left half of the hall (x below 60 m) matter most; maximise their service.",
+      "reader": "controlled_language",
+      "choice": 7,
+      "norm_regret": 0.0,
+      "parse_and_select_ms": 0.05543600127566606
+    },
+    {
+      "scene": 53006,
+      "split": "novel",
+      "text": "Robots in the left half of the hall (x below 60 m) matter most; maximise their service.",
+      "reader": "d3_typed_family",
+      "model_executed": true,
+      "choice": 7,
+      "norm_regret": 0.0
+    },
+    {
+      "scene": 53006,
+      "split": "novel",
+      "text": "Prioritise robots working on the left side of the warehouse, the first 60 metres.",
+      "reader": "controlled_language",
+      "choice": 7,
+      "norm_regret": 0.0,
+      "parse_and_select_ms": 0.04967700078850612
+    },
+    {
+      "scene": 53006,
+      "split": "novel",
+      "text": "Prioritise robots working on the left side of the warehouse, the first 60 metres.",
+      "reader": "d3_typed_family",
+      "model_executed": true,
+      "choice": 7,
+      "norm_regret": 0.0
+    },
+    {
+      "scene": 53007,
+      "split": "test",
+      "text": "First guarantee each video stream 90% of its rate, then make the allocation as fair as possible.",
+      "reader": "controlled_language",
+      "choice": 7,
+      "norm_regret": 0.0,
+      "parse_and_select_ms": 0.1105720002669841
+    },
+    {
+      "scene": 53007,
+      "split": "test",
+      "text": "First guarantee each video stream 90% of its rate, then make the allocation as fair as possible.",
+      "reader": "d3_typed_family",
+      "model_executed": true,
+      "choice": 7,
+      "norm_regret": 0.0
+    },
+    {
+      "scene": 53007,
+      "split": "test",
+      "text": "You may move up to 5 robots to new access points; use them to maximise fleet throughput.",
+      "reader": "controlled_language",
+      "choice": 1,
+      "norm_regret": 0.0,
+      "parse_and_select_ms": 0.04566099960356951
+    },
+    {
+      "scene": 53007,
+      "split": "test",
+      "text": "You may move up to 5 robots to new access points; use them to maximise fleet throughput.",
+      "reader": "d3_typed_family",
+      "model_executed": true,
+      "choice": 1,
+      "norm_regret": 0.0
+    },
+    {
+      "scene": 53007,
+      "split": "test",
+      "text": "The front half of the hall is where the work is today: serve those robots best.",
+      "reader": "controlled_language",
+      "choice": 7,
+      "norm_regret": 0.0,
+      "parse_and_select_ms": 0.0654520008538384
+    },
+    {
+      "scene": 53007,
+      "split": "test",
+      "text": "The front half of the hall is where the work is today: serve those robots best.",
+      "reader": "d3_typed_family",
+      "model_executed": true,
+      "choice": 7,
+      "norm_regret": 0.0
+    },
+    {
+      "scene": 53007,
+      "split": "test",
+      "text": "Today the work is in the back half of the hall: serve those robots best.",
+      "reader": "controlled_language",
+      "choice": 3,
+      "norm_regret": 0.0,
+      "parse_and_select_ms": 0.04767499922309071
+    },
+    {
+      "scene": 53007,
+      "split": "test",
+      "text": "Today the work is in the back half of the hall: serve those robots best.",
+      "reader": "d3_typed_family",
+      "model_executed": true,
+      "choice": 3,
+      "norm_regret": 0.0
+    },
+    {
+      "scene": 53007,
+      "split": "test",
+      "text": "Focus entirely on the least-served robot in the fleet.",
+      "reader": "controlled_language",
+      "choice": 7,
+      "norm_regret": 0.0,
+      "parse_and_select_ms": 0.03305100108264014
+    },
+    {
+      "scene": 53007,
+      "split": "test",
+      "text": "Focus entirely on the least-served robot in the fleet.",
+      "reader": "d3_typed_family",
+      "model_executed": true,
+      "choice": 7,
+      "norm_regret": 0.0
+    },
+    {
+      "scene": 53007,
+      "split": "test",
+      "text": "Keep all safety links above their floors before anything else, then deliver as much data as possible.",
+      "reader": "controlled_language",
+      "choice": 6,
+      "norm_regret": 0.0,
+      "parse_and_select_ms": 0.034562999644549564
+    },
+    {
+      "scene": 53007,
+      "split": "test",
+      "text": "Keep all safety links above their floors before anything else, then deliver as much data as possible.",
+      "reader": "d3_typed_family",
+      "model_executed": true,
+      "choice": 6,
+      "norm_regret": 0.0
+    },
+    {
+      "scene": 53007,
+      "split": "novel",
+      "text": "Each video robot must keep at least 80% of its rate; after that, be as fair as possible.",
+      "reader": "controlled_language",
+      "choice": 7,
+      "norm_regret": 0.0,
+      "parse_and_select_ms": 0.04629199975170195
+    },
+    {
+      "scene": 53007,
+      "split": "novel",
+      "text": "Each video robot must keep at least 80% of its rate; after that, be as fair as possible.",
+      "reader": "d3_typed_family",
+      "model_executed": true,
+      "choice": 7,
+      "norm_regret": 0.0
+    },
+    {
+      "scene": 53007,
+      "split": "novel",
+      "text": "Guarantee video streams 80% of their rate, then share the rest evenly.",
+      "reader": "controlled_language",
+      "choice": 7,
+      "norm_regret": 0.0,
+      "parse_and_select_ms": 0.07731000005151145
+    },
+    {
+      "scene": 53007,
+      "split": "novel",
+      "text": "Guarantee video streams 80% of their rate, then share the rest evenly.",
+      "reader": "d3_typed_family",
+      "model_executed": true,
+      "choice": 7,
+      "norm_regret": 0.0
+    },
+    {
+      "scene": 53007,
+      "split": "novel",
+      "text": "Reconnect at most 2 robots this round; within that, maximise total data.",
+      "reader": "controlled_language",
+      "choice": 1,
+      "norm_regret": 0.0,
+      "parse_and_select_ms": 0.036097000702284276
+    },
+    {
+      "scene": 53007,
+      "split": "novel",
+      "text": "Reconnect at most 2 robots this round; within that, maximise total data.",
+      "reader": "d3_typed_family",
+      "model_executed": true,
+      "choice": null,
+      "norm_regret": null,
+      "status": "deferred",
+      "error": "The semantic reader abstained"
+    },
+    {
+      "scene": 53007,
+      "split": "novel",
+      "text": "Only two BSSID switches are allowed. Get the most data inside that budget.",
+      "reader": "controlled_language",
+      "choice": 1,
+      "norm_regret": 0.0,
+      "parse_and_select_ms": 0.03243999890401028
+    },
+    {
+      "scene": 53007,
+      "split": "novel",
+      "text": "Only two BSSID switches are allowed. Get the most data inside that budget.",
+      "reader": "d3_typed_family",
+      "model_executed": true,
+      "choice": 1,
+      "norm_regret": 0.0
+    },
+    {
+      "scene": 53007,
+      "split": "novel",
+      "text": "Robots in the left half of the hall (x below 60 m) matter most; maximise their service.",
+      "reader": "controlled_language",
+      "choice": 8,
+      "norm_regret": 0.0,
+      "parse_and_select_ms": 0.052160998166073114
+    },
+    {
+      "scene": 53007,
+      "split": "novel",
+      "text": "Robots in the left half of the hall (x below 60 m) matter most; maximise their service.",
+      "reader": "d3_typed_family",
+      "model_executed": true,
+      "choice": 8,
+      "norm_regret": 0.0
+    },
+    {
+      "scene": 53007,
+      "split": "novel",
+      "text": "Prioritise robots working on the left side of the warehouse, the first 60 metres.",
+      "reader": "controlled_language",
+      "choice": 8,
+      "norm_regret": 0.0,
+      "parse_and_select_ms": 0.0485460004711058
+    },
+    {
+      "scene": 53007,
+      "split": "novel",
+      "text": "Prioritise robots working on the left side of the warehouse, the first 60 metres.",
+      "reader": "d3_typed_family",
+      "model_executed": true,
+      "choice": 8,
+      "norm_regret": 0.0
+    },
+    {
+      "scene": 53008,
+      "split": "test",
+      "text": "First guarantee each video stream 90% of its rate, then make the allocation as fair as possible.",
+      "reader": "controlled_language",
+      "choice": 8,
+      "norm_regret": 0.0,
+      "parse_and_select_ms": 0.11087199891335331
+    },
+    {
+      "scene": 53008,
+      "split": "test",
+      "text": "First guarantee each video stream 90% of its rate, then make the allocation as fair as possible.",
+      "reader": "d3_typed_family",
+      "model_executed": true,
+      "choice": 8,
+      "norm_regret": 0.0
+    },
+    {
+      "scene": 53008,
+      "split": "test",
+      "text": "You may move up to 5 robots to new access points; use them to maximise fleet throughput.",
+      "reader": "controlled_language",
+      "choice": 3,
+      "norm_regret": 0.0,
+      "parse_and_select_ms": 0.04743299723486416
+    },
+    {
+      "scene": 53008,
+      "split": "test",
+      "text": "You may move up to 5 robots to new access points; use them to maximise fleet throughput.",
+      "reader": "d3_typed_family",
+      "model_executed": true,
+      "choice": 3,
+      "norm_regret": 0.0
+    },
+    {
+      "scene": 53008,
+      "split": "test",
+      "text": "The front half of the hall is where the work is today: serve those robots best.",
+      "reader": "controlled_language",
+      "choice": 8,
+      "norm_regret": 0.0,
+      "parse_and_select_ms": 0.06322800254565664
+    },
+    {
+      "scene": 53008,
+      "split": "test",
+      "text": "The front half of the hall is where the work is today: serve those robots best.",
+      "reader": "d3_typed_family",
+      "model_executed": true,
+      "choice": 8,
+      "norm_regret": 0.0
+    },
+    {
+      "scene": 53008,
+      "split": "test",
+      "text": "Today the work is in the back half of the hall: serve those robots best.",
+      "reader": "controlled_language",
+      "choice": 0,
+      "norm_regret": 0.0,
+      "parse_and_select_ms": 0.04740400254377164
+    },
+    {
+      "scene": 53008,
+      "split": "test",
+      "text": "Today the work is in the back half of the hall: serve those robots best.",
+      "reader": "d3_typed_family",
+      "model_executed": true,
+      "choice": 0,
+      "norm_regret": 0.0
+    },
+    {
+      "scene": 53008,
+      "split": "test",
+      "text": "Focus entirely on the least-served robot in the fleet.",
+      "reader": "controlled_language",
+      "choice": 6,
+      "norm_regret": 0.0,
+      "parse_and_select_ms": 0.03277100040577352
+    },
+    {
+      "scene": 53008,
+      "split": "test",
+      "text": "Focus entirely on the least-served robot in the fleet.",
+      "reader": "d3_typed_family",
+      "model_executed": true,
+      "choice": 6,
+      "norm_regret": 0.0
+    },
+    {
+      "scene": 53008,
+      "split": "test",
+      "text": "Keep all safety links above their floors before anything else, then deliver as much data as possible.",
+      "reader": "controlled_language",
+      "choice": 4,
+      "norm_regret": 0.0,
+      "parse_and_select_ms": 0.035555000067688525
+    },
+    {
+      "scene": 53008,
+      "split": "test",
+      "text": "Keep all safety links above their floors before anything else, then deliver as much data as possible.",
+      "reader": "d3_typed_family",
+      "model_executed": true,
+      "choice": 4,
+      "norm_regret": 0.0
+    },
+    {
+      "scene": 53008,
+      "split": "novel",
+      "text": "Each video robot must keep at least 80% of its rate; after that, be as fair as possible.",
+      "reader": "controlled_language",
+      "choice": 8,
+      "norm_regret": 0.0,
+      "parse_and_select_ms": 0.04584099951898679
+    },
+    {
+      "scene": 53008,
+      "split": "novel",
+      "text": "Each video robot must keep at least 80% of its rate; after that, be as fair as possible.",
+      "reader": "d3_typed_family",
+      "model_executed": true,
+      "choice": 8,
+      "norm_regret": 0.0
+    },
+    {
+      "scene": 53008,
+      "split": "novel",
+      "text": "Guarantee video streams 80% of their rate, then share the rest evenly.",
+      "reader": "controlled_language",
+      "choice": 8,
+      "norm_regret": 0.0,
+      "parse_and_select_ms": 0.0679360018693842
+    },
+    {
+      "scene": 53008,
+      "split": "novel",
+      "text": "Guarantee video streams 80% of their rate, then share the rest evenly.",
+      "reader": "d3_typed_family",
+      "model_executed": true,
+      "choice": 8,
+      "norm_regret": 0.0
+    },
+    {
+      "scene": 53008,
+      "split": "novel",
+      "text": "Reconnect at most 2 robots this round; within that, maximise total data.",
+      "reader": "controlled_language",
+      "choice": 5,
+      "norm_regret": 0.0,
+      "parse_and_select_ms": 0.035795997973764315
+    },
+    {
+      "scene": 53008,
+      "split": "novel",
+      "text": "Reconnect at most 2 robots this round; within that, maximise total data.",
+      "reader": "d3_typed_family",
+      "model_executed": true,
+      "choice": null,
+      "norm_regret": null,
+      "status": "deferred",
+      "error": "The semantic reader abstained"
+    },
+    {
+      "scene": 53008,
+      "split": "novel",
+      "text": "Only two BSSID switches are allowed. Get the most data inside that budget.",
+      "reader": "controlled_language",
+      "choice": 5,
+      "norm_regret": 0.0,
+      "parse_and_select_ms": 0.032570998882874846
+    },
+    {
+      "scene": 53008,
+      "split": "novel",
+      "text": "Only two BSSID switches are allowed. Get the most data inside that budget.",
+      "reader": "d3_typed_family",
+      "model_executed": true,
+      "choice": 5,
+      "norm_regret": 0.0
+    },
+    {
+      "scene": 53008,
+      "split": "novel",
+      "text": "Robots in the left half of the hall (x below 60 m) matter most; maximise their service.",
+      "reader": "controlled_language",
+      "choice": 1,
+      "norm_regret": 0.0,
+      "parse_and_select_ms": 0.05303200305206701
+    },
+    {
+      "scene": 53008,
+      "split": "novel",
+      "text": "Robots in the left half of the hall (x below 60 m) matter most; maximise their service.",
+      "reader": "d3_typed_family",
+      "model_executed": true,
+      "choice": 1,
+      "norm_regret": 0.0
+    },
+    {
+      "scene": 53008,
+      "split": "novel",
+      "text": "Prioritise robots working on the left side of the warehouse, the first 60 metres.",
+      "reader": "controlled_language",
+      "choice": 1,
+      "norm_regret": 0.0,
+      "parse_and_select_ms": 0.049055997806135565
+    },
+    {
+      "scene": 53008,
+      "split": "novel",
+      "text": "Prioritise robots working on the left side of the warehouse, the first 60 metres.",
+      "reader": "d3_typed_family",
+      "model_executed": true,
+      "choice": 1,
+      "norm_regret": 0.0
+    },
+    {
+      "scene": 53009,
+      "split": "test",
+      "text": "First guarantee each video stream 90% of its rate, then make the allocation as fair as possible.",
+      "reader": "controlled_language",
+      "choice": 3,
+      "norm_regret": 0.0,
+      "parse_and_select_ms": 0.11313100185361691
+    },
+    {
+      "scene": 53009,
+      "split": "test",
+      "text": "First guarantee each video stream 90% of its rate, then make the allocation as fair as possible.",
+      "reader": "d3_typed_family",
+      "model_executed": true,
+      "choice": 3,
+      "norm_regret": 0.0
+    },
+    {
+      "scene": 53009,
+      "split": "test",
+      "text": "You may move up to 5 robots to new access points; use them to maximise fleet throughput.",
+      "reader": "controlled_language",
+      "choice": 8,
+      "norm_regret": 0.0,
+      "parse_and_select_ms": 0.0473809996037744
+    },
+    {
+      "scene": 53009,
+      "split": "test",
+      "text": "You may move up to 5 robots to new access points; use them to maximise fleet throughput.",
+      "reader": "d3_typed_family",
+      "model_executed": true,
+      "choice": 8,
+      "norm_regret": 0.0
+    },
+    {
+      "scene": 53009,
+      "split": "test",
+      "text": "The front half of the hall is where the work is today: serve those robots best.",
+      "reader": "controlled_language",
+      "choice": 2,
+      "norm_regret": 0.0,
+      "parse_and_select_ms": 0.11387099948478863
+    },
+    {
+      "scene": 53009,
+      "split": "test",
+      "text": "The front half of the hall is where the work is today: serve those robots best.",
+      "reader": "d3_typed_family",
+      "model_executed": true,
+      "choice": 2,
+      "norm_regret": 0.0
+    },
+    {
+      "scene": 53009,
+      "split": "test",
+      "text": "Today the work is in the back half of the hall: serve those robots best.",
+      "reader": "controlled_language",
+      "choice": 3,
+      "norm_regret": 0.0,
+      "parse_and_select_ms": 0.050655999075388536
+    },
+    {
+      "scene": 53009,
+      "split": "test",
+      "text": "Today the work is in the back half of the hall: serve those robots best.",
+      "reader": "d3_typed_family",
+      "model_executed": true,
+      "choice": 3,
+      "norm_regret": 0.0
+    },
+    {
+      "scene": 53009,
+      "split": "test",
+      "text": "Focus entirely on the least-served robot in the fleet.",
+      "reader": "controlled_language",
+      "choice": 0,
+      "norm_regret": 0.0,
+      "parse_and_select_ms": 0.03460199877736159
+    },
+    {
+      "scene": 53009,
+      "split": "test",
+      "text": "Focus entirely on the least-served robot in the fleet.",
+      "reader": "d3_typed_family",
+      "model_executed": true,
+      "choice": 0,
+      "norm_regret": 0.0
+    },
+    {
+      "scene": 53009,
+      "split": "test",
+      "text": "Keep all safety links above their floors before anything else, then deliver as much data as possible.",
+      "reader": "controlled_language",
+      "choice": 6,
+      "norm_regret": 0.0,
+      "parse_and_select_ms": 0.035123000998282805
+    },
+    {
+      "scene": 53009,
+      "split": "test",
+      "text": "Keep all safety links above their floors before anything else, then deliver as much data as possible.",
+      "reader": "d3_typed_family",
+      "model_executed": true,
+      "choice": 6,
+      "norm_regret": 0.0
+    },
+    {
+      "scene": 53009,
+      "split": "novel",
+      "text": "Each video robot must keep at least 80% of its rate; after that, be as fair as possible.",
+      "reader": "controlled_language",
+      "choice": 3,
+      "norm_regret": 0.0,
+      "parse_and_select_ms": 0.04688099943450652
+    },
+    {
+      "scene": 53009,
+      "split": "novel",
+      "text": "Each video robot must keep at least 80% of its rate; after that, be as fair as possible.",
+      "reader": "d3_typed_family",
+      "model_executed": true,
+      "choice": 3,
+      "norm_regret": 0.0
+    },
+    {
+      "scene": 53009,
+      "split": "novel",
+      "text": "Guarantee video streams 80% of their rate, then share the rest evenly.",
+      "reader": "controlled_language",
+      "choice": 3,
+      "norm_regret": 0.0,
+      "parse_and_select_ms": 0.039909999031806365
+    },
+    {
+      "scene": 53009,
+      "split": "novel",
+      "text": "Guarantee video streams 80% of their rate, then share the rest evenly.",
+      "reader": "d3_typed_family",
+      "model_executed": true,
+      "choice": 3,
+      "norm_regret": 0.0
+    },
+    {
+      "scene": 53009,
+      "split": "novel",
+      "text": "Reconnect at most 2 robots this round; within that, maximise total data.",
+      "reader": "controlled_language",
+      "choice": 1,
+      "norm_regret": 0.0,
+      "parse_and_select_ms": 0.034340999263804406
+    },
+    {
+      "scene": 53009,
+      "split": "novel",
+      "text": "Reconnect at most 2 robots this round; within that, maximise total data.",
+      "reader": "d3_typed_family",
+      "model_executed": true,
+      "choice": null,
+      "norm_regret": null,
+      "status": "deferred",
+      "error": "The semantic reader abstained"
+    },
+    {
+      "scene": 53009,
+      "split": "novel",
+      "text": "Only two BSSID switches are allowed. Get the most data inside that budget.",
+      "reader": "controlled_language",
+      "choice": 1,
+      "norm_regret": 0.0,
+      "parse_and_select_ms": 0.0331900009769015
+    },
+    {
+      "scene": 53009,
+      "split": "novel",
+      "text": "Only two BSSID switches are allowed. Get the most data inside that budget.",
+      "reader": "d3_typed_family",
+      "model_executed": true,
+      "choice": 1,
+      "norm_regret": 0.0
+    },
+    {
+      "scene": 53009,
+      "split": "novel",
+      "text": "Robots in the left half of the hall (x below 60 m) matter most; maximise their service.",
+      "reader": "controlled_language",
+      "choice": 0,
+      "norm_regret": 0.0,
+      "parse_and_select_ms": 0.05306999810272828
+    },
+    {
+      "scene": 53009,
+      "split": "novel",
+      "text": "Robots in the left half of the hall (x below 60 m) matter most; maximise their service.",
+      "reader": "d3_typed_family",
+      "model_executed": true,
+      "choice": 0,
+      "norm_regret": 0.0
+    },
+    {
+      "scene": 53009,
+      "split": "novel",
+      "text": "Prioritise robots working on the left side of the warehouse, the first 60 metres.",
+      "reader": "controlled_language",
+      "choice": 0,
+      "norm_regret": 0.0,
+      "parse_and_select_ms": 0.049664999096421525
+    },
+    {
+      "scene": 53009,
+      "split": "novel",
+      "text": "Prioritise robots working on the left side of the warehouse, the first 60 metres.",
+      "reader": "d3_typed_family",
+      "model_executed": true,
+      "choice": 0,
+      "norm_regret": 0.0
+    },
+    {
+      "scene": 53010,
+      "split": "test",
+      "text": "First guarantee each video stream 90% of its rate, then make the allocation as fair as possible.",
+      "reader": "controlled_language",
+      "choice": 8,
+      "norm_regret": 0.0,
+      "parse_and_select_ms": 0.14451800234382972
+    },
+    {
+      "scene": 53010,
+      "split": "test",
+      "text": "First guarantee each video stream 90% of its rate, then make the allocation as fair as possible.",
+      "reader": "d3_typed_family",
+      "model_executed": true,
+      "choice": 8,
+      "norm_regret": 0.0
+    },
+    {
+      "scene": 53010,
+      "split": "test",
+      "text": "You may move up to 5 robots to new access points; use them to maximise fleet throughput.",
+      "reader": "controlled_language",
+      "choice": 1,
+      "norm_regret": 0.0,
+      "parse_and_select_ms": 0.04681100108427927
+    },
+    {
+      "scene": 53010,
+      "split": "test",
+      "text": "You may move up to 5 robots to new access points; use them to maximise fleet throughput.",
+      "reader": "d3_typed_family",
+      "model_executed": true,
+      "choice": 1,
+      "norm_regret": 0.0
+    },
+    {
+      "scene": 53010,
+      "split": "test",
+      "text": "The front half of the hall is where the work is today: serve those robots best.",
+      "reader": "controlled_language",
+      "choice": 8,
+      "norm_regret": 0.0,
+      "parse_and_select_ms": 0.06490799933089875
+    },
+    {
+      "scene": 53010,
+      "split": "test",
+      "text": "The front half of the hall is where the work is today: serve those robots best.",
+      "reader": "d3_typed_family",
+      "model_executed": true,
+      "choice": 8,
+      "norm_regret": 0.0
+    },
+    {
+      "scene": 53010,
+      "split": "test",
+      "text": "Today the work is in the back half of the hall: serve those robots best.",
+      "reader": "controlled_language",
+      "choice": 5,
+      "norm_regret": 0.0,
+      "parse_and_select_ms": 0.06903400208102539
+    },
+    {
+      "scene": 53010,
+      "split": "test",
+      "text": "Today the work is in the back half of the hall: serve those robots best.",
+      "reader": "d3_typed_family",
+      "model_executed": true,
+      "choice": 5,
+      "norm_regret": 0.0
+    },
+    {
+      "scene": 53010,
+      "split": "test",
+      "text": "Focus entirely on the least-served robot in the fleet.",
+      "reader": "controlled_language",
+      "choice": 3,
+      "norm_regret": 0.0,
+      "parse_and_select_ms": 0.03593400106183253
+    },
+    {
+      "scene": 53010,
+      "split": "test",
+      "text": "Focus entirely on the least-served robot in the fleet.",
+      "reader": "d3_typed_family",
+      "model_executed": true,
+      "choice": 3,
+      "norm_regret": 0.0
+    },
+    {
+      "scene": 53010,
+      "split": "test",
+      "text": "Keep all safety links above their floors before anything else, then deliver as much data as possible.",
+      "reader": "controlled_language",
+      "choice": 4,
+      "norm_regret": 0.0,
+      "parse_and_select_ms": 0.03627399928518571
+    },
+    {
+      "scene": 53010,
+      "split": "test",
+      "text": "Keep all safety links above their floors before anything else, then deliver as much data as possible.",
+      "reader": "d3_typed_family",
+      "model_executed": true,
+      "choice": 4,
+      "norm_regret": 0.0
+    },
+    {
+      "scene": 53010,
+      "split": "novel",
+      "text": "Each video robot must keep at least 80% of its rate; after that, be as fair as possible.",
+      "reader": "controlled_language",
+      "choice": 8,
+      "norm_regret": 0.0,
+      "parse_and_select_ms": 0.04789300146512687
+    },
+    {
+      "scene": 53010,
+      "split": "novel",
+      "text": "Each video robot must keep at least 80% of its rate; after that, be as fair as possible.",
+      "reader": "d3_typed_family",
+      "model_executed": true,
+      "choice": 8,
+      "norm_regret": 0.0
+    },
+    {
+      "scene": 53010,
+      "split": "novel",
+      "text": "Guarantee video streams 80% of their rate, then share the rest evenly.",
+      "reader": "controlled_language",
+      "choice": 8,
+      "norm_regret": 0.0,
+      "parse_and_select_ms": 0.039719998312648386
+    },
+    {
+      "scene": 53010,
+      "split": "novel",
+      "text": "Guarantee video streams 80% of their rate, then share the rest evenly.",
+      "reader": "d3_typed_family",
+      "model_executed": true,
+      "choice": 8,
+      "norm_regret": 0.0
+    },
+    {
+      "scene": 53010,
+      "split": "novel",
+      "text": "Reconnect at most 2 robots this round; within that, maximise total data.",
+      "reader": "controlled_language",
+      "choice": 1,
+      "norm_regret": 0.0,
+      "parse_and_select_ms": 0.03592400025809184
+    },
+    {
+      "scene": 53010,
+      "split": "novel",
+      "text": "Reconnect at most 2 robots this round; within that, maximise total data.",
+      "reader": "d3_typed_family",
+      "model_executed": true,
+      "choice": null,
+      "norm_regret": null,
+      "status": "deferred",
+      "error": "The semantic reader abstained"
+    },
+    {
+      "scene": 53010,
+      "split": "novel",
+      "text": "Only two BSSID switches are allowed. Get the most data inside that budget.",
+      "reader": "controlled_language",
+      "choice": 1,
+      "norm_regret": 0.0,
+      "parse_and_select_ms": 0.033491000067442656
+    },
+    {
+      "scene": 53010,
+      "split": "novel",
+      "text": "Only two BSSID switches are allowed. Get the most data inside that budget.",
+      "reader": "d3_typed_family",
+      "model_executed": true,
+      "choice": 1,
+      "norm_regret": 0.0
+    },
+    {
+      "scene": 53010,
+      "split": "novel",
+      "text": "Robots in the left half of the hall (x below 60 m) matter most; maximise their service.",
+      "reader": "controlled_language",
+      "choice": 9,
+      "norm_regret": 0.0,
+      "parse_and_select_ms": 0.05495299774338491
+    },
+    {
+      "scene": 53010,
+      "split": "novel",
+      "text": "Robots in the left half of the hall (x below 60 m) matter most; maximise their service.",
+      "reader": "d3_typed_family",
+      "model_executed": true,
+      "choice": 9,
+      "norm_regret": 0.0
+    },
+    {
+      "scene": 53010,
+      "split": "novel",
+      "text": "Prioritise robots working on the left side of the warehouse, the first 60 metres.",
+      "reader": "controlled_language",
+      "choice": 9,
+      "norm_regret": 0.0,
+      "parse_and_select_ms": 0.05686499935109168
+    },
+    {
+      "scene": 53010,
+      "split": "novel",
+      "text": "Prioritise robots working on the left side of the warehouse, the first 60 metres.",
+      "reader": "d3_typed_family",
+      "model_executed": true,
+      "choice": 9,
+      "norm_regret": 0.0
+    },
+    {
+      "scene": 53011,
+      "split": "test",
+      "text": "First guarantee each video stream 90% of its rate, then make the allocation as fair as possible.",
+      "reader": "controlled_language",
+      "choice": 9,
+      "norm_regret": 0.0,
+      "parse_and_select_ms": 0.19446300211711787
+    },
+    {
+      "scene": 53011,
+      "split": "test",
+      "text": "First guarantee each video stream 90% of its rate, then make the allocation as fair as possible.",
+      "reader": "d3_typed_family",
+      "model_executed": true,
+      "choice": 9,
+      "norm_regret": 0.0
+    },
+    {
+      "scene": 53011,
+      "split": "test",
+      "text": "You may move up to 5 robots to new access points; use them to maximise fleet throughput.",
+      "reader": "controlled_language",
+      "choice": 7,
+      "norm_regret": 0.0,
+      "parse_and_select_ms": 0.048502999561605975
+    },
+    {
+      "scene": 53011,
+      "split": "test",
+      "text": "You may move up to 5 robots to new access points; use them to maximise fleet throughput.",
+      "reader": "d3_typed_family",
+      "model_executed": true,
+      "choice": 7,
+      "norm_regret": 0.0
+    },
+    {
+      "scene": 53011,
+      "split": "test",
+      "text": "The front half of the hall is where the work is today: serve those robots best.",
+      "reader": "controlled_language",
+      "choice": 9,
+      "norm_regret": 0.0,
+      "parse_and_select_ms": 0.08418699871981516
+    },
+    {
+      "scene": 53011,
+      "split": "test",
+      "text": "The front half of the hall is where the work is today: serve those robots best.",
+      "reader": "d3_typed_family",
+      "model_executed": true,
+      "choice": 9,
+      "norm_regret": 0.0
+    },
+    {
+      "scene": 53011,
+      "split": "test",
+      "text": "Today the work is in the back half of the hall: serve those robots best.",
+      "reader": "controlled_language",
+      "choice": 0,
+      "norm_regret": 0.0,
+      "parse_and_select_ms": 0.055253000027732924
+    },
+    {
+      "scene": 53011,
+      "split": "test",
+      "text": "Today the work is in the back half of the hall: serve those robots best.",
+      "reader": "d3_typed_family",
+      "model_executed": true,
+      "choice": 0,
+      "norm_regret": 0.0
+    },
+    {
+      "scene": 53011,
+      "split": "test",
+      "text": "Focus entirely on the least-served robot in the fleet.",
+      "reader": "controlled_language",
+      "choice": 0,
+      "norm_regret": 0.0,
+      "parse_and_select_ms": 0.03514299896778539
+    },
+    {
+      "scene": 53011,
+      "split": "test",
+      "text": "Focus entirely on the least-served robot in the fleet.",
+      "reader": "d3_typed_family",
+      "model_executed": true,
+      "choice": 0,
+      "norm_regret": 0.0
+    },
+    {
+      "scene": 53011,
+      "split": "test",
+      "text": "Keep all safety links above their floors before anything else, then deliver as much data as possible.",
+      "reader": "controlled_language",
+      "choice": 7,
+      "norm_regret": 0.0,
+      "parse_and_select_ms": 0.03535300129442476
+    },
+    {
+      "scene": 53011,
+      "split": "test",
+      "text": "Keep all safety links above their floors before anything else, then deliver as much data as possible.",
+      "reader": "d3_typed_family",
+      "model_executed": true,
+      "choice": 7,
+      "norm_regret": 0.0
+    },
+    {
+      "scene": 53011,
+      "split": "novel",
+      "text": "Each video robot must keep at least 80% of its rate; after that, be as fair as possible.",
+      "reader": "controlled_language",
+      "choice": 9,
+      "norm_regret": 0.0,
+      "parse_and_select_ms": 0.1215230004163459
+    },
+    {
+      "scene": 53011,
+      "split": "novel",
+      "text": "Each video robot must keep at least 80% of its rate; after that, be as fair as possible.",
+      "reader": "d3_typed_family",
+      "model_executed": true,
+      "choice": 9,
+      "norm_regret": 0.0
+    },
+    {
+      "scene": 53011,
+      "split": "novel",
+      "text": "Guarantee video streams 80% of their rate, then share the rest evenly.",
+      "reader": "controlled_language",
+      "choice": 9,
+      "norm_regret": 0.0,
+      "parse_and_select_ms": 0.047630997869418934
+    },
+    {
+      "scene": 53011,
+      "split": "novel",
+      "text": "Guarantee video streams 80% of their rate, then share the rest evenly.",
+      "reader": "d3_typed_family",
+      "model_executed": true,
+      "choice": 9,
+      "norm_regret": 0.0
+    },
+    {
+      "scene": 53011,
+      "split": "novel",
+      "text": "Reconnect at most 2 robots this round; within that, maximise total data.",
+      "reader": "controlled_language",
+      "choice": 8,
+      "norm_regret": 0.0,
+      "parse_and_select_ms": 0.03702599860844202
+    },
+    {
+      "scene": 53011,
+      "split": "novel",
+      "text": "Reconnect at most 2 robots this round; within that, maximise total data.",
+      "reader": "d3_typed_family",
+      "model_executed": true,
+      "choice": null,
+      "norm_regret": null,
+      "status": "deferred",
+      "error": "The semantic reader abstained"
+    },
+    {
+      "scene": 53011,
+      "split": "novel",
+      "text": "Only two BSSID switches are allowed. Get the most data inside that budget.",
+      "reader": "controlled_language",
+      "choice": 8,
+      "norm_regret": 0.0,
+      "parse_and_select_ms": 0.03295999704278074
+    },
+    {
+      "scene": 53011,
+      "split": "novel",
+      "text": "Only two BSSID switches are allowed. Get the most data inside that budget.",
+      "reader": "d3_typed_family",
+      "model_executed": true,
+      "choice": 8,
+      "norm_regret": 0.0
+    },
+    {
+      "scene": 53011,
+      "split": "novel",
+      "text": "Robots in the left half of the hall (x below 60 m) matter most; maximise their service.",
+      "reader": "controlled_language",
+      "choice": 6,
+      "norm_regret": 0.0,
+      "parse_and_select_ms": 0.05257900193100795
+    },
+    {
+      "scene": 53011,
+      "split": "novel",
+      "text": "Robots in the left half of the hall (x below 60 m) matter most; maximise their service.",
+      "reader": "d3_typed_family",
+      "model_executed": true,
+      "choice": 6,
+      "norm_regret": 0.0
+    },
+    {
+      "scene": 53011,
+      "split": "novel",
+      "text": "Prioritise robots working on the left side of the warehouse, the first 60 metres.",
+      "reader": "controlled_language",
+      "choice": 6,
+      "norm_regret": 0.0,
+      "parse_and_select_ms": 0.04974499825038947
+    },
+    {
+      "scene": 53011,
+      "split": "novel",
+      "text": "Prioritise robots working on the left side of the warehouse, the first 60 metres.",
+      "reader": "d3_typed_family",
+      "model_executed": true,
+      "choice": 6,
+      "norm_regret": 0.0
+    },
+    {
+      "scene": 53012,
+      "split": "test",
+      "text": "First guarantee each video stream 90% of its rate, then make the allocation as fair as possible.",
+      "reader": "controlled_language",
+      "choice": 5,
+      "norm_regret": 0.0,
+      "parse_and_select_ms": 0.1225199994223658
+    },
+    {
+      "scene": 53012,
+      "split": "test",
+      "text": "First guarantee each video stream 90% of its rate, then make the allocation as fair as possible.",
+      "reader": "d3_typed_family",
+      "model_executed": true,
+      "choice": 5,
+      "norm_regret": 0.0
+    },
+    {
+      "scene": 53012,
+      "split": "test",
+      "text": "You may move up to 5 robots to new access points; use them to maximise fleet throughput.",
+      "reader": "controlled_language",
+      "choice": 3,
+      "norm_regret": 0.0,
+      "parse_and_select_ms": 0.045359996875049546
+    },
+    {
+      "scene": 53012,
+      "split": "test",
+      "text": "You may move up to 5 robots to new access points; use them to maximise fleet throughput.",
+      "reader": "d3_typed_family",
+      "model_executed": true,
+      "choice": 3,
+      "norm_regret": 0.0
+    },
+    {
+      "scene": 53012,
+      "split": "test",
+      "text": "The front half of the hall is where the work is today: serve those robots best.",
+      "reader": "controlled_language",
+      "choice": 5,
+      "norm_regret": 0.0,
+      "parse_and_select_ms": 0.07664800068596378
+    },
+    {
+      "scene": 53012,
+      "split": "test",
+      "text": "The front half of the hall is where the work is today: serve those robots best.",
+      "reader": "d3_typed_family",
+      "model_executed": true,
+      "choice": 5,
+      "norm_regret": 0.0
+    },
+    {
+      "scene": 53012,
+      "split": "test",
+      "text": "Today the work is in the back half of the hall: serve those robots best.",
+      "reader": "controlled_language",
+      "choice": 5,
+      "norm_regret": 0.0,
+      "parse_and_select_ms": 0.045931999920867383
+    },
+    {
+      "scene": 53012,
+      "split": "test",
+      "text": "Today the work is in the back half of the hall: serve those robots best.",
+      "reader": "d3_typed_family",
+      "model_executed": true,
+      "choice": 5,
+      "norm_regret": 0.0
+    },
+    {
+      "scene": 53012,
+      "split": "test",
+      "text": "Focus entirely on the least-served robot in the fleet.",
+      "reader": "controlled_language",
+      "choice": 0,
+      "norm_regret": 0.0,
+      "parse_and_select_ms": 0.032310999813489616
+    },
+    {
+      "scene": 53012,
+      "split": "test",
+      "text": "Focus entirely on the least-served robot in the fleet.",
+      "reader": "d3_typed_family",
+      "model_executed": true,
+      "choice": 0,
+      "norm_regret": 0.0
+    },
+    {
+      "scene": 53012,
+      "split": "test",
+      "text": "Keep all safety links above their floors before anything else, then deliver as much data as possible.",
+      "reader": "controlled_language",
+      "choice": 5,
+      "norm_regret": 0.0,
+      "parse_and_select_ms": 0.03331200059619732
+    },
+    {
+      "scene": 53012,
+      "split": "test",
+      "text": "Keep all safety links above their floors before anything else, then deliver as much data as possible.",
+      "reader": "d3_typed_family",
+      "model_executed": true,
+      "choice": 5,
+      "norm_regret": 0.0
+    },
+    {
+      "scene": 53012,
+      "split": "novel",
+      "text": "Each video robot must keep at least 80% of its rate; after that, be as fair as possible.",
+      "reader": "controlled_language",
+      "choice": 5,
+      "norm_regret": 0.0,
+      "parse_and_select_ms": 0.0439690011262428
+    },
+    {
+      "scene": 53012,
+      "split": "novel",
+      "text": "Each video robot must keep at least 80% of its rate; after that, be as fair as possible.",
+      "reader": "d3_typed_family",
+      "model_executed": true,
+      "choice": 5,
+      "norm_regret": 0.0
+    },
+    {
+      "scene": 53012,
+      "split": "novel",
+      "text": "Guarantee video streams 80% of their rate, then share the rest evenly.",
+      "reader": "controlled_language",
+      "choice": 5,
+      "norm_regret": 0.0,
+      "parse_and_select_ms": 0.06905700138304383
+    },
+    {
+      "scene": 53012,
+      "split": "novel",
+      "text": "Guarantee video streams 80% of their rate, then share the rest evenly.",
+      "reader": "d3_typed_family",
+      "model_executed": true,
+      "choice": 5,
+      "norm_regret": 0.0
+    },
+    {
+      "scene": 53012,
+      "split": "novel",
+      "text": "Reconnect at most 2 robots this round; within that, maximise total data.",
+      "reader": "controlled_language",
+      "choice": 2,
+      "norm_regret": 0.0,
+      "parse_and_select_ms": 0.03403200025786646
+    },
+    {
+      "scene": 53012,
+      "split": "novel",
+      "text": "Reconnect at most 2 robots this round; within that, maximise total data.",
+      "reader": "d3_typed_family",
+      "model_executed": true,
+      "choice": null,
+      "norm_regret": null,
+      "status": "deferred",
+      "error": "The semantic reader abstained"
+    },
+    {
+      "scene": 53012,
+      "split": "novel",
+      "text": "Only two BSSID switches are allowed. Get the most data inside that budget.",
+      "reader": "controlled_language",
+      "choice": 2,
+      "norm_regret": 0.0,
+      "parse_and_select_ms": 0.031128998671192676
+    },
+    {
+      "scene": 53012,
+      "split": "novel",
+      "text": "Only two BSSID switches are allowed. Get the most data inside that budget.",
+      "reader": "d3_typed_family",
+      "model_executed": true,
+      "choice": 2,
+      "norm_regret": 0.0
+    },
+    {
+      "scene": 53012,
+      "split": "novel",
+      "text": "Robots in the left half of the hall (x below 60 m) matter most; maximise their service.",
+      "reader": "controlled_language",
+      "choice": 5,
+      "norm_regret": 0.0,
+      "parse_and_select_ms": 0.049597001634538174
+    },
+    {
+      "scene": 53012,
+      "split": "novel",
+      "text": "Robots in the left half of the hall (x below 60 m) matter most; maximise their service.",
+      "reader": "d3_typed_family",
+      "model_executed": true,
+      "choice": 5,
+      "norm_regret": 0.0
+    },
+    {
+      "scene": 53012,
+      "split": "novel",
+      "text": "Prioritise robots working on the left side of the warehouse, the first 60 metres.",
+      "reader": "controlled_language",
+      "choice": 5,
+      "norm_regret": 0.0,
+      "parse_and_select_ms": 0.04679300036514178
+    },
+    {
+      "scene": 53012,
+      "split": "novel",
+      "text": "Prioritise robots working on the left side of the warehouse, the first 60 metres.",
+      "reader": "d3_typed_family",
+      "model_executed": true,
+      "choice": 5,
+      "norm_regret": 0.0
+    },
+    {
+      "scene": 53013,
+      "split": "test",
+      "text": "First guarantee each video stream 90% of its rate, then make the allocation as fair as possible.",
+      "reader": "controlled_language",
+      "choice": 6,
+      "norm_regret": 0.0,
+      "parse_and_select_ms": 0.13446899902191944
+    },
+    {
+      "scene": 53013,
+      "split": "test",
+      "text": "First guarantee each video stream 90% of its rate, then make the allocation as fair as possible.",
+      "reader": "d3_typed_family",
+      "model_executed": true,
+      "choice": 6,
+      "norm_regret": 0.0
+    },
+    {
+      "scene": 53013,
+      "split": "test",
+      "text": "You may move up to 5 robots to new access points; use them to maximise fleet throughput.",
+      "reader": "controlled_language",
+      "choice": 7,
+      "norm_regret": 0.0,
+      "parse_and_select_ms": 0.04615199941326864
+    },
+    {
+      "scene": 53013,
+      "split": "test",
+      "text": "You may move up to 5 robots to new access points; use them to maximise fleet throughput.",
+      "reader": "d3_typed_family",
+      "model_executed": true,
+      "choice": 7,
+      "norm_regret": 0.0
+    },
+    {
+      "scene": 53013,
+      "split": "test",
+      "text": "The front half of the hall is where the work is today: serve those robots best.",
+      "reader": "controlled_language",
+      "choice": 0,
+      "norm_regret": 0.0,
+      "parse_and_select_ms": 0.0643499988655094
+    },
+    {
+      "scene": 53013,
+      "split": "test",
+      "text": "The front half of the hall is where the work is today: serve those robots best.",
+      "reader": "d3_typed_family",
+      "model_executed": true,
+      "choice": 0,
+      "norm_regret": 0.0
+    },
+    {
+      "scene": 53013,
+      "split": "test",
+      "text": "Today the work is in the back half of the hall: serve those robots best.",
+      "reader": "controlled_language",
+      "choice": 6,
+      "norm_regret": 0.0,
+      "parse_and_select_ms": 0.04887600152869709
+    },
+    {
+      "scene": 53013,
+      "split": "test",
+      "text": "Today the work is in the back half of the hall: serve those robots best.",
+      "reader": "d3_typed_family",
+      "model_executed": true,
+      "choice": 6,
+      "norm_regret": 0.0
+    },
+    {
+      "scene": 53013,
+      "split": "test",
+      "text": "Focus entirely on the least-served robot in the fleet.",
+      "reader": "controlled_language",
+      "choice": 0,
+      "norm_regret": 0.0,
+      "parse_and_select_ms": 0.03225000182283111
+    },
+    {
+      "scene": 53013,
+      "split": "test",
+      "text": "Focus entirely on the least-served robot in the fleet.",
+      "reader": "d3_typed_family",
+      "model_executed": true,
+      "choice": 0,
+      "norm_regret": 0.0
+    },
+    {
+      "scene": 53013,
+      "split": "test",
+      "text": "Keep all safety links above their floors before anything else, then deliver as much data as possible.",
+      "reader": "controlled_language",
+      "choice": 2,
+      "norm_regret": 0.0,
+      "parse_and_select_ms": 0.03351199848111719
+    },
+    {
+      "scene": 53013,
+      "split": "test",
+      "text": "Keep all safety links above their floors before anything else, then deliver as much data as possible.",
+      "reader": "d3_typed_family",
+      "model_executed": true,
+      "choice": 2,
+      "norm_regret": 0.0
+    },
+    {
+      "scene": 53013,
+      "split": "novel",
+      "text": "Each video robot must keep at least 80% of its rate; after that, be as fair as possible.",
+      "reader": "controlled_language",
+      "choice": 6,
+      "norm_regret": 0.0,
+      "parse_and_select_ms": 0.1967550015251618
+    },
+    {
+      "scene": 53013,
+      "split": "novel",
+      "text": "Each video robot must keep at least 80% of its rate; after that, be as fair as possible.",
+      "reader": "d3_typed_family",
+      "model_executed": true,
+      "choice": 6,
+      "norm_regret": 0.0
+    },
+    {
+      "scene": 53013,
+      "split": "novel",
+      "text": "Guarantee video streams 80% of their rate, then share the rest evenly.",
+      "reader": "controlled_language",
+      "choice": 6,
+      "norm_regret": 0.0,
+      "parse_and_select_ms": 0.049947000661632046
+    },
+    {
+      "scene": 53013,
+      "split": "novel",
+      "text": "Guarantee video streams 80% of their rate, then share the rest evenly.",
+      "reader": "d3_typed_family",
+      "model_executed": true,
+      "choice": 6,
+      "norm_regret": 0.0
+    },
+    {
+      "scene": 53013,
+      "split": "novel",
+      "text": "Reconnect at most 2 robots this round; within that, maximise total data.",
+      "reader": "controlled_language",
+      "choice": 9,
+      "norm_regret": 0.0,
+      "parse_and_select_ms": 0.03762800042750314
+    },
+    {
+      "scene": 53013,
+      "split": "novel",
+      "text": "Reconnect at most 2 robots this round; within that, maximise total data.",
+      "reader": "d3_typed_family",
+      "model_executed": true,
+      "choice": null,
+      "norm_regret": null,
+      "status": "deferred",
+      "error": "The semantic reader abstained"
+    },
+    {
+      "scene": 53013,
+      "split": "novel",
+      "text": "Only two BSSID switches are allowed. Get the most data inside that budget.",
+      "reader": "controlled_language",
+      "choice": 9,
+      "norm_regret": 0.0,
+      "parse_and_select_ms": 0.032921001547947526
+    },
+    {
+      "scene": 53013,
+      "split": "novel",
+      "text": "Only two BSSID switches are allowed. Get the most data inside that budget.",
+      "reader": "d3_typed_family",
+      "model_executed": true,
+      "choice": 9,
+      "norm_regret": 0.0
+    },
+    {
+      "scene": 53013,
+      "split": "novel",
+      "text": "Robots in the left half of the hall (x below 60 m) matter most; maximise their service.",
+      "reader": "controlled_language",
+      "choice": 6,
+      "norm_regret": 0.0,
+      "parse_and_select_ms": 0.055376000091200694
+    },
+    {
+      "scene": 53013,
+      "split": "novel",
+      "text": "Robots in the left half of the hall (x below 60 m) matter most; maximise their service.",
+      "reader": "d3_typed_family",
+      "model_executed": true,
+      "choice": 6,
+      "norm_regret": 0.0
+    },
+    {
+      "scene": 53013,
+      "split": "novel",
+      "text": "Prioritise robots working on the left side of the warehouse, the first 60 metres.",
+      "reader": "controlled_language",
+      "choice": 6,
+      "norm_regret": 0.0,
+      "parse_and_select_ms": 0.05240199971012771
+    },
+    {
+      "scene": 53013,
+      "split": "novel",
+      "text": "Prioritise robots working on the left side of the warehouse, the first 60 metres.",
+      "reader": "d3_typed_family",
+      "model_executed": true,
+      "choice": 6,
+      "norm_regret": 0.0
+    },
+    {
+      "scene": 53014,
+      "split": "test",
+      "text": "First guarantee each video stream 90% of its rate, then make the allocation as fair as possible.",
+      "reader": "controlled_language",
+      "choice": 1,
+      "norm_regret": 0.0,
+      "parse_and_select_ms": 0.11360599819454364
+    },
+    {
+      "scene": 53014,
+      "split": "test",
+      "text": "First guarantee each video stream 90% of its rate, then make the allocation as fair as possible.",
+      "reader": "d3_typed_family",
+      "model_executed": true,
+      "choice": 1,
+      "norm_regret": 0.0
+    },
+    {
+      "scene": 53014,
+      "split": "test",
+      "text": "You may move up to 5 robots to new access points; use them to maximise fleet throughput.",
+      "reader": "controlled_language",
+      "choice": 2,
+      "norm_regret": 0.0,
+      "parse_and_select_ms": 0.046803001168882474
+    },
+    {
+      "scene": 53014,
+      "split": "test",
+      "text": "You may move up to 5 robots to new access points; use them to maximise fleet throughput.",
+      "reader": "d3_typed_family",
+      "model_executed": true,
+      "choice": 2,
+      "norm_regret": 0.0
+    },
+    {
+      "scene": 53014,
+      "split": "test",
+      "text": "The front half of the hall is where the work is today: serve those robots best.",
+      "reader": "controlled_language",
+      "choice": 8,
+      "norm_regret": 0.0,
+      "parse_and_select_ms": 0.06355799996526912
+    },
+    {
+      "scene": 53014,
+      "split": "test",
+      "text": "The front half of the hall is where the work is today: serve those robots best.",
+      "reader": "d3_typed_family",
+      "model_executed": true,
+      "choice": 8,
+      "norm_regret": 0.0
+    },
+    {
+      "scene": 53014,
+      "split": "test",
+      "text": "Today the work is in the back half of the hall: serve those robots best.",
+      "reader": "controlled_language",
+      "choice": 1,
+      "norm_regret": 0.0,
+      "parse_and_select_ms": 0.04821499896934256
+    },
+    {
+      "scene": 53014,
+      "split": "test",
+      "text": "Today the work is in the back half of the hall: serve those robots best.",
+      "reader": "d3_typed_family",
+      "model_executed": true,
+      "choice": 1,
+      "norm_regret": 0.0
+    },
+    {
+      "scene": 53014,
+      "split": "test",
+      "text": "Focus entirely on the least-served robot in the fleet.",
+      "reader": "controlled_language",
+      "choice": 0,
+      "norm_regret": 0.0,
+      "parse_and_select_ms": 0.03313100023660809
+    },
+    {
+      "scene": 53014,
+      "split": "test",
+      "text": "Focus entirely on the least-served robot in the fleet.",
+      "reader": "d3_typed_family",
+      "model_executed": true,
+      "choice": 0,
+      "norm_regret": 0.0
+    },
+    {
+      "scene": 53014,
+      "split": "test",
+      "text": "Keep all safety links above their floors before anything else, then deliver as much data as possible.",
+      "reader": "controlled_language",
+      "choice": 3,
+      "norm_regret": 0.0,
+      "parse_and_select_ms": 0.034062999475281686
+    },
+    {
+      "scene": 53014,
+      "split": "test",
+      "text": "Keep all safety links above their floors before anything else, then deliver as much data as possible.",
+      "reader": "d3_typed_family",
+      "model_executed": true,
+      "choice": 3,
+      "norm_regret": 0.0
+    },
+    {
+      "scene": 53014,
+      "split": "novel",
+      "text": "Each video robot must keep at least 80% of its rate; after that, be as fair as possible.",
+      "reader": "controlled_language",
+      "choice": 1,
+      "norm_regret": 0.0,
+      "parse_and_select_ms": 0.045310000132303685
+    },
+    {
+      "scene": 53014,
+      "split": "novel",
+      "text": "Each video robot must keep at least 80% of its rate; after that, be as fair as possible.",
+      "reader": "d3_typed_family",
+      "model_executed": true,
+      "choice": 1,
+      "norm_regret": 0.0
+    },
+    {
+      "scene": 53014,
+      "split": "novel",
+      "text": "Guarantee video streams 80% of their rate, then share the rest evenly.",
+      "reader": "controlled_language",
+      "choice": 1,
+      "norm_regret": 0.0,
+      "parse_and_select_ms": 0.04025299858767539
+    },
+    {
+      "scene": 53014,
+      "split": "novel",
+      "text": "Guarantee video streams 80% of their rate, then share the rest evenly.",
+      "reader": "d3_typed_family",
+      "model_executed": true,
+      "choice": 1,
+      "norm_regret": 0.0
+    },
+    {
+      "scene": 53014,
+      "split": "novel",
+      "text": "Reconnect at most 2 robots this round; within that, maximise total data.",
+      "reader": "controlled_language",
+      "choice": 5,
+      "norm_regret": 0.0,
+      "parse_and_select_ms": 0.03440399814280681
+    },
+    {
+      "scene": 53014,
+      "split": "novel",
+      "text": "Reconnect at most 2 robots this round; within that, maximise total data.",
+      "reader": "d3_typed_family",
+      "model_executed": true,
+      "choice": null,
+      "norm_regret": null,
+      "status": "deferred",
+      "error": "The semantic reader abstained"
+    },
+    {
+      "scene": 53014,
+      "split": "novel",
+      "text": "Only two BSSID switches are allowed. Get the most data inside that budget.",
+      "reader": "controlled_language",
+      "choice": 5,
+      "norm_regret": 0.0,
+      "parse_and_select_ms": 0.031749998015584424
+    },
+    {
+      "scene": 53014,
+      "split": "novel",
+      "text": "Only two BSSID switches are allowed. Get the most data inside that budget.",
+      "reader": "d3_typed_family",
+      "model_executed": true,
+      "choice": 5,
+      "norm_regret": 0.0
+    },
+    {
+      "scene": 53014,
+      "split": "novel",
+      "text": "Robots in the left half of the hall (x below 60 m) matter most; maximise their service.",
+      "reader": "controlled_language",
+      "choice": 4,
+      "norm_regret": 0.0,
+      "parse_and_select_ms": 0.052762003178941086
+    },
+    {
+      "scene": 53014,
+      "split": "novel",
+      "text": "Robots in the left half of the hall (x below 60 m) matter most; maximise their service.",
+      "reader": "d3_typed_family",
+      "model_executed": true,
+      "choice": 4,
+      "norm_regret": 0.0
+    },
+    {
+      "scene": 53014,
+      "split": "novel",
+      "text": "Prioritise robots working on the left side of the warehouse, the first 60 metres.",
+      "reader": "controlled_language",
+      "choice": 4,
+      "norm_regret": 0.0,
+      "parse_and_select_ms": 0.05190099909668788
+    },
+    {
+      "scene": 53014,
+      "split": "novel",
+      "text": "Prioritise robots working on the left side of the warehouse, the first 60 metres.",
+      "reader": "d3_typed_family",
+      "model_executed": true,
+      "choice": 4,
+      "norm_regret": 0.0
+    },
+    {
+      "scene": 53015,
+      "split": "test",
+      "text": "First guarantee each video stream 90% of its rate, then make the allocation as fair as possible.",
+      "reader": "controlled_language",
+      "choice": 1,
+      "norm_regret": 0.0,
+      "parse_and_select_ms": 0.1328309990640264
+    },
+    {
+      "scene": 53015,
+      "split": "test",
+      "text": "First guarantee each video stream 90% of its rate, then make the allocation as fair as possible.",
+      "reader": "d3_typed_family",
+      "model_executed": true,
+      "choice": 1,
+      "norm_regret": 0.0
+    },
+    {
+      "scene": 53015,
+      "split": "test",
+      "text": "You may move up to 5 robots to new access points; use them to maximise fleet throughput.",
+      "reader": "controlled_language",
+      "choice": 2,
+      "norm_regret": 0.0,
+      "parse_and_select_ms": 0.2052710005955305
+    },
+    {
+      "scene": 53015,
+      "split": "test",
+      "text": "You may move up to 5 robots to new access points; use them to maximise fleet throughput.",
+      "reader": "d3_typed_family",
+      "model_executed": true,
+      "choice": 2,
+      "norm_regret": 0.0
+    },
+    {
+      "scene": 53015,
+      "split": "test",
+      "text": "The front half of the hall is where the work is today: serve those robots best.",
+      "reader": "controlled_language",
+      "choice": 1,
+      "norm_regret": 0.0,
+      "parse_and_select_ms": 0.07551399903604761
+    },
+    {
+      "scene": 53015,
+      "split": "test",
+      "text": "The front half of the hall is where the work is today: serve those robots best.",
+      "reader": "d3_typed_family",
+      "model_executed": true,
+      "choice": 1,
+      "norm_regret": 0.0
+    },
+    {
+      "scene": 53015,
+      "split": "test",
+      "text": "Today the work is in the back half of the hall: serve those robots best.",
+      "reader": "controlled_language",
+      "choice": 8,
+      "norm_regret": 0.0,
+      "parse_and_select_ms": 0.04928399721393362
+    },
+    {
+      "scene": 53015,
+      "split": "test",
+      "text": "Today the work is in the back half of the hall: serve those robots best.",
+      "reader": "d3_typed_family",
+      "model_executed": true,
+      "choice": 8,
+      "norm_regret": 0.0
+    },
+    {
+      "scene": 53015,
+      "split": "test",
+      "text": "Focus entirely on the least-served robot in the fleet.",
+      "reader": "controlled_language",
+      "choice": 1,
+      "norm_regret": 0.0,
+      "parse_and_select_ms": 0.03381100032129325
+    },
+    {
+      "scene": 53015,
+      "split": "test",
+      "text": "Focus entirely on the least-served robot in the fleet.",
+      "reader": "d3_typed_family",
+      "model_executed": true,
+      "choice": 1,
+      "norm_regret": 0.0
+    },
+    {
+      "scene": 53015,
+      "split": "test",
+      "text": "Keep all safety links above their floors before anything else, then deliver as much data as possible.",
+      "reader": "controlled_language",
+      "choice": 9,
+      "norm_regret": 0.0,
+      "parse_and_select_ms": 0.03568399915820919
+    },
+    {
+      "scene": 53015,
+      "split": "test",
+      "text": "Keep all safety links above their floors before anything else, then deliver as much data as possible.",
+      "reader": "d3_typed_family",
+      "model_executed": true,
+      "choice": 9,
+      "norm_regret": 0.0
+    },
+    {
+      "scene": 53015,
+      "split": "novel",
+      "text": "Each video robot must keep at least 80% of its rate; after that, be as fair as possible.",
+      "reader": "controlled_language",
+      "choice": 1,
+      "norm_regret": 0.0,
+      "parse_and_select_ms": 0.048123001761268824
+    },
+    {
+      "scene": 53015,
+      "split": "novel",
+      "text": "Each video robot must keep at least 80% of its rate; after that, be as fair as possible.",
+      "reader": "d3_typed_family",
+      "model_executed": true,
+      "choice": 1,
+      "norm_regret": 0.0
+    },
+    {
+      "scene": 53015,
+      "split": "novel",
+      "text": "Guarantee video streams 80% of their rate, then share the rest evenly.",
+      "reader": "controlled_language",
+      "choice": 1,
+      "norm_regret": 0.0,
+      "parse_and_select_ms": 0.038909001887077466
+    },
+    {
+      "scene": 53015,
+      "split": "novel",
+      "text": "Guarantee video streams 80% of their rate, then share the rest evenly.",
+      "reader": "d3_typed_family",
+      "model_executed": true,
+      "choice": 1,
+      "norm_regret": 0.0
+    },
+    {
+      "scene": 53015,
+      "split": "novel",
+      "text": "Reconnect at most 2 robots this round; within that, maximise total data.",
+      "reader": "controlled_language",
+      "choice": 3,
+      "norm_regret": 0.0,
+      "parse_and_select_ms": 0.0337310011673253
+    },
+    {
+      "scene": 53015,
+      "split": "novel",
+      "text": "Reconnect at most 2 robots this round; within that, maximise total data.",
+      "reader": "d3_typed_family",
+      "model_executed": true,
+      "choice": null,
+      "norm_regret": null,
+      "status": "deferred",
+      "error": "The semantic reader abstained"
+    },
+    {
+      "scene": 53015,
+      "split": "novel",
+      "text": "Only two BSSID switches are allowed. Get the most data inside that budget.",
+      "reader": "controlled_language",
+      "choice": 3,
+      "norm_regret": 0.0,
+      "parse_and_select_ms": 0.03193899829057045
+    },
+    {
+      "scene": 53015,
+      "split": "novel",
+      "text": "Only two BSSID switches are allowed. Get the most data inside that budget.",
+      "reader": "d3_typed_family",
+      "model_executed": true,
+      "choice": 3,
+      "norm_regret": 0.0
+    },
+    {
+      "scene": 53015,
+      "split": "novel",
+      "text": "Robots in the left half of the hall (x below 60 m) matter most; maximise their service.",
+      "reader": "controlled_language",
+      "choice": 1,
+      "norm_regret": 0.0,
+      "parse_and_select_ms": 0.1139029991463758
+    },
+    {
+      "scene": 53015,
+      "split": "novel",
+      "text": "Robots in the left half of the hall (x below 60 m) matter most; maximise their service.",
+      "reader": "d3_typed_family",
+      "model_executed": true,
+      "choice": 1,
+      "norm_regret": 0.0
+    },
+    {
+      "scene": 53015,
+      "split": "novel",
+      "text": "Prioritise robots working on the left side of the warehouse, the first 60 metres.",
+      "reader": "controlled_language",
+      "choice": 1,
+      "norm_regret": 0.0,
+      "parse_and_select_ms": 0.05209899973124266
+    },
+    {
+      "scene": 53015,
+      "split": "novel",
+      "text": "Prioritise robots working on the left side of the warehouse, the first 60 metres.",
+      "reader": "d3_typed_family",
+      "model_executed": true,
+      "choice": 1,
+      "norm_regret": 0.0
+    },
+    {
+      "scene": 53016,
+      "split": "test",
+      "text": "First guarantee each video stream 90% of its rate, then make the allocation as fair as possible.",
+      "reader": "controlled_language",
+      "choice": 4,
+      "norm_regret": 0.0,
+      "parse_and_select_ms": 0.20689299708465114
+    },
+    {
+      "scene": 53016,
+      "split": "test",
+      "text": "First guarantee each video stream 90% of its rate, then make the allocation as fair as possible.",
+      "reader": "d3_typed_family",
+      "model_executed": true,
+      "choice": 4,
+      "norm_regret": 0.0
+    },
+    {
+      "scene": 53016,
+      "split": "test",
+      "text": "You may move up to 5 robots to new access points; use them to maximise fleet throughput.",
+      "reader": "controlled_language",
+      "choice": 8,
+      "norm_regret": 0.0,
+      "parse_and_select_ms": 0.05093700019642711
+    },
+    {
+      "scene": 53016,
+      "split": "test",
+      "text": "You may move up to 5 robots to new access points; use them to maximise fleet throughput.",
+      "reader": "d3_typed_family",
+      "model_executed": true,
+      "choice": 8,
+      "norm_regret": 0.0
+    },
+    {
+      "scene": 53016,
+      "split": "test",
+      "text": "The front half of the hall is where the work is today: serve those robots best.",
+      "reader": "controlled_language",
+      "choice": 5,
+      "norm_regret": 0.0,
+      "parse_and_select_ms": 0.0648179993731901
+    },
+    {
+      "scene": 53016,
+      "split": "test",
+      "text": "The front half of the hall is where the work is today: serve those robots best.",
+      "reader": "d3_typed_family",
+      "model_executed": true,
+      "choice": 5,
+      "norm_regret": 0.0
+    },
+    {
+      "scene": 53016,
+      "split": "test",
+      "text": "Today the work is in the back half of the hall: serve those robots best.",
+      "reader": "controlled_language",
+      "choice": 9,
+      "norm_regret": 0.0,
+      "parse_and_select_ms": 0.04790200182469562
+    },
+    {
+      "scene": 53016,
+      "split": "test",
+      "text": "Today the work is in the back half of the hall: serve those robots best.",
+      "reader": "d3_typed_family",
+      "model_executed": true,
+      "choice": 9,
+      "norm_regret": 0.0
+    },
+    {
+      "scene": 53016,
+      "split": "test",
+      "text": "Focus entirely on the least-served robot in the fleet.",
+      "reader": "controlled_language",
+      "choice": 3,
+      "norm_regret": 0.0,
+      "parse_and_select_ms": 0.03301000106148422
+    },
+    {
+      "scene": 53016,
+      "split": "test",
+      "text": "Focus entirely on the least-served robot in the fleet.",
+      "reader": "d3_typed_family",
+      "model_executed": true,
+      "choice": 3,
+      "norm_regret": 0.0
+    },
+    {
+      "scene": 53016,
+      "split": "test",
+      "text": "Keep all safety links above their floors before anything else, then deliver as much data as possible.",
+      "reader": "controlled_language",
+      "choice": 0,
+      "norm_regret": 0.0,
+      "parse_and_select_ms": 0.03518299854476936
+    },
+    {
+      "scene": 53016,
+      "split": "test",
+      "text": "Keep all safety links above their floors before anything else, then deliver as much data as possible.",
+      "reader": "d3_typed_family",
+      "model_executed": true,
+      "choice": 0,
+      "norm_regret": 0.0
+    },
+    {
+      "scene": 53016,
+      "split": "novel",
+      "text": "Each video robot must keep at least 80% of its rate; after that, be as fair as possible.",
+      "reader": "controlled_language",
+      "choice": 4,
+      "norm_regret": 0.0,
+      "parse_and_select_ms": 0.06187300095916726
+    },
+    {
+      "scene": 53016,
+      "split": "novel",
+      "text": "Each video robot must keep at least 80% of its rate; after that, be as fair as possible.",
+      "reader": "d3_typed_family",
+      "model_executed": true,
+      "choice": 4,
+      "norm_regret": 0.0
+    },
+    {
+      "scene": 53016,
+      "split": "novel",
+      "text": "Guarantee video streams 80% of their rate, then share the rest evenly.",
+      "reader": "controlled_language",
+      "choice": 4,
+      "norm_regret": 0.0,
+      "parse_and_select_ms": 0.04157300281804055
+    },
+    {
+      "scene": 53016,
+      "split": "novel",
+      "text": "Guarantee video streams 80% of their rate, then share the rest evenly.",
+      "reader": "d3_typed_family",
+      "model_executed": true,
+      "choice": 4,
+      "norm_regret": 0.0
+    },
+    {
+      "scene": 53016,
+      "split": "novel",
+      "text": "Reconnect at most 2 robots this round; within that, maximise total data.",
+      "reader": "controlled_language",
+      "choice": 8,
+      "norm_regret": 0.0,
+      "parse_and_select_ms": 0.03464199835434556
+    },
+    {
+      "scene": 53016,
+      "split": "novel",
+      "text": "Reconnect at most 2 robots this round; within that, maximise total data.",
+      "reader": "d3_typed_family",
+      "model_executed": true,
+      "choice": null,
+      "norm_regret": null,
+      "status": "deferred",
+      "error": "The semantic reader abstained"
+    },
+    {
+      "scene": 53016,
+      "split": "novel",
+      "text": "Only two BSSID switches are allowed. Get the most data inside that budget.",
+      "reader": "controlled_language",
+      "choice": 8,
+      "norm_regret": 0.0,
+      "parse_and_select_ms": 0.03300000025774352
+    },
+    {
+      "scene": 53016,
+      "split": "novel",
+      "text": "Only two BSSID switches are allowed. Get the most data inside that budget.",
+      "reader": "d3_typed_family",
+      "model_executed": true,
+      "choice": 8,
+      "norm_regret": 0.0
+    },
+    {
+      "scene": 53016,
+      "split": "novel",
+      "text": "Robots in the left half of the hall (x below 60 m) matter most; maximise their service.",
+      "reader": "controlled_language",
+      "choice": 4,
+      "norm_regret": 0.0,
+      "parse_and_select_ms": 0.05417200009105727
+    },
+    {
+      "scene": 53016,
+      "split": "novel",
+      "text": "Robots in the left half of the hall (x below 60 m) matter most; maximise their service.",
+      "reader": "d3_typed_family",
+      "model_executed": true,
+      "choice": 4,
+      "norm_regret": 0.0
+    },
+    {
+      "scene": 53016,
+      "split": "novel",
+      "text": "Prioritise robots working on the left side of the warehouse, the first 60 metres.",
+      "reader": "controlled_language",
+      "choice": 4,
+      "norm_regret": 0.0,
+      "parse_and_select_ms": 0.05992000296828337
+    },
+    {
+      "scene": 53016,
+      "split": "novel",
+      "text": "Prioritise robots working on the left side of the warehouse, the first 60 metres.",
+      "reader": "d3_typed_family",
+      "model_executed": true,
+      "choice": 4,
+      "norm_regret": 0.0
+    },
+    {
+      "scene": 53017,
+      "split": "test",
+      "text": "First guarantee each video stream 90% of its rate, then make the allocation as fair as possible.",
+      "reader": "controlled_language",
+      "choice": 7,
+      "norm_regret": 0.0,
+      "parse_and_select_ms": 0.21011799981351942
+    },
+    {
+      "scene": 53017,
+      "split": "test",
+      "text": "First guarantee each video stream 90% of its rate, then make the allocation as fair as possible.",
+      "reader": "d3_typed_family",
+      "model_executed": true,
+      "choice": 7,
+      "norm_regret": 0.0
+    },
+    {
+      "scene": 53017,
+      "split": "test",
+      "text": "You may move up to 5 robots to new access points; use them to maximise fleet throughput.",
+      "reader": "controlled_language",
+      "choice": 5,
+      "norm_regret": 0.0,
+      "parse_and_select_ms": 0.13962099910713732
+    },
+    {
+      "scene": 53017,
+      "split": "test",
+      "text": "You may move up to 5 robots to new access points; use them to maximise fleet throughput.",
+      "reader": "d3_typed_family",
+      "model_executed": true,
+      "choice": 5,
+      "norm_regret": 0.0
+    },
+    {
+      "scene": 53017,
+      "split": "test",
+      "text": "The front half of the hall is where the work is today: serve those robots best.",
+      "reader": "controlled_language",
+      "choice": 7,
+      "norm_regret": 0.0,
+      "parse_and_select_ms": 0.07572500180685893
+    },
+    {
+      "scene": 53017,
+      "split": "test",
+      "text": "The front half of the hall is where the work is today: serve those robots best.",
+      "reader": "d3_typed_family",
+      "model_executed": true,
+      "choice": 7,
+      "norm_regret": 0.0
+    },
+    {
+      "scene": 53017,
+      "split": "test",
+      "text": "Today the work is in the back half of the hall: serve those robots best.",
+      "reader": "controlled_language",
+      "choice": 3,
+      "norm_regret": 0.0,
+      "parse_and_select_ms": 0.04856300074607134
+    },
+    {
+      "scene": 53017,
+      "split": "test",
+      "text": "Today the work is in the back half of the hall: serve those robots best.",
+      "reader": "d3_typed_family",
+      "model_executed": true,
+      "choice": 3,
+      "norm_regret": 0.0
+    },
+    {
+      "scene": 53017,
+      "split": "test",
+      "text": "Focus entirely on the least-served robot in the fleet.",
+      "reader": "controlled_language",
+      "choice": 7,
+      "norm_regret": 0.0,
+      "parse_and_select_ms": 0.03312999979243614
+    },
+    {
+      "scene": 53017,
+      "split": "test",
+      "text": "Focus entirely on the least-served robot in the fleet.",
+      "reader": "d3_typed_family",
+      "model_executed": true,
+      "choice": 7,
+      "norm_regret": 0.0
+    },
+    {
+      "scene": 53017,
+      "split": "test",
+      "text": "Keep all safety links above their floors before anything else, then deliver as much data as possible.",
+      "reader": "controlled_language",
+      "choice": 9,
+      "norm_regret": 0.0,
+      "parse_and_select_ms": 0.03591399945435114
+    },
+    {
+      "scene": 53017,
+      "split": "test",
+      "text": "Keep all safety links above their floors before anything else, then deliver as much data as possible.",
+      "reader": "d3_typed_family",
+      "model_executed": true,
+      "choice": 9,
+      "norm_regret": 0.0
+    },
+    {
+      "scene": 53017,
+      "split": "novel",
+      "text": "Each video robot must keep at least 80% of its rate; after that, be as fair as possible.",
+      "reader": "controlled_language",
+      "choice": 7,
+      "norm_regret": 0.0,
+      "parse_and_select_ms": 0.0476120003440883
+    },
+    {
+      "scene": 53017,
+      "split": "novel",
+      "text": "Each video robot must keep at least 80% of its rate; after that, be as fair as possible.",
+      "reader": "d3_typed_family",
+      "model_executed": true,
+      "choice": 7,
+      "norm_regret": 0.0
+    },
+    {
+      "scene": 53017,
+      "split": "novel",
+      "text": "Guarantee video streams 80% of their rate, then share the rest evenly.",
+      "reader": "controlled_language",
+      "choice": 7,
+      "norm_regret": 0.0,
+      "parse_and_select_ms": 0.039409002056345344
+    },
+    {
+      "scene": 53017,
+      "split": "novel",
+      "text": "Guarantee video streams 80% of their rate, then share the rest evenly.",
+      "reader": "d3_typed_family",
+      "model_executed": true,
+      "choice": 7,
+      "norm_regret": 0.0
+    },
+    {
+      "scene": 53017,
+      "split": "novel",
+      "text": "Reconnect at most 2 robots this round; within that, maximise total data.",
+      "reader": "controlled_language",
+      "choice": 0,
+      "norm_regret": 0.0,
+      "parse_and_select_ms": 0.03435200051171705
+    },
+    {
+      "scene": 53017,
+      "split": "novel",
+      "text": "Reconnect at most 2 robots this round; within that, maximise total data.",
+      "reader": "d3_typed_family",
+      "model_executed": true,
+      "choice": null,
+      "norm_regret": null,
+      "status": "deferred",
+      "error": "The semantic reader abstained"
+    },
+    {
+      "scene": 53017,
+      "split": "novel",
+      "text": "Only two BSSID switches are allowed. Get the most data inside that budget.",
+      "reader": "controlled_language",
+      "choice": 0,
+      "norm_regret": 0.0,
+      "parse_and_select_ms": 0.03945000207750127
+    },
+    {
+      "scene": 53017,
+      "split": "novel",
+      "text": "Only two BSSID switches are allowed. Get the most data inside that budget.",
+      "reader": "d3_typed_family",
+      "model_executed": true,
+      "choice": 0,
+      "norm_regret": 0.0
+    },
+    {
+      "scene": 53017,
+      "split": "novel",
+      "text": "Robots in the left half of the hall (x below 60 m) matter most; maximise their service.",
+      "reader": "controlled_language",
+      "choice": 7,
+      "norm_regret": 0.0,
+      "parse_and_select_ms": 0.07509400165872648
+    },
+    {
+      "scene": 53017,
+      "split": "novel",
+      "text": "Robots in the left half of the hall (x below 60 m) matter most; maximise their service.",
+      "reader": "d3_typed_family",
+      "model_executed": true,
+      "choice": 7,
+      "norm_regret": 0.0
+    },
+    {
+      "scene": 53017,
+      "split": "novel",
+      "text": "Prioritise robots working on the left side of the warehouse, the first 60 metres.",
+      "reader": "controlled_language",
+      "choice": 7,
+      "norm_regret": 0.0,
+      "parse_and_select_ms": 0.052178998885210603
+    },
+    {
+      "scene": 53017,
+      "split": "novel",
+      "text": "Prioritise robots working on the left side of the warehouse, the first 60 metres.",
+      "reader": "d3_typed_family",
+      "model_executed": true,
+      "choice": 7,
+      "norm_regret": 0.0
+    },
+    {
+      "scene": 53018,
+      "split": "test",
+      "text": "First guarantee each video stream 90% of its rate, then make the allocation as fair as possible.",
+      "reader": "controlled_language",
+      "choice": 9,
+      "norm_regret": 0.0,
+      "parse_and_select_ms": 0.1120489978347905
+    },
+    {
+      "scene": 53018,
+      "split": "test",
+      "text": "First guarantee each video stream 90% of its rate, then make the allocation as fair as possible.",
+      "reader": "d3_typed_family",
+      "model_executed": true,
+      "choice": 9,
+      "norm_regret": 0.0
+    },
+    {
+      "scene": 53018,
+      "split": "test",
+      "text": "You may move up to 5 robots to new access points; use them to maximise fleet throughput.",
+      "reader": "controlled_language",
+      "choice": 3,
+      "norm_regret": 0.0,
+      "parse_and_select_ms": 0.04573900150717236
+    },
+    {
+      "scene": 53018,
+      "split": "test",
+      "text": "You may move up to 5 robots to new access points; use them to maximise fleet throughput.",
+      "reader": "d3_typed_family",
+      "model_executed": true,
+      "choice": 3,
+      "norm_regret": 0.0
+    },
+    {
+      "scene": 53018,
+      "split": "test",
+      "text": "The front half of the hall is where the work is today: serve those robots best.",
+      "reader": "controlled_language",
+      "choice": 2,
+      "norm_regret": 0.0,
+      "parse_and_select_ms": 0.06406700049410574
+    },
+    {
+      "scene": 53018,
+      "split": "test",
+      "text": "The front half of the hall is where the work is today: serve those robots best.",
+      "reader": "d3_typed_family",
+      "model_executed": true,
+      "choice": 2,
+      "norm_regret": 0.0
+    },
+    {
+      "scene": 53018,
+      "split": "test",
+      "text": "Today the work is in the back half of the hall: serve those robots best.",
+      "reader": "controlled_language",
+      "choice": 9,
+      "norm_regret": 0.0,
+      "parse_and_select_ms": 0.046580000343965366
+    },
+    {
+      "scene": 53018,
+      "split": "test",
+      "text": "Today the work is in the back half of the hall: serve those robots best.",
+      "reader": "d3_typed_family",
+      "model_executed": true,
+      "choice": 9,
+      "norm_regret": 0.0
+    },
+    {
+      "scene": 53018,
+      "split": "test",
+      "text": "Focus entirely on the least-served robot in the fleet.",
+      "reader": "controlled_language",
+      "choice": 2,
+      "norm_regret": 0.0,
+      "parse_and_select_ms": 0.08103199797915295
+    },
+    {
+      "scene": 53018,
+      "split": "test",
+      "text": "Focus entirely on the least-served robot in the fleet.",
+      "reader": "d3_typed_family",
+      "model_executed": true,
+      "choice": 2,
+      "norm_regret": 0.0
+    },
+    {
+      "scene": 53018,
+      "split": "test",
+      "text": "Keep all safety links above their floors before anything else, then deliver as much data as possible.",
+      "reader": "controlled_language",
+      "choice": 1,
+      "norm_regret": 0.0,
+      "parse_and_select_ms": 0.10508799823583104
+    },
+    {
+      "scene": 53018,
+      "split": "test",
+      "text": "Keep all safety links above their floors before anything else, then deliver as much data as possible.",
+      "reader": "d3_typed_family",
+      "model_executed": true,
+      "choice": 1,
+      "norm_regret": 0.0
+    },
+    {
+      "scene": 53018,
+      "split": "novel",
+      "text": "Each video robot must keep at least 80% of its rate; after that, be as fair as possible.",
+      "reader": "controlled_language",
+      "choice": 9,
+      "norm_regret": 0.0,
+      "parse_and_select_ms": 0.2175290028390009
+    },
+    {
+      "scene": 53018,
+      "split": "novel",
+      "text": "Each video robot must keep at least 80% of its rate; after that, be as fair as possible.",
+      "reader": "d3_typed_family",
+      "model_executed": true,
+      "choice": 9,
+      "norm_regret": 0.0
+    },
+    {
+      "scene": 53018,
+      "split": "novel",
+      "text": "Guarantee video streams 80% of their rate, then share the rest evenly.",
+      "reader": "controlled_language",
+      "choice": 9,
+      "norm_regret": 0.0,
+      "parse_and_select_ms": 0.044316999264992774
+    },
+    {
+      "scene": 53018,
+      "split": "novel",
+      "text": "Guarantee video streams 80% of their rate, then share the rest evenly.",
+      "reader": "d3_typed_family",
+      "model_executed": true,
+      "choice": 9,
+      "norm_regret": 0.0
+    },
+    {
+      "scene": 53018,
+      "split": "novel",
+      "text": "Reconnect at most 2 robots this round; within that, maximise total data.",
+      "reader": "controlled_language",
+      "choice": 3,
+      "norm_regret": 0.0,
+      "parse_and_select_ms": 0.11923000056413002
+    },
+    {
+      "scene": 53018,
+      "split": "novel",
+      "text": "Reconnect at most 2 robots this round; within that, maximise total data.",
+      "reader": "d3_typed_family",
+      "model_executed": true,
+      "choice": null,
+      "norm_regret": null,
+      "status": "deferred",
+      "error": "The semantic reader abstained"
+    },
+    {
+      "scene": 53018,
+      "split": "novel",
+      "text": "Only two BSSID switches are allowed. Get the most data inside that budget.",
+      "reader": "controlled_language",
+      "choice": 3,
+      "norm_regret": 0.0,
+      "parse_and_select_ms": 0.04125299892621115
+    },
+    {
+      "scene": 53018,
+      "split": "novel",
+      "text": "Only two BSSID switches are allowed. Get the most data inside that budget.",
+      "reader": "d3_typed_family",
+      "model_executed": true,
+      "choice": 3,
+      "norm_regret": 0.0
+    },
+    {
+      "scene": 53018,
+      "split": "novel",
+      "text": "Robots in the left half of the hall (x below 60 m) matter most; maximise their service.",
+      "reader": "controlled_language",
+      "choice": 5,
+      "norm_regret": 0.0,
+      "parse_and_select_ms": 0.0621839972154703
+    },
+    {
+      "scene": 53018,
+      "split": "novel",
+      "text": "Robots in the left half of the hall (x below 60 m) matter most; maximise their service.",
+      "reader": "d3_typed_family",
+      "model_executed": true,
+      "choice": 5,
+      "norm_regret": 0.0
+    },
+    {
+      "scene": 53018,
+      "split": "novel",
+      "text": "Prioritise robots working on the left side of the warehouse, the first 60 metres.",
+      "reader": "controlled_language",
+      "choice": 5,
+      "norm_regret": 0.0,
+      "parse_and_select_ms": 0.05518300167750567
+    },
+    {
+      "scene": 53018,
+      "split": "novel",
+      "text": "Prioritise robots working on the left side of the warehouse, the first 60 metres.",
+      "reader": "d3_typed_family",
+      "model_executed": true,
+      "choice": 5,
+      "norm_regret": 0.0
+    },
+    {
+      "scene": 53019,
+      "split": "test",
+      "text": "First guarantee each video stream 90% of its rate, then make the allocation as fair as possible.",
+      "reader": "controlled_language",
+      "choice": 0,
+      "norm_regret": 0.0,
+      "parse_and_select_ms": 0.1318299982813187
+    },
+    {
+      "scene": 53019,
+      "split": "test",
+      "text": "First guarantee each video stream 90% of its rate, then make the allocation as fair as possible.",
+      "reader": "d3_typed_family",
+      "model_executed": true,
+      "choice": 0,
+      "norm_regret": 0.0
+    },
+    {
+      "scene": 53019,
+      "split": "test",
+      "text": "You may move up to 5 robots to new access points; use them to maximise fleet throughput.",
+      "reader": "controlled_language",
+      "choice": 7,
+      "norm_regret": 0.0,
+      "parse_and_select_ms": 0.062424001953331754
+    },
+    {
+      "scene": 53019,
+      "split": "test",
+      "text": "You may move up to 5 robots to new access points; use them to maximise fleet throughput.",
+      "reader": "d3_typed_family",
+      "model_executed": true,
+      "choice": 7,
+      "norm_regret": 0.0
+    },
+    {
+      "scene": 53019,
+      "split": "test",
+      "text": "The front half of the hall is where the work is today: serve those robots best.",
+      "reader": "controlled_language",
+      "choice": 0,
+      "norm_regret": 0.0,
+      "parse_and_select_ms": 0.06324499918264337
+    },
+    {
+      "scene": 53019,
+      "split": "test",
+      "text": "The front half of the hall is where the work is today: serve those robots best.",
+      "reader": "d3_typed_family",
+      "model_executed": true,
+      "choice": 0,
+      "norm_regret": 0.0
+    },
+    {
+      "scene": 53019,
+      "split": "test",
+      "text": "Today the work is in the back half of the hall: serve those robots best.",
+      "reader": "controlled_language",
+      "choice": 0,
+      "norm_regret": 0.0,
+      "parse_and_select_ms": 0.0656100019114092
+    },
+    {
+      "scene": 53019,
+      "split": "test",
+      "text": "Today the work is in the back half of the hall: serve those robots best.",
+      "reader": "d3_typed_family",
+      "model_executed": true,
+      "choice": 0,
+      "norm_regret": 0.0
+    },
+    {
+      "scene": 53019,
+      "split": "test",
+      "text": "Focus entirely on the least-served robot in the fleet.",
+      "reader": "controlled_language",
+      "choice": 0,
+      "norm_regret": 0.0,
+      "parse_and_select_ms": 0.037305999285308644
+    },
+    {
+      "scene": 53019,
+      "split": "test",
+      "text": "Focus entirely on the least-served robot in the fleet.",
+      "reader": "d3_typed_family",
+      "model_executed": true,
+      "choice": 0,
+      "norm_regret": 0.0
+    },
+    {
+      "scene": 53019,
+      "split": "test",
+      "text": "Keep all safety links above their floors before anything else, then deliver as much data as possible.",
+      "reader": "controlled_language",
+      "choice": 0,
+      "norm_regret": 0.0,
+      "parse_and_select_ms": 0.03596500027924776
+    },
+    {
+      "scene": 53019,
+      "split": "test",
+      "text": "Keep all safety links above their floors before anything else, then deliver as much data as possible.",
+      "reader": "d3_typed_family",
+      "model_executed": true,
+      "choice": 0,
+      "norm_regret": 0.0
+    },
+    {
+      "scene": 53019,
+      "split": "novel",
+      "text": "Each video robot must keep at least 80% of its rate; after that, be as fair as possible.",
+      "reader": "controlled_language",
+      "choice": 0,
+      "norm_regret": 0.0,
+      "parse_and_select_ms": 0.04690000059781596
+    },
+    {
+      "scene": 53019,
+      "split": "novel",
+      "text": "Each video robot must keep at least 80% of its rate; after that, be as fair as possible.",
+      "reader": "d3_typed_family",
+      "model_executed": true,
+      "choice": 0,
+      "norm_regret": 0.0
+    },
+    {
+      "scene": 53019,
+      "split": "novel",
+      "text": "Guarantee video streams 80% of their rate, then share the rest evenly.",
+      "reader": "controlled_language",
+      "choice": 0,
+      "norm_regret": 0.0,
+      "parse_and_select_ms": 0.03930900129489601
+    },
+    {
+      "scene": 53019,
+      "split": "novel",
+      "text": "Guarantee video streams 80% of their rate, then share the rest evenly.",
+      "reader": "d3_typed_family",
+      "model_executed": true,
+      "choice": 0,
+      "norm_regret": 0.0
+    },
+    {
+      "scene": 53019,
+      "split": "novel",
+      "text": "Reconnect at most 2 robots this round; within that, maximise total data.",
+      "reader": "controlled_language",
+      "choice": 4,
+      "norm_regret": 0.0,
+      "parse_and_select_ms": 0.034431999665685
+    },
+    {
+      "scene": 53019,
+      "split": "novel",
+      "text": "Reconnect at most 2 robots this round; within that, maximise total data.",
+      "reader": "d3_typed_family",
+      "model_executed": true,
+      "choice": null,
+      "norm_regret": null,
+      "status": "deferred",
+      "error": "The semantic reader abstained"
+    },
+    {
+      "scene": 53019,
+      "split": "novel",
+      "text": "Only two BSSID switches are allowed. Get the most data inside that budget.",
+      "reader": "controlled_language",
+      "choice": 4,
+      "norm_regret": 0.0,
+      "parse_and_select_ms": 0.03212900264770724
+    },
+    {
+      "scene": 53019,
+      "split": "novel",
+      "text": "Only two BSSID switches are allowed. Get the most data inside that budget.",
+      "reader": "d3_typed_family",
+      "model_executed": true,
+      "choice": 4,
+      "norm_regret": 0.0
+    },
+    {
+      "scene": 53019,
+      "split": "novel",
+      "text": "Robots in the left half of the hall (x below 60 m) matter most; maximise their service.",
+      "reader": "controlled_language",
+      "choice": 0,
+      "norm_regret": 0.0,
+      "parse_and_select_ms": 0.053259998821886256
+    },
+    {
+      "scene": 53019,
+      "split": "novel",
+      "text": "Robots in the left half of the hall (x below 60 m) matter most; maximise their service.",
+      "reader": "d3_typed_family",
+      "model_executed": true,
+      "choice": 0,
+      "norm_regret": 0.0
+    },
+    {
+      "scene": 53019,
+      "split": "novel",
+      "text": "Prioritise robots working on the left side of the warehouse, the first 60 metres.",
+      "reader": "controlled_language",
+      "choice": 0,
+      "norm_regret": 0.0,
+      "parse_and_select_ms": 0.19179900118615478
+    },
+    {
+      "scene": 53019,
+      "split": "novel",
+      "text": "Prioritise robots working on the left side of the warehouse, the first 60 metres.",
+      "reader": "d3_typed_family",
+      "model_executed": true,
+      "choice": 0,
+      "norm_regret": 0.0
+    }
+  ],
+  "limits": [
+    "Uses the same simulator outcomes/candidate plans, not learned sensed-input radio predictions",
+    "Controlled-language parser has public warehouse glossary and rules, not learned language generalisation",
+    "Regret on answered missions must be read together with coverage",
+    "No global optimisation or hard-constraint guarantee"
+  ]
+}

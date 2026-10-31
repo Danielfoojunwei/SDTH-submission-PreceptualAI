@@ -1,0 +1,318 @@
+{
+  "source_report_sha256": "6f82fa8987d44b3a1901fcb352d41a0c667fdbb4f06662653b3ba9aa814330df",
+  "analysis_source_sha256": "48fac443c147230ae4ee94f21a8f9cc9f6731f04cb4b422518678286556b60e0",
+  "comparisons": {
+    "qwen": {
+      "n": 24,
+      "answered": 24,
+      "strict_schema_accuracy": 0,
+      "active_semantics_accuracy": 0.5833333333333334,
+      "latency_ms_mean": 9694.856648874671,
+      "cases": [
+        {
+          "text": "Every robot streaming video must keep at least 90% of its rate; subject to that, share capacity as evenly as possible.",
+          "answered": true,
+          "strict_match": false,
+          "active_semantics_match": true
+        },
+        {
+          "text": "Reconnect at most 5 robots in this plan; within that limit, maximise the total data delivered.",
+          "answered": true,
+          "strict_match": false,
+          "active_semantics_match": true
+        },
+        {
+          "text": "Robots working in the front half of the hall, near shipping (y below 40 m), matter most; maximise their service.",
+          "answered": true,
+          "strict_match": false,
+          "active_semantics_match": false
+        },
+        {
+          "text": "Robots in the back half of the hall, near receiving (y of 40 m or more), matter most; maximise their service.",
+          "answered": true,
+          "strict_match": false,
+          "active_semantics_match": false
+        },
+        {
+          "text": "Maximise the service of the single worst-served robot.",
+          "answered": true,
+          "strict_match": false,
+          "active_semantics_match": true
+        },
+        {
+          "text": "First, no safety link may fall below its floor; only then maximise total data.",
+          "answered": true,
+          "strict_match": false,
+          "active_semantics_match": false
+        },
+        {
+          "text": "Video robots need 90% of their requested rate or more. Once that holds, spread capacity fairly.",
+          "answered": true,
+          "strict_match": false,
+          "active_semantics_match": true
+        },
+        {
+          "text": "No more than five BSSID switches this round. Inside that budget, push the most data.",
+          "answered": true,
+          "strict_match": false,
+          "active_semantics_match": true
+        },
+        {
+          "text": "Prioritise the robots in the shipping half of the warehouse (the front 40 metres).",
+          "answered": true,
+          "strict_match": false,
+          "active_semantics_match": false
+        },
+        {
+          "text": "Prioritise the robots in the receiving half of the warehouse (the back 40 metres).",
+          "answered": true,
+          "strict_match": false,
+          "active_semantics_match": false
+        },
+        {
+          "text": "Make the robot with the poorest link as well off as possible.",
+          "answered": true,
+          "strict_match": false,
+          "active_semantics_match": true
+        },
+        {
+          "text": "Safety heartbeats come first. Once every one is above its minimum, maximise throughput.",
+          "answered": true,
+          "strict_match": false,
+          "active_semantics_match": true
+        },
+        {
+          "text": "First guarantee each video stream 90% of its rate, then make the allocation as fair as possible.",
+          "answered": true,
+          "strict_match": false,
+          "active_semantics_match": true
+        },
+        {
+          "text": "You may move up to 5 robots to new access points; use them to maximise fleet throughput.",
+          "answered": true,
+          "strict_match": false,
+          "active_semantics_match": true
+        },
+        {
+          "text": "The front half of the hall is where the work is today: serve those robots best.",
+          "answered": true,
+          "strict_match": false,
+          "active_semantics_match": false
+        },
+        {
+          "text": "Today the work is in the back half of the hall: serve those robots best.",
+          "answered": true,
+          "strict_match": false,
+          "active_semantics_match": false
+        },
+        {
+          "text": "Focus entirely on the least-served robot in the fleet.",
+          "answered": true,
+          "strict_match": false,
+          "active_semantics_match": false
+        },
+        {
+          "text": "Keep all safety links above their floors before anything else, then deliver as much data as possible.",
+          "answered": true,
+          "strict_match": false,
+          "active_semantics_match": true
+        },
+        {
+          "text": "Each video robot must keep at least 80% of its rate; after that, be as fair as possible.",
+          "answered": true,
+          "strict_match": false,
+          "active_semantics_match": true
+        },
+        {
+          "text": "Guarantee video streams 80% of their rate, then share the rest evenly.",
+          "answered": true,
+          "strict_match": false,
+          "active_semantics_match": true
+        },
+        {
+          "text": "Reconnect at most 2 robots this round; within that, maximise total data.",
+          "answered": true,
+          "strict_match": false,
+          "active_semantics_match": true
+        },
+        {
+          "text": "Only two BSSID switches are allowed. Get the most data inside that budget.",
+          "answered": true,
+          "strict_match": false,
+          "active_semantics_match": true
+        },
+        {
+          "text": "Robots in the left half of the hall (x below 60 m) matter most; maximise their service.",
+          "answered": true,
+          "strict_match": false,
+          "active_semantics_match": false
+        },
+        {
+          "text": "Prioritise robots working on the left side of the warehouse, the first 60 metres.",
+          "answered": true,
+          "strict_match": false,
+          "active_semantics_match": false
+        }
+      ]
+    },
+    "d3": {
+      "n": 24,
+      "answered": 23,
+      "strict_schema_accuracy": 0.9583333333333334,
+      "active_semantics_accuracy": 0.9583333333333334,
+      "latency_ms_mean": 1052.4666587916727,
+      "cases": [
+        {
+          "text": "Every robot streaming video must keep at least 90% of its rate; subject to that, share capacity as evenly as possible.",
+          "answered": true,
+          "strict_match": true,
+          "active_semantics_match": true
+        },
+        {
+          "text": "Reconnect at most 5 robots in this plan; within that limit, maximise the total data delivered.",
+          "answered": true,
+          "strict_match": true,
+          "active_semantics_match": true
+        },
+        {
+          "text": "Robots working in the front half of the hall, near shipping (y below 40 m), matter most; maximise their service.",
+          "answered": true,
+          "strict_match": true,
+          "active_semantics_match": true
+        },
+        {
+          "text": "Robots in the back half of the hall, near receiving (y of 40 m or more), matter most; maximise their service.",
+          "answered": true,
+          "strict_match": true,
+          "active_semantics_match": true
+        },
+        {
+          "text": "Maximise the service of the single worst-served robot.",
+          "answered": true,
+          "strict_match": true,
+          "active_semantics_match": true
+        },
+        {
+          "text": "First, no safety link may fall below its floor; only then maximise total data.",
+          "answered": true,
+          "strict_match": true,
+          "active_semantics_match": true
+        },
+        {
+          "text": "Video robots need 90% of their requested rate or more. Once that holds, spread capacity fairly.",
+          "answered": true,
+          "strict_match": true,
+          "active_semantics_match": true
+        },
+        {
+          "text": "No more than five BSSID switches this round. Inside that budget, push the most data.",
+          "answered": true,
+          "strict_match": true,
+          "active_semantics_match": true
+        },
+        {
+          "text": "Prioritise the robots in the shipping half of the warehouse (the front 40 metres).",
+          "answered": true,
+          "strict_match": true,
+          "active_semantics_match": true
+        },
+        {
+          "text": "Prioritise the robots in the receiving half of the warehouse (the back 40 metres).",
+          "answered": true,
+          "strict_match": true,
+          "active_semantics_match": true
+        },
+        {
+          "text": "Make the robot with the poorest link as well off as possible.",
+          "answered": true,
+          "strict_match": true,
+          "active_semantics_match": true
+        },
+        {
+          "text": "Safety heartbeats come first. Once every one is above its minimum, maximise throughput.",
+          "answered": true,
+          "strict_match": true,
+          "active_semantics_match": true
+        },
+        {
+          "text": "First guarantee each video stream 90% of its rate, then make the allocation as fair as possible.",
+          "answered": true,
+          "strict_match": true,
+          "active_semantics_match": true
+        },
+        {
+          "text": "You may move up to 5 robots to new access points; use them to maximise fleet throughput.",
+          "answered": true,
+          "strict_match": true,
+          "active_semantics_match": true
+        },
+        {
+          "text": "The front half of the hall is where the work is today: serve those robots best.",
+          "answered": true,
+          "strict_match": true,
+          "active_semantics_match": true
+        },
+        {
+          "text": "Today the work is in the back half of the hall: serve those robots best.",
+          "answered": true,
+          "strict_match": true,
+          "active_semantics_match": true
+        },
+        {
+          "text": "Focus entirely on the least-served robot in the fleet.",
+          "answered": true,
+          "strict_match": true,
+          "active_semantics_match": true
+        },
+        {
+          "text": "Keep all safety links above their floors before anything else, then deliver as much data as possible.",
+          "answered": true,
+          "strict_match": true,
+          "active_semantics_match": true
+        },
+        {
+          "text": "Each video robot must keep at least 80% of its rate; after that, be as fair as possible.",
+          "answered": true,
+          "strict_match": true,
+          "active_semantics_match": true
+        },
+        {
+          "text": "Guarantee video streams 80% of their rate, then share the rest evenly.",
+          "answered": true,
+          "strict_match": true,
+          "active_semantics_match": true
+        },
+        {
+          "text": "Reconnect at most 2 robots this round; within that, maximise total data.",
+          "answered": false,
+          "strict_match": false,
+          "active_semantics_match": false
+        },
+        {
+          "text": "Only two BSSID switches are allowed. Get the most data inside that budget.",
+          "answered": true,
+          "strict_match": true,
+          "active_semantics_match": true
+        },
+        {
+          "text": "Robots in the left half of the hall (x below 60 m) matter most; maximise their service.",
+          "answered": true,
+          "strict_match": true,
+          "active_semantics_match": true
+        },
+        {
+          "text": "Prioritise robots working on the left side of the warehouse, the first 60 metres.",
+          "answered": true,
+          "strict_match": true,
+          "active_semantics_match": true
+        }
+      ]
+    }
+  },
+  "method": "Compare kind and only the fields used by that kind; no output rewriting or label-guided correction",
+  "limits": [
+    "Strict schema accuracy also penalises irrelevant populated fields",
+    "The typed reader extracts literal values deterministically, while Qwen generates them",
+    "One prompt and a small author-written set are not a general capability ranking"
+  ]
+}

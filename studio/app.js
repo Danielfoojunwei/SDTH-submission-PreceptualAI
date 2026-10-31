@@ -212,6 +212,18 @@ function regretRows(m, label, hl) {
 }
 function researchResults() {
   let html = "";
+  const next = B.warehouse_v2;
+  if (next) {
+    html += `<div class="card" style="margin-top:16px"><h3>Warehouse v2 · observed-input research</h3>
+      <p class="sub">Three compact-model training seeds · simulated observations and interventions. These metrics belong to a new protocol; compare models within each row group.</p>
+      ${table(["Split", "Model", "Mean normalized candidate regret ↓", "Service RMSE ↓"],
+        next.core_models.map((r) => [esc(r.split), esc(r.arm), fmt(r.mean_regret), fmt(r.service_rmse)]))}
+      <p class="note">The compact non-graph baseline wins plan selection in this protocol. No physical-car result or SOTA claim is established.</p>
+      ${table(["Prospective closed-loop policy", "Service fraction ↑", "Worst-decile service ↑", "Reconnections ↓", "Critical-violation robot-steps ↓"],
+        next.prospective_closedloop.map((r) => [esc(r.policy), fmt(r.mean_service), fmt(r.worst_decile_mean_service),
+          fmt(r.reconnections, 1), fmt(r.critical_violation_robot_steps, 1)]))}
+      <p class="note">Three new 100-robot simulated rollouts per policy. The horizon correction is evaluated separately from the initial failure. Compare the strongest-scan baseline and service/continuity trade-offs; a fleet average does not establish benefit to every robot.</p></div>`;
+  }
   const run = B.training_run;
   if (run) {
     html += `<div class="card" style="margin-top:16px"><h3>Full RadioJEV rerun · ${esc(run.status)}</h3>
