@@ -1,0 +1,491 @@
+{
+  "source": "deterministic_schema_audit_of_actual_unchanged_model_outputs",
+  "parent_report_sha256": "7d1c1d39c51709f7711cf4baee7536dbaa290955116378df76bd743310d7506b",
+  "original_strict_accuracy": 0.1,
+  "accuracy_with_declared_defaults": 0.1,
+  "readings": [
+    {
+      "text": "Switch at most 12 robots; maximise throughput.",
+      "raw_output_unchanged": "{\n  \"max_moves\": 12,\n  \"floors\": [\n    {\n      \"group\": {\n        \"kind\": \"teleoperated\",\n        \"ids\": [],\n        \"axis\": null,\n        \"direction\": null,\n        \"boundary_m\": null\n      },\n      \"fraction\": 0.3\n    }\n  ],\n  \"priorities\": [\n    {\n      \"kind\": \"min_switches\",\n      \"group\": {\n        \"kind\": \"all\",\n        \"ids\": [],\n        \"axis\": null,\n        \"direction\": null,\n        \"boundary_m\": null\n      },\n      \"fraction\": 0.1\n    },\n    {\n      \"kind\": \"throughput\",\n      \"group\": {\n        \"kind\": \"all\",\n        \"ids\": [],\n        \"axis\": null,\n        \"direction\": null,\n        \"boundary_m\": null\n      },\n      \"fraction\": 0.1\n    }\n  ],\n  \"conditional_floor\": null\n}\n",
+      "original_strict_exact_match": false,
+      "schema_valid_with_declared_defaults": true,
+      "exact_contract_match": false,
+      "contract": {
+        "max_moves": 12,
+        "floors": [
+          {
+            "group": {
+              "kind": "teleoperated",
+              "ids": [],
+              "axis": null,
+              "direction": null,
+              "boundary_m": null
+            },
+            "fraction": 0.3
+          }
+        ],
+        "priorities": [
+          {
+            "kind": "min_switches",
+            "group": {
+              "kind": "all",
+              "ids": [],
+              "axis": null,
+              "direction": null,
+              "boundary_m": null
+            },
+            "fraction": 0.1
+          },
+          {
+            "kind": "throughput",
+            "group": {
+              "kind": "all",
+              "ids": [],
+              "axis": null,
+              "direction": null,
+              "boundary_m": null
+            },
+            "fraction": 0.1
+          }
+        ],
+        "conditional_floor": null
+      }
+    },
+    {
+      "text": "Switch at most 12 robots; require service >= 30% for teleoperated robots at every offset; minimise switches; then maximise throughput.",
+      "raw_output_unchanged": "{\n  \"max_moves\": 12,\n  \"floors\": [\n    {\n      \"group\": {\n        \"kind\": \"teleoperated\",\n        \"ids\": [],\n        \"axis\": null,\n        \"direction\": null,\n        \"boundary_m\": null\n      },\n      \"fraction\": 0.3\n    }\n  ],\n  \"priorities\": [\n    {\n      \"kind\": \"min_switches\",\n      \"group\": {\n        \"kind\": \"all\",\n        \"ids\": [],\n        \"axis\": null,\n        \"direction\": null,\n        \"boundary_m\": null\n      },\n      \"fraction\": 0.1\n    },\n    {\n      \"kind\": \"throughput\",\n      \"group\": {\n        \"kind\": \"all\",\n        \"ids\": [],\n        \"axis\": null,\n        \"direction\": null,\n        \"boundary_m\": null\n      },\n      \"fraction\": 0.1\n    }\n  ],\n  \"conditional_floor\": null\n}\n",
+      "original_strict_exact_match": true,
+      "schema_valid_with_declared_defaults": true,
+      "exact_contract_match": true,
+      "contract": {
+        "max_moves": 12,
+        "floors": [
+          {
+            "group": {
+              "kind": "teleoperated",
+              "ids": [],
+              "axis": null,
+              "direction": null,
+              "boundary_m": null
+            },
+            "fraction": 0.3
+          }
+        ],
+        "priorities": [
+          {
+            "kind": "min_switches",
+            "group": {
+              "kind": "all",
+              "ids": [],
+              "axis": null,
+              "direction": null,
+              "boundary_m": null
+            },
+            "fraction": 0.1
+          },
+          {
+            "kind": "throughput",
+            "group": {
+              "kind": "all",
+              "ids": [],
+              "axis": null,
+              "direction": null,
+              "boundary_m": null
+            },
+            "fraction": 0.1
+          }
+        ],
+        "conditional_floor": null
+      }
+    },
+    {
+      "text": "Switch at most 12 robots; maximise worst-served 10% service; then minimise critical violations.",
+      "raw_output_unchanged": "{\n  \"max_moves\": 12,\n  \"floors\": [\n    {\n      \"group\": {\n        \"kind\": \"teleoperated\",\n        \"ids\": [],\n        \"axis\": null,\n        \"direction\": null,\n        \"boundary_m\": null\n      },\n      \"fraction\": 0.3\n    }\n  ],\n  \"priorities\": [\n    {\n      \"kind\": \"min_switches\",\n      \"group\": {\n        \"kind\": \"all\",\n        \"ids\": [],\n        \"axis\": null,\n        \"direction\": null,\n        \"boundary_m\": null\n      },\n      \"fraction\": 0.1\n    },\n    {\n      \"kind\": \"throughput\",\n      \"group\": {\n        \"kind\": \"all\",\n        \"ids\": [],\n        \"axis\": null,\n        \"direction\": null,\n        \"boundary_m\": null\n      },\n      \"fraction\": 0.1\n    }\n  ],\n  \"conditional_floor\": null\n}\n",
+      "original_strict_exact_match": false,
+      "schema_valid_with_declared_defaults": true,
+      "exact_contract_match": false,
+      "contract": {
+        "max_moves": 12,
+        "floors": [
+          {
+            "group": {
+              "kind": "teleoperated",
+              "ids": [],
+              "axis": null,
+              "direction": null,
+              "boundary_m": null
+            },
+            "fraction": 0.3
+          }
+        ],
+        "priorities": [
+          {
+            "kind": "min_switches",
+            "group": {
+              "kind": "all",
+              "ids": [],
+              "axis": null,
+              "direction": null,
+              "boundary_m": null
+            },
+            "fraction": 0.1
+          },
+          {
+            "kind": "throughput",
+            "group": {
+              "kind": "all",
+              "ids": [],
+              "axis": null,
+              "direction": null,
+              "boundary_m": null
+            },
+            "fraction": 0.1
+          }
+        ],
+        "conditional_floor": null
+      }
+    },
+    {
+      "text": "Switch at most 12 robots; if any teleoperated robot has observed service < 60%, prioritise that group; minimise critical violations; then maximise throughput.",
+      "raw_output_unchanged": "{\n  \"max_moves\": 12,\n  \"floors\": [\n    {\n      \"group\": {\n        \"kind\": \"teleoperated\",\n        \"ids\": [],\n        \"axis\": null,\n        \"direction\": null,\n        \"boundary_m\": null\n      },\n      \"fraction\": 0.3\n    }\n  ],\n  \"priorities\": [\n    {\n      \"kind\": \"min_switches\",\n      \"group\": {\n        \"kind\": \"all\",\n        \"ids\": [],\n        \"axis\": null,\n        \"direction\": null,\n        \"boundary_m\": null\n      },\n      \"fraction\": 0.1\n    },\n    {\n      \"kind\": \"throughput\",\n      \"group\": {\n        \"kind\": \"all\",\n        \"ids\": [],\n        \"axis\": null,\n        \"direction\": null,\n        \"boundary_m\": null\n      },\n      \"fraction\": 0.1\n    }\n  ],\n  \"conditional_floor\": null\n}\n",
+      "original_strict_exact_match": false,
+      "schema_valid_with_declared_defaults": true,
+      "exact_contract_match": false,
+      "contract": {
+        "max_moves": 12,
+        "floors": [
+          {
+            "group": {
+              "kind": "teleoperated",
+              "ids": [],
+              "axis": null,
+              "direction": null,
+              "boundary_m": null
+            },
+            "fraction": 0.3
+          }
+        ],
+        "priorities": [
+          {
+            "kind": "min_switches",
+            "group": {
+              "kind": "all",
+              "ids": [],
+              "axis": null,
+              "direction": null,
+              "boundary_m": null
+            },
+            "fraction": 0.1
+          },
+          {
+            "kind": "throughput",
+            "group": {
+              "kind": "all",
+              "ids": [],
+              "axis": null,
+              "direction": null,
+              "boundary_m": null
+            },
+            "fraction": 0.1
+          }
+        ],
+        "conditional_floor": null
+      }
+    },
+    {
+      "text": "Switch at most 12 robots; maximise service for robots with x < 60 m; then maximise throughput.",
+      "raw_output_unchanged": "{\n  \"max_moves\": 12,\n  \"floors\": [\n    {\n      \"group\": {\n        \"kind\": \"teleoperated\",\n        \"ids\": [],\n        \"axis\": null,\n        \"direction\": null,\n        \"boundary_m\": null\n      },\n      \"fraction\": 0.3\n    }\n  ],\n  \"priorities\": [\n    {\n      \"kind\": \"min_switches\",\n      \"group\": {\n        \"kind\": \"all\",\n        \"ids\": [],\n        \"axis\": null,\n        \"direction\": null,\n        \"boundary_m\": null\n      },\n      \"fraction\": 0.1\n    },\n    {\n      \"kind\": \"throughput\",\n      \"group\": {\n        \"kind\": \"all\",\n        \"ids\": [],\n        \"axis\": null,\n        \"direction\": null,\n        \"boundary_m\": null\n      },\n      \"fraction\": 0.1\n    }\n  ],\n  \"conditional_floor\": null\n}\n",
+      "original_strict_exact_match": false,
+      "schema_valid_with_declared_defaults": true,
+      "exact_contract_match": false,
+      "contract": {
+        "max_moves": 12,
+        "floors": [
+          {
+            "group": {
+              "kind": "teleoperated",
+              "ids": [],
+              "axis": null,
+              "direction": null,
+              "boundary_m": null
+            },
+            "fraction": 0.3
+          }
+        ],
+        "priorities": [
+          {
+            "kind": "min_switches",
+            "group": {
+              "kind": "all",
+              "ids": [],
+              "axis": null,
+              "direction": null,
+              "boundary_m": null
+            },
+            "fraction": 0.1
+          },
+          {
+            "kind": "throughput",
+            "group": {
+              "kind": "all",
+              "ids": [],
+              "axis": null,
+              "direction": null,
+              "boundary_m": null
+            },
+            "fraction": 0.1
+          }
+        ],
+        "conditional_floor": null
+      }
+    },
+    {
+      "text": "Switch at most 5 robots; require service >= 12.5% for video robots at every offset; minimise switches; then maximise throughput.",
+      "raw_output_unchanged": "{\n  \"max_moves\": 5,\n  \"floors\": [\n    {\n      \"group\": {\n        \"kind\": \"teleoperated\",\n        \"ids\": [],\n        \"axis\": null,\n        \"direction\": null,\n        \"boundary_m\": null\n      },\n      \"fraction\": 0.3\n    }\n  ],\n  \"priorities\": [\n    {\n      \"kind\": \"min_switches\",\n      \"group\": {\n        \"kind\": \"all\",\n        \"ids\": [],\n        \"axis\": null,\n        \"direction\": null,\n        \"boundary_m\": null\n      },\n      \"fraction\": 0.1\n    },\n    {\n      \"kind\": \"throughput\",\n      \"group\": {\n        \"kind\": \"all\",\n        \"ids\": [],\n        \"axis\": null,\n        \"direction\": null,\n        \"boundary_m\": null\n      },\n      \"fraction\": 0.1\n    }\n  ],\n  \"conditional_floor\": null\n}\n",
+      "original_strict_exact_match": false,
+      "schema_valid_with_declared_defaults": true,
+      "exact_contract_match": false,
+      "contract": {
+        "max_moves": 5,
+        "floors": [
+          {
+            "group": {
+              "kind": "teleoperated",
+              "ids": [],
+              "axis": null,
+              "direction": null,
+              "boundary_m": null
+            },
+            "fraction": 0.3
+          }
+        ],
+        "priorities": [
+          {
+            "kind": "min_switches",
+            "group": {
+              "kind": "all",
+              "ids": [],
+              "axis": null,
+              "direction": null,
+              "boundary_m": null
+            },
+            "fraction": 0.1
+          },
+          {
+            "kind": "throughput",
+            "group": {
+              "kind": "all",
+              "ids": [],
+              "axis": null,
+              "direction": null,
+              "boundary_m": null
+            },
+            "fraction": 0.1
+          }
+        ],
+        "conditional_floor": null
+      }
+    },
+    {
+      "text": "Switch at most 12 robots; require service >= 80% for teleoperated robots at every offset; minimise switches; then maximise throughput.",
+      "raw_output_unchanged": "{\n  \"max_moves\": 12,\n  \"floors\": [\n    {\n      \"group\": {\n        \"kind\": \"teleoperated\",\n        \"ids\": [],\n        \"axis\": null,\n        \"direction\": null,\n        \"boundary_m\": null\n      },\n      \"fraction\": 0.3\n    }\n  ],\n  \"priorities\": [\n    {\n      \"kind\": \"min_switches\",\n      \"group\": {\n        \"kind\": \"all\",\n        \"ids\": [],\n        \"axis\": null,\n        \"direction\": null,\n        \"boundary_m\": null\n      },\n      \"fraction\": 0.1\n    },\n    {\n      \"kind\": \"throughput\",\n      \"group\": {\n        \"kind\": \"all\",\n        \"ids\": [],\n        \"axis\": null,\n        \"direction\": null,\n        \"boundary_m\": null\n      },\n      \"fraction\": 0.1\n    }\n  ],\n  \"conditional_floor\": null\n}\n",
+      "original_strict_exact_match": false,
+      "schema_valid_with_declared_defaults": true,
+      "exact_contract_match": false,
+      "contract": {
+        "max_moves": 12,
+        "floors": [
+          {
+            "group": {
+              "kind": "teleoperated",
+              "ids": [],
+              "axis": null,
+              "direction": null,
+              "boundary_m": null
+            },
+            "fraction": 0.3
+          }
+        ],
+        "priorities": [
+          {
+            "kind": "min_switches",
+            "group": {
+              "kind": "all",
+              "ids": [],
+              "axis": null,
+              "direction": null,
+              "boundary_m": null
+            },
+            "fraction": 0.1
+          },
+          {
+            "kind": "throughput",
+            "group": {
+              "kind": "all",
+              "ids": [],
+              "axis": null,
+              "direction": null,
+              "boundary_m": null
+            },
+            "fraction": 0.1
+          }
+        ],
+        "conditional_floor": null
+      }
+    },
+    {
+      "text": "Switch at most 8 robots; if any teleoperated robot has observed service < 75%, prioritise that group; maximise worst-served 20% service; then maximise throughput.",
+      "raw_output_unchanged": "{\n  \"max_moves\": 12,\n  \"floors\": [\n    {\n      \"group\": {\n        \"kind\": \"teleoperated\",\n        \"ids\": [],\n        \"axis\": null,\n        \"direction\": null,\n        \"boundary_m\": null\n      },\n      \"fraction\": 0.3\n    }\n  ],\n  \"priorities\": [\n    {\n      \"kind\": \"min_switches\",\n      \"group\": {\n        \"kind\": \"all\",\n        \"ids\": [],\n        \"axis\": null,\n        \"direction\": null,\n        \"boundary_m\": null\n      },\n      \"fraction\": 0.1\n    },\n    {\n      \"kind\": \"throughput\",\n      \"group\": {\n        \"kind\": \"all\",\n        \"ids\": [],\n        \"axis\": null,\n        \"direction\": null,\n        \"boundary_m\": null\n      },\n      \"fraction\": 0.1\n    }\n  ],\n  \"conditional_floor\": null\n}\n",
+      "original_strict_exact_match": false,
+      "schema_valid_with_declared_defaults": true,
+      "exact_contract_match": false,
+      "contract": {
+        "max_moves": 12,
+        "floors": [
+          {
+            "group": {
+              "kind": "teleoperated",
+              "ids": [],
+              "axis": null,
+              "direction": null,
+              "boundary_m": null
+            },
+            "fraction": 0.3
+          }
+        ],
+        "priorities": [
+          {
+            "kind": "min_switches",
+            "group": {
+              "kind": "all",
+              "ids": [],
+              "axis": null,
+              "direction": null,
+              "boundary_m": null
+            },
+            "fraction": 0.1
+          },
+          {
+            "kind": "throughput",
+            "group": {
+              "kind": "all",
+              "ids": [],
+              "axis": null,
+              "direction": null,
+              "boundary_m": null
+            },
+            "fraction": 0.1
+          }
+        ],
+        "conditional_floor": null
+      }
+    },
+    {
+      "text": "Switch at most 12 robots; maximise service for robots with y >= 40 m; then minimise switches.",
+      "raw_output_unchanged": "{\n  \"max_moves\": 12,\n  \"floors\": [\n    {\n      \"group\": {\n        \"kind\": \"teleoperated\",\n        \"ids\": [],\n        \"axis\": null,\n        \"direction\": null,\n        \"boundary_m\": null\n      },\n      \"fraction\": 0.3\n    }\n  ],\n  \"priorities\": [\n    {\n      \"kind\": \"min_switches\",\n      \"group\": {\n        \"kind\": \"all\",\n        \"ids\": [],\n        \"axis\": null,\n        \"direction\": null,\n        \"boundary_m\": null\n      },\n      \"fraction\": 0.1\n    },\n    {\n      \"kind\": \"throughput\",\n      \"group\": {\n        \"kind\": \"all\",\n        \"ids\": [],\n        \"axis\": null,\n        \"direction\": null,\n        \"boundary_m\": null\n      },\n      \"fraction\": 0.1\n    }\n  ],\n  \"conditional_floor\": null\n}\n",
+      "original_strict_exact_match": false,
+      "schema_valid_with_declared_defaults": true,
+      "exact_contract_match": false,
+      "contract": {
+        "max_moves": 12,
+        "floors": [
+          {
+            "group": {
+              "kind": "teleoperated",
+              "ids": [],
+              "axis": null,
+              "direction": null,
+              "boundary_m": null
+            },
+            "fraction": 0.3
+          }
+        ],
+        "priorities": [
+          {
+            "kind": "min_switches",
+            "group": {
+              "kind": "all",
+              "ids": [],
+              "axis": null,
+              "direction": null,
+              "boundary_m": null
+            },
+            "fraction": 0.1
+          },
+          {
+            "kind": "throughput",
+            "group": {
+              "kind": "all",
+              "ids": [],
+              "axis": null,
+              "direction": null,
+              "boundary_m": null
+            },
+            "fraction": 0.1
+          }
+        ],
+        "conditional_floor": null
+      }
+    },
+    {
+      "text": "Switch at most 12 robots; require service >= 100% for all robots at every offset; minimise switches; then maximise throughput.",
+      "raw_output_unchanged": "{\n  \"max_moves\": 12,\n  \"floors\": [\n    {\n      \"group\": {\n        \"kind\": \"teleoperated\",\n        \"ids\": [],\n        \"axis\": null,\n        \"direction\": null,\n        \"boundary_m\": null\n      },\n      \"fraction\": 0.3\n    }\n  ],\n  \"priorities\": [\n    {\n      \"kind\": \"min_switches\",\n      \"group\": {\n        \"kind\": \"all\",\n        \"ids\": [],\n        \"axis\": null,\n        \"direction\": null,\n        \"boundary_m\": null\n      },\n      \"fraction\": 0.1\n    },\n    {\n      \"kind\": \"throughput\",\n      \"group\": {\n        \"kind\": \"all\",\n        \"ids\": [],\n        \"axis\": null,\n        \"direction\": null,\n        \"boundary_m\": null\n      },\n      \"fraction\": 0.1\n    }\n  ],\n  \"conditional_floor\": null\n}\n",
+      "original_strict_exact_match": false,
+      "schema_valid_with_declared_defaults": true,
+      "exact_contract_match": false,
+      "contract": {
+        "max_moves": 12,
+        "floors": [
+          {
+            "group": {
+              "kind": "teleoperated",
+              "ids": [],
+              "axis": null,
+              "direction": null,
+              "boundary_m": null
+            },
+            "fraction": 0.3
+          }
+        ],
+        "priorities": [
+          {
+            "kind": "min_switches",
+            "group": {
+              "kind": "all",
+              "ids": [],
+              "axis": null,
+              "direction": null,
+              "boundary_m": null
+            },
+            "fraction": 0.1
+          },
+          {
+            "kind": "throughput",
+            "group": {
+              "kind": "all",
+              "ids": [],
+              "axis": null,
+              "direction": null,
+              "boundary_m": null
+            },
+            "fraction": 0.1
+          }
+        ],
+        "conditional_floor": null
+      }
+    }
+  ],
+  "defaults": [
+    "Absent nullable group fields use None; absent IDs use []",
+    "A missing non-tail fraction is 0.1",
+    "Absent floors mean no floors; absent conditional priority means none",
+    "Non-group goals default to all robots"
+  ],
+  "model_executed_in_this_audit": false,
+  "label_guided_repairs": false,
+  "limits": [
+    "Designed after finding the over-strict validation issue; original exact-schema score is retained",
+    "Unknown or conflicting fields remain errors; mission-specific missing values are never recovered from labels",
+    "Malformed JSON, truncation and omitted real constraints still count as failures"
+  ]
+}

@@ -1,0 +1,43 @@
+{
+  "binary_sha256": "5675c75982d8a538ce36d3e75d7b670504645718bd22c1410360b27e99709599",
+  "source_sha256": {
+    "third_party/ns3/warehouse-contracts.cc": "91c758393f8fe11fe6b088232cbe973084772202d187e17687656b4623f228c5",
+    "scripts/run_warehouse_packet_audit.py": "ca7db79da8e9ba895d64b5ec3d45acc343f9090889bfe8372c2f739fff225458"
+  },
+  "version": "ns3-3.49",
+  "duration_s": 8,
+  "seeds": [
+    146000,
+    146001,
+    146002,
+    146003,
+    146004,
+    146005
+  ],
+  "rts_cts": [
+    false,
+    true
+  ],
+  "training_scene_seeds": [
+    146000,
+    146001
+  ],
+  "validation_scene_seeds": [
+    146002
+  ],
+  "test_scene_seeds": [
+    146003,
+    146004,
+    146005
+  ],
+  "source": "ns3_packet_events",
+  "hardware_experiments_executed": false,
+  "learned_policy": "predeclared graph_jepa seed 0; research arm, not qualified",
+  "protocol_limits": [
+    "Eight-second prefix of the committed 30-second route",
+    "Geometry, routes, demands, channels and action assignments match; log-distance propagation lacks racks",
+    "Assumed application muting is not Wi-Fi authentication or DHCP emulation",
+    "Deadline labels concern generated packets; absent muted demand is charged in service",
+    "External busy metadata parameterises an independent burst source, not calibrated hardware airtime"
+  ]
+}

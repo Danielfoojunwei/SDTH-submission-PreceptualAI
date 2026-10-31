@@ -5,12 +5,50 @@ Current experiment status and restart prerequisites are in [docs/HANDOFF.md](doc
 The restored didjital R6.1 reference and its executed software checks are
 documented in [docs/R6_COMPATIBILITY.md](docs/R6_COMPATIBILITY.md).
 
-The completed milestone is **warehouse connectivity: WirelessJEV/RadioJEV E1–E5
-and corrected E7**. E6 remains excluded. Router, E8, JEPA/world-model,
-general-robotics, custom-PHY and satellite extensions are deferred. See the
-consolidated [warehouse results](docs/WAREHOUSE_RESULTS.md) for completion status.
+The original completed milestone is **warehouse connectivity: WirelessJEV/RadioJEV
+E1–E5 and corrected E7**; its [results](docs/WAREHOUSE_RESULTS.md) are preserved.
+The new [warehouse v2 campaign](docs/WAREHOUSE_V2.md) adds structured missions,
+sensed-input temporal models, three independent compact-model seeds, active
+sensing, site adaptation/removal, real pretrained baselines, and executed
+Sionna/ns-3 PHY/MAC studies. See [v2 findings](docs/WAREHOUSE_V2_RESULTS.md).
+E6, general robotics, custom on-air waveforms and satellite work remain excluded.
+Physical-car qualification remains pending; no foundation-model or SOTA claim
+follows from these experiments.
 
-Mission-conditioned Wi-Fi coordination for a 10-car Raspbot fleet. A frozen open System One model chooses the fleet plan. Exact numerical oracles teach and score it. A swarm protocol shares what the cars learn.
+The [30-second horizon extension](docs/WAREHOUSE_HORIZON.md) now trains six
+compact forecasters, plans partial switches under explicit mission budgets,
+and exposes a validated, proposal-only CLI. On three fresh simulated scenes,
+route-aware numerical planning raises mean service from 0.237 to 0.326 against
+budgeted strongest-signal roaming. All six learned residuals fail the
+closed-loop acceptance checks and fall back to that numerical planner.
+The twelve-switch cap is an operator-policy scenario, not a hardware rate
+limit; unconstrained roaming performs better on service in the original
+horizon holdout. Read the [full results](docs/WAREHOUSE_HORIZON_RESULTS.md)
+and [prospective selector audit](docs/WAREHOUSE_HORIZON_SELECTOR.md).
+
+The [compositional mission and radio audit](docs/WAREHOUSE_V3.md) adds hard
+per-offset floors, explicit groups, conditional and lexicographic priorities,
+masked/JEPA-style pretraining, a full-priority cached-mission scorer, measured
+native packet events and a complete local cost frontier. Canonical missions
+use a complete compiler by default; actual neural clause verification is
+available explicitly. The [v3 results](docs/WAREHOUSE_V3_RESULTS.md) preserve
+the failed gates and separate simulations from hardware measurements.
+Both implementations currently target Wi-Fi; [protocol-independent adapters
+are not implemented](docs/PROTOCOL_BOUNDARY.md).
+
+A separate [native packet-supervision campaign](docs/WAREHOUSE_NATIVE.md) is
+running to address the remaining learned-controller gap. It aligns native
+labels and the decision window at thirty seconds, uses 100 simulated robots,
+and freezes three seeds per neural architecture before six fresh test scenes.
+The [status snapshot](artifacts/warehouse_native/snapshot.json) is timestamped;
+running jobs are not completed results or physical qualification.
+
+WirelessJEV turns warehouse missions into typed constraints and priorities for
+planning. RadioJEV learns radio consequences from observations and proposed
+actions. The current proposal path uses the complete controlled language and
+numerical belief by default; actual System One verification and learned scorers
+are explicit research options. The original ten-car prototype and subsequent
+100-/200-robot warehouse experiments run in simulation.
 
 Milestone 1 runs entirely in a digital twin. Nothing here touches a car, a radio or a network.
 
@@ -20,8 +58,8 @@ Every car is the same hardware as the existing SmartCar (`src/wirelessjev/hardwa
 - **Management radio:** the onboard brcmfmac SDIO radio (`wlan0`) runs the management hotspot at 192.168.1.11. WirelessJEV never scans, selects or modifies it; SmartCarGuard owns its recovery.
 - **Customer radio:** an Intel BE200 on PCIe (`8086:272b`, `wlan1`). It is the only radio acted on, and the only action is choosing a BSSID.
 - **Wire format:** exactly the existing `SmartCarCmd.py` JSON: `status`, and `connect` with ssid/bssid/security plus the Wi-Fi password, which SmartCarCmd requires, just as the PC app sends it. Plans, receipts and logs never contain the password; the real transport (`carlink.py`) injects it from the operator's WiFi.json at send time.
-- **Measured anchors:**
-  - about 4 s per BSSID switch;
+- **Target settings and reported anchors:**
+  - an assumed 4 s per BSSID switch, pending physical stage measurements;
   - 5 s policy interval;
   - -80 dBm legacy reconnect threshold;
   - VHT 80 MHz with 2 spatial streams;

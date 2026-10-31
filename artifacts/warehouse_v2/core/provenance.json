@@ -1,0 +1,30 @@
+{
+  "created_at": "2026-10-30T23:31:58.043992+00:00",
+  "source": "simulation_and_pretrained_inference",
+  "git_head": "47717168dafe5afc0bf6cf1abff232019d3a5725",
+  "git_dirty": true,
+  "source_sha256": {
+    "src/wirelessjev/warehouse_v2/phy.py": "2857928144525765fc1e7c59b704026fc4e08e5ffd9fab4483bf548b7ff32030",
+    "src/wirelessjev/warehouse_v2/missions.py": "c2a25893151c5be94b0a635ac14cd37731e978af760422f391f6f79625478f28",
+    "src/wirelessjev/warehouse_v2/model.py": "c33d33b43700469bd1d78e6d3c7f09227c2ab19ae905f5ac6ba9e4a7d4858f97",
+    "src/wirelessjev/warehouse_v2/experiment.py": "ccbcb47a7561e1daf03f83c792295b052239af1b869111d92eb1476dfb7be9ec",
+    "src/wirelessjev/warehouse_v2/data.py": "a9a5f75a7915d47710187b50e894fab8f670427a35e589a9f7962ad164f0e216",
+    "src/wirelessjev/warehouse_v2/metrics.py": "1d2069f359fa1877603e7abc232f2a201b8cb048a68470cd13d779cdd5a38eb2",
+    "src/wirelessjev/warehouse_v2/__init__.py": "5e0bba6e0e2940fe1f829990f71210059328a95db560596c008c2642d6bcc8d8",
+    "scripts/run_warehouse_v2.py": "9aa2124172da01ada101e3d07caace71388b2ad05fdfacc23d836a1bab80fd09",
+    "uv.lock": "b1133feaac6b6254dd04a9159511bfb6a34f3beb597bc36b4e70db158c7842c2"
+  },
+  "dependencies": {
+    "torch": "2.14.1",
+    "sionna": "2.2.0",
+    "numpy": "2.5.4",
+    "scipy": "1.18.1",
+    "transformers": "5.17.0"
+  },
+  "hardware": {
+    "cuda": false,
+    "cpu_threads": 2
+  },
+  "physical_car_access": false,
+  "hardware_experiments_executed": false
+}

@@ -1,0 +1,132 @@
+{
+  "readings": [
+    {
+      "text": "Switch at most 3 robots; require service >= 40% for robots [amr-001, amr-017] at every offset; minimise critical violations; then maximise throughput.",
+      "answered": true,
+      "contract": {
+        "max_moves": 3,
+        "floors": [
+          {
+            "group": {
+              "kind": "ids",
+              "ids": [
+                "amr-001",
+                "amr-017"
+              ],
+              "axis": null,
+              "direction": null,
+              "boundary_m": null
+            },
+            "fraction": 0.4
+          }
+        ],
+        "priorities": [
+          {
+            "kind": "critical",
+            "group": {
+              "kind": "all",
+              "ids": [],
+              "axis": null,
+              "direction": null,
+              "boundary_m": null
+            },
+            "fraction": 0.1
+          },
+          {
+            "kind": "throughput",
+            "group": {
+              "kind": "all",
+              "ids": [],
+              "axis": null,
+              "direction": null,
+              "boundary_m": null
+            },
+            "fraction": 0.1
+          }
+        ],
+        "conditional_floor": null
+      },
+      "receipt": {
+        "reader": "complete_compiler_with_typed_clause_verification",
+        "model_executed": true,
+        "clauses": [
+          {
+            "text": "switch at most 3 robots",
+            "choice": "switch_budget",
+            "expected_compiled_type": "switch_budget",
+            "answer_probabilities": {
+              "switch_budget": 0.9897505447116306,
+              "service_floor": 4.3393408594866244e-05,
+              "conditional_priority": 5.2978179012972475e-05,
+              "min_switches": 0.009706800375609212,
+              "throughput": 8.418315977783607e-05,
+              "tail": 2.4329101737881066e-05,
+              "critical": 5.008378165148358e-05,
+              "group_service": 4.5340010746422106e-05,
+              "unsupported": 0.00024234727123872293
+            },
+            "cached": false,
+            "model_executed": true
+          },
+          {
+            "text": "require service >= 40% for robots [amr-001, amr-017] at every offset",
+            "choice": "service_floor",
+            "expected_compiled_type": "service_floor",
+            "answer_probabilities": {
+              "switch_budget": 0.0001644862694049823,
+              "service_floor": 0.9615092332370446,
+              "conditional_priority": 0.002885538456593891,
+              "min_switches": 0.00017174656874972092,
+              "throughput": 0.00022474910846606434,
+              "tail": 0.0013379917192599972,
+              "critical": 0.0007603636049158169,
+              "group_service": 0.031503198757791354,
+              "unsupported": 0.0014426922777735494
+            },
+            "cached": false,
+            "model_executed": true
+          },
+          {
+            "text": "minimise critical violations",
+            "choice": "critical",
+            "expected_compiled_type": "critical",
+            "answer_probabilities": {
+              "switch_budget": 4.0847640675121825e-05,
+              "service_floor": 9.911603541498052e-05,
+              "conditional_priority": 0.00023375865408388477,
+              "min_switches": 0.0009230136855779739,
+              "throughput": 0.00016078457639187707,
+              "tail": 0.000524427845390182,
+              "critical": 0.9965592889751638,
+              "group_service": 0.00016940131911759963,
+              "unsupported": 0.0012893612681846025
+            },
+            "cached": false,
+            "model_executed": true
+          },
+          {
+            "text": "then maximise throughput",
+            "choice": "throughput",
+            "expected_compiled_type": "throughput",
+            "answer_probabilities": {
+              "switch_budget": 0.00014115952955530222,
+              "service_floor": 0.00011277136226801829,
+              "conditional_priority": 0.0007873735163730951,
+              "min_switches": 0.0003535641883847033,
+              "throughput": 0.9926720865131785,
+              "tail": 0.0016902264918883414,
+              "critical": 0.0003828823685749359,
+              "group_service": 0.0016260331043239235,
+              "unsupported": 0.002233902925453192
+            },
+            "cached": false,
+            "model_executed": true
+          }
+        ],
+        "probabilities_are_physical_risk": false,
+        "unrestricted_language_supported": false,
+        "latency_ms": 236768.53398799722
+      }
+    }
+  ]
+}

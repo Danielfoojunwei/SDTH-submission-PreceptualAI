@@ -1,0 +1,45 @@
+{
+  "source": "prospective_warehouse_simulation",
+  "audit_environments": [
+    143000,
+    143001,
+    143002
+  ],
+  "validation_environment_count": 6,
+  "validation_rollouts": 42,
+  "audit_rollouts": 24,
+  "accepted_learned_models": 0,
+  "candidate_models": 6,
+  "verified_identical_fallbacks": 18,
+  "designed_after_original_holdout": true,
+  "summary": [
+    {
+      "method": "budgeted_strongest",
+      "runs": 3,
+      "mean_service": 0.2374667134957468,
+      "worst_decile_service": 0.06840312007725914,
+      "critical_violation_robot_steps": 8037.666666666667,
+      "mean_mission_utility": -0.550960872598362
+    },
+    {
+      "method": "numerical_planner",
+      "runs": 3,
+      "mean_service": 0.3257622668780531,
+      "worst_decile_service": 0.1174278918312834,
+      "critical_violation_robot_steps": 6853,
+      "mean_mission_utility": -0.36077854753074334
+    },
+    {
+      "method": "guarded_residual",
+      "runs": 18,
+      "mean_service": 0.3257622668780531,
+      "worst_decile_service": 0.1174278918312834,
+      "critical_violation_robot_steps": 6853,
+      "mean_mission_utility": -0.36077854753074334
+    }
+  ],
+  "guarded_rows_are_independent_fleets": false,
+  "hardware_qualified": false,
+  "physical_safety_guarantee": false,
+  "sota_established": false
+}

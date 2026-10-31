@@ -1,0 +1,3060 @@
+{
+  "source": "frozen_model_simulation_re_evaluation_and_actual_cpu_timing",
+  "selection_sha256": "23cbb86221fee156cad659eec9f9d8a02ad67bdebd6afc028f1c834ce300b764",
+  "per_environment": [
+    {
+      "domain": "ordinary",
+      "scene": 150000,
+      "method": "numerical",
+      "service_rmse": 0.3714691079386578
+    },
+    {
+      "domain": "ordinary",
+      "scene": 150001,
+      "method": "numerical",
+      "service_rmse": 0.4278704943944524
+    },
+    {
+      "domain": "ordinary",
+      "scene": 150002,
+      "method": "numerical",
+      "service_rmse": 0.4305772549140505
+    },
+    {
+      "domain": "ordinary",
+      "scene": 150000,
+      "method": "mlp-0",
+      "service_rmse": 0.33232899374469393
+    },
+    {
+      "domain": "ordinary",
+      "scene": 150001,
+      "method": "mlp-0",
+      "service_rmse": 0.34475705664071254
+    },
+    {
+      "domain": "ordinary",
+      "scene": 150002,
+      "method": "mlp-0",
+      "service_rmse": 0.3163964891452033
+    },
+    {
+      "domain": "ordinary",
+      "scene": 150000,
+      "method": "graph_scratch-0",
+      "service_rmse": 0.33256199910150913
+    },
+    {
+      "domain": "ordinary",
+      "scene": 150001,
+      "method": "graph_scratch-0",
+      "service_rmse": 0.33810832555104814
+    },
+    {
+      "domain": "ordinary",
+      "scene": 150002,
+      "method": "graph_scratch-0",
+      "service_rmse": 0.31550432879152523
+    },
+    {
+      "domain": "ordinary",
+      "scene": 150000,
+      "method": "graph_masked-0",
+      "service_rmse": 0.33109444361185936
+    },
+    {
+      "domain": "ordinary",
+      "scene": 150001,
+      "method": "graph_masked-0",
+      "service_rmse": 0.34541343691870946
+    },
+    {
+      "domain": "ordinary",
+      "scene": 150002,
+      "method": "graph_masked-0",
+      "service_rmse": 0.3215472680244147
+    },
+    {
+      "domain": "ordinary",
+      "scene": 150000,
+      "method": "graph_jepa-0",
+      "service_rmse": 0.32646816123327715
+    },
+    {
+      "domain": "ordinary",
+      "scene": 150001,
+      "method": "graph_jepa-0",
+      "service_rmse": 0.3443163222762912
+    },
+    {
+      "domain": "ordinary",
+      "scene": 150002,
+      "method": "graph_jepa-0",
+      "service_rmse": 0.3103025811684641
+    },
+    {
+      "domain": "ordinary",
+      "scene": 150000,
+      "method": "mlp-1",
+      "service_rmse": 0.32950579743351466
+    },
+    {
+      "domain": "ordinary",
+      "scene": 150001,
+      "method": "mlp-1",
+      "service_rmse": 0.34065996927791664
+    },
+    {
+      "domain": "ordinary",
+      "scene": 150002,
+      "method": "mlp-1",
+      "service_rmse": 0.3110254608978292
+    },
+    {
+      "domain": "ordinary",
+      "scene": 150000,
+      "method": "graph_scratch-1",
+      "service_rmse": 0.32759359604007343
+    },
+    {
+      "domain": "ordinary",
+      "scene": 150001,
+      "method": "graph_scratch-1",
+      "service_rmse": 0.3420741373758437
+    },
+    {
+      "domain": "ordinary",
+      "scene": 150002,
+      "method": "graph_scratch-1",
+      "service_rmse": 0.31871851522411804
+    },
+    {
+      "domain": "ordinary",
+      "scene": 150000,
+      "method": "graph_masked-1",
+      "service_rmse": 0.3330830509595298
+    },
+    {
+      "domain": "ordinary",
+      "scene": 150001,
+      "method": "graph_masked-1",
+      "service_rmse": 0.3408504162445244
+    },
+    {
+      "domain": "ordinary",
+      "scene": 150002,
+      "method": "graph_masked-1",
+      "service_rmse": 0.3189584529011368
+    },
+    {
+      "domain": "ordinary",
+      "scene": 150000,
+      "method": "graph_jepa-1",
+      "service_rmse": 0.32972018463458014
+    },
+    {
+      "domain": "ordinary",
+      "scene": 150001,
+      "method": "graph_jepa-1",
+      "service_rmse": 0.34161179471134373
+    },
+    {
+      "domain": "ordinary",
+      "scene": 150002,
+      "method": "graph_jepa-1",
+      "service_rmse": 0.31213547334268615
+    },
+    {
+      "domain": "ordinary",
+      "scene": 150000,
+      "method": "mlp-2",
+      "service_rmse": 0.34037048259968056
+    },
+    {
+      "domain": "ordinary",
+      "scene": 150001,
+      "method": "mlp-2",
+      "service_rmse": 0.3469431203614625
+    },
+    {
+      "domain": "ordinary",
+      "scene": 150002,
+      "method": "mlp-2",
+      "service_rmse": 0.32218109805246986
+    },
+    {
+      "domain": "ordinary",
+      "scene": 150000,
+      "method": "graph_scratch-2",
+      "service_rmse": 0.3309553135325486
+    },
+    {
+      "domain": "ordinary",
+      "scene": 150001,
+      "method": "graph_scratch-2",
+      "service_rmse": 0.3359005373729923
+    },
+    {
+      "domain": "ordinary",
+      "scene": 150002,
+      "method": "graph_scratch-2",
+      "service_rmse": 0.31333018035119
+    },
+    {
+      "domain": "ordinary",
+      "scene": 150000,
+      "method": "graph_masked-2",
+      "service_rmse": 0.33614933711124384
+    },
+    {
+      "domain": "ordinary",
+      "scene": 150001,
+      "method": "graph_masked-2",
+      "service_rmse": 0.33961975676973066
+    },
+    {
+      "domain": "ordinary",
+      "scene": 150002,
+      "method": "graph_masked-2",
+      "service_rmse": 0.32109837599115826
+    },
+    {
+      "domain": "ordinary",
+      "scene": 150000,
+      "method": "graph_jepa-2",
+      "service_rmse": 0.32704738082338103
+    },
+    {
+      "domain": "ordinary",
+      "scene": 150001,
+      "method": "graph_jepa-2",
+      "service_rmse": 0.3398092561225385
+    },
+    {
+      "domain": "ordinary",
+      "scene": 150002,
+      "method": "graph_jepa-2",
+      "service_rmse": 0.3060505319585802
+    },
+    {
+      "domain": "layout",
+      "scene": 151000,
+      "method": "numerical",
+      "service_rmse": 0.29627106371432665
+    },
+    {
+      "domain": "layout",
+      "scene": 151001,
+      "method": "numerical",
+      "service_rmse": 0.37862585369112156
+    },
+    {
+      "domain": "layout",
+      "scene": 151002,
+      "method": "numerical",
+      "service_rmse": 0.38324695965572037
+    },
+    {
+      "domain": "layout",
+      "scene": 151000,
+      "method": "mlp-0",
+      "service_rmse": 0.26176768443602993
+    },
+    {
+      "domain": "layout",
+      "scene": 151001,
+      "method": "mlp-0",
+      "service_rmse": 0.3361184118407923
+    },
+    {
+      "domain": "layout",
+      "scene": 151002,
+      "method": "mlp-0",
+      "service_rmse": 0.3309339580067632
+    },
+    {
+      "domain": "layout",
+      "scene": 151000,
+      "method": "graph_scratch-0",
+      "service_rmse": 0.26030523780329246
+    },
+    {
+      "domain": "layout",
+      "scene": 151001,
+      "method": "graph_scratch-0",
+      "service_rmse": 0.33371558752019703
+    },
+    {
+      "domain": "layout",
+      "scene": 151002,
+      "method": "graph_scratch-0",
+      "service_rmse": 0.3238544475357035
+    },
+    {
+      "domain": "layout",
+      "scene": 151000,
+      "method": "graph_masked-0",
+      "service_rmse": 0.2606694614155953
+    },
+    {
+      "domain": "layout",
+      "scene": 151001,
+      "method": "graph_masked-0",
+      "service_rmse": 0.3376863438684223
+    },
+    {
+      "domain": "layout",
+      "scene": 151002,
+      "method": "graph_masked-0",
+      "service_rmse": 0.3305225045174389
+    },
+    {
+      "domain": "layout",
+      "scene": 151000,
+      "method": "graph_jepa-0",
+      "service_rmse": 0.26523132410780176
+    },
+    {
+      "domain": "layout",
+      "scene": 151001,
+      "method": "graph_jepa-0",
+      "service_rmse": 0.33706985378011783
+    },
+    {
+      "domain": "layout",
+      "scene": 151002,
+      "method": "graph_jepa-0",
+      "service_rmse": 0.3300710174827824
+    },
+    {
+      "domain": "layout",
+      "scene": 151000,
+      "method": "mlp-1",
+      "service_rmse": 0.26178636025530694
+    },
+    {
+      "domain": "layout",
+      "scene": 151001,
+      "method": "mlp-1",
+      "service_rmse": 0.33953127703076746
+    },
+    {
+      "domain": "layout",
+      "scene": 151002,
+      "method": "mlp-1",
+      "service_rmse": 0.33520293787180444
+    },
+    {
+      "domain": "layout",
+      "scene": 151000,
+      "method": "graph_scratch-1",
+      "service_rmse": 0.2626611275178736
+    },
+    {
+      "domain": "layout",
+      "scene": 151001,
+      "method": "graph_scratch-1",
+      "service_rmse": 0.3384973074798795
+    },
+    {
+      "domain": "layout",
+      "scene": 151002,
+      "method": "graph_scratch-1",
+      "service_rmse": 0.332026964929067
+    },
+    {
+      "domain": "layout",
+      "scene": 151000,
+      "method": "graph_masked-1",
+      "service_rmse": 0.2595830478252169
+    },
+    {
+      "domain": "layout",
+      "scene": 151001,
+      "method": "graph_masked-1",
+      "service_rmse": 0.33768790837891394
+    },
+    {
+      "domain": "layout",
+      "scene": 151002,
+      "method": "graph_masked-1",
+      "service_rmse": 0.33153997526679885
+    },
+    {
+      "domain": "layout",
+      "scene": 151000,
+      "method": "graph_jepa-1",
+      "service_rmse": 0.259910237007334
+    },
+    {
+      "domain": "layout",
+      "scene": 151001,
+      "method": "graph_jepa-1",
+      "service_rmse": 0.33679852677677036
+    },
+    {
+      "domain": "layout",
+      "scene": 151002,
+      "method": "graph_jepa-1",
+      "service_rmse": 0.32910411361403835
+    },
+    {
+      "domain": "layout",
+      "scene": 151000,
+      "method": "mlp-2",
+      "service_rmse": 0.2616957294613155
+    },
+    {
+      "domain": "layout",
+      "scene": 151001,
+      "method": "mlp-2",
+      "service_rmse": 0.3384891548227164
+    },
+    {
+      "domain": "layout",
+      "scene": 151002,
+      "method": "mlp-2",
+      "service_rmse": 0.3343939323698626
+    },
+    {
+      "domain": "layout",
+      "scene": 151000,
+      "method": "graph_scratch-2",
+      "service_rmse": 0.26093978487721614
+    },
+    {
+      "domain": "layout",
+      "scene": 151001,
+      "method": "graph_scratch-2",
+      "service_rmse": 0.33576909892168666
+    },
+    {
+      "domain": "layout",
+      "scene": 151002,
+      "method": "graph_scratch-2",
+      "service_rmse": 0.3283133581598757
+    },
+    {
+      "domain": "layout",
+      "scene": 151000,
+      "method": "graph_masked-2",
+      "service_rmse": 0.25923403633996384
+    },
+    {
+      "domain": "layout",
+      "scene": 151001,
+      "method": "graph_masked-2",
+      "service_rmse": 0.3366979713048418
+    },
+    {
+      "domain": "layout",
+      "scene": 151002,
+      "method": "graph_masked-2",
+      "service_rmse": 0.32635510248625577
+    },
+    {
+      "domain": "layout",
+      "scene": 151000,
+      "method": "graph_jepa-2",
+      "service_rmse": 0.25686420044653
+    },
+    {
+      "domain": "layout",
+      "scene": 151001,
+      "method": "graph_jepa-2",
+      "service_rmse": 0.3357536263376153
+    },
+    {
+      "domain": "layout",
+      "scene": 151002,
+      "method": "graph_jepa-2",
+      "service_rmse": 0.3293447459244758
+    },
+    {
+      "domain": "fleet200",
+      "scene": 152000,
+      "method": "numerical",
+      "service_rmse": 0.3371553071628879
+    },
+    {
+      "domain": "fleet200",
+      "scene": 152001,
+      "method": "numerical",
+      "service_rmse": 0.3577656407775459
+    },
+    {
+      "domain": "fleet200",
+      "scene": 152002,
+      "method": "numerical",
+      "service_rmse": 0.3046724403383559
+    },
+    {
+      "domain": "fleet200",
+      "scene": 152000,
+      "method": "mlp-0",
+      "service_rmse": 0.29456270621140546
+    },
+    {
+      "domain": "fleet200",
+      "scene": 152001,
+      "method": "mlp-0",
+      "service_rmse": 0.2783970766377721
+    },
+    {
+      "domain": "fleet200",
+      "scene": 152002,
+      "method": "mlp-0",
+      "service_rmse": 0.2620943860842254
+    },
+    {
+      "domain": "fleet200",
+      "scene": 152000,
+      "method": "graph_scratch-0",
+      "service_rmse": 0.28870145157509686
+    },
+    {
+      "domain": "fleet200",
+      "scene": 152001,
+      "method": "graph_scratch-0",
+      "service_rmse": 0.27484526613726895
+    },
+    {
+      "domain": "fleet200",
+      "scene": 152002,
+      "method": "graph_scratch-0",
+      "service_rmse": 0.2585845187572128
+    },
+    {
+      "domain": "fleet200",
+      "scene": 152000,
+      "method": "graph_masked-0",
+      "service_rmse": 0.2955345282586781
+    },
+    {
+      "domain": "fleet200",
+      "scene": 152001,
+      "method": "graph_masked-0",
+      "service_rmse": 0.286403209293329
+    },
+    {
+      "domain": "fleet200",
+      "scene": 152002,
+      "method": "graph_masked-0",
+      "service_rmse": 0.2569149837290364
+    },
+    {
+      "domain": "fleet200",
+      "scene": 152000,
+      "method": "graph_jepa-0",
+      "service_rmse": 0.29744640457346394
+    },
+    {
+      "domain": "fleet200",
+      "scene": 152001,
+      "method": "graph_jepa-0",
+      "service_rmse": 0.2827783013102635
+    },
+    {
+      "domain": "fleet200",
+      "scene": 152002,
+      "method": "graph_jepa-0",
+      "service_rmse": 0.26216882183821033
+    },
+    {
+      "domain": "fleet200",
+      "scene": 152000,
+      "method": "mlp-1",
+      "service_rmse": 0.29806201295850343
+    },
+    {
+      "domain": "fleet200",
+      "scene": 152001,
+      "method": "mlp-1",
+      "service_rmse": 0.2782708041074706
+    },
+    {
+      "domain": "fleet200",
+      "scene": 152002,
+      "method": "mlp-1",
+      "service_rmse": 0.2603529744846114
+    },
+    {
+      "domain": "fleet200",
+      "scene": 152000,
+      "method": "graph_scratch-1",
+      "service_rmse": 0.2978535033489955
+    },
+    {
+      "domain": "fleet200",
+      "scene": 152001,
+      "method": "graph_scratch-1",
+      "service_rmse": 0.27690592183932994
+    },
+    {
+      "domain": "fleet200",
+      "scene": 152002,
+      "method": "graph_scratch-1",
+      "service_rmse": 0.26166198529438384
+    },
+    {
+      "domain": "fleet200",
+      "scene": 152000,
+      "method": "graph_masked-1",
+      "service_rmse": 0.2961276244309249
+    },
+    {
+      "domain": "fleet200",
+      "scene": 152001,
+      "method": "graph_masked-1",
+      "service_rmse": 0.27971067331760363
+    },
+    {
+      "domain": "fleet200",
+      "scene": 152002,
+      "method": "graph_masked-1",
+      "service_rmse": 0.25717190771267795
+    },
+    {
+      "domain": "fleet200",
+      "scene": 152000,
+      "method": "graph_jepa-1",
+      "service_rmse": 0.29421121969535224
+    },
+    {
+      "domain": "fleet200",
+      "scene": 152001,
+      "method": "graph_jepa-1",
+      "service_rmse": 0.28134880640845117
+    },
+    {
+      "domain": "fleet200",
+      "scene": 152002,
+      "method": "graph_jepa-1",
+      "service_rmse": 0.2588733998686446
+    },
+    {
+      "domain": "fleet200",
+      "scene": 152000,
+      "method": "mlp-2",
+      "service_rmse": 0.29710551173639527
+    },
+    {
+      "domain": "fleet200",
+      "scene": 152001,
+      "method": "mlp-2",
+      "service_rmse": 0.28304402601135925
+    },
+    {
+      "domain": "fleet200",
+      "scene": 152002,
+      "method": "mlp-2",
+      "service_rmse": 0.26025865844165935
+    },
+    {
+      "domain": "fleet200",
+      "scene": 152000,
+      "method": "graph_scratch-2",
+      "service_rmse": 0.29367728848602287
+    },
+    {
+      "domain": "fleet200",
+      "scene": 152001,
+      "method": "graph_scratch-2",
+      "service_rmse": 0.2782860544004133
+    },
+    {
+      "domain": "fleet200",
+      "scene": 152002,
+      "method": "graph_scratch-2",
+      "service_rmse": 0.2558095504299887
+    },
+    {
+      "domain": "fleet200",
+      "scene": 152000,
+      "method": "graph_masked-2",
+      "service_rmse": 0.289857724523956
+    },
+    {
+      "domain": "fleet200",
+      "scene": 152001,
+      "method": "graph_masked-2",
+      "service_rmse": 0.27998721786734065
+    },
+    {
+      "domain": "fleet200",
+      "scene": 152002,
+      "method": "graph_masked-2",
+      "service_rmse": 0.2549007160027128
+    },
+    {
+      "domain": "fleet200",
+      "scene": 152000,
+      "method": "graph_jepa-2",
+      "service_rmse": 0.29348034769048054
+    },
+    {
+      "domain": "fleet200",
+      "scene": 152001,
+      "method": "graph_jepa-2",
+      "service_rmse": 0.278417344726293
+    },
+    {
+      "domain": "fleet200",
+      "scene": 152002,
+      "method": "graph_jepa-2",
+      "service_rmse": 0.260074142444287
+    },
+    {
+      "domain": "traffic",
+      "scene": 153000,
+      "method": "numerical",
+      "service_rmse": 0.32747801832654716
+    },
+    {
+      "domain": "traffic",
+      "scene": 153001,
+      "method": "numerical",
+      "service_rmse": 0.2313924723552166
+    },
+    {
+      "domain": "traffic",
+      "scene": 153002,
+      "method": "numerical",
+      "service_rmse": 0.3306551879187543
+    },
+    {
+      "domain": "traffic",
+      "scene": 153000,
+      "method": "mlp-0",
+      "service_rmse": 0.2807817279966577
+    },
+    {
+      "domain": "traffic",
+      "scene": 153001,
+      "method": "mlp-0",
+      "service_rmse": 0.2134991684947178
+    },
+    {
+      "domain": "traffic",
+      "scene": 153002,
+      "method": "mlp-0",
+      "service_rmse": 0.2727700484987714
+    },
+    {
+      "domain": "traffic",
+      "scene": 153000,
+      "method": "graph_scratch-0",
+      "service_rmse": 0.2776714827709879
+    },
+    {
+      "domain": "traffic",
+      "scene": 153001,
+      "method": "graph_scratch-0",
+      "service_rmse": 0.212652081250747
+    },
+    {
+      "domain": "traffic",
+      "scene": 153002,
+      "method": "graph_scratch-0",
+      "service_rmse": 0.27045912045612813
+    },
+    {
+      "domain": "traffic",
+      "scene": 153000,
+      "method": "graph_masked-0",
+      "service_rmse": 0.2808222518517262
+    },
+    {
+      "domain": "traffic",
+      "scene": 153001,
+      "method": "graph_masked-0",
+      "service_rmse": 0.21185625382680146
+    },
+    {
+      "domain": "traffic",
+      "scene": 153002,
+      "method": "graph_masked-0",
+      "service_rmse": 0.2739366092081229
+    },
+    {
+      "domain": "traffic",
+      "scene": 153000,
+      "method": "graph_jepa-0",
+      "service_rmse": 0.28388361829345105
+    },
+    {
+      "domain": "traffic",
+      "scene": 153001,
+      "method": "graph_jepa-0",
+      "service_rmse": 0.21462658075350396
+    },
+    {
+      "domain": "traffic",
+      "scene": 153002,
+      "method": "graph_jepa-0",
+      "service_rmse": 0.27649880473267263
+    },
+    {
+      "domain": "traffic",
+      "scene": 153000,
+      "method": "mlp-1",
+      "service_rmse": 0.2839909624644056
+    },
+    {
+      "domain": "traffic",
+      "scene": 153001,
+      "method": "mlp-1",
+      "service_rmse": 0.2182940976129256
+    },
+    {
+      "domain": "traffic",
+      "scene": 153002,
+      "method": "mlp-1",
+      "service_rmse": 0.2744019506972462
+    },
+    {
+      "domain": "traffic",
+      "scene": 153000,
+      "method": "graph_scratch-1",
+      "service_rmse": 0.28236464914525455
+    },
+    {
+      "domain": "traffic",
+      "scene": 153001,
+      "method": "graph_scratch-1",
+      "service_rmse": 0.21409514667839724
+    },
+    {
+      "domain": "traffic",
+      "scene": 153002,
+      "method": "graph_scratch-1",
+      "service_rmse": 0.27609640141241465
+    },
+    {
+      "domain": "traffic",
+      "scene": 153000,
+      "method": "graph_masked-1",
+      "service_rmse": 0.2806056845883397
+    },
+    {
+      "domain": "traffic",
+      "scene": 153001,
+      "method": "graph_masked-1",
+      "service_rmse": 0.21353588315189168
+    },
+    {
+      "domain": "traffic",
+      "scene": 153002,
+      "method": "graph_masked-1",
+      "service_rmse": 0.2744512614317093
+    },
+    {
+      "domain": "traffic",
+      "scene": 153000,
+      "method": "graph_jepa-1",
+      "service_rmse": 0.28021511769850393
+    },
+    {
+      "domain": "traffic",
+      "scene": 153001,
+      "method": "graph_jepa-1",
+      "service_rmse": 0.2147706347875739
+    },
+    {
+      "domain": "traffic",
+      "scene": 153002,
+      "method": "graph_jepa-1",
+      "service_rmse": 0.27557433667723386
+    },
+    {
+      "domain": "traffic",
+      "scene": 153000,
+      "method": "mlp-2",
+      "service_rmse": 0.28232958191768276
+    },
+    {
+      "domain": "traffic",
+      "scene": 153001,
+      "method": "mlp-2",
+      "service_rmse": 0.21389698690436404
+    },
+    {
+      "domain": "traffic",
+      "scene": 153002,
+      "method": "mlp-2",
+      "service_rmse": 0.2763407281104094
+    },
+    {
+      "domain": "traffic",
+      "scene": 153000,
+      "method": "graph_scratch-2",
+      "service_rmse": 0.2799285568383063
+    },
+    {
+      "domain": "traffic",
+      "scene": 153001,
+      "method": "graph_scratch-2",
+      "service_rmse": 0.21298766531021665
+    },
+    {
+      "domain": "traffic",
+      "scene": 153002,
+      "method": "graph_scratch-2",
+      "service_rmse": 0.27267367945712306
+    },
+    {
+      "domain": "traffic",
+      "scene": 153000,
+      "method": "graph_masked-2",
+      "service_rmse": 0.27847844215946976
+    },
+    {
+      "domain": "traffic",
+      "scene": 153001,
+      "method": "graph_masked-2",
+      "service_rmse": 0.2146348173887682
+    },
+    {
+      "domain": "traffic",
+      "scene": 153002,
+      "method": "graph_masked-2",
+      "service_rmse": 0.27229635929096685
+    },
+    {
+      "domain": "traffic",
+      "scene": 153000,
+      "method": "graph_jepa-2",
+      "service_rmse": 0.27983117545805314
+    },
+    {
+      "domain": "traffic",
+      "scene": 153001,
+      "method": "graph_jepa-2",
+      "service_rmse": 0.2105246126665568
+    },
+    {
+      "domain": "traffic",
+      "scene": 153002,
+      "method": "graph_jepa-2",
+      "service_rmse": 0.2738412126358182
+    }
+  ],
+  "intervals": {
+    "ordinary/mlp-minus-numerical": {
+      "difference": -0.07839801150977765,
+      "ci95": [
+        -0.11225256279975837,
+        -0.038341748783087826
+      ],
+      "matrix": [
+        [
+          -0.03914011419396385,
+          -0.08311343775373986,
+          -0.11418076576884723
+        ],
+        [
+          -0.041963310505143125,
+          -0.08721052511653576,
+          -0.11955179401622135
+        ],
+        [
+          -0.031098625338977226,
+          -0.08092737403298988,
+          -0.10839615686158066
+        ]
+      ],
+      "method": "crossed_model_seed_and_environment_percentile_bootstrap"
+    },
+    "ordinary/graph_scratch-minus-numerical": {
+      "difference": -0.08166707093340374,
+      "ci95": [
+        -0.11365485131424184,
+        -0.041634366903600915
+      ],
+      "matrix": [
+        [
+          -0.03890710883714865,
+          -0.08976216884340427,
+          -0.11507292612252529
+        ],
+        [
+          -0.04387551189858435,
+          -0.08579635701860872,
+          -0.11185873968993248
+        ],
+        [
+          -0.040513794406109194,
+          -0.0919699570214601,
+          -0.11724707456286054
+        ]
+      ],
+      "method": "crossed_model_seed_and_environment_percentile_bootstrap"
+    },
+    "ordinary/graph_masked-minus-numerical": {
+      "difference": -0.07799289257879721,
+      "ci95": [
+        -0.10932924824514012,
+        -0.03802683071111346
+      ],
+      "matrix": [
+        [
+          -0.040374664326798426,
+          -0.08245705747574295,
+          -0.10902998688963583
+        ],
+        [
+          -0.038386056979128,
+          -0.08702007814992802,
+          -0.11161880201291374
+        ],
+        [
+          -0.03531977082741394,
+          -0.08825073762472174,
+          -0.10947887892289226
+        ]
+      ],
+      "method": "crossed_model_seed_and_environment_percentile_bootstrap"
+    },
+    "ordinary/graph_jepa-minus-numerical": {
+      "difference": -0.08358765394114889,
+      "ci95": [
+        -0.11966370968751242,
+        -0.0439169389049463
+      ],
+      "matrix": [
+        [
+          -0.04500094670538063,
+          -0.08355417211816119,
+          -0.12027467374558642
+        ],
+        [
+          -0.041748923304077645,
+          -0.08625869968310867,
+          -0.11844178157136437
+        ],
+        [
+          -0.044421727115276755,
+          -0.08806123827191392,
+          -0.12452672295547035
+        ]
+      ],
+      "method": "crossed_model_seed_and_environment_percentile_bootstrap"
+    },
+    "ordinary/graph_masked-minus-scratch": {
+      "difference": 0.00367417835460652,
+      "ci95": [
+        0.00101400421893925,
+        0.006448621149283931
+      ],
+      "matrix": [
+        [
+          -0.0014675554896497744,
+          0.007305111367661321,
+          0.006042939232889455
+        ],
+        [
+          0.005489454919456349,
+          -0.0012237211313192997,
+          0.00023993767701874225
+        ],
+        [
+          0.0051940235786952504,
+          0.0037192193967383602,
+          0.007768195639968278
+        ]
+      ],
+      "method": "crossed_model_seed_and_environment_percentile_bootstrap"
+    },
+    "ordinary/graph_jepa-minus-scratch": {
+      "difference": -0.0019205830077451507,
+      "ci95": [
+        -0.006122610461974968,
+        0.003218124270096434
+      ],
+      "matrix": [
+        [
+          -0.006093837868231977,
+          0.006207996725243081,
+          -0.005201747623061137
+        ],
+        [
+          0.0021265885945067065,
+          -0.00046234266449995953,
+          -0.006583041881431884
+        ],
+        [
+          -0.003907932709167561,
+          0.003908718749546181,
+          -0.0072796483926098055
+        ]
+      ],
+      "method": "crossed_model_seed_and_environment_percentile_bootstrap"
+    },
+    "layout/mlp-minus-numerical": {
+      "difference": -0.04161246500979412,
+      "ci95": [
+        -0.04904448171608122,
+        -0.03452736426986821
+      ],
+      "matrix": [
+        [
+          -0.03450337927829672,
+          -0.042507441850329286,
+          -0.05231300164895719
+        ],
+        [
+          -0.03448470345901972,
+          -0.0390945766603541,
+          -0.048044021783915924
+        ],
+        [
+          -0.03457533425301118,
+          -0.04013669886840515,
+          -0.048853027285857775
+        ]
+      ],
+      "method": "crossed_model_seed_and_environment_percentile_bootstrap"
+    },
+    "layout/graph_scratch-minus-numerical": {
+      "difference": -0.04426096849319045,
+      "ci95": [
+        -0.054565096803652735,
+        -0.03518052933950714
+      ],
+      "matrix": [
+        [
+          -0.0359658259110342,
+          -0.04491026617092453,
+          -0.05939251212001684
+        ],
+        [
+          -0.03360993619645303,
+          -0.04012854621124207,
+          -0.05121999472665334
+        ],
+        [
+          -0.035331278837110514,
+          -0.0428567547694349,
+          -0.05493360149584464
+        ]
+      ],
+      "method": "crossed_model_seed_and_environment_percentile_bootstrap"
+    },
+    "layout/graph_masked-minus-numerical": {
+      "difference": -0.043828364420006455,
+      "ci95": [
+        -0.052385298221828136,
+        -0.03655855234915232
+      ],
+      "matrix": [
+        [
+          -0.03560160229873133,
+          -0.04093950982269928,
+          -0.052724455138281445
+        ],
+        [
+          -0.03668801588910975,
+          -0.040937945312207624,
+          -0.05170698438892152
+        ],
+        [
+          -0.03703702737436282,
+          -0.04192788238627976,
+          -0.0568918571694646
+        ]
+      ],
+      "method": "crossed_model_seed_and_environment_percentile_bootstrap"
+    },
+    "layout/graph_jepa-minus-numerical": {
+      "difference": -0.043809331745115546,
+      "ci95": [
+        -0.05349824346251932,
+        -0.03560247652710472
+      ],
+      "matrix": [
+        [
+          -0.031039739606524896,
+          -0.04155599991100373,
+          -0.05317594217293797
+        ],
+        [
+          -0.036360826706992644,
+          -0.041827326914351204,
+          -0.05414284604168201
+        ],
+        [
+          -0.03940686326779663,
+          -0.042872227353506265,
+          -0.05390221373124454
+        ]
+      ],
+      "method": "crossed_model_seed_and_environment_percentile_bootstrap"
+    },
+    "layout/graph_masked-minus-scratch": {
+      "difference": 0.00043260407318399284,
+      "ci95": [
+        -0.0020728945381430896,
+        0.003667678980754504
+      ],
+      "matrix": [
+        [
+          0.0003642236123028719,
+          0.003970756348225246,
+          0.006668056981735393
+        ],
+        [
+          -0.003078079692656721,
+          -0.0008093991009655577,
+          -0.00048698966226817797
+        ],
+        [
+          -0.0017057485372523051,
+          0.0009288723831551438,
+          -0.0019582556736199574
+        ]
+      ],
+      "method": "crossed_model_seed_and_environment_percentile_bootstrap"
+    },
+    "layout/graph_jepa-minus-scratch": {
+      "difference": 0.00045163674807490665,
+      "ci95": [
+        -0.002663227307665328,
+        0.00448817588625261
+      ],
+      "matrix": [
+        [
+          0.004926086304509303,
+          0.0033542662599208017,
+          0.006216569947078865
+        ],
+        [
+          -0.0027508905105396164,
+          -0.0016987807031091373,
+          -0.002922851315028674
+        ],
+        [
+          -0.004075584430686119,
+          -1.5472584071363205e-05,
+          0.0010313877646001002
+        ]
+      ],
+      "method": "crossed_model_seed_and_environment_percentile_bootstrap"
+    },
+    "fleet200/mlp-minus-numerical": {
+      "difference": -0.054070223129218525,
+      "ci95": [
+        -0.0778616718586786,
+        -0.04082893172350315
+      ],
+      "matrix": [
+        [
+          -0.04259260095148243,
+          -0.07936856413977383,
+          -0.04257805425413047
+        ],
+        [
+          -0.039093294204384454,
+          -0.07949483667007529,
+          -0.044319465853744466
+        ],
+        [
+          -0.04004979542649262,
+          -0.07472161476618666,
+          -0.044413781896696536
+        ]
+      ],
+      "method": "crossed_model_seed_and_environment_percentile_bootstrap"
+    },
+    "fleet200/graph_scratch-minus-numerical": {
+      "difference": -0.05693940272973958,
+      "ci95": [
+        -0.0810865599852085,
+        -0.0421163391784012
+      ],
+      "matrix": [
+        [
+          -0.04845385558779103,
+          -0.08292037464027696,
+          -0.04608792158114311
+        ],
+        [
+          -0.039301803813892366,
+          -0.08085971893821597,
+          -0.04301045504397205
+        ],
+        [
+          -0.043478018676865016,
+          -0.0794795863771326,
+          -0.04886288990836718
+        ]
+      ],
+      "method": "crossed_model_seed_and_environment_percentile_bootstrap"
+    },
+    "fleet200/graph_masked-minus-numerical": {
+      "difference": -0.05579684218890107,
+      "ci95": [
+        -0.07573194061812148,
+        -0.043315348091701567
+      ],
+      "matrix": [
+        [
+          -0.04162077890420979,
+          -0.07136243148421689,
+          -0.047757456609319515
+        ],
+        [
+          -0.041027682731963,
+          -0.07805496745994228,
+          -0.04750053262567794
+        ],
+        [
+          -0.04729758263893191,
+          -0.07777842291020526,
+          -0.049771724335643086
+        ]
+      ],
+      "method": "crossed_model_seed_and_environment_percentile_bootstrap"
+    },
+    "fleet200/graph_jepa-minus-numerical": {
+      "difference": -0.05444237514232475,
+      "ci95": [
+        -0.07691748996254337,
+        -0.041725562529196604
+      ],
+      "matrix": [
+        [
+          -0.039708902589423944,
+          -0.07498733946728242,
+          -0.04250361850014556
+        ],
+        [
+          -0.04294408746753564,
+          -0.07641683436909474,
+          -0.04579904046971128
+        ],
+        [
+          -0.04367495947240735,
+          -0.07934829605125293,
+          -0.04459829789406888
+        ]
+      ],
+      "method": "crossed_model_seed_and_environment_percentile_bootstrap"
+    },
+    "fleet200/graph_masked-minus-scratch": {
+      "difference": 0.0011425605408385121,
+      "ci95": [
+        -0.0030054778866203916,
+        0.007086838892208834
+      ],
+      "matrix": [
+        [
+          0.006833076683581241,
+          0.011557943156060069,
+          -0.0016695350281764054
+        ],
+        [
+          -0.0017258789180706335,
+          0.0028047514782736926,
+          -0.004490077581705887
+        ],
+        [
+          -0.0038195639620668964,
+          0.0017011634669273357,
+          -0.0009088344272759064
+        ]
+      ],
+      "method": "crossed_model_seed_and_environment_percentile_bootstrap"
+    },
+    "fleet200/graph_jepa-minus-scratch": {
+      "difference": 0.002497027587414836,
+      "ci95": [
+        -0.0018083994492042147,
+        0.006754097084119726
+      ],
+      "matrix": [
+        [
+          0.008744952998367084,
+          0.00793303517299454,
+          0.003584303080997553
+        ],
+        [
+          -0.0036422836536432746,
+          0.00444288456912123,
+          -0.0027885854257392317
+        ],
+        [
+          -0.00019694079554233301,
+          0.00013129032587966272,
+          0.004264592014298296
+        ]
+      ],
+      "method": "crossed_model_seed_and_environment_percentile_bootstrap"
+    },
+    "traffic/mlp-minus-numerical": {
+      "difference": -0.0391413092338193,
+      "ci95": [
+        -0.05560697808378704,
+        -0.01616238801788078
+      ],
+      "matrix": [
+        [
+          -0.04669629032988948,
+          -0.017893303860498783,
+          -0.05788513941998291
+        ],
+        [
+          -0.04348705586214158,
+          -0.013098374742291002,
+          -0.0562532372215081
+        ],
+        [
+          -0.0451484364088644,
+          -0.017495485450852555,
+          -0.05431445980834493
+        ]
+      ],
+      "method": "crossed_model_seed_and_environment_percentile_bootstrap"
+    },
+    "traffic/graph_scratch-minus-numerical": {
+      "difference": -0.041072028053553186,
+      "ci95": [
+        -0.056732890160270534,
+        -0.018147507942096297
+      ],
+      "matrix": [
+        [
+          -0.04980653555555925,
+          -0.018740391104469595,
+          -0.06019606746262618
+        ],
+        [
+          -0.045113369181292606,
+          -0.017297325676819353,
+          -0.05455878650633966
+        ],
+        [
+          -0.04754946148824085,
+          -0.018404807044999943,
+          -0.05798150846163125
+        ]
+      ],
+      "method": "crossed_model_seed_and_environment_percentile_bootstrap"
+    },
+    "traffic/graph_masked-minus-numerical": {
+      "difference": -0.04088438587819535,
+      "ci95": [
+        -0.056547027969435955,
+        -0.018050154232729487
+      ],
+      "matrix": [
+        [
+          -0.04665576647482095,
+          -0.01953621852841514,
+          -0.05671857871063141
+        ],
+        [
+          -0.04687233373820748,
+          -0.01785658920332492,
+          -0.05620392648704503
+        ],
+        [
+          -0.0489995761670774,
+          -0.016757654966448404,
+          -0.05835882862778746
+        ]
+      ],
+      "method": "crossed_model_seed_and_environment_percentile_bootstrap"
+    },
+    "traffic/graph_jepa-minus-numerical": {
+      "difference": -0.03986788245535408,
+      "ci95": [
+        -0.05477269522304087,
+        -0.018085196286005033
+      ],
+      "matrix": [
+        [
+          -0.043594400033096115,
+          -0.01676589160171263,
+          -0.05415638318608168
+        ],
+        [
+          -0.047262900628043225,
+          -0.016621837567642683,
+          -0.055080851241520457
+        ],
+        [
+          -0.04764684286849402,
+          -0.020867859688659784,
+          -0.056813975282936136
+        ]
+      ],
+      "method": "crossed_model_seed_and_environment_percentile_bootstrap"
+    },
+    "traffic/graph_masked-minus-scratch": {
+      "difference": 0.00018764217535783341,
+      "ci95": [
+        -0.0015115208569888388,
+        0.0020007486842563028
+      ],
+      "matrix": [
+        [
+          0.0031507690807383026,
+          -0.0007958274239455443,
+          0.003477488751994773
+        ],
+        [
+          -0.001758964556914877,
+          -0.0005592635265055657,
+          -0.001645139980705368
+        ],
+        [
+          -0.0014501146788365449,
+          0.0016471520785515392,
+          -0.0003773201661562142
+        ]
+      ],
+      "method": "crossed_model_seed_and_environment_percentile_bootstrap"
+    },
+    "traffic/graph_jepa-minus-scratch": {
+      "difference": 0.0012041455981991066,
+      "ci95": [
+        -0.0012078582614415227,
+        0.004684622685281988
+      ],
+      "matrix": [
+        [
+          0.006212135522463136,
+          0.0019744995027569656,
+          0.006039684276544499
+        ],
+        [
+          -0.002149531446750619,
+          0.0006754881091766696,
+          -0.0005220647351807939
+        ],
+        [
+          -9.738138025316978e-05,
+          -0.002463052643659841,
+          0.0011675331786951126
+        ]
+      ],
+      "method": "crossed_model_seed_and_environment_percentile_bootstrap"
+    }
+  },
+  "timings": [
+    {
+      "domain": "ordinary",
+      "method": "numerical",
+      "median_ms": 115.81438649955089,
+      "p95_ms": 121.6722427525383,
+      "samples": 16,
+      "stage_mean_ms": {
+        "input_decode_validate_ms": 19.377156624159397,
+        "belief_candidates_forecast_ms": 96.52201306334973,
+        "neural_forecast_ms": 0.21868537442060187,
+        "contract_and_execution_checks_ms": 0.22831475052953465,
+        "total_ms": 116.34616981245927
+      },
+      "includes": [
+        "JSON_decode",
+        "schema_validation",
+        "belief_construction",
+        "candidate_generation",
+        "forecast",
+        "typed_contract_evaluation",
+        "visibility_and_budget_checks"
+      ],
+      "excludes": [
+        "physical_sensor_collection",
+        "mission_cache_miss",
+        "physical_network_actuation"
+      ],
+      "source": "actual_cpu_wall_time"
+    },
+    {
+      "domain": "ordinary",
+      "method": "mlp-0",
+      "median_ms": 121.1385210044682,
+      "p95_ms": 129.35183524677996,
+      "samples": 16,
+      "stage_mean_ms": {
+        "input_decode_validate_ms": 20.309251125581795,
+        "belief_candidates_forecast_ms": 98.09684162473786,
+        "neural_forecast_ms": 3.3884727504300827,
+        "contract_and_execution_checks_ms": 0.29282431250976515,
+        "total_ms": 122.0873898132595
+      },
+      "includes": [
+        "JSON_decode",
+        "schema_validation",
+        "belief_construction",
+        "candidate_generation",
+        "forecast",
+        "typed_contract_evaluation",
+        "visibility_and_budget_checks"
+      ],
+      "excludes": [
+        "physical_sensor_collection",
+        "mission_cache_miss",
+        "physical_network_actuation"
+      ],
+      "source": "actual_cpu_wall_time"
+    },
+    {
+      "domain": "ordinary",
+      "method": "graph_scratch-0",
+      "median_ms": 125.67094649784849,
+      "p95_ms": 131.74241725209868,
+      "samples": 16,
+      "stage_mean_ms": {
+        "input_decode_validate_ms": 20.99289118677916,
+        "belief_candidates_forecast_ms": 100.3384355635717,
+        "neural_forecast_ms": 3.722755312537629,
+        "contract_and_execution_checks_ms": 0.2980088124786562,
+        "total_ms": 125.35209087536714
+      },
+      "includes": [
+        "JSON_decode",
+        "schema_validation",
+        "belief_construction",
+        "candidate_generation",
+        "forecast",
+        "typed_contract_evaluation",
+        "visibility_and_budget_checks"
+      ],
+      "excludes": [
+        "physical_sensor_collection",
+        "mission_cache_miss",
+        "physical_network_actuation"
+      ],
+      "source": "actual_cpu_wall_time"
+    },
+    {
+      "domain": "ordinary",
+      "method": "graph_masked-0",
+      "median_ms": 125.73309499930474,
+      "p95_ms": 129.79923074817634,
+      "samples": 16,
+      "stage_mean_ms": {
+        "input_decode_validate_ms": 21.216438125065906,
+        "belief_candidates_forecast_ms": 100.4020211862553,
+        "neural_forecast_ms": 3.9068923765626096,
+        "contract_and_execution_checks_ms": 0.27027662417822285,
+        "total_ms": 125.79562831206204
+      },
+      "includes": [
+        "JSON_decode",
+        "schema_validation",
+        "belief_construction",
+        "candidate_generation",
+        "forecast",
+        "typed_contract_evaluation",
+        "visibility_and_budget_checks"
+      ],
+      "excludes": [
+        "physical_sensor_collection",
+        "mission_cache_miss",
+        "physical_network_actuation"
+      ],
+      "source": "actual_cpu_wall_time"
+    },
+    {
+      "domain": "ordinary",
+      "method": "graph_jepa-0",
+      "median_ms": 119.61622349917889,
+      "p95_ms": 128.42717275088944,
+      "samples": 16,
+      "stage_mean_ms": {
+        "input_decode_validate_ms": 20.298249060942908,
+        "belief_candidates_forecast_ms": 96.79809050112453,
+        "neural_forecast_ms": 3.5724515619222075,
+        "contract_and_execution_checks_ms": 0.2598956252768403,
+        "total_ms": 120.92868674926649
+      },
+      "includes": [
+        "JSON_decode",
+        "schema_validation",
+        "belief_construction",
+        "candidate_generation",
+        "forecast",
+        "typed_contract_evaluation",
+        "visibility_and_budget_checks"
+      ],
+      "excludes": [
+        "physical_sensor_collection",
+        "mission_cache_miss",
+        "physical_network_actuation"
+      ],
+      "source": "actual_cpu_wall_time"
+    },
+    {
+      "domain": "ordinary",
+      "method": "mlp-1",
+      "median_ms": 119.61743100255262,
+      "p95_ms": 151.14046724920627,
+      "samples": 16,
+      "stage_mean_ms": {
+        "input_decode_validate_ms": 25.658170937731484,
+        "belief_candidates_forecast_ms": 97.06393587566708,
+        "neural_forecast_ms": 3.9844629991421243,
+        "contract_and_execution_checks_ms": 0.2776189371616056,
+        "total_ms": 126.9841887497023
+      },
+      "includes": [
+        "JSON_decode",
+        "schema_validation",
+        "belief_construction",
+        "candidate_generation",
+        "forecast",
+        "typed_contract_evaluation",
+        "visibility_and_budget_checks"
+      ],
+      "excludes": [
+        "physical_sensor_collection",
+        "mission_cache_miss",
+        "physical_network_actuation"
+      ],
+      "source": "actual_cpu_wall_time"
+    },
+    {
+      "domain": "ordinary",
+      "method": "graph_scratch-1",
+      "median_ms": 121.38509250144125,
+      "p95_ms": 124.67574699985562,
+      "samples": 16,
+      "stage_mean_ms": {
+        "input_decode_validate_ms": 20.177521875211823,
+        "belief_candidates_forecast_ms": 97.25690637515072,
+        "neural_forecast_ms": 3.420802874643414,
+        "contract_and_execution_checks_ms": 0.25795593774091685,
+        "total_ms": 121.11318706274687
+      },
+      "includes": [
+        "JSON_decode",
+        "schema_validation",
+        "belief_construction",
+        "candidate_generation",
+        "forecast",
+        "typed_contract_evaluation",
+        "visibility_and_budget_checks"
+      ],
+      "excludes": [
+        "physical_sensor_collection",
+        "mission_cache_miss",
+        "physical_network_actuation"
+      ],
+      "source": "actual_cpu_wall_time"
+    },
+    {
+      "domain": "ordinary",
+      "method": "graph_masked-1",
+      "median_ms": 124.02275199565338,
+      "p95_ms": 128.2853462453204,
+      "samples": 16,
+      "stage_mean_ms": {
+        "input_decode_validate_ms": 20.67312968620172,
+        "belief_candidates_forecast_ms": 99.32453725195955,
+        "neural_forecast_ms": 4.33426099789358,
+        "contract_and_execution_checks_ms": 0.2979457494802773,
+        "total_ms": 124.62987368553513
+      },
+      "includes": [
+        "JSON_decode",
+        "schema_validation",
+        "belief_construction",
+        "candidate_generation",
+        "forecast",
+        "typed_contract_evaluation",
+        "visibility_and_budget_checks"
+      ],
+      "excludes": [
+        "physical_sensor_collection",
+        "mission_cache_miss",
+        "physical_network_actuation"
+      ],
+      "source": "actual_cpu_wall_time"
+    },
+    {
+      "domain": "ordinary",
+      "method": "graph_jepa-1",
+      "median_ms": 119.95036349981092,
+      "p95_ms": 126.72275449949666,
+      "samples": 16,
+      "stage_mean_ms": {
+        "input_decode_validate_ms": 20.123453812630032,
+        "belief_candidates_forecast_ms": 97.30341812428378,
+        "neural_forecast_ms": 3.459889563600882,
+        "contract_and_execution_checks_ms": 0.2828219990078651,
+        "total_ms": 121.16958349952256
+      },
+      "includes": [
+        "JSON_decode",
+        "schema_validation",
+        "belief_construction",
+        "candidate_generation",
+        "forecast",
+        "typed_contract_evaluation",
+        "visibility_and_budget_checks"
+      ],
+      "excludes": [
+        "physical_sensor_collection",
+        "mission_cache_miss",
+        "physical_network_actuation"
+      ],
+      "source": "actual_cpu_wall_time"
+    },
+    {
+      "domain": "ordinary",
+      "method": "mlp-2",
+      "median_ms": 124.09201400078018,
+      "p95_ms": 142.14442224874801,
+      "samples": 16,
+      "stage_mean_ms": {
+        "input_decode_validate_ms": 22.157419062750705,
+        "belief_candidates_forecast_ms": 101.38064868715446,
+        "neural_forecast_ms": 3.7793365004290536,
+        "contract_and_execution_checks_ms": 0.3049406868740334,
+        "total_ms": 127.62234493720825
+      },
+      "includes": [
+        "JSON_decode",
+        "schema_validation",
+        "belief_construction",
+        "candidate_generation",
+        "forecast",
+        "typed_contract_evaluation",
+        "visibility_and_budget_checks"
+      ],
+      "excludes": [
+        "physical_sensor_collection",
+        "mission_cache_miss",
+        "physical_network_actuation"
+      ],
+      "source": "actual_cpu_wall_time"
+    },
+    {
+      "domain": "ordinary",
+      "method": "graph_scratch-2",
+      "median_ms": 127.70335350069217,
+      "p95_ms": 134.89414349896833,
+      "samples": 16,
+      "stage_mean_ms": {
+        "input_decode_validate_ms": 22.27987831201972,
+        "belief_candidates_forecast_ms": 101.17722437598786,
+        "neural_forecast_ms": 4.117044624308619,
+        "contract_and_execution_checks_ms": 0.31293412575905677,
+        "total_ms": 127.88708143807526
+      },
+      "includes": [
+        "JSON_decode",
+        "schema_validation",
+        "belief_construction",
+        "candidate_generation",
+        "forecast",
+        "typed_contract_evaluation",
+        "visibility_and_budget_checks"
+      ],
+      "excludes": [
+        "physical_sensor_collection",
+        "mission_cache_miss",
+        "physical_network_actuation"
+      ],
+      "source": "actual_cpu_wall_time"
+    },
+    {
+      "domain": "ordinary",
+      "method": "graph_masked-2",
+      "median_ms": 122.25859799946193,
+      "p95_ms": 125.35748600203078,
+      "samples": 16,
+      "stage_mean_ms": {
+        "input_decode_validate_ms": 20.830147375363595,
+        "belief_candidates_forecast_ms": 97.59205274849592,
+        "neural_forecast_ms": 3.523675750784605,
+        "contract_and_execution_checks_ms": 0.26221550069749355,
+        "total_ms": 122.20809137534161
+      },
+      "includes": [
+        "JSON_decode",
+        "schema_validation",
+        "belief_construction",
+        "candidate_generation",
+        "forecast",
+        "typed_contract_evaluation",
+        "visibility_and_budget_checks"
+      ],
+      "excludes": [
+        "physical_sensor_collection",
+        "mission_cache_miss",
+        "physical_network_actuation"
+      ],
+      "source": "actual_cpu_wall_time"
+    },
+    {
+      "domain": "ordinary",
+      "method": "graph_jepa-2",
+      "median_ms": 124.37865699757822,
+      "p95_ms": 133.73433124434086,
+      "samples": 16,
+      "stage_mean_ms": {
+        "input_decode_validate_ms": 21.50033706220711,
+        "belief_candidates_forecast_ms": 99.2558813118194,
+        "neural_forecast_ms": 3.544848000728962,
+        "contract_and_execution_checks_ms": 0.28468537448134157,
+        "total_ms": 124.5857517492368
+      },
+      "includes": [
+        "JSON_decode",
+        "schema_validation",
+        "belief_construction",
+        "candidate_generation",
+        "forecast",
+        "typed_contract_evaluation",
+        "visibility_and_budget_checks"
+      ],
+      "excludes": [
+        "physical_sensor_collection",
+        "mission_cache_miss",
+        "physical_network_actuation"
+      ],
+      "source": "actual_cpu_wall_time"
+    },
+    {
+      "domain": "layout",
+      "method": "numerical",
+      "median_ms": 104.93648199917516,
+      "p95_ms": 118.77560874745541,
+      "samples": 16,
+      "stage_mean_ms": {
+        "input_decode_validate_ms": 19.726646312392404,
+        "belief_candidates_forecast_ms": 87.05648799923438,
+        "neural_forecast_ms": 0.1855143746070098,
+        "contract_and_execution_checks_ms": 0.2217989999735437,
+        "total_ms": 107.19044768620734
+      },
+      "includes": [
+        "JSON_decode",
+        "schema_validation",
+        "belief_construction",
+        "candidate_generation",
+        "forecast",
+        "typed_contract_evaluation",
+        "visibility_and_budget_checks"
+      ],
+      "excludes": [
+        "physical_sensor_collection",
+        "mission_cache_miss",
+        "physical_network_actuation"
+      ],
+      "source": "actual_cpu_wall_time"
+    },
+    {
+      "domain": "layout",
+      "method": "mlp-0",
+      "median_ms": 107.32855400055996,
+      "p95_ms": 109.5567607517296,
+      "samples": 16,
+      "stage_mean_ms": {
+        "input_decode_validate_ms": 19.092840750545292,
+        "belief_candidates_forecast_ms": 84.77236537555655,
+        "neural_forecast_ms": 3.1015511253826844,
+        "contract_and_execution_checks_ms": 0.2517159377930511,
+        "total_ms": 107.21847318927757
+      },
+      "includes": [
+        "JSON_decode",
+        "schema_validation",
+        "belief_construction",
+        "candidate_generation",
+        "forecast",
+        "typed_contract_evaluation",
+        "visibility_and_budget_checks"
+      ],
+      "excludes": [
+        "physical_sensor_collection",
+        "mission_cache_miss",
+        "physical_network_actuation"
+      ],
+      "source": "actual_cpu_wall_time"
+    },
+    {
+      "domain": "layout",
+      "method": "graph_scratch-0",
+      "median_ms": 108.33575899960124,
+      "p95_ms": 137.70128674877924,
+      "samples": 16,
+      "stage_mean_ms": {
+        "input_decode_validate_ms": 25.52792018695982,
+        "belief_candidates_forecast_ms": 85.6796229381871,
+        "neural_forecast_ms": 3.5676482493727235,
+        "contract_and_execution_checks_ms": 0.2751561250988743,
+        "total_ms": 115.05034749961851
+      },
+      "includes": [
+        "JSON_decode",
+        "schema_validation",
+        "belief_construction",
+        "candidate_generation",
+        "forecast",
+        "typed_contract_evaluation",
+        "visibility_and_budget_checks"
+      ],
+      "excludes": [
+        "physical_sensor_collection",
+        "mission_cache_miss",
+        "physical_network_actuation"
+      ],
+      "source": "actual_cpu_wall_time"
+    },
+    {
+      "domain": "layout",
+      "method": "graph_masked-0",
+      "median_ms": 108.20271900229272,
+      "p95_ms": 110.86758249984996,
+      "samples": 16,
+      "stage_mean_ms": {
+        "input_decode_validate_ms": 19.542265187283192,
+        "belief_candidates_forecast_ms": 85.08471768709569,
+        "neural_forecast_ms": 3.489627375074633,
+        "contract_and_execution_checks_ms": 0.2571838745097921,
+        "total_ms": 108.37379412396331
+      },
+      "includes": [
+        "JSON_decode",
+        "schema_validation",
+        "belief_construction",
+        "candidate_generation",
+        "forecast",
+        "typed_contract_evaluation",
+        "visibility_and_budget_checks"
+      ],
+      "excludes": [
+        "physical_sensor_collection",
+        "mission_cache_miss",
+        "physical_network_actuation"
+      ],
+      "source": "actual_cpu_wall_time"
+    },
+    {
+      "domain": "layout",
+      "method": "graph_jepa-0",
+      "median_ms": 107.26841699943179,
+      "p95_ms": 118.41555649516522,
+      "samples": 16,
+      "stage_mean_ms": {
+        "input_decode_validate_ms": 19.29406637464126,
+        "belief_candidates_forecast_ms": 85.81698243733626,
+        "neural_forecast_ms": 3.3337582508465857,
+        "contract_and_execution_checks_ms": 0.3018044999407721,
+        "total_ms": 108.74661156276488
+      },
+      "includes": [
+        "JSON_decode",
+        "schema_validation",
+        "belief_construction",
+        "candidate_generation",
+        "forecast",
+        "typed_contract_evaluation",
+        "visibility_and_budget_checks"
+      ],
+      "excludes": [
+        "physical_sensor_collection",
+        "mission_cache_miss",
+        "physical_network_actuation"
+      ],
+      "source": "actual_cpu_wall_time"
+    },
+    {
+      "domain": "layout",
+      "method": "mlp-1",
+      "median_ms": 113.78283699741587,
+      "p95_ms": 126.05000600342464,
+      "samples": 16,
+      "stage_mean_ms": {
+        "input_decode_validate_ms": 20.851287375080574,
+        "belief_candidates_forecast_ms": 89.52215681210873,
+        "neural_forecast_ms": 3.6938102507519943,
+        "contract_and_execution_checks_ms": 0.2976456880787737,
+        "total_ms": 114.36490012602007
+      },
+      "includes": [
+        "JSON_decode",
+        "schema_validation",
+        "belief_construction",
+        "candidate_generation",
+        "forecast",
+        "typed_contract_evaluation",
+        "visibility_and_budget_checks"
+      ],
+      "excludes": [
+        "physical_sensor_collection",
+        "mission_cache_miss",
+        "physical_network_actuation"
+      ],
+      "source": "actual_cpu_wall_time"
+    },
+    {
+      "domain": "layout",
+      "method": "graph_scratch-1",
+      "median_ms": 109.7679739978048,
+      "p95_ms": 121.2256882499787,
+      "samples": 16,
+      "stage_mean_ms": {
+        "input_decode_validate_ms": 20.410718750099477,
+        "belief_candidates_forecast_ms": 87.09012887493373,
+        "neural_forecast_ms": 4.153244125063793,
+        "contract_and_execution_checks_ms": 0.26963418758896296,
+        "total_ms": 111.92372593768596
+      },
+      "includes": [
+        "JSON_decode",
+        "schema_validation",
+        "belief_construction",
+        "candidate_generation",
+        "forecast",
+        "typed_contract_evaluation",
+        "visibility_and_budget_checks"
+      ],
+      "excludes": [
+        "physical_sensor_collection",
+        "mission_cache_miss",
+        "physical_network_actuation"
+      ],
+      "source": "actual_cpu_wall_time"
+    },
+    {
+      "domain": "layout",
+      "method": "graph_masked-1",
+      "median_ms": 111.67678800120484,
+      "p95_ms": 123.17928550146462,
+      "samples": 16,
+      "stage_mean_ms": {
+        "input_decode_validate_ms": 20.243933936399117,
+        "belief_candidates_forecast_ms": 87.97848081349002,
+        "neural_forecast_ms": 4.571738873892173,
+        "contract_and_execution_checks_ms": 0.2761283758445643,
+        "total_ms": 113.07028199962588
+      },
+      "includes": [
+        "JSON_decode",
+        "schema_validation",
+        "belief_construction",
+        "candidate_generation",
+        "forecast",
+        "typed_contract_evaluation",
+        "visibility_and_budget_checks"
+      ],
+      "excludes": [
+        "physical_sensor_collection",
+        "mission_cache_miss",
+        "physical_network_actuation"
+      ],
+      "source": "actual_cpu_wall_time"
+    },
+    {
+      "domain": "layout",
+      "method": "graph_jepa-1",
+      "median_ms": 109.65573950306862,
+      "p95_ms": 144.37049775006017,
+      "samples": 16,
+      "stage_mean_ms": {
+        "input_decode_validate_ms": 26.512118438859034,
+        "belief_candidates_forecast_ms": 85.36519175004287,
+        "neural_forecast_ms": 4.17888106267128,
+        "contract_and_execution_checks_ms": 0.2853947494259046,
+        "total_ms": 116.34158600099909
+      },
+      "includes": [
+        "JSON_decode",
+        "schema_validation",
+        "belief_construction",
+        "candidate_generation",
+        "forecast",
+        "typed_contract_evaluation",
+        "visibility_and_budget_checks"
+      ],
+      "excludes": [
+        "physical_sensor_collection",
+        "mission_cache_miss",
+        "physical_network_actuation"
+      ],
+      "source": "actual_cpu_wall_time"
+    },
+    {
+      "domain": "layout",
+      "method": "mlp-2",
+      "median_ms": 111.03348599863239,
+      "p95_ms": 116.01641875131463,
+      "samples": 16,
+      "stage_mean_ms": {
+        "input_decode_validate_ms": 20.730160873881687,
+        "belief_candidates_forecast_ms": 87.26443437535636,
+        "neural_forecast_ms": 3.3796226248341554,
+        "contract_and_execution_checks_ms": 0.2968802505165513,
+        "total_ms": 111.67109812458875
+      },
+      "includes": [
+        "JSON_decode",
+        "schema_validation",
+        "belief_construction",
+        "candidate_generation",
+        "forecast",
+        "typed_contract_evaluation",
+        "visibility_and_budget_checks"
+      ],
+      "excludes": [
+        "physical_sensor_collection",
+        "mission_cache_miss",
+        "physical_network_actuation"
+      ],
+      "source": "actual_cpu_wall_time"
+    },
+    {
+      "domain": "layout",
+      "method": "graph_scratch-2",
+      "median_ms": 119.79219800196006,
+      "p95_ms": 167.3060027496831,
+      "samples": 16,
+      "stage_mean_ms": {
+        "input_decode_validate_ms": 23.114512374377227,
+        "belief_candidates_forecast_ms": 100.797576626519,
+        "neural_forecast_ms": 4.819961123303074,
+        "contract_and_execution_checks_ms": 0.34873762569986866,
+        "total_ms": 129.08078774989917
+      },
+      "includes": [
+        "JSON_decode",
+        "schema_validation",
+        "belief_construction",
+        "candidate_generation",
+        "forecast",
+        "typed_contract_evaluation",
+        "visibility_and_budget_checks"
+      ],
+      "excludes": [
+        "physical_sensor_collection",
+        "mission_cache_miss",
+        "physical_network_actuation"
+      ],
+      "source": "actual_cpu_wall_time"
+    },
+    {
+      "domain": "layout",
+      "method": "graph_masked-2",
+      "median_ms": 119.97060350040556,
+      "p95_ms": 135.78814025277097,
+      "samples": 16,
+      "stage_mean_ms": {
+        "input_decode_validate_ms": 22.72908218765224,
+        "belief_candidates_forecast_ms": 93.51948531275411,
+        "neural_forecast_ms": 5.10497887580641,
+        "contract_and_execution_checks_ms": 0.3276503753113502,
+        "total_ms": 121.68119675152411
+      },
+      "includes": [
+        "JSON_decode",
+        "schema_validation",
+        "belief_construction",
+        "candidate_generation",
+        "forecast",
+        "typed_contract_evaluation",
+        "visibility_and_budget_checks"
+      ],
+      "excludes": [
+        "physical_sensor_collection",
+        "mission_cache_miss",
+        "physical_network_actuation"
+      ],
+      "source": "actual_cpu_wall_time"
+    },
+    {
+      "domain": "layout",
+      "method": "graph_jepa-2",
+      "median_ms": 111.43321250347071,
+      "p95_ms": 129.15391500246187,
+      "samples": 16,
+      "stage_mean_ms": {
+        "input_decode_validate_ms": 20.32956412540443,
+        "belief_candidates_forecast_ms": 90.30306300110169,
+        "neural_forecast_ms": 3.9727036241856695,
+        "contract_and_execution_checks_ms": 0.2695088755899633,
+        "total_ms": 114.87483962628176
+      },
+      "includes": [
+        "JSON_decode",
+        "schema_validation",
+        "belief_construction",
+        "candidate_generation",
+        "forecast",
+        "typed_contract_evaluation",
+        "visibility_and_budget_checks"
+      ],
+      "excludes": [
+        "physical_sensor_collection",
+        "mission_cache_miss",
+        "physical_network_actuation"
+      ],
+      "source": "actual_cpu_wall_time"
+    },
+    {
+      "domain": "fleet200",
+      "method": "numerical",
+      "median_ms": 143.25815399934072,
+      "p95_ms": 158.0676459998358,
+      "samples": 16,
+      "stage_mean_ms": {
+        "input_decode_validate_ms": 39.002666249871254,
+        "belief_candidates_forecast_ms": 105.8901067503939,
+        "neural_forecast_ms": 0.29983568583702436,
+        "contract_and_execution_checks_ms": 0.27684612541634124,
+        "total_ms": 145.46945481151852
+      },
+      "includes": [
+        "JSON_decode",
+        "schema_validation",
+        "belief_construction",
+        "candidate_generation",
+        "forecast",
+        "typed_contract_evaluation",
+        "visibility_and_budget_checks"
+      ],
+      "excludes": [
+        "physical_sensor_collection",
+        "mission_cache_miss",
+        "physical_network_actuation"
+      ],
+      "source": "actual_cpu_wall_time"
+    },
+    {
+      "domain": "fleet200",
+      "method": "mlp-0",
+      "median_ms": 145.78796700152452,
+      "p95_ms": 163.02013974927831,
+      "samples": 16,
+      "stage_mean_ms": {
+        "input_decode_validate_ms": 38.62762456265045,
+        "belief_candidates_forecast_ms": 104.4887694361023,
+        "neural_forecast_ms": 4.992596938336646,
+        "contract_and_execution_checks_ms": 0.3309813751002366,
+        "total_ms": 148.43997231218964
+      },
+      "includes": [
+        "JSON_decode",
+        "schema_validation",
+        "belief_construction",
+        "candidate_generation",
+        "forecast",
+        "typed_contract_evaluation",
+        "visibility_and_budget_checks"
+      ],
+      "excludes": [
+        "physical_sensor_collection",
+        "mission_cache_miss",
+        "physical_network_actuation"
+      ],
+      "source": "actual_cpu_wall_time"
+    },
+    {
+      "domain": "fleet200",
+      "method": "graph_scratch-0",
+      "median_ms": 149.87133449903922,
+      "p95_ms": 155.51281950138218,
+      "samples": 16,
+      "stage_mean_ms": {
+        "input_decode_validate_ms": 38.89263756263972,
+        "belief_candidates_forecast_ms": 104.25144549935794,
+        "neural_forecast_ms": 6.373585812980309,
+        "contract_and_execution_checks_ms": 0.3949246884076274,
+        "total_ms": 149.9125935633856
+      },
+      "includes": [
+        "JSON_decode",
+        "schema_validation",
+        "belief_construction",
+        "candidate_generation",
+        "forecast",
+        "typed_contract_evaluation",
+        "visibility_and_budget_checks"
+      ],
+      "excludes": [
+        "physical_sensor_collection",
+        "mission_cache_miss",
+        "physical_network_actuation"
+      ],
+      "source": "actual_cpu_wall_time"
+    },
+    {
+      "domain": "fleet200",
+      "method": "graph_masked-0",
+      "median_ms": 152.0825444968068,
+      "p95_ms": 180.06187900209625,
+      "samples": 16,
+      "stage_mean_ms": {
+        "input_decode_validate_ms": 40.1118368108655,
+        "belief_candidates_forecast_ms": 108.86041693811421,
+        "neural_forecast_ms": 6.825965187090333,
+        "contract_and_execution_checks_ms": 0.35542506293495535,
+        "total_ms": 156.153643999005
+      },
+      "includes": [
+        "JSON_decode",
+        "schema_validation",
+        "belief_construction",
+        "candidate_generation",
+        "forecast",
+        "typed_contract_evaluation",
+        "visibility_and_budget_checks"
+      ],
+      "excludes": [
+        "physical_sensor_collection",
+        "mission_cache_miss",
+        "physical_network_actuation"
+      ],
+      "source": "actual_cpu_wall_time"
+    },
+    {
+      "domain": "fleet200",
+      "method": "graph_jepa-0",
+      "median_ms": 146.05070750258164,
+      "p95_ms": 175.26282675135008,
+      "samples": 16,
+      "stage_mean_ms": {
+        "input_decode_validate_ms": 44.11804699975619,
+        "belief_candidates_forecast_ms": 101.2521056886726,
+        "neural_forecast_ms": 6.618485186663747,
+        "contract_and_execution_checks_ms": 0.3238300005250494,
+        "total_ms": 152.31246787561759
+      },
+      "includes": [
+        "JSON_decode",
+        "schema_validation",
+        "belief_construction",
+        "candidate_generation",
+        "forecast",
+        "typed_contract_evaluation",
+        "visibility_and_budget_checks"
+      ],
+      "excludes": [
+        "physical_sensor_collection",
+        "mission_cache_miss",
+        "physical_network_actuation"
+      ],
+      "source": "actual_cpu_wall_time"
+    },
+    {
+      "domain": "fleet200",
+      "method": "mlp-1",
+      "median_ms": 142.64082350200624,
+      "p95_ms": 146.48397349992592,
+      "samples": 16,
+      "stage_mean_ms": {
+        "input_decode_validate_ms": 36.82405781228226,
+        "belief_candidates_forecast_ms": 100.52209612513252,
+        "neural_forecast_ms": 5.209890937294404,
+        "contract_and_execution_checks_ms": 0.2996034381794743,
+        "total_ms": 142.85564831288866
+      },
+      "includes": [
+        "JSON_decode",
+        "schema_validation",
+        "belief_construction",
+        "candidate_generation",
+        "forecast",
+        "typed_contract_evaluation",
+        "visibility_and_budget_checks"
+      ],
+      "excludes": [
+        "physical_sensor_collection",
+        "mission_cache_miss",
+        "physical_network_actuation"
+      ],
+      "source": "actual_cpu_wall_time"
+    },
+    {
+      "domain": "fleet200",
+      "method": "graph_scratch-1",
+      "median_ms": 151.85202899738215,
+      "p95_ms": 168.46225949666405,
+      "samples": 16,
+      "stage_mean_ms": {
+        "input_decode_validate_ms": 39.41522812419862,
+        "belief_candidates_forecast_ms": 107.85280312575196,
+        "neural_forecast_ms": 6.695154062981601,
+        "contract_and_execution_checks_ms": 0.34897306159109576,
+        "total_ms": 154.31215837452328
+      },
+      "includes": [
+        "JSON_decode",
+        "schema_validation",
+        "belief_construction",
+        "candidate_generation",
+        "forecast",
+        "typed_contract_evaluation",
+        "visibility_and_budget_checks"
+      ],
+      "excludes": [
+        "physical_sensor_collection",
+        "mission_cache_miss",
+        "physical_network_actuation"
+      ],
+      "source": "actual_cpu_wall_time"
+    },
+    {
+      "domain": "fleet200",
+      "method": "graph_masked-1",
+      "median_ms": 150.79307950145449,
+      "p95_ms": 158.72247100196546,
+      "samples": 16,
+      "stage_mean_ms": {
+        "input_decode_validate_ms": 40.63636824957939,
+        "belief_candidates_forecast_ms": 104.89890043709238,
+        "neural_forecast_ms": 6.27543518658058,
+        "contract_and_execution_checks_ms": 0.378532125523634,
+        "total_ms": 152.18923599877598
+      },
+      "includes": [
+        "JSON_decode",
+        "schema_validation",
+        "belief_construction",
+        "candidate_generation",
+        "forecast",
+        "typed_contract_evaluation",
+        "visibility_and_budget_checks"
+      ],
+      "excludes": [
+        "physical_sensor_collection",
+        "mission_cache_miss",
+        "physical_network_actuation"
+      ],
+      "source": "actual_cpu_wall_time"
+    },
+    {
+      "domain": "fleet200",
+      "method": "graph_jepa-1",
+      "median_ms": 148.30718149823952,
+      "p95_ms": 156.81966125339386,
+      "samples": 16,
+      "stage_mean_ms": {
+        "input_decode_validate_ms": 39.08593012511119,
+        "belief_candidates_forecast_ms": 103.79672437420595,
+        "neural_forecast_ms": 5.836760438342026,
+        "contract_and_execution_checks_ms": 0.3860444380734407,
+        "total_ms": 149.1054593757326
+      },
+      "includes": [
+        "JSON_decode",
+        "schema_validation",
+        "belief_construction",
+        "candidate_generation",
+        "forecast",
+        "typed_contract_evaluation",
+        "visibility_and_budget_checks"
+      ],
+      "excludes": [
+        "physical_sensor_collection",
+        "mission_cache_miss",
+        "physical_network_actuation"
+      ],
+      "source": "actual_cpu_wall_time"
+    },
+    {
+      "domain": "fleet200",
+      "method": "mlp-2",
+      "median_ms": 149.1427044966258,
+      "p95_ms": 158.1571115020779,
+      "samples": 16,
+      "stage_mean_ms": {
+        "input_decode_validate_ms": 38.44947593870529,
+        "belief_candidates_forecast_ms": 104.1861463108944,
+        "neural_forecast_ms": 5.548046563035314,
+        "contract_and_execution_checks_ms": 0.345805749475403,
+        "total_ms": 148.5294745621104
+      },
+      "includes": [
+        "JSON_decode",
+        "schema_validation",
+        "belief_construction",
+        "candidate_generation",
+        "forecast",
+        "typed_contract_evaluation",
+        "visibility_and_budget_checks"
+      ],
+      "excludes": [
+        "physical_sensor_collection",
+        "mission_cache_miss",
+        "physical_network_actuation"
+      ],
+      "source": "actual_cpu_wall_time"
+    },
+    {
+      "domain": "fleet200",
+      "method": "graph_scratch-2",
+      "median_ms": 144.9559100001352,
+      "p95_ms": 150.50181949845864,
+      "samples": 16,
+      "stage_mean_ms": {
+        "input_decode_validate_ms": 37.52024206232818,
+        "belief_candidates_forecast_ms": 101.04239212569155,
+        "neural_forecast_ms": 6.005642875607009,
+        "contract_and_execution_checks_ms": 0.30029468643988366,
+        "total_ms": 144.86857175006662
+      },
+      "includes": [
+        "JSON_decode",
+        "schema_validation",
+        "belief_construction",
+        "candidate_generation",
+        "forecast",
+        "typed_contract_evaluation",
+        "visibility_and_budget_checks"
+      ],
+      "excludes": [
+        "physical_sensor_collection",
+        "mission_cache_miss",
+        "physical_network_actuation"
+      ],
+      "source": "actual_cpu_wall_time"
+    },
+    {
+      "domain": "fleet200",
+      "method": "graph_masked-2",
+      "median_ms": 149.3509885003732,
+      "p95_ms": 156.92324449810258,
+      "samples": 16,
+      "stage_mean_ms": {
+        "input_decode_validate_ms": 38.8769884384601,
+        "belief_candidates_forecast_ms": 104.37525356155675,
+        "neural_forecast_ms": 6.102604439092829,
+        "contract_and_execution_checks_ms": 0.3101771862930036,
+        "total_ms": 149.66502362540268
+      },
+      "includes": [
+        "JSON_decode",
+        "schema_validation",
+        "belief_construction",
+        "candidate_generation",
+        "forecast",
+        "typed_contract_evaluation",
+        "visibility_and_budget_checks"
+      ],
+      "excludes": [
+        "physical_sensor_collection",
+        "mission_cache_miss",
+        "physical_network_actuation"
+      ],
+      "source": "actual_cpu_wall_time"
+    },
+    {
+      "domain": "fleet200",
+      "method": "graph_jepa-2",
+      "median_ms": 147.5777499981632,
+      "p95_ms": 153.6616684988985,
+      "samples": 16,
+      "stage_mean_ms": {
+        "input_decode_validate_ms": 38.48419243831813,
+        "belief_candidates_forecast_ms": 102.65144062441323,
+        "neural_forecast_ms": 5.860792062776454,
+        "contract_and_execution_checks_ms": 0.32283468726745923,
+        "total_ms": 147.31925981277527
+      },
+      "includes": [
+        "JSON_decode",
+        "schema_validation",
+        "belief_construction",
+        "candidate_generation",
+        "forecast",
+        "typed_contract_evaluation",
+        "visibility_and_budget_checks"
+      ],
+      "excludes": [
+        "physical_sensor_collection",
+        "mission_cache_miss",
+        "physical_network_actuation"
+      ],
+      "source": "actual_cpu_wall_time"
+    },
+    {
+      "domain": "traffic",
+      "method": "numerical",
+      "median_ms": 120.29480949786375,
+      "p95_ms": 130.16004625205824,
+      "samples": 16,
+      "stage_mean_ms": {
+        "input_decode_validate_ms": 22.462248313331656,
+        "belief_candidates_forecast_ms": 99.18396099919846,
+        "neural_forecast_ms": 0.2058837503682298,
+        "contract_and_execution_checks_ms": 0.2501067492630682,
+        "total_ms": 122.10219981216142
+      },
+      "includes": [
+        "JSON_decode",
+        "schema_validation",
+        "belief_construction",
+        "candidate_generation",
+        "forecast",
+        "typed_contract_evaluation",
+        "visibility_and_budget_checks"
+      ],
+      "excludes": [
+        "physical_sensor_collection",
+        "mission_cache_miss",
+        "physical_network_actuation"
+      ],
+      "source": "actual_cpu_wall_time"
+    },
+    {
+      "domain": "traffic",
+      "method": "mlp-0",
+      "median_ms": 123.81779499992263,
+      "p95_ms": 137.8914260003512,
+      "samples": 16,
+      "stage_mean_ms": {
+        "input_decode_validate_ms": 24.060193186414836,
+        "belief_candidates_forecast_ms": 98.51007318820848,
+        "neural_forecast_ms": 2.842401000634709,
+        "contract_and_execution_checks_ms": 0.29966824877192266,
+        "total_ms": 125.71233562402995
+      },
+      "includes": [
+        "JSON_decode",
+        "schema_validation",
+        "belief_construction",
+        "candidate_generation",
+        "forecast",
+        "typed_contract_evaluation",
+        "visibility_and_budget_checks"
+      ],
+      "excludes": [
+        "physical_sensor_collection",
+        "mission_cache_miss",
+        "physical_network_actuation"
+      ],
+      "source": "actual_cpu_wall_time"
+    },
+    {
+      "domain": "traffic",
+      "method": "graph_scratch-0",
+      "median_ms": 126.8953649996547,
+      "p95_ms": 177.88571125129238,
+      "samples": 16,
+      "stage_mean_ms": {
+        "input_decode_validate_ms": 24.284521749905252,
+        "belief_candidates_forecast_ms": 105.87592174942984,
+        "neural_forecast_ms": 3.599962250518729,
+        "contract_and_execution_checks_ms": 0.2965321868941828,
+        "total_ms": 134.056937936748
+      },
+      "includes": [
+        "JSON_decode",
+        "schema_validation",
+        "belief_construction",
+        "candidate_generation",
+        "forecast",
+        "typed_contract_evaluation",
+        "visibility_and_budget_checks"
+      ],
+      "excludes": [
+        "physical_sensor_collection",
+        "mission_cache_miss",
+        "physical_network_actuation"
+      ],
+      "source": "actual_cpu_wall_time"
+    },
+    {
+      "domain": "traffic",
+      "method": "graph_masked-0",
+      "median_ms": 123.50480999884894,
+      "p95_ms": 138.71193774866697,
+      "samples": 16,
+      "stage_mean_ms": {
+        "input_decode_validate_ms": 23.036813562157477,
+        "belief_candidates_forecast_ms": 99.49074237556488,
+        "neural_forecast_ms": 3.0658799364573497,
+        "contract_and_execution_checks_ms": 0.2784620014608663,
+        "total_ms": 125.87189787564057
+      },
+      "includes": [
+        "JSON_decode",
+        "schema_validation",
+        "belief_construction",
+        "candidate_generation",
+        "forecast",
+        "typed_contract_evaluation",
+        "visibility_and_budget_checks"
+      ],
+      "excludes": [
+        "physical_sensor_collection",
+        "mission_cache_miss",
+        "physical_network_actuation"
+      ],
+      "source": "actual_cpu_wall_time"
+    },
+    {
+      "domain": "traffic",
+      "method": "graph_jepa-0",
+      "median_ms": 120.64229550014716,
+      "p95_ms": 127.70587125123711,
+      "samples": 16,
+      "stage_mean_ms": {
+        "input_decode_validate_ms": 22.08041731364574,
+        "belief_candidates_forecast_ms": 96.00046968625975,
+        "neural_forecast_ms": 2.8884082503282116,
+        "contract_and_execution_checks_ms": 0.24420025056315353,
+        "total_ms": 121.21349550079685
+      },
+      "includes": [
+        "JSON_decode",
+        "schema_validation",
+        "belief_construction",
+        "candidate_generation",
+        "forecast",
+        "typed_contract_evaluation",
+        "visibility_and_budget_checks"
+      ],
+      "excludes": [
+        "physical_sensor_collection",
+        "mission_cache_miss",
+        "physical_network_actuation"
+      ],
+      "source": "actual_cpu_wall_time"
+    },
+    {
+      "domain": "traffic",
+      "method": "mlp-1",
+      "median_ms": 122.05402949985,
+      "p95_ms": 126.15948500024388,
+      "samples": 16,
+      "stage_mean_ms": {
+        "input_decode_validate_ms": 22.50132100061819,
+        "belief_candidates_forecast_ms": 96.83192487409542,
+        "neural_forecast_ms": 2.6492786873859586,
+        "contract_and_execution_checks_ms": 0.24080818775473745,
+        "total_ms": 122.22333274985431
+      },
+      "includes": [
+        "JSON_decode",
+        "schema_validation",
+        "belief_construction",
+        "candidate_generation",
+        "forecast",
+        "typed_contract_evaluation",
+        "visibility_and_budget_checks"
+      ],
+      "excludes": [
+        "physical_sensor_collection",
+        "mission_cache_miss",
+        "physical_network_actuation"
+      ],
+      "source": "actual_cpu_wall_time"
+    },
+    {
+      "domain": "traffic",
+      "method": "graph_scratch-1",
+      "median_ms": 121.072098500008,
+      "p95_ms": 127.71321675063518,
+      "samples": 16,
+      "stage_mean_ms": {
+        "input_decode_validate_ms": 22.685251062284806,
+        "belief_candidates_forecast_ms": 96.08838037593159,
+        "neural_forecast_ms": 2.9345536236178305,
+        "contract_and_execution_checks_ms": 0.2570291258052748,
+        "total_ms": 121.9652141876395
+      },
+      "includes": [
+        "JSON_decode",
+        "schema_validation",
+        "belief_construction",
+        "candidate_generation",
+        "forecast",
+        "typed_contract_evaluation",
+        "visibility_and_budget_checks"
+      ],
+      "excludes": [
+        "physical_sensor_collection",
+        "mission_cache_miss",
+        "physical_network_actuation"
+      ],
+      "source": "actual_cpu_wall_time"
+    },
+    {
+      "domain": "traffic",
+      "method": "graph_masked-1",
+      "median_ms": 123.3991410008457,
+      "p95_ms": 129.8993900018104,
+      "samples": 16,
+      "stage_mean_ms": {
+        "input_decode_validate_ms": 23.977677187303925,
+        "belief_candidates_forecast_ms": 97.05758449990753,
+        "neural_forecast_ms": 3.195040937498561,
+        "contract_and_execution_checks_ms": 0.28867962555523263,
+        "total_ms": 124.51898225026525
+      },
+      "includes": [
+        "JSON_decode",
+        "schema_validation",
+        "belief_construction",
+        "candidate_generation",
+        "forecast",
+        "typed_contract_evaluation",
+        "visibility_and_budget_checks"
+      ],
+      "excludes": [
+        "physical_sensor_collection",
+        "mission_cache_miss",
+        "physical_network_actuation"
+      ],
+      "source": "actual_cpu_wall_time"
+    },
+    {
+      "domain": "traffic",
+      "method": "graph_jepa-1",
+      "median_ms": 124.52942349773366,
+      "p95_ms": 126.36613449831202,
+      "samples": 16,
+      "stage_mean_ms": {
+        "input_decode_validate_ms": 22.975647311341163,
+        "belief_candidates_forecast_ms": 97.3558768755538,
+        "neural_forecast_ms": 3.1677633128310845,
+        "contract_and_execution_checks_ms": 0.27488037403600174,
+        "total_ms": 123.77416787376205
+      },
+      "includes": [
+        "JSON_decode",
+        "schema_validation",
+        "belief_construction",
+        "candidate_generation",
+        "forecast",
+        "typed_contract_evaluation",
+        "visibility_and_budget_checks"
+      ],
+      "excludes": [
+        "physical_sensor_collection",
+        "mission_cache_miss",
+        "physical_network_actuation"
+      ],
+      "source": "actual_cpu_wall_time"
+    },
+    {
+      "domain": "traffic",
+      "method": "mlp-2",
+      "median_ms": 122.90754649802693,
+      "p95_ms": 148.40558149990102,
+      "samples": 16,
+      "stage_mean_ms": {
+        "input_decode_validate_ms": 28.301545937210904,
+        "belief_candidates_forecast_ms": 97.00330068835683,
+        "neural_forecast_ms": 2.761081311291491,
+        "contract_and_execution_checks_ms": 0.28482218795033987,
+        "total_ms": 128.35075012480957
+      },
+      "includes": [
+        "JSON_decode",
+        "schema_validation",
+        "belief_construction",
+        "candidate_generation",
+        "forecast",
+        "typed_contract_evaluation",
+        "visibility_and_budget_checks"
+      ],
+      "excludes": [
+        "physical_sensor_collection",
+        "mission_cache_miss",
+        "physical_network_actuation"
+      ],
+      "source": "actual_cpu_wall_time"
+    },
+    {
+      "domain": "traffic",
+      "method": "graph_scratch-2",
+      "median_ms": 120.29667149909073,
+      "p95_ms": 125.04912324766337,
+      "samples": 16,
+      "stage_mean_ms": {
+        "input_decode_validate_ms": 22.518463500091457,
+        "belief_candidates_forecast_ms": 94.6670791872748,
+        "neural_forecast_ms": 2.7341182508280326,
+        "contract_and_execution_checks_ms": 0.2632202490531199,
+        "total_ms": 120.1828811872474
+      },
+      "includes": [
+        "JSON_decode",
+        "schema_validation",
+        "belief_construction",
+        "candidate_generation",
+        "forecast",
+        "typed_contract_evaluation",
+        "visibility_and_budget_checks"
+      ],
+      "excludes": [
+        "physical_sensor_collection",
+        "mission_cache_miss",
+        "physical_network_actuation"
+      ],
+      "source": "actual_cpu_wall_time"
+    },
+    {
+      "domain": "traffic",
+      "method": "graph_masked-2",
+      "median_ms": 120.61318450287217,
+      "p95_ms": 123.50473350124958,
+      "samples": 16,
+      "stage_mean_ms": {
+        "input_decode_validate_ms": 22.580847188237385,
+        "belief_candidates_forecast_ms": 94.86381893702855,
+        "neural_forecast_ms": 2.8281546883590636,
+        "contract_and_execution_checks_ms": 0.2745798747127992,
+        "total_ms": 120.5474006883378
+      },
+      "includes": [
+        "JSON_decode",
+        "schema_validation",
+        "belief_construction",
+        "candidate_generation",
+        "forecast",
+        "typed_contract_evaluation",
+        "visibility_and_budget_checks"
+      ],
+      "excludes": [
+        "physical_sensor_collection",
+        "mission_cache_miss",
+        "physical_network_actuation"
+      ],
+      "source": "actual_cpu_wall_time"
+    },
+    {
+      "domain": "traffic",
+      "method": "graph_jepa-2",
+      "median_ms": 123.0360275003477,
+      "p95_ms": 128.19315075103077,
+      "samples": 16,
+      "stage_mean_ms": {
+        "input_decode_validate_ms": 22.805752812473656,
+        "belief_candidates_forecast_ms": 96.66632481275883,
+        "neural_forecast_ms": 2.8429812496142404,
+        "contract_and_execution_checks_ms": 0.27121218727188534,
+        "total_ms": 122.58627106211861
+      },
+      "includes": [
+        "JSON_decode",
+        "schema_validation",
+        "belief_construction",
+        "candidate_generation",
+        "forecast",
+        "typed_contract_evaluation",
+        "visibility_and_budget_checks"
+      ],
+      "excludes": [
+        "physical_sensor_collection",
+        "mission_cache_miss",
+        "physical_network_actuation"
+      ],
+      "source": "actual_cpu_wall_time"
+    }
+  ],
+  "limits": [
+    "This re-evaluates the same frozen models and held-out scenes; it is not an independent replication",
+    "Intervals describe mean per-environment RMSE differences, not the pooled-RMSE statistic",
+    "Model seeds and environments are resampled separately; three environments per domain remain small",
+    "Local timing includes decoding, public belief, candidates, prediction and checks; physical sensing/actuation remain unmeasured"
+  ]
+}

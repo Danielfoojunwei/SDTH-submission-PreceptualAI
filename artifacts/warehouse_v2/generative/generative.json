@@ -1,0 +1,1106 @@
+{
+  "repository": "Qwen/Qwen3.5-0.8B",
+  "revision": "2fc06364715b967f1860aea9cf38778875588b17",
+  "licence": "Apache-2.0",
+  "cache": "/workspace/.cache/huggingface/hub/models--Qwen--Qwen3.5-0.8B/snapshots/2fc06364715b967f1860aea9cf38778875588b17",
+  "weights_sha256": {
+    "model.safetensors-00001-of-00001.safetensors": "04b1c301231dd422b8860db31311ab2721511346a32cb1e079c4c4e5f1fe4696"
+  },
+  "source": "real_pretrained_cpu_inference",
+  "load_s": 2.547123194002779,
+  "threads": 2,
+  "dtype": "torch.bfloat16",
+  "parameters": 852985920,
+  "readings": [
+    {
+      "text": "Every robot streaming video must keep at least 90% of its rate; subject to that, share capacity as evenly as possible.",
+      "raw_output": "{\n  \"kind\": \"video_floor\",\n  \"floor\": 0.9,\n  \"max_moves\": 0,\n  \"axis\": \"x\",\n  \"boundary_m\": 60,\n  \"side\": \"lt\"\n}\n",
+      "latency_ms": 9660.33958099797,
+      "generated_tokens": 60,
+      "model_executed": true,
+      "spec": {
+        "kind": "video_floor",
+        "floor": 0.9,
+        "max_moves": 0,
+        "axis": "x",
+        "boundary_m": 60,
+        "side": "lt",
+        "semantics": "historical_e2"
+      },
+      "matches_controlled_parser": false
+    },
+    {
+      "text": "Reconnect at most 5 robots in this plan; within that limit, maximise the total data delivered.",
+      "raw_output": "{\n  \"kind\": \"move_budget\",\n  \"floor\": 0.5,\n  \"max_moves\": 5,\n  \"axis\": \"x\",\n  \"boundary_m\": 60,\n  \"side\": \"lt\"\n}\n",
+      "latency_ms": 9836.167248999118,
+      "generated_tokens": 60,
+      "model_executed": true,
+      "spec": {
+        "kind": "move_budget",
+        "floor": 0.5,
+        "max_moves": 5,
+        "axis": "x",
+        "boundary_m": 60,
+        "side": "lt",
+        "semantics": "historical_e2"
+      },
+      "matches_controlled_parser": false
+    },
+    {
+      "text": "Robots working in the front half of the hall, near shipping (y below 40 m), matter most; maximise their service.",
+      "raw_output": "{\n  \"kind\": \"video_floor\",\n  \"floor\": 0.5,\n  \"max_moves\": 0,\n  \"axis\": \"x\",\n  \"boundary_m\": 60,\n  \"side\": \"lt\"\n}\n",
+      "latency_ms": 9131.506077999802,
+      "generated_tokens": 60,
+      "model_executed": true,
+      "spec": {
+        "kind": "video_floor",
+        "floor": 0.5,
+        "max_moves": 0,
+        "axis": "x",
+        "boundary_m": 60,
+        "side": "lt",
+        "semantics": "historical_e2"
+      },
+      "matches_controlled_parser": false
+    },
+    {
+      "text": "Robots in the back half of the hall, near receiving (y of 40 m or more), matter most; maximise their service.",
+      "raw_output": "{\n  \"kind\": \"move_budget\",\n  \"floor\": 0.5,\n  \"max_moves\": 10,\n  \"axis\": \"y\",\n  \"boundary_m\": 40,\n  \"side\": \"lt\"\n}\n",
+      "latency_ms": 9896.492695002962,
+      "generated_tokens": 61,
+      "model_executed": true,
+      "spec": {
+        "kind": "move_budget",
+        "floor": 0.5,
+        "max_moves": 10,
+        "axis": "y",
+        "boundary_m": 40,
+        "side": "lt",
+        "semantics": "historical_e2"
+      },
+      "matches_controlled_parser": false
+    },
+    {
+      "text": "Maximise the service of the single worst-served robot.",
+      "raw_output": "{\n  \"kind\": \"worst\",\n  \"floor\": 0.5,\n  \"max_moves\": 0,\n  \"axis\": \"x\",\n  \"boundary_m\": 60,\n  \"side\": \"lt\"\n}\n",
+      "latency_ms": 8753.81515999834,
+      "generated_tokens": 60,
+      "model_executed": true,
+      "spec": {
+        "kind": "worst",
+        "floor": 0.5,
+        "max_moves": 0,
+        "axis": "x",
+        "boundary_m": 60,
+        "side": "lt",
+        "semantics": "historical_e2"
+      },
+      "matches_controlled_parser": false
+    },
+    {
+      "text": "First, no safety link may fall below its floor; only then maximise total data.",
+      "raw_output": "{\n  \"kind\": \"move_budget\",\n  \"floor\": 0,\n  \"max_moves\": 100,\n  \"axis\": \"x\",\n  \"boundary_m\": 120,\n  \"side\": \"lt\"\n}\n",
+      "latency_ms": 9555.025768000633,
+      "generated_tokens": 61,
+      "model_executed": true,
+      "spec": {
+        "kind": "move_budget",
+        "floor": 0,
+        "max_moves": 100,
+        "axis": "x",
+        "boundary_m": 120,
+        "side": "lt",
+        "semantics": "historical_e2"
+      },
+      "matches_controlled_parser": false
+    },
+    {
+      "text": "Video robots need 90% of their requested rate or more. Once that holds, spread capacity fairly.",
+      "raw_output": "{\n  \"kind\": \"video_floor\",\n  \"floor\": 0.9,\n  \"max_moves\": 0,\n  \"axis\": \"x\",\n  \"boundary_m\": 120,\n  \"side\": \"lt\"\n}\n",
+      "latency_ms": 10164.955880998605,
+      "generated_tokens": 61,
+      "model_executed": true,
+      "spec": {
+        "kind": "video_floor",
+        "floor": 0.9,
+        "max_moves": 0,
+        "axis": "x",
+        "boundary_m": 120,
+        "side": "lt",
+        "semantics": "historical_e2"
+      },
+      "matches_controlled_parser": false
+    },
+    {
+      "text": "No more than five BSSID switches this round. Inside that budget, push the most data.",
+      "raw_output": "{\n  \"kind\": \"move_budget\",\n  \"max_moves\": 5,\n  \"axis\": \"x\",\n  \"boundary_m\": 60,\n  \"side\": \"lt\"\n}\n",
+      "latency_ms": 10492.544802997145,
+      "generated_tokens": 50,
+      "model_executed": true,
+      "spec": {
+        "kind": "move_budget",
+        "floor": null,
+        "max_moves": 5,
+        "axis": "x",
+        "boundary_m": 60,
+        "side": "lt",
+        "semantics": "historical_e2"
+      },
+      "matches_controlled_parser": false
+    },
+    {
+      "text": "Prioritise the robots in the shipping half of the warehouse (the front 40 metres).",
+      "raw_output": "{\n  \"kind\": \"move_budget\",\n  \"floor\": 0.5,\n  \"max_moves\": 100,\n  \"axis\": \"x\",\n  \"boundary_m\": 40,\n  \"side\": \"lt\"\n}\n",
+      "latency_ms": 13270.288173000154,
+      "generated_tokens": 62,
+      "model_executed": true,
+      "spec": {
+        "kind": "move_budget",
+        "floor": 0.5,
+        "max_moves": 100,
+        "axis": "x",
+        "boundary_m": 40,
+        "side": "lt",
+        "semantics": "historical_e2"
+      },
+      "matches_controlled_parser": false
+    },
+    {
+      "text": "Prioritise the robots in the receiving half of the warehouse (the back 40 metres).",
+      "raw_output": "{\n  \"kind\": \"move_budget\",\n  \"floor\": 0.5,\n  \"max_moves\": 100,\n  \"axis\": \"y\",\n  \"boundary_m\": 40,\n  \"side\": \"lt\"\n}\n",
+      "latency_ms": 11924.33075200097,
+      "generated_tokens": 62,
+      "model_executed": true,
+      "spec": {
+        "kind": "move_budget",
+        "floor": 0.5,
+        "max_moves": 100,
+        "axis": "y",
+        "boundary_m": 40,
+        "side": "lt",
+        "semantics": "historical_e2"
+      },
+      "matches_controlled_parser": false
+    },
+    {
+      "text": "Make the robot with the poorest link as well off as possible.",
+      "raw_output": "{\n  \"kind\": \"worst\",\n  \"floor\": 0.5,\n  \"max_moves\": 100,\n  \"axis\": \"x\",\n  \"boundary_m\": 100,\n  \"side\": \"lt\"\n}\n",
+      "latency_ms": 10526.692678002291,
+      "generated_tokens": 63,
+      "model_executed": true,
+      "spec": {
+        "kind": "worst",
+        "floor": 0.5,
+        "max_moves": 100,
+        "axis": "x",
+        "boundary_m": 100,
+        "side": "lt",
+        "semantics": "historical_e2"
+      },
+      "matches_controlled_parser": false
+    },
+    {
+      "text": "Safety heartbeats come first. Once every one is above its minimum, maximise throughput.",
+      "raw_output": "{\n  \"kind\": \"safety\",\n  \"floor\": 0.5,\n  \"max_moves\": 0,\n  \"axis\": \"x\",\n  \"boundary_m\": 120,\n  \"side\": \"lt\"\n}\n",
+      "latency_ms": 9959.692803997314,
+      "generated_tokens": 61,
+      "model_executed": true,
+      "spec": {
+        "kind": "safety",
+        "floor": 0.5,
+        "max_moves": 0,
+        "axis": "x",
+        "boundary_m": 120,
+        "side": "lt",
+        "semantics": "historical_e2"
+      },
+      "matches_controlled_parser": false
+    },
+    {
+      "text": "First guarantee each video stream 90% of its rate, then make the allocation as fair as possible.",
+      "raw_output": "{\n  \"kind\": \"video_floor\",\n  \"floor\": 0.9,\n  \"max_moves\": 0,\n  \"axis\": \"x\",\n  \"boundary_m\": 120,\n  \"side\": \"lt\"\n}\n",
+      "latency_ms": 9442.645910003193,
+      "generated_tokens": 61,
+      "model_executed": true,
+      "spec": {
+        "kind": "video_floor",
+        "floor": 0.9,
+        "max_moves": 0,
+        "axis": "x",
+        "boundary_m": 120,
+        "side": "lt",
+        "semantics": "historical_e2"
+      },
+      "matches_controlled_parser": false
+    },
+    {
+      "text": "You may move up to 5 robots to new access points; use them to maximise fleet throughput.",
+      "raw_output": "{\n  \"kind\": \"move_budget\",\n  \"floor\": 0.5,\n  \"max_moves\": 5,\n  \"axis\": \"x\",\n  \"boundary_m\": 60,\n  \"side\": \"lt\"\n}\n",
+      "latency_ms": 9310.599938999076,
+      "generated_tokens": 60,
+      "model_executed": true,
+      "spec": {
+        "kind": "move_budget",
+        "floor": 0.5,
+        "max_moves": 5,
+        "axis": "x",
+        "boundary_m": 60,
+        "side": "lt",
+        "semantics": "historical_e2"
+      },
+      "matches_controlled_parser": false
+    },
+    {
+      "text": "The front half of the hall is where the work is today: serve those robots best.",
+      "raw_output": "{\n  \"kind\": \"video_floor\",\n  \"floor\": 0.5,\n  \"max_moves\": 0,\n  \"axis\": \"x\",\n  \"boundary_m\": 60,\n  \"side\": \"lt\"\n}\n",
+      "latency_ms": 9595.69998599909,
+      "generated_tokens": 60,
+      "model_executed": true,
+      "spec": {
+        "kind": "video_floor",
+        "floor": 0.5,
+        "max_moves": 0,
+        "axis": "x",
+        "boundary_m": 60,
+        "side": "lt",
+        "semantics": "historical_e2"
+      },
+      "matches_controlled_parser": false
+    },
+    {
+      "text": "Today the work is in the back half of the hall: serve those robots best.",
+      "raw_output": "{\n  \"kind\": \"video_floor\",\n  \"floor\": 0.5,\n  \"max_moves\": 0,\n  \"axis\": \"y\",\n  \"boundary_m\": 40,\n  \"side\": \"lt\"\n}\n",
+      "latency_ms": 9355.854629000532,
+      "generated_tokens": 60,
+      "model_executed": true,
+      "spec": {
+        "kind": "video_floor",
+        "floor": 0.5,
+        "max_moves": 0,
+        "axis": "y",
+        "boundary_m": 40,
+        "side": "lt",
+        "semantics": "historical_e2"
+      },
+      "matches_controlled_parser": false
+    },
+    {
+      "text": "Focus entirely on the least-served robot in the fleet.",
+      "raw_output": "{\n  \"kind\": \"video_floor\",\n  \"floor\": 0.5,\n  \"max_moves\": 0,\n  \"axis\": \"x\",\n  \"boundary_m\": 60,\n  \"side\": \"lt\"\n}\n",
+      "latency_ms": 9258.675187000335,
+      "generated_tokens": 60,
+      "model_executed": true,
+      "spec": {
+        "kind": "video_floor",
+        "floor": 0.5,
+        "max_moves": 0,
+        "axis": "x",
+        "boundary_m": 60,
+        "side": "lt",
+        "semantics": "historical_e2"
+      },
+      "matches_controlled_parser": false
+    },
+    {
+      "text": "Keep all safety links above their floors before anything else, then deliver as much data as possible.",
+      "raw_output": "{\n  \"kind\": \"safety\",\n  \"floor\": 0.5,\n  \"max_moves\": 0,\n  \"axis\": \"x\",\n  \"boundary_m\": 120,\n  \"side\": \"lt\"\n}\n",
+      "latency_ms": 9189.565363998554,
+      "generated_tokens": 61,
+      "model_executed": true,
+      "spec": {
+        "kind": "safety",
+        "floor": 0.5,
+        "max_moves": 0,
+        "axis": "x",
+        "boundary_m": 120,
+        "side": "lt",
+        "semantics": "historical_e2"
+      },
+      "matches_controlled_parser": false
+    },
+    {
+      "text": "Each video robot must keep at least 80% of its rate; after that, be as fair as possible.",
+      "raw_output": "{\n  \"kind\": \"video_floor\",\n  \"floor\": 0.8,\n  \"max_moves\": 0,\n  \"axis\": \"x\",\n  \"boundary_m\": 120,\n  \"side\": \"lt\"\n}\n",
+      "latency_ms": 9513.043259998085,
+      "generated_tokens": 61,
+      "model_executed": true,
+      "spec": {
+        "kind": "video_floor",
+        "floor": 0.8,
+        "max_moves": 0,
+        "axis": "x",
+        "boundary_m": 120,
+        "side": "lt",
+        "semantics": "historical_e2"
+      },
+      "matches_controlled_parser": false
+    },
+    {
+      "text": "Guarantee video streams 80% of their rate, then share the rest evenly.",
+      "raw_output": "{\n  \"kind\": \"video_floor\",\n  \"floor\": 0.8,\n  \"max_moves\": 0,\n  \"axis\": \"x\",\n  \"boundary_m\": 120,\n  \"side\": \"lt\"\n}\n",
+      "latency_ms": 9848.987981000391,
+      "generated_tokens": 61,
+      "model_executed": true,
+      "spec": {
+        "kind": "video_floor",
+        "floor": 0.8,
+        "max_moves": 0,
+        "axis": "x",
+        "boundary_m": 120,
+        "side": "lt",
+        "semantics": "historical_e2"
+      },
+      "matches_controlled_parser": false
+    },
+    {
+      "text": "Reconnect at most 2 robots this round; within that, maximise total data.",
+      "raw_output": "{\n  \"kind\": \"move_budget\",\n  \"max_moves\": 2,\n  \"axis\": \"x\",\n  \"boundary_m\": 60,\n  \"side\": \"lt\"\n}\n",
+      "latency_ms": 7984.082728999056,
+      "generated_tokens": 50,
+      "model_executed": true,
+      "spec": {
+        "kind": "move_budget",
+        "floor": null,
+        "max_moves": 2,
+        "axis": "x",
+        "boundary_m": 60,
+        "side": "lt",
+        "semantics": "historical_e2"
+      },
+      "matches_controlled_parser": false
+    },
+    {
+      "text": "Only two BSSID switches are allowed. Get the most data inside that budget.",
+      "raw_output": "{\n  \"kind\": \"move_budget\",\n  \"max_moves\": 2,\n  \"axis\": \"x\",\n  \"boundary_m\": 60,\n  \"side\": \"lt\"\n}\n",
+      "latency_ms": 7589.107726998918,
+      "generated_tokens": 50,
+      "model_executed": true,
+      "spec": {
+        "kind": "move_budget",
+        "floor": null,
+        "max_moves": 2,
+        "axis": "x",
+        "boundary_m": 60,
+        "side": "lt",
+        "semantics": "historical_e2"
+      },
+      "matches_controlled_parser": false
+    },
+    {
+      "text": "Robots in the left half of the hall (x below 60 m) matter most; maximise their service.",
+      "raw_output": "{\n  \"kind\": \"move_budget\",\n  \"floor\": 0.5,\n  \"max_moves\": 10,\n  \"axis\": \"x\",\n  \"boundary_m\": 60,\n  \"side\": \"lt\"\n}\n",
+      "latency_ms": 9387.029753997922,
+      "generated_tokens": 61,
+      "model_executed": true,
+      "spec": {
+        "kind": "move_budget",
+        "floor": 0.5,
+        "max_moves": 10,
+        "axis": "x",
+        "boundary_m": 60,
+        "side": "lt",
+        "semantics": "historical_e2"
+      },
+      "matches_controlled_parser": false
+    },
+    {
+      "text": "Prioritise robots working on the left side of the warehouse, the first 60 metres.",
+      "raw_output": "{\n  \"kind\": \"move_budget\",\n  \"floor\": 0,\n  \"max_moves\": 60,\n  \"axis\": \"x\",\n  \"boundary_m\": 60,\n  \"side\": \"lt\"\n}\n",
+      "latency_ms": 9029.415485001664,
+      "generated_tokens": 59,
+      "model_executed": true,
+      "spec": {
+        "kind": "move_budget",
+        "floor": 0,
+        "max_moves": 60,
+        "axis": "x",
+        "boundary_m": 60,
+        "side": "lt",
+        "semantics": "historical_e2"
+      },
+      "matches_controlled_parser": false
+    }
+  ],
+  "d3_readings_same_session": [
+    {
+      "text": "Every robot streaming video must keep at least 90% of its rate; subject to that, share capacity as evenly as possible.",
+      "spec": {
+        "kind": "video_floor",
+        "floor": 0.9,
+        "max_moves": null,
+        "axis": null,
+        "boundary_m": null,
+        "side": null,
+        "semantics": "historical_e2"
+      },
+      "receipt": {
+        "model_executed": true,
+        "cached": false,
+        "reader": "d3_typed_semantic_family+literal_fields",
+        "answer_probabilities": {
+          "video_floor": 0.9987281046192333,
+          "move_budget": 2.6299065924872613e-05,
+          "zone": 6.446520284674728e-05,
+          "worst": 0.000879277610218575,
+          "safety": 0.00023231531994638628,
+          "unsupported": 6.953818183009659e-05
+        },
+        "probability_is_calibrated": false,
+        "latency_ms": 967.9999479994876
+      },
+      "matches_controlled_parser": true,
+      "latency_ms": 968.0717370029015
+    },
+    {
+      "text": "Reconnect at most 5 robots in this plan; within that limit, maximise the total data delivered.",
+      "spec": {
+        "kind": "move_budget",
+        "floor": null,
+        "max_moves": 5,
+        "axis": null,
+        "boundary_m": null,
+        "side": null,
+        "semantics": "historical_e2"
+      },
+      "receipt": {
+        "model_executed": true,
+        "cached": false,
+        "reader": "d3_typed_semantic_family+literal_fields",
+        "answer_probabilities": {
+          "video_floor": 0.0019332635381943135,
+          "move_budget": 0.585879635962273,
+          "zone": 0.04574433435880895,
+          "worst": 0.03828482781262306,
+          "safety": 0.17199352738015056,
+          "unsupported": 0.15616441094795017
+        },
+        "probability_is_calibrated": false,
+        "latency_ms": 992.2465449999436
+      },
+      "matches_controlled_parser": true,
+      "latency_ms": 992.3091389973706
+    },
+    {
+      "text": "Robots working in the front half of the hall, near shipping (y below 40 m), matter most; maximise their service.",
+      "spec": {
+        "kind": "zone",
+        "floor": null,
+        "max_moves": null,
+        "axis": "y",
+        "boundary_m": 40.0,
+        "side": "lt",
+        "semantics": "historical_e2"
+      },
+      "receipt": {
+        "model_executed": true,
+        "cached": false,
+        "reader": "d3_typed_semantic_family+literal_fields",
+        "answer_probabilities": {
+          "video_floor": 0.0001171805653207794,
+          "move_budget": 3.562993574130294e-05,
+          "zone": 0.9942634865294512,
+          "worst": 0.003973884107726568,
+          "safety": 0.0008938570537503314,
+          "unsupported": 0.0007159618080098127
+        },
+        "probability_is_calibrated": false,
+        "latency_ms": 1105.4768299982243
+      },
+      "matches_controlled_parser": true,
+      "latency_ms": 1105.5341069986753
+    },
+    {
+      "text": "Robots in the back half of the hall, near receiving (y of 40 m or more), matter most; maximise their service.",
+      "spec": {
+        "kind": "zone",
+        "floor": null,
+        "max_moves": null,
+        "axis": "y",
+        "boundary_m": 40.0,
+        "side": "ge",
+        "semantics": "historical_e2"
+      },
+      "receipt": {
+        "model_executed": true,
+        "cached": false,
+        "reader": "d3_typed_semantic_family+literal_fields",
+        "answer_probabilities": {
+          "video_floor": 0.0007436200590670997,
+          "move_budget": 3.115072186528083e-05,
+          "zone": 0.9844500682452164,
+          "worst": 0.012827176939435875,
+          "safety": 0.0008084133946550459,
+          "unsupported": 0.001139570639760289
+        },
+        "probability_is_calibrated": false,
+        "latency_ms": 1020.828786000493
+      },
+      "matches_controlled_parser": true,
+      "latency_ms": 1020.8831080017262
+    },
+    {
+      "text": "Maximise the service of the single worst-served robot.",
+      "spec": {
+        "kind": "worst",
+        "floor": null,
+        "max_moves": null,
+        "axis": null,
+        "boundary_m": null,
+        "side": null,
+        "semantics": "historical_e2"
+      },
+      "receipt": {
+        "model_executed": true,
+        "cached": false,
+        "reader": "d3_typed_semantic_family+literal_fields",
+        "answer_probabilities": {
+          "video_floor": 8.26464902044952e-05,
+          "move_budget": 3.701008322786482e-05,
+          "zone": 0.00076758273530904,
+          "worst": 0.99826560647437,
+          "safety": 0.00016454581237935396,
+          "unsupported": 0.0006826084045092604
+        },
+        "probability_is_calibrated": false,
+        "latency_ms": 1006.4164830000664
+      },
+      "matches_controlled_parser": true,
+      "latency_ms": 1006.4643049990991
+    },
+    {
+      "text": "First, no safety link may fall below its floor; only then maximise total data.",
+      "spec": {
+        "kind": "safety",
+        "floor": null,
+        "max_moves": null,
+        "axis": null,
+        "boundary_m": null,
+        "side": null,
+        "semantics": "historical_e2"
+      },
+      "receipt": {
+        "model_executed": true,
+        "cached": false,
+        "reader": "d3_typed_semantic_family+literal_fields",
+        "answer_probabilities": {
+          "video_floor": 0.00013951369690558724,
+          "move_budget": 0.00010061884532754766,
+          "zone": 0.000919807123626429,
+          "worst": 0.00036625225444014437,
+          "safety": 0.9953817829687618,
+          "unsupported": 0.003092025110938452
+        },
+        "probability_is_calibrated": false,
+        "latency_ms": 1092.8257910018147
+      },
+      "matches_controlled_parser": true,
+      "latency_ms": 1092.945600998064
+    },
+    {
+      "text": "Video robots need 90% of their requested rate or more. Once that holds, spread capacity fairly.",
+      "spec": {
+        "kind": "video_floor",
+        "floor": 0.9,
+        "max_moves": null,
+        "axis": null,
+        "boundary_m": null,
+        "side": null,
+        "semantics": "historical_e2"
+      },
+      "receipt": {
+        "model_executed": true,
+        "cached": false,
+        "reader": "d3_typed_semantic_family+literal_fields",
+        "answer_probabilities": {
+          "video_floor": 0.9985849779203864,
+          "move_budget": 3.92379865954128e-05,
+          "zone": 0.00043772658935227736,
+          "worst": 0.0003395552489653736,
+          "safety": 0.0002215769936903977,
+          "unsupported": 0.000376925261010213
+        },
+        "probability_is_calibrated": false,
+        "latency_ms": 1076.4999689999968
+      },
+      "matches_controlled_parser": true,
+      "latency_ms": 1076.5562630003842
+    },
+    {
+      "text": "No more than five BSSID switches this round. Inside that budget, push the most data.",
+      "spec": {
+        "kind": "move_budget",
+        "floor": null,
+        "max_moves": 5,
+        "axis": null,
+        "boundary_m": null,
+        "side": null,
+        "semantics": "historical_e2"
+      },
+      "receipt": {
+        "model_executed": true,
+        "cached": false,
+        "reader": "d3_typed_semantic_family+literal_fields",
+        "answer_probabilities": {
+          "video_floor": 1.8139060218928873e-05,
+          "move_budget": 0.9981872253021835,
+          "zone": 4.235681183717985e-05,
+          "worst": 5.638407568999145e-05,
+          "safety": 0.0013347249228907157,
+          "unsupported": 0.0003611698271796793
+        },
+        "probability_is_calibrated": false,
+        "latency_ms": 1007.6615959987976
+      },
+      "matches_controlled_parser": true,
+      "latency_ms": 1007.7505600020231
+    },
+    {
+      "text": "Prioritise the robots in the shipping half of the warehouse (the front 40 metres).",
+      "spec": {
+        "kind": "zone",
+        "floor": null,
+        "max_moves": null,
+        "axis": "y",
+        "boundary_m": 40.0,
+        "side": "lt",
+        "semantics": "historical_e2"
+      },
+      "receipt": {
+        "model_executed": true,
+        "cached": false,
+        "reader": "d3_typed_semantic_family+literal_fields",
+        "answer_probabilities": {
+          "video_floor": 1.9762375312521002e-05,
+          "move_budget": 2.5175973221430462e-05,
+          "zone": 0.9988468631947169,
+          "worst": 0.0005072699731009864,
+          "safety": 0.00017531660988271682,
+          "unsupported": 0.0004256118737653901
+        },
+        "probability_is_calibrated": false,
+        "latency_ms": 1025.0519219989656
+      },
+      "matches_controlled_parser": true,
+      "latency_ms": 1025.1095589992474
+    },
+    {
+      "text": "Prioritise the robots in the receiving half of the warehouse (the back 40 metres).",
+      "spec": {
+        "kind": "zone",
+        "floor": null,
+        "max_moves": null,
+        "axis": "y",
+        "boundary_m": 40.0,
+        "side": "ge",
+        "semantics": "historical_e2"
+      },
+      "receipt": {
+        "model_executed": true,
+        "cached": false,
+        "reader": "d3_typed_semantic_family+literal_fields",
+        "answer_probabilities": {
+          "video_floor": 2.3410344171526627e-05,
+          "move_budget": 2.277350502715891e-05,
+          "zone": 0.9981572662836194,
+          "worst": 0.0012505178664477968,
+          "safety": 0.0001497838478906298,
+          "unsupported": 0.000396248152843397
+        },
+        "probability_is_calibrated": false,
+        "latency_ms": 1036.1550950001401
+      },
+      "matches_controlled_parser": true,
+      "latency_ms": 1036.205141001119
+    },
+    {
+      "text": "Make the robot with the poorest link as well off as possible.",
+      "spec": {
+        "kind": "worst",
+        "floor": null,
+        "max_moves": null,
+        "axis": null,
+        "boundary_m": null,
+        "side": null,
+        "semantics": "historical_e2"
+      },
+      "receipt": {
+        "model_executed": true,
+        "cached": false,
+        "reader": "d3_typed_semantic_family+literal_fields",
+        "answer_probabilities": {
+          "video_floor": 0.0003675913649207613,
+          "move_budget": 0.00019217742630743345,
+          "zone": 0.002339504169068896,
+          "worst": 0.9832627457006495,
+          "safety": 0.007500101083251047,
+          "unsupported": 0.0063378802558023755
+        },
+        "probability_is_calibrated": false,
+        "latency_ms": 978.7776270022732
+      },
+      "matches_controlled_parser": true,
+      "latency_ms": 978.8247379983659
+    },
+    {
+      "text": "Safety heartbeats come first. Once every one is above its minimum, maximise throughput.",
+      "spec": {
+        "kind": "safety",
+        "floor": null,
+        "max_moves": null,
+        "axis": null,
+        "boundary_m": null,
+        "side": null,
+        "semantics": "historical_e2"
+      },
+      "receipt": {
+        "model_executed": true,
+        "cached": false,
+        "reader": "d3_typed_semantic_family+literal_fields",
+        "answer_probabilities": {
+          "video_floor": 0.000261431457786438,
+          "move_budget": 0.0004051087820084412,
+          "zone": 0.01996977550103529,
+          "worst": 0.0025301220811973077,
+          "safety": 0.9692579441266472,
+          "unsupported": 0.007575618051325294
+        },
+        "probability_is_calibrated": false,
+        "latency_ms": 1086.7763700007345
+      },
+      "matches_controlled_parser": true,
+      "latency_ms": 1086.8528860009974
+    },
+    {
+      "text": "First guarantee each video stream 90% of its rate, then make the allocation as fair as possible.",
+      "spec": {
+        "kind": "video_floor",
+        "floor": 0.9,
+        "max_moves": null,
+        "axis": null,
+        "boundary_m": null,
+        "side": null,
+        "semantics": "historical_e2"
+      },
+      "receipt": {
+        "model_executed": true,
+        "cached": false,
+        "reader": "d3_typed_semantic_family+literal_fields",
+        "answer_probabilities": {
+          "video_floor": 0.9996190930546046,
+          "move_budget": 4.629527512050029e-06,
+          "zone": 2.7645845865165323e-05,
+          "worst": 8.950585172444847e-05,
+          "safety": 0.00014777807027064617,
+          "unsupported": 0.00011134765002302189
+        },
+        "probability_is_calibrated": false,
+        "latency_ms": 994.2480249992514
+      },
+      "matches_controlled_parser": true,
+      "latency_ms": 994.3293080032163
+    },
+    {
+      "text": "You may move up to 5 robots to new access points; use them to maximise fleet throughput.",
+      "spec": {
+        "kind": "move_budget",
+        "floor": null,
+        "max_moves": 5,
+        "axis": null,
+        "boundary_m": null,
+        "side": null,
+        "semantics": "historical_e2"
+      },
+      "receipt": {
+        "model_executed": true,
+        "cached": false,
+        "reader": "d3_typed_semantic_family+literal_fields",
+        "answer_probabilities": {
+          "video_floor": 0.0005856808534899956,
+          "move_budget": 0.8292573830317573,
+          "zone": 0.04047473669933235,
+          "worst": 0.010155972466024454,
+          "safety": 0.056895428001520955,
+          "unsupported": 0.06263079894787486
+        },
+        "probability_is_calibrated": false,
+        "latency_ms": 1087.8029450032045
+      },
+      "matches_controlled_parser": true,
+      "latency_ms": 1087.8565050006728
+    },
+    {
+      "text": "The front half of the hall is where the work is today: serve those robots best.",
+      "spec": {
+        "kind": "zone",
+        "floor": null,
+        "max_moves": null,
+        "axis": "y",
+        "boundary_m": 40.0,
+        "side": "lt",
+        "semantics": "historical_e2"
+      },
+      "receipt": {
+        "model_executed": true,
+        "cached": false,
+        "reader": "d3_typed_semantic_family+literal_fields",
+        "answer_probabilities": {
+          "video_floor": 0.0009271579247128333,
+          "move_budget": 0.000188302142461534,
+          "zone": 0.87713150942587,
+          "worst": 0.1049041804651599,
+          "safety": 0.005315887097259247,
+          "unsupported": 0.011532962944536507
+        },
+        "probability_is_calibrated": false,
+        "latency_ms": 1118.0311539974355
+      },
+      "matches_controlled_parser": true,
+      "latency_ms": 1118.0970129971683
+    },
+    {
+      "text": "Today the work is in the back half of the hall: serve those robots best.",
+      "spec": {
+        "kind": "zone",
+        "floor": null,
+        "max_moves": null,
+        "axis": "y",
+        "boundary_m": 40.0,
+        "side": "ge",
+        "semantics": "historical_e2"
+      },
+      "receipt": {
+        "model_executed": true,
+        "cached": false,
+        "reader": "d3_typed_semantic_family+literal_fields",
+        "answer_probabilities": {
+          "video_floor": 0.0004212185509869813,
+          "move_budget": 8.093298063322317e-05,
+          "zone": 0.9499873655249764,
+          "worst": 0.04076913802707524,
+          "safety": 0.0028863763850817794,
+          "unsupported": 0.005854968531246399
+        },
+        "probability_is_calibrated": false,
+        "latency_ms": 1000.2896400001191
+      },
+      "matches_controlled_parser": true,
+      "latency_ms": 1000.3399660017749
+    },
+    {
+      "text": "Focus entirely on the least-served robot in the fleet.",
+      "spec": {
+        "kind": "worst",
+        "floor": null,
+        "max_moves": null,
+        "axis": null,
+        "boundary_m": null,
+        "side": null,
+        "semantics": "historical_e2"
+      },
+      "receipt": {
+        "model_executed": true,
+        "cached": false,
+        "reader": "d3_typed_semantic_family+literal_fields",
+        "answer_probabilities": {
+          "video_floor": 0.00026406119263493156,
+          "move_budget": 0.0001521706932486172,
+          "zone": 0.003136741985988244,
+          "worst": 0.9933281580839913,
+          "safety": 0.0009745158640876976,
+          "unsupported": 0.0021443521800491314
+        },
+        "probability_is_calibrated": false,
+        "latency_ms": 938.7415410019457
+      },
+      "matches_controlled_parser": true,
+      "latency_ms": 938.786799000809
+    },
+    {
+      "text": "Keep all safety links above their floors before anything else, then deliver as much data as possible.",
+      "spec": {
+        "kind": "safety",
+        "floor": null,
+        "max_moves": null,
+        "axis": null,
+        "boundary_m": null,
+        "side": null,
+        "semantics": "historical_e2"
+      },
+      "receipt": {
+        "model_executed": true,
+        "cached": false,
+        "reader": "d3_typed_semantic_family+literal_fields",
+        "answer_probabilities": {
+          "video_floor": 2.6764814964589082e-05,
+          "move_budget": 3.844673024078677e-05,
+          "zone": 0.0007022236066556211,
+          "worst": 6.724375831530324e-05,
+          "safety": 0.9984619369388537,
+          "unsupported": 0.0007033841509700795
+        },
+        "probability_is_calibrated": false,
+        "latency_ms": 1139.8985539999558
+      },
+      "matches_controlled_parser": true,
+      "latency_ms": 1140.0316340004792
+    },
+    {
+      "text": "Each video robot must keep at least 80% of its rate; after that, be as fair as possible.",
+      "spec": {
+        "kind": "video_floor",
+        "floor": 0.8,
+        "max_moves": null,
+        "axis": null,
+        "boundary_m": null,
+        "side": null,
+        "semantics": "historical_e2"
+      },
+      "receipt": {
+        "model_executed": true,
+        "cached": false,
+        "reader": "d3_typed_semantic_family+literal_fields",
+        "answer_probabilities": {
+          "video_floor": 0.9981716367578349,
+          "move_budget": 2.093306906189488e-05,
+          "zone": 0.00015331088024504947,
+          "worst": 0.0012619688004483097,
+          "safety": 0.00025212722722378855,
+          "unsupported": 0.0001400232651860544
+        },
+        "probability_is_calibrated": false,
+        "latency_ms": 1209.223485999246
+      },
+      "matches_controlled_parser": true,
+      "latency_ms": 1209.277848000056
+    },
+    {
+      "text": "Guarantee video streams 80% of their rate, then share the rest evenly.",
+      "spec": {
+        "kind": "video_floor",
+        "floor": 0.8,
+        "max_moves": null,
+        "axis": null,
+        "boundary_m": null,
+        "side": null,
+        "semantics": "historical_e2"
+      },
+      "receipt": {
+        "model_executed": true,
+        "cached": false,
+        "reader": "d3_typed_semantic_family+literal_fields",
+        "answer_probabilities": {
+          "video_floor": 0.9996160351897649,
+          "move_budget": 6.888592964037813e-06,
+          "zone": 1.4716295604136007e-05,
+          "worst": 7.344462998974524e-05,
+          "safety": 0.00011093340528000517,
+          "unsupported": 0.0001779818863970926
+        },
+        "probability_is_calibrated": false,
+        "latency_ms": 1130.0940869987244
+      },
+      "matches_controlled_parser": true,
+      "latency_ms": 1130.1468569981807
+    },
+    {
+      "text": "Reconnect at most 2 robots this round; within that, maximise total data.",
+      "error": "The semantic reader abstained",
+      "matches_controlled_parser": false,
+      "latency_ms": 1012.3316799981694
+    },
+    {
+      "text": "Only two BSSID switches are allowed. Get the most data inside that budget.",
+      "spec": {
+        "kind": "move_budget",
+        "floor": null,
+        "max_moves": 2,
+        "axis": null,
+        "boundary_m": null,
+        "side": null,
+        "semantics": "historical_e2"
+      },
+      "receipt": {
+        "model_executed": true,
+        "cached": false,
+        "reader": "d3_typed_semantic_family+literal_fields",
+        "answer_probabilities": {
+          "video_floor": 5.17002717541582e-05,
+          "move_budget": 0.99712505325973,
+          "zone": 0.00021352382422747782,
+          "worst": 0.00019284844926366787,
+          "safety": 0.0009018911189639032,
+          "unsupported": 0.0015149830760608257
+        },
+        "probability_is_calibrated": false,
+        "latency_ms": 1073.129397998855
+      },
+      "matches_controlled_parser": true,
+      "latency_ms": 1073.1804950009973
+    },
+    {
+      "text": "Robots in the left half of the hall (x below 60 m) matter most; maximise their service.",
+      "spec": {
+        "kind": "zone",
+        "floor": null,
+        "max_moves": null,
+        "axis": "x",
+        "boundary_m": 60.0,
+        "side": "lt",
+        "semantics": "historical_e2"
+      },
+      "receipt": {
+        "model_executed": true,
+        "cached": false,
+        "reader": "d3_typed_semantic_family+literal_fields",
+        "answer_probabilities": {
+          "video_floor": 0.00017231464563007885,
+          "move_budget": 2.667071448512845e-05,
+          "zone": 0.9937765834667928,
+          "worst": 0.005030254953045394,
+          "safety": 0.0004105359064272625,
+          "unsupported": 0.0005836403136193998
+        },
+        "probability_is_calibrated": false,
+        "latency_ms": 1109.2830909983604
+      },
+      "matches_controlled_parser": true,
+      "latency_ms": 1109.3367819994455
+    },
+    {
+      "text": "Prioritise robots working on the left side of the warehouse, the first 60 metres.",
+      "spec": {
+        "kind": "zone",
+        "floor": null,
+        "max_moves": null,
+        "axis": "x",
+        "boundary_m": 60.0,
+        "side": "lt",
+        "semantics": "historical_e2"
+      },
+      "receipt": {
+        "model_executed": true,
+        "cached": false,
+        "reader": "d3_typed_semantic_family+literal_fields",
+        "answer_probabilities": {
+          "video_floor": 2.158209459435987e-05,
+          "move_budget": 2.866600147586719e-05,
+          "zone": 0.998419163855085,
+          "worst": 0.0006894589156823589,
+          "safety": 0.00021663165496741785,
+          "unsupported": 0.0006244974781950276
+        },
+        "probability_is_calibrated": false,
+        "latency_ms": 1047.9249010022613
+      },
+      "matches_controlled_parser": true,
+      "latency_ms": 1047.9777799992007
+    }
+  ],
+  "generative_schema_accuracy": 0.0,
+  "d3_schema_accuracy": 0.9583333333333334,
+  "limits": [
+    "Small author-written mission set and fixed public warehouse glossary",
+    "Qwen generates literal schema fields; d3 selects a family and parses literal fields deterministically",
+    "These measure interpreter behaviour, not real-network service or a full end-to-end generative controller"
+  ]
+}

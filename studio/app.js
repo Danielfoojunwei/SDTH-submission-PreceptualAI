@@ -212,6 +212,58 @@ function regretRows(m, label, hl) {
 }
 function researchResults() {
   let html = "";
+  const audit = B.warehouse_v3;
+  if (audit) {
+    html += `<div class="card" style="margin-top:16px"><h3>Compositional missions and radio representations</h3>
+      <p class="sub">Wi-Fi warehouse simulation · three independently trained seeds per compact architecture · held-out layout, traffic and fleet-size regimes.</p>
+      ${table(["Domain", "Radio model", "Service RMSE ↓", "Proposal coverage", "False feasibility, all cases ↓"],
+        audit.core_models.map((r) => [esc(r.domain), esc(r.model), fmt(r.service_rmse), pct(r.proposal_coverage), pct(r.false_feasible_fraction)]))}
+      <p class="note">Whole-mission d3 family gate: ${audit.d3_answered}/${audit.d3_total} answered. A separately designed clause reader answered ${audit.clause_reader_answered}/${audit.clause_reader_total} fresh canonical statements. These are different small text sets. The complete controlled grammar is the default; answer probabilities are not physical-risk probabilities.</p>
+      <p class="note">Forecast gains do not establish better control. Predicted floors can defer; candidate-set infeasibility is not global infeasibility. The full-priority text/no-text graph scorers use separate fresh environments; offline ranking is not a release qualification.</p></div>
+      <div class="card" style="margin-top:16px"><h3>Native moving Wi-Fi audit</h3>
+      <p class="sub">${audit.native_executions} actual native executions · ${audit.unique_native_conditions} distinct input/seed/RTS conditions · three held-out test scenes. The learned policy uses one predeclared model seed.</p>
+      ${table(["Policy", "RTS/CTS", "Service ↑", "Worst decile ↑", "Critical deadline misses ↓"],
+        audit.native_packet_audit.map((r) => [esc(r.policy), r.rts_cts ? "on" : "off", fmt(r.mean_service),
+          fmt(r.worst_decile_service), pct(r.critical_deadline_miss_fraction_generated)]))}
+      <p class="note">Matched NIST/VHT80/HT20/two-stream profile; eight-second route prefix with assumed switch muting. Rack/material calibration, real authentication and hardware qualification remain absent. Deadlines count actual generated packets; ungenerated muted demand is charged through service. Repeated identical inputs are not independent fleets.</p>
+      <p class="note">Pooled shared gates: ${audit.pooled_gates_accepted}/3 accepted. FedAvg gates: ${audit.federation_gates_accepted}/3 accepted. Approximate removal equals clean retraining in ${audit.approximate_removal_equals_retrain}/3 seeds; attack diagnostics do not certify deletion.</p>
+      ${table(["Observed packet-event predictor", "Late-event Brier ↓", "ECE ↓", "Throughput MAE (Mbps) ↓"], [
+        ["persistence", fmt(audit.packet_persistence.late_arrival_risk.brier), fmt(audit.packet_persistence.late_arrival_risk.ece), fmt(audit.packet_persistence.throughput_mae_mbps)],
+        ...audit.packet_predictors.map((r) => [esc(r.model), fmt(r.calibrated_late_event_brier), fmt(r.calibrated_late_event_ece), fmt(r.throughput_mae_mbps)])])}
+      <p class="note">Packet probabilities concern a late received critical packet in the next second. No-arrival bins are included; this is not packet-loss probability. Calibration uses validation data only, with three held-out native scenes.</p>
+      ${audit.packet_event_discrimination_testable ? "" : '<p class="note">The packet-event holdout lacks both labels, so it cannot establish event discrimination.</p>'}
+      <p class="note">The implementation remains Wi-Fi-specific. No physical-car, protocol-agnostic, foundation-model or SOTA claim is established.</p></div>`;
+  }
+  const horizon = B.warehouse_horizon;
+  if (horizon) {
+    html += `<div class="card" style="margin-top:16px"><h3>Thirty-second route-aware planning</h3>
+      <p class="sub">Six forecast offsets · three independent model seeds crossed with three held-out simulated environments.</p>
+      ${table(["Controller", "Runs", "Service fraction ↑", "Worst-decile service ↑", "Critical-violation robot-steps ↓", "Budget violations"],
+        horizon.summary.map((r) => [esc(r.method), r.runs, fmt(r.mean_service), fmt(r.worst_decile_service),
+          fmt(r.critical_violation_robot_steps, 1), r.constraint_violations]))}
+      <p class="note">Twelve switches per decision is an operator-policy scenario, not a hardware rate limit. Unconstrained strongest-scan has higher service and violates that budget. Learned residuals improve forecasts but do not reliably improve closed-loop control; their worst-decile service regresses. All observations and actions are simulated.</p></div>`;
+  }
+  const selector = B.warehouse_horizon_selector;
+  if (selector) {
+    html += `<div class="card" style="margin-top:16px"><h3>Prospective proposal guard · ${selector.accepted_learned_models}/${selector.candidate_models} learned models accepted</h3>
+      <p class="sub">${selector.validation_rollouts} validation rollouts, then ${selector.audit_rollouts} audit rollouts on three fresh environments. Designed after the original holdout; sealed before this audit.</p>
+      ${table(["Audit controller", "Runs", "Service fraction ↑", "Worst-decile service ↑", "Critical-violation robot-steps ↓"],
+        selector.summary.map((r) => [esc(r.method), r.runs, fmt(r.mean_service), fmt(r.worst_decile_service),
+          fmt(r.critical_violation_robot_steps, 1)]))}
+      <p class="note">Rejected residuals use the numerical planner. The ${selector.verified_identical_fallbacks} identical fallback outcomes are not independent learned successes. The interface writes proposals only; no physical-car qualification or safety guarantee is established.</p></div>`;
+  }
+  const next = B.warehouse_v2;
+  if (next) {
+    html += `<div class="card" style="margin-top:16px"><h3>Warehouse v2 · observed-input research</h3>
+      <p class="sub">Three compact-model training seeds · simulated observations and interventions. These metrics belong to a new protocol; compare models within each row group.</p>
+      ${table(["Split", "Model", "Mean normalized candidate regret ↓", "Service RMSE ↓"],
+        next.core_models.map((r) => [esc(r.split), esc(r.arm), fmt(r.mean_regret), fmt(r.service_rmse)]))}
+      <p class="note">The compact non-graph baseline wins plan selection in this protocol. No physical-car result or SOTA claim is established.</p>
+      ${table(["Prospective closed-loop policy", "Service fraction ↑", "Worst-decile service ↑", "Reconnections ↓", "Critical-violation robot-steps ↓"],
+        next.prospective_closedloop.map((r) => [esc(r.policy), fmt(r.mean_service), fmt(r.worst_decile_mean_service),
+          fmt(r.reconnections, 1), fmt(r.critical_violation_robot_steps, 1)]))}
+      <p class="note">Three new 100-robot simulated rollouts per policy. The horizon correction is evaluated separately from the initial failure. Compare the strongest-scan baseline and service/continuity trade-offs; a fleet average does not establish benefit to every robot.</p></div>`;
+  }
   const run = B.training_run;
   if (run) {
     html += `<div class="card" style="margin-top:16px"><h3>Full RadioJEV rerun · ${esc(run.status)}</h3>

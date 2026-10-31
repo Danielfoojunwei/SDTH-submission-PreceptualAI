@@ -6,7 +6,143 @@ The cloud development environment has Python 3.12, locked dependencies and a
 CPU-only test/simulation workflow. See Git history and the associated review
 branch for commit/push status; external publications are tracked separately.
 
-## Active completion scope
+## Active native packet-supervision continuation
+
+The v4 campaign at `/workspace/training/warehouse-v4-native` is **running**,
+not completed. See `WAREHOUSE_NATIVE.md` and the timestamped snapshot under
+`artifacts/warehouse_native/`. It uses the full thirty-second window, public
+known-map inputs without twin scans, native endpoint labels, eight training /
+three validation / six test scenes, and three seeds each for an MLP and graph.
+A fitted linear specialist accompanies the numerical and signal baselines.
+
+The development collector and supervisor have separate PID/status files and
+locks. The supervisor waits for all 37 distinct development native runs, then
+trains six checkpoints, seals selection, and starts fresh test collection.
+Check `status.json`, `collection-development.json`, `progress-development.json`,
+`collection-test.json`, and `run.log`. Do not start duplicate workers or rerun
+completed historical experiments. Native runs can take many minutes on this CPU.
+
+The collector freezes the existing Python sources as well as its scientific
+inputs. Until collection completes, changes to those source files make its
+protocol checks reject a resume/test invocation. New model/training modules
+have their own frozen capsule. Resume from the executed sources if necessary;
+do not silently replace a capsule or reuse outputs under changed physics.
+A pre-training supervisor attempt is retained under `attempts/`: recovery now
+reuses sealed validation results rather than regenerating timing-dependent
+hashes. Native collection and its protocol were unchanged.
+
+After completion, `scripts/archive_warehouse_native.py` verifies raw endpoint
+labels, finite checkpoints, frozen selection and source capsules before
+archiving. Its `--follow` mode can watch the existing supervisor. Archived
+results still need review/commit and Studio export; there is no unattended
+Git push or merge. The experiment has no actual handover or hardware access.
+
+## Compositional mission and radio audit
+
+The user's pasted six-direction request is mapped to executed evidence and
+remaining acceptance boundaries in `WAREHOUSE_SCOPE_CHECKLIST.md`. The v3
+protocol/results are in `WAREHOUSE_V3.md` and `WAREHOUSE_V3_RESULTS.md`.
+All controller data remains simulated; actual pretrained inference and native
+packet programs executed. The default proposal interface uses the complete
+controlled grammar and numerical planning. Neural verification/scoring is
+explicit and never sends a car command.
+
+Retained completed runs are under `/workspace/training/`:
+
+- `warehouse-v3`: twelve compact models, three seeds per architecture, four
+  transfer domains; all model/test selection receipts retained.
+- `warehouse-v3-packets-matched`: 48 native runs, 40 unique input/seed/RTS
+  conditions. Fixed channels, matched NIST/VHT80/HT20/two-stream powers/profile,
+  actual counters/deadlines; eight-second route prefix, assumed switch muting.
+- `warehouse-v3-hidden-matched`: six constructed two-client native runs.
+- `warehouse-v3-sensing-corrected`: sensing with real simulated previous-service
+  counters and an explicit distinction between no scan and unheard APs.
+- `warehouse-v3-studies`: completed shared/federation/removal stage. Its idle
+  obsolete packet dependency was superseded; this root is not labelled a full
+  three-stage completion. The sensing pilot was superseded separately.
+- `warehouse-v3-packet-learning-unconditional` and `warehouse-v3-packet-calibration`:
+  all time bins included; actual late-arrival-event calibration, not loss risk.
+- `warehouse-v3-generative` and `warehouse-v3-schema-audit`: actual Qwen outputs,
+  strict and default-aware schema audits; no label-guided repair.
+- `warehouse-v3-clauses`: actual d3 clause verification on twelve fresh canonical
+  statements, designed after the whole-family gate answered only four of ten.
+- `warehouse-v3-ranker` and `warehouse-v3-ranker-record-audit`: full-priority
+  group-aware text/no-text heads on fresh environments. The first raw case
+  field `gold_choice` was an indicator; the fixed-model audit recovers actual
+  indices and verifies all quality fields unchanged. Both versions are retained.
+- `warehouse-v3-frontier-matched` and `warehouse-v3-cost-audit`: actual semantic,
+  int8 and routing comparisons, per-domain complete local cost and crossed
+  model-seed/environment intervals on frozen models.
+
+Do not restart completed training. Superseded 20-MHz/one-stream packet runs,
+conditional-on-arrival packet learning and reset-counter sensing are diagnostic
+pilots, not completed matched primary evidence. Source/receipt lineage explains
+the corrections. The native two-to-four-worker operational retry preserves
+completed cases; physical inputs, seeds and binary remain unchanged.
+
+Forecasting and native-event prediction improve in some comparisons; masked
+and JEPA-style pretraining do not consistently beat scratch. Cached text does
+not establish a general advantage. Pooled/FedAvg release gates reject all
+candidates, and approximate removal differs from clean retraining. Retain the
+negative outcomes. Historical large-model E1–E5 still have one training seed.
+
+No physical car or network credential changed. Switch duration remains an
+assumption; stage capture and field qualification need real hardware. Both JEVs
+remain Wi-Fi-specific. External Claude publication and environment publication
+remain separate from verified local serving and saved configuration drafts.
+
+## Route-aware horizon continuation
+
+The subsequent "continue building" request adds the protocol in
+`docs/WAREHOUSE_HORIZON.md`, with results in `WAREHOUSE_HORIZON_RESULTS.md`
+and `WAREHOUSE_HORIZON_SELECTOR.md`. The six independently trained compact
+checkpoints and exact executed sources are portable in
+`artifacts/warehouse_horizon/`; original E1–E5/E7 and v2 evidence is untouched.
+The CPU campaign completed on 31 October 2026 at 09:48 Singapore time; its
+fresh-scene selector audit completed at 10:00. No training worker needs restarting.
+
+`/workspace/training/warehouse-horizon` contains the full training campaign
+(18 training, six validation, three held-out environments; three seeds per
+architecture; 30 full-cross control rollouts). The selector at
+`/workspace/training/warehouse-horizon-selector` contains 42 validation and
+24 fresh audit rollouts. It was designed after the original holdout; its
+policy was sealed before audit environments 143000–143002 were evaluated.
+An earlier validation-only selector attempt in `warehouse-horizon-gate`
+was stopped before audit access; `superseded.json` explains the whole-schedule
+replacement. That failed attempt is not a completed experiment.
+
+All six residuals fail the closed-loop checks. The proposal CLI therefore
+uses numerical planning, including when a rejected residual is requested.
+An explicit `--research-residual` option permits simulated-input research
+only. Actual d3 inference interprets the declared controlled mission grammar;
+caller-supplied contracts are labelled separately. No car command is sent.
+The observation schema does not authenticate a self-reported hardware origin.
+
+On the fresh audit, numerical mean service is 0.326 versus 0.237 for budgeted
+strongest-signal roaming. The twelve-switch cap is a declared operator-policy
+scenario, not the existing concurrent transaction limit or a physical rate
+limit. Unconstrained roaming has higher service in the original holdout.
+These results do not qualify all robots, actual hardware or SOTA performance.
+
+## Warehouse v2 continuation
+
+The user subsequently authorised all six warehouse research directions and
+requested actual dependencies and execution. The v2 source, protocols and
+reproduction commands are in `docs/WAREHOUSE_V2.md`; interpreted results are in
+`docs/WAREHOUSE_V2_RESULTS.md`. This continuation uses the separate branch
+`codex/warehouse-v2-research`, preserving the original review branch below.
+The implementation adapts pinned ns-3 examples, executes Sionna, and runs real
+d3-lite, Qwen3.5-0.8B and Chronos-Bolt weights. It does not reproduce ANSpect
+proprietary code or use physical SmartCar measurements. Hardware requirements
+are in `docs/WAREHOUSE_HARDWARE_DATA.md`.
+
+Workspace runs are under `/workspace/training/warehouse-v2-{core,studies,factorized,generative}`.
+Use their status/receipts, archived report hashes and exact source snapshots
+before resuming anything; completed compact-model training should not restart.
+The historical large-model experiments still have one training seed. Three
+new compact-model seeds must not be reported as three original E1–E5 runs.
+
+## Original completion scope
 
 The user returned the scope to warehouse connectivity: finish WirelessJEV and
 RadioJEV E1–E5 and corrected E7. E6 remains excluded. Router, E8, JEPA/world
