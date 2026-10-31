@@ -17,6 +17,7 @@ import math
 from pathlib import Path
 import re
 import time
+from zoneinfo import ZoneInfo
 
 from .hardware import RASPBOT
 from .missions import MISSIONS, WAREHOUSE_MISSIONS
@@ -31,6 +32,13 @@ RADIOJEV_STAGES = ("e1_no_llm", "e1_radio_lora", "e1_radio_frozen", "e1_intent",
 def _load(rel: str):
     p = ROOT / rel
     return json.loads(p.read_text()) if p.exists() else None
+
+
+def _native_results():
+    snapshot = _load("artifacts/warehouse_native/snapshot.json")
+    if snapshot is None:
+        return None
+    return {**snapshot, "postrun_audit": _load("artifacts/warehouse_native/postrun_audit.json")}
 
 
 def _paper_map() -> list[dict]:
@@ -130,7 +138,7 @@ def build(run_dir: Path | None = None) -> dict:
         "rack_db": W.RACK_DB,
     }
     return {
-        "generated_at": time.strftime("%Y-%m-%d %H:%M:%S"),
+        "generated_at": datetime.now(ZoneInfo("Asia/Singapore")).strftime("%Y-%m-%d %H:%M:%S %Z"),
         "evidence_class": "digital twin (synthetic); no car or radio was touched",
         "model": {"repo": MODEL_REPO, "revision": MODEL_REVISION},
         "hardware": asdict(RASPBOT),
@@ -148,6 +156,11 @@ def build(run_dir: Path | None = None) -> dict:
         "radiojev_audits": {"e3": _load("artifacts/radiojev_cloud/e3_label_audit.json")},
         "training_run": (training_snapshot(run_dir) if run_dir
                          else _load("artifacts/radiojev_cloud/snapshot.json")),
+        "warehouse_v2": _load("artifacts/warehouse_v2/snapshot.json"),
+        "warehouse_horizon": _load("artifacts/warehouse_horizon/snapshot.json"),
+        "warehouse_horizon_selector": _load("artifacts/warehouse_horizon/selector/snapshot.json"),
+        "warehouse_v3": _load("artifacts/warehouse_v3/snapshot.json"),
+        "warehouse_native": _native_results(),
         "closedloop_10car": _slim_closedloop(_load("artifacts/closedloop.json")),
         "closedloop_warehouse": _slim_closedloop(_load("artifacts/closedloop_warehouse.json")),
         "papers": _paper_map(),

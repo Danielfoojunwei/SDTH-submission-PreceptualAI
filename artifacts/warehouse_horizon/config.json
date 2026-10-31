@@ -1,0 +1,51 @@
+{
+  "source": "simulation",
+  "schema": "warehouse.route_horizon.v1",
+  "train": [
+    140000,
+    140001,
+    140002,
+    140003,
+    140004,
+    140005,
+    140006,
+    140007,
+    140008,
+    140009,
+    140010,
+    140011,
+    140012,
+    140013,
+    140014,
+    140015,
+    140016,
+    140017
+  ],
+  "validation": [
+    141000,
+    141001,
+    141002,
+    141003,
+    141004,
+    141005
+  ],
+  "test": [
+    142000,
+    142001,
+    142002
+  ],
+  "model_seeds": [
+    0,
+    1,
+    2
+  ],
+  "episode_s": 600,
+  "horizon_s": 30,
+  "step_s": 5,
+  "scan_sigma_db": 3,
+  "max_training_candidates": 12,
+  "max_moves": 12,
+  "assumed_switch_outage_s": 4,
+  "primary_scan_interruption_modelled": false,
+  "epochs": 14
+}

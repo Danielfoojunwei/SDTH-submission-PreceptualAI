@@ -1,0 +1,980 @@
+{
+  "routes": {
+    "0.0": {
+      "False-False-critical": "mlp-1",
+      "False-False-throughput": "graph_scratch-2",
+      "False-True-throughput": "graph_scratch-2",
+      "True-False-throughput": "numerical"
+    },
+    "0.001": {
+      "False-False-critical": "mlp-1",
+      "False-False-throughput": "graph_scratch-2",
+      "False-True-throughput": "graph_scratch-2-semantic",
+      "True-False-throughput": "numerical"
+    },
+    "0.01": {
+      "False-False-critical": "graph_masked-1",
+      "False-False-throughput": "numerical",
+      "False-True-throughput": "mlp-2-semantic",
+      "True-False-throughput": "numerical"
+    }
+  },
+  "calibration": {
+    "numerical": {
+      "temperature": 2.5723026728856118,
+      "one_sided_service_margin_q90": 0.2926512062549591,
+      "fit_on": "validation_only",
+      "marginal_not_simultaneous": true,
+      "physical_coverage_guarantee": false
+    },
+    "mlp-0": {
+      "temperature": 0.9464862020711994,
+      "one_sided_service_margin_q90": 0.10563437640666962,
+      "fit_on": "validation_only",
+      "marginal_not_simultaneous": true,
+      "physical_coverage_guarantee": false
+    },
+    "mlp-0-semantic": {
+      "temperature": 0.9464862020711994,
+      "one_sided_service_margin_q90": 0.10563437640666962,
+      "fit_on": "validation_only",
+      "marginal_not_simultaneous": true,
+      "physical_coverage_guarantee": false
+    },
+    "graph_scratch-0": {
+      "temperature": 0.9735309799430996,
+      "one_sided_service_margin_q90": 0.08313162624835968,
+      "fit_on": "validation_only",
+      "marginal_not_simultaneous": true,
+      "physical_coverage_guarantee": false
+    },
+    "graph_scratch-0-semantic": {
+      "temperature": 0.9735309799430996,
+      "one_sided_service_margin_q90": 0.08313162624835968,
+      "fit_on": "validation_only",
+      "marginal_not_simultaneous": true,
+      "physical_coverage_guarantee": false
+    },
+    "graph_masked-0": {
+      "temperature": 0.9989857296135217,
+      "one_sided_service_margin_q90": 0.12346353381872177,
+      "fit_on": "validation_only",
+      "marginal_not_simultaneous": true,
+      "physical_coverage_guarantee": false
+    },
+    "graph_masked-0-semantic": {
+      "temperature": 0.9989857296135217,
+      "one_sided_service_margin_q90": 0.12346353381872177,
+      "fit_on": "validation_only",
+      "marginal_not_simultaneous": true,
+      "physical_coverage_guarantee": false
+    },
+    "graph_jepa-0": {
+      "temperature": 1.1009413743545653,
+      "one_sided_service_margin_q90": 0.13536961376667023,
+      "fit_on": "validation_only",
+      "marginal_not_simultaneous": true,
+      "physical_coverage_guarantee": false
+    },
+    "graph_jepa-0-semantic": {
+      "temperature": 1.1009413743545653,
+      "one_sided_service_margin_q90": 0.13536961376667023,
+      "fit_on": "validation_only",
+      "marginal_not_simultaneous": true,
+      "physical_coverage_guarantee": false
+    },
+    "graph_jepa-0-int8": {
+      "temperature": 1.1153621703590748,
+      "one_sided_service_margin_q90": 0.12829847633838654,
+      "fit_on": "validation_only",
+      "marginal_not_simultaneous": true,
+      "physical_coverage_guarantee": false
+    },
+    "mlp-1": {
+      "temperature": 0.9294539656183851,
+      "one_sided_service_margin_q90": 0.12697608768939972,
+      "fit_on": "validation_only",
+      "marginal_not_simultaneous": true,
+      "physical_coverage_guarantee": false
+    },
+    "mlp-1-semantic": {
+      "temperature": 0.9294539656183851,
+      "one_sided_service_margin_q90": 0.12697608768939972,
+      "fit_on": "validation_only",
+      "marginal_not_simultaneous": true,
+      "physical_coverage_guarantee": false
+    },
+    "graph_scratch-1": {
+      "temperature": 0.9474426892442146,
+      "one_sided_service_margin_q90": 0.14782769978046417,
+      "fit_on": "validation_only",
+      "marginal_not_simultaneous": true,
+      "physical_coverage_guarantee": false
+    },
+    "graph_scratch-1-semantic": {
+      "temperature": 0.9474426892442146,
+      "one_sided_service_margin_q90": 0.14782769978046417,
+      "fit_on": "validation_only",
+      "marginal_not_simultaneous": true,
+      "physical_coverage_guarantee": false
+    },
+    "graph_masked-1": {
+      "temperature": 0.9440062330122989,
+      "one_sided_service_margin_q90": 0.1160300225019455,
+      "fit_on": "validation_only",
+      "marginal_not_simultaneous": true,
+      "physical_coverage_guarantee": false
+    },
+    "graph_masked-1-semantic": {
+      "temperature": 0.9440062330122989,
+      "one_sided_service_margin_q90": 0.1160300225019455,
+      "fit_on": "validation_only",
+      "marginal_not_simultaneous": true,
+      "physical_coverage_guarantee": false
+    },
+    "graph_jepa-1": {
+      "temperature": 1.0066921699966465,
+      "one_sided_service_margin_q90": 0.09548944234848022,
+      "fit_on": "validation_only",
+      "marginal_not_simultaneous": true,
+      "physical_coverage_guarantee": false
+    },
+    "graph_jepa-1-semantic": {
+      "temperature": 1.0066921699966465,
+      "one_sided_service_margin_q90": 0.09548944234848022,
+      "fit_on": "validation_only",
+      "marginal_not_simultaneous": true,
+      "physical_coverage_guarantee": false
+    },
+    "graph_jepa-1-int8": {
+      "temperature": 1.0295254273771801,
+      "one_sided_service_margin_q90": 0.05866982415318489,
+      "fit_on": "validation_only",
+      "marginal_not_simultaneous": true,
+      "physical_coverage_guarantee": false
+    },
+    "mlp-2": {
+      "temperature": 0.9294943630968965,
+      "one_sided_service_margin_q90": 0.06404733657836914,
+      "fit_on": "validation_only",
+      "marginal_not_simultaneous": true,
+      "physical_coverage_guarantee": false
+    },
+    "mlp-2-semantic": {
+      "temperature": 0.9294943630968965,
+      "one_sided_service_margin_q90": 0.06404733657836914,
+      "fit_on": "validation_only",
+      "marginal_not_simultaneous": true,
+      "physical_coverage_guarantee": false
+    },
+    "graph_scratch-2": {
+      "temperature": 0.9021964214467896,
+      "one_sided_service_margin_q90": 0.08913996815681458,
+      "fit_on": "validation_only",
+      "marginal_not_simultaneous": true,
+      "physical_coverage_guarantee": false
+    },
+    "graph_scratch-2-semantic": {
+      "temperature": 0.9021964214467896,
+      "one_sided_service_margin_q90": 0.08913996815681458,
+      "fit_on": "validation_only",
+      "marginal_not_simultaneous": true,
+      "physical_coverage_guarantee": false
+    },
+    "graph_masked-2": {
+      "temperature": 0.9695069512817154,
+      "one_sided_service_margin_q90": 0.11668189615011215,
+      "fit_on": "validation_only",
+      "marginal_not_simultaneous": true,
+      "physical_coverage_guarantee": false
+    },
+    "graph_masked-2-semantic": {
+      "temperature": 0.9695069512817154,
+      "one_sided_service_margin_q90": 0.11668189615011215,
+      "fit_on": "validation_only",
+      "marginal_not_simultaneous": true,
+      "physical_coverage_guarantee": false
+    },
+    "graph_jepa-2": {
+      "temperature": 1.033395717130468,
+      "one_sided_service_margin_q90": 0.12782463431358337,
+      "fit_on": "validation_only",
+      "marginal_not_simultaneous": true,
+      "physical_coverage_guarantee": false
+    },
+    "graph_jepa-2-semantic": {
+      "temperature": 1.033395717130468,
+      "one_sided_service_margin_q90": 0.12782463431358337,
+      "fit_on": "validation_only",
+      "marginal_not_simultaneous": true,
+      "physical_coverage_guarantee": false
+    },
+    "graph_jepa-2-int8": {
+      "temperature": 1.0305510121411419,
+      "one_sided_service_margin_q90": 0.13298988342285156,
+      "fit_on": "validation_only",
+      "marginal_not_simultaneous": true,
+      "physical_coverage_guarantee": false
+    }
+  },
+  "timings_on_validation": {
+    "numerical": {
+      "median_ms": 113.6542569984158,
+      "p95_ms": 158.6590714960039,
+      "samples": 16,
+      "stage_mean_ms": {
+        "input_decode_validate_ms": 27.744489811993844,
+        "belief_candidates_forecast_ms": 95.189370063963,
+        "neural_forecast_ms": 0.19291743728899746,
+        "contract_and_execution_checks_ms": 0.2282793748236145,
+        "total_ms": 123.35505668806945
+      },
+      "includes": [
+        "JSON_decode",
+        "schema_validation",
+        "belief_construction",
+        "candidate_generation",
+        "forecast",
+        "typed_contract_evaluation",
+        "visibility_and_budget_checks"
+      ],
+      "excludes": [
+        "physical_sensor_collection",
+        "mission_cache_miss",
+        "physical_network_actuation"
+      ],
+      "source": "actual_cpu_wall_time"
+    },
+    "mlp-0": {
+      "median_ms": 124.56228450173512,
+      "p95_ms": 128.67086550068052,
+      "samples": 16,
+      "stage_mean_ms": {
+        "input_decode_validate_ms": 19.77836906144148,
+        "belief_candidates_forecast_ms": 101.88809293867962,
+        "neural_forecast_ms": 2.622101813358313,
+        "contract_and_execution_checks_ms": 0.27886262387255556,
+        "total_ms": 124.56742643735197
+      },
+      "includes": [
+        "JSON_decode",
+        "schema_validation",
+        "belief_construction",
+        "candidate_generation",
+        "forecast",
+        "typed_contract_evaluation",
+        "visibility_and_budget_checks"
+      ],
+      "excludes": [
+        "physical_sensor_collection",
+        "mission_cache_miss",
+        "physical_network_actuation"
+      ],
+      "source": "actual_cpu_wall_time"
+    },
+    "mlp-0-semantic": {
+      "median_ms": 127.33362950530136,
+      "p95_ms": 141.27296525111888,
+      "samples": 16,
+      "stage_mean_ms": {
+        "input_decode_validate_ms": 20.60110693810202,
+        "belief_candidates_forecast_ms": 104.89556075026485,
+        "neural_forecast_ms": 3.0539343124473817,
+        "contract_and_execution_checks_ms": 0.29138474974388373,
+        "total_ms": 128.84198675055814
+      },
+      "includes": [
+        "JSON_decode",
+        "schema_validation",
+        "belief_construction",
+        "candidate_generation",
+        "forecast",
+        "typed_contract_evaluation",
+        "visibility_and_budget_checks"
+      ],
+      "excludes": [
+        "physical_sensor_collection",
+        "mission_cache_miss",
+        "physical_network_actuation"
+      ],
+      "source": "actual_cpu_wall_time"
+    },
+    "graph_scratch-0": {
+      "median_ms": 123.46854799761786,
+      "p95_ms": 134.67442424735054,
+      "samples": 16,
+      "stage_mean_ms": {
+        "input_decode_validate_ms": 20.26052731253003,
+        "belief_candidates_forecast_ms": 102.0450924997931,
+        "neural_forecast_ms": 3.0208034377210424,
+        "contract_and_execution_checks_ms": 0.2703853115235688,
+        "total_ms": 125.59680856156774
+      },
+      "includes": [
+        "JSON_decode",
+        "schema_validation",
+        "belief_construction",
+        "candidate_generation",
+        "forecast",
+        "typed_contract_evaluation",
+        "visibility_and_budget_checks"
+      ],
+      "excludes": [
+        "physical_sensor_collection",
+        "mission_cache_miss",
+        "physical_network_actuation"
+      ],
+      "source": "actual_cpu_wall_time"
+    },
+    "graph_scratch-0-semantic": {
+      "median_ms": 120.97840999922482,
+      "p95_ms": 124.99727374961367,
+      "samples": 16,
+      "stage_mean_ms": {
+        "input_decode_validate_ms": 20.033163250445796,
+        "belief_candidates_forecast_ms": 97.10568712489476,
+        "neural_forecast_ms": 3.5696955619641813,
+        "contract_and_execution_checks_ms": 0.2841901250576484,
+        "total_ms": 120.99273606236238
+      },
+      "includes": [
+        "JSON_decode",
+        "schema_validation",
+        "belief_construction",
+        "candidate_generation",
+        "forecast",
+        "typed_contract_evaluation",
+        "visibility_and_budget_checks"
+      ],
+      "excludes": [
+        "physical_sensor_collection",
+        "mission_cache_miss",
+        "physical_network_actuation"
+      ],
+      "source": "actual_cpu_wall_time"
+    },
+    "graph_masked-0": {
+      "median_ms": 121.08424449979793,
+      "p95_ms": 132.12467125049443,
+      "samples": 16,
+      "stage_mean_ms": {
+        "input_decode_validate_ms": 20.60813718708232,
+        "belief_candidates_forecast_ms": 99.4685928758372,
+        "neural_forecast_ms": 3.3674769988465414,
+        "contract_and_execution_checks_ms": 0.299828500374133,
+        "total_ms": 123.7440355621402
+      },
+      "includes": [
+        "JSON_decode",
+        "schema_validation",
+        "belief_construction",
+        "candidate_generation",
+        "forecast",
+        "typed_contract_evaluation",
+        "visibility_and_budget_checks"
+      ],
+      "excludes": [
+        "physical_sensor_collection",
+        "mission_cache_miss",
+        "physical_network_actuation"
+      ],
+      "source": "actual_cpu_wall_time"
+    },
+    "graph_masked-0-semantic": {
+      "median_ms": 122.25129699800164,
+      "p95_ms": 154.47707199928118,
+      "samples": 16,
+      "stage_mean_ms": {
+        "input_decode_validate_ms": 25.85002506248202,
+        "belief_candidates_forecast_ms": 99.79602906287255,
+        "neural_forecast_ms": 3.7183220620136126,
+        "contract_and_execution_checks_ms": 0.26419762480145437,
+        "total_ms": 129.62857381216963
+      },
+      "includes": [
+        "JSON_decode",
+        "schema_validation",
+        "belief_construction",
+        "candidate_generation",
+        "forecast",
+        "typed_contract_evaluation",
+        "visibility_and_budget_checks"
+      ],
+      "excludes": [
+        "physical_sensor_collection",
+        "mission_cache_miss",
+        "physical_network_actuation"
+      ],
+      "source": "actual_cpu_wall_time"
+    },
+    "graph_jepa-0": {
+      "median_ms": 120.1995449991955,
+      "p95_ms": 123.36129474897461,
+      "samples": 16,
+      "stage_mean_ms": {
+        "input_decode_validate_ms": 19.59904493742215,
+        "belief_candidates_forecast_ms": 97.4557459371681,
+        "neural_forecast_ms": 3.240805811856262,
+        "contract_and_execution_checks_ms": 0.27952787468166207,
+        "total_ms": 120.57512456112818
+      },
+      "includes": [
+        "JSON_decode",
+        "schema_validation",
+        "belief_construction",
+        "candidate_generation",
+        "forecast",
+        "typed_contract_evaluation",
+        "visibility_and_budget_checks"
+      ],
+      "excludes": [
+        "physical_sensor_collection",
+        "mission_cache_miss",
+        "physical_network_actuation"
+      ],
+      "source": "actual_cpu_wall_time"
+    },
+    "graph_jepa-0-semantic": {
+      "median_ms": 118.64088799848105,
+      "p95_ms": 122.41048099895124,
+      "samples": 16,
+      "stage_mean_ms": {
+        "input_decode_validate_ms": 19.61822525026946,
+        "belief_candidates_forecast_ms": 95.861356561727,
+        "neural_forecast_ms": 3.305815438125137,
+        "contract_and_execution_checks_ms": 0.266483062205225,
+        "total_ms": 119.05188031232683
+      },
+      "includes": [
+        "JSON_decode",
+        "schema_validation",
+        "belief_construction",
+        "candidate_generation",
+        "forecast",
+        "typed_contract_evaluation",
+        "visibility_and_budget_checks"
+      ],
+      "excludes": [
+        "physical_sensor_collection",
+        "mission_cache_miss",
+        "physical_network_actuation"
+      ],
+      "source": "actual_cpu_wall_time"
+    },
+    "graph_jepa-0-int8": {
+      "median_ms": 120.02482800016878,
+      "p95_ms": 128.95071425191418,
+      "samples": 16,
+      "stage_mean_ms": {
+        "input_decode_validate_ms": 19.811648562608752,
+        "belief_candidates_forecast_ms": 98.29651799918793,
+        "neural_forecast_ms": 3.1148646871770325,
+        "contract_and_execution_checks_ms": 0.2658253761183005,
+        "total_ms": 121.48885662509201
+      },
+      "includes": [
+        "JSON_decode",
+        "schema_validation",
+        "belief_construction",
+        "candidate_generation",
+        "forecast",
+        "typed_contract_evaluation",
+        "visibility_and_budget_checks"
+      ],
+      "excludes": [
+        "physical_sensor_collection",
+        "mission_cache_miss",
+        "physical_network_actuation"
+      ],
+      "source": "actual_cpu_wall_time"
+    },
+    "mlp-1": {
+      "median_ms": 121.23684199832496,
+      "p95_ms": 130.8541887483443,
+      "samples": 16,
+      "stage_mean_ms": {
+        "input_decode_validate_ms": 21.279821313328284,
+        "belief_candidates_forecast_ms": 98.35274524948545,
+        "neural_forecast_ms": 2.7588942502916325,
+        "contract_and_execution_checks_ms": 0.2880326246668119,
+        "total_ms": 122.67949343777218
+      },
+      "includes": [
+        "JSON_decode",
+        "schema_validation",
+        "belief_construction",
+        "candidate_generation",
+        "forecast",
+        "typed_contract_evaluation",
+        "visibility_and_budget_checks"
+      ],
+      "excludes": [
+        "physical_sensor_collection",
+        "mission_cache_miss",
+        "physical_network_actuation"
+      ],
+      "source": "actual_cpu_wall_time"
+    },
+    "mlp-1-semantic": {
+      "median_ms": 120.43009400076699,
+      "p95_ms": 128.54462575160142,
+      "samples": 16,
+      "stage_mean_ms": {
+        "input_decode_validate_ms": 20.521327563528757,
+        "belief_candidates_forecast_ms": 97.79124906253855,
+        "neural_forecast_ms": 3.0817553119959484,
+        "contract_and_execution_checks_ms": 0.24888000098144403,
+        "total_ms": 121.6432119390447
+      },
+      "includes": [
+        "JSON_decode",
+        "schema_validation",
+        "belief_construction",
+        "candidate_generation",
+        "forecast",
+        "typed_contract_evaluation",
+        "visibility_and_budget_checks"
+      ],
+      "excludes": [
+        "physical_sensor_collection",
+        "mission_cache_miss",
+        "physical_network_actuation"
+      ],
+      "source": "actual_cpu_wall_time"
+    },
+    "graph_scratch-1": {
+      "median_ms": 120.39720350003336,
+      "p95_ms": 123.59030125298887,
+      "samples": 16,
+      "stage_mean_ms": {
+        "input_decode_validate_ms": 21.66294656080936,
+        "belief_candidates_forecast_ms": 95.68531368859112,
+        "neural_forecast_ms": 3.3023736873474263,
+        "contract_and_execution_checks_ms": 0.311057625367539,
+        "total_ms": 120.96169156211545
+      },
+      "includes": [
+        "JSON_decode",
+        "schema_validation",
+        "belief_construction",
+        "candidate_generation",
+        "forecast",
+        "typed_contract_evaluation",
+        "visibility_and_budget_checks"
+      ],
+      "excludes": [
+        "physical_sensor_collection",
+        "mission_cache_miss",
+        "physical_network_actuation"
+      ],
+      "source": "actual_cpu_wall_time"
+    },
+    "graph_scratch-1-semantic": {
+      "median_ms": 119.78426750283688,
+      "p95_ms": 124.06900075438898,
+      "samples": 16,
+      "stage_mean_ms": {
+        "input_decode_validate_ms": 19.921248437640315,
+        "belief_candidates_forecast_ms": 97.5145679999514,
+        "neural_forecast_ms": 2.866456186893629,
+        "contract_and_execution_checks_ms": 0.2592916252979194,
+        "total_ms": 120.56156424978326
+      },
+      "includes": [
+        "JSON_decode",
+        "schema_validation",
+        "belief_construction",
+        "candidate_generation",
+        "forecast",
+        "typed_contract_evaluation",
+        "visibility_and_budget_checks"
+      ],
+      "excludes": [
+        "physical_sensor_collection",
+        "mission_cache_miss",
+        "physical_network_actuation"
+      ],
+      "source": "actual_cpu_wall_time"
+    },
+    "graph_masked-1": {
+      "median_ms": 117.81096999766305,
+      "p95_ms": 124.92793949968473,
+      "samples": 16,
+      "stage_mean_ms": {
+        "input_decode_validate_ms": 19.383285376079584,
+        "belief_candidates_forecast_ms": 96.94590299932315,
+        "neural_forecast_ms": 2.4966598757600877,
+        "contract_and_execution_checks_ms": 0.2535838120820699,
+        "total_ms": 119.0794320632449
+      },
+      "includes": [
+        "JSON_decode",
+        "schema_validation",
+        "belief_construction",
+        "candidate_generation",
+        "forecast",
+        "typed_contract_evaluation",
+        "visibility_and_budget_checks"
+      ],
+      "excludes": [
+        "physical_sensor_collection",
+        "mission_cache_miss",
+        "physical_network_actuation"
+      ],
+      "source": "actual_cpu_wall_time"
+    },
+    "graph_masked-1-semantic": {
+      "median_ms": 120.66788000083761,
+      "p95_ms": 135.13297900135512,
+      "samples": 16,
+      "stage_mean_ms": {
+        "input_decode_validate_ms": 20.78486143727787,
+        "belief_candidates_forecast_ms": 98.05281750004724,
+        "neural_forecast_ms": 3.1229006249304803,
+        "contract_and_execution_checks_ms": 0.26317143829146517,
+        "total_ms": 122.22375100054705
+      },
+      "includes": [
+        "JSON_decode",
+        "schema_validation",
+        "belief_construction",
+        "candidate_generation",
+        "forecast",
+        "typed_contract_evaluation",
+        "visibility_and_budget_checks"
+      ],
+      "excludes": [
+        "physical_sensor_collection",
+        "mission_cache_miss",
+        "physical_network_actuation"
+      ],
+      "source": "actual_cpu_wall_time"
+    },
+    "graph_jepa-1": {
+      "median_ms": 128.27357399874018,
+      "p95_ms": 159.6489447492786,
+      "samples": 16,
+      "stage_mean_ms": {
+        "input_decode_validate_ms": 28.885705687571317,
+        "belief_candidates_forecast_ms": 102.14037662490227,
+        "neural_forecast_ms": 3.134640375719755,
+        "contract_and_execution_checks_ms": 0.30644031130577787,
+        "total_ms": 134.46716299949912
+      },
+      "includes": [
+        "JSON_decode",
+        "schema_validation",
+        "belief_construction",
+        "candidate_generation",
+        "forecast",
+        "typed_contract_evaluation",
+        "visibility_and_budget_checks"
+      ],
+      "excludes": [
+        "physical_sensor_collection",
+        "mission_cache_miss",
+        "physical_network_actuation"
+      ],
+      "source": "actual_cpu_wall_time"
+    },
+    "graph_jepa-1-semantic": {
+      "median_ms": 124.62574299934204,
+      "p95_ms": 135.03559324999515,
+      "samples": 16,
+      "stage_mean_ms": {
+        "input_decode_validate_ms": 21.42191937446114,
+        "belief_candidates_forecast_ms": 101.38111137484884,
+        "neural_forecast_ms": 3.2054211874310568,
+        "contract_and_execution_checks_ms": 0.26636668781065964,
+        "total_ms": 126.2748186245517
+      },
+      "includes": [
+        "JSON_decode",
+        "schema_validation",
+        "belief_construction",
+        "candidate_generation",
+        "forecast",
+        "typed_contract_evaluation",
+        "visibility_and_budget_checks"
+      ],
+      "excludes": [
+        "physical_sensor_collection",
+        "mission_cache_miss",
+        "physical_network_actuation"
+      ],
+      "source": "actual_cpu_wall_time"
+    },
+    "graph_jepa-1-int8": {
+      "median_ms": 121.12461449942202,
+      "p95_ms": 125.40141375211533,
+      "samples": 16,
+      "stage_mean_ms": {
+        "input_decode_validate_ms": 20.29883975046687,
+        "belief_candidates_forecast_ms": 97.66471850025482,
+        "neural_forecast_ms": 3.641807124040497,
+        "contract_and_execution_checks_ms": 0.25379106227774173,
+        "total_ms": 121.85915643703993
+      },
+      "includes": [
+        "JSON_decode",
+        "schema_validation",
+        "belief_construction",
+        "candidate_generation",
+        "forecast",
+        "typed_contract_evaluation",
+        "visibility_and_budget_checks"
+      ],
+      "excludes": [
+        "physical_sensor_collection",
+        "mission_cache_miss",
+        "physical_network_actuation"
+      ],
+      "source": "actual_cpu_wall_time"
+    },
+    "mlp-2": {
+      "median_ms": 120.5492065018916,
+      "p95_ms": 123.97423550282838,
+      "samples": 16,
+      "stage_mean_ms": {
+        "input_decode_validate_ms": 20.917142562666413,
+        "belief_candidates_forecast_ms": 96.50236531297196,
+        "neural_forecast_ms": 2.8444679992389865,
+        "contract_and_execution_checks_ms": 0.2853478749784699,
+        "total_ms": 120.54932374985583
+      },
+      "includes": [
+        "JSON_decode",
+        "schema_validation",
+        "belief_construction",
+        "candidate_generation",
+        "forecast",
+        "typed_contract_evaluation",
+        "visibility_and_budget_checks"
+      ],
+      "excludes": [
+        "physical_sensor_collection",
+        "mission_cache_miss",
+        "physical_network_actuation"
+      ],
+      "source": "actual_cpu_wall_time"
+    },
+    "mlp-2-semantic": {
+      "median_ms": 116.38689949541003,
+      "p95_ms": 119.6781379985623,
+      "samples": 16,
+      "stage_mean_ms": {
+        "input_decode_validate_ms": 19.400007749936776,
+        "belief_candidates_forecast_ms": 94.33524681162453,
+        "neural_forecast_ms": 2.3589331258335733,
+        "contract_and_execution_checks_ms": 0.23652799927731394,
+        "total_ms": 116.33071568667219
+      },
+      "includes": [
+        "JSON_decode",
+        "schema_validation",
+        "belief_construction",
+        "candidate_generation",
+        "forecast",
+        "typed_contract_evaluation",
+        "visibility_and_budget_checks"
+      ],
+      "excludes": [
+        "physical_sensor_collection",
+        "mission_cache_miss",
+        "physical_network_actuation"
+      ],
+      "source": "actual_cpu_wall_time"
+    },
+    "graph_scratch-2": {
+      "median_ms": 122.52480250026565,
+      "p95_ms": 128.02162299703923,
+      "samples": 16,
+      "stage_mean_ms": {
+        "input_decode_validate_ms": 20.84849206266881,
+        "belief_candidates_forecast_ms": 99.15181918813687,
+        "neural_forecast_ms": 3.2587034365860745,
+        "contract_and_execution_checks_ms": 0.25630737627579947,
+        "total_ms": 123.51532206366755
+      },
+      "includes": [
+        "JSON_decode",
+        "schema_validation",
+        "belief_construction",
+        "candidate_generation",
+        "forecast",
+        "typed_contract_evaluation",
+        "visibility_and_budget_checks"
+      ],
+      "excludes": [
+        "physical_sensor_collection",
+        "mission_cache_miss",
+        "physical_network_actuation"
+      ],
+      "source": "actual_cpu_wall_time"
+    },
+    "graph_scratch-2-semantic": {
+      "median_ms": 121.68981400100165,
+      "p95_ms": 125.37613349923049,
+      "samples": 16,
+      "stage_mean_ms": {
+        "input_decode_validate_ms": 20.683818250290642,
+        "belief_candidates_forecast_ms": 97.04194337427907,
+        "neural_forecast_ms": 3.5186573122700793,
+        "contract_and_execution_checks_ms": 0.24865318800948444,
+        "total_ms": 121.49307212484928
+      },
+      "includes": [
+        "JSON_decode",
+        "schema_validation",
+        "belief_construction",
+        "candidate_generation",
+        "forecast",
+        "typed_contract_evaluation",
+        "visibility_and_budget_checks"
+      ],
+      "excludes": [
+        "physical_sensor_collection",
+        "mission_cache_miss",
+        "physical_network_actuation"
+      ],
+      "source": "actual_cpu_wall_time"
+    },
+    "graph_masked-2": {
+      "median_ms": 119.65588200109778,
+      "p95_ms": 153.34121599880746,
+      "samples": 16,
+      "stage_mean_ms": {
+        "input_decode_validate_ms": 25.75567212579699,
+        "belief_candidates_forecast_ms": 97.60532843756664,
+        "neural_forecast_ms": 3.0833958740004164,
+        "contract_and_execution_checks_ms": 0.26662593882065266,
+        "total_ms": 126.7110223761847
+      },
+      "includes": [
+        "JSON_decode",
+        "schema_validation",
+        "belief_construction",
+        "candidate_generation",
+        "forecast",
+        "typed_contract_evaluation",
+        "visibility_and_budget_checks"
+      ],
+      "excludes": [
+        "physical_sensor_collection",
+        "mission_cache_miss",
+        "physical_network_actuation"
+      ],
+      "source": "actual_cpu_wall_time"
+    },
+    "graph_masked-2-semantic": {
+      "median_ms": 120.64531299984083,
+      "p95_ms": 125.96292449779867,
+      "samples": 16,
+      "stage_mean_ms": {
+        "input_decode_validate_ms": 20.283335189105856,
+        "belief_candidates_forecast_ms": 97.44233931087365,
+        "neural_forecast_ms": 3.184407500157249,
+        "contract_and_execution_checks_ms": 0.26438031181896804,
+        "total_ms": 121.17446231195572
+      },
+      "includes": [
+        "JSON_decode",
+        "schema_validation",
+        "belief_construction",
+        "candidate_generation",
+        "forecast",
+        "typed_contract_evaluation",
+        "visibility_and_budget_checks"
+      ],
+      "excludes": [
+        "physical_sensor_collection",
+        "mission_cache_miss",
+        "physical_network_actuation"
+      ],
+      "source": "actual_cpu_wall_time"
+    },
+    "graph_jepa-2": {
+      "median_ms": 122.86924849831848,
+      "p95_ms": 131.27267999880132,
+      "samples": 16,
+      "stage_mean_ms": {
+        "input_decode_validate_ms": 20.616337124920392,
+        "belief_candidates_forecast_ms": 100.58059437460543,
+        "neural_forecast_ms": 2.841353250460088,
+        "contract_and_execution_checks_ms": 0.28287668646953534,
+        "total_ms": 124.32116143645544
+      },
+      "includes": [
+        "JSON_decode",
+        "schema_validation",
+        "belief_construction",
+        "candidate_generation",
+        "forecast",
+        "typed_contract_evaluation",
+        "visibility_and_budget_checks"
+      ],
+      "excludes": [
+        "physical_sensor_collection",
+        "mission_cache_miss",
+        "physical_network_actuation"
+      ],
+      "source": "actual_cpu_wall_time"
+    },
+    "graph_jepa-2-semantic": {
+      "median_ms": 118.51796649716562,
+      "p95_ms": 120.54215499847487,
+      "samples": 16,
+      "stage_mean_ms": {
+        "input_decode_validate_ms": 19.861377687448112,
+        "belief_candidates_forecast_ms": 95.39116643736634,
+        "neural_forecast_ms": 2.8690907497548324,
+        "contract_and_execution_checks_ms": 0.24591700002929429,
+        "total_ms": 118.36755187459858
+      },
+      "includes": [
+        "JSON_decode",
+        "schema_validation",
+        "belief_construction",
+        "candidate_generation",
+        "forecast",
+        "typed_contract_evaluation",
+        "visibility_and_budget_checks"
+      ],
+      "excludes": [
+        "physical_sensor_collection",
+        "mission_cache_miss",
+        "physical_network_actuation"
+      ],
+      "source": "actual_cpu_wall_time"
+    },
+    "graph_jepa-2-int8": {
+      "median_ms": 119.66794599356945,
+      "p95_ms": 124.13314799960062,
+      "samples": 16,
+      "stage_mean_ms": {
+        "input_decode_validate_ms": 20.22001587511113,
+        "belief_candidates_forecast_ms": 96.6219634369736,
+        "neural_forecast_ms": 2.9095562508700823,
+        "contract_and_execution_checks_ms": 0.2544966237110202,
+        "total_ms": 120.00603218666583
+      },
+      "includes": [
+        "JSON_decode",
+        "schema_validation",
+        "belief_construction",
+        "candidate_generation",
+        "forecast",
+        "typed_contract_evaluation",
+        "visibility_and_budget_checks"
+      ],
+      "excludes": [
+        "physical_sensor_collection",
+        "mission_cache_miss",
+        "physical_network_actuation"
+      ],
+      "source": "actual_cpu_wall_time"
+    }
+  },
+  "fit_on": "validation_only",
+  "sealed_at": "2026-10-31T03:59:51.330070+00:00"
+}

@@ -1,0 +1,423 @@
+{
+  "source": "native_ns3_packet_events",
+  "split_samples": {
+    "train": 6077,
+    "validation": 2897,
+    "test": 8811
+  },
+  "test_scenes": [
+    146003,
+    146004,
+    146005
+  ],
+  "test_label_counts": {
+    "late": 5447,
+    "not_late": 3364
+  },
+  "persistence": {
+    "late_arrival_risk": {
+      "brier": 0.11508341845420497,
+      "log_loss": 1.8549256349758003,
+      "ece": 0.11508341845420494,
+      "reliability": [
+        {
+          "n": 3712,
+          "predicted": 0.0,
+          "observed": 0.18345905172413793
+        },
+        {
+          "n": 5099,
+          "predicted": 1.0,
+          "observed": 0.9346930770739361
+        }
+      ]
+    },
+    "throughput_mae_mbps": 2.0849164725910794
+  },
+  "records": [
+    {
+      "seed": 0,
+      "temporal": false,
+      "next_second_throughput_mae_mbps": 1.8243741989135742,
+      "late_arrival_risk": {
+        "brier": 0.06878950763486845,
+        "log_loss": 0.23015426862947166,
+        "ece": 0.033725683978860124,
+        "reliability": [
+          {
+            "n": 1317,
+            "predicted": 0.05815621529760273,
+            "observed": 0.017463933181473046
+          },
+          {
+            "n": 991,
+            "predicted": 0.1457652302926893,
+            "observed": 0.055499495459132187
+          },
+          {
+            "n": 397,
+            "predicted": 0.24108912940289573,
+            "observed": 0.15869017632241814
+          },
+          {
+            "n": 280,
+            "predicted": 0.34930269973618644,
+            "observed": 0.3
+          },
+          {
+            "n": 298,
+            "predicted": 0.4513713363433044,
+            "observed": 0.5604026845637584
+          },
+          {
+            "n": 319,
+            "predicted": 0.5483119349494623,
+            "observed": 0.5297805642633229
+          },
+          {
+            "n": 349,
+            "predicted": 0.6533089657567633,
+            "observed": 0.6475644699140402
+          },
+          {
+            "n": 417,
+            "predicted": 0.7530102641176548,
+            "observed": 0.7961630695443646
+          },
+          {
+            "n": 669,
+            "predicted": 0.8565591549659524,
+            "observed": 0.8819133034379671
+          },
+          {
+            "n": 3774,
+            "predicted": 0.9819209170076161,
+            "observed": 0.9904610492845787
+          }
+        ]
+      },
+      "checkpoint_sha256": "12aab548d0bcb9e8e58ee1cdcedb317a5f5479378b0799fc923d12e3e7092049"
+    },
+    {
+      "seed": 0,
+      "temporal": true,
+      "next_second_throughput_mae_mbps": 1.8357759714126587,
+      "late_arrival_risk": {
+        "brier": 0.05979614852346567,
+        "log_loss": 0.2059451567529911,
+        "ece": 0.03179646720954367,
+        "reliability": [
+          {
+            "n": 1890,
+            "predicted": 0.051942361826717694,
+            "observed": 0.014285714285714285
+          },
+          {
+            "n": 480,
+            "predicted": 0.13808146361261606,
+            "observed": 0.06041666666666667
+          },
+          {
+            "n": 259,
+            "predicted": 0.24869913023871346,
+            "observed": 0.1274131274131274
+          },
+          {
+            "n": 263,
+            "predicted": 0.35006993544419,
+            "observed": 0.24334600760456274
+          },
+          {
+            "n": 246,
+            "predicted": 0.44885770697903826,
+            "observed": 0.3699186991869919
+          },
+          {
+            "n": 253,
+            "predicted": 0.5540944156439408,
+            "observed": 0.4743083003952569
+          },
+          {
+            "n": 247,
+            "predicted": 0.652143085775105,
+            "observed": 0.6032388663967612
+          },
+          {
+            "n": 387,
+            "predicted": 0.7536599591412901,
+            "observed": 0.7674418604651163
+          },
+          {
+            "n": 563,
+            "predicted": 0.8576336065786981,
+            "observed": 0.8507992895204263
+          },
+          {
+            "n": 4223,
+            "predicted": 0.9724457738892377,
+            "observed": 0.9846080985081695
+          }
+        ]
+      },
+      "checkpoint_sha256": "cd0f826b813bd2768990f513b40da150bb6bce381c3fb2e176a6492abd530b80"
+    },
+    {
+      "seed": 1,
+      "temporal": false,
+      "next_second_throughput_mae_mbps": 1.8236863613128662,
+      "late_arrival_risk": {
+        "brier": 0.06419327852860207,
+        "log_loss": 0.21595909542126127,
+        "ece": 0.031887814993601736,
+        "reliability": [
+          {
+            "n": 1616,
+            "predicted": 0.05101230124554523,
+            "observed": 0.012376237623762377
+          },
+          {
+            "n": 844,
+            "predicted": 0.14156929586276906,
+            "observed": 0.07227488151658767
+          },
+          {
+            "n": 262,
+            "predicted": 0.24364887968501972,
+            "observed": 0.20610687022900764
+          },
+          {
+            "n": 277,
+            "predicted": 0.3488914678243093,
+            "observed": 0.2924187725631769
+          },
+          {
+            "n": 287,
+            "predicted": 0.4499800371376064,
+            "observed": 0.5156794425087108
+          },
+          {
+            "n": 329,
+            "predicted": 0.5488104494147026,
+            "observed": 0.5075987841945289
+          },
+          {
+            "n": 310,
+            "predicted": 0.651412764095491,
+            "observed": 0.6709677419354839
+          },
+          {
+            "n": 423,
+            "predicted": 0.7518698077111662,
+            "observed": 0.817966903073286
+          },
+          {
+            "n": 658,
+            "predicted": 0.8520640082272353,
+            "observed": 0.8996960486322189
+          },
+          {
+            "n": 3805,
+            "predicted": 0.9811335437401209,
+            "observed": 0.9908015768725361
+          }
+        ]
+      },
+      "checkpoint_sha256": "10f1a917e8565f17fff1ec543184c82871ada669ee16c0fd85a5791d5e05307f"
+    },
+    {
+      "seed": 1,
+      "temporal": true,
+      "next_second_throughput_mae_mbps": 1.7537487745285034,
+      "late_arrival_risk": {
+        "brier": 0.057845041849943483,
+        "log_loss": 0.19900647770225724,
+        "ece": 0.02110440150039016,
+        "reliability": [
+          {
+            "n": 2213,
+            "predicted": 0.046456919997758826,
+            "observed": 0.01717126073203796
+          },
+          {
+            "n": 363,
+            "predicted": 0.1444510732348957,
+            "observed": 0.10192837465564739
+          },
+          {
+            "n": 302,
+            "predicted": 0.24995537531494305,
+            "observed": 0.25165562913907286
+          },
+          {
+            "n": 242,
+            "predicted": 0.34629926639647524,
+            "observed": 0.33884297520661155
+          },
+          {
+            "n": 187,
+            "predicted": 0.4480004707440973,
+            "observed": 0.39572192513368987
+          },
+          {
+            "n": 203,
+            "predicted": 0.5499550785337176,
+            "observed": 0.6157635467980296
+          },
+          {
+            "n": 263,
+            "predicted": 0.6544855295931885,
+            "observed": 0.688212927756654
+          },
+          {
+            "n": 307,
+            "predicted": 0.753407805672686,
+            "observed": 0.7882736156351792
+          },
+          {
+            "n": 637,
+            "predicted": 0.8582579233395623,
+            "observed": 0.8649921507064364
+          },
+          {
+            "n": 4094,
+            "predicted": 0.9732806400432782,
+            "observed": 0.9870542256961407
+          }
+        ]
+      },
+      "checkpoint_sha256": "92858e1fe315d5934e480281f4738d99741adae2afa360d103630e324bb9a55c"
+    },
+    {
+      "seed": 2,
+      "temporal": false,
+      "next_second_throughput_mae_mbps": 1.93534255027771,
+      "late_arrival_risk": {
+        "brier": 0.06942919701407714,
+        "log_loss": 0.2327084079516622,
+        "ece": 0.03642366098768733,
+        "reliability": [
+          {
+            "n": 1111,
+            "predicted": 0.06562892477339072,
+            "observed": 0.009900990099009901
+          },
+          {
+            "n": 1134,
+            "predicted": 0.14655138848503851,
+            "observed": 0.047619047619047616
+          },
+          {
+            "n": 420,
+            "predicted": 0.23921609066781543,
+            "observed": 0.1523809523809524
+          },
+          {
+            "n": 298,
+            "predicted": 0.34805312462701093,
+            "observed": 0.30201342281879195
+          },
+          {
+            "n": 322,
+            "predicted": 0.45095572069935175,
+            "observed": 0.5341614906832298
+          },
+          {
+            "n": 343,
+            "predicted": 0.5511149753634506,
+            "observed": 0.5422740524781341
+          },
+          {
+            "n": 332,
+            "predicted": 0.6522810755364866,
+            "observed": 0.6566265060240963
+          },
+          {
+            "n": 420,
+            "predicted": 0.7538532244307654,
+            "observed": 0.8023809523809524
+          },
+          {
+            "n": 642,
+            "predicted": 0.8494657540804129,
+            "observed": 0.883177570093458
+          },
+          {
+            "n": 3789,
+            "predicted": 0.9830184036019799,
+            "observed": 0.9891792029559251
+          }
+        ]
+      },
+      "checkpoint_sha256": "0b336ff390d4ca7d72d6659ae715dbc5abd33a4a37eee5b7764fb8660ea70682"
+    },
+    {
+      "seed": 2,
+      "temporal": true,
+      "next_second_throughput_mae_mbps": 1.9497214555740356,
+      "late_arrival_risk": {
+        "brier": 0.05777721952647782,
+        "log_loss": 0.19760111123937044,
+        "ece": 0.019229542327242048,
+        "reliability": [
+          {
+            "n": 2216,
+            "predicted": 0.04143741596002629,
+            "observed": 0.016696750902527077
+          },
+          {
+            "n": 335,
+            "predicted": 0.1452855502046756,
+            "observed": 0.08955223880597014
+          },
+          {
+            "n": 248,
+            "predicted": 0.24757698977426176,
+            "observed": 0.24596774193548387
+          },
+          {
+            "n": 228,
+            "predicted": 0.3487626563823014,
+            "observed": 0.3026315789473684
+          },
+          {
+            "n": 184,
+            "predicted": 0.4507561897777993,
+            "observed": 0.375
+          },
+          {
+            "n": 202,
+            "predicted": 0.5502614609085688,
+            "observed": 0.5148514851485149
+          },
+          {
+            "n": 235,
+            "predicted": 0.653667538724047,
+            "observed": 0.625531914893617
+          },
+          {
+            "n": 311,
+            "predicted": 0.7520425325421275,
+            "observed": 0.77491961414791
+          },
+          {
+            "n": 595,
+            "predicted": 0.8570405563386548,
+            "observed": 0.8453781512605042
+          },
+          {
+            "n": 4257,
+            "predicted": 0.9731593102615765,
+            "observed": 0.9833215879727507
+          }
+        ]
+      },
+      "checkpoint_sha256": "caf2a2d6afa0a54f59dd19f04d4df9aae2c7fcce0fcbed7d63fa107650df91d8"
+    }
+  ],
+  "limits": [
+    "Predicts any late received critical packet in the next one-second bin; not loss probability",
+    "Rows share scenes and policy interventions; scene-disjoint test has three environments",
+    "Missing retry/late-rate denominators use explicit validity masks",
+    "These are real simulator events, not physical hardware measurements"
+  ]
+}

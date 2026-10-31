@@ -1,0 +1,141 @@
+{
+  "source": "offline_simulated_counterfactuals",
+  "split": "test",
+  "arm": "temporal_graph",
+  "service_rmse": 0.25204495542594574,
+  "signal_rmse_db": 8.905592138548812,
+  "risk": {
+    "brier": 0.07346444065882941,
+    "log_loss": 0.23932644407561854,
+    "ece": 0.01932991257783014,
+    "reliability": [
+      {
+        "n": 11060,
+        "predicted": 0.03837490657824016,
+        "observed": 0.06889692585895117
+      },
+      {
+        "n": 3342,
+        "predicted": 0.1451111303019281,
+        "observed": 0.15050867743865948
+      },
+      {
+        "n": 2056,
+        "predicted": 0.24485707836740211,
+        "observed": 0.21498054474708173
+      },
+      {
+        "n": 1433,
+        "predicted": 0.34906117575449785,
+        "observed": 0.3077459874389393
+      },
+      {
+        "n": 1210,
+        "predicted": 0.4479729597726144,
+        "observed": 0.3512396694214876
+      },
+      {
+        "n": 884,
+        "predicted": 0.5483933168029353,
+        "observed": 0.4671945701357466
+      },
+      {
+        "n": 717,
+        "predicted": 0.6500237976490537,
+        "observed": 0.5774058577405857
+      },
+      {
+        "n": 985,
+        "predicted": 0.7557515237537132,
+        "observed": 0.7583756345177665
+      },
+      {
+        "n": 2343,
+        "predicted": 0.8499228730447975,
+        "observed": 0.8186086214255228
+      },
+      {
+        "n": 19170,
+        "predicted": 0.992955722100547,
+        "observed": 0.9907668231611894
+      }
+    ]
+  },
+  "regret": {
+    "mean": 0.06776002588513722,
+    "ci95": [
+      0.04985248195262551,
+      0.08821389347229587
+    ],
+    "clusters": 12,
+    "method": "scene_cluster_percentile_bootstrap"
+  },
+  "by_family": {
+    "move_budget": {
+      "mean": 0.0,
+      "ci95": [
+        0.0,
+        0.0
+      ],
+      "clusters": 12,
+      "method": "scene_cluster_percentile_bootstrap"
+    },
+    "safety": {
+      "mean": 0.0020480590389558564,
+      "ci95": [
+        0.0,
+        0.0042820375378209135
+      ],
+      "clusters": 12,
+      "method": "scene_cluster_percentile_bootstrap"
+    },
+    "video_floor": {
+      "mean": 0.25411109818881494,
+      "ci95": [
+        0.1830084110564196,
+        0.33738889474447603
+      ],
+      "clusters": 12,
+      "method": "scene_cluster_percentile_bootstrap"
+    },
+    "worst": {
+      "mean": 0.0,
+      "ci95": [
+        0.0,
+        0.0
+      ],
+      "clusters": 12,
+      "method": "scene_cluster_percentile_bootstrap"
+    },
+    "zone": {
+      "mean": 0.012184739254061478,
+      "ci95": [
+        0.006640794951521525,
+        0.018225017670677822
+      ],
+      "clusters": 12,
+      "method": "scene_cluster_percentile_bootstrap"
+    }
+  },
+  "forward_ms_mean": 2.7633011391285605,
+  "forward_ms_p95": 2.952344299774267,
+  "timing_includes": [
+    "tensor_conversion",
+    "observation_graph_forward"
+  ],
+  "timing_excludes": [
+    "sensor_collection",
+    "candidate_generation",
+    "cached_mission_embedding_first_use",
+    "actuation"
+  ],
+  "limits": [
+    "Counterfactual choices evaluated on logged behaviour states, not a closed-loop policy rollout",
+    "Intervals cluster scenes within one trained model, not independent training seeds",
+    "Candidate-set regret is not global optimisation regret"
+  ],
+  "predictions": "/workspace/training/warehouse-v2-core/cache/predictions-temporal_graph-1-test.json",
+  "predictions_sha256": "618bca9486364abbaa543e7a04acc5c05d1f12bc79475cb855c8428cd2561e32",
+  "checkpoint_sha256": "308f6d0438f763da29226a38cfc98df76fdc9d560c888f80417aeb50b161ed13",
+  "seed": 1
+}

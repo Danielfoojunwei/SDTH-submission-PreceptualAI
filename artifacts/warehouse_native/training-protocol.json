@@ -1,0 +1,28 @@
+{
+  "source_sha256": {
+    "scripts/run_warehouse_native.py": "eff5044164c42b658ae75c2b9c9077ef6837ed7a8e766e1c4480ff4837ef7039",
+    "src/wirelessjev/warehouse_native/__init__.py": "9b85c1650842af06bae1176df0681c17e65fffe63b6b7b02c21bc138a3283860",
+    "src/wirelessjev/warehouse_native/data.py": "3dfce33a80b040259ccabe13f5aed3726772f7072de22980bc76079d286ebfcf",
+    "src/wirelessjev/warehouse_native/learning.py": "d4fd006cb4cf7620bf0c7c274686391409437d714d63599823da37ecdd506e6d",
+    "src/wirelessjev/warehouse_native/model.py": "a5c9a45576d06957ba9b0b9db2799effe3bf87cd5bb8fd1f509f764a0e6c8161"
+  },
+  "model_seeds": [
+    0,
+    1,
+    2
+  ],
+  "arms": [
+    "mlp",
+    "graph"
+  ],
+  "epochs": 120,
+  "target": "Native endpoint service and critical demand met within 50 ms, over thirty seconds",
+  "loss": "Per-robot fraction MSE + 0.1 floor-event BCE + 5 candidate-advantage MSE",
+  "selection": "Minimum validation loss per checkpoint; temperature fitted on validation only",
+  "numerical_baseline": "Known native log-distance map, NIST VHT80/HT20 two-stream curves, matched noise figure and mute window",
+  "specialist_baseline": "Training-fitted linear residual; ridge penalty chosen on validation",
+  "default_selection": "Best validation utility among candidates passing all gates, else numerical",
+  "gate": "Positive scene-bootstrap lower utility bound and no validation scene loses tail or critical demand service",
+  "test_accessed_before_selection": false,
+  "hardware_qualified": false
+}

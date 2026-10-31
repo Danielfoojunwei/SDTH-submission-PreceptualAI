@@ -1,0 +1,521 @@
+{
+  "source": "multi_step_warehouse_simulation",
+  "model_seeds": [
+    0,
+    1,
+    2
+  ],
+  "environment_count": 3,
+  "full_cross": true,
+  "horizon_s": 30,
+  "offsets_s": [
+    5,
+    10,
+    15,
+    20,
+    25,
+    30
+  ],
+  "switch_budget": 12,
+  "summary": [
+    {
+      "method": "stay",
+      "runs": 3,
+      "mean_mission_utility": -0.7367916296494832,
+      "mean_service": 0.14900655039170516,
+      "worst_decile_service": 0.026288718298491796,
+      "critical_violation_robot_steps": 9780,
+      "reconnections": 0,
+      "constraint_violations": 0,
+      "compute_ms_p95_mean": 0.0576390829640635
+    },
+    {
+      "method": "budgeted_strongest",
+      "runs": 3,
+      "mean_mission_utility": -0.6422736505384423,
+      "mean_service": 0.20243713021809642,
+      "worst_decile_service": 0.07125751615584959,
+      "critical_violation_robot_steps": 8971,
+      "reconnections": 240,
+      "constraint_violations": 0,
+      "compute_ms_p95_mean": 0.16924726696743167
+    },
+    {
+      "method": "unconstrained_strongest",
+      "runs": 3,
+      "mean_mission_utility": -0.11066064919615513,
+      "mean_service": 0.5184274407534066,
+      "worst_decile_service": 0.37680867499203013,
+      "critical_violation_robot_steps": 4478.666666666667,
+      "reconnections": 1549.6666666666667,
+      "constraint_violations": 60,
+      "compute_ms_p95_mean": 0.16998195072422587
+    },
+    {
+      "method": "numerical_planner",
+      "runs": 3,
+      "mean_mission_utility": -0.4387084325167635,
+      "mean_service": 0.3070265535210819,
+      "worst_decile_service": 0.1133082775885923,
+      "critical_violation_robot_steps": 7652,
+      "reconnections": 239.33333333333334,
+      "constraint_violations": 0,
+      "compute_ms_p95_mean": 143.847428366765
+    },
+    {
+      "method": "residual_mlp",
+      "runs": 9,
+      "mean_mission_utility": -0.4351815325147572,
+      "mean_service": 0.3056571350280942,
+      "worst_decile_service": 0.0916047014179974,
+      "critical_violation_robot_steps": 7655,
+      "reconnections": 239.22222222222223,
+      "constraint_violations": 0,
+      "compute_ms_p95_mean": 150.5779222723504
+    },
+    {
+      "method": "residual_graph",
+      "runs": 9,
+      "mean_mission_utility": -0.44084538977323806,
+      "mean_service": 0.29941822581836336,
+      "worst_decile_service": 0.09807458575673815,
+      "critical_violation_robot_steps": 7687.111111111111,
+      "reconnections": 239.66666666666666,
+      "constraint_violations": 0,
+      "compute_ms_p95_mean": 156.49875183903026
+    }
+  ],
+  "paired_comparisons": {
+    "residual_mlp": {
+      "mean_mission_utility": {
+        "difference": 0.003526900002006265,
+        "ci95": [
+          -0.006545908166359656,
+          0.012088834026131836
+        ],
+        "model_seeds": [
+          0,
+          1,
+          2
+        ],
+        "environments": [
+          142000,
+          142001,
+          142002
+        ],
+        "paired_matrix": [
+          [
+            0.0015414312802228824,
+            0.012546277441998765,
+            -0.0007564784120452361
+          ],
+          [
+            0.01064467666421387,
+            0.015219041685634593,
+            -0.003789279639227594
+          ],
+          [
+            0.01168348980108802,
+            0.0003135483462545774,
+            -0.015660607150083494
+          ]
+        ],
+        "method": "crossed_model_seed_and_environment_percentile_bootstrap"
+      },
+      "critical_violation_robot_steps": {
+        "difference": 3.0,
+        "ci95": [
+          -70.0,
+          74.0
+        ],
+        "model_seeds": [
+          0,
+          1,
+          2
+        ],
+        "environments": [
+          142000,
+          142001,
+          142002
+        ],
+        "paired_matrix": [
+          [
+            -92,
+            -24,
+            11
+          ],
+          [
+            -1,
+            -12,
+            105
+          ],
+          [
+            -117,
+            80,
+            77
+          ]
+        ],
+        "method": "crossed_model_seed_and_environment_percentile_bootstrap"
+      },
+      "worst_decile_mean_service": {
+        "difference": -0.021703576170594905,
+        "ci95": [
+          -0.028072714538264917,
+          -0.017006664439783395
+        ],
+        "model_seeds": [
+          0,
+          1,
+          2
+        ],
+        "environments": [
+          142000,
+          142001,
+          142002
+        ],
+        "paired_matrix": [
+          [
+            -0.015637834101973114,
+            -0.027358501304795647,
+            -0.026546076851204775
+          ],
+          [
+            -0.024084076818566294,
+            -0.02055624995584658,
+            -0.009040459629133829
+          ],
+          [
+            -0.020425644171276236,
+            -0.017264797486525804,
+            -0.03441854521603187
+          ]
+        ],
+        "method": "crossed_model_seed_and_environment_percentile_bootstrap"
+      }
+    },
+    "residual_graph": {
+      "mean_mission_utility": {
+        "difference": -0.0021369572564745834,
+        "ci95": [
+          -0.020278540850249476,
+          0.015459388786705386
+        ],
+        "model_seeds": [
+          0,
+          1,
+          2
+        ],
+        "environments": [
+          142000,
+          142001,
+          142002
+        ],
+        "paired_matrix": [
+          [
+            0.01575673741856043,
+            0.00764688167958788,
+            -0.016856617049403444
+          ],
+          [
+            0.010281358189661916,
+            -0.005612189760307251,
+            -0.02177328371607007
+          ],
+          [
+            0.020340070751893813,
+            0.0028044769063593766,
+            -0.0318200497285539
+          ]
+        ],
+        "method": "crossed_model_seed_and_environment_percentile_bootstrap"
+      },
+      "critical_violation_robot_steps": {
+        "difference": 35.111111111111114,
+        "ci95": [
+          -155.33333333333334,
+          184.33333333333334
+        ],
+        "model_seeds": [
+          0,
+          1,
+          2
+        ],
+        "environments": [
+          142000,
+          142001,
+          142002
+        ],
+        "paired_matrix": [
+          [
+            -156,
+            -8,
+            140
+          ],
+          [
+            -99,
+            149,
+            199
+          ],
+          [
+            -211,
+            48,
+            254
+          ]
+        ],
+        "method": "crossed_model_seed_and_environment_percentile_bootstrap"
+      },
+      "worst_decile_mean_service": {
+        "difference": -0.015233691831854156,
+        "ci95": [
+          -0.024596516016175025,
+          -0.0046410712713350856
+        ],
+        "model_seeds": [
+          0,
+          1,
+          2
+        ],
+        "environments": [
+          142000,
+          142001,
+          142002
+        ],
+        "paired_matrix": [
+          [
+            0.001756754504900121,
+            -0.010065727094504262,
+            -0.0203292440488457
+          ],
+          [
+            -0.008507064727458519,
+            -0.020174972109214248,
+            -0.02444116940970313
+          ],
+          [
+            -0.007172903591446858,
+            -0.020182133412352254,
+            -0.027986766598062554
+          ]
+        ],
+        "method": "crossed_model_seed_and_environment_percentile_bootstrap"
+      }
+    }
+  },
+  "per_robot_comparisons": {
+    "numerical_planner": {
+      "baseline": "budgeted_strongest",
+      "service_fraction_threshold": 0.01,
+      "records": [
+        {
+          "scene": 142000,
+          "model_seed": null,
+          "higher_by_more_than_threshold": 70,
+          "lower_by_more_than_threshold": 22,
+          "within_threshold": 8,
+          "worst_robot": "amr-098",
+          "worst_change": -0.26982764671445736
+        },
+        {
+          "scene": 142001,
+          "model_seed": null,
+          "higher_by_more_than_threshold": 70,
+          "lower_by_more_than_threshold": 27,
+          "within_threshold": 3,
+          "worst_robot": "amr-087",
+          "worst_change": -0.13449332589176594
+        },
+        {
+          "scene": 142002,
+          "model_seed": null,
+          "higher_by_more_than_threshold": 84,
+          "lower_by_more_than_threshold": 14,
+          "within_threshold": 2,
+          "worst_robot": "amr-030",
+          "worst_change": -0.1879878372236704
+        }
+      ],
+      "descriptive_only": true,
+      "independent_physical_robots": false
+    },
+    "residual_mlp": {
+      "baseline": "budgeted_strongest",
+      "service_fraction_threshold": 0.01,
+      "records": [
+        {
+          "scene": 142000,
+          "model_seed": 0,
+          "higher_by_more_than_threshold": 66,
+          "lower_by_more_than_threshold": 25,
+          "within_threshold": 9,
+          "worst_robot": "amr-098",
+          "worst_change": -0.26822293339810743
+        },
+        {
+          "scene": 142000,
+          "model_seed": 1,
+          "higher_by_more_than_threshold": 60,
+          "lower_by_more_than_threshold": 34,
+          "within_threshold": 6,
+          "worst_robot": "amr-060",
+          "worst_change": -0.26286233060458725
+        },
+        {
+          "scene": 142000,
+          "model_seed": 2,
+          "higher_by_more_than_threshold": 64,
+          "lower_by_more_than_threshold": 24,
+          "within_threshold": 12,
+          "worst_robot": "amr-060",
+          "worst_change": -0.26744240232427646
+        },
+        {
+          "scene": 142001,
+          "model_seed": 0,
+          "higher_by_more_than_threshold": 68,
+          "lower_by_more_than_threshold": 30,
+          "within_threshold": 2,
+          "worst_robot": "amr-028",
+          "worst_change": -0.24688728692776615
+        },
+        {
+          "scene": 142001,
+          "model_seed": 1,
+          "higher_by_more_than_threshold": 68,
+          "lower_by_more_than_threshold": 28,
+          "within_threshold": 4,
+          "worst_robot": "amr-028",
+          "worst_change": -0.24688728692776615
+        },
+        {
+          "scene": 142001,
+          "model_seed": 2,
+          "higher_by_more_than_threshold": 68,
+          "lower_by_more_than_threshold": 27,
+          "within_threshold": 5,
+          "worst_robot": "amr-028",
+          "worst_change": -0.24688728692776615
+        },
+        {
+          "scene": 142002,
+          "model_seed": 0,
+          "higher_by_more_than_threshold": 76,
+          "lower_by_more_than_threshold": 16,
+          "within_threshold": 8,
+          "worst_robot": "amr-014",
+          "worst_change": -0.17355853457313175
+        },
+        {
+          "scene": 142002,
+          "model_seed": 1,
+          "higher_by_more_than_threshold": 82,
+          "lower_by_more_than_threshold": 12,
+          "within_threshold": 6,
+          "worst_robot": "amr-095",
+          "worst_change": -0.17420500915777443
+        },
+        {
+          "scene": 142002,
+          "model_seed": 2,
+          "higher_by_more_than_threshold": 80,
+          "lower_by_more_than_threshold": 14,
+          "within_threshold": 6,
+          "worst_robot": "amr-030",
+          "worst_change": -0.15505361830502562
+        }
+      ],
+      "descriptive_only": true,
+      "independent_physical_robots": false
+    },
+    "residual_graph": {
+      "baseline": "budgeted_strongest",
+      "service_fraction_threshold": 0.01,
+      "records": [
+        {
+          "scene": 142000,
+          "model_seed": 0,
+          "higher_by_more_than_threshold": 64,
+          "lower_by_more_than_threshold": 24,
+          "within_threshold": 12,
+          "worst_robot": "amr-060",
+          "worst_change": -0.26744240232427646
+        },
+        {
+          "scene": 142000,
+          "model_seed": 1,
+          "higher_by_more_than_threshold": 67,
+          "lower_by_more_than_threshold": 27,
+          "within_threshold": 6,
+          "worst_robot": "amr-060",
+          "worst_change": -0.26744240232427646
+        },
+        {
+          "scene": 142000,
+          "model_seed": 2,
+          "higher_by_more_than_threshold": 66,
+          "lower_by_more_than_threshold": 25,
+          "within_threshold": 9,
+          "worst_robot": "amr-060",
+          "worst_change": -0.26744240232427646
+        },
+        {
+          "scene": 142001,
+          "model_seed": 0,
+          "higher_by_more_than_threshold": 67,
+          "lower_by_more_than_threshold": 31,
+          "within_threshold": 2,
+          "worst_robot": "amr-074",
+          "worst_change": -0.19205773428770095
+        },
+        {
+          "scene": 142001,
+          "model_seed": 1,
+          "higher_by_more_than_threshold": 63,
+          "lower_by_more_than_threshold": 30,
+          "within_threshold": 7,
+          "worst_robot": "amr-083",
+          "worst_change": -0.31307955070022564
+        },
+        {
+          "scene": 142001,
+          "model_seed": 2,
+          "higher_by_more_than_threshold": 67,
+          "lower_by_more_than_threshold": 29,
+          "within_threshold": 4,
+          "worst_robot": "amr-083",
+          "worst_change": -0.33117724780449387
+        },
+        {
+          "scene": 142002,
+          "model_seed": 0,
+          "higher_by_more_than_threshold": 82,
+          "lower_by_more_than_threshold": 14,
+          "within_threshold": 4,
+          "worst_robot": "amr-030",
+          "worst_change": -0.18838710964655625
+        },
+        {
+          "scene": 142002,
+          "model_seed": 1,
+          "higher_by_more_than_threshold": 81,
+          "lower_by_more_than_threshold": 14,
+          "within_threshold": 5,
+          "worst_robot": "amr-030",
+          "worst_change": -0.18798736736269014
+        },
+        {
+          "scene": 142002,
+          "model_seed": 2,
+          "higher_by_more_than_threshold": 78,
+          "lower_by_more_than_threshold": 16,
+          "within_threshold": 6,
+          "worst_robot": "amr-030",
+          "worst_change": -0.21338695163835894
+        }
+      ],
+      "descriptive_only": true,
+      "independent_physical_robots": false
+    }
+  },
+  "hardware_qualified": false,
+  "sota_established": false
+}

@@ -1,0 +1,29 @@
+{
+  "source": "executed_automated_checks_and_actual_cli_inference",
+  "python_tests": {
+    "passed": 107,
+    "failed": 0,
+    "command": "HF_HUB_OFFLINE=1 OMP_NUM_THREADS=2 OPENBLAS_NUM_THREADS=2 .venv/bin/python -m pytest -q tests"
+  },
+  "javascript_tests": {
+    "passed": 9,
+    "failed": 0,
+    "command": "node --test tests/studio_results.test.mjs"
+  },
+  "completed_controllers_verify_without_restart": true,
+  "archive_hashes_and_executed_capsules_verified": true,
+  "original_e_and_v2_evidence_unchanged": true,
+  "studio_http_bundle_verified": true,
+  "external_claude_publication": false,
+  "hardware_experiments_executed": false,
+  "examples_sha256": {
+    "research_residual_proposal.json": "9810a01c68f93129e3159e3b5890abc33e3a530c2c7809743e8adc92ee681a55",
+    "observation.json": "100e97f82655f3fc1e4108d06a9d6f29c7452c3d7812934255f95ea65c0b007a",
+    "guarded_proposal.json": "43c7421d0fdb27070ca81e8d6fcd4a8c0594e57e0fc53f38de34453d8adacb66",
+    "typed_mission_proposal.json": "50195c79bed3c5fc71b52a4c1fdb9e2fcfc15b20cb219d7e061c988d56789732",
+    "contract.json": "d87698fbb7a3df5e89fd247b84051ceb7fbbc8f1f0b44d2d934fd717fdcd6343"
+  },
+  "proposal_implementation_sha256": {
+    "scripts/plan_warehouse_horizon.py": "77b9f015fc019e964cce99f9473cd9840e930b6e9eb2f2434f36e93f475a5782"
+  }
+}

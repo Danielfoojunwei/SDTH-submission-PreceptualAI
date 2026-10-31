@@ -1,0 +1,74 @@
+{
+  "source": "actual_ns3_packet_simulation",
+  "binary_sha256": "5bc75fba6b0938c697ac575cdc1ee6cc1c6f4ddfa6f533feb4122dff86353812",
+  "input_sha256": "66e18aee1545746e8bba8d44eca4ce66ecdb08d16a97085cba4c90259c820b60",
+  "records": [
+    {
+      "seed": 170000,
+      "rts_cts": false,
+      "wall_s": 1.1881573680002475,
+      "critical_generated": 832,
+      "critical_misses": 236,
+      "received_bytes": 7706880,
+      "retry_attempts": 14151,
+      "report_sha256": "1f76f8f93c6dd60873c11ec556ad7296a0f3c2fc5a70dd92c9287c4ab00f91c5"
+    },
+    {
+      "seed": 170000,
+      "rts_cts": true,
+      "wall_s": 1.7176945969986264,
+      "critical_generated": 832,
+      "critical_misses": 179,
+      "received_bytes": 7978560,
+      "retry_attempts": 4561,
+      "report_sha256": "0ca098af2fb6b8d6f5d23d5312ad87564930d1a957290445e260d5e493be49fc"
+    },
+    {
+      "seed": 170001,
+      "rts_cts": false,
+      "wall_s": 1.3184850550023839,
+      "critical_generated": 832,
+      "critical_misses": 53,
+      "received_bytes": 8138160,
+      "retry_attempts": 11048,
+      "report_sha256": "e089a5a1f1df36df80092176574ce234bcdd8d5f6fc7ec4b1f2bcb60780bdad9"
+    },
+    {
+      "seed": 170001,
+      "rts_cts": true,
+      "wall_s": 1.513811110999086,
+      "critical_generated": 832,
+      "critical_misses": 130,
+      "received_bytes": 8166000,
+      "retry_attempts": 3733,
+      "report_sha256": "12270db59584f1e46203324315ef195f233d9667c0c2896f1606e4002d4b4f85"
+    },
+    {
+      "seed": 170002,
+      "rts_cts": false,
+      "wall_s": 1.405594857998949,
+      "critical_generated": 832,
+      "critical_misses": 57,
+      "received_bytes": 7985520,
+      "retry_attempts": 14382,
+      "report_sha256": "97ba9818de260ca05f72ccfb6179f3bdb0d159a8fca995866938ff650643c229"
+    },
+    {
+      "seed": 170002,
+      "rts_cts": true,
+      "wall_s": 1.5723739439999918,
+      "critical_generated": 832,
+      "critical_misses": 119,
+      "received_bytes": 8158560,
+      "retry_attempts": 3900,
+      "report_sha256": "66dd7d775b8e4abb77159a7d061f56272e887ab423baa47a06938d10f72494d6"
+    }
+  ],
+  "robots": 2,
+  "geometry": "Clients 56m apart, each 28m horizontally from AP; seeks a hidden-transmitter regime under declared log-distance radio",
+  "limits": [
+    "Constructed mechanism sensitivity, not a 100-robot fleet result",
+    "RTS/CTS is a simulator-side capability comparison, not enabled on customer APs",
+    "No guarantee RTS improves every topology or traffic regime"
+  ]
+}

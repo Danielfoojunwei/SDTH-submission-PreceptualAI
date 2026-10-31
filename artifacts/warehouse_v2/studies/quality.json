@@ -1,0 +1,1454 @@
+{
+  "source": "simulation_and_actual_cpu_quantized_inference",
+  "records": [
+    {
+      "seed": 0,
+      "routes_fitted_on_validation_only": {
+        "video_floor": "instant_mlp",
+        "move_budget": "instant_mlp",
+        "zone": "temporal_graph",
+        "worst": "instant_mlp",
+        "safety": "instant_mlp"
+      },
+      "summary": {
+        "test": {
+          "instant_mlp": {
+            "regret": {
+              "mean": 0.06215965506738558,
+              "ci95": [
+                0.035855437368014394,
+                0.09170591819206436
+              ],
+              "clusters": 12,
+              "method": "scene_cluster_percentile_bootstrap"
+            },
+            "mean_service": 0.49966850804371965,
+            "worst_decile_service": 0.012131786348663248,
+            "critical_failure_count": 39.82793209876543
+          },
+          "observed_load_balance": {
+            "regret": {
+              "mean": 0.789251270584315,
+              "ci95": [
+                0.7577920418046333,
+                0.8224029748697407
+              ],
+              "clusters": 12,
+              "method": "scene_cluster_percentile_bootstrap"
+            },
+            "mean_service": 0.2318920728371099,
+            "worst_decile_service": 0.001002895611303824,
+            "critical_failure_count": 84.79629629629629
+          },
+          "perfect_branch_ceiling": {
+            "regret": {
+              "mean": 0.03660416023625725,
+              "ci95": [
+                0.022756625407946783,
+                0.051856665850898924
+              ],
+              "clusters": 12,
+              "method": "scene_cluster_percentile_bootstrap"
+            },
+            "mean_service": 0.49224020454480694,
+            "worst_decile_service": 0.013132008384549587,
+            "critical_failure_count": 41.11033950617284
+          },
+          "random_sparse_switch": {
+            "regret": {
+              "mean": 0.22685032809777994,
+              "ci95": [
+                0.1952665707810933,
+                0.2565237449265811
+              ],
+              "clusters": 12,
+              "method": "scene_cluster_percentile_bootstrap"
+            },
+            "mean_service": 0.48823092519133177,
+            "worst_decile_service": 0.0022760791773045502,
+            "critical_failure_count": 39.611111111111114
+          },
+          "semantic_graph": {
+            "regret": {
+              "mean": 0.2252792315759709,
+              "ci95": [
+                0.1935901235756925,
+                0.2538699080786332
+              ],
+              "clusters": 12,
+              "method": "scene_cluster_percentile_bootstrap"
+            },
+            "mean_service": 0.4593601395709463,
+            "worst_decile_service": 0.015464208907405358,
+            "critical_failure_count": 46.854166666666664
+          },
+          "stay": {
+            "regret": {
+              "mean": 0.13327905835000292,
+              "ci95": [
+                0.0995994909855923,
+                0.16661614499187433
+              ],
+              "clusters": 12,
+              "method": "scene_cluster_percentile_bootstrap"
+            },
+            "mean_service": 0.5324872120938919,
+            "worst_decile_service": 0.0072733946791332625,
+            "critical_failure_count": 33.51851851851852
+          },
+          "strongest_scan": {
+            "regret": {
+              "mean": 0.5668138482518311,
+              "ci95": [
+                0.5159897940704631,
+                0.6180397999310928
+              ],
+              "clusters": 12,
+              "method": "scene_cluster_percentile_bootstrap"
+            },
+            "mean_service": 0.30803108063560947,
+            "worst_decile_service": 0.03144209031220439,
+            "critical_failure_count": 74.0925925925926
+          },
+          "temporal_graph": {
+            "regret": {
+              "mean": 0.06021097338008177,
+              "ci95": [
+                0.04057331429346645,
+                0.08196878387861942
+              ],
+              "clusters": 12,
+              "method": "scene_cluster_percentile_bootstrap"
+            },
+            "mean_service": 0.496086079109874,
+            "worst_decile_service": 0.012387945430474908,
+            "critical_failure_count": 40.07716049382716
+          },
+          "validation_family_router": {
+            "regret": {
+              "mean": 0.061998462716238226,
+              "ci95": [
+                0.03568319125825602,
+                0.09162049635419806
+              ],
+              "clusters": 12,
+              "method": "scene_cluster_percentile_bootstrap"
+            },
+            "mean_service": 0.49968565838342466,
+            "worst_decile_service": 0.012131786348663248,
+            "critical_failure_count": 39.829475308641975
+          }
+        },
+        "shift": {
+          "instant_mlp": {
+            "regret": {
+              "mean": 0.07673514748069002,
+              "ci95": [
+                0.03827388838872721,
+                0.1105640895654523
+              ],
+              "clusters": 6,
+              "method": "scene_cluster_percentile_bootstrap"
+            },
+            "mean_service": 0.5143388445592589,
+            "worst_decile_service": 0.006313319347818945,
+            "critical_failure_count": 32.382716049382715
+          },
+          "observed_load_balance": {
+            "regret": {
+              "mean": 0.7727880369428268,
+              "ci95": [
+                0.734827897730041,
+                0.8106193839188224
+              ],
+              "clusters": 6,
+              "method": "scene_cluster_percentile_bootstrap"
+            },
+            "mean_service": 0.24289970251697082,
+            "worst_decile_service": 0.0003531549505337521,
+            "critical_failure_count": 82.57407407407408
+          },
+          "perfect_branch_ceiling": {
+            "regret": {
+              "mean": 0.055303508223725276,
+              "ci95": [
+                0.028806324473813132,
+                0.07966252321286874
+              ],
+              "clusters": 6,
+              "method": "scene_cluster_percentile_bootstrap"
+            },
+            "mean_service": 0.5075384642422935,
+            "worst_decile_service": 0.006310544968410222,
+            "critical_failure_count": 33.88425925925926
+          },
+          "random_sparse_switch": {
+            "regret": {
+              "mean": 0.17926736724013412,
+              "ci95": [
+                0.153782306164649,
+                0.20756251413311905
+              ],
+              "clusters": 6,
+              "method": "scene_cluster_percentile_bootstrap"
+            },
+            "mean_service": 0.5125633665808925,
+            "worst_decile_service": 0.0016543804250196208,
+            "critical_failure_count": 33.351851851851855
+          },
+          "semantic_graph": {
+            "regret": {
+              "mean": 0.2082769282705491,
+              "ci95": [
+                0.16190709642189247,
+                0.25074301343520794
+              ],
+              "clusters": 6,
+              "method": "scene_cluster_percentile_bootstrap"
+            },
+            "mean_service": 0.47881082774220424,
+            "worst_decile_service": 0.009212121815869102,
+            "critical_failure_count": 39.492283950617285
+          },
+          "stay": {
+            "regret": {
+              "mean": 0.11517650456279094,
+              "ci95": [
+                0.08922938830459783,
+                0.14054163830574729
+              ],
+              "clusters": 6,
+              "method": "scene_cluster_percentile_bootstrap"
+            },
+            "mean_service": 0.5426693547655035,
+            "worst_decile_service": 0.004409695910807285,
+            "critical_failure_count": 27.444444444444443
+          },
+          "strongest_scan": {
+            "regret": {
+              "mean": 0.5494600534584948,
+              "ci95": [
+                0.49845227420199145,
+                0.6187663680857417
+              ],
+              "clusters": 6,
+              "method": "scene_cluster_percentile_bootstrap"
+            },
+            "mean_service": 0.32427301037090794,
+            "worst_decile_service": 0.01821790802878914,
+            "critical_failure_count": 67.61111111111111
+          },
+          "temporal_graph": {
+            "regret": {
+              "mean": 0.07921936471389206,
+              "ci95": [
+                0.04109133468867382,
+                0.11483506941138177
+              ],
+              "clusters": 6,
+              "method": "scene_cluster_percentile_bootstrap"
+            },
+            "mean_service": 0.5167840694387754,
+            "worst_decile_service": 0.005829297724743316,
+            "critical_failure_count": 32.425925925925924
+          },
+          "validation_family_router": {
+            "regret": {
+              "mean": 0.07683099226114137,
+              "ci95": [
+                0.03827388838872721,
+                0.1105640895654523
+              ],
+              "clusters": 6,
+              "method": "scene_cluster_percentile_bootstrap"
+            },
+            "mean_service": 0.5142469796823499,
+            "worst_decile_service": 0.006313319347818945,
+            "critical_failure_count": 32.39969135802469
+          }
+        },
+        "fleet200": {
+          "instant_mlp": {
+            "regret": {
+              "mean": 0.026360131965096418,
+              "ci95": [
+                0.014711771733494028,
+                0.037752361391472665
+              ],
+              "clusters": 6,
+              "method": "scene_cluster_percentile_bootstrap"
+            },
+            "mean_service": 0.36576010615645366,
+            "worst_decile_service": 0.00028128705997477045,
+            "critical_failure_count": 100.13425925925925
+          },
+          "observed_load_balance": {
+            "regret": {
+              "mean": 0.7037050514935562,
+              "ci95": [
+                0.6698707515127439,
+                0.7329778042796091
+              ],
+              "clusters": 6,
+              "method": "scene_cluster_percentile_bootstrap"
+            },
+            "mean_service": 0.1717287161284023,
+            "worst_decile_service": 0.0,
+            "critical_failure_count": 173.83333333333334
+          },
+          "perfect_branch_ceiling": {
+            "regret": {
+              "mean": 0.01713335041041532,
+              "ci95": [
+                0.011236111689890723,
+                0.02246361377614516
+              ],
+              "clusters": 6,
+              "method": "scene_cluster_percentile_bootstrap"
+            },
+            "mean_service": 0.3654804192253469,
+            "worst_decile_service": 0.00028753627828583927,
+            "critical_failure_count": 100.44135802469135
+          },
+          "random_sparse_switch": {
+            "regret": {
+              "mean": 0.12708432106914974,
+              "ci95": [
+                0.0978539066194826,
+                0.1536974853825403
+              ],
+              "clusters": 6,
+              "method": "scene_cluster_percentile_bootstrap"
+            },
+            "mean_service": 0.36333270729691897,
+            "worst_decile_service": 0.0,
+            "critical_failure_count": 101.27777777777777
+          },
+          "semantic_graph": {
+            "regret": {
+              "mean": 0.13862088472254713,
+              "ci95": [
+                0.1151180765879007,
+                0.16303572495881882
+              ],
+              "clusters": 6,
+              "method": "scene_cluster_percentile_bootstrap"
+            },
+            "mean_service": 0.34536784057171993,
+            "worst_decile_service": 0.0004212103240094205,
+            "critical_failure_count": 107.875
+          },
+          "stay": {
+            "regret": {
+              "mean": 0.04075751580509219,
+              "ci95": [
+                0.022351640859046767,
+                0.06162150196722464
+              ],
+              "clusters": 6,
+              "method": "scene_cluster_percentile_bootstrap"
+            },
+            "mean_service": 0.38783266119383,
+            "worst_decile_service": 0.0,
+            "critical_failure_count": 90.5
+          },
+          "strongest_scan": {
+            "regret": {
+              "mean": 0.4960500297906817,
+              "ci95": [
+                0.43495182104522967,
+                0.5534341260733696
+              ],
+              "clusters": 6,
+              "method": "scene_cluster_percentile_bootstrap"
+            },
+            "mean_service": 0.25014666964610416,
+            "worst_decile_service": 0.001183463701400561,
+            "critical_failure_count": 146.92592592592592
+          },
+          "temporal_graph": {
+            "regret": {
+              "mean": 0.03556036452560134,
+              "ci95": [
+                0.014998805666785043,
+                0.05806728620940882
+              ],
+              "clusters": 6,
+              "method": "scene_cluster_percentile_bootstrap"
+            },
+            "mean_service": 0.37165698611441955,
+            "worst_decile_service": 0.0002804797517860101,
+            "critical_failure_count": 97.60802469135803
+          },
+          "validation_family_router": {
+            "regret": {
+              "mean": 0.026360131965096418,
+              "ci95": [
+                0.014711771733494028,
+                0.037752361391472665
+              ],
+              "clusters": 6,
+              "method": "scene_cluster_percentile_bootstrap"
+            },
+            "mean_service": 0.36576010615645366,
+            "worst_decile_service": 0.00028128705997477045,
+            "critical_failure_count": 100.13425925925925
+          }
+        }
+      },
+      "pipeline_latency": {
+        "instant_mlp": {
+          "mean_ms": 1.660059240754138,
+          "p95_ms": 2.017535150662297,
+          "p99_ms": 2.732020860021293,
+          "decisions": 648,
+          "statuses": {
+            "infeasible_within_candidates": 216,
+            "selected": 432
+          },
+          "includes": [
+            "literal_mission_parse",
+            "candidate_generation",
+            "tensor_conversion",
+            "radio_prediction",
+            "hard_constraint_candidate_selection",
+            "target_visibility_guard"
+          ],
+          "excludes": [
+            "physical_sensor_collection",
+            "first_use_d3_mission_interpretation",
+            "network_transport",
+            "actuation"
+          ],
+          "risk_threshold": 0.1,
+          "risk_threshold_is_safety_guarantee": false
+        },
+        "temporal_graph": {
+          "mean_ms": 3.2667841897639365,
+          "p95_ms": 3.827637249378313,
+          "p99_ms": 5.207313218525069,
+          "decisions": 648,
+          "statuses": {
+            "infeasible_within_candidates": 216,
+            "selected": 432
+          },
+          "includes": [
+            "literal_mission_parse",
+            "candidate_generation",
+            "tensor_conversion",
+            "radio_prediction",
+            "hard_constraint_candidate_selection",
+            "target_visibility_guard"
+          ],
+          "excludes": [
+            "physical_sensor_collection",
+            "first_use_d3_mission_interpretation",
+            "network_transport",
+            "actuation"
+          ],
+          "risk_threshold": 0.1,
+          "risk_threshold_is_safety_guarantee": false
+        }
+      },
+      "cpu_int8": {
+        "operators_executed": true,
+        "latency": {
+          "mean_ms": 3.3549641697570705,
+          "p95_ms": 3.9787735999198044,
+          "p99_ms": 4.769305989102576,
+          "decisions": 648,
+          "statuses": {
+            "infeasible_within_candidates": 216,
+            "selected": 432
+          },
+          "includes": [
+            "literal_mission_parse",
+            "candidate_generation",
+            "tensor_conversion",
+            "radio_prediction",
+            "hard_constraint_candidate_selection",
+            "target_visibility_guard"
+          ],
+          "excludes": [
+            "physical_sensor_collection",
+            "first_use_d3_mission_interpretation",
+            "network_transport",
+            "actuation"
+          ],
+          "risk_threshold": 0.1,
+          "risk_threshold_is_safety_guarantee": false
+        },
+        "service_rmse": 0.25032056858196916
+      },
+      "per_case_records": "/workspace/training/warehouse-v2-studies/cache/quality-0.json"
+    },
+    {
+      "seed": 1,
+      "routes_fitted_on_validation_only": {
+        "video_floor": "instant_mlp",
+        "move_budget": "instant_mlp",
+        "zone": "temporal_graph",
+        "worst": "instant_mlp",
+        "safety": "instant_mlp"
+      },
+      "summary": {
+        "test": {
+          "instant_mlp": {
+            "regret": {
+              "mean": 0.03856116449848438,
+              "ci95": [
+                0.023990910970543927,
+                0.05266346152168772
+              ],
+              "clusters": 12,
+              "method": "scene_cluster_percentile_bootstrap"
+            },
+            "mean_service": 0.48496952629935597,
+            "worst_decile_service": 0.013993120930491038,
+            "critical_failure_count": 42.3125
+          },
+          "observed_load_balance": {
+            "regret": {
+              "mean": 0.789251270584315,
+              "ci95": [
+                0.7577920418046333,
+                0.8224029748697407
+              ],
+              "clusters": 12,
+              "method": "scene_cluster_percentile_bootstrap"
+            },
+            "mean_service": 0.2318920728371099,
+            "worst_decile_service": 0.001002895611303824,
+            "critical_failure_count": 84.79629629629629
+          },
+          "perfect_branch_ceiling": {
+            "regret": {
+              "mean": 0.034274533360457785,
+              "ci95": [
+                0.01991107182832001,
+                0.04900789840725742
+              ],
+              "clusters": 12,
+              "method": "scene_cluster_percentile_bootstrap"
+            },
+            "mean_service": 0.48531206524758425,
+            "worst_decile_service": 0.013871668334935366,
+            "critical_failure_count": 42.242283950617285
+          },
+          "random_sparse_switch": {
+            "regret": {
+              "mean": 0.22685032809777994,
+              "ci95": [
+                0.1952665707810933,
+                0.2565237449265811
+              ],
+              "clusters": 12,
+              "method": "scene_cluster_percentile_bootstrap"
+            },
+            "mean_service": 0.48823092519133177,
+            "worst_decile_service": 0.0022760791773045502,
+            "critical_failure_count": 39.611111111111114
+          },
+          "semantic_graph": {
+            "regret": {
+              "mean": 0.13327905835000292,
+              "ci95": [
+                0.0995994909855923,
+                0.16661614499187433
+              ],
+              "clusters": 12,
+              "method": "scene_cluster_percentile_bootstrap"
+            },
+            "mean_service": 0.5324872120938919,
+            "worst_decile_service": 0.0072733946791332625,
+            "critical_failure_count": 33.51851851851852
+          },
+          "stay": {
+            "regret": {
+              "mean": 0.13327905835000292,
+              "ci95": [
+                0.0995994909855923,
+                0.16661614499187433
+              ],
+              "clusters": 12,
+              "method": "scene_cluster_percentile_bootstrap"
+            },
+            "mean_service": 0.5324872120938919,
+            "worst_decile_service": 0.0072733946791332625,
+            "critical_failure_count": 33.51851851851852
+          },
+          "strongest_scan": {
+            "regret": {
+              "mean": 0.5668138482518311,
+              "ci95": [
+                0.5159897940704631,
+                0.6180397999310928
+              ],
+              "clusters": 12,
+              "method": "scene_cluster_percentile_bootstrap"
+            },
+            "mean_service": 0.30803108063560947,
+            "worst_decile_service": 0.03144209031220439,
+            "critical_failure_count": 74.0925925925926
+          },
+          "temporal_graph": {
+            "regret": {
+              "mean": 0.06776002588513722,
+              "ci95": [
+                0.04985248195262551,
+                0.08821389347229587
+              ],
+              "clusters": 12,
+              "method": "scene_cluster_percentile_bootstrap"
+            },
+            "mean_service": 0.4991851450392493,
+            "worst_decile_service": 0.012119541030951501,
+            "critical_failure_count": 39.37191358024691
+          },
+          "validation_family_router": {
+            "regret": {
+              "mean": 0.03815021351436843,
+              "ci95": [
+                0.023845753081260215,
+                0.05231848337011965
+              ],
+              "clusters": 12,
+              "method": "scene_cluster_percentile_bootstrap"
+            },
+            "mean_service": 0.4849649933569225,
+            "worst_decile_service": 0.013993120930491038,
+            "critical_failure_count": 42.31944444444444
+          }
+        },
+        "shift": {
+          "instant_mlp": {
+            "regret": {
+              "mean": 0.0721055178510604,
+              "ci95": [
+                0.033472541846287035,
+                0.11151378019582749
+              ],
+              "clusters": 6,
+              "method": "scene_cluster_percentile_bootstrap"
+            },
+            "mean_service": 0.5077919879997218,
+            "worst_decile_service": 0.006777578045363986,
+            "critical_failure_count": 33.81944444444444
+          },
+          "observed_load_balance": {
+            "regret": {
+              "mean": 0.7727880369428268,
+              "ci95": [
+                0.734827897730041,
+                0.8106193839188224
+              ],
+              "clusters": 6,
+              "method": "scene_cluster_percentile_bootstrap"
+            },
+            "mean_service": 0.24289970251697082,
+            "worst_decile_service": 0.0003531549505337521,
+            "critical_failure_count": 82.57407407407408
+          },
+          "perfect_branch_ceiling": {
+            "regret": {
+              "mean": 0.06500565311683865,
+              "ci95": [
+                0.03272977707083175,
+                0.0954487325893976
+              ],
+              "clusters": 6,
+              "method": "scene_cluster_percentile_bootstrap"
+            },
+            "mean_service": 0.5073100973242595,
+            "worst_decile_service": 0.006570443140204858,
+            "critical_failure_count": 33.86574074074074
+          },
+          "random_sparse_switch": {
+            "regret": {
+              "mean": 0.17926736724013412,
+              "ci95": [
+                0.153782306164649,
+                0.20756251413311905
+              ],
+              "clusters": 6,
+              "method": "scene_cluster_percentile_bootstrap"
+            },
+            "mean_service": 0.5125633665808925,
+            "worst_decile_service": 0.0016543804250196208,
+            "critical_failure_count": 33.351851851851855
+          },
+          "semantic_graph": {
+            "regret": {
+              "mean": 0.11517650456279094,
+              "ci95": [
+                0.08922938830459783,
+                0.14054163830574729
+              ],
+              "clusters": 6,
+              "method": "scene_cluster_percentile_bootstrap"
+            },
+            "mean_service": 0.5426693547655035,
+            "worst_decile_service": 0.004409695910807285,
+            "critical_failure_count": 27.444444444444443
+          },
+          "stay": {
+            "regret": {
+              "mean": 0.11517650456279094,
+              "ci95": [
+                0.08922938830459783,
+                0.14054163830574729
+              ],
+              "clusters": 6,
+              "method": "scene_cluster_percentile_bootstrap"
+            },
+            "mean_service": 0.5426693547655035,
+            "worst_decile_service": 0.004409695910807285,
+            "critical_failure_count": 27.444444444444443
+          },
+          "strongest_scan": {
+            "regret": {
+              "mean": 0.5494600534584948,
+              "ci95": [
+                0.49845227420199145,
+                0.6187663680857417
+              ],
+              "clusters": 6,
+              "method": "scene_cluster_percentile_bootstrap"
+            },
+            "mean_service": 0.32427301037090794,
+            "worst_decile_service": 0.01821790802878914,
+            "critical_failure_count": 67.61111111111111
+          },
+          "temporal_graph": {
+            "regret": {
+              "mean": 0.09800042186467359,
+              "ci95": [
+                0.05362829821024666,
+                0.13489602607858525
+              ],
+              "clusters": 6,
+              "method": "scene_cluster_percentile_bootstrap"
+            },
+            "mean_service": 0.5216434787682913,
+            "worst_decile_service": 0.0059980816871600074,
+            "critical_failure_count": 31.645061728395063
+          },
+          "validation_family_router": {
+            "regret": {
+              "mean": 0.07236649435642273,
+              "ci95": [
+                0.03396793702101995,
+                0.11180131453718155
+              ],
+              "clusters": 6,
+              "method": "scene_cluster_percentile_bootstrap"
+            },
+            "mean_service": 0.5076440685877094,
+            "worst_decile_service": 0.006777578045363986,
+            "critical_failure_count": 33.85030864197531
+          }
+        },
+        "fleet200": {
+          "instant_mlp": {
+            "regret": {
+              "mean": 0.026360131965096418,
+              "ci95": [
+                0.014711771733494028,
+                0.037752361391472665
+              ],
+              "clusters": 6,
+              "method": "scene_cluster_percentile_bootstrap"
+            },
+            "mean_service": 0.3651931163061548,
+            "worst_decile_service": 0.00028155616270435723,
+            "critical_failure_count": 100.37345679012346
+          },
+          "observed_load_balance": {
+            "regret": {
+              "mean": 0.7037050514935562,
+              "ci95": [
+                0.6698707515127439,
+                0.7329778042796091
+              ],
+              "clusters": 6,
+              "method": "scene_cluster_percentile_bootstrap"
+            },
+            "mean_service": 0.1717287161284023,
+            "worst_decile_service": 0.0,
+            "critical_failure_count": 173.83333333333334
+          },
+          "perfect_branch_ceiling": {
+            "regret": {
+              "mean": 0.02217997058781933,
+              "ci95": [
+                0.01433003239661856,
+                0.029573445298915937
+              ],
+              "clusters": 6,
+              "method": "scene_cluster_percentile_bootstrap"
+            },
+            "mean_service": 0.3659071451811879,
+            "worst_decile_service": 0.00028155616270435723,
+            "critical_failure_count": 100.15586419753086
+          },
+          "random_sparse_switch": {
+            "regret": {
+              "mean": 0.12708432106914974,
+              "ci95": [
+                0.0978539066194826,
+                0.1536974853825403
+              ],
+              "clusters": 6,
+              "method": "scene_cluster_percentile_bootstrap"
+            },
+            "mean_service": 0.36333270729691897,
+            "worst_decile_service": 0.0,
+            "critical_failure_count": 101.27777777777777
+          },
+          "semantic_graph": {
+            "regret": {
+              "mean": 0.04075751580509219,
+              "ci95": [
+                0.022351640859046767,
+                0.06162150196722464
+              ],
+              "clusters": 6,
+              "method": "scene_cluster_percentile_bootstrap"
+            },
+            "mean_service": 0.38783266119383,
+            "worst_decile_service": 0.0,
+            "critical_failure_count": 90.5
+          },
+          "stay": {
+            "regret": {
+              "mean": 0.04075751580509219,
+              "ci95": [
+                0.022351640859046767,
+                0.06162150196722464
+              ],
+              "clusters": 6,
+              "method": "scene_cluster_percentile_bootstrap"
+            },
+            "mean_service": 0.38783266119383,
+            "worst_decile_service": 0.0,
+            "critical_failure_count": 90.5
+          },
+          "strongest_scan": {
+            "regret": {
+              "mean": 0.4960500297906817,
+              "ci95": [
+                0.43495182104522967,
+                0.5534341260733696
+              ],
+              "clusters": 6,
+              "method": "scene_cluster_percentile_bootstrap"
+            },
+            "mean_service": 0.25014666964610416,
+            "worst_decile_service": 0.001183463701400561,
+            "critical_failure_count": 146.92592592592592
+          },
+          "temporal_graph": {
+            "regret": {
+              "mean": 0.03556036452560134,
+              "ci95": [
+                0.014998805666785043,
+                0.05806728620940882
+              ],
+              "clusters": 6,
+              "method": "scene_cluster_percentile_bootstrap"
+            },
+            "mean_service": 0.37312525945405167,
+            "worst_decile_service": 0.0002804797517860101,
+            "critical_failure_count": 96.57716049382717
+          },
+          "validation_family_router": {
+            "regret": {
+              "mean": 0.026360131965096418,
+              "ci95": [
+                0.014711771733494028,
+                0.037752361391472665
+              ],
+              "clusters": 6,
+              "method": "scene_cluster_percentile_bootstrap"
+            },
+            "mean_service": 0.3651931163061548,
+            "worst_decile_service": 0.00028155616270435723,
+            "critical_failure_count": 100.37345679012346
+          }
+        }
+      },
+      "pipeline_latency": {
+        "instant_mlp": {
+          "mean_ms": 1.6231284783956383,
+          "p95_ms": 1.8981850003910947,
+          "p99_ms": 2.951359219732686,
+          "decisions": 648,
+          "statuses": {
+            "infeasible_within_candidates": 216,
+            "selected": 432
+          },
+          "includes": [
+            "literal_mission_parse",
+            "candidate_generation",
+            "tensor_conversion",
+            "radio_prediction",
+            "hard_constraint_candidate_selection",
+            "target_visibility_guard"
+          ],
+          "excludes": [
+            "physical_sensor_collection",
+            "first_use_d3_mission_interpretation",
+            "network_transport",
+            "actuation"
+          ],
+          "risk_threshold": 0.1,
+          "risk_threshold_is_safety_guarantee": false
+        },
+        "temporal_graph": {
+          "mean_ms": 3.000106717626082,
+          "p95_ms": 3.475706049175642,
+          "p99_ms": 4.491639088955701,
+          "decisions": 648,
+          "statuses": {
+            "infeasible_within_candidates": 216,
+            "selected": 432
+          },
+          "includes": [
+            "literal_mission_parse",
+            "candidate_generation",
+            "tensor_conversion",
+            "radio_prediction",
+            "hard_constraint_candidate_selection",
+            "target_visibility_guard"
+          ],
+          "excludes": [
+            "physical_sensor_collection",
+            "first_use_d3_mission_interpretation",
+            "network_transport",
+            "actuation"
+          ],
+          "risk_threshold": 0.1,
+          "risk_threshold_is_safety_guarantee": false
+        }
+      },
+      "cpu_int8": {
+        "operators_executed": true,
+        "latency": {
+          "mean_ms": 3.182848990648235,
+          "p95_ms": 3.845563599315937,
+          "p99_ms": 4.741605619310571,
+          "decisions": 648,
+          "statuses": {
+            "infeasible_within_candidates": 216,
+            "selected": 432
+          },
+          "includes": [
+            "literal_mission_parse",
+            "candidate_generation",
+            "tensor_conversion",
+            "radio_prediction",
+            "hard_constraint_candidate_selection",
+            "target_visibility_guard"
+          ],
+          "excludes": [
+            "physical_sensor_collection",
+            "first_use_d3_mission_interpretation",
+            "network_transport",
+            "actuation"
+          ],
+          "risk_threshold": 0.1,
+          "risk_threshold_is_safety_guarantee": false
+        },
+        "service_rmse": 0.2521377719658269
+      },
+      "per_case_records": "/workspace/training/warehouse-v2-studies/cache/quality-1.json"
+    },
+    {
+      "seed": 2,
+      "routes_fitted_on_validation_only": {
+        "video_floor": "instant_mlp",
+        "move_budget": "instant_mlp",
+        "zone": "temporal_graph",
+        "worst": "instant_mlp",
+        "safety": "instant_mlp"
+      },
+      "summary": {
+        "test": {
+          "instant_mlp": {
+            "regret": {
+              "mean": 0.05050981048003046,
+              "ci95": [
+                0.031572806818201814,
+                0.07112615954266614
+              ],
+              "clusters": 12,
+              "method": "scene_cluster_percentile_bootstrap"
+            },
+            "mean_service": 0.4944042875144033,
+            "worst_decile_service": 0.012458310548588347,
+            "critical_failure_count": 40.676697530864196
+          },
+          "observed_load_balance": {
+            "regret": {
+              "mean": 0.789251270584315,
+              "ci95": [
+                0.7577920418046333,
+                0.8224029748697407
+              ],
+              "clusters": 12,
+              "method": "scene_cluster_percentile_bootstrap"
+            },
+            "mean_service": 0.2318920728371099,
+            "worst_decile_service": 0.001002895611303824,
+            "critical_failure_count": 84.79629629629629
+          },
+          "perfect_branch_ceiling": {
+            "regret": {
+              "mean": 0.03272021183547173,
+              "ci95": [
+                0.021135335545675194,
+                0.04464628458609459
+              ],
+              "clusters": 12,
+              "method": "scene_cluster_percentile_bootstrap"
+            },
+            "mean_service": 0.4900058234386422,
+            "worst_decile_service": 0.01303591903437067,
+            "critical_failure_count": 41.49305555555556
+          },
+          "random_sparse_switch": {
+            "regret": {
+              "mean": 0.22685032809777994,
+              "ci95": [
+                0.1952665707810933,
+                0.2565237449265811
+              ],
+              "clusters": 12,
+              "method": "scene_cluster_percentile_bootstrap"
+            },
+            "mean_service": 0.48823092519133177,
+            "worst_decile_service": 0.0022760791773045502,
+            "critical_failure_count": 39.611111111111114
+          },
+          "semantic_graph": {
+            "regret": {
+              "mean": 0.21616368642688388,
+              "ci95": [
+                0.18300099895834002,
+                0.24736931488070335
+              ],
+              "clusters": 12,
+              "method": "scene_cluster_percentile_bootstrap"
+            },
+            "mean_service": 0.46281134291770465,
+            "worst_decile_service": 0.015282726681893288,
+            "critical_failure_count": 46.14969135802469
+          },
+          "stay": {
+            "regret": {
+              "mean": 0.13327905835000292,
+              "ci95": [
+                0.0995994909855923,
+                0.16661614499187433
+              ],
+              "clusters": 12,
+              "method": "scene_cluster_percentile_bootstrap"
+            },
+            "mean_service": 0.5324872120938919,
+            "worst_decile_service": 0.0072733946791332625,
+            "critical_failure_count": 33.51851851851852
+          },
+          "strongest_scan": {
+            "regret": {
+              "mean": 0.5668138482518311,
+              "ci95": [
+                0.5159897940704631,
+                0.6180397999310928
+              ],
+              "clusters": 12,
+              "method": "scene_cluster_percentile_bootstrap"
+            },
+            "mean_service": 0.30803108063560947,
+            "worst_decile_service": 0.03144209031220439,
+            "critical_failure_count": 74.0925925925926
+          },
+          "temporal_graph": {
+            "regret": {
+              "mean": 0.06817968837438254,
+              "ci95": [
+                0.04276842764905459,
+                0.10000137083442055
+              ],
+              "clusters": 12,
+              "method": "scene_cluster_percentile_bootstrap"
+            },
+            "mean_service": 0.5033228975019337,
+            "worst_decile_service": 0.011620967239426214,
+            "critical_failure_count": 38.98456790123457
+          },
+          "validation_family_router": {
+            "regret": {
+              "mean": 0.050703627503632255,
+              "ci95": [
+                0.03194346098496254,
+                0.07095745141288018
+              ],
+              "clusters": 12,
+              "method": "scene_cluster_percentile_bootstrap"
+            },
+            "mean_service": 0.4943866233145933,
+            "worst_decile_service": 0.012458310548588347,
+            "critical_failure_count": 40.682870370370374
+          }
+        },
+        "shift": {
+          "instant_mlp": {
+            "regret": {
+              "mean": 0.07673514748069002,
+              "ci95": [
+                0.03827388838872721,
+                0.1105640895654523
+              ],
+              "clusters": 6,
+              "method": "scene_cluster_percentile_bootstrap"
+            },
+            "mean_service": 0.5144249975773287,
+            "worst_decile_service": 0.006326516827301267,
+            "critical_failure_count": 32.41820987654321
+          },
+          "observed_load_balance": {
+            "regret": {
+              "mean": 0.7727880369428268,
+              "ci95": [
+                0.734827897730041,
+                0.8106193839188224
+              ],
+              "clusters": 6,
+              "method": "scene_cluster_percentile_bootstrap"
+            },
+            "mean_service": 0.24289970251697082,
+            "worst_decile_service": 0.0003531549505337521,
+            "critical_failure_count": 82.57407407407408
+          },
+          "perfect_branch_ceiling": {
+            "regret": {
+              "mean": 0.05994038814893606,
+              "ci95": [
+                0.03051302832260215,
+                0.08631047257611016
+              ],
+              "clusters": 6,
+              "method": "scene_cluster_percentile_bootstrap"
+            },
+            "mean_service": 0.5097777844740101,
+            "worst_decile_service": 0.006354289283631204,
+            "critical_failure_count": 33.44753086419753
+          },
+          "random_sparse_switch": {
+            "regret": {
+              "mean": 0.17926736724013412,
+              "ci95": [
+                0.153782306164649,
+                0.20756251413311905
+              ],
+              "clusters": 6,
+              "method": "scene_cluster_percentile_bootstrap"
+            },
+            "mean_service": 0.5125633665808925,
+            "worst_decile_service": 0.0016543804250196208,
+            "critical_failure_count": 33.351851851851855
+          },
+          "semantic_graph": {
+            "regret": {
+              "mean": 0.18455995545695178,
+              "ci95": [
+                0.13436522940173745,
+                0.23462852131368359
+              ],
+              "clusters": 6,
+              "method": "scene_cluster_percentile_bootstrap"
+            },
+            "mean_service": 0.48923608049014466,
+            "worst_decile_service": 0.008469805308261219,
+            "critical_failure_count": 37.67438271604938
+          },
+          "stay": {
+            "regret": {
+              "mean": 0.11517650456279094,
+              "ci95": [
+                0.08922938830459783,
+                0.14054163830574729
+              ],
+              "clusters": 6,
+              "method": "scene_cluster_percentile_bootstrap"
+            },
+            "mean_service": 0.5426693547655035,
+            "worst_decile_service": 0.004409695910807285,
+            "critical_failure_count": 27.444444444444443
+          },
+          "strongest_scan": {
+            "regret": {
+              "mean": 0.5494600534584948,
+              "ci95": [
+                0.49845227420199145,
+                0.6187663680857417
+              ],
+              "clusters": 6,
+              "method": "scene_cluster_percentile_bootstrap"
+            },
+            "mean_service": 0.32427301037090794,
+            "worst_decile_service": 0.01821790802878914,
+            "critical_failure_count": 67.61111111111111
+          },
+          "temporal_graph": {
+            "regret": {
+              "mean": 0.09088426126196235,
+              "ci95": [
+                0.05242365035698961,
+                0.1253311465672517
+              ],
+              "clusters": 6,
+              "method": "scene_cluster_percentile_bootstrap"
+            },
+            "mean_service": 0.5194765192996941,
+            "worst_decile_service": 0.0056012985321474305,
+            "critical_failure_count": 31.848765432098766
+          },
+          "validation_family_router": {
+            "regret": {
+              "mean": 0.07688137317337135,
+              "ci95": [
+                0.03883487005863884,
+                0.1105640895654523
+              ],
+              "clusters": 6,
+              "method": "scene_cluster_percentile_bootstrap"
+            },
+            "mean_service": 0.5144055753854322,
+            "worst_decile_service": 0.006326516827301267,
+            "critical_failure_count": 32.425925925925924
+          }
+        },
+        "fleet200": {
+          "instant_mlp": {
+            "regret": {
+              "mean": 0.026360131965096418,
+              "ci95": [
+                0.014711771733494028,
+                0.037752361391472665
+              ],
+              "clusters": 6,
+              "method": "scene_cluster_percentile_bootstrap"
+            },
+            "mean_service": 0.367447857549529,
+            "worst_decile_service": 0.00028128705997477045,
+            "critical_failure_count": 99.32716049382717
+          },
+          "observed_load_balance": {
+            "regret": {
+              "mean": 0.7037050514935562,
+              "ci95": [
+                0.6698707515127439,
+                0.7329778042796091
+              ],
+              "clusters": 6,
+              "method": "scene_cluster_percentile_bootstrap"
+            },
+            "mean_service": 0.1717287161284023,
+            "worst_decile_service": 0.0,
+            "critical_failure_count": 173.83333333333334
+          },
+          "perfect_branch_ceiling": {
+            "regret": {
+              "mean": 0.014251611415040966,
+              "ci95": [
+                0.007668484460467611,
+                0.021163074070814837
+              ],
+              "clusters": 6,
+              "method": "scene_cluster_percentile_bootstrap"
+            },
+            "mean_service": 0.3671109783980582,
+            "worst_decile_service": 0.00028753627828583927,
+            "critical_failure_count": 99.625
+          },
+          "random_sparse_switch": {
+            "regret": {
+              "mean": 0.12708432106914974,
+              "ci95": [
+                0.0978539066194826,
+                0.1536974853825403
+              ],
+              "clusters": 6,
+              "method": "scene_cluster_percentile_bootstrap"
+            },
+            "mean_service": 0.36333270729691897,
+            "worst_decile_service": 0.0,
+            "critical_failure_count": 101.27777777777777
+          },
+          "semantic_graph": {
+            "regret": {
+              "mean": 0.10180247845243157,
+              "ci95": [
+                0.07407626218196971,
+                0.12924727098728864
+              ],
+              "clusters": 6,
+              "method": "scene_cluster_percentile_bootstrap"
+            },
+            "mean_service": 0.3645642173970923,
+            "worst_decile_service": 0.00039448790046685365,
+            "critical_failure_count": 100.74228395061728
+          },
+          "stay": {
+            "regret": {
+              "mean": 0.04075751580509219,
+              "ci95": [
+                0.022351640859046767,
+                0.06162150196722464
+              ],
+              "clusters": 6,
+              "method": "scene_cluster_percentile_bootstrap"
+            },
+            "mean_service": 0.38783266119383,
+            "worst_decile_service": 0.0,
+            "critical_failure_count": 90.5
+          },
+          "strongest_scan": {
+            "regret": {
+              "mean": 0.4960500297906817,
+              "ci95": [
+                0.43495182104522967,
+                0.5534341260733696
+              ],
+              "clusters": 6,
+              "method": "scene_cluster_percentile_bootstrap"
+            },
+            "mean_service": 0.25014666964610416,
+            "worst_decile_service": 0.001183463701400561,
+            "critical_failure_count": 146.92592592592592
+          },
+          "temporal_graph": {
+            "regret": {
+              "mean": 0.030930734895971708,
+              "ci95": [
+                0.014998805666785043,
+                0.046837493795420064
+              ],
+              "clusters": 6,
+              "method": "scene_cluster_percentile_bootstrap"
+            },
+            "mean_service": 0.36721162031186216,
+            "worst_decile_service": 0.0002614545498803591,
+            "critical_failure_count": 99.0
+          },
+          "validation_family_router": {
+            "regret": {
+              "mean": 0.026360131965096418,
+              "ci95": [
+                0.014711771733494028,
+                0.037752361391472665
+              ],
+              "clusters": 6,
+              "method": "scene_cluster_percentile_bootstrap"
+            },
+            "mean_service": 0.367447857549529,
+            "worst_decile_service": 0.00028128705997477045,
+            "critical_failure_count": 99.32716049382717
+          }
+        }
+      },
+      "pipeline_latency": {
+        "instant_mlp": {
+          "mean_ms": 1.4913301651356534,
+          "p95_ms": 1.7428506487703999,
+          "p99_ms": 2.4391828211082593,
+          "decisions": 648,
+          "statuses": {
+            "infeasible_within_candidates": 215,
+            "selected": 433
+          },
+          "includes": [
+            "literal_mission_parse",
+            "candidate_generation",
+            "tensor_conversion",
+            "radio_prediction",
+            "hard_constraint_candidate_selection",
+            "target_visibility_guard"
+          ],
+          "excludes": [
+            "physical_sensor_collection",
+            "first_use_d3_mission_interpretation",
+            "network_transport",
+            "actuation"
+          ],
+          "risk_threshold": 0.1,
+          "risk_threshold_is_safety_guarantee": false
+        },
+        "temporal_graph": {
+          "mean_ms": 3.137555919805397,
+          "p95_ms": 3.58365144857089,
+          "p99_ms": 4.595455921225943,
+          "decisions": 648,
+          "statuses": {
+            "infeasible_within_candidates": 215,
+            "selected": 433
+          },
+          "includes": [
+            "literal_mission_parse",
+            "candidate_generation",
+            "tensor_conversion",
+            "radio_prediction",
+            "hard_constraint_candidate_selection",
+            "target_visibility_guard"
+          ],
+          "excludes": [
+            "physical_sensor_collection",
+            "first_use_d3_mission_interpretation",
+            "network_transport",
+            "actuation"
+          ],
+          "risk_threshold": 0.1,
+          "risk_threshold_is_safety_guarantee": false
+        }
+      },
+      "cpu_int8": {
+        "operators_executed": true,
+        "latency": {
+          "mean_ms": 3.304465581830884,
+          "p95_ms": 3.90541204924375,
+          "p99_ms": 4.8450934406355355,
+          "decisions": 648,
+          "statuses": {
+            "infeasible_within_candidates": 215,
+            "selected": 433
+          },
+          "includes": [
+            "literal_mission_parse",
+            "candidate_generation",
+            "tensor_conversion",
+            "radio_prediction",
+            "hard_constraint_candidate_selection",
+            "target_visibility_guard"
+          ],
+          "excludes": [
+            "physical_sensor_collection",
+            "first_use_d3_mission_interpretation",
+            "network_transport",
+            "actuation"
+          ],
+          "risk_threshold": 0.1,
+          "risk_threshold_is_safety_guarantee": false
+        },
+        "service_rmse": 0.2533345765558824
+      },
+      "per_case_records": "/workspace/training/warehouse-v2-studies/cache/quality-2.json"
+    }
+  ],
+  "limits": [
+    "Validation routing uses known mission families, with new thresholds/zones only at test time",
+    "Perfect branch choice is an unattainable evaluation ceiling",
+    "Int8 quality is measured; reduced bit width is not assumed to make this CPU faster",
+    "Hard constraints operate on predictions and can defer; they are not physical safety guarantees"
+  ]
+}

@@ -1,0 +1,38 @@
+{
+  "max_moves": 12,
+  "floors": [],
+  "priorities": [
+    {
+      "kind": "critical",
+      "group": {
+        "kind": "all",
+        "ids": [],
+        "axis": null,
+        "direction": null,
+        "boundary_m": null
+      },
+      "fraction": 0.1
+    },
+    {
+      "kind": "throughput",
+      "group": {
+        "kind": "all",
+        "ids": [],
+        "axis": null,
+        "direction": null,
+        "boundary_m": null
+      },
+      "fraction": 0.1
+    }
+  ],
+  "conditional_floor": {
+    "group": {
+      "kind": "teleoperated",
+      "ids": [],
+      "axis": null,
+      "direction": null,
+      "boundary_m": null
+    },
+    "fraction": 0.6
+  }
+}

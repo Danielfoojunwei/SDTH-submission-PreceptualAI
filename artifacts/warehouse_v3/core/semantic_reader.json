@@ -1,0 +1,238 @@
+{
+  "source": "actual_pinned_d3_inference",
+  "model": {
+    "repo": "vllm-sr/d3-lite",
+    "revision": "03560c26f5199c3c04129a2ccb38960c913635e0"
+  },
+  "readings": [
+    {
+      "text": "Switch at most 12 robots; maximise throughput.",
+      "embedding_ms": 603.8688720000209,
+      "model_executed": true,
+      "contract": {
+        "max_moves": 12,
+        "floors": [],
+        "priorities": [
+          {
+            "kind": "throughput",
+            "group": {
+              "kind": "all",
+              "ids": [],
+              "axis": null,
+              "direction": null,
+              "boundary_m": null
+            },
+            "fraction": 0.1
+          }
+        ],
+        "conditional_floor": null
+      },
+      "receipt": {
+        "reader": "actual_d3_family_and_complete_literal_compiler",
+        "model_executed": true,
+        "cached": false,
+        "choice": "ordered",
+        "answer_probabilities": {
+          "conditional": 0.006111968447046181,
+          "floors": 0.00871023116555224,
+          "ordered": 0.9824588964773467,
+          "unsupported": 0.0027189039100548487
+        },
+        "probabilities_are_physical_risk": false,
+        "latency_ms": 700.5011189976358
+      },
+      "abstained": false
+    },
+    {
+      "text": "Switch at most 12 robots; require service >= 30% for teleoperated robots at every offset; minimise switches; then maximise throughput.",
+      "embedding_ms": 874.2345200007549,
+      "model_executed": true,
+      "abstained": true,
+      "reason": "The semantic model abstained or disagreed with the explicit contract"
+    },
+    {
+      "text": "Switch at most 12 robots; maximise worst-served 10% service; then minimise critical violations.",
+      "embedding_ms": 641.3399880038924,
+      "model_executed": true,
+      "contract": {
+        "max_moves": 12,
+        "floors": [],
+        "priorities": [
+          {
+            "kind": "tail",
+            "group": {
+              "kind": "all",
+              "ids": [],
+              "axis": null,
+              "direction": null,
+              "boundary_m": null
+            },
+            "fraction": 0.1
+          },
+          {
+            "kind": "critical",
+            "group": {
+              "kind": "all",
+              "ids": [],
+              "axis": null,
+              "direction": null,
+              "boundary_m": null
+            },
+            "fraction": 0.1
+          }
+        ],
+        "conditional_floor": null
+      },
+      "receipt": {
+        "reader": "actual_d3_family_and_complete_literal_compiler",
+        "model_executed": true,
+        "cached": false,
+        "choice": "ordered",
+        "answer_probabilities": {
+          "conditional": 0.020823726546896956,
+          "floors": 0.06141731177317339,
+          "ordered": 0.9096921733190799,
+          "unsupported": 0.008066788360849703
+        },
+        "probabilities_are_physical_risk": false,
+        "latency_ms": 873.25255000178
+      },
+      "abstained": false
+    },
+    {
+      "text": "Switch at most 12 robots; if any teleoperated robot has observed service < 60%, prioritise that group; minimise critical violations; then maximise throughput.",
+      "embedding_ms": 813.2263079969562,
+      "model_executed": true,
+      "abstained": true,
+      "reason": "The semantic model abstained or disagreed with the explicit contract"
+    },
+    {
+      "text": "Switch at most 12 robots; maximise service for robots with x < 60 m; then maximise throughput.",
+      "embedding_ms": 684.7436120006023,
+      "model_executed": true,
+      "contract": {
+        "max_moves": 12,
+        "floors": [],
+        "priorities": [
+          {
+            "kind": "group_service",
+            "group": {
+              "kind": "zone",
+              "ids": [],
+              "axis": "x",
+              "direction": "<",
+              "boundary_m": 60.0
+            },
+            "fraction": 0.1
+          },
+          {
+            "kind": "throughput",
+            "group": {
+              "kind": "all",
+              "ids": [],
+              "axis": null,
+              "direction": null,
+              "boundary_m": null
+            },
+            "fraction": 0.1
+          }
+        ],
+        "conditional_floor": null
+      },
+      "receipt": {
+        "reader": "actual_d3_family_and_complete_literal_compiler",
+        "model_executed": true,
+        "cached": false,
+        "choice": "ordered",
+        "answer_probabilities": {
+          "conditional": 0.07672599996045791,
+          "floors": 0.19274716815225212,
+          "ordered": 0.7188049829294945,
+          "unsupported": 0.01172184895779547
+        },
+        "probabilities_are_physical_risk": false,
+        "latency_ms": 945.2272179987631
+      },
+      "abstained": false
+    },
+    {
+      "text": "Switch at most 5 robots; require service >= 12.5% for video robots at every offset; minimise switches; then maximise throughput.",
+      "embedding_ms": 695.5567959957989,
+      "model_executed": true,
+      "abstained": true,
+      "reason": "The semantic model abstained or disagreed with the explicit contract"
+    },
+    {
+      "text": "Switch at most 12 robots; require service >= 80% for teleoperated robots at every offset; minimise switches; then maximise throughput.",
+      "embedding_ms": 960.5106990056811,
+      "model_executed": true,
+      "abstained": true,
+      "reason": "The semantic model abstained or disagreed with the explicit contract"
+    },
+    {
+      "text": "Switch at most 8 robots; if any teleoperated robot has observed service < 75%, prioritise that group; maximise worst-served 20% service; then maximise throughput.",
+      "embedding_ms": 808.3929130007164,
+      "model_executed": true,
+      "abstained": true,
+      "reason": "The semantic model abstained or disagreed with the explicit contract"
+    },
+    {
+      "text": "Switch at most 12 robots; maximise service for robots with y >= 40 m; then minimise switches.",
+      "embedding_ms": 664.326907004579,
+      "model_executed": true,
+      "contract": {
+        "max_moves": 12,
+        "floors": [],
+        "priorities": [
+          {
+            "kind": "group_service",
+            "group": {
+              "kind": "zone",
+              "ids": [],
+              "axis": "y",
+              "direction": ">=",
+              "boundary_m": 40.0
+            },
+            "fraction": 0.1
+          },
+          {
+            "kind": "min_switches",
+            "group": {
+              "kind": "all",
+              "ids": [],
+              "axis": null,
+              "direction": null,
+              "boundary_m": null
+            },
+            "fraction": 0.1
+          }
+        ],
+        "conditional_floor": null
+      },
+      "receipt": {
+        "reader": "actual_d3_family_and_complete_literal_compiler",
+        "model_executed": true,
+        "cached": false,
+        "choice": "ordered",
+        "answer_probabilities": {
+          "conditional": 0.04289639088010135,
+          "floors": 0.07673623577219753,
+          "ordered": 0.8736687489732925,
+          "unsupported": 0.006698624374408611
+        },
+        "probabilities_are_physical_risk": false,
+        "latency_ms": 898.8323129960918
+      },
+      "abstained": false
+    },
+    {
+      "text": "Switch at most 12 robots; require service >= 100% for all robots at every offset; minimise switches; then maximise throughput.",
+      "embedding_ms": 670.826996996766,
+      "model_executed": true,
+      "abstained": true,
+      "reason": "The semantic model abstained or disagreed with the explicit contract"
+    }
+  ],
+  "embedding_sha256": "dedcdcec546ae64238f02018266f336f485688fb10ef7627a06f4043688f28d5",
+  "probabilities_are_physical_risk": false
+}

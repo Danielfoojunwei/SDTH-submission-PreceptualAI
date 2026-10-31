@@ -1,0 +1,45 @@
+{
+  "model": {
+    "repo": "vllm-sr/d3-lite",
+    "revision": "03560c26f5199c3c04129a2ccb38960c913635e0"
+  },
+  "model_executed": true,
+  "readings": {
+    "throughput": {
+      "text": "Reconnect at most 12 robots per decision; maximise total data delivered. Apply a penalty of 1 per fraction of robots with critical-link failures.",
+      "choice": "throughput",
+      "probabilities": {
+        "throughput": 0.9947582291863398,
+        "tail": 0.003127955118309534,
+        "unsupported": 0.0021138156953506787
+      },
+      "model_executed": true,
+      "latency_ms": 1427.4953339991043,
+      "probabilities_are_physical_risk": false,
+      "contract": {
+        "objective": "throughput",
+        "max_moves": 12,
+        "critical_penalty": 1.0,
+        "tail_fraction": 0.1
+      }
+    },
+    "tail": {
+      "text": "Reconnect at most 12 robots per decision; maximise average service of the worst-served 10% of robots. Apply a penalty of 1 per fraction of robots with critical-link failures.",
+      "choice": "tail",
+      "probabilities": {
+        "throughput": 0.000699569273002763,
+        "tail": 0.9985157149923543,
+        "unsupported": 0.0007847157346429937
+      },
+      "model_executed": true,
+      "latency_ms": 924.263755998254,
+      "probabilities_are_physical_risk": false,
+      "contract": {
+        "objective": "tail",
+        "max_moves": 12,
+        "critical_penalty": 1.0,
+        "tail_fraction": 0.1
+      }
+    }
+  }
+}

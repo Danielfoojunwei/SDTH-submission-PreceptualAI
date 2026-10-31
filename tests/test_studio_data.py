@@ -77,3 +77,14 @@ def test_training_snapshot_rejects_smoke_or_missing_completed_results(tmp_path):
         "stages": {"e1_no_llm": {"status": "completed"}}}))
     with pytest.raises(FileNotFoundError):
         studio_data.training_snapshot(tmp_path)
+
+
+def test_native_export_keeps_completion_and_label_audit_together(monkeypatch):
+    snapshot={'state':'completed','model_checkpoints_finished':6}
+    audit={'risk_discrimination_testable':False}
+    monkeypatch.setattr(studio_data,'_load',{'artifacts/warehouse_native/snapshot.json':snapshot,
+        'artifacts/warehouse_native/postrun_audit.json':audit}.get)
+    value=studio_data.build()['warehouse_native']
+    assert value['state']=='completed' and value['model_checkpoints_finished']==6
+    assert value['postrun_audit'] is audit
+    assert 'postrun_audit' not in snapshot

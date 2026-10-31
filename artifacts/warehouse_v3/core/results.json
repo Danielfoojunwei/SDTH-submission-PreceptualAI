@@ -1,0 +1,4062 @@
+{
+  "source": "simulation",
+  "results": [
+    {
+      "domain": "ordinary",
+      "method": "numerical",
+      "summary": {
+        "service_rmse": 0.4108767984750882,
+        "raw_quantile_80_coverage": 1.0,
+        "risk": {
+          "brier": 0.1952570056708475,
+          "log_loss": 0.5824079427841535,
+          "ece": 0.07754375806609512,
+          "reliability": [
+            {
+              "n": 80239,
+              "predicted": 0.18049882352352142,
+              "observed": 0.305287952242675
+            },
+            {
+              "n": 132530,
+              "predicted": 0.8195012211799622,
+              "observed": 0.7686712442465857
+            },
+            {
+              "n": 3231,
+              "predicted": 1.0,
+              "observed": 1.0
+            }
+          ]
+        },
+        "cases": 300,
+        "proposal_coverage": 0.6,
+        "false_feasible_fraction": 0.0,
+        "truth_has_feasible_candidate_fraction": 0.6,
+        "ordinal_regret_when_feasible": {
+          "mean": 0.2269921436588103,
+          "ci95": [
+            0.15834175084175084,
+            0.3044528619528619
+          ],
+          "clusters": 3,
+          "method": "scene_cluster_percentile_bootstrap"
+        }
+      },
+      "evaluation_elapsed_s": 0.2074434999958612
+    },
+    {
+      "domain": "ordinary",
+      "method": "mlp-0",
+      "summary": {
+        "service_rmse": 0.33136421378413766,
+        "raw_quantile_80_coverage": 0.9198055555555555,
+        "risk": {
+          "brier": 0.1585122612352455,
+          "log_loss": 0.48266361935713065,
+          "ece": 0.028051888795767886,
+          "reliability": [
+            {
+              "n": 12451,
+              "predicted": 0.06199198831182442,
+              "observed": 0.10039354268733434
+            },
+            {
+              "n": 17926,
+              "predicted": 0.150335778356842,
+              "observed": 0.20071404663617093
+            },
+            {
+              "n": 16873,
+              "predicted": 0.24868984101916974,
+              "observed": 0.2877970722455995
+            },
+            {
+              "n": 16654,
+              "predicted": 0.35008970286124064,
+              "observed": 0.3600336255554221
+            },
+            {
+              "n": 17187,
+              "predicted": 0.4511450554276245,
+              "observed": 0.4267178681561645
+            },
+            {
+              "n": 17350,
+              "predicted": 0.5495042106431911,
+              "observed": 0.5171181556195965
+            },
+            {
+              "n": 17743,
+              "predicted": 0.6514602447586735,
+              "observed": 0.578087132953841
+            },
+            {
+              "n": 19071,
+              "predicted": 0.7506836732984946,
+              "observed": 0.6912065439672802
+            },
+            {
+              "n": 26341,
+              "predicted": 0.8548044315535235,
+              "observed": 0.8501195854371512
+            },
+            {
+              "n": 54404,
+              "predicted": 0.9571400609895347,
+              "observed": 0.9514190133078451
+            }
+          ]
+        },
+        "cases": 300,
+        "proposal_coverage": 0.6,
+        "false_feasible_fraction": 0.0,
+        "truth_has_feasible_candidate_fraction": 0.6,
+        "ordinal_regret_when_feasible": {
+          "mean": 0.1729489337822671,
+          "ci95": [
+            0.13494107744107744,
+            0.21079124579124578
+          ],
+          "clusters": 3,
+          "method": "scene_cluster_percentile_bootstrap"
+        }
+      },
+      "evaluation_elapsed_s": 0.34067854000022635
+    },
+    {
+      "domain": "ordinary",
+      "method": "graph_scratch-0",
+      "summary": {
+        "service_rmse": 0.3288655776754978,
+        "raw_quantile_80_coverage": 0.9434814814814815,
+        "risk": {
+          "brier": 0.15754786433794252,
+          "log_loss": 0.4792396861435677,
+          "ece": 0.0418356789910683,
+          "reliability": [
+            {
+              "n": 17117,
+              "predicted": 0.061518726871396964,
+              "observed": 0.10352281357714553
+            },
+            {
+              "n": 22635,
+              "predicted": 0.14998034486707168,
+              "observed": 0.2417936823503424
+            },
+            {
+              "n": 21754,
+              "predicted": 0.24925310908994594,
+              "observed": 0.3312953939505378
+            },
+            {
+              "n": 19588,
+              "predicted": 0.35005638801810546,
+              "observed": 0.4251582601592812
+            },
+            {
+              "n": 16657,
+              "predicted": 0.449819101424265,
+              "observed": 0.5010506093534249
+            },
+            {
+              "n": 15919,
+              "predicted": 0.5496572950533477,
+              "observed": 0.581443558012438
+            },
+            {
+              "n": 14576,
+              "predicted": 0.6491248457029085,
+              "observed": 0.6519621295279913
+            },
+            {
+              "n": 16655,
+              "predicted": 0.7522723786503801,
+              "observed": 0.7752026418492945
+            },
+            {
+              "n": 23668,
+              "predicted": 0.8539577314247044,
+              "observed": 0.897836741592023
+            },
+            {
+              "n": 47431,
+              "predicted": 0.9569832485766322,
+              "observed": 0.9604056418797833
+            }
+          ]
+        },
+        "cases": 300,
+        "proposal_coverage": 0.6,
+        "false_feasible_fraction": 0.0,
+        "truth_has_feasible_candidate_fraction": 0.6,
+        "ordinal_regret_when_feasible": {
+          "mean": 0.2000196408529742,
+          "ci95": [
+            0.16145622895622896,
+            0.22099326599326602
+          ],
+          "clusters": 3,
+          "method": "scene_cluster_percentile_bootstrap"
+        }
+      },
+      "evaluation_elapsed_s": 0.30321802900289185
+    },
+    {
+      "domain": "ordinary",
+      "method": "graph_masked-0",
+      "summary": {
+        "service_rmse": 0.33282959532299544,
+        "raw_quantile_80_coverage": 0.9542175925925925,
+        "risk": {
+          "brier": 0.15829834292610903,
+          "log_loss": 0.4806703580123777,
+          "ece": 0.03113118184900077,
+          "reliability": [
+            {
+              "n": 13168,
+              "predicted": 0.06160112455497011,
+              "observed": 0.09781287970838397
+            },
+            {
+              "n": 18151,
+              "predicted": 0.14985090702432266,
+              "observed": 0.20125612913889043
+            },
+            {
+              "n": 16080,
+              "predicted": 0.24878988529726936,
+              "observed": 0.2822139303482587
+            },
+            {
+              "n": 14934,
+              "predicted": 0.34941726363821174,
+              "observed": 0.3633989554037766
+            },
+            {
+              "n": 15621,
+              "predicted": 0.45049554005977815,
+              "observed": 0.42065168683182896
+            },
+            {
+              "n": 17214,
+              "predicted": 0.5502947406118113,
+              "observed": 0.508074822818636
+            },
+            {
+              "n": 18203,
+              "predicted": 0.6498194938962593,
+              "observed": 0.5565566115475471
+            },
+            {
+              "n": 21360,
+              "predicted": 0.7517500213329935,
+              "observed": 0.6943352059925093
+            },
+            {
+              "n": 30540,
+              "predicted": 0.8542523804098153,
+              "observed": 0.847871643745907
+            },
+            {
+              "n": 50729,
+              "predicted": 0.9514024606294622,
+              "observed": 0.9564548877367975
+            }
+          ]
+        },
+        "cases": 300,
+        "proposal_coverage": 0.6,
+        "false_feasible_fraction": 0.0,
+        "truth_has_feasible_candidate_fraction": 0.6,
+        "ordinal_regret_when_feasible": {
+          "mean": 0.17148428731762067,
+          "ci95": [
+            0.11761784511784512,
+            0.20157407407407407
+          ],
+          "clusters": 3,
+          "method": "scene_cluster_percentile_bootstrap"
+        }
+      },
+      "evaluation_elapsed_s": 0.3046744440071052
+    },
+    {
+      "domain": "ordinary",
+      "method": "graph_jepa-0",
+      "summary": {
+        "service_rmse": 0.3273239384079728,
+        "raw_quantile_80_coverage": 0.9454583333333332,
+        "risk": {
+          "brier": 0.16131602893349808,
+          "log_loss": 0.4845766382902975,
+          "ece": 0.04023896552249573,
+          "reliability": [
+            {
+              "n": 6335,
+              "predicted": 0.07133847088946269,
+              "observed": 0.11365430149960537
+            },
+            {
+              "n": 16226,
+              "predicted": 0.15092548088403734,
+              "observed": 0.15715518303956613
+            },
+            {
+              "n": 15326,
+              "predicted": 0.2508202502019067,
+              "observed": 0.26693201096176433
+            },
+            {
+              "n": 15753,
+              "predicted": 0.3507203619714571,
+              "observed": 0.30387862629340445
+            },
+            {
+              "n": 17203,
+              "predicted": 0.45162197797996795,
+              "observed": 0.4050456315758879
+            },
+            {
+              "n": 19714,
+              "predicted": 0.5505585542397095,
+              "observed": 0.46261540022319164
+            },
+            {
+              "n": 21210,
+              "predicted": 0.6494630712824349,
+              "observed": 0.5394153701084394
+            },
+            {
+              "n": 22472,
+              "predicted": 0.749248886846295,
+              "observed": 0.6593983624065504
+            },
+            {
+              "n": 30072,
+              "predicted": 0.8537631593436502,
+              "observed": 0.8470670391061452
+            },
+            {
+              "n": 51689,
+              "predicted": 0.9553856094940391,
+              "observed": 0.9601849523109366
+            }
+          ]
+        },
+        "cases": 300,
+        "proposal_coverage": 0.6,
+        "false_feasible_fraction": 0.0,
+        "truth_has_feasible_candidate_fraction": 0.6,
+        "ordinal_regret_when_feasible": {
+          "mean": 0.17861391694725026,
+          "ci95": [
+            0.1161026936026936,
+            0.22753367003367003
+          ],
+          "clusters": 3,
+          "method": "scene_cluster_percentile_bootstrap"
+        }
+      },
+      "evaluation_elapsed_s": 0.28535273899615277
+    },
+    {
+      "domain": "ordinary",
+      "method": "mlp-1",
+      "summary": {
+        "service_rmse": 0.3272919810288843,
+        "raw_quantile_80_coverage": 0.924273148148148,
+        "risk": {
+          "brier": 0.15888412957143683,
+          "log_loss": 0.48436584265290394,
+          "ece": 0.031801660406649,
+          "reliability": [
+            {
+              "n": 15403,
+              "predicted": 0.058497056321418786,
+              "observed": 0.10660260988119198
+            },
+            {
+              "n": 18341,
+              "predicted": 0.15085522675633165,
+              "observed": 0.2148737800556131
+            },
+            {
+              "n": 17206,
+              "predicted": 0.24903909178299363,
+              "observed": 0.2983842845519005
+            },
+            {
+              "n": 16094,
+              "predicted": 0.3497570422501746,
+              "observed": 0.3786504287312042
+            },
+            {
+              "n": 16586,
+              "predicted": 0.45012825331619793,
+              "observed": 0.4706378873748945
+            },
+            {
+              "n": 16810,
+              "predicted": 0.5490472235259806,
+              "observed": 0.5193932183224271
+            },
+            {
+              "n": 17005,
+              "predicted": 0.650886018908539,
+              "observed": 0.5654807409585416
+            },
+            {
+              "n": 20044,
+              "predicted": 0.7534271696267597,
+              "observed": 0.7114847335861105
+            },
+            {
+              "n": 26797,
+              "predicted": 0.8538877840704423,
+              "observed": 0.8639399932828302
+            },
+            {
+              "n": 51714,
+              "predicted": 0.9564517222360147,
+              "observed": 0.9518312255868817
+            }
+          ]
+        },
+        "cases": 300,
+        "proposal_coverage": 0.6,
+        "false_feasible_fraction": 0.0,
+        "truth_has_feasible_candidate_fraction": 0.6,
+        "ordinal_regret_when_feasible": {
+          "mean": 0.16301627384960718,
+          "ci95": [
+            0.12938552188552188,
+            0.18048821548821548
+          ],
+          "clusters": 3,
+          "method": "scene_cluster_percentile_bootstrap"
+        }
+      },
+      "evaluation_elapsed_s": 0.29849409199960064
+    },
+    {
+      "domain": "ordinary",
+      "method": "graph_scratch-1",
+      "summary": {
+        "service_rmse": 0.32960267574488367,
+        "raw_quantile_80_coverage": 0.9317453703703703,
+        "risk": {
+          "brier": 0.15681850252166252,
+          "log_loss": 0.4780625770008936,
+          "ece": 0.02501633796539736,
+          "reliability": [
+            {
+              "n": 14564,
+              "predicted": 0.06058662276054724,
+              "observed": 0.09001647898928866
+            },
+            {
+              "n": 17497,
+              "predicted": 0.14922273110483567,
+              "observed": 0.20786420529233582
+            },
+            {
+              "n": 16766,
+              "predicted": 0.24847642750305193,
+              "observed": 0.2843254204938566
+            },
+            {
+              "n": 16478,
+              "predicted": 0.35156632175989877,
+              "observed": 0.36454666828498605
+            },
+            {
+              "n": 16799,
+              "predicted": 0.4497764992003597,
+              "observed": 0.45621763200190485
+            },
+            {
+              "n": 17776,
+              "predicted": 0.550265952649683,
+              "observed": 0.5192956795679567
+            },
+            {
+              "n": 16624,
+              "predicted": 0.6494197140378776,
+              "observed": 0.5766963426371511
+            },
+            {
+              "n": 18785,
+              "predicted": 0.7523266498859112,
+              "observed": 0.7049773755656109
+            },
+            {
+              "n": 26295,
+              "predicted": 0.852680279624215,
+              "observed": 0.8532420612283704
+            },
+            {
+              "n": 54416,
+              "predicted": 0.9570349654189911,
+              "observed": 0.9503822405174949
+            }
+          ]
+        },
+        "cases": 300,
+        "proposal_coverage": 0.6,
+        "false_feasible_fraction": 0.0,
+        "truth_has_feasible_candidate_fraction": 0.6,
+        "ordinal_regret_when_feasible": {
+          "mean": 0.17357182940516272,
+          "ci95": [
+            0.13554713804713805,
+            0.1967760942760943
+          ],
+          "clusters": 3,
+          "method": "scene_cluster_percentile_bootstrap"
+        }
+      },
+      "evaluation_elapsed_s": 0.35617300200101454
+    },
+    {
+      "domain": "ordinary",
+      "method": "graph_masked-1",
+      "summary": {
+        "service_rmse": 0.33108801436459,
+        "raw_quantile_80_coverage": 0.9514444444444444,
+        "risk": {
+          "brier": 0.1576132518036913,
+          "log_loss": 0.4798838561106099,
+          "ece": 0.028309628859181726,
+          "reliability": [
+            {
+              "n": 15948,
+              "predicted": 0.05902990925323511,
+              "observed": 0.10690995736142463
+            },
+            {
+              "n": 18487,
+              "predicted": 0.14957231541401042,
+              "observed": 0.22150700492237788
+            },
+            {
+              "n": 17454,
+              "predicted": 0.25026597111812776,
+              "observed": 0.3067491692448722
+            },
+            {
+              "n": 16998,
+              "predicted": 0.3496702928843393,
+              "observed": 0.3733380397693846
+            },
+            {
+              "n": 16622,
+              "predicted": 0.45009977172111265,
+              "observed": 0.46137648899049455
+            },
+            {
+              "n": 17503,
+              "predicted": 0.5499574349708831,
+              "observed": 0.5238530537622121
+            },
+            {
+              "n": 17043,
+              "predicted": 0.6495068857754186,
+              "observed": 0.6041189931350115
+            },
+            {
+              "n": 18775,
+              "predicted": 0.7523607274695496,
+              "observed": 0.7180825565912117
+            },
+            {
+              "n": 27151,
+              "predicted": 0.8545926460916484,
+              "observed": 0.8669662259216971
+            },
+            {
+              "n": 50019,
+              "predicted": 0.9538005565378652,
+              "observed": 0.9585157640096763
+            }
+          ]
+        },
+        "cases": 300,
+        "proposal_coverage": 0.6033333333333334,
+        "false_feasible_fraction": 0.0033333333333333335,
+        "truth_has_feasible_candidate_fraction": 0.6,
+        "ordinal_regret_when_feasible": {
+          "mean": 0.17936307519640854,
+          "ci95": [
+            0.12691077441077442,
+            0.21950336700336698
+          ],
+          "clusters": 3,
+          "method": "scene_cluster_percentile_bootstrap"
+        }
+      },
+      "evaluation_elapsed_s": 0.30890842199733015
+    },
+    {
+      "domain": "ordinary",
+      "method": "graph_jepa-1",
+      "summary": {
+        "service_rmse": 0.32804601921083654,
+        "raw_quantile_80_coverage": 0.9532175925925925,
+        "risk": {
+          "brier": 0.15826597720540023,
+          "log_loss": 0.47770712195878445,
+          "ece": 0.024007718529547927,
+          "reliability": [
+            {
+              "n": 12548,
+              "predicted": 0.06622096499602423,
+              "observed": 0.10886197003506536
+            },
+            {
+              "n": 18929,
+              "predicted": 0.14809025164030956,
+              "observed": 0.2047123461355592
+            },
+            {
+              "n": 17925,
+              "predicted": 0.2507994412635992,
+              "observed": 0.3170432357043236
+            },
+            {
+              "n": 19198,
+              "predicted": 0.35014543774159257,
+              "observed": 0.3676424627565371
+            },
+            {
+              "n": 20530,
+              "predicted": 0.4497275991464207,
+              "observed": 0.45572333170969315
+            },
+            {
+              "n": 18394,
+              "predicted": 0.5495001848001668,
+              "observed": 0.533054256822877
+            },
+            {
+              "n": 17344,
+              "predicted": 0.6497558252404811,
+              "observed": 0.6113929889298892
+            },
+            {
+              "n": 18235,
+              "predicted": 0.7506455354276081,
+              "observed": 0.744228132711818
+            },
+            {
+              "n": 24300,
+              "predicted": 0.8543101902557498,
+              "observed": 0.8772427983539095
+            },
+            {
+              "n": 48597,
+              "predicted": 0.9604248656121135,
+              "observed": 0.9663971027018129
+            }
+          ]
+        },
+        "cases": 300,
+        "proposal_coverage": 0.6,
+        "false_feasible_fraction": 0.0,
+        "truth_has_feasible_candidate_fraction": 0.6,
+        "ordinal_regret_when_feasible": {
+          "mean": 0.18925364758698093,
+          "ci95": [
+            0.1506986531986532,
+            0.22483164983164983
+          ],
+          "clusters": 3,
+          "method": "scene_cluster_percentile_bootstrap"
+        }
+      },
+      "evaluation_elapsed_s": 0.3904608040029416
+    },
+    {
+      "domain": "ordinary",
+      "method": "mlp-2",
+      "summary": {
+        "service_rmse": 0.3366611818696373,
+        "raw_quantile_80_coverage": 0.9231944444444443,
+        "risk": {
+          "brier": 0.15785448655979029,
+          "log_loss": 0.480822535779425,
+          "ece": 0.027787925319284788,
+          "reliability": [
+            {
+              "n": 10912,
+              "predicted": 0.06474913964811044,
+              "observed": 0.0846774193548387
+            },
+            {
+              "n": 18138,
+              "predicted": 0.15110371920507829,
+              "observed": 0.1944536332561473
+            },
+            {
+              "n": 18817,
+              "predicted": 0.24947498936423676,
+              "observed": 0.27549556252325025
+            },
+            {
+              "n": 17515,
+              "predicted": 0.3495097383563259,
+              "observed": 0.3766485869254924
+            },
+            {
+              "n": 17051,
+              "predicted": 0.4504147811401877,
+              "observed": 0.44841944753973373
+            },
+            {
+              "n": 16103,
+              "predicted": 0.5497740142753922,
+              "observed": 0.5052474694156368
+            },
+            {
+              "n": 16754,
+              "predicted": 0.6514528877121517,
+              "observed": 0.5647009669332697
+            },
+            {
+              "n": 19252,
+              "predicted": 0.7509869939908649,
+              "observed": 0.6934863910243092
+            },
+            {
+              "n": 25009,
+              "predicted": 0.8552250134134107,
+              "observed": 0.8449358231036826
+            },
+            {
+              "n": 56449,
+              "predicted": 0.9585057068739891,
+              "observed": 0.9502736983826109
+            }
+          ]
+        },
+        "cases": 300,
+        "proposal_coverage": 0.6,
+        "false_feasible_fraction": 0.0,
+        "truth_has_feasible_candidate_fraction": 0.6,
+        "ordinal_regret_when_feasible": {
+          "mean": 0.17028058361391696,
+          "ci95": [
+            0.1344360269360269,
+            0.19561447811447807
+          ],
+          "clusters": 3,
+          "method": "scene_cluster_percentile_bootstrap"
+        }
+      },
+      "evaluation_elapsed_s": 0.4103291920037009
+    },
+    {
+      "domain": "ordinary",
+      "method": "graph_scratch-2",
+      "summary": {
+        "service_rmse": 0.3268722444023056,
+        "raw_quantile_80_coverage": 0.9256018518518518,
+        "risk": {
+          "brier": 0.15408476435593557,
+          "log_loss": 0.47117565407625545,
+          "ece": 0.026497264107143825,
+          "reliability": [
+            {
+              "n": 15963,
+              "predicted": 0.0581786615169548,
+              "observed": 0.09227588799097913
+            },
+            {
+              "n": 18825,
+              "predicted": 0.15017275462389626,
+              "observed": 0.21163346613545816
+            },
+            {
+              "n": 17725,
+              "predicted": 0.24855658321689988,
+              "observed": 0.2863187588152327
+            },
+            {
+              "n": 17284,
+              "predicted": 0.35013099893620653,
+              "observed": 0.38677389493172876
+            },
+            {
+              "n": 16286,
+              "predicted": 0.44976456473035603,
+              "observed": 0.4737197593024684
+            },
+            {
+              "n": 16063,
+              "predicted": 0.5495004065565323,
+              "observed": 0.526551702670734
+            },
+            {
+              "n": 15880,
+              "predicted": 0.6492706124142976,
+              "observed": 0.5967254408060454
+            },
+            {
+              "n": 17089,
+              "predicted": 0.7518021260445473,
+              "observed": 0.7166598396629411
+            },
+            {
+              "n": 23803,
+              "predicted": 0.8535092177773876,
+              "observed": 0.8424568331722893
+            },
+            {
+              "n": 57082,
+              "predicted": 0.9581942407882964,
+              "observed": 0.9535930766266073
+            }
+          ]
+        },
+        "cases": 300,
+        "proposal_coverage": 0.6,
+        "false_feasible_fraction": 0.0,
+        "truth_has_feasible_candidate_fraction": 0.6,
+        "ordinal_regret_when_feasible": {
+          "mean": 0.18142536475869808,
+          "ci95": [
+            0.16695286195286194,
+            0.20010942760942763
+          ],
+          "clusters": 3,
+          "method": "scene_cluster_percentile_bootstrap"
+        }
+      },
+      "evaluation_elapsed_s": 0.3449142800018308
+    },
+    {
+      "domain": "ordinary",
+      "method": "graph_masked-2",
+      "summary": {
+        "service_rmse": 0.33238638314107616,
+        "raw_quantile_80_coverage": 0.9388287037037039,
+        "risk": {
+          "brier": 0.16050469350449242,
+          "log_loss": 0.48672423973506534,
+          "ece": 0.027978112161775023,
+          "reliability": [
+            {
+              "n": 12552,
+              "predicted": 0.06304764821351187,
+              "observed": 0.10109942638623327
+            },
+            {
+              "n": 17473,
+              "predicted": 0.150427352257765,
+              "observed": 0.2011102844388485
+            },
+            {
+              "n": 16507,
+              "predicted": 0.24811168665591857,
+              "observed": 0.27830617313866846
+            },
+            {
+              "n": 15697,
+              "predicted": 0.34941280413115944,
+              "observed": 0.3697521819455947
+            },
+            {
+              "n": 16668,
+              "predicted": 0.4509286340071281,
+              "observed": 0.4419246460283177
+            },
+            {
+              "n": 18623,
+              "predicted": 0.5502899398111358,
+              "observed": 0.516189657949847
+            },
+            {
+              "n": 18157,
+              "predicted": 0.6495652645276482,
+              "observed": 0.5633089166712563
+            },
+            {
+              "n": 21137,
+              "predicted": 0.7524782876652102,
+              "observed": 0.6875620949046696
+            },
+            {
+              "n": 29400,
+              "predicted": 0.8537810457685366,
+              "observed": 0.8573809523809524
+            },
+            {
+              "n": 49786,
+              "predicted": 0.9528357272757659,
+              "observed": 0.9535009842124292
+            }
+          ]
+        },
+        "cases": 300,
+        "proposal_coverage": 0.6,
+        "false_feasible_fraction": 0.0,
+        "truth_has_feasible_candidate_fraction": 0.6,
+        "ordinal_regret_when_feasible": {
+          "mean": 0.17652356902356903,
+          "ci95": [
+            0.1207996632996633,
+            0.2137457912457912
+          ],
+          "clusters": 3,
+          "method": "scene_cluster_percentile_bootstrap"
+        }
+      },
+      "evaluation_elapsed_s": 0.2635789659980219
+    },
+    {
+      "domain": "ordinary",
+      "method": "graph_jepa-2",
+      "summary": {
+        "service_rmse": 0.32460090776321854,
+        "raw_quantile_80_coverage": 0.9524027777777777,
+        "risk": {
+          "brier": 0.1608818571348998,
+          "log_loss": 0.4842662662178888,
+          "ece": 0.02567425868429753,
+          "reliability": [
+            {
+              "n": 9412,
+              "predicted": 0.06923923935192802,
+              "observed": 0.10815979600509987
+            },
+            {
+              "n": 17251,
+              "predicted": 0.14786342190895266,
+              "observed": 0.1848588487623906
+            },
+            {
+              "n": 15900,
+              "predicted": 0.25015148423096667,
+              "observed": 0.28465408805031445
+            },
+            {
+              "n": 17557,
+              "predicted": 0.3522465178738655,
+              "observed": 0.34009227088910404
+            },
+            {
+              "n": 19959,
+              "predicted": 0.4508658746773784,
+              "observed": 0.4445613507690766
+            },
+            {
+              "n": 21576,
+              "predicted": 0.5500473624877811,
+              "observed": 0.5130237300704487
+            },
+            {
+              "n": 21148,
+              "predicted": 0.6493551232750754,
+              "observed": 0.5789199924342727
+            },
+            {
+              "n": 21368,
+              "predicted": 0.7511767370424793,
+              "observed": 0.7314208161737177
+            },
+            {
+              "n": 26277,
+              "predicted": 0.8518808756752202,
+              "observed": 0.8822924991437379
+            },
+            {
+              "n": 45552,
+              "predicted": 0.9605145505542791,
+              "observed": 0.9636678960309097
+            }
+          ]
+        },
+        "cases": 300,
+        "proposal_coverage": 0.6,
+        "false_feasible_fraction": 0.0,
+        "truth_has_feasible_candidate_fraction": 0.6,
+        "ordinal_regret_when_feasible": {
+          "mean": 0.18937991021324357,
+          "ci95": [
+            0.1556228956228956,
+            0.2073821548821549
+          ],
+          "clusters": 3,
+          "method": "scene_cluster_percentile_bootstrap"
+        }
+      },
+      "evaluation_elapsed_s": 0.28522492200136185
+    },
+    {
+      "domain": "ordinary",
+      "method": "validation_router",
+      "summary": {
+        "cases": 300,
+        "proposal_coverage": 0.6,
+        "false_feasible_fraction": 0.0,
+        "truth_has_feasible_candidate_fraction": 0.6,
+        "ordinal_regret_when_feasible": {
+          "mean": 0.19268799102132436,
+          "ci95": [
+            0.16301346801346803,
+            0.2285942760942761
+          ],
+          "clusters": 3,
+          "method": "scene_cluster_percentile_bootstrap"
+        }
+      }
+    },
+    {
+      "domain": "layout",
+      "method": "numerical",
+      "summary": {
+        "service_rmse": 0.35497056796449217,
+        "raw_quantile_80_coverage": 1.0,
+        "risk": {
+          "brier": 0.17187387755515993,
+          "log_loss": 0.5270863940594006,
+          "ece": 0.09578542617874014,
+          "reliability": [
+            {
+              "n": 69016,
+              "predicted": 0.18049882352352142,
+              "observed": 0.3943433406746262
+            },
+            {
+              "n": 143829,
+              "predicted": 0.8195012211799622,
+              "observed": 0.860737403444368
+            },
+            {
+              "n": 3155,
+              "predicted": 1.0,
+              "observed": 1.0
+            }
+          ]
+        },
+        "cases": 300,
+        "proposal_coverage": 0.6,
+        "false_feasible_fraction": 0.0,
+        "truth_has_feasible_candidate_fraction": 0.6,
+        "ordinal_regret_when_feasible": {
+          "mean": 0.15984848484848485,
+          "ci95": [
+            0.1381313131313131,
+            0.1816835016835017
+          ],
+          "clusters": 3,
+          "method": "scene_cluster_percentile_bootstrap"
+        }
+      },
+      "evaluation_elapsed_s": 0.17361563900340116
+    },
+    {
+      "domain": "layout",
+      "method": "mlp-0",
+      "summary": {
+        "service_rmse": 0.3114563596800251,
+        "raw_quantile_80_coverage": 0.9486759259259259,
+        "risk": {
+          "brier": 0.13553122416804544,
+          "log_loss": 0.4240861623199497,
+          "ece": 0.026544559766038284,
+          "reliability": [
+            {
+              "n": 5907,
+              "predicted": 0.07021158377715471,
+              "observed": 0.14491281530387676
+            },
+            {
+              "n": 13820,
+              "predicted": 0.15236990765308592,
+              "observed": 0.23589001447178004
+            },
+            {
+              "n": 14850,
+              "predicted": 0.2504321568220954,
+              "observed": 0.31851851851851853
+            },
+            {
+              "n": 14196,
+              "predicted": 0.34861669712509696,
+              "observed": 0.41927303465765003
+            },
+            {
+              "n": 12126,
+              "predicted": 0.4498250279664679,
+              "observed": 0.5032986970146792
+            },
+            {
+              "n": 10741,
+              "predicted": 0.5478441391274446,
+              "observed": 0.5551624615957546
+            },
+            {
+              "n": 12440,
+              "predicted": 0.6526222734014321,
+              "observed": 0.6438102893890675
+            },
+            {
+              "n": 18096,
+              "predicted": 0.7538155896521637,
+              "observed": 0.7440870910698497
+            },
+            {
+              "n": 27017,
+              "predicted": 0.8533778950976298,
+              "observed": 0.8484657808046785
+            },
+            {
+              "n": 86807,
+              "predicted": 0.9663689636086352,
+              "observed": 0.9550957872061009
+            }
+          ]
+        },
+        "cases": 300,
+        "proposal_coverage": 0.6,
+        "false_feasible_fraction": 0.0,
+        "truth_has_feasible_candidate_fraction": 0.6,
+        "ordinal_regret_when_feasible": {
+          "mean": 0.1627581369248036,
+          "ci95": [
+            0.1265909090909091,
+            0.18837542087542086
+          ],
+          "clusters": 3,
+          "method": "scene_cluster_percentile_bootstrap"
+        }
+      },
+      "evaluation_elapsed_s": 0.24701139199896716
+    },
+    {
+      "domain": "layout",
+      "method": "graph_scratch-0",
+      "summary": {
+        "service_rmse": 0.3076830692831151,
+        "raw_quantile_80_coverage": 0.9573472222222221,
+        "risk": {
+          "brier": 0.13606572003556588,
+          "log_loss": 0.4246383897954692,
+          "ece": 0.03121237763971588,
+          "reliability": [
+            {
+              "n": 7441,
+              "predicted": 0.06928610734748189,
+              "observed": 0.16140303722617927
+            },
+            {
+              "n": 14432,
+              "predicted": 0.151054992386968,
+              "observed": 0.2567211751662971
+            },
+            {
+              "n": 15198,
+              "predicted": 0.25036483245262864,
+              "observed": 0.3261613370180287
+            },
+            {
+              "n": 13769,
+              "predicted": 0.34844846017342157,
+              "observed": 0.42109085627133414
+            },
+            {
+              "n": 11788,
+              "predicted": 0.44928768610131103,
+              "observed": 0.506956226671191
+            },
+            {
+              "n": 10748,
+              "predicted": 0.5494565219019797,
+              "observed": 0.5836434685522888
+            },
+            {
+              "n": 11727,
+              "predicted": 0.6519259829101146,
+              "observed": 0.6557516841476934
+            },
+            {
+              "n": 17377,
+              "predicted": 0.753451685684696,
+              "observed": 0.7478851355239685
+            },
+            {
+              "n": 26131,
+              "predicted": 0.8542925375190651,
+              "observed": 0.8483027821361602
+            },
+            {
+              "n": 87389,
+              "predicted": 0.9662650724864783,
+              "observed": 0.9544336243691998
+            }
+          ]
+        },
+        "cases": 300,
+        "proposal_coverage": 0.6,
+        "false_feasible_fraction": 0.0,
+        "truth_has_feasible_candidate_fraction": 0.6,
+        "ordinal_regret_when_feasible": {
+          "mean": 0.16404601571268237,
+          "ci95": [
+            0.1147979797979798,
+            0.20146464646464643
+          ],
+          "clusters": 3,
+          "method": "scene_cluster_percentile_bootstrap"
+        }
+      },
+      "evaluation_elapsed_s": 0.3069868009988568
+    },
+    {
+      "domain": "layout",
+      "method": "graph_masked-0",
+      "summary": {
+        "service_rmse": 0.3115690190751745,
+        "raw_quantile_80_coverage": 0.9600555555555556,
+        "risk": {
+          "brier": 0.14279504812361063,
+          "log_loss": 0.44232533812595404,
+          "ece": 0.041300134742718715,
+          "reliability": [
+            {
+              "n": 8721,
+              "predicted": 0.06896590840136796,
+              "observed": 0.23495012039903682
+            },
+            {
+              "n": 16644,
+              "predicted": 0.1507418959468023,
+              "observed": 0.29740447007930787
+            },
+            {
+              "n": 16366,
+              "predicted": 0.24944326100905337,
+              "observed": 0.3551875840156422
+            },
+            {
+              "n": 13070,
+              "predicted": 0.34689417155352636,
+              "observed": 0.44552410099464423
+            },
+            {
+              "n": 10006,
+              "predicted": 0.44808320781540306,
+              "observed": 0.5075954427343594
+            },
+            {
+              "n": 8911,
+              "predicted": 0.5499696764342914,
+              "observed": 0.5643586578386264
+            },
+            {
+              "n": 11627,
+              "predicted": 0.6543749819989564,
+              "observed": 0.6404919583727531
+            },
+            {
+              "n": 19253,
+              "predicted": 0.7526866022422147,
+              "observed": 0.7354697969147665
+            },
+            {
+              "n": 27569,
+              "predicted": 0.8536626702813218,
+              "observed": 0.8608219376836301
+            },
+            {
+              "n": 83833,
+              "predicted": 0.9624677345679427,
+              "observed": 0.955327854186299
+            }
+          ]
+        },
+        "cases": 300,
+        "proposal_coverage": 0.6,
+        "false_feasible_fraction": 0.0,
+        "truth_has_feasible_candidate_fraction": 0.6,
+        "ordinal_regret_when_feasible": {
+          "mean": 0.15998316498316498,
+          "ci95": [
+            0.11616161616161616,
+            0.18753367003367
+          ],
+          "clusters": 3,
+          "method": "scene_cluster_percentile_bootstrap"
+        }
+      },
+      "evaluation_elapsed_s": 0.34184644500055583
+    },
+    {
+      "domain": "layout",
+      "method": "graph_jepa-0",
+      "summary": {
+        "service_rmse": 0.31246899483385926,
+        "raw_quantile_80_coverage": 0.9579675925925926,
+        "risk": {
+          "brier": 0.14265467177835472,
+          "log_loss": 0.4380612468410569,
+          "ece": 0.03710416653312751,
+          "reliability": [
+            {
+              "n": 7534,
+              "predicted": 0.07032462971672893,
+              "observed": 0.253650119458455
+            },
+            {
+              "n": 15119,
+              "predicted": 0.1500849931361822,
+              "observed": 0.3055757655929625
+            },
+            {
+              "n": 16103,
+              "predicted": 0.24993411863504608,
+              "observed": 0.3557101161274297
+            },
+            {
+              "n": 14215,
+              "predicted": 0.34846689193088576,
+              "observed": 0.4046429827646852
+            },
+            {
+              "n": 11280,
+              "predicted": 0.4472601128755309,
+              "observed": 0.4879432624113475
+            },
+            {
+              "n": 9702,
+              "predicted": 0.5502756970969703,
+              "observed": 0.5567924139352711
+            },
+            {
+              "n": 11103,
+              "predicted": 0.6525683026802086,
+              "observed": 0.6137980725929929
+            },
+            {
+              "n": 17905,
+              "predicted": 0.7538307261447006,
+              "observed": 0.7287349902261938
+            },
+            {
+              "n": 29264,
+              "predicted": 0.8545021507532594,
+              "observed": 0.8535743575724439
+            },
+            {
+              "n": 83775,
+              "predicted": 0.964040819509319,
+              "observed": 0.9598448224410624
+            }
+          ]
+        },
+        "cases": 300,
+        "proposal_coverage": 0.6,
+        "false_feasible_fraction": 0.0,
+        "truth_has_feasible_candidate_fraction": 0.6,
+        "ordinal_regret_when_feasible": {
+          "mean": 0.17055555555555554,
+          "ci95": [
+            0.1451010101010101,
+            0.20554713804713806
+          ],
+          "clusters": 3,
+          "method": "scene_cluster_percentile_bootstrap"
+        }
+      },
+      "evaluation_elapsed_s": 0.2594439769964083
+    },
+    {
+      "domain": "layout",
+      "method": "mlp-1",
+      "summary": {
+        "service_rmse": 0.31420513259957733,
+        "raw_quantile_80_coverage": 0.9558842592592591,
+        "risk": {
+          "brier": 0.13733069303380555,
+          "log_loss": 0.4286254660199719,
+          "ece": 0.038987976425206634,
+          "reliability": [
+            {
+              "n": 8607,
+              "predicted": 0.06403794734449535,
+              "observed": 0.15963750435691879
+            },
+            {
+              "n": 15419,
+              "predicted": 0.14991923130198717,
+              "observed": 0.27025098903949674
+            },
+            {
+              "n": 15622,
+              "predicted": 0.2502697988459417,
+              "observed": 0.34220970426321856
+            },
+            {
+              "n": 13883,
+              "predicted": 0.3487433701772936,
+              "observed": 0.45191961391630053
+            },
+            {
+              "n": 12091,
+              "predicted": 0.4494064877617104,
+              "observed": 0.5217930692250434
+            },
+            {
+              "n": 10804,
+              "predicted": 0.5506147917322828,
+              "observed": 0.5896890040725657
+            },
+            {
+              "n": 12378,
+              "predicted": 0.6525518578211004,
+              "observed": 0.6838746162546453
+            },
+            {
+              "n": 16906,
+              "predicted": 0.752324497588327,
+              "observed": 0.7496155211167633
+            },
+            {
+              "n": 25423,
+              "predicted": 0.8539900057870914,
+              "observed": 0.8652794713448452
+            },
+            {
+              "n": 84867,
+              "predicted": 0.9668021028696159,
+              "observed": 0.9567087324873037
+            }
+          ]
+        },
+        "cases": 300,
+        "proposal_coverage": 0.6,
+        "false_feasible_fraction": 0.0,
+        "truth_has_feasible_candidate_fraction": 0.6,
+        "ordinal_regret_when_feasible": {
+          "mean": 0.1718490460157127,
+          "ci95": [
+            0.1353030303030303,
+            0.19035353535353536
+          ],
+          "clusters": 3,
+          "method": "scene_cluster_percentile_bootstrap"
+        }
+      },
+      "evaluation_elapsed_s": 0.2723428020035499
+    },
+    {
+      "domain": "layout",
+      "method": "graph_scratch-1",
+      "summary": {
+        "service_rmse": 0.31295004953937755,
+        "raw_quantile_80_coverage": 0.9539166666666665,
+        "risk": {
+          "brier": 0.13574462435566204,
+          "log_loss": 0.4247613051660275,
+          "ece": 0.031906263925710714,
+          "reliability": [
+            {
+              "n": 7831,
+              "predicted": 0.06726147776208899,
+              "observed": 0.14966160132805517
+            },
+            {
+              "n": 13729,
+              "predicted": 0.15088927225108764,
+              "observed": 0.2471410882074441
+            },
+            {
+              "n": 14696,
+              "predicted": 0.2494035516903575,
+              "observed": 0.3319270549809472
+            },
+            {
+              "n": 13925,
+              "predicted": 0.34967234041575257,
+              "observed": 0.41888689407540397
+            },
+            {
+              "n": 12828,
+              "predicted": 0.44969569362460693,
+              "observed": 0.5109136264421578
+            },
+            {
+              "n": 11565,
+              "predicted": 0.5502102263345896,
+              "observed": 0.5943795936013835
+            },
+            {
+              "n": 13185,
+              "predicted": 0.6532841175805904,
+              "observed": 0.6722791050436102
+            },
+            {
+              "n": 17413,
+              "predicted": 0.751406422472901,
+              "observed": 0.7581691839430311
+            },
+            {
+              "n": 25070,
+              "predicted": 0.8533580880099481,
+              "observed": 0.8577582768248903
+            },
+            {
+              "n": 85758,
+              "predicted": 0.9663216774129593,
+              "observed": 0.9549663005200681
+            }
+          ]
+        },
+        "cases": 300,
+        "proposal_coverage": 0.6,
+        "false_feasible_fraction": 0.0,
+        "truth_has_feasible_candidate_fraction": 0.6,
+        "ordinal_regret_when_feasible": {
+          "mean": 0.16431818181818184,
+          "ci95": [
+            0.13055555555555556,
+            0.18462962962962964
+          ],
+          "clusters": 3,
+          "method": "scene_cluster_percentile_bootstrap"
+        }
+      },
+      "evaluation_elapsed_s": 0.2981012950040167
+    },
+    {
+      "domain": "layout",
+      "method": "graph_masked-1",
+      "summary": {
+        "service_rmse": 0.3116275754718893,
+        "raw_quantile_80_coverage": 0.9631296296296294,
+        "risk": {
+          "brier": 0.14144389447534061,
+          "log_loss": 0.43989800998695333,
+          "ece": 0.038593534984893235,
+          "reliability": [
+            {
+              "n": 8780,
+              "predicted": 0.06756097694247927,
+              "observed": 0.2174259681093394
+            },
+            {
+              "n": 15062,
+              "predicted": 0.14923760566631408,
+              "observed": 0.2956446687026955
+            },
+            {
+              "n": 16239,
+              "predicted": 0.24901438295745784,
+              "observed": 0.34244719502432414
+            },
+            {
+              "n": 13997,
+              "predicted": 0.34714479020402084,
+              "observed": 0.4400943059226977
+            },
+            {
+              "n": 10876,
+              "predicted": 0.44864067831222254,
+              "observed": 0.5130562706877528
+            },
+            {
+              "n": 10073,
+              "predicted": 0.549507320489356,
+              "observed": 0.5680532115556438
+            },
+            {
+              "n": 12444,
+              "predicted": 0.6535542187143545,
+              "observed": 0.6500321440051431
+            },
+            {
+              "n": 18684,
+              "predicted": 0.7518884584904227,
+              "observed": 0.7587240419610362
+            },
+            {
+              "n": 27000,
+              "predicted": 0.8531191140898952,
+              "observed": 0.8632222222222222
+            },
+            {
+              "n": 82845,
+              "predicted": 0.964188672122199,
+              "observed": 0.9561590922807652
+            }
+          ]
+        },
+        "cases": 300,
+        "proposal_coverage": 0.6,
+        "false_feasible_fraction": 0.0,
+        "truth_has_feasible_candidate_fraction": 0.6,
+        "ordinal_regret_when_feasible": {
+          "mean": 0.17388888888888887,
+          "ci95": [
+            0.126010101010101,
+            0.21788720538720538
+          ],
+          "clusters": 3,
+          "method": "scene_cluster_percentile_bootstrap"
+        }
+      },
+      "evaluation_elapsed_s": 0.28510213700064924
+    },
+    {
+      "domain": "layout",
+      "method": "graph_jepa-1",
+      "summary": {
+        "service_rmse": 0.3105350739921302,
+        "raw_quantile_80_coverage": 0.9685555555555555,
+        "risk": {
+          "brier": 0.14432188244532132,
+          "log_loss": 0.44360701431059835,
+          "ece": 0.04900256681124382,
+          "reliability": [
+            {
+              "n": 11209,
+              "predicted": 0.06606085062335147,
+              "observed": 0.25104826478722453
+            },
+            {
+              "n": 17423,
+              "predicted": 0.15022869407531966,
+              "observed": 0.3331802789416289
+            },
+            {
+              "n": 16240,
+              "predicted": 0.24826485676131224,
+              "observed": 0.36336206896551726
+            },
+            {
+              "n": 13526,
+              "predicted": 0.34831991931196327,
+              "observed": 0.4473606387697767
+            },
+            {
+              "n": 10827,
+              "predicted": 0.44775232826561284,
+              "observed": 0.5167636464394569
+            },
+            {
+              "n": 10058,
+              "predicted": 0.5499841134752993,
+              "observed": 0.5817259892622788
+            },
+            {
+              "n": 11825,
+              "predicted": 0.6527827584163836,
+              "observed": 0.6780549682875264
+            },
+            {
+              "n": 16714,
+              "predicted": 0.7524414619176143,
+              "observed": 0.7474572214909656
+            },
+            {
+              "n": 25704,
+              "predicted": 0.8548063797475651,
+              "observed": 0.866324307500778
+            },
+            {
+              "n": 82474,
+              "predicted": 0.9668987671925446,
+              "observed": 0.9624123966340907
+            }
+          ]
+        },
+        "cases": 300,
+        "proposal_coverage": 0.6,
+        "false_feasible_fraction": 0.0,
+        "truth_has_feasible_candidate_fraction": 0.6,
+        "ordinal_regret_when_feasible": {
+          "mean": 0.1767003367003367,
+          "ci95": [
+            0.1262373737373737,
+            0.2119528619528619
+          ],
+          "clusters": 3,
+          "method": "scene_cluster_percentile_bootstrap"
+        }
+      },
+      "evaluation_elapsed_s": 0.2903869660003693
+    },
+    {
+      "domain": "layout",
+      "method": "mlp-2",
+      "summary": {
+        "service_rmse": 0.31351707277098806,
+        "raw_quantile_80_coverage": 0.9596388888888889,
+        "risk": {
+          "brier": 0.1351465779039322,
+          "log_loss": 0.42292034047178123,
+          "ece": 0.03146014977725977,
+          "reliability": [
+            {
+              "n": 6310,
+              "predicted": 0.06921883931534037,
+              "observed": 0.12393026941362915
+            },
+            {
+              "n": 14272,
+              "predicted": 0.15229472662729415,
+              "observed": 0.234375
+            },
+            {
+              "n": 15930,
+              "predicted": 0.2507006623463592,
+              "observed": 0.3421845574387947
+            },
+            {
+              "n": 14769,
+              "predicted": 0.3494085448335815,
+              "observed": 0.42616290879544994
+            },
+            {
+              "n": 12382,
+              "predicted": 0.44805712472004183,
+              "observed": 0.5228557583589081
+            },
+            {
+              "n": 11001,
+              "predicted": 0.5492192993228213,
+              "observed": 0.5664939550949913
+            },
+            {
+              "n": 12851,
+              "predicted": 0.6518240748523376,
+              "observed": 0.6755894482919618
+            },
+            {
+              "n": 17347,
+              "predicted": 0.7524559181478859,
+              "observed": 0.7523491093560847
+            },
+            {
+              "n": 24495,
+              "predicted": 0.8532266270897783,
+              "observed": 0.8609920391916718
+            },
+            {
+              "n": 86643,
+              "predicted": 0.9676848602972123,
+              "observed": 0.955287790127304
+            }
+          ]
+        },
+        "cases": 300,
+        "proposal_coverage": 0.6,
+        "false_feasible_fraction": 0.0,
+        "truth_has_feasible_candidate_fraction": 0.6,
+        "ordinal_regret_when_feasible": {
+          "mean": 0.15599887766554435,
+          "ci95": [
+            0.12070707070707071,
+            0.1792845117845118
+          ],
+          "clusters": 3,
+          "method": "scene_cluster_percentile_bootstrap"
+        }
+      },
+      "evaluation_elapsed_s": 0.33470783200027654
+    },
+    {
+      "domain": "layout",
+      "method": "graph_scratch-2",
+      "summary": {
+        "service_rmse": 0.3101720599219429,
+        "raw_quantile_80_coverage": 0.9555694444444444,
+        "risk": {
+          "brier": 0.13537493392213562,
+          "log_loss": 0.42371739690026594,
+          "ece": 0.04046405506354142,
+          "reliability": [
+            {
+              "n": 9061,
+              "predicted": 0.06486118165447226,
+              "observed": 0.13331861825405583
+            },
+            {
+              "n": 14214,
+              "predicted": 0.15121184901268955,
+              "observed": 0.2583368509919797
+            },
+            {
+              "n": 15272,
+              "predicted": 0.2506163296230711,
+              "observed": 0.34304609743321113
+            },
+            {
+              "n": 14494,
+              "predicted": 0.3489104591744907,
+              "observed": 0.43210983855388435
+            },
+            {
+              "n": 12928,
+              "predicted": 0.4489776598229672,
+              "observed": 0.5504331683168316
+            },
+            {
+              "n": 11642,
+              "predicted": 0.5504072553573698,
+              "observed": 0.5998110290328122
+            },
+            {
+              "n": 13666,
+              "predicted": 0.6520610442495479,
+              "observed": 0.6954485584662666
+            },
+            {
+              "n": 16553,
+              "predicted": 0.7513384831453648,
+              "observed": 0.7685615900441007
+            },
+            {
+              "n": 22895,
+              "predicted": 0.8535211949219321,
+              "observed": 0.867394627647958
+            },
+            {
+              "n": 85275,
+              "predicted": 0.9674740945981836,
+              "observed": 0.9569510407505131
+            }
+          ]
+        },
+        "cases": 300,
+        "proposal_coverage": 0.6,
+        "false_feasible_fraction": 0.0,
+        "truth_has_feasible_candidate_fraction": 0.6,
+        "ordinal_regret_when_feasible": {
+          "mean": 0.16221099887766555,
+          "ci95": [
+            0.126010101010101,
+            0.20358585858585856
+          ],
+          "clusters": 3,
+          "method": "scene_cluster_percentile_bootstrap"
+        }
+      },
+      "evaluation_elapsed_s": 0.3361508820016752
+    },
+    {
+      "domain": "layout",
+      "method": "graph_masked-2",
+      "summary": {
+        "service_rmse": 0.3093409458815738,
+        "raw_quantile_80_coverage": 0.9584675925925925,
+        "risk": {
+          "brier": 0.14100976115147096,
+          "log_loss": 0.43755117261357845,
+          "ece": 0.03548090758789715,
+          "reliability": [
+            {
+              "n": 7541,
+              "predicted": 0.07058165260611485,
+              "observed": 0.20302347168810503
+            },
+            {
+              "n": 15245,
+              "predicted": 0.15131333495171667,
+              "observed": 0.29032469662184324
+            },
+            {
+              "n": 16352,
+              "predicted": 0.24970009104747856,
+              "observed": 0.34344422700587085
+            },
+            {
+              "n": 13860,
+              "predicted": 0.3476820709062861,
+              "observed": 0.4331168831168831
+            },
+            {
+              "n": 11432,
+              "predicted": 0.4497041871798589,
+              "observed": 0.5230055983205039
+            },
+            {
+              "n": 10187,
+              "predicted": 0.5496180658545475,
+              "observed": 0.5439285363698831
+            },
+            {
+              "n": 11535,
+              "predicted": 0.6528108539083173,
+              "observed": 0.6429995665366277
+            },
+            {
+              "n": 17520,
+              "predicted": 0.7527716283078335,
+              "observed": 0.7524543378995434
+            },
+            {
+              "n": 26953,
+              "predicted": 0.8542570913585003,
+              "observed": 0.8506288724817275
+            },
+            {
+              "n": 85375,
+              "predicted": 0.9635538387584826,
+              "observed": 0.9551625183016106
+            }
+          ]
+        },
+        "cases": 300,
+        "proposal_coverage": 0.6,
+        "false_feasible_fraction": 0.0,
+        "truth_has_feasible_candidate_fraction": 0.6,
+        "ordinal_regret_when_feasible": {
+          "mean": 0.16663299663299663,
+          "ci95": [
+            0.12297979797979798,
+            0.20508417508417504
+          ],
+          "clusters": 3,
+          "method": "scene_cluster_percentile_bootstrap"
+        }
+      },
+      "evaluation_elapsed_s": 0.32156098799896426
+    },
+    {
+      "domain": "layout",
+      "method": "graph_jepa-2",
+      "summary": {
+        "service_rmse": 0.3093960120072395,
+        "raw_quantile_80_coverage": 0.9651851851851853,
+        "risk": {
+          "brier": 0.14225355845088453,
+          "log_loss": 0.43584213778256875,
+          "ece": 0.038744733964195414,
+          "reliability": [
+            {
+              "n": 7533,
+              "predicted": 0.07031780369182314,
+              "observed": 0.23841762909863268
+            },
+            {
+              "n": 15173,
+              "predicted": 0.1505855517181388,
+              "observed": 0.3025769458907269
+            },
+            {
+              "n": 16165,
+              "predicted": 0.24992520831112813,
+              "observed": 0.36486235694401487
+            },
+            {
+              "n": 14133,
+              "predicted": 0.34959758807500607,
+              "observed": 0.4125097290030425
+            },
+            {
+              "n": 11827,
+              "predicted": 0.4481132522539102,
+              "observed": 0.4949691384121079
+            },
+            {
+              "n": 10200,
+              "predicted": 0.5497369199699047,
+              "observed": 0.5591176470588235
+            },
+            {
+              "n": 11706,
+              "predicted": 0.6530006012508406,
+              "observed": 0.6168631471040492
+            },
+            {
+              "n": 18056,
+              "predicted": 0.7542487328354638,
+              "observed": 0.7303389455028799
+            },
+            {
+              "n": 28127,
+              "predicted": 0.8543792301309805,
+              "observed": 0.8596722010879226
+            },
+            {
+              "n": 83080,
+              "predicted": 0.9666085856762653,
+              "observed": 0.9618440057775638
+            }
+          ]
+        },
+        "cases": 300,
+        "proposal_coverage": 0.6,
+        "false_feasible_fraction": 0.0,
+        "truth_has_feasible_candidate_fraction": 0.6,
+        "ordinal_regret_when_feasible": {
+          "mean": 0.18119528619528616,
+          "ci95": [
+            0.13547979797979798,
+            0.20634680134680133
+          ],
+          "clusters": 3,
+          "method": "scene_cluster_percentile_bootstrap"
+        }
+      },
+      "evaluation_elapsed_s": 0.2970267060009064
+    },
+    {
+      "domain": "layout",
+      "method": "validation_router",
+      "summary": {
+        "cases": 300,
+        "proposal_coverage": 0.6,
+        "false_feasible_fraction": 0.0,
+        "truth_has_feasible_candidate_fraction": 0.6,
+        "ordinal_regret_when_feasible": {
+          "mean": 0.16902918069584735,
+          "ci95": [
+            0.13176767676767678,
+            0.20904040404040403
+          ],
+          "clusters": 3,
+          "method": "scene_cluster_percentile_bootstrap"
+        }
+      }
+    },
+    {
+      "domain": "fleet200",
+      "method": "numerical",
+      "summary": {
+        "service_rmse": 0.333913786662964,
+        "raw_quantile_80_coverage": 1.0,
+        "risk": {
+          "brier": 0.15354665003566312,
+          "log_loss": 0.48458298011114836,
+          "ece": 0.09262481379022615,
+          "reliability": [
+            {
+              "n": 98535,
+              "predicted": 0.18049882352352142,
+              "observed": 0.40655604607499873
+            },
+            {
+              "n": 330309,
+              "predicted": 0.8195012211799622,
+              "observed": 0.8732066035136796
+            },
+            {
+              "n": 3156,
+              "predicted": 1.0,
+              "observed": 1.0
+            }
+          ]
+        },
+        "cases": 300,
+        "proposal_coverage": 0.6,
+        "false_feasible_fraction": 0.0,
+        "truth_has_feasible_candidate_fraction": 0.6,
+        "ordinal_regret_when_feasible": {
+          "mean": 0.20343855218855217,
+          "ci95": [
+            0.1658375420875421,
+            0.2501010101010101
+          ],
+          "clusters": 3,
+          "method": "scene_cluster_percentile_bootstrap"
+        }
+      },
+      "evaluation_elapsed_s": 0.2877310129988473
+    },
+    {
+      "domain": "fleet200",
+      "method": "mlp-0",
+      "summary": {
+        "service_rmse": 0.27866681861314313,
+        "raw_quantile_80_coverage": 0.9642407407407406,
+        "risk": {
+          "brier": 0.12310053170742295,
+          "log_loss": 0.3896609358636648,
+          "ece": 0.059286873407553065,
+          "reliability": [
+            {
+              "n": 13817,
+              "predicted": 0.06625891943754254,
+              "observed": 0.1438807266410943
+            },
+            {
+              "n": 23276,
+              "predicted": 0.14998595328807246,
+              "observed": 0.2537807183364839
+            },
+            {
+              "n": 22427,
+              "predicted": 0.25073855896610986,
+              "observed": 0.3809693672805101
+            },
+            {
+              "n": 22710,
+              "predicted": 0.350380553611571,
+              "observed": 0.49088507265521797
+            },
+            {
+              "n": 23340,
+              "predicted": 0.44982338232445535,
+              "observed": 0.5718508997429306
+            },
+            {
+              "n": 26061,
+              "predicted": 0.5515681425085419,
+              "observed": 0.6398449790875255
+            },
+            {
+              "n": 31931,
+              "predicted": 0.6518245422031104,
+              "observed": 0.7394068460117128
+            },
+            {
+              "n": 44445,
+              "predicted": 0.7528185211843709,
+              "observed": 0.8254696816289796
+            },
+            {
+              "n": 61862,
+              "predicted": 0.8535308375020505,
+              "observed": 0.9096052503960428
+            },
+            {
+              "n": 162131,
+              "predicted": 0.9627905441207235,
+              "observed": 0.9712331386348076
+            }
+          ]
+        },
+        "cases": 300,
+        "proposal_coverage": 0.6,
+        "false_feasible_fraction": 0.0,
+        "truth_has_feasible_candidate_fraction": 0.6,
+        "ordinal_regret_when_feasible": {
+          "mean": 0.22975729517396182,
+          "ci95": [
+            0.21530303030303036,
+            0.25152356902356904
+          ],
+          "clusters": 3,
+          "method": "scene_cluster_percentile_bootstrap"
+        }
+      },
+      "evaluation_elapsed_s": 0.4667633900025976
+    },
+    {
+      "domain": "fleet200",
+      "method": "graph_scratch-0",
+      "summary": {
+        "service_rmse": 0.274320008870743,
+        "raw_quantile_80_coverage": 0.9724189814814815,
+        "risk": {
+          "brier": 0.12538144462202302,
+          "log_loss": 0.3951453581759826,
+          "ece": 0.07366413310533375,
+          "reliability": [
+            {
+              "n": 16352,
+              "predicted": 0.06460015659937063,
+              "observed": 0.1432852250489237
+            },
+            {
+              "n": 25010,
+              "predicted": 0.15082614731634916,
+              "observed": 0.2629348260695722
+            },
+            {
+              "n": 24388,
+              "predicted": 0.24966179173178843,
+              "observed": 0.40831556503198296
+            },
+            {
+              "n": 23380,
+              "predicted": 0.3498231204875113,
+              "observed": 0.5121471343028229
+            },
+            {
+              "n": 23312,
+              "predicted": 0.45002743397764583,
+              "observed": 0.6039378860672615
+            },
+            {
+              "n": 26332,
+              "predicted": 0.5510879011863491,
+              "observed": 0.6814902020355461
+            },
+            {
+              "n": 32136,
+              "predicted": 0.652524854217206,
+              "observed": 0.7556945481702764
+            },
+            {
+              "n": 45019,
+              "predicted": 0.7531920485813325,
+              "observed": 0.8414225104955685
+            },
+            {
+              "n": 64487,
+              "predicted": 0.8524221936339142,
+              "observed": 0.9145719292260456
+            },
+            {
+              "n": 151584,
+              "predicted": 0.9623380221767796,
+              "observed": 0.9738890648089508
+            }
+          ]
+        },
+        "cases": 300,
+        "proposal_coverage": 0.6,
+        "false_feasible_fraction": 0.0,
+        "truth_has_feasible_candidate_fraction": 0.6,
+        "ordinal_regret_when_feasible": {
+          "mean": 0.20484147025813693,
+          "ci95": [
+            0.19569023569023566,
+            0.21360690235690238
+          ],
+          "clusters": 3,
+          "method": "scene_cluster_percentile_bootstrap"
+        }
+      },
+      "evaluation_elapsed_s": 0.42184432499925606
+    },
+    {
+      "domain": "fleet200",
+      "method": "graph_masked-0",
+      "summary": {
+        "service_rmse": 0.28010281716486946,
+        "raw_quantile_80_coverage": 0.975212962962963,
+        "risk": {
+          "brier": 0.12516138592317422,
+          "log_loss": 0.3953144392478796,
+          "ece": 0.05928378467220239,
+          "reliability": [
+            {
+              "n": 16077,
+              "predicted": 0.06580391968108057,
+              "observed": 0.17783168501586116
+            },
+            {
+              "n": 24837,
+              "predicted": 0.15059637748085655,
+              "observed": 0.28344808149132344
+            },
+            {
+              "n": 23053,
+              "predicted": 0.2482410644292211,
+              "observed": 0.40827658005465667
+            },
+            {
+              "n": 20729,
+              "predicted": 0.3490523996139908,
+              "observed": 0.49409040474697286
+            },
+            {
+              "n": 18658,
+              "predicted": 0.4492262700565222,
+              "observed": 0.5700503805338193
+            },
+            {
+              "n": 20691,
+              "predicted": 0.5516230187923772,
+              "observed": 0.6150500217485864
+            },
+            {
+              "n": 30016,
+              "predicted": 0.654276724483794,
+              "observed": 0.7081889658848614
+            },
+            {
+              "n": 47766,
+              "predicted": 0.7535767792040682,
+              "observed": 0.8075618640874263
+            },
+            {
+              "n": 72792,
+              "predicted": 0.8530000081978364,
+              "observed": 0.9040279151555116
+            },
+            {
+              "n": 157381,
+              "predicted": 0.9579041555503326,
+              "observed": 0.9727476633138689
+            }
+          ]
+        },
+        "cases": 300,
+        "proposal_coverage": 0.6,
+        "false_feasible_fraction": 0.0,
+        "truth_has_feasible_candidate_fraction": 0.6,
+        "ordinal_regret_when_feasible": {
+          "mean": 0.20842312008978678,
+          "ci95": [
+            0.1768939393939394,
+            0.23018518518518516
+          ],
+          "clusters": 3,
+          "method": "scene_cluster_percentile_bootstrap"
+        }
+      },
+      "evaluation_elapsed_s": 0.4354423199984012
+    },
+    {
+      "domain": "fleet200",
+      "method": "graph_jepa-0",
+      "summary": {
+        "service_rmse": 0.281170424256437,
+        "raw_quantile_80_coverage": 0.9712337962962964,
+        "risk": {
+          "brier": 0.12284033750953859,
+          "log_loss": 0.3867880988269922,
+          "ece": 0.047646203692495843,
+          "reliability": [
+            {
+              "n": 11071,
+              "predicted": 0.06933976277880954,
+              "observed": 0.20621443410712673
+            },
+            {
+              "n": 22775,
+              "predicted": 0.15013434911860332,
+              "observed": 0.2620417124039517
+            },
+            {
+              "n": 23943,
+              "predicted": 0.24856388166211368,
+              "observed": 0.35789165935764106
+            },
+            {
+              "n": 21545,
+              "predicted": 0.349259922873202,
+              "observed": 0.4515664887444883
+            },
+            {
+              "n": 19118,
+              "predicted": 0.45018182910502563,
+              "observed": 0.5447745580081599
+            },
+            {
+              "n": 21470,
+              "predicted": 0.5517723664218013,
+              "observed": 0.6026548672566372
+            },
+            {
+              "n": 28265,
+              "predicted": 0.6534887080864845,
+              "observed": 0.6903944808066513
+            },
+            {
+              "n": 49625,
+              "predicted": 0.7547069179429216,
+              "observed": 0.796110831234257
+            },
+            {
+              "n": 74632,
+              "predicted": 0.8533355004040039,
+              "observed": 0.9025083074284489
+            },
+            {
+              "n": 159556,
+              "predicted": 0.9610120992877907,
+              "observed": 0.973727092682193
+            }
+          ]
+        },
+        "cases": 300,
+        "proposal_coverage": 0.6,
+        "false_feasible_fraction": 0.0,
+        "truth_has_feasible_candidate_fraction": 0.6,
+        "ordinal_regret_when_feasible": {
+          "mean": 0.2203212682379349,
+          "ci95": [
+            0.19353114478114478,
+            0.2340909090909091
+          ],
+          "clusters": 3,
+          "method": "scene_cluster_percentile_bootstrap"
+        }
+      },
+      "evaluation_elapsed_s": 0.40321446300367825
+    },
+    {
+      "domain": "fleet200",
+      "method": "mlp-1",
+      "summary": {
+        "service_rmse": 0.2793201719117795,
+        "raw_quantile_80_coverage": 0.9670069444444446,
+        "risk": {
+          "brier": 0.1247336969303797,
+          "log_loss": 0.39449894623985915,
+          "ece": 0.07320716781724304,
+          "reliability": [
+            {
+              "n": 19055,
+              "predicted": 0.06102216660715415,
+              "observed": 0.14626082393072684
+            },
+            {
+              "n": 25407,
+              "predicted": 0.14941001039117277,
+              "observed": 0.29047113000354235
+            },
+            {
+              "n": 23189,
+              "predicted": 0.25005993259370013,
+              "observed": 0.4077364267540644
+            },
+            {
+              "n": 23065,
+              "predicted": 0.3494669500230425,
+              "observed": 0.5230002167786689
+            },
+            {
+              "n": 23028,
+              "predicted": 0.45078070742586573,
+              "observed": 0.5951450408198714
+            },
+            {
+              "n": 24552,
+              "predicted": 0.5522123705043432,
+              "observed": 0.6671961550993809
+            },
+            {
+              "n": 29966,
+              "predicted": 0.6521622159190166,
+              "observed": 0.7602282586931857
+            },
+            {
+              "n": 44497,
+              "predicted": 0.752469998946508,
+              "observed": 0.8399892127559161
+            },
+            {
+              "n": 62745,
+              "predicted": 0.8541003064535863,
+              "observed": 0.914287991074986
+            },
+            {
+              "n": 156496,
+              "predicted": 0.96262013418898,
+              "observed": 0.9734945302116348
+            }
+          ]
+        },
+        "cases": 300,
+        "proposal_coverage": 0.6,
+        "false_feasible_fraction": 0.0,
+        "truth_has_feasible_candidate_fraction": 0.6,
+        "ordinal_regret_when_feasible": {
+          "mean": 0.23613776655443322,
+          "ci95": [
+            0.2328114478114478,
+            0.23901515151515149
+          ],
+          "clusters": 3,
+          "method": "scene_cluster_percentile_bootstrap"
+        }
+      },
+      "evaluation_elapsed_s": 0.3834146830049576
+    },
+    {
+      "domain": "fleet200",
+      "method": "graph_scratch-1",
+      "summary": {
+        "service_rmse": 0.2792015959572089,
+        "raw_quantile_80_coverage": 0.966662037037037,
+        "risk": {
+          "brier": 0.11991426638920957,
+          "log_loss": 0.38166488498777534,
+          "ece": 0.055585627423275455,
+          "reliability": [
+            {
+              "n": 15067,
+              "predicted": 0.06293540821333946,
+              "observed": 0.13068294949226786
+            },
+            {
+              "n": 22949,
+              "predicted": 0.15089304218893917,
+              "observed": 0.25212427556756284
+            },
+            {
+              "n": 22026,
+              "predicted": 0.2503873362012859,
+              "observed": 0.37169708526287115
+            },
+            {
+              "n": 21990,
+              "predicted": 0.35053256902980934,
+              "observed": 0.47389722601182355
+            },
+            {
+              "n": 22341,
+              "predicted": 0.44997881179017896,
+              "observed": 0.5684168121391164
+            },
+            {
+              "n": 24327,
+              "predicted": 0.5507761984138624,
+              "observed": 0.6429892711801701
+            },
+            {
+              "n": 28029,
+              "predicted": 0.6530982720562264,
+              "observed": 0.7309929002104962
+            },
+            {
+              "n": 44550,
+              "predicted": 0.7542179124323206,
+              "observed": 0.8200224466891134
+            },
+            {
+              "n": 67948,
+              "predicted": 0.8537625920200963,
+              "observed": 0.9081945016777536
+            },
+            {
+              "n": 162773,
+              "predicted": 0.9622443819941996,
+              "observed": 0.9719609517548979
+            }
+          ]
+        },
+        "cases": 300,
+        "proposal_coverage": 0.6,
+        "false_feasible_fraction": 0.0,
+        "truth_has_feasible_candidate_fraction": 0.6,
+        "ordinal_regret_when_feasible": {
+          "mean": 0.20926066217732883,
+          "ci95": [
+            0.20114478114478113,
+            0.22080387205387203
+          ],
+          "clusters": 3,
+          "method": "scene_cluster_percentile_bootstrap"
+        }
+      },
+      "evaluation_elapsed_s": 0.5120501330020488
+    },
+    {
+      "domain": "fleet200",
+      "method": "graph_masked-1",
+      "summary": {
+        "service_rmse": 0.27812887949981524,
+        "raw_quantile_80_coverage": 0.9756458333333331,
+        "risk": {
+          "brier": 0.12465086426497611,
+          "log_loss": 0.3941596095546225,
+          "ece": 0.06385445161023028,
+          "reliability": [
+            {
+              "n": 16159,
+              "predicted": 0.06398435001534088,
+              "observed": 0.17544402500154713
+            },
+            {
+              "n": 24137,
+              "predicted": 0.15112268026025627,
+              "observed": 0.276587811244148
+            },
+            {
+              "n": 23605,
+              "predicted": 0.24977135405692477,
+              "observed": 0.39728871001906374
+            },
+            {
+              "n": 22424,
+              "predicted": 0.3498614981911393,
+              "observed": 0.49616482340349627
+            },
+            {
+              "n": 20682,
+              "predicted": 0.45035730862009976,
+              "observed": 0.5753795571027946
+            },
+            {
+              "n": 23350,
+              "predicted": 0.5507700739606289,
+              "observed": 0.6347751605995717
+            },
+            {
+              "n": 30494,
+              "predicted": 0.6534573530974119,
+              "observed": 0.7277825145930347
+            },
+            {
+              "n": 46387,
+              "predicted": 0.7528591367905788,
+              "observed": 0.8214370405501541
+            },
+            {
+              "n": 67612,
+              "predicted": 0.8538023106608809,
+              "observed": 0.9117020647222387
+            },
+            {
+              "n": 157150,
+              "predicted": 0.9601317237999801,
+              "observed": 0.9733884823417117
+            }
+          ]
+        },
+        "cases": 300,
+        "proposal_coverage": 0.6,
+        "false_feasible_fraction": 0.0,
+        "truth_has_feasible_candidate_fraction": 0.6,
+        "ordinal_regret_when_feasible": {
+          "mean": 0.2185072951739618,
+          "ci95": [
+            0.20371212121212123,
+            0.23940235690235692
+          ],
+          "clusters": 3,
+          "method": "scene_cluster_percentile_bootstrap"
+        }
+      },
+      "evaluation_elapsed_s": 0.40719906100275693
+    },
+    {
+      "domain": "fleet200",
+      "method": "graph_jepa-1",
+      "summary": {
+        "service_rmse": 0.2785275748297573,
+        "raw_quantile_80_coverage": 0.9774282407407408,
+        "risk": {
+          "brier": 0.1269250010208041,
+          "log_loss": 0.3980968055965921,
+          "ece": 0.0739877470523912,
+          "reliability": [
+            {
+              "n": 17766,
+              "predicted": 0.06562097436088667,
+              "observed": 0.19694922886412247
+            },
+            {
+              "n": 28156,
+              "predicted": 0.15004444208421105,
+              "observed": 0.30888620542690726
+            },
+            {
+              "n": 23905,
+              "predicted": 0.24860361131993927,
+              "observed": 0.41271700481070905
+            },
+            {
+              "n": 20603,
+              "predicted": 0.34878570765845607,
+              "observed": 0.4892006018540989
+            },
+            {
+              "n": 21093,
+              "predicted": 0.449972233420522,
+              "observed": 0.5832740719670033
+            },
+            {
+              "n": 23792,
+              "predicted": 0.5518325446918857,
+              "observed": 0.6487474781439139
+            },
+            {
+              "n": 33178,
+              "predicted": 0.6534664944794274,
+              "observed": 0.7524865874977394
+            },
+            {
+              "n": 48814,
+              "predicted": 0.7522252800644663,
+              "observed": 0.8394927684680624
+            },
+            {
+              "n": 62542,
+              "predicted": 0.8523684244603276,
+              "observed": 0.9143135812733842
+            },
+            {
+              "n": 152151,
+              "predicted": 0.9650465134485254,
+              "observed": 0.9769045224809564
+            }
+          ]
+        },
+        "cases": 300,
+        "proposal_coverage": 0.6,
+        "false_feasible_fraction": 0.0,
+        "truth_has_feasible_candidate_fraction": 0.6,
+        "ordinal_regret_when_feasible": {
+          "mean": 0.21969416386083052,
+          "ci95": [
+            0.20515993265993263,
+            0.2388636363636364
+          ],
+          "clusters": 3,
+          "method": "scene_cluster_percentile_bootstrap"
+        }
+      },
+      "evaluation_elapsed_s": 0.44771323899476556
+    },
+    {
+      "domain": "fleet200",
+      "method": "mlp-2",
+      "summary": {
+        "service_rmse": 0.2805471885789843,
+        "raw_quantile_80_coverage": 0.9712592592592593,
+        "risk": {
+          "brier": 0.12412519540151887,
+          "log_loss": 0.3909546326680771,
+          "ece": 0.06572138593143019,
+          "reliability": [
+            {
+              "n": 14061,
+              "predicted": 0.06779481606637049,
+              "observed": 0.12545338169404738
+            },
+            {
+              "n": 24844,
+              "predicted": 0.15125501779873884,
+              "observed": 0.26380615037836097
+            },
+            {
+              "n": 25779,
+              "predicted": 0.24998808139358908,
+              "observed": 0.4059505799293999
+            },
+            {
+              "n": 24762,
+              "predicted": 0.3492990288335531,
+              "observed": 0.516961473225103
+            },
+            {
+              "n": 23255,
+              "predicted": 0.4509674523535966,
+              "observed": 0.5831434100193507
+            },
+            {
+              "n": 25212,
+              "predicted": 0.5520131122388859,
+              "observed": 0.6567507536093924
+            },
+            {
+              "n": 29816,
+              "predicted": 0.6522038818917008,
+              "observed": 0.756372417493963
+            },
+            {
+              "n": 41604,
+              "predicted": 0.7530333054528742,
+              "observed": 0.8293433323718873
+            },
+            {
+              "n": 58466,
+              "predicted": 0.8541192671210996,
+              "observed": 0.9116409537166901
+            },
+            {
+              "n": 164201,
+              "predicted": 0.964249213221619,
+              "observed": 0.9718881127398737
+            }
+          ]
+        },
+        "cases": 300,
+        "proposal_coverage": 0.6,
+        "false_feasible_fraction": 0.0,
+        "truth_has_feasible_candidate_fraction": 0.6,
+        "ordinal_regret_when_feasible": {
+          "mean": 0.2327707631874298,
+          "ci95": [
+            0.22083333333333333,
+            0.2517508417508417
+          ],
+          "clusters": 3,
+          "method": "scene_cluster_percentile_bootstrap"
+        }
+      },
+      "evaluation_elapsed_s": 0.44283366400486557
+    },
+    {
+      "domain": "fleet200",
+      "method": "graph_scratch-2",
+      "summary": {
+        "service_rmse": 0.27636208370990734,
+        "raw_quantile_80_coverage": 0.967300925925926,
+        "risk": {
+          "brier": 0.12299624894650778,
+          "log_loss": 0.38846793993104345,
+          "ece": 0.06904130984195916,
+          "reliability": [
+            {
+              "n": 17598,
+              "predicted": 0.06137904553383725,
+              "observed": 0.13359472667348563
+            },
+            {
+              "n": 24327,
+              "predicted": 0.15049781445380905,
+              "observed": 0.26850824187117195
+            },
+            {
+              "n": 24403,
+              "predicted": 0.24968104928015042,
+              "observed": 0.39052575503011927
+            },
+            {
+              "n": 23934,
+              "predicted": 0.3499048721526832,
+              "observed": 0.521183253948358
+            },
+            {
+              "n": 23446,
+              "predicted": 0.4501580922161059,
+              "observed": 0.6024481787938241
+            },
+            {
+              "n": 25135,
+              "predicted": 0.5511970798727862,
+              "observed": 0.684145613686095
+            },
+            {
+              "n": 30651,
+              "predicted": 0.6522792429543799,
+              "observed": 0.7604319598055528
+            },
+            {
+              "n": 40205,
+              "predicted": 0.752149945292184,
+              "observed": 0.8303196119885586
+            },
+            {
+              "n": 57942,
+              "predicted": 0.8547027866784237,
+              "observed": 0.9129646888267577
+            },
+            {
+              "n": 164359,
+              "predicted": 0.9640124470967579,
+              "observed": 0.9725418139560352
+            }
+          ]
+        },
+        "cases": 300,
+        "proposal_coverage": 0.6,
+        "false_feasible_fraction": 0.0,
+        "truth_has_feasible_candidate_fraction": 0.6,
+        "ordinal_regret_when_feasible": {
+          "mean": 0.21115460157126825,
+          "ci95": [
+            0.20478114478114479,
+            0.21890993265993267
+          ],
+          "clusters": 3,
+          "method": "scene_cluster_percentile_bootstrap"
+        }
+      },
+      "evaluation_elapsed_s": 0.4219939260001411
+    },
+    {
+      "domain": "fleet200",
+      "method": "graph_masked-2",
+      "summary": {
+        "service_rmse": 0.2753087464732368,
+        "raw_quantile_80_coverage": 0.9719074074074076,
+        "risk": {
+          "brier": 0.12451119489980444,
+          "log_loss": 0.39410107481568235,
+          "ece": 0.0622128986349476,
+          "reliability": [
+            {
+              "n": 14516,
+              "predicted": 0.0664264134010241,
+              "observed": 0.17146596858638743
+            },
+            {
+              "n": 24941,
+              "predicted": 0.1516643387114011,
+              "observed": 0.26253959344051964
+            },
+            {
+              "n": 24800,
+              "predicted": 0.24860434309369134,
+              "observed": 0.4007258064516129
+            },
+            {
+              "n": 22217,
+              "predicted": 0.349311076302165,
+              "observed": 0.4914254849889724
+            },
+            {
+              "n": 20482,
+              "predicted": 0.4494571405999561,
+              "observed": 0.5843179377013964
+            },
+            {
+              "n": 21811,
+              "predicted": 0.550825544083213,
+              "observed": 0.6331667507221127
+            },
+            {
+              "n": 29374,
+              "predicted": 0.6526354410836328,
+              "observed": 0.7285013957921972
+            },
+            {
+              "n": 45861,
+              "predicted": 0.7541554097127375,
+              "observed": 0.8209589847582913
+            },
+            {
+              "n": 71591,
+              "predicted": 0.8534639763376842,
+              "observed": 0.9070832925926443
+            },
+            {
+              "n": 156407,
+              "predicted": 0.9591519464797527,
+              "observed": 0.9717276080993817
+            }
+          ]
+        },
+        "cases": 300,
+        "proposal_coverage": 0.6,
+        "false_feasible_fraction": 0.0,
+        "truth_has_feasible_candidate_fraction": 0.6,
+        "ordinal_regret_when_feasible": {
+          "mean": 0.21188692480359148,
+          "ci95": [
+            0.1860606060606061,
+            0.24899831649831647
+          ],
+          "clusters": 3,
+          "method": "scene_cluster_percentile_bootstrap"
+        }
+      },
+      "evaluation_elapsed_s": 0.35481121899647405
+    },
+    {
+      "domain": "fleet200",
+      "method": "graph_jepa-2",
+      "summary": {
+        "service_rmse": 0.27766015912328035,
+        "raw_quantile_80_coverage": 0.9766087962962963,
+        "risk": {
+          "brier": 0.12418020363311023,
+          "log_loss": 0.39233472925764323,
+          "ece": 0.06424027032506195,
+          "reliability": [
+            {
+              "n": 12818,
+              "predicted": 0.06732681637368954,
+              "observed": 0.19620845685754407
+            },
+            {
+              "n": 25880,
+              "predicted": 0.15110667577298384,
+              "observed": 0.26012364760432766
+            },
+            {
+              "n": 24794,
+              "predicted": 0.24928838231442985,
+              "observed": 0.38948939259498266
+            },
+            {
+              "n": 21571,
+              "predicted": 0.3488120478461556,
+              "observed": 0.47489685225534284
+            },
+            {
+              "n": 19542,
+              "predicted": 0.4500389488219678,
+              "observed": 0.5403745778323611
+            },
+            {
+              "n": 22376,
+              "predicted": 0.552642767402501,
+              "observed": 0.6345638183768323
+            },
+            {
+              "n": 32730,
+              "predicted": 0.654246178219306,
+              "observed": 0.7374274366025053
+            },
+            {
+              "n": 55427,
+              "predicted": 0.7538816676344668,
+              "observed": 0.8336911613473578
+            },
+            {
+              "n": 72010,
+              "predicted": 0.8509205282570471,
+              "observed": 0.9161783085682544
+            },
+            {
+              "n": 144852,
+              "predicted": 0.9649796132392813,
+              "observed": 0.9762930439344987
+            }
+          ]
+        },
+        "cases": 300,
+        "proposal_coverage": 0.6,
+        "false_feasible_fraction": 0.0,
+        "truth_has_feasible_candidate_fraction": 0.6,
+        "ordinal_regret_when_feasible": {
+          "mean": 0.2154643658810326,
+          "ci95": [
+            0.1972053872053872,
+            0.23242424242424245
+          ],
+          "clusters": 3,
+          "method": "scene_cluster_percentile_bootstrap"
+        }
+      },
+      "evaluation_elapsed_s": 0.38231338600598974
+    },
+    {
+      "domain": "fleet200",
+      "method": "validation_router",
+      "summary": {
+        "cases": 300,
+        "proposal_coverage": 0.6,
+        "false_feasible_fraction": 0.0,
+        "truth_has_feasible_candidate_fraction": 0.6,
+        "ordinal_regret_when_feasible": {
+          "mean": 0.2148414702581369,
+          "ci95": [
+            0.21235690235690233,
+            0.21890993265993267
+          ],
+          "clusters": 3,
+          "method": "scene_cluster_percentile_bootstrap"
+        }
+      }
+    },
+    {
+      "domain": "traffic",
+      "method": "numerical",
+      "summary": {
+        "service_rmse": 0.30006509407534043,
+        "raw_quantile_80_coverage": 1.0,
+        "risk": {
+          "brier": 0.1679396963652065,
+          "log_loss": 0.5177951031065338,
+          "ece": 0.1264064331963244,
+          "reliability": [
+            {
+              "n": 66333,
+              "predicted": 0.18049882352352142,
+              "observed": 0.44275096859783214
+            },
+            {
+              "n": 146554,
+              "predicted": 0.8195012211799622,
+              "observed": 0.8871064590526359
+            },
+            {
+              "n": 3113,
+              "predicted": 1.0,
+              "observed": 1.0
+            }
+          ]
+        },
+        "cases": 300,
+        "proposal_coverage": 0.6,
+        "false_feasible_fraction": 0.0,
+        "truth_has_feasible_candidate_fraction": 0.6,
+        "ordinal_regret_when_feasible": {
+          "mean": 0.1506804152637486,
+          "ci95": [
+            0.11302188552188552,
+            0.19975168350168349
+          ],
+          "clusters": 3,
+          "method": "scene_cluster_percentile_bootstrap"
+        }
+      },
+      "evaluation_elapsed_s": 0.1867345330028911
+    },
+    {
+      "domain": "traffic",
+      "method": "mlp-0",
+      "summary": {
+        "service_rmse": 0.2574385189274953,
+        "raw_quantile_80_coverage": 0.9592407407407408,
+        "risk": {
+          "brier": 0.12449925948236462,
+          "log_loss": 0.387570628084565,
+          "ece": 0.03117098603065177,
+          "reliability": [
+            {
+              "n": 5399,
+              "predicted": 0.06937450412481438,
+              "observed": 0.12354139655491758
+            },
+            {
+              "n": 11571,
+              "predicted": 0.15078422479655376,
+              "observed": 0.22928009679370842
+            },
+            {
+              "n": 13007,
+              "predicted": 0.25124251318947566,
+              "observed": 0.3507342200353656
+            },
+            {
+              "n": 12903,
+              "predicted": 0.34847506145345214,
+              "observed": 0.4553204681081919
+            },
+            {
+              "n": 10811,
+              "predicted": 0.44830029186482634,
+              "observed": 0.5458329479234113
+            },
+            {
+              "n": 10561,
+              "predicted": 0.5502466781438949,
+              "observed": 0.6387652684404886
+            },
+            {
+              "n": 11100,
+              "predicted": 0.6517159101340148,
+              "observed": 0.6587387387387388
+            },
+            {
+              "n": 16365,
+              "predicted": 0.7535535990044571,
+              "observed": 0.766758325695081
+            },
+            {
+              "n": 28542,
+              "predicted": 0.8565138487134732,
+              "observed": 0.8403755868544601
+            },
+            {
+              "n": 95741,
+              "predicted": 0.9646500233540996,
+              "observed": 0.9634430390323895
+            }
+          ]
+        },
+        "cases": 300,
+        "proposal_coverage": 0.6,
+        "false_feasible_fraction": 0.0,
+        "truth_has_feasible_candidate_fraction": 0.6,
+        "ordinal_regret_when_feasible": {
+          "mean": 0.1665446127946128,
+          "ci95": [
+            0.11852693602693604,
+            0.2410395622895623
+          ],
+          "clusters": 3,
+          "method": "scene_cluster_percentile_bootstrap"
+        }
+      },
+      "evaluation_elapsed_s": 0.2660343829993508
+    },
+    {
+      "domain": "traffic",
+      "method": "graph_scratch-0",
+      "summary": {
+        "service_rmse": 0.2552583631293438,
+        "raw_quantile_80_coverage": 0.9662453703703703,
+        "risk": {
+          "brier": 0.12754096132724663,
+          "log_loss": 0.39457945243088205,
+          "ece": 0.0403177402037696,
+          "reliability": [
+            {
+              "n": 6837,
+              "predicted": 0.06841939779621556,
+              "observed": 0.13719467602749744
+            },
+            {
+              "n": 13089,
+              "predicted": 0.15101728384161808,
+              "observed": 0.27152570861028347
+            },
+            {
+              "n": 13615,
+              "predicted": 0.25066854889301793,
+              "observed": 0.38060962174072716
+            },
+            {
+              "n": 13272,
+              "predicted": 0.34914471460545615,
+              "observed": 0.47822483423749246
+            },
+            {
+              "n": 10944,
+              "predicted": 0.44901958567073996,
+              "observed": 0.570906432748538
+            },
+            {
+              "n": 9932,
+              "predicted": 0.5502509956656566,
+              "observed": 0.6560612162706404
+            },
+            {
+              "n": 10521,
+              "predicted": 0.6511376719206937,
+              "observed": 0.6908088584735291
+            },
+            {
+              "n": 14753,
+              "predicted": 0.7544843685115498,
+              "observed": 0.7515759506541042
+            },
+            {
+              "n": 28409,
+              "predicted": 0.8567086977945083,
+              "observed": 0.8483579147453272
+            },
+            {
+              "n": 94628,
+              "predicted": 0.9653106784132219,
+              "observed": 0.9642917529695227
+            }
+          ]
+        },
+        "cases": 300,
+        "proposal_coverage": 0.6,
+        "false_feasible_fraction": 0.0,
+        "truth_has_feasible_candidate_fraction": 0.6,
+        "ordinal_regret_when_feasible": {
+          "mean": 0.16285493827160494,
+          "ci95": [
+            0.12425925925925926,
+            0.23434764309764308
+          ],
+          "clusters": 3,
+          "method": "scene_cluster_percentile_bootstrap"
+        }
+      },
+      "evaluation_elapsed_s": 0.2714957339994726
+    },
+    {
+      "domain": "traffic",
+      "method": "graph_masked-0",
+      "summary": {
+        "service_rmse": 0.257413723594945,
+        "raw_quantile_80_coverage": 0.9703888888888887,
+        "risk": {
+          "brier": 0.13352228077514508,
+          "log_loss": 0.41052956460214773,
+          "ece": 0.0493888146864785,
+          "reliability": [
+            {
+              "n": 7672,
+              "predicted": 0.06895639637763863,
+              "observed": 0.20972367049009386
+            },
+            {
+              "n": 15298,
+              "predicted": 0.15059410020073952,
+              "observed": 0.3101058961955811
+            },
+            {
+              "n": 14967,
+              "predicted": 0.24932622393028064,
+              "observed": 0.4185207456404089
+            },
+            {
+              "n": 12209,
+              "predicted": 0.3469685061146463,
+              "observed": 0.510770742894586
+            },
+            {
+              "n": 9143,
+              "predicted": 0.44706641815429204,
+              "observed": 0.5611943563381823
+            },
+            {
+              "n": 7396,
+              "predicted": 0.5498797887399302,
+              "observed": 0.6210113574905354
+            },
+            {
+              "n": 9020,
+              "predicted": 0.651761503058368,
+              "observed": 0.6391352549889135
+            },
+            {
+              "n": 14668,
+              "predicted": 0.7540342565702098,
+              "observed": 0.736433051540769
+            },
+            {
+              "n": 30381,
+              "predicted": 0.8557880765921446,
+              "observed": 0.8406569895658471
+            },
+            {
+              "n": 95246,
+              "predicted": 0.9616436546870347,
+              "observed": 0.9638934968397623
+            }
+          ]
+        },
+        "cases": 300,
+        "proposal_coverage": 0.6,
+        "false_feasible_fraction": 0.0,
+        "truth_has_feasible_candidate_fraction": 0.6,
+        "ordinal_regret_when_feasible": {
+          "mean": 0.17026234567901233,
+          "ci95": [
+            0.13875420875420877,
+            0.2254250841750842
+          ],
+          "clusters": 3,
+          "method": "scene_cluster_percentile_bootstrap"
+        }
+      },
+      "evaluation_elapsed_s": 0.29174825900554424
+    },
+    {
+      "domain": "traffic",
+      "method": "graph_jepa-0",
+      "summary": {
+        "service_rmse": 0.26019612277403287,
+        "raw_quantile_80_coverage": 0.966837962962963,
+        "risk": {
+          "brier": 0.135755652979148,
+          "log_loss": 0.4133841299072201,
+          "ece": 0.05194906429689016,
+          "reliability": [
+            {
+              "n": 6509,
+              "predicted": 0.07064433420200876,
+              "observed": 0.23782455062221539
+            },
+            {
+              "n": 16076,
+              "predicted": 0.15038095104491186,
+              "observed": 0.32588952475740235
+            },
+            {
+              "n": 14855,
+              "predicted": 0.2478313185578041,
+              "observed": 0.4327835745540222
+            },
+            {
+              "n": 13096,
+              "predicted": 0.3477988514728348,
+              "observed": 0.5012981062919976
+            },
+            {
+              "n": 9637,
+              "predicted": 0.44626652435839786,
+              "observed": 0.5333610044619695
+            },
+            {
+              "n": 7423,
+              "predicted": 0.5482179122794659,
+              "observed": 0.5786070321972249
+            },
+            {
+              "n": 8499,
+              "predicted": 0.6530265830266979,
+              "observed": 0.6372514413460407
+            },
+            {
+              "n": 14321,
+              "predicted": 0.7565655921867511,
+              "observed": 0.7340967809510509
+            },
+            {
+              "n": 31983,
+              "predicted": 0.8567415696853836,
+              "observed": 0.8372572929368727
+            },
+            {
+              "n": 93601,
+              "predicted": 0.9632190715429756,
+              "observed": 0.9675965000373927
+            }
+          ]
+        },
+        "cases": 300,
+        "proposal_coverage": 0.6,
+        "false_feasible_fraction": 0.0,
+        "truth_has_feasible_candidate_fraction": 0.6,
+        "ordinal_regret_when_feasible": {
+          "mean": 0.18444584736251401,
+          "ci95": [
+            0.14989057239057238,
+            0.2417129629629629
+          ],
+          "clusters": 3,
+          "method": "scene_cluster_percentile_bootstrap"
+        }
+      },
+      "evaluation_elapsed_s": 0.2812548220026656
+    },
+    {
+      "domain": "traffic",
+      "method": "mlp-1",
+      "summary": {
+        "service_rmse": 0.260512066489926,
+        "raw_quantile_80_coverage": 0.9629999999999999,
+        "risk": {
+          "brier": 0.12635257278793346,
+          "log_loss": 0.39222148717686195,
+          "ece": 0.039396048144799536,
+          "reliability": [
+            {
+              "n": 8003,
+              "predicted": 0.06365529199270596,
+              "observed": 0.13882294139697612
+            },
+            {
+              "n": 12353,
+              "predicted": 0.15013030296787022,
+              "observed": 0.273698696672873
+            },
+            {
+              "n": 13113,
+              "predicted": 0.25066394662112507,
+              "observed": 0.3766491268207123
+            },
+            {
+              "n": 12608,
+              "predicted": 0.34760864818856346,
+              "observed": 0.4821541878172589
+            },
+            {
+              "n": 10945,
+              "predicted": 0.44920982579598967,
+              "observed": 0.5735038830516217
+            },
+            {
+              "n": 10358,
+              "predicted": 0.5505283214072736,
+              "observed": 0.6433674454527901
+            },
+            {
+              "n": 10796,
+              "predicted": 0.651557106614422,
+              "observed": 0.6738606891441274
+            },
+            {
+              "n": 15331,
+              "predicted": 0.7531558678742841,
+              "observed": 0.7651816580784032
+            },
+            {
+              "n": 27555,
+              "predicted": 0.8585595541847442,
+              "observed": 0.8488114679731447
+            },
+            {
+              "n": 94938,
+              "predicted": 0.9654969982131878,
+              "observed": 0.9653142050601445
+            }
+          ]
+        },
+        "cases": 300,
+        "proposal_coverage": 0.6,
+        "false_feasible_fraction": 0.0,
+        "truth_has_feasible_candidate_fraction": 0.6,
+        "ordinal_regret_when_feasible": {
+          "mean": 0.1688173400673401,
+          "ci95": [
+            0.11170875420875422,
+            0.2465951178451178
+          ],
+          "clusters": 3,
+          "method": "scene_cluster_percentile_bootstrap"
+        }
+      },
+      "evaluation_elapsed_s": 0.2809085460030474
+    },
+    {
+      "domain": "traffic",
+      "method": "graph_scratch-1",
+      "summary": {
+        "service_rmse": 0.25935545093626,
+        "raw_quantile_80_coverage": 0.9622268518518517,
+        "risk": {
+          "brier": 0.1252584826515551,
+          "log_loss": 0.3889498674469159,
+          "ece": 0.03670815282168849,
+          "reliability": [
+            {
+              "n": 6792,
+              "predicted": 0.06625113131363797,
+              "observed": 0.12426383981154299
+            },
+            {
+              "n": 12020,
+              "predicted": 0.15088124737800557,
+              "observed": 0.253910149750416
+            },
+            {
+              "n": 12414,
+              "predicted": 0.2514720968908113,
+              "observed": 0.3591912357016272
+            },
+            {
+              "n": 12508,
+              "predicted": 0.34924690516175344,
+              "observed": 0.46913975055964185
+            },
+            {
+              "n": 11579,
+              "predicted": 0.4501055205941087,
+              "observed": 0.555402020899905
+            },
+            {
+              "n": 10914,
+              "predicted": 0.5498571491938317,
+              "observed": 0.6420194245922668
+            },
+            {
+              "n": 11153,
+              "predicted": 0.6509240492196358,
+              "observed": 0.6965838787770107
+            },
+            {
+              "n": 14414,
+              "predicted": 0.7535743041244942,
+              "observed": 0.7455251838490357
+            },
+            {
+              "n": 27447,
+              "predicted": 0.857329109789839,
+              "observed": 0.843297992494626
+            },
+            {
+              "n": 96759,
+              "predicted": 0.9652148405995453,
+              "observed": 0.9628975082421274
+            }
+          ]
+        },
+        "cases": 300,
+        "proposal_coverage": 0.6,
+        "false_feasible_fraction": 0.0,
+        "truth_has_feasible_candidate_fraction": 0.6,
+        "ordinal_regret_when_feasible": {
+          "mean": 0.17771464646464646,
+          "ci95": [
+            0.1368855218855219,
+            0.22891835016835016
+          ],
+          "clusters": 3,
+          "method": "scene_cluster_percentile_bootstrap"
+        }
+      },
+      "evaluation_elapsed_s": 0.29965810800058534
+    },
+    {
+      "domain": "traffic",
+      "method": "graph_masked-1",
+      "summary": {
+        "service_rmse": 0.25797972692843235,
+        "raw_quantile_80_coverage": 0.9720972222222223,
+        "risk": {
+          "brier": 0.13367227269440463,
+          "log_loss": 0.41129918568004237,
+          "ece": 0.04830497731610324,
+          "reliability": [
+            {
+              "n": 8336,
+              "predicted": 0.0667708164353358,
+              "observed": 0.22348848368522073
+            },
+            {
+              "n": 14670,
+              "predicted": 0.1503160097299178,
+              "observed": 0.3147920927062031
+            },
+            {
+              "n": 14806,
+              "predicted": 0.24968853444424607,
+              "observed": 0.40767256517627987
+            },
+            {
+              "n": 12453,
+              "predicted": 0.3478992335874661,
+              "observed": 0.5122460451296876
+            },
+            {
+              "n": 9587,
+              "predicted": 0.4484203818898337,
+              "observed": 0.5603421299676645
+            },
+            {
+              "n": 8630,
+              "predicted": 0.5501109249622217,
+              "observed": 0.6283893395133257
+            },
+            {
+              "n": 10128,
+              "predicted": 0.6534797083910137,
+              "observed": 0.665086887835703
+            },
+            {
+              "n": 14969,
+              "predicted": 0.7546459837590249,
+              "observed": 0.7529561092925379
+            },
+            {
+              "n": 30673,
+              "predicted": 0.8563700412699659,
+              "observed": 0.8505852052293548
+            },
+            {
+              "n": 91748,
+              "predicted": 0.9639767401023361,
+              "observed": 0.9668112656406679
+            }
+          ]
+        },
+        "cases": 300,
+        "proposal_coverage": 0.6,
+        "false_feasible_fraction": 0.0,
+        "truth_has_feasible_candidate_fraction": 0.6,
+        "ordinal_regret_when_feasible": {
+          "mean": 0.175074354657688,
+          "ci95": [
+            0.1329882154882155,
+            0.23350589225589224
+          ],
+          "clusters": 3,
+          "method": "scene_cluster_percentile_bootstrap"
+        }
+      },
+      "evaluation_elapsed_s": 0.2931702560017584
+    },
+    {
+      "domain": "traffic",
+      "method": "graph_jepa-1",
+      "summary": {
+        "service_rmse": 0.2585782620335936,
+        "raw_quantile_80_coverage": 0.9739722222222224,
+        "risk": {
+          "brier": 0.13920677045232557,
+          "log_loss": 0.4234164845405447,
+          "ece": 0.06124312326143907,
+          "reliability": [
+            {
+              "n": 10075,
+              "predicted": 0.06741209788871906,
+              "observed": 0.2386104218362283
+            },
+            {
+              "n": 18324,
+              "predicted": 0.14930048731355539,
+              "observed": 0.37306265007640255
+            },
+            {
+              "n": 15553,
+              "predicted": 0.24904526522448842,
+              "observed": 0.4649263807625538
+            },
+            {
+              "n": 11842,
+              "predicted": 0.34690041866249743,
+              "observed": 0.5119912176997129
+            },
+            {
+              "n": 8276,
+              "predicted": 0.4484375462461751,
+              "observed": 0.5502658289028516
+            },
+            {
+              "n": 7594,
+              "predicted": 0.550231829030532,
+              "observed": 0.6218066894917039
+            },
+            {
+              "n": 9276,
+              "predicted": 0.653156819767405,
+              "observed": 0.6684993531694696
+            },
+            {
+              "n": 15622,
+              "predicted": 0.7545985032930339,
+              "observed": 0.756369222890795
+            },
+            {
+              "n": 29154,
+              "predicted": 0.8555668217148598,
+              "observed": 0.8586814845304246
+            },
+            {
+              "n": 90284,
+              "predicted": 0.9656881103036696,
+              "observed": 0.970603872225422
+            }
+          ]
+        },
+        "cases": 300,
+        "proposal_coverage": 0.6,
+        "false_feasible_fraction": 0.0,
+        "truth_has_feasible_candidate_fraction": 0.6,
+        "ordinal_regret_when_feasible": {
+          "mean": 0.17901655443322112,
+          "ci95": [
+            0.14393097643097644,
+            0.24171296296296296
+          ],
+          "clusters": 3,
+          "method": "scene_cluster_percentile_bootstrap"
+        }
+      },
+      "evaluation_elapsed_s": 0.28651675700530177
+    },
+    {
+      "domain": "traffic",
+      "method": "mlp-2",
+      "summary": {
+        "service_rmse": 0.2593749614266127,
+        "raw_quantile_80_coverage": 0.9661157407407407,
+        "risk": {
+          "brier": 0.1253512526096821,
+          "log_loss": 0.3889694177002183,
+          "ece": 0.036628577326243326,
+          "reliability": [
+            {
+              "n": 5476,
+              "predicted": 0.06866313145551055,
+              "observed": 0.12344777209642074
+            },
+            {
+              "n": 12012,
+              "predicted": 0.1501397868321264,
+              "observed": 0.24217449217449216
+            },
+            {
+              "n": 13039,
+              "predicted": 0.2512598305366935,
+              "observed": 0.3594600812945778
+            },
+            {
+              "n": 13451,
+              "predicted": 0.3496994056424087,
+              "observed": 0.46591331499516764
+            },
+            {
+              "n": 11814,
+              "predicted": 0.44896092286908285,
+              "observed": 0.5457931267987134
+            },
+            {
+              "n": 10842,
+              "predicted": 0.5487876806811551,
+              "observed": 0.6354916067146283
+            },
+            {
+              "n": 11153,
+              "predicted": 0.651231764277396,
+              "observed": 0.6925490899309603
+            },
+            {
+              "n": 15187,
+              "predicted": 0.7514891393167236,
+              "observed": 0.7613748600776981
+            },
+            {
+              "n": 25703,
+              "predicted": 0.8578130347308623,
+              "observed": 0.8363615142201299
+            },
+            {
+              "n": 97323,
+              "predicted": 0.967046845414058,
+              "observed": 0.9641092033743308
+            }
+          ]
+        },
+        "cases": 300,
+        "proposal_coverage": 0.6,
+        "false_feasible_fraction": 0.0,
+        "truth_has_feasible_candidate_fraction": 0.6,
+        "ordinal_regret_when_feasible": {
+          "mean": 0.17399410774410776,
+          "ci95": [
+            0.13178451178451178,
+            0.2460900673400673
+          ],
+          "clusters": 3,
+          "method": "scene_cluster_percentile_bootstrap"
+        }
+      },
+      "evaluation_elapsed_s": 0.27740640699630603
+    },
+    {
+      "domain": "traffic",
+      "method": "graph_scratch-2",
+      "summary": {
+        "service_rmse": 0.25695309427763896,
+        "raw_quantile_80_coverage": 0.964875,
+        "risk": {
+          "brier": 0.12554435755470747,
+          "log_loss": 0.3898168729755719,
+          "ece": 0.04018062981592139,
+          "reliability": [
+            {
+              "n": 8270,
+              "predicted": 0.06396913294885376,
+              "observed": 0.1411124546553809
+            },
+            {
+              "n": 12513,
+              "predicted": 0.1491751708956652,
+              "observed": 0.2612483017661632
+            },
+            {
+              "n": 12676,
+              "predicted": 0.25086945365513674,
+              "observed": 0.3832439255285579
+            },
+            {
+              "n": 12407,
+              "predicted": 0.3492751191156631,
+              "observed": 0.4782783912307568
+            },
+            {
+              "n": 11966,
+              "predicted": 0.44970784926472274,
+              "observed": 0.5787230486378071
+            },
+            {
+              "n": 11085,
+              "predicted": 0.5503475381384898,
+              "observed": 0.6316644113667118
+            },
+            {
+              "n": 11347,
+              "predicted": 0.6514894673453876,
+              "observed": 0.7100555212831585
+            },
+            {
+              "n": 14331,
+              "predicted": 0.7511566744189428,
+              "observed": 0.7604493754797292
+            },
+            {
+              "n": 26077,
+              "predicted": 0.8558649720830018,
+              "observed": 0.8530889289412126
+            },
+            {
+              "n": 95328,
+              "predicted": 0.9660347403158734,
+              "observed": 0.9665051191675059
+            }
+          ]
+        },
+        "cases": 300,
+        "proposal_coverage": 0.6,
+        "false_feasible_fraction": 0.0,
+        "truth_has_feasible_candidate_fraction": 0.6,
+        "ordinal_regret_when_feasible": {
+          "mean": 0.17230780022446687,
+          "ci95": [
+            0.14473063973063974,
+            0.2248779461279461
+          ],
+          "clusters": 3,
+          "method": "scene_cluster_percentile_bootstrap"
+        }
+      },
+      "evaluation_elapsed_s": 0.29679427499650046
+    },
+    {
+      "domain": "traffic",
+      "method": "graph_masked-2",
+      "summary": {
+        "service_rmse": 0.2567512770926955,
+        "raw_quantile_80_coverage": 0.9687638888888888,
+        "risk": {
+          "brier": 0.1340255557641114,
+          "log_loss": 0.41185741584349966,
+          "ece": 0.048808724543903254,
+          "reliability": [
+            {
+              "n": 7074,
+              "predicted": 0.07091349571038028,
+              "observed": 0.2080859485439638
+            },
+            {
+              "n": 14578,
+              "predicted": 0.1513776867735417,
+              "observed": 0.30703800246947455
+            },
+            {
+              "n": 15159,
+              "predicted": 0.2501292338921516,
+              "observed": 0.41361567385711456
+            },
+            {
+              "n": 13130,
+              "predicted": 0.3481213900326593,
+              "observed": 0.4897182025894897
+            },
+            {
+              "n": 9865,
+              "predicted": 0.4470051886373163,
+              "observed": 0.5928028383172833
+            },
+            {
+              "n": 8236,
+              "predicted": 0.5479343856145248,
+              "observed": 0.6135259834871297
+            },
+            {
+              "n": 9031,
+              "predicted": 0.6537196649993962,
+              "observed": 0.6619421990920163
+            },
+            {
+              "n": 13423,
+              "predicted": 0.754859844738455,
+              "observed": 0.7382850331520524
+            },
+            {
+              "n": 29348,
+              "predicted": 0.8587415102365086,
+              "observed": 0.8373313343328336
+            },
+            {
+              "n": 96156,
+              "predicted": 0.9624158652368602,
+              "observed": 0.9617704563417779
+            }
+          ]
+        },
+        "cases": 300,
+        "proposal_coverage": 0.6,
+        "false_feasible_fraction": 0.0,
+        "truth_has_feasible_candidate_fraction": 0.6,
+        "ordinal_regret_when_feasible": {
+          "mean": 0.17785493827160492,
+          "ci95": [
+            0.1320875420875421,
+            0.2386826599326599
+          ],
+          "clusters": 3,
+          "method": "scene_cluster_percentile_bootstrap"
+        }
+      },
+      "evaluation_elapsed_s": 0.2954914669971913
+    },
+    {
+      "domain": "traffic",
+      "method": "graph_jepa-2",
+      "summary": {
+        "service_rmse": 0.25665483243355913,
+        "raw_quantile_80_coverage": 0.9728425925925925,
+        "risk": {
+          "brier": 0.13592718856886246,
+          "log_loss": 0.41382360531480916,
+          "ece": 0.05206235339205399,
+          "reliability": [
+            {
+              "n": 7272,
+              "predicted": 0.06823918274839433,
+              "observed": 0.2196094609460946
+            },
+            {
+              "n": 16321,
+              "predicted": 0.1499133341707813,
+              "observed": 0.32338704736229396
+            },
+            {
+              "n": 16092,
+              "predicted": 0.24888594812391085,
+              "observed": 0.4635843897588864
+            },
+            {
+              "n": 12278,
+              "predicted": 0.3471499876967081,
+              "observed": 0.4867242221860238
+            },
+            {
+              "n": 9245,
+              "predicted": 0.4465762207094175,
+              "observed": 0.5569497025419146
+            },
+            {
+              "n": 6853,
+              "predicted": 0.5505712321252348,
+              "observed": 0.5759521377498905
+            },
+            {
+              "n": 9161,
+              "predicted": 0.6528581648580295,
+              "observed": 0.6545136993777971
+            },
+            {
+              "n": 16441,
+              "predicted": 0.7547440991611364,
+              "observed": 0.7474606167508059
+            },
+            {
+              "n": 31975,
+              "predicted": 0.8564959027396225,
+              "observed": 0.8470367474589523
+            },
+            {
+              "n": 90362,
+              "predicted": 0.9650283231795335,
+              "observed": 0.9707067129988269
+            }
+          ]
+        },
+        "cases": 300,
+        "proposal_coverage": 0.6,
+        "false_feasible_fraction": 0.0,
+        "truth_has_feasible_candidate_fraction": 0.6,
+        "ordinal_regret_when_feasible": {
+          "mean": 0.15897586980920314,
+          "ci95": [
+            0.12074074074074075,
+            0.20572811447811448
+          ],
+          "clusters": 3,
+          "method": "scene_cluster_percentile_bootstrap"
+        }
+      },
+      "evaluation_elapsed_s": 0.2634599849989172
+    },
+    {
+      "domain": "traffic",
+      "method": "validation_router",
+      "summary": {
+        "cases": 300,
+        "proposal_coverage": 0.6,
+        "false_feasible_fraction": 0.0,
+        "truth_has_feasible_candidate_fraction": 0.6,
+        "ordinal_regret_when_feasible": {
+          "mean": 0.18388468013468015,
+          "ci95": [
+            0.14688552188552187,
+            0.24154461279461278
+          ],
+          "clusters": 3,
+          "method": "scene_cluster_percentile_bootstrap"
+        }
+      }
+    }
+  ],
+  "model_seeds": [
+    0,
+    1,
+    2
+  ],
+  "selection_sha256": "23cbb86221fee156cad659eec9f9d8a02ad67bdebd6afc028f1c834ce300b764",
+  "future_truth_in_policy_inputs": false,
+  "limits": [
+    "Only the declared complete mission grammar is supported",
+    "Candidate-set infeasibility is not global physical infeasibility",
+    "Marginal intervals do not ensure joint service floors",
+    "No physical-car or foundation-model claim; new radio encoders are trained from scratch"
+  ]
+}

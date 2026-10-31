@@ -1,0 +1,3605 @@
+{
+  "source": "simulated_multitask_training_and_real_pretrained_forecasting",
+  "admission_label_counts": {
+    "train": {
+      "hold": 260,
+      "lower": 1010,
+      "raise": 290
+    },
+    "validation": {
+      "hold": 67,
+      "raise": 71,
+      "lower": 252
+    },
+    "test": {
+      "hold": 129,
+      "raise": 128,
+      "lower": 523
+    }
+  },
+  "baselines": {
+    "admission_majority_accuracy": 0.6705128205128205,
+    "admission_exact_numeric_oracle_accuracy": 1.0,
+    "traffic_rule_accuracy": {
+      "trend": 0.6916666666666667,
+      "event": 0.8,
+      "volatility": 0.9083333333333333
+    },
+    "forecast_last_value_mae_mbps": 3.770571476867259,
+    "chronos": {
+      "repository": "amazon/chronos-bolt-small",
+      "revision": "772f3d25d38aec6d914c8949dab4462e2d46f5d8",
+      "model_executed": true,
+      "elapsed_s": 3.5170998530011275,
+      "forecast_mae_mbps": 3.0594567065948346,
+      "quantile_80_empirical_coverage": 0.9055555555555556
+    }
+  },
+  "records": [
+    {
+      "seed": 0,
+      "shared_core": false,
+      "parameters": 59156,
+      "history": [
+        {
+          "epoch": 1,
+          "validation": {
+            "admission_accuracy": 0.6461538461538462,
+            "admission_balanced_accuracy": 0.3333333333333333,
+            "admission_per_label_recall": {
+              "0": 1.0,
+              "1": 0.0,
+              "2": 0.0
+            },
+            "traffic_accuracy": {
+              "trend": 0.5333333333333333,
+              "event": 0.4,
+              "volatility": 0.4166666666666667
+            },
+            "forecast_mae_mbps": 3.8960788249969482,
+            "association_throughput_norm_regret": 0.010180864793558916
+          }
+        },
+        {
+          "epoch": 2,
+          "validation": {
+            "admission_accuracy": 0.6461538461538462,
+            "admission_balanced_accuracy": 0.3333333333333333,
+            "admission_per_label_recall": {
+              "0": 1.0,
+              "1": 0.0,
+              "2": 0.0
+            },
+            "traffic_accuracy": {
+              "trend": 0.55,
+              "event": 0.3333333333333333,
+              "volatility": 0.38333333333333336
+            },
+            "forecast_mae_mbps": 3.3800835609436035,
+            "association_throughput_norm_regret": 0.010180864793558916
+          }
+        },
+        {
+          "epoch": 3,
+          "validation": {
+            "admission_accuracy": 0.717948717948718,
+            "admission_balanced_accuracy": 0.5215449690959466,
+            "admission_per_label_recall": {
+              "0": 0.9365079365079365,
+              "1": 0.14925373134328357,
+              "2": 0.4788732394366197
+            },
+            "traffic_accuracy": {
+              "trend": 0.6333333333333333,
+              "event": 0.38333333333333336,
+              "volatility": 0.4
+            },
+            "forecast_mae_mbps": 3.216665267944336,
+            "association_throughput_norm_regret": 0.010180864793558916
+          }
+        },
+        {
+          "epoch": 4,
+          "validation": {
+            "admission_accuracy": 0.7205128205128205,
+            "admission_balanced_accuracy": 0.5166927490871153,
+            "admission_per_label_recall": {
+              "0": 0.9444444444444444,
+              "1": 0.0,
+              "2": 0.6056338028169014
+            },
+            "traffic_accuracy": {
+              "trend": 0.7166666666666667,
+              "event": 0.35,
+              "volatility": 0.4166666666666667
+            },
+            "forecast_mae_mbps": 3.204202175140381,
+            "association_throughput_norm_regret": 0.010180864793558916
+          }
+        },
+        {
+          "epoch": 5,
+          "validation": {
+            "admission_accuracy": 0.7256410256410256,
+            "admission_balanced_accuracy": 0.5294545048066175,
+            "admission_per_label_recall": {
+              "0": 0.9404761904761905,
+              "1": 0.0,
+              "2": 0.647887323943662
+            },
+            "traffic_accuracy": {
+              "trend": 0.7166666666666667,
+              "event": 0.5,
+              "volatility": 0.36666666666666664
+            },
+            "forecast_mae_mbps": 3.150378465652466,
+            "association_throughput_norm_regret": 0.010180864793558916
+          }
+        },
+        {
+          "epoch": 6,
+          "validation": {
+            "admission_accuracy": 0.7333333333333333,
+            "admission_balanced_accuracy": 0.5637715179968701,
+            "admission_per_label_recall": {
+              "0": 0.9166666666666666,
+              "1": 0.0,
+              "2": 0.7746478873239436
+            },
+            "traffic_accuracy": {
+              "trend": 0.7333333333333333,
+              "event": 0.5833333333333334,
+              "volatility": 0.36666666666666664
+            },
+            "forecast_mae_mbps": 3.264575242996216,
+            "association_throughput_norm_regret": 0.010180864793558916
+          }
+        },
+        {
+          "epoch": 7,
+          "validation": {
+            "admission_accuracy": 0.7410256410256411,
+            "admission_balanced_accuracy": 0.5778560250391237,
+            "admission_per_label_recall": {
+              "0": 0.9166666666666666,
+              "1": 0.0,
+              "2": 0.8169014084507042
+            },
+            "traffic_accuracy": {
+              "trend": 0.7666666666666667,
+              "event": 0.6166666666666667,
+              "volatility": 0.36666666666666664
+            },
+            "forecast_mae_mbps": 3.47831654548645,
+            "association_throughput_norm_regret": 0.010180864793558916
+          }
+        },
+        {
+          "epoch": 8,
+          "validation": {
+            "admission_accuracy": 0.7256410256410256,
+            "admission_balanced_accuracy": 0.5496870109546166,
+            "admission_per_label_recall": {
+              "0": 0.9166666666666666,
+              "1": 0.0,
+              "2": 0.7323943661971831
+            },
+            "traffic_accuracy": {
+              "trend": 0.85,
+              "event": 0.6333333333333333,
+              "volatility": 0.43333333333333335
+            },
+            "forecast_mae_mbps": 3.4348480701446533,
+            "association_throughput_norm_regret": 0.010180864793558916
+          }
+        },
+        {
+          "epoch": 9,
+          "validation": {
+            "admission_accuracy": 0.735897435897436,
+            "admission_balanced_accuracy": 0.5718384380356212,
+            "admission_per_label_recall": {
+              "0": 0.9126984126984127,
+              "1": 0.0,
+              "2": 0.8028169014084507
+            },
+            "traffic_accuracy": {
+              "trend": 0.7666666666666667,
+              "event": 0.6166666666666667,
+              "volatility": 0.43333333333333335
+            },
+            "forecast_mae_mbps": 3.3313684463500977,
+            "association_throughput_norm_regret": 0.010180864793558916
+          }
+        },
+        {
+          "epoch": 10,
+          "validation": {
+            "admission_accuracy": 0.7410256410256411,
+            "admission_balanced_accuracy": 0.5744839406811239,
+            "admission_per_label_recall": {
+              "0": 0.9206349206349206,
+              "1": 0.0,
+              "2": 0.8028169014084507
+            },
+            "traffic_accuracy": {
+              "trend": 0.8666666666666667,
+              "event": 0.6333333333333333,
+              "volatility": 0.45
+            },
+            "forecast_mae_mbps": 3.2091009616851807,
+            "association_throughput_norm_regret": 0.010180864793558916
+          }
+        },
+        {
+          "epoch": 11,
+          "validation": {
+            "admission_accuracy": 0.7307692307692307,
+            "admission_balanced_accuracy": 0.5826812728221179,
+            "admission_per_label_recall": {
+              "0": 0.8888888888888888,
+              "1": 0.0,
+              "2": 0.8591549295774648
+            },
+            "traffic_accuracy": {
+              "trend": 0.85,
+              "event": 0.6166666666666667,
+              "volatility": 0.4
+            },
+            "forecast_mae_mbps": 3.2013823986053467,
+            "association_throughput_norm_regret": 0.010180864793558916
+          }
+        },
+        {
+          "epoch": 12,
+          "validation": {
+            "admission_accuracy": 0.7333333333333333,
+            "admission_balanced_accuracy": 0.5806319397868694,
+            "admission_per_label_recall": {
+              "0": 0.8968253968253969,
+              "1": 0.0,
+              "2": 0.8450704225352113
+            },
+            "traffic_accuracy": {
+              "trend": 0.85,
+              "event": 0.6833333333333333,
+              "volatility": 0.4166666666666667
+            },
+            "forecast_mae_mbps": 3.076786994934082,
+            "association_throughput_norm_regret": 0.010180864793558916
+          }
+        },
+        {
+          "epoch": 13,
+          "validation": {
+            "admission_accuracy": 0.7307692307692307,
+            "admission_balanced_accuracy": 0.5860533571801178,
+            "admission_per_label_recall": {
+              "0": 0.8849206349206349,
+              "1": 0.0,
+              "2": 0.8732394366197183
+            },
+            "traffic_accuracy": {
+              "trend": 0.9166666666666666,
+              "event": 0.7166666666666667,
+              "volatility": 0.4
+            },
+            "forecast_mae_mbps": 3.1483256816864014,
+            "association_throughput_norm_regret": 0.010180864793558916
+          }
+        },
+        {
+          "epoch": 14,
+          "validation": {
+            "admission_accuracy": 0.7384615384615385,
+            "admission_balanced_accuracy": 0.583277442432372,
+            "admission_per_label_recall": {
+              "0": 0.9047619047619048,
+              "1": 0.0,
+              "2": 0.8450704225352113
+            },
+            "traffic_accuracy": {
+              "trend": 0.8833333333333333,
+              "event": 0.6333333333333333,
+              "volatility": 0.45
+            },
+            "forecast_mae_mbps": 3.1684069633483887,
+            "association_throughput_norm_regret": 0.010180864793558916
+          }
+        },
+        {
+          "epoch": 15,
+          "validation": {
+            "admission_accuracy": 0.7410256410256411,
+            "admission_balanced_accuracy": 0.5846001937551234,
+            "admission_per_label_recall": {
+              "0": 0.9087301587301587,
+              "1": 0.0,
+              "2": 0.8450704225352113
+            },
+            "traffic_accuracy": {
+              "trend": 0.8833333333333333,
+              "event": 0.7,
+              "volatility": 0.45
+            },
+            "forecast_mae_mbps": 3.174546241760254,
+            "association_throughput_norm_regret": 0.010180864793558916
+          }
+        },
+        {
+          "epoch": 16,
+          "validation": {
+            "admission_accuracy": 0.7461538461538462,
+            "admission_balanced_accuracy": 0.6052272729800583,
+            "admission_per_label_recall": {
+              "0": 0.8968253968253969,
+              "1": 0.05970149253731343,
+              "2": 0.8591549295774648
+            },
+            "traffic_accuracy": {
+              "trend": 0.9166666666666666,
+              "event": 0.65,
+              "volatility": 0.36666666666666664
+            },
+            "forecast_mae_mbps": 3.084014654159546,
+            "association_throughput_norm_regret": 0.010180864793558916
+          }
+        },
+        {
+          "epoch": 17,
+          "validation": {
+            "admission_accuracy": 0.7333333333333333,
+            "admission_balanced_accuracy": 0.6017053120269433,
+            "admission_per_label_recall": {
+              "0": 0.873015873015873,
+              "1": 0.04477611940298507,
+              "2": 0.8873239436619719
+            },
+            "traffic_accuracy": {
+              "trend": 0.9166666666666666,
+              "event": 0.7,
+              "volatility": 0.48333333333333334
+            },
+            "forecast_mae_mbps": 3.078580141067505,
+            "association_throughput_norm_regret": 0.010180864793558916
+          }
+        },
+        {
+          "epoch": 18,
+          "validation": {
+            "admission_accuracy": 0.717948717948718,
+            "admission_balanced_accuracy": 0.6005129728064351,
+            "admission_per_label_recall": {
+              "0": 0.8412698412698413,
+              "1": 0.04477611940298507,
+              "2": 0.9154929577464789
+            },
+            "traffic_accuracy": {
+              "trend": 0.9166666666666666,
+              "event": 0.7333333333333333,
+              "volatility": 0.38333333333333336
+            },
+            "forecast_mae_mbps": 2.992009162902832,
+            "association_throughput_norm_regret": 0.010180864793558916
+          }
+        },
+        {
+          "epoch": 19,
+          "validation": {
+            "admission_accuracy": 0.735897435897436,
+            "admission_balanced_accuracy": 0.5853267754676206,
+            "admission_per_label_recall": {
+              "0": 0.8968253968253969,
+              "1": 0.0,
+              "2": 0.8591549295774648
+            },
+            "traffic_accuracy": {
+              "trend": 0.9,
+              "event": 0.7333333333333333,
+              "volatility": 0.43333333333333335
+            },
+            "forecast_mae_mbps": 2.721832036972046,
+            "association_throughput_norm_regret": 0.010180864793558916
+          }
+        },
+        {
+          "epoch": 20,
+          "validation": {
+            "admission_accuracy": 0.7282051282051282,
+            "admission_balanced_accuracy": 0.5847306058573664,
+            "admission_per_label_recall": {
+              "0": 0.8809523809523809,
+              "1": 0.0,
+              "2": 0.8732394366197183
+            },
+            "traffic_accuracy": {
+              "trend": 0.9,
+              "event": 0.7333333333333333,
+              "volatility": 0.43333333333333335
+            },
+            "forecast_mae_mbps": 2.694457769393921,
+            "association_throughput_norm_regret": 0.010180864793558916
+          }
+        },
+        {
+          "epoch": 21,
+          "validation": {
+            "admission_accuracy": 0.735897435897436,
+            "admission_balanced_accuracy": 0.5853267754676206,
+            "admission_per_label_recall": {
+              "0": 0.8968253968253969,
+              "1": 0.0,
+              "2": 0.8591549295774648
+            },
+            "traffic_accuracy": {
+              "trend": 0.9,
+              "event": 0.7166666666666667,
+              "volatility": 0.4166666666666667
+            },
+            "forecast_mae_mbps": 2.688481569290161,
+            "association_throughput_norm_regret": 0.010180864793558916
+          }
+        },
+        {
+          "epoch": 22,
+          "validation": {
+            "admission_accuracy": 0.7307692307692307,
+            "admission_balanced_accuracy": 0.6012234267962668,
+            "admission_per_label_recall": {
+              "0": 0.8690476190476191,
+              "1": 0.08955223880597014,
+              "2": 0.8450704225352113
+            },
+            "traffic_accuracy": {
+              "trend": 0.9166666666666666,
+              "event": 0.7333333333333333,
+              "volatility": 0.4666666666666667
+            },
+            "forecast_mae_mbps": 2.707974672317505,
+            "association_throughput_norm_regret": 0.010180864793558916
+          }
+        },
+        {
+          "epoch": 23,
+          "validation": {
+            "admission_accuracy": 0.7230769230769231,
+            "admission_balanced_accuracy": 0.6042796302413708,
+            "admission_per_label_recall": {
+              "0": 0.8492063492063492,
+              "1": 0.1044776119402985,
+              "2": 0.8591549295774648
+            },
+            "traffic_accuracy": {
+              "trend": 0.9,
+              "event": 0.7333333333333333,
+              "volatility": 0.5
+            },
+            "forecast_mae_mbps": 2.6707372665405273,
+            "association_throughput_norm_regret": 0.010180864793558916
+          }
+        },
+        {
+          "epoch": 24,
+          "validation": {
+            "admission_accuracy": 0.7410256410256411,
+            "admission_balanced_accuracy": 0.5846001937551234,
+            "admission_per_label_recall": {
+              "0": 0.9087301587301587,
+              "1": 0.0,
+              "2": 0.8450704225352113
+            },
+            "traffic_accuracy": {
+              "trend": 0.8666666666666667,
+              "event": 0.7166666666666667,
+              "volatility": 0.4666666666666667
+            },
+            "forecast_mae_mbps": 2.7382545471191406,
+            "association_throughput_norm_regret": 0.010180864793558916
+          }
+        },
+        {
+          "epoch": 25,
+          "validation": {
+            "admission_accuracy": 0.7461538461538462,
+            "admission_balanced_accuracy": 0.5982028155667004,
+            "admission_per_label_recall": {
+              "0": 0.9047619047619048,
+              "1": 0.04477611940298507,
+              "2": 0.8450704225352113
+            },
+            "traffic_accuracy": {
+              "trend": 0.8833333333333333,
+              "event": 0.75,
+              "volatility": 0.45
+            },
+            "forecast_mae_mbps": 2.617743492126465,
+            "association_throughput_norm_regret": 0.010180864793558916
+          }
+        },
+        {
+          "epoch": 26,
+          "validation": {
+            "admission_accuracy": 0.7538461538461538,
+            "admission_balanced_accuracy": 0.6142493434904618,
+            "admission_per_label_recall": {
+              "0": 0.9047619047619048,
+              "1": 0.14925373134328357,
+              "2": 0.7887323943661971
+            },
+            "traffic_accuracy": {
+              "trend": 0.9166666666666666,
+              "event": 0.7666666666666667,
+              "volatility": 0.4666666666666667
+            },
+            "forecast_mae_mbps": 2.672715187072754,
+            "association_throughput_norm_regret": 0.010180864793558916
+          }
+        },
+        {
+          "epoch": 27,
+          "validation": {
+            "admission_accuracy": 0.7051282051282052,
+            "admission_balanced_accuracy": 0.5365737821066809,
+            "admission_per_label_recall": {
+              "0": 0.8888888888888888,
+              "1": 0.04477611940298507,
+              "2": 0.676056338028169
+            },
+            "traffic_accuracy": {
+              "trend": 0.9166666666666666,
+              "event": 0.7666666666666667,
+              "volatility": 0.5
+            },
+            "forecast_mae_mbps": 2.728041648864746,
+            "association_throughput_norm_regret": 0.010180864793558916
+          }
+        },
+        {
+          "epoch": 28,
+          "validation": {
+            "admission_accuracy": 0.7205128205128205,
+            "admission_balanced_accuracy": 0.5810340205967702,
+            "admission_per_label_recall": {
+              "0": 0.873015873015873,
+              "1": 0.19402985074626866,
+              "2": 0.676056338028169
+            },
+            "traffic_accuracy": {
+              "trend": 0.8833333333333333,
+              "event": 0.8,
+              "volatility": 0.5666666666666667
+            },
+            "forecast_mae_mbps": 2.6480000019073486,
+            "association_throughput_norm_regret": 0.010180864793558916
+          }
+        },
+        {
+          "epoch": 29,
+          "validation": {
+            "admission_accuracy": 0.7435897435897436,
+            "admission_balanced_accuracy": 0.6089583381994564,
+            "admission_per_label_recall": {
+              "0": 0.8888888888888888,
+              "1": 0.14925373134328357,
+              "2": 0.7887323943661971
+            },
+            "traffic_accuracy": {
+              "trend": 0.8666666666666667,
+              "event": 0.8,
+              "volatility": 0.6166666666666667
+            },
+            "forecast_mae_mbps": 2.512542963027954,
+            "association_throughput_norm_regret": 0.010180864793558916
+          }
+        },
+        {
+          "epoch": 30,
+          "validation": {
+            "admission_accuracy": 0.7,
+            "admission_balanced_accuracy": 0.5625780665196263,
+            "admission_per_label_recall": {
+              "0": 0.8531746031746031,
+              "1": 0.31343283582089554,
+              "2": 0.5211267605633803
+            },
+            "traffic_accuracy": {
+              "trend": 0.8833333333333333,
+              "event": 0.8,
+              "volatility": 0.5333333333333333
+            },
+            "forecast_mae_mbps": 2.5896596908569336,
+            "association_throughput_norm_regret": 0.010180864793558916
+          }
+        }
+      ],
+      "test": {
+        "admission_accuracy": 0.7384615384615385,
+        "admission_balanced_accuracy": 0.5792465359607907,
+        "admission_per_label_recall": {
+          "0": 0.8948374760994264,
+          "1": 0.10852713178294573,
+          "2": 0.734375
+        },
+        "traffic_accuracy": {
+          "trend": 0.9166666666666666,
+          "event": 0.8583333333333333,
+          "volatility": 0.5666666666666667
+        },
+        "forecast_mae_mbps": 2.7362520694732666,
+        "association_throughput_norm_regret": 0.019628133249676064
+      }
+    },
+    {
+      "seed": 0,
+      "shared_core": true,
+      "parameters": 42516,
+      "history": [
+        {
+          "epoch": 1,
+          "validation": {
+            "admission_accuracy": 0.6461538461538462,
+            "admission_balanced_accuracy": 0.3333333333333333,
+            "admission_per_label_recall": {
+              "0": 1.0,
+              "1": 0.0,
+              "2": 0.0
+            },
+            "traffic_accuracy": {
+              "trend": 0.5333333333333333,
+              "event": 0.4166666666666667,
+              "volatility": 0.3
+            },
+            "forecast_mae_mbps": 4.267592906951904,
+            "association_throughput_norm_regret": 0.010180864793558916
+          }
+        },
+        {
+          "epoch": 2,
+          "validation": {
+            "admission_accuracy": 0.6461538461538462,
+            "admission_balanced_accuracy": 0.3333333333333333,
+            "admission_per_label_recall": {
+              "0": 1.0,
+              "1": 0.0,
+              "2": 0.0
+            },
+            "traffic_accuracy": {
+              "trend": 0.65,
+              "event": 0.4,
+              "volatility": 0.38333333333333336
+            },
+            "forecast_mae_mbps": 3.510359048843384,
+            "association_throughput_norm_regret": 0.010180864793558916
+          }
+        },
+        {
+          "epoch": 3,
+          "validation": {
+            "admission_accuracy": 0.6794871794871795,
+            "admission_balanced_accuracy": 0.42808704076309717,
+            "admission_per_label_recall": {
+              "0": 0.9603174603174603,
+              "1": 0.0,
+              "2": 0.323943661971831
+            },
+            "traffic_accuracy": {
+              "trend": 0.7,
+              "event": 0.38333333333333336,
+              "volatility": 0.4166666666666667
+            },
+            "forecast_mae_mbps": 3.1063551902770996,
+            "association_throughput_norm_regret": 0.010180864793558916
+          }
+        },
+        {
+          "epoch": 4,
+          "validation": {
+            "admission_accuracy": 0.7307692307692307,
+            "admission_balanced_accuracy": 0.5388441761681199,
+            "admission_per_label_recall": {
+              "0": 0.9404761904761905,
+              "1": 0.0,
+              "2": 0.676056338028169
+            },
+            "traffic_accuracy": {
+              "trend": 0.7333333333333333,
+              "event": 0.3,
+              "volatility": 0.38333333333333336
+            },
+            "forecast_mae_mbps": 3.1597039699554443,
+            "association_throughput_norm_regret": 0.010180864793558916
+          }
+        },
+        {
+          "epoch": 5,
+          "validation": {
+            "admission_accuracy": 0.7333333333333333,
+            "admission_balanced_accuracy": 0.5705156867128699,
+            "admission_per_label_recall": {
+              "0": 0.9087301587301587,
+              "1": 0.0,
+              "2": 0.8028169014084507
+            },
+            "traffic_accuracy": {
+              "trend": 0.75,
+              "event": 0.5166666666666667,
+              "volatility": 0.35
+            },
+            "forecast_mae_mbps": 3.2255570888519287,
+            "association_throughput_norm_regret": 0.010180864793558916
+          }
+        },
+        {
+          "epoch": 6,
+          "validation": {
+            "admission_accuracy": 0.7282051282051282,
+            "admission_balanced_accuracy": 0.5543818466353677,
+            "admission_per_label_recall": {
+              "0": 0.9166666666666666,
+              "1": 0.0,
+              "2": 0.7464788732394366
+            },
+            "traffic_accuracy": {
+              "trend": 0.7833333333333333,
+              "event": 0.6166666666666667,
+              "volatility": 0.4
+            },
+            "forecast_mae_mbps": 3.326673746109009,
+            "association_throughput_norm_regret": 0.010180864793558916
+          }
+        },
+        {
+          "epoch": 7,
+          "validation": {
+            "admission_accuracy": 0.7333333333333333,
+            "admission_balanced_accuracy": 0.5637715179968701,
+            "admission_per_label_recall": {
+              "0": 0.9166666666666666,
+              "1": 0.0,
+              "2": 0.7746478873239436
+            },
+            "traffic_accuracy": {
+              "trend": 0.8666666666666667,
+              "event": 0.6166666666666667,
+              "volatility": 0.45
+            },
+            "forecast_mae_mbps": 3.2853994369506836,
+            "association_throughput_norm_regret": 0.010180864793558916
+          }
+        },
+        {
+          "epoch": 8,
+          "validation": {
+            "admission_accuracy": 0.735897435897436,
+            "admission_balanced_accuracy": 0.5684663536776212,
+            "admission_per_label_recall": {
+              "0": 0.9166666666666666,
+              "1": 0.0,
+              "2": 0.7887323943661971
+            },
+            "traffic_accuracy": {
+              "trend": 0.9,
+              "event": 0.6666666666666666,
+              "volatility": 0.4166666666666667
+            },
+            "forecast_mae_mbps": 3.2812845706939697,
+            "association_throughput_norm_regret": 0.010180864793558916
+          }
+        },
+        {
+          "epoch": 9,
+          "validation": {
+            "admission_accuracy": 0.7410256410256411,
+            "admission_balanced_accuracy": 0.5778560250391237,
+            "admission_per_label_recall": {
+              "0": 0.9166666666666666,
+              "1": 0.0,
+              "2": 0.8169014084507042
+            },
+            "traffic_accuracy": {
+              "trend": 0.9,
+              "event": 0.7,
+              "volatility": 0.43333333333333335
+            },
+            "forecast_mae_mbps": 3.2495007514953613,
+            "association_throughput_norm_regret": 0.010180864793558916
+          }
+        },
+        {
+          "epoch": 10,
+          "validation": {
+            "admission_accuracy": 0.735897435897436,
+            "admission_balanced_accuracy": 0.5718384380356212,
+            "admission_per_label_recall": {
+              "0": 0.9126984126984127,
+              "1": 0.0,
+              "2": 0.8028169014084507
+            },
+            "traffic_accuracy": {
+              "trend": 0.9,
+              "event": 0.7333333333333333,
+              "volatility": 0.43333333333333335
+            },
+            "forecast_mae_mbps": 3.212907552719116,
+            "association_throughput_norm_regret": 0.010180864793558916
+          }
+        },
+        {
+          "epoch": 11,
+          "validation": {
+            "admission_accuracy": 0.7333333333333333,
+            "admission_balanced_accuracy": 0.587376108502869,
+            "admission_per_label_recall": {
+              "0": 0.8888888888888888,
+              "1": 0.0,
+              "2": 0.8732394366197183
+            },
+            "traffic_accuracy": {
+              "trend": 0.9166666666666666,
+              "event": 0.75,
+              "volatility": 0.4
+            },
+            "forecast_mae_mbps": 3.113438606262207,
+            "association_throughput_norm_regret": 0.010180864793558916
+          }
+        },
+        {
+          "epoch": 12,
+          "validation": {
+            "admission_accuracy": 0.7333333333333333,
+            "admission_balanced_accuracy": 0.5840040241448693,
+            "admission_per_label_recall": {
+              "0": 0.8928571428571429,
+              "1": 0.0,
+              "2": 0.8591549295774648
+            },
+            "traffic_accuracy": {
+              "trend": 0.8833333333333333,
+              "event": 0.7333333333333333,
+              "volatility": 0.36666666666666664
+            },
+            "forecast_mae_mbps": 3.1069045066833496,
+            "association_throughput_norm_regret": 0.010180864793558916
+          }
+        },
+        {
+          "epoch": 13,
+          "validation": {
+            "admission_accuracy": 0.7333333333333333,
+            "admission_balanced_accuracy": 0.587376108502869,
+            "admission_per_label_recall": {
+              "0": 0.8888888888888888,
+              "1": 0.0,
+              "2": 0.8732394366197183
+            },
+            "traffic_accuracy": {
+              "trend": 0.95,
+              "event": 0.7166666666666667,
+              "volatility": 0.48333333333333334
+            },
+            "forecast_mae_mbps": 3.067312002182007,
+            "association_throughput_norm_regret": 0.010180864793558916
+          }
+        },
+        {
+          "epoch": 14,
+          "validation": {
+            "admission_accuracy": 0.7333333333333333,
+            "admission_balanced_accuracy": 0.5806319397868694,
+            "admission_per_label_recall": {
+              "0": 0.8968253968253969,
+              "1": 0.0,
+              "2": 0.8450704225352113
+            },
+            "traffic_accuracy": {
+              "trend": 0.9,
+              "event": 0.7,
+              "volatility": 0.55
+            },
+            "forecast_mae_mbps": 3.046626091003418,
+            "association_throughput_norm_regret": 0.010180864793558916
+          }
+        },
+        {
+          "epoch": 15,
+          "validation": {
+            "admission_accuracy": 0.735897435897436,
+            "admission_balanced_accuracy": 0.5785826067516209,
+            "admission_per_label_recall": {
+              "0": 0.9047619047619048,
+              "1": 0.0,
+              "2": 0.8309859154929577
+            },
+            "traffic_accuracy": {
+              "trend": 0.9166666666666666,
+              "event": 0.7166666666666667,
+              "volatility": 0.5166666666666667
+            },
+            "forecast_mae_mbps": 2.928262948989868,
+            "association_throughput_norm_regret": 0.010180864793558916
+          }
+        },
+        {
+          "epoch": 16,
+          "validation": {
+            "admission_accuracy": 0.7384615384615385,
+            "admission_balanced_accuracy": 0.59030189984573,
+            "admission_per_label_recall": {
+              "0": 0.8968253968253969,
+              "1": 0.014925373134328358,
+              "2": 0.8591549295774648
+            },
+            "traffic_accuracy": {
+              "trend": 0.9333333333333333,
+              "event": 0.75,
+              "volatility": 0.36666666666666664
+            },
+            "forecast_mae_mbps": 2.769843816757202,
+            "association_throughput_norm_regret": 0.010180864793558916
+          }
+        },
+        {
+          "epoch": 17,
+          "validation": {
+            "admission_accuracy": 0.7307692307692307,
+            "admission_balanced_accuracy": 0.5894254415381176,
+            "admission_per_label_recall": {
+              "0": 0.8809523809523809,
+              "1": 0.0,
+              "2": 0.8873239436619719
+            },
+            "traffic_accuracy": {
+              "trend": 0.9333333333333333,
+              "event": 0.75,
+              "volatility": 0.5833333333333334
+            },
+            "forecast_mae_mbps": 2.85758900642395,
+            "association_throughput_norm_regret": 0.010180864793558916
+          }
+        },
+        {
+          "epoch": 18,
+          "validation": {
+            "admission_accuracy": 0.717948717948718,
+            "admission_balanced_accuracy": 0.5861837692823608,
+            "admission_per_label_recall": {
+              "0": 0.8571428571428571,
+              "1": 0.0,
+              "2": 0.9014084507042254
+            },
+            "traffic_accuracy": {
+              "trend": 0.95,
+              "event": 0.75,
+              "volatility": 0.45
+            },
+            "forecast_mae_mbps": 2.7475264072418213,
+            "association_throughput_norm_regret": 0.010180864793558916
+          }
+        },
+        {
+          "epoch": 19,
+          "validation": {
+            "admission_accuracy": 0.7307692307692307,
+            "admission_balanced_accuracy": 0.5826812728221179,
+            "admission_per_label_recall": {
+              "0": 0.8888888888888888,
+              "1": 0.0,
+              "2": 0.8591549295774648
+            },
+            "traffic_accuracy": {
+              "trend": 0.9333333333333333,
+              "event": 0.75,
+              "volatility": 0.5666666666666667
+            },
+            "forecast_mae_mbps": 2.626310110092163,
+            "association_throughput_norm_regret": 0.010180864793558916
+          }
+        },
+        {
+          "epoch": 20,
+          "validation": {
+            "admission_accuracy": 0.7256410256410256,
+            "admission_balanced_accuracy": 0.586779938892615,
+            "admission_per_label_recall": {
+              "0": 0.873015873015873,
+              "1": 0.0,
+              "2": 0.8873239436619719
+            },
+            "traffic_accuracy": {
+              "trend": 0.9,
+              "event": 0.7166666666666667,
+              "volatility": 0.5333333333333333
+            },
+            "forecast_mae_mbps": 2.5887610912323,
+            "association_throughput_norm_regret": 0.010180864793558916
+          }
+        },
+        {
+          "epoch": 21,
+          "validation": {
+            "admission_accuracy": 0.7384615384615385,
+            "admission_balanced_accuracy": 0.583277442432372,
+            "admission_per_label_recall": {
+              "0": 0.9047619047619048,
+              "1": 0.0,
+              "2": 0.8450704225352113
+            },
+            "traffic_accuracy": {
+              "trend": 0.9333333333333333,
+              "event": 0.75,
+              "volatility": 0.5166666666666667
+            },
+            "forecast_mae_mbps": 2.7655117511749268,
+            "association_throughput_norm_regret": 0.010180864793558916
+          }
+        },
+        {
+          "epoch": 22,
+          "validation": {
+            "admission_accuracy": 0.7410256410256411,
+            "admission_balanced_accuracy": 0.6023014816371974,
+            "admission_per_label_recall": {
+              "0": 0.8888888888888888,
+              "1": 0.04477611940298507,
+              "2": 0.8732394366197183
+            },
+            "traffic_accuracy": {
+              "trend": 0.9333333333333333,
+              "event": 0.8,
+              "volatility": 0.5666666666666667
+            },
+            "forecast_mae_mbps": 2.642256736755371,
+            "association_throughput_norm_regret": 0.010180864793558916
+          }
+        },
+        {
+          "epoch": 23,
+          "validation": {
+            "admission_accuracy": 0.7333333333333333,
+            "admission_balanced_accuracy": 0.5986135163663017,
+            "admission_per_label_recall": {
+              "0": 0.876984126984127,
+              "1": 0.05970149253731343,
+              "2": 0.8591549295774648
+            },
+            "traffic_accuracy": {
+              "trend": 0.9166666666666666,
+              "event": 0.8,
+              "volatility": 0.48333333333333334
+            },
+            "forecast_mae_mbps": 2.7215750217437744,
+            "association_throughput_norm_regret": 0.010180864793558916
+          }
+        },
+        {
+          "epoch": 24,
+          "validation": {
+            "admission_accuracy": 0.7384615384615385,
+            "admission_balanced_accuracy": 0.583277442432372,
+            "admission_per_label_recall": {
+              "0": 0.9047619047619048,
+              "1": 0.0,
+              "2": 0.8450704225352113
+            },
+            "traffic_accuracy": {
+              "trend": 0.9,
+              "event": 0.75,
+              "volatility": 0.5166666666666667
+            },
+            "forecast_mae_mbps": 2.717813491821289,
+            "association_throughput_norm_regret": 0.010180864793558916
+          }
+        },
+        {
+          "epoch": 25,
+          "validation": {
+            "admission_accuracy": 0.7333333333333333,
+            "admission_balanced_accuracy": 0.5840040241448693,
+            "admission_per_label_recall": {
+              "0": 0.8928571428571429,
+              "1": 0.0,
+              "2": 0.8591549295774648
+            },
+            "traffic_accuracy": {
+              "trend": 0.9333333333333333,
+              "event": 0.75,
+              "volatility": 0.5
+            },
+            "forecast_mae_mbps": 2.587035894393921,
+            "association_throughput_norm_regret": 0.010180864793558916
+          }
+        },
+        {
+          "epoch": 26,
+          "validation": {
+            "admission_accuracy": 0.735897435897436,
+            "admission_balanced_accuracy": 0.5903805920097701,
+            "admission_per_label_recall": {
+              "0": 0.8928571428571429,
+              "1": 0.08955223880597014,
+              "2": 0.7887323943661971
+            },
+            "traffic_accuracy": {
+              "trend": 0.9333333333333333,
+              "event": 0.7333333333333333,
+              "volatility": 0.45
+            },
+            "forecast_mae_mbps": 2.7418508529663086,
+            "association_throughput_norm_regret": 0.010180864793558916
+          }
+        },
+        {
+          "epoch": 27,
+          "validation": {
+            "admission_accuracy": 0.7205128205128205,
+            "admission_balanced_accuracy": 0.6021160128265447,
+            "admission_per_label_recall": {
+              "0": 0.8452380952380952,
+              "1": 0.05970149253731343,
+              "2": 0.9014084507042254
+            },
+            "traffic_accuracy": {
+              "trend": 0.9666666666666667,
+              "event": 0.7666666666666667,
+              "volatility": 0.4166666666666667
+            },
+            "forecast_mae_mbps": 2.5579710006713867,
+            "association_throughput_norm_regret": 0.010180864793558916
+          }
+        },
+        {
+          "epoch": 28,
+          "validation": {
+            "admission_accuracy": 0.7256410256410256,
+            "admission_balanced_accuracy": 0.6095350433168386,
+            "admission_per_label_recall": {
+              "0": 0.8492063492063492,
+              "1": 0.13432835820895522,
+              "2": 0.8450704225352113
+            },
+            "traffic_accuracy": {
+              "trend": 0.9333333333333333,
+              "event": 0.7666666666666667,
+              "volatility": 0.5666666666666667
+            },
+            "forecast_mae_mbps": 2.625748634338379,
+            "association_throughput_norm_regret": 0.010180864793558916
+          }
+        },
+        {
+          "epoch": 29,
+          "validation": {
+            "admission_accuracy": 0.735897435897436,
+            "admission_balanced_accuracy": 0.5965641833310532,
+            "admission_per_label_recall": {
+              "0": 0.8849206349206349,
+              "1": 0.05970149253731343,
+              "2": 0.8450704225352113
+            },
+            "traffic_accuracy": {
+              "trend": 0.9,
+              "event": 0.8,
+              "volatility": 0.5333333333333333
+            },
+            "forecast_mae_mbps": 2.8223001956939697,
+            "association_throughput_norm_regret": 0.010180864793558916
+          }
+        },
+        {
+          "epoch": 30,
+          "validation": {
+            "admission_accuracy": 0.7205128205128205,
+            "admission_balanced_accuracy": 0.5891796327995613,
+            "admission_per_label_recall": {
+              "0": 0.8650793650793651,
+              "1": 0.26865671641791045,
+              "2": 0.6338028169014085
+            },
+            "traffic_accuracy": {
+              "trend": 0.95,
+              "event": 0.7833333333333333,
+              "volatility": 0.35
+            },
+            "forecast_mae_mbps": 2.8674864768981934,
+            "association_throughput_norm_regret": 0.010180864793558916
+          }
+        }
+      ],
+      "test": {
+        "admission_accuracy": 0.7294871794871794,
+        "admission_balanced_accuracy": 0.5612596173561396,
+        "admission_per_label_recall": {
+          "0": 0.8948374760994264,
+          "1": 0.015503875968992248,
+          "2": 0.7734375
+        },
+        "traffic_accuracy": {
+          "trend": 0.925,
+          "event": 0.8583333333333333,
+          "volatility": 0.5
+        },
+        "forecast_mae_mbps": 2.6611745357513428,
+        "association_throughput_norm_regret": 0.019628133249676064
+      }
+    },
+    {
+      "seed": 1,
+      "shared_core": false,
+      "parameters": 59156,
+      "history": [
+        {
+          "epoch": 1,
+          "validation": {
+            "admission_accuracy": 0.6461538461538462,
+            "admission_balanced_accuracy": 0.3333333333333333,
+            "admission_per_label_recall": {
+              "0": 1.0,
+              "1": 0.0,
+              "2": 0.0
+            },
+            "traffic_accuracy": {
+              "trend": 0.5333333333333333,
+              "event": 0.4166666666666667,
+              "volatility": 0.4
+            },
+            "forecast_mae_mbps": 3.770578384399414,
+            "association_throughput_norm_regret": 0.010180864793558916
+          }
+        },
+        {
+          "epoch": 2,
+          "validation": {
+            "admission_accuracy": 0.6461538461538462,
+            "admission_balanced_accuracy": 0.3333333333333333,
+            "admission_per_label_recall": {
+              "0": 1.0,
+              "1": 0.0,
+              "2": 0.0
+            },
+            "traffic_accuracy": {
+              "trend": 0.6666666666666666,
+              "event": 0.4,
+              "volatility": 0.26666666666666666
+            },
+            "forecast_mae_mbps": 3.320301055908203,
+            "association_throughput_norm_regret": 0.010180864793558916
+          }
+        },
+        {
+          "epoch": 3,
+          "validation": {
+            "admission_accuracy": 0.6923076923076923,
+            "admission_balanced_accuracy": 0.45493330352485284,
+            "admission_per_label_recall": {
+              "0": 0.9563492063492064,
+              "1": 0.0,
+              "2": 0.4084507042253521
+            },
+            "traffic_accuracy": {
+              "trend": 0.7,
+              "event": 0.3333333333333333,
+              "volatility": 0.31666666666666665
+            },
+            "forecast_mae_mbps": 3.516850471496582,
+            "association_throughput_norm_regret": 0.010180864793558916
+          }
+        },
+        {
+          "epoch": 4,
+          "validation": {
+            "admission_accuracy": 0.7256410256410256,
+            "admission_balanced_accuracy": 0.5232709134853343,
+            "admission_per_label_recall": {
+              "0": 0.9484126984126984,
+              "1": 0.029850746268656716,
+              "2": 0.5915492957746479
+            },
+            "traffic_accuracy": {
+              "trend": 0.7166666666666667,
+              "event": 0.36666666666666664,
+              "volatility": 0.36666666666666664
+            },
+            "forecast_mae_mbps": 3.402900457382202,
+            "association_throughput_norm_regret": 0.010180864793558916
+          }
+        },
+        {
+          "epoch": 5,
+          "validation": {
+            "admission_accuracy": 0.7256410256410256,
+            "admission_balanced_accuracy": 0.5429428422386169,
+            "admission_per_label_recall": {
+              "0": 0.9246031746031746,
+              "1": 0.0,
+              "2": 0.704225352112676
+            },
+            "traffic_accuracy": {
+              "trend": 0.7333333333333333,
+              "event": 0.31666666666666665,
+              "volatility": 0.4166666666666667
+            },
+            "forecast_mae_mbps": 3.087015390396118,
+            "association_throughput_norm_regret": 0.010180864793558916
+          }
+        },
+        {
+          "epoch": 6,
+          "validation": {
+            "admission_accuracy": 0.7205128205128205,
+            "admission_balanced_accuracy": 0.5268090021611148,
+            "admission_per_label_recall": {
+              "0": 0.9325396825396826,
+              "1": 0.0,
+              "2": 0.647887323943662
+            },
+            "traffic_accuracy": {
+              "trend": 0.7666666666666667,
+              "event": 0.45,
+              "volatility": 0.4
+            },
+            "forecast_mae_mbps": 3.159543514251709,
+            "association_throughput_norm_regret": 0.010180864793558916
+          }
+        },
+        {
+          "epoch": 7,
+          "validation": {
+            "admission_accuracy": 0.7256410256410256,
+            "admission_balanced_accuracy": 0.5260824204486176,
+            "admission_per_label_recall": {
+              "0": 0.9444444444444444,
+              "1": 0.0,
+              "2": 0.6338028169014085
+            },
+            "traffic_accuracy": {
+              "trend": 0.75,
+              "event": 0.6166666666666667,
+              "volatility": 0.45
+            },
+            "forecast_mae_mbps": 3.526629686355591,
+            "association_throughput_norm_regret": 0.010180864793558916
+          }
+        },
+        {
+          "epoch": 8,
+          "validation": {
+            "admission_accuracy": 0.7256410256410256,
+            "admission_balanced_accuracy": 0.5328265891646173,
+            "admission_per_label_recall": {
+              "0": 0.9365079365079365,
+              "1": 0.0,
+              "2": 0.6619718309859155
+            },
+            "traffic_accuracy": {
+              "trend": 0.7666666666666667,
+              "event": 0.5666666666666667,
+              "volatility": 0.4
+            },
+            "forecast_mae_mbps": 3.2015886306762695,
+            "association_throughput_norm_regret": 0.010180864793558916
+          }
+        },
+        {
+          "epoch": 9,
+          "validation": {
+            "admission_accuracy": 0.7384615384615385,
+            "admission_balanced_accuracy": 0.5799053580743722,
+            "admission_per_label_recall": {
+              "0": 0.9087301587301587,
+              "1": 0.0,
+              "2": 0.8309859154929577
+            },
+            "traffic_accuracy": {
+              "trend": 0.8333333333333334,
+              "event": 0.6666666666666666,
+              "volatility": 0.45
+            },
+            "forecast_mae_mbps": 3.2140238285064697,
+            "association_throughput_norm_regret": 0.010180864793558916
+          }
+        },
+        {
+          "epoch": 10,
+          "validation": {
+            "admission_accuracy": 0.735897435897436,
+            "admission_balanced_accuracy": 0.5785826067516209,
+            "admission_per_label_recall": {
+              "0": 0.9047619047619048,
+              "1": 0.0,
+              "2": 0.8309859154929577
+            },
+            "traffic_accuracy": {
+              "trend": 0.8166666666666667,
+              "event": 0.6166666666666667,
+              "volatility": 0.4166666666666667
+            },
+            "forecast_mae_mbps": 3.3718693256378174,
+            "association_throughput_norm_regret": 0.010180864793558916
+          }
+        },
+        {
+          "epoch": 11,
+          "validation": {
+            "admission_accuracy": 0.735897435897436,
+            "admission_balanced_accuracy": 0.5822349798069789,
+            "admission_per_label_recall": {
+              "0": 0.9007936507936508,
+              "1": 0.014925373134328358,
+              "2": 0.8309859154929577
+            },
+            "traffic_accuracy": {
+              "trend": 0.8166666666666667,
+              "event": 0.6666666666666666,
+              "volatility": 0.4666666666666667
+            },
+            "forecast_mae_mbps": 3.2165510654449463,
+            "association_throughput_norm_regret": 0.010180864793558916
+          }
+        },
+        {
+          "epoch": 12,
+          "validation": {
+            "admission_accuracy": 0.735897435897436,
+            "admission_balanced_accuracy": 0.5687466423749795,
+            "admission_per_label_recall": {
+              "0": 0.9166666666666666,
+              "1": 0.014925373134328358,
+              "2": 0.7746478873239436
+            },
+            "traffic_accuracy": {
+              "trend": 0.9166666666666666,
+              "event": 0.6833333333333333,
+              "volatility": 0.4166666666666667
+            },
+            "forecast_mae_mbps": 2.9812710285186768,
+            "association_throughput_norm_regret": 0.010180864793558916
+          }
+        },
+        {
+          "epoch": 13,
+          "validation": {
+            "admission_accuracy": 0.7307692307692307,
+            "admission_balanced_accuracy": 0.5759371041061182,
+            "admission_per_label_recall": {
+              "0": 0.8968253968253969,
+              "1": 0.0,
+              "2": 0.8309859154929577
+            },
+            "traffic_accuracy": {
+              "trend": 0.85,
+              "event": 0.7,
+              "volatility": 0.5166666666666667
+            },
+            "forecast_mae_mbps": 2.9199109077453613,
+            "association_throughput_norm_regret": 0.010180864793558916
+          }
+        },
+        {
+          "epoch": 14,
+          "validation": {
+            "admission_accuracy": 0.7333333333333333,
+            "admission_balanced_accuracy": 0.5705156867128699,
+            "admission_per_label_recall": {
+              "0": 0.9087301587301587,
+              "1": 0.0,
+              "2": 0.8028169014084507
+            },
+            "traffic_accuracy": {
+              "trend": 0.9166666666666666,
+              "event": 0.7,
+              "volatility": 0.4166666666666667
+            },
+            "forecast_mae_mbps": 2.7371842861175537,
+            "association_throughput_norm_regret": 0.010180864793558916
+          }
+        },
+        {
+          "epoch": 15,
+          "validation": {
+            "admission_accuracy": 0.7307692307692307,
+            "admission_balanced_accuracy": 0.5759371041061182,
+            "admission_per_label_recall": {
+              "0": 0.8968253968253969,
+              "1": 0.0,
+              "2": 0.8309859154929577
+            },
+            "traffic_accuracy": {
+              "trend": 0.9333333333333333,
+              "event": 0.7333333333333333,
+              "volatility": 0.4
+            },
+            "forecast_mae_mbps": 2.5981688499450684,
+            "association_throughput_norm_regret": 0.010180864793558916
+          }
+        },
+        {
+          "epoch": 16,
+          "validation": {
+            "admission_accuracy": 0.7333333333333333,
+            "admission_balanced_accuracy": 0.5840040241448693,
+            "admission_per_label_recall": {
+              "0": 0.8928571428571429,
+              "1": 0.0,
+              "2": 0.8591549295774648
+            },
+            "traffic_accuracy": {
+              "trend": 0.8833333333333333,
+              "event": 0.75,
+              "volatility": 0.5333333333333333
+            },
+            "forecast_mae_mbps": 2.634016275405884,
+            "association_throughput_norm_regret": 0.010180864793558916
+          }
+        },
+        {
+          "epoch": 17,
+          "validation": {
+            "admission_accuracy": 0.735897435897436,
+            "admission_balanced_accuracy": 0.575210522393621,
+            "admission_per_label_recall": {
+              "0": 0.9087301587301587,
+              "1": 0.0,
+              "2": 0.8169014084507042
+            },
+            "traffic_accuracy": {
+              "trend": 0.9166666666666666,
+              "event": 0.7666666666666667,
+              "volatility": 0.5
+            },
+            "forecast_mae_mbps": 2.6651532649993896,
+            "association_throughput_norm_regret": 0.010180864793558916
+          }
+        },
+        {
+          "epoch": 18,
+          "validation": {
+            "admission_accuracy": 0.7512820512820513,
+            "admission_balanced_accuracy": 0.607872775625561,
+            "admission_per_label_recall": {
+              "0": 0.9047619047619048,
+              "1": 0.05970149253731343,
+              "2": 0.8591549295774648
+            },
+            "traffic_accuracy": {
+              "trend": 0.9,
+              "event": 0.7666666666666667,
+              "volatility": 0.43333333333333335
+            },
+            "forecast_mae_mbps": 2.722679853439331,
+            "association_throughput_norm_regret": 0.010180864793558916
+          }
+        },
+        {
+          "epoch": 19,
+          "validation": {
+            "admission_accuracy": 0.7384615384615385,
+            "admission_balanced_accuracy": 0.5717511258818805,
+            "admission_per_label_recall": {
+              "0": 0.9206349206349206,
+              "1": 0.1044776119402985,
+              "2": 0.6901408450704225
+            },
+            "traffic_accuracy": {
+              "trend": 0.9166666666666666,
+              "event": 0.75,
+              "volatility": 0.45
+            },
+            "forecast_mae_mbps": 2.720072031021118,
+            "association_throughput_norm_regret": 0.010180864793558916
+          }
+        },
+        {
+          "epoch": 20,
+          "validation": {
+            "admission_accuracy": 0.7384615384615385,
+            "admission_balanced_accuracy": 0.6122161381778787,
+            "admission_per_label_recall": {
+              "0": 0.873015873015873,
+              "1": 0.1044776119402985,
+              "2": 0.8591549295774648
+            },
+            "traffic_accuracy": {
+              "trend": 0.9,
+              "event": 0.7833333333333333,
+              "volatility": 0.4666666666666667
+            },
+            "forecast_mae_mbps": 2.72741436958313,
+            "association_throughput_norm_regret": 0.010180864793558916
+          }
+        },
+        {
+          "epoch": 21,
+          "validation": {
+            "admission_accuracy": 0.7435897435897436,
+            "admission_balanced_accuracy": 0.6036242329599487,
+            "admission_per_label_recall": {
+              "0": 0.8928571428571429,
+              "1": 0.04477611940298507,
+              "2": 0.8732394366197183
+            },
+            "traffic_accuracy": {
+              "trend": 0.9166666666666666,
+              "event": 0.7333333333333333,
+              "volatility": 0.4666666666666667
+            },
+            "forecast_mae_mbps": 2.6518232822418213,
+            "association_throughput_norm_regret": 0.010180864793558916
+          }
+        },
+        {
+          "epoch": 22,
+          "validation": {
+            "admission_accuracy": 0.735897435897436,
+            "admission_balanced_accuracy": 0.6103328094604109,
+            "admission_per_label_recall": {
+              "0": 0.8690476190476191,
+              "1": 0.07462686567164178,
+              "2": 0.8873239436619719
+            },
+            "traffic_accuracy": {
+              "trend": 0.9166666666666666,
+              "event": 0.75,
+              "volatility": 0.5666666666666667
+            },
+            "forecast_mae_mbps": 2.7582883834838867,
+            "association_throughput_norm_regret": 0.010180864793558916
+          }
+        },
+        {
+          "epoch": 23,
+          "validation": {
+            "admission_accuracy": 0.7205128205128205,
+            "admission_balanced_accuracy": 0.6046386111027692,
+            "admission_per_label_recall": {
+              "0": 0.8452380952380952,
+              "1": 0.19402985074626866,
+              "2": 0.7746478873239436
+            },
+            "traffic_accuracy": {
+              "trend": 0.9166666666666666,
+              "event": 0.7666666666666667,
+              "volatility": 0.5333333333333333
+            },
+            "forecast_mae_mbps": 2.657686948776245,
+            "association_throughput_norm_regret": 0.010180864793558916
+          }
+        },
+        {
+          "epoch": 24,
+          "validation": {
+            "admission_accuracy": 0.7461538461538462,
+            "admission_balanced_accuracy": 0.6100008008248496,
+            "admission_per_label_recall": {
+              "0": 0.8928571428571429,
+              "1": 0.13432835820895522,
+              "2": 0.8028169014084507
+            },
+            "traffic_accuracy": {
+              "trend": 0.9166666666666666,
+              "event": 0.75,
+              "volatility": 0.5333333333333333
+            },
+            "forecast_mae_mbps": 2.666574001312256,
+            "association_throughput_norm_regret": 0.010180864793558916
+          }
+        },
+        {
+          "epoch": 25,
+          "validation": {
+            "admission_accuracy": 0.7538461538461538,
+            "admission_balanced_accuracy": 0.6207132235091033,
+            "admission_per_label_recall": {
+              "0": 0.8968253968253969,
+              "1": 0.13432835820895522,
+              "2": 0.8309859154929577
+            },
+            "traffic_accuracy": {
+              "trend": 0.9333333333333333,
+              "event": 0.7333333333333333,
+              "volatility": 0.5333333333333333
+            },
+            "forecast_mae_mbps": 2.6940832138061523,
+            "association_throughput_norm_regret": 0.010180864793558916
+          }
+        },
+        {
+          "epoch": 26,
+          "validation": {
+            "admission_accuracy": 0.7384615384615385,
+            "admission_balanced_accuracy": 0.6161487999305951,
+            "admission_per_label_recall": {
+              "0": 0.8690476190476191,
+              "1": 0.13432835820895522,
+              "2": 0.8450704225352113
+            },
+            "traffic_accuracy": {
+              "trend": 0.9,
+              "event": 0.7833333333333333,
+              "volatility": 0.5333333333333333
+            },
+            "forecast_mae_mbps": 2.763882875442505,
+            "association_throughput_norm_regret": 0.010180864793558916
+          }
+        },
+        {
+          "epoch": 27,
+          "validation": {
+            "admission_accuracy": 0.7538461538461538,
+            "admission_balanced_accuracy": 0.6103166817377454,
+            "admission_per_label_recall": {
+              "0": 0.9087301587301587,
+              "1": 0.11940298507462686,
+              "2": 0.8028169014084507
+            },
+            "traffic_accuracy": {
+              "trend": 0.9166666666666666,
+              "event": 0.7833333333333333,
+              "volatility": 0.6
+            },
+            "forecast_mae_mbps": 2.7002017498016357,
+            "association_throughput_norm_regret": 0.010180864793558916
+          }
+        },
+        {
+          "epoch": 28,
+          "validation": {
+            "admission_accuracy": 0.7564102564102564,
+            "admission_balanced_accuracy": 0.6372060444480037,
+            "admission_per_label_recall": {
+              "0": 0.8849206349206349,
+              "1": 0.22388059701492538,
+              "2": 0.8028169014084507
+            },
+            "traffic_accuracy": {
+              "trend": 0.9333333333333333,
+              "event": 0.7833333333333333,
+              "volatility": 0.65
+            },
+            "forecast_mae_mbps": 2.738564968109131,
+            "association_throughput_norm_regret": 0.010180864793558916
+          }
+        },
+        {
+          "epoch": 29,
+          "validation": {
+            "admission_accuracy": 0.7487179487179487,
+            "admission_balanced_accuracy": 0.6366098748377496,
+            "admission_per_label_recall": {
+              "0": 0.8690476190476191,
+              "1": 0.22388059701492538,
+              "2": 0.8169014084507042
+            },
+            "traffic_accuracy": {
+              "trend": 0.95,
+              "event": 0.7833333333333333,
+              "volatility": 0.5666666666666667
+            },
+            "forecast_mae_mbps": 2.837294578552246,
+            "association_throughput_norm_regret": 0.010180864793558916
+          }
+        },
+        {
+          "epoch": 30,
+          "validation": {
+            "admission_accuracy": 0.7589743589743589,
+            "admission_balanced_accuracy": 0.6005950017406818,
+            "admission_per_label_recall": {
+              "0": 0.9325396825396826,
+              "1": 0.1791044776119403,
+              "2": 0.6901408450704225
+            },
+            "traffic_accuracy": {
+              "trend": 0.95,
+              "event": 0.8,
+              "volatility": 0.5
+            },
+            "forecast_mae_mbps": 2.747413396835327,
+            "association_throughput_norm_regret": 0.010180864793558916
+          }
+        }
+      ],
+      "test": {
+        "admission_accuracy": 0.7423076923076923,
+        "admission_balanced_accuracy": 0.5869177245912817,
+        "admission_per_label_recall": {
+          "0": 0.8948374760994264,
+          "1": 0.16279069767441862,
+          "2": 0.703125
+        },
+        "traffic_accuracy": {
+          "trend": 0.925,
+          "event": 0.825,
+          "volatility": 0.5416666666666666
+        },
+        "forecast_mae_mbps": 2.8008289337158203,
+        "association_throughput_norm_regret": 0.019628133249676064
+      }
+    },
+    {
+      "seed": 1,
+      "shared_core": true,
+      "parameters": 42516,
+      "history": [
+        {
+          "epoch": 1,
+          "validation": {
+            "admission_accuracy": 0.6461538461538462,
+            "admission_balanced_accuracy": 0.3333333333333333,
+            "admission_per_label_recall": {
+              "0": 1.0,
+              "1": 0.0,
+              "2": 0.0
+            },
+            "traffic_accuracy": {
+              "trend": 0.4666666666666667,
+              "event": 0.4166666666666667,
+              "volatility": 0.4166666666666667
+            },
+            "forecast_mae_mbps": 4.63254451751709,
+            "association_throughput_norm_regret": 0.010180864793558916
+          }
+        },
+        {
+          "epoch": 2,
+          "validation": {
+            "admission_accuracy": 0.6461538461538462,
+            "admission_balanced_accuracy": 0.3333333333333333,
+            "admission_per_label_recall": {
+              "0": 1.0,
+              "1": 0.0,
+              "2": 0.0
+            },
+            "traffic_accuracy": {
+              "trend": 0.6,
+              "event": 0.4,
+              "volatility": 0.25
+            },
+            "forecast_mae_mbps": 3.235898494720459,
+            "association_throughput_norm_regret": 0.010180864793558916
+          }
+        },
+        {
+          "epoch": 3,
+          "validation": {
+            "admission_accuracy": 0.6512820512820513,
+            "admission_balanced_accuracy": 0.34609508905283554,
+            "admission_per_label_recall": {
+              "0": 0.996031746031746,
+              "1": 0.0,
+              "2": 0.04225352112676056
+            },
+            "traffic_accuracy": {
+              "trend": 0.7,
+              "event": 0.38333333333333336,
+              "volatility": 0.26666666666666666
+            },
+            "forecast_mae_mbps": 3.2947044372558594,
+            "association_throughput_norm_regret": 0.010180864793558916
+          }
+        },
+        {
+          "epoch": 4,
+          "validation": {
+            "admission_accuracy": 0.7076923076923077,
+            "admission_balanced_accuracy": 0.4864744019673597,
+            "admission_per_label_recall": {
+              "0": 0.9523809523809523,
+              "1": 0.0,
+              "2": 0.5070422535211268
+            },
+            "traffic_accuracy": {
+              "trend": 0.7333333333333333,
+              "event": 0.35,
+              "volatility": 0.35
+            },
+            "forecast_mae_mbps": 3.278782367706299,
+            "association_throughput_norm_regret": 0.010180864793558916
+          }
+        },
+        {
+          "epoch": 5,
+          "validation": {
+            "admission_accuracy": 0.717948717948718,
+            "admission_balanced_accuracy": 0.535602503912363,
+            "admission_per_label_recall": {
+              "0": 0.9166666666666666,
+              "1": 0.0,
+              "2": 0.6901408450704225
+            },
+            "traffic_accuracy": {
+              "trend": 0.7166666666666667,
+              "event": 0.31666666666666665,
+              "volatility": 0.4
+            },
+            "forecast_mae_mbps": 3.0511474609375,
+            "association_throughput_norm_regret": 0.010180864793558916
+          }
+        },
+        {
+          "epoch": 6,
+          "validation": {
+            "admission_accuracy": 0.7307692307692307,
+            "admission_balanced_accuracy": 0.5624487666741188,
+            "admission_per_label_recall": {
+              "0": 0.9126984126984127,
+              "1": 0.0,
+              "2": 0.7746478873239436
+            },
+            "traffic_accuracy": {
+              "trend": 0.6833333333333333,
+              "event": 0.5166666666666667,
+              "volatility": 0.36666666666666664
+            },
+            "forecast_mae_mbps": 3.3156850337982178,
+            "association_throughput_norm_regret": 0.010180864793558916
+          }
+        },
+        {
+          "epoch": 7,
+          "validation": {
+            "admission_accuracy": 0.7205128205128205,
+            "admission_balanced_accuracy": 0.5301810865191147,
+            "admission_per_label_recall": {
+              "0": 0.9285714285714286,
+              "1": 0.0,
+              "2": 0.6619718309859155
+            },
+            "traffic_accuracy": {
+              "trend": 0.7833333333333333,
+              "event": 0.6,
+              "volatility": 0.4
+            },
+            "forecast_mae_mbps": 3.749124050140381,
+            "association_throughput_norm_regret": 0.010180864793558916
+          }
+        },
+        {
+          "epoch": 8,
+          "validation": {
+            "admission_accuracy": 0.7282051282051282,
+            "admission_balanced_accuracy": 0.5644980997093673,
+            "admission_per_label_recall": {
+              "0": 0.9047619047619048,
+              "1": 0.0,
+              "2": 0.7887323943661971
+            },
+            "traffic_accuracy": {
+              "trend": 0.9,
+              "event": 0.65,
+              "volatility": 0.4
+            },
+            "forecast_mae_mbps": 3.2762739658355713,
+            "association_throughput_norm_regret": 0.010180864793558916
+          }
+        },
+        {
+          "epoch": 9,
+          "validation": {
+            "admission_accuracy": 0.7307692307692307,
+            "admission_balanced_accuracy": 0.579309188464118,
+            "admission_per_label_recall": {
+              "0": 0.8928571428571429,
+              "1": 0.0,
+              "2": 0.8450704225352113
+            },
+            "traffic_accuracy": {
+              "trend": 0.8833333333333333,
+              "event": 0.7166666666666667,
+              "volatility": 0.31666666666666665
+            },
+            "forecast_mae_mbps": 3.264225959777832,
+            "association_throughput_norm_regret": 0.010180864793558916
+          }
+        },
+        {
+          "epoch": 10,
+          "validation": {
+            "admission_accuracy": 0.735897435897436,
+            "admission_balanced_accuracy": 0.5819546911096207,
+            "admission_per_label_recall": {
+              "0": 0.9007936507936508,
+              "1": 0.0,
+              "2": 0.8450704225352113
+            },
+            "traffic_accuracy": {
+              "trend": 0.8166666666666667,
+              "event": 0.6666666666666666,
+              "volatility": 0.4
+            },
+            "forecast_mae_mbps": 3.521360158920288,
+            "association_throughput_norm_regret": 0.010180864793558916
+          }
+        },
+        {
+          "epoch": 11,
+          "validation": {
+            "admission_accuracy": 0.7307692307692307,
+            "admission_balanced_accuracy": 0.600382560704192,
+            "admission_per_label_recall": {
+              "0": 0.8690476190476191,
+              "1": 0.04477611940298507,
+              "2": 0.8873239436619719
+            },
+            "traffic_accuracy": {
+              "trend": 0.9,
+              "event": 0.6666666666666666,
+              "volatility": 0.4166666666666667
+            },
+            "forecast_mae_mbps": 3.3135721683502197,
+            "association_throughput_norm_regret": 0.010180864793558916
+          }
+        },
+        {
+          "epoch": 12,
+          "validation": {
+            "admission_accuracy": 0.7307692307692307,
+            "admission_balanced_accuracy": 0.5725650197481184,
+            "admission_per_label_recall": {
+              "0": 0.9007936507936508,
+              "1": 0.0,
+              "2": 0.8169014084507042
+            },
+            "traffic_accuracy": {
+              "trend": 0.9333333333333333,
+              "event": 0.6666666666666666,
+              "volatility": 0.43333333333333335
+            },
+            "forecast_mae_mbps": 3.209646224975586,
+            "association_throughput_norm_regret": 0.010180864793558916
+          }
+        },
+        {
+          "epoch": 13,
+          "validation": {
+            "admission_accuracy": 0.7307692307692307,
+            "admission_balanced_accuracy": 0.5759371041061182,
+            "admission_per_label_recall": {
+              "0": 0.8968253968253969,
+              "1": 0.0,
+              "2": 0.8309859154929577
+            },
+            "traffic_accuracy": {
+              "trend": 0.8833333333333333,
+              "event": 0.7166666666666667,
+              "volatility": 0.48333333333333334
+            },
+            "forecast_mae_mbps": 3.0892887115478516,
+            "association_throughput_norm_regret": 0.010180864793558916
+          }
+        },
+        {
+          "epoch": 14,
+          "validation": {
+            "admission_accuracy": 0.7307692307692307,
+            "admission_balanced_accuracy": 0.5759371041061182,
+            "admission_per_label_recall": {
+              "0": 0.8968253968253969,
+              "1": 0.0,
+              "2": 0.8309859154929577
+            },
+            "traffic_accuracy": {
+              "trend": 0.8833333333333333,
+              "event": 0.7166666666666667,
+              "volatility": 0.4
+            },
+            "forecast_mae_mbps": 2.909111261367798,
+            "association_throughput_norm_regret": 0.010180864793558916
+          }
+        },
+        {
+          "epoch": 15,
+          "validation": {
+            "admission_accuracy": 0.7307692307692307,
+            "admission_balanced_accuracy": 0.5826812728221179,
+            "admission_per_label_recall": {
+              "0": 0.8888888888888888,
+              "1": 0.0,
+              "2": 0.8591549295774648
+            },
+            "traffic_accuracy": {
+              "trend": 0.95,
+              "event": 0.75,
+              "volatility": 0.3333333333333333
+            },
+            "forecast_mae_mbps": 2.7943990230560303,
+            "association_throughput_norm_regret": 0.010180864793558916
+          }
+        },
+        {
+          "epoch": 16,
+          "validation": {
+            "admission_accuracy": 0.7333333333333333,
+            "admission_balanced_accuracy": 0.587376108502869,
+            "admission_per_label_recall": {
+              "0": 0.8888888888888888,
+              "1": 0.0,
+              "2": 0.8732394366197183
+            },
+            "traffic_accuracy": {
+              "trend": 0.9166666666666666,
+              "event": 0.6833333333333333,
+              "volatility": 0.5
+            },
+            "forecast_mae_mbps": 2.6900875568389893,
+            "association_throughput_norm_regret": 0.010180864793558916
+          }
+        },
+        {
+          "epoch": 17,
+          "validation": {
+            "admission_accuracy": 0.7333333333333333,
+            "admission_balanced_accuracy": 0.5772598554288696,
+            "admission_per_label_recall": {
+              "0": 0.9007936507936508,
+              "1": 0.0,
+              "2": 0.8309859154929577
+            },
+            "traffic_accuracy": {
+              "trend": 0.9,
+              "event": 0.7166666666666667,
+              "volatility": 0.4166666666666667
+            },
+            "forecast_mae_mbps": 2.6997456550598145,
+            "association_throughput_norm_regret": 0.010180864793558916
+          }
+        },
+        {
+          "epoch": 18,
+          "validation": {
+            "admission_accuracy": 0.7461538461538462,
+            "admission_balanced_accuracy": 0.6018551886220584,
+            "admission_per_label_recall": {
+              "0": 0.9007936507936508,
+              "1": 0.05970149253731343,
+              "2": 0.8450704225352113
+            },
+            "traffic_accuracy": {
+              "trend": 0.8833333333333333,
+              "event": 0.7666666666666667,
+              "volatility": 0.3333333333333333
+            },
+            "forecast_mae_mbps": 2.7098891735076904,
+            "association_throughput_norm_regret": 0.010180864793558916
+          }
+        },
+        {
+          "epoch": 19,
+          "validation": {
+            "admission_accuracy": 0.7512820512820513,
+            "admission_balanced_accuracy": 0.6092742191123524,
+            "admission_per_label_recall": {
+              "0": 0.9047619047619048,
+              "1": 0.13432835820895522,
+              "2": 0.7887323943661971
+            },
+            "traffic_accuracy": {
+              "trend": 0.9,
+              "event": 0.7666666666666667,
+              "volatility": 0.4166666666666667
+            },
+            "forecast_mae_mbps": 2.5635201930999756,
+            "association_throughput_norm_regret": 0.010180864793558916
+          }
+        },
+        {
+          "epoch": 20,
+          "validation": {
+            "admission_accuracy": 0.7461538461538462,
+            "admission_balanced_accuracy": 0.6265809339174906,
+            "admission_per_label_recall": {
+              "0": 0.873015873015873,
+              "1": 0.11940298507462686,
+              "2": 0.8873239436619719
+            },
+            "traffic_accuracy": {
+              "trend": 0.9,
+              "event": 0.75,
+              "volatility": 0.4666666666666667
+            },
+            "forecast_mae_mbps": 2.6046056747436523,
+            "association_throughput_norm_regret": 0.010180864793558916
+          }
+        },
+        {
+          "epoch": 21,
+          "validation": {
+            "admission_accuracy": 0.735897435897436,
+            "admission_balanced_accuracy": 0.5960036059363366,
+            "admission_per_label_recall": {
+              "0": 0.8849206349206349,
+              "1": 0.029850746268656716,
+              "2": 0.8732394366197183
+            },
+            "traffic_accuracy": {
+              "trend": 0.9,
+              "event": 0.7333333333333333,
+              "volatility": 0.43333333333333335
+            },
+            "forecast_mae_mbps": 2.524876832962036,
+            "association_throughput_norm_regret": 0.010180864793558916
+          }
+        },
+        {
+          "epoch": 22,
+          "validation": {
+            "admission_accuracy": 0.7384615384615385,
+            "admission_balanced_accuracy": 0.6223323912518783,
+            "admission_per_label_recall": {
+              "0": 0.8611111111111112,
+              "1": 0.1044776119402985,
+              "2": 0.9014084507042254
+            },
+            "traffic_accuracy": {
+              "trend": 0.9,
+              "event": 0.7,
+              "volatility": 0.5666666666666667
+            },
+            "forecast_mae_mbps": 2.5768744945526123,
+            "association_throughput_norm_regret": 0.010180864793558916
+          }
+        },
+        {
+          "epoch": 23,
+          "validation": {
+            "admission_accuracy": 0.7435897435897436,
+            "admission_balanced_accuracy": 0.6530671035611123,
+            "admission_per_label_recall": {
+              "0": 0.8412698412698413,
+              "1": 0.34328358208955223,
+              "2": 0.7746478873239436
+            },
+            "traffic_accuracy": {
+              "trend": 0.9166666666666666,
+              "event": 0.7333333333333333,
+              "volatility": 0.5
+            },
+            "forecast_mae_mbps": 2.6655826568603516,
+            "association_throughput_norm_regret": 0.010180864793558916
+          }
+        },
+        {
+          "epoch": 24,
+          "validation": {
+            "admission_accuracy": 0.7564102564102564,
+            "admission_balanced_accuracy": 0.6290604322452126,
+            "admission_per_label_recall": {
+              "0": 0.8928571428571429,
+              "1": 0.14925373134328357,
+              "2": 0.8450704225352113
+            },
+            "traffic_accuracy": {
+              "trend": 0.9333333333333333,
+              "event": 0.7,
+              "volatility": 0.55
+            },
+            "forecast_mae_mbps": 2.702251434326172,
+            "association_throughput_norm_regret": 0.010180864793558916
+          }
+        },
+        {
+          "epoch": 25,
+          "validation": {
+            "admission_accuracy": 0.7461538461538462,
+            "admission_balanced_accuracy": 0.6206776312935657,
+            "admission_per_label_recall": {
+              "0": 0.8809523809523809,
+              "1": 0.16417910447761194,
+              "2": 0.8169014084507042
+            },
+            "traffic_accuracy": {
+              "trend": 0.8666666666666667,
+              "event": 0.7166666666666667,
+              "volatility": 0.4666666666666667
+            },
+            "forecast_mae_mbps": 2.565915107727051,
+            "association_throughput_norm_regret": 0.010180864793558916
+          }
+        },
+        {
+          "epoch": 26,
+          "validation": {
+            "admission_accuracy": 0.7461538461538462,
+            "admission_balanced_accuracy": 0.6386592078729981,
+            "admission_per_label_recall": {
+              "0": 0.8611111111111112,
+              "1": 0.22388059701492538,
+              "2": 0.8309859154929577
+            },
+            "traffic_accuracy": {
+              "trend": 0.8833333333333333,
+              "event": 0.7833333333333333,
+              "volatility": 0.6166666666666667
+            },
+            "forecast_mae_mbps": 2.770045042037964,
+            "association_throughput_norm_regret": 0.010180864793558916
+          }
+        },
+        {
+          "epoch": 27,
+          "validation": {
+            "admission_accuracy": 0.7410256410256411,
+            "admission_balanced_accuracy": 0.5961178903159143,
+            "admission_per_label_recall": {
+              "0": 0.8968253968253969,
+              "1": 0.07462686567164178,
+              "2": 0.8169014084507042
+            },
+            "traffic_accuracy": {
+              "trend": 0.8833333333333333,
+              "event": 0.8166666666666667,
+              "volatility": 0.5333333333333333
+            },
+            "forecast_mae_mbps": 2.5487115383148193,
+            "association_throughput_norm_regret": 0.010180864793558916
+          }
+        },
+        {
+          "epoch": 28,
+          "validation": {
+            "admission_accuracy": 0.7564102564102564,
+            "admission_balanced_accuracy": 0.6439502131640034,
+            "admission_per_label_recall": {
+              "0": 0.876984126984127,
+              "1": 0.22388059701492538,
+              "2": 0.8309859154929577
+            },
+            "traffic_accuracy": {
+              "trend": 0.9,
+              "event": 0.8,
+              "volatility": 0.6833333333333333
+            },
+            "forecast_mae_mbps": 2.7330543994903564,
+            "association_throughput_norm_regret": 0.010180864793558916
+          }
+        },
+        {
+          "epoch": 29,
+          "validation": {
+            "admission_accuracy": 0.7589743589743589,
+            "admission_balanced_accuracy": 0.6345961340180386,
+            "admission_per_label_recall": {
+              "0": 0.8928571428571429,
+              "1": 0.19402985074626866,
+              "2": 0.8169014084507042
+            },
+            "traffic_accuracy": {
+              "trend": 0.9166666666666666,
+              "event": 0.8,
+              "volatility": 0.6166666666666667
+            },
+            "forecast_mae_mbps": 2.728332996368408,
+            "association_throughput_norm_regret": 0.010180864793558916
+          }
+        },
+        {
+          "epoch": 30,
+          "validation": {
+            "admission_accuracy": 0.7538461538461538,
+            "admission_balanced_accuracy": 0.6209935122064615,
+            "admission_per_label_recall": {
+              "0": 0.8968253968253969,
+              "1": 0.14925373134328357,
+              "2": 0.8169014084507042
+            },
+            "traffic_accuracy": {
+              "trend": 0.9,
+              "event": 0.8333333333333334,
+              "volatility": 0.6833333333333333
+            },
+            "forecast_mae_mbps": 2.728093147277832,
+            "association_throughput_norm_regret": 0.010180864793558916
+          }
+        }
+      ],
+      "test": {
+        "admission_accuracy": 0.7461538461538462,
+        "admission_balanced_accuracy": 0.5752235429296298,
+        "admission_per_label_recall": {
+          "0": 0.9139579349904398,
+          "1": 0.10077519379844961,
+          "2": 0.7109375
+        },
+        "traffic_accuracy": {
+          "trend": 0.9416666666666667,
+          "event": 0.85,
+          "volatility": 0.625
+        },
+        "forecast_mae_mbps": 2.849705934524536,
+        "association_throughput_norm_regret": 0.019628133249676064
+      }
+    },
+    {
+      "seed": 2,
+      "shared_core": false,
+      "parameters": 59156,
+      "history": [
+        {
+          "epoch": 1,
+          "validation": {
+            "admission_accuracy": 0.6461538461538462,
+            "admission_balanced_accuracy": 0.3333333333333333,
+            "admission_per_label_recall": {
+              "0": 1.0,
+              "1": 0.0,
+              "2": 0.0
+            },
+            "traffic_accuracy": {
+              "trend": 0.5333333333333333,
+              "event": 0.4,
+              "volatility": 0.4
+            },
+            "forecast_mae_mbps": 4.094688892364502,
+            "association_throughput_norm_regret": 0.010180864793558916
+          }
+        },
+        {
+          "epoch": 2,
+          "validation": {
+            "admission_accuracy": 0.6487179487179487,
+            "admission_balanced_accuracy": 0.3380281690140845,
+            "admission_per_label_recall": {
+              "0": 1.0,
+              "1": 0.0,
+              "2": 0.014084507042253521
+            },
+            "traffic_accuracy": {
+              "trend": 0.6833333333333333,
+              "event": 0.2833333333333333,
+              "volatility": 0.36666666666666664
+            },
+            "forecast_mae_mbps": 3.464796543121338,
+            "association_throughput_norm_regret": 0.010180864793558916
+          }
+        },
+        {
+          "epoch": 3,
+          "validation": {
+            "admission_accuracy": 0.7256410256410256,
+            "admission_balanced_accuracy": 0.5227103360906177,
+            "admission_per_label_recall": {
+              "0": 0.9484126984126984,
+              "1": 0.0,
+              "2": 0.6197183098591549
+            },
+            "traffic_accuracy": {
+              "trend": 0.6833333333333333,
+              "event": 0.26666666666666666,
+              "volatility": 0.4166666666666667
+            },
+            "forecast_mae_mbps": 3.2881736755371094,
+            "association_throughput_norm_regret": 0.010180864793558916
+          }
+        },
+        {
+          "epoch": 4,
+          "validation": {
+            "admission_accuracy": 0.7282051282051282,
+            "admission_balanced_accuracy": 0.5341493404873686,
+            "admission_per_label_recall": {
+              "0": 0.9404761904761905,
+              "1": 0.0,
+              "2": 0.6619718309859155
+            },
+            "traffic_accuracy": {
+              "trend": 0.7,
+              "event": 0.36666666666666664,
+              "volatility": 0.45
+            },
+            "forecast_mae_mbps": 3.1324408054351807,
+            "association_throughput_norm_regret": 0.010180864793558916
+          }
+        },
+        {
+          "epoch": 5,
+          "validation": {
+            "admission_accuracy": 0.6897435897435897,
+            "admission_balanced_accuracy": 0.4690436705362078,
+            "admission_per_label_recall": {
+              "0": 0.9444444444444444,
+              "1": 0.4626865671641791,
+              "2": 0.0
+            },
+            "traffic_accuracy": {
+              "trend": 0.75,
+              "event": 0.3333333333333333,
+              "volatility": 0.45
+            },
+            "forecast_mae_mbps": 3.811748504638672,
+            "association_throughput_norm_regret": 0.010180864793558916
+          }
+        },
+        {
+          "epoch": 6,
+          "validation": {
+            "admission_accuracy": 0.7333333333333333,
+            "admission_balanced_accuracy": 0.5401669274908711,
+            "admission_per_label_recall": {
+              "0": 0.9444444444444444,
+              "1": 0.0,
+              "2": 0.676056338028169
+            },
+            "traffic_accuracy": {
+              "trend": 0.7,
+              "event": 0.45,
+              "volatility": 0.4666666666666667
+            },
+            "forecast_mae_mbps": 3.4639434814453125,
+            "association_throughput_norm_regret": 0.010180864793558916
+          }
+        },
+        {
+          "epoch": 7,
+          "validation": {
+            "admission_accuracy": 0.735897435897436,
+            "admission_balanced_accuracy": 0.5650942693196214,
+            "admission_per_label_recall": {
+              "0": 0.9206349206349206,
+              "1": 0.0,
+              "2": 0.7746478873239436
+            },
+            "traffic_accuracy": {
+              "trend": 0.7,
+              "event": 0.5833333333333334,
+              "volatility": 0.48333333333333334
+            },
+            "forecast_mae_mbps": 3.389270067214966,
+            "association_throughput_norm_regret": 0.010180864793558916
+          }
+        },
+        {
+          "epoch": 8,
+          "validation": {
+            "admission_accuracy": 0.735897435897436,
+            "admission_balanced_accuracy": 0.575210522393621,
+            "admission_per_label_recall": {
+              "0": 0.9087301587301587,
+              "1": 0.0,
+              "2": 0.8169014084507042
+            },
+            "traffic_accuracy": {
+              "trend": 0.85,
+              "event": 0.6333333333333333,
+              "volatility": 0.4666666666666667
+            },
+            "forecast_mae_mbps": 3.1009745597839355,
+            "association_throughput_norm_regret": 0.010180864793558916
+          }
+        },
+        {
+          "epoch": 9,
+          "validation": {
+            "admission_accuracy": 0.7333333333333333,
+            "admission_balanced_accuracy": 0.5637715179968701,
+            "admission_per_label_recall": {
+              "0": 0.9166666666666666,
+              "1": 0.0,
+              "2": 0.7746478873239436
+            },
+            "traffic_accuracy": {
+              "trend": 0.9,
+              "event": 0.6166666666666667,
+              "volatility": 0.43333333333333335
+            },
+            "forecast_mae_mbps": 3.163733959197998,
+            "association_throughput_norm_regret": 0.010180864793558916
+          }
+        },
+        {
+          "epoch": 10,
+          "validation": {
+            "admission_accuracy": 0.7307692307692307,
+            "admission_balanced_accuracy": 0.5523325136001193,
+            "admission_per_label_recall": {
+              "0": 0.9246031746031746,
+              "1": 0.0,
+              "2": 0.7323943661971831
+            },
+            "traffic_accuracy": {
+              "trend": 0.8833333333333333,
+              "event": 0.6666666666666666,
+              "volatility": 0.48333333333333334
+            },
+            "forecast_mae_mbps": 3.2551355361938477,
+            "association_throughput_norm_regret": 0.010180864793558916
+          }
+        },
+        {
+          "epoch": 11,
+          "validation": {
+            "admission_accuracy": 0.7307692307692307,
+            "admission_balanced_accuracy": 0.5826812728221179,
+            "admission_per_label_recall": {
+              "0": 0.8888888888888888,
+              "1": 0.0,
+              "2": 0.8591549295774648
+            },
+            "traffic_accuracy": {
+              "trend": 0.8833333333333333,
+              "event": 0.7,
+              "volatility": 0.5166666666666667
+            },
+            "forecast_mae_mbps": 3.101227045059204,
+            "association_throughput_norm_regret": 0.010180864793558916
+          }
+        },
+        {
+          "epoch": 12,
+          "validation": {
+            "admission_accuracy": 0.7384615384615385,
+            "admission_balanced_accuracy": 0.5799053580743722,
+            "admission_per_label_recall": {
+              "0": 0.9087301587301587,
+              "1": 0.0,
+              "2": 0.8309859154929577
+            },
+            "traffic_accuracy": {
+              "trend": 0.9166666666666666,
+              "event": 0.65,
+              "volatility": 0.5
+            },
+            "forecast_mae_mbps": 3.0223779678344727,
+            "association_throughput_norm_regret": 0.010180864793558916
+          }
+        },
+        {
+          "epoch": 13,
+          "validation": {
+            "admission_accuracy": 0.7333333333333333,
+            "admission_balanced_accuracy": 0.5806319397868694,
+            "admission_per_label_recall": {
+              "0": 0.8968253968253969,
+              "1": 0.0,
+              "2": 0.8450704225352113
+            },
+            "traffic_accuracy": {
+              "trend": 0.9,
+              "event": 0.75,
+              "volatility": 0.5
+            },
+            "forecast_mae_mbps": 2.775123357772827,
+            "association_throughput_norm_regret": 0.010180864793558916
+          }
+        },
+        {
+          "epoch": 14,
+          "validation": {
+            "admission_accuracy": 0.7333333333333333,
+            "admission_balanced_accuracy": 0.5738877710708697,
+            "admission_per_label_recall": {
+              "0": 0.9047619047619048,
+              "1": 0.0,
+              "2": 0.8169014084507042
+            },
+            "traffic_accuracy": {
+              "trend": 0.9333333333333333,
+              "event": 0.7333333333333333,
+              "volatility": 0.43333333333333335
+            },
+            "forecast_mae_mbps": 2.788856267929077,
+            "association_throughput_norm_regret": 0.010180864793558916
+          }
+        },
+        {
+          "epoch": 15,
+          "validation": {
+            "admission_accuracy": 0.7384615384615385,
+            "admission_balanced_accuracy": 0.5945148502958046,
+            "admission_per_label_recall": {
+              "0": 0.8928571428571429,
+              "1": 0.05970149253731343,
+              "2": 0.8309859154929577
+            },
+            "traffic_accuracy": {
+              "trend": 0.9333333333333333,
+              "event": 0.7333333333333333,
+              "volatility": 0.4666666666666667
+            },
+            "forecast_mae_mbps": 2.803218364715576,
+            "association_throughput_norm_regret": 0.010180864793558916
+          }
+        },
+        {
+          "epoch": 16,
+          "validation": {
+            "admission_accuracy": 0.7461538461538462,
+            "admission_balanced_accuracy": 0.6125320190907746,
+            "admission_per_label_recall": {
+              "0": 0.8888888888888888,
+              "1": 0.08955223880597014,
+              "2": 0.8591549295774648
+            },
+            "traffic_accuracy": {
+              "trend": 0.9,
+              "event": 0.75,
+              "volatility": 0.43333333333333335
+            },
+            "forecast_mae_mbps": 2.6433699131011963,
+            "association_throughput_norm_regret": 0.010180864793558916
+          }
+        },
+        {
+          "epoch": 17,
+          "validation": {
+            "admission_accuracy": 0.7282051282051282,
+            "admission_balanced_accuracy": 0.6060842667947987,
+            "admission_per_label_recall": {
+              "0": 0.8571428571428571,
+              "1": 0.05970149253731343,
+              "2": 0.9014084507042254
+            },
+            "traffic_accuracy": {
+              "trend": 0.8833333333333333,
+              "event": 0.6833333333333333,
+              "volatility": 0.4666666666666667
+            },
+            "forecast_mae_mbps": 2.618058204650879,
+            "association_throughput_norm_regret": 0.010180864793558916
+          }
+        },
+        {
+          "epoch": 18,
+          "validation": {
+            "admission_accuracy": 0.7384615384615385,
+            "admission_balanced_accuracy": 0.5917033433325214,
+            "admission_per_label_recall": {
+              "0": 0.8968253968253969,
+              "1": 0.08955223880597014,
+              "2": 0.7887323943661971
+            },
+            "traffic_accuracy": {
+              "trend": 0.9166666666666666,
+              "event": 0.75,
+              "volatility": 0.48333333333333334
+            },
+            "forecast_mae_mbps": 2.6757164001464844,
+            "association_throughput_norm_regret": 0.010180864793558916
+          }
+        },
+        {
+          "epoch": 19,
+          "validation": {
+            "admission_accuracy": 0.7487179487179487,
+            "admission_balanced_accuracy": 0.6110432634502426,
+            "admission_per_label_recall": {
+              "0": 0.8968253968253969,
+              "1": 0.11940298507462686,
+              "2": 0.8169014084507042
+            },
+            "traffic_accuracy": {
+              "trend": 0.9,
+              "event": 0.7333333333333333,
+              "volatility": 0.5
+            },
+            "forecast_mae_mbps": 2.5936477184295654,
+            "association_throughput_norm_regret": 0.010180864793558916
+          }
+        },
+        {
+          "epoch": 20,
+          "validation": {
+            "admission_accuracy": 0.7435897435897436,
+            "admission_balanced_accuracy": 0.5937882685833075,
+            "admission_per_label_recall": {
+              "0": 0.9047619047619048,
+              "1": 0.05970149253731343,
+              "2": 0.8169014084507042
+            },
+            "traffic_accuracy": {
+              "trend": 0.95,
+              "event": 0.7666666666666667,
+              "volatility": 0.55
+            },
+            "forecast_mae_mbps": 2.6031575202941895,
+            "association_throughput_norm_regret": 0.010180864793558916
+          }
+        },
+        {
+          "epoch": 21,
+          "validation": {
+            "admission_accuracy": 0.7128205128205128,
+            "admission_balanced_accuracy": 0.5902824353528578,
+            "admission_per_label_recall": {
+              "0": 0.8412698412698413,
+              "1": 0.0,
+              "2": 0.9295774647887324
+            },
+            "traffic_accuracy": {
+              "trend": 0.8833333333333333,
+              "event": 0.7666666666666667,
+              "volatility": 0.45
+            },
+            "forecast_mae_mbps": 2.6435930728912354,
+            "association_throughput_norm_regret": 0.010180864793558916
+          }
+        },
+        {
+          "epoch": 22,
+          "validation": {
+            "admission_accuracy": 0.7128205128205128,
+            "admission_balanced_accuracy": 0.5922444562343658,
+            "admission_per_label_recall": {
+              "0": 0.8412698412698413,
+              "1": 0.1044776119402985,
+              "2": 0.8309859154929577
+            },
+            "traffic_accuracy": {
+              "trend": 0.9166666666666666,
+              "event": 0.7833333333333333,
+              "volatility": 0.48333333333333334
+            },
+            "forecast_mae_mbps": 2.59791898727417,
+            "association_throughput_norm_regret": 0.010180864793558916
+          }
+        },
+        {
+          "epoch": 23,
+          "validation": {
+            "admission_accuracy": 0.7564102564102564,
+            "admission_balanced_accuracy": 0.6476025862193615,
+            "admission_per_label_recall": {
+              "0": 0.873015873015873,
+              "1": 0.23880597014925373,
+              "2": 0.8309859154929577
+            },
+            "traffic_accuracy": {
+              "trend": 0.9333333333333333,
+              "event": 0.7833333333333333,
+              "volatility": 0.5166666666666667
+            },
+            "forecast_mae_mbps": 2.679283380508423,
+            "association_throughput_norm_regret": 0.010180864793558916
+          }
+        },
+        {
+          "epoch": 24,
+          "validation": {
+            "admission_accuracy": 0.7410256410256411,
+            "admission_balanced_accuracy": 0.6202830582166298,
+            "admission_per_label_recall": {
+              "0": 0.8690476190476191,
+              "1": 0.1044776119402985,
+              "2": 0.8873239436619719
+            },
+            "traffic_accuracy": {
+              "trend": 0.9333333333333333,
+              "event": 0.75,
+              "volatility": 0.5666666666666667
+            },
+            "forecast_mae_mbps": 2.719715118408203,
+            "association_throughput_norm_regret": 0.010180864793558916
+          }
+        },
+        {
+          "epoch": 25,
+          "validation": {
+            "admission_accuracy": 0.7333333333333333,
+            "admission_balanced_accuracy": 0.5806319397868694,
+            "admission_per_label_recall": {
+              "0": 0.8968253968253969,
+              "1": 0.0,
+              "2": 0.8450704225352113
+            },
+            "traffic_accuracy": {
+              "trend": 0.9,
+              "event": 0.7833333333333333,
+              "volatility": 0.5666666666666667
+            },
+            "forecast_mae_mbps": 2.571265935897827,
+            "association_throughput_norm_regret": 0.010180864793558916
+          }
+        },
+        {
+          "epoch": 26,
+          "validation": {
+            "admission_accuracy": 0.7564102564102564,
+            "admission_balanced_accuracy": 0.6358046009612123,
+            "admission_per_label_recall": {
+              "0": 0.8849206349206349,
+              "1": 0.14925373134328357,
+              "2": 0.8732394366197183
+            },
+            "traffic_accuracy": {
+              "trend": 0.9166666666666666,
+              "event": 0.8,
+              "volatility": 0.55
+            },
+            "forecast_mae_mbps": 2.459620952606201,
+            "association_throughput_norm_regret": 0.010180864793558916
+          }
+        },
+        {
+          "epoch": 27,
+          "validation": {
+            "admission_accuracy": 0.7333333333333333,
+            "admission_balanced_accuracy": 0.6362584017093161,
+            "admission_per_label_recall": {
+              "0": 0.8373015873015873,
+              "1": 0.26865671641791045,
+              "2": 0.8028169014084507
+            },
+            "traffic_accuracy": {
+              "trend": 0.9333333333333333,
+              "event": 0.8,
+              "volatility": 0.4666666666666667
+            },
+            "forecast_mae_mbps": 2.864976644515991,
+            "association_throughput_norm_regret": 0.010180864793558916
+          }
+        },
+        {
+          "epoch": 28,
+          "validation": {
+            "admission_accuracy": 0.7410256410256411,
+            "admission_balanced_accuracy": 0.5921852285631979,
+            "admission_per_label_recall": {
+              "0": 0.9007936507936508,
+              "1": 0.04477611940298507,
+              "2": 0.8309859154929577
+            },
+            "traffic_accuracy": {
+              "trend": 0.9166666666666666,
+              "event": 0.7833333333333333,
+              "volatility": 0.5666666666666667
+            },
+            "forecast_mae_mbps": 2.5968010425567627,
+            "association_throughput_norm_regret": 0.010180864793558916
+          }
+        },
+        {
+          "epoch": 29,
+          "validation": {
+            "admission_accuracy": 0.7564102564102564,
+            "admission_balanced_accuracy": 0.6301815870346457,
+            "admission_per_label_recall": {
+              "0": 0.8928571428571429,
+              "1": 0.208955223880597,
+              "2": 0.7887323943661971
+            },
+            "traffic_accuracy": {
+              "trend": 0.9333333333333333,
+              "event": 0.8333333333333334,
+              "volatility": 0.65
+            },
+            "forecast_mae_mbps": 2.668626546859741,
+            "association_throughput_norm_regret": 0.010180864793558916
+          }
+        },
+        {
+          "epoch": 30,
+          "validation": {
+            "admission_accuracy": 0.7512820512820513,
+            "admission_balanced_accuracy": 0.6089939304149942,
+            "admission_per_label_recall": {
+              "0": 0.9047619047619048,
+              "1": 0.11940298507462686,
+              "2": 0.8028169014084507
+            },
+            "traffic_accuracy": {
+              "trend": 0.9,
+              "event": 0.7666666666666667,
+              "volatility": 0.6166666666666667
+            },
+            "forecast_mae_mbps": 2.748662233352661,
+            "association_throughput_norm_regret": 0.010180864793558916
+          }
+        }
+      ],
+      "test": {
+        "admission_accuracy": 0.7384615384615385,
+        "admission_balanced_accuracy": 0.5772393432468219,
+        "admission_per_label_recall": {
+          "0": 0.8967495219885278,
+          "1": 0.12403100775193798,
+          "2": 0.7109375
+        },
+        "traffic_accuracy": {
+          "trend": 0.9166666666666666,
+          "event": 0.875,
+          "volatility": 0.575
+        },
+        "forecast_mae_mbps": 2.6228549480438232,
+        "association_throughput_norm_regret": 0.019628133249676064
+      }
+    },
+    {
+      "seed": 2,
+      "shared_core": true,
+      "parameters": 42516,
+      "history": [
+        {
+          "epoch": 1,
+          "validation": {
+            "admission_accuracy": 0.6461538461538462,
+            "admission_balanced_accuracy": 0.3333333333333333,
+            "admission_per_label_recall": {
+              "0": 1.0,
+              "1": 0.0,
+              "2": 0.0
+            },
+            "traffic_accuracy": {
+              "trend": 0.5333333333333333,
+              "event": 0.4166666666666667,
+              "volatility": 0.26666666666666666
+            },
+            "forecast_mae_mbps": 4.463562965393066,
+            "association_throughput_norm_regret": 0.010180864793558916
+          }
+        },
+        {
+          "epoch": 2,
+          "validation": {
+            "admission_accuracy": 0.6461538461538462,
+            "admission_balanced_accuracy": 0.3333333333333333,
+            "admission_per_label_recall": {
+              "0": 1.0,
+              "1": 0.0,
+              "2": 0.0
+            },
+            "traffic_accuracy": {
+              "trend": 0.6166666666666667,
+              "event": 0.26666666666666666,
+              "volatility": 0.4
+            },
+            "forecast_mae_mbps": 3.509772300720215,
+            "association_throughput_norm_regret": 0.010180864793558916
+          }
+        },
+        {
+          "epoch": 3,
+          "validation": {
+            "admission_accuracy": 0.6846153846153846,
+            "admission_balanced_accuracy": 0.43410462776659964,
+            "admission_per_label_recall": {
+              "0": 0.9642857142857143,
+              "1": 0.0,
+              "2": 0.3380281690140845
+            },
+            "traffic_accuracy": {
+              "trend": 0.7166666666666667,
+              "event": 0.26666666666666666,
+              "volatility": 0.4
+            },
+            "forecast_mae_mbps": 3.2365527153015137,
+            "association_throughput_norm_regret": 0.010180864793558916
+          }
+        },
+        {
+          "epoch": 4,
+          "validation": {
+            "admission_accuracy": 0.7461538461538462,
+            "admission_balanced_accuracy": 0.5686949224367766,
+            "admission_per_label_recall": {
+              "0": 0.9404761904761905,
+              "1": 0.08955223880597014,
+              "2": 0.676056338028169
+            },
+            "traffic_accuracy": {
+              "trend": 0.7,
+              "event": 0.35,
+              "volatility": 0.48333333333333334
+            },
+            "forecast_mae_mbps": 3.095736265182495,
+            "association_throughput_norm_regret": 0.010180864793558916
+          }
+        },
+        {
+          "epoch": 5,
+          "validation": {
+            "admission_accuracy": 0.7410256410256411,
+            "admission_balanced_accuracy": 0.5935866720499893,
+            "admission_per_label_recall": {
+              "0": 0.9007936507936508,
+              "1": 0.11940298507462686,
+              "2": 0.7605633802816901
+            },
+            "traffic_accuracy": {
+              "trend": 0.7,
+              "event": 0.5166666666666667,
+              "volatility": 0.31666666666666665
+            },
+            "forecast_mae_mbps": 3.277405023574829,
+            "association_throughput_norm_regret": 0.010180864793558916
+          }
+        },
+        {
+          "epoch": 6,
+          "validation": {
+            "admission_accuracy": 0.7384615384615385,
+            "admission_balanced_accuracy": 0.5799053580743722,
+            "admission_per_label_recall": {
+              "0": 0.9087301587301587,
+              "1": 0.0,
+              "2": 0.8309859154929577
+            },
+            "traffic_accuracy": {
+              "trend": 0.6833333333333333,
+              "event": 0.5333333333333333,
+              "volatility": 0.36666666666666664
+            },
+            "forecast_mae_mbps": 3.405733585357666,
+            "association_throughput_norm_regret": 0.010180864793558916
+          }
+        },
+        {
+          "epoch": 7,
+          "validation": {
+            "admission_accuracy": 0.7333333333333333,
+            "admission_balanced_accuracy": 0.5806319397868694,
+            "admission_per_label_recall": {
+              "0": 0.8968253968253969,
+              "1": 0.0,
+              "2": 0.8450704225352113
+            },
+            "traffic_accuracy": {
+              "trend": 0.7166666666666667,
+              "event": 0.5666666666666667,
+              "volatility": 0.43333333333333335
+            },
+            "forecast_mae_mbps": 3.3533596992492676,
+            "association_throughput_norm_regret": 0.010180864793558916
+          }
+        },
+        {
+          "epoch": 8,
+          "validation": {
+            "admission_accuracy": 0.7333333333333333,
+            "admission_balanced_accuracy": 0.5806319397868694,
+            "admission_per_label_recall": {
+              "0": 0.8968253968253969,
+              "1": 0.0,
+              "2": 0.8450704225352113
+            },
+            "traffic_accuracy": {
+              "trend": 0.85,
+              "event": 0.5833333333333334,
+              "volatility": 0.4666666666666667
+            },
+            "forecast_mae_mbps": 3.2554352283477783,
+            "association_throughput_norm_regret": 0.010180864793558916
+          }
+        },
+        {
+          "epoch": 9,
+          "validation": {
+            "admission_accuracy": 0.7384615384615385,
+            "admission_balanced_accuracy": 0.5765332737163723,
+            "admission_per_label_recall": {
+              "0": 0.9126984126984127,
+              "1": 0.0,
+              "2": 0.8169014084507042
+            },
+            "traffic_accuracy": {
+              "trend": 0.8833333333333333,
+              "event": 0.6,
+              "volatility": 0.4666666666666667
+            },
+            "forecast_mae_mbps": 3.2850091457366943,
+            "association_throughput_norm_regret": 0.010180864793558916
+          }
+        },
+        {
+          "epoch": 10,
+          "validation": {
+            "admission_accuracy": 0.7384615384615385,
+            "admission_balanced_accuracy": 0.5765332737163723,
+            "admission_per_label_recall": {
+              "0": 0.9126984126984127,
+              "1": 0.0,
+              "2": 0.8169014084507042
+            },
+            "traffic_accuracy": {
+              "trend": 0.85,
+              "event": 0.6333333333333333,
+              "volatility": 0.36666666666666664
+            },
+            "forecast_mae_mbps": 3.3153774738311768,
+            "association_throughput_norm_regret": 0.010180864793558916
+          }
+        },
+        {
+          "epoch": 11,
+          "validation": {
+            "admission_accuracy": 0.7282051282051282,
+            "admission_balanced_accuracy": 0.5813585214993665,
+            "admission_per_label_recall": {
+              "0": 0.8849206349206349,
+              "1": 0.0,
+              "2": 0.8591549295774648
+            },
+            "traffic_accuracy": {
+              "trend": 0.8666666666666667,
+              "event": 0.7,
+              "volatility": 0.5
+            },
+            "forecast_mae_mbps": 3.345390558242798,
+            "association_throughput_norm_regret": 0.010180864793558916
+          }
+        },
+        {
+          "epoch": 12,
+          "validation": {
+            "admission_accuracy": 0.735897435897436,
+            "admission_balanced_accuracy": 0.5819546911096207,
+            "admission_per_label_recall": {
+              "0": 0.9007936507936508,
+              "1": 0.0,
+              "2": 0.8450704225352113
+            },
+            "traffic_accuracy": {
+              "trend": 0.8666666666666667,
+              "event": 0.7166666666666667,
+              "volatility": 0.5
+            },
+            "forecast_mae_mbps": 3.212592124938965,
+            "association_throughput_norm_regret": 0.010180864793558916
+          }
+        },
+        {
+          "epoch": 13,
+          "validation": {
+            "admission_accuracy": 0.7333333333333333,
+            "admission_balanced_accuracy": 0.5840040241448693,
+            "admission_per_label_recall": {
+              "0": 0.8928571428571429,
+              "1": 0.0,
+              "2": 0.8591549295774648
+            },
+            "traffic_accuracy": {
+              "trend": 0.8833333333333333,
+              "event": 0.7166666666666667,
+              "volatility": 0.43333333333333335
+            },
+            "forecast_mae_mbps": 3.08059024810791,
+            "association_throughput_norm_regret": 0.010180864793558916
+          }
+        },
+        {
+          "epoch": 14,
+          "validation": {
+            "admission_accuracy": 0.7307692307692307,
+            "admission_balanced_accuracy": 0.5829615615194762,
+            "admission_per_label_recall": {
+              "0": 0.8888888888888888,
+              "1": 0.014925373134328358,
+              "2": 0.8450704225352113
+            },
+            "traffic_accuracy": {
+              "trend": 0.8833333333333333,
+              "event": 0.75,
+              "volatility": 0.43333333333333335
+            },
+            "forecast_mae_mbps": 3.0494730472564697,
+            "association_throughput_norm_regret": 0.010180864793558916
+          }
+        },
+        {
+          "epoch": 15,
+          "validation": {
+            "admission_accuracy": 0.735897435897436,
+            "admission_balanced_accuracy": 0.5982459155152028,
+            "admission_per_label_recall": {
+              "0": 0.8849206349206349,
+              "1": 0.14925373134328357,
+              "2": 0.7605633802816901
+            },
+            "traffic_accuracy": {
+              "trend": 0.9333333333333333,
+              "event": 0.7166666666666667,
+              "volatility": 0.4666666666666667
+            },
+            "forecast_mae_mbps": 2.894502878189087,
+            "association_throughput_norm_regret": 0.010180864793558916
+          }
+        },
+        {
+          "epoch": 16,
+          "validation": {
+            "admission_accuracy": 0.7307692307692307,
+            "admission_balanced_accuracy": 0.5852038710983424,
+            "admission_per_label_recall": {
+              "0": 0.8888888888888888,
+              "1": 0.13432835820895522,
+              "2": 0.7323943661971831
+            },
+            "traffic_accuracy": {
+              "trend": 0.8833333333333333,
+              "event": 0.6833333333333333,
+              "volatility": 0.3333333333333333
+            },
+            "forecast_mae_mbps": 2.681256055831909,
+            "association_throughput_norm_regret": 0.010180864793558916
+          }
+        },
+        {
+          "epoch": 17,
+          "validation": {
+            "admission_accuracy": 0.7205128205128205,
+            "admission_balanced_accuracy": 0.6021160128265447,
+            "admission_per_label_recall": {
+              "0": 0.8452380952380952,
+              "1": 0.05970149253731343,
+              "2": 0.9014084507042254
+            },
+            "traffic_accuracy": {
+              "trend": 0.8666666666666667,
+              "event": 0.75,
+              "volatility": 0.4666666666666667
+            },
+            "forecast_mae_mbps": 2.621973752975464,
+            "association_throughput_norm_regret": 0.010180864793558916
+          }
+        },
+        {
+          "epoch": 18,
+          "validation": {
+            "admission_accuracy": 0.7461538461538462,
+            "admission_balanced_accuracy": 0.6102810895222078,
+            "admission_per_label_recall": {
+              "0": 0.8928571428571429,
+              "1": 0.14925373134328357,
+              "2": 0.7887323943661971
+            },
+            "traffic_accuracy": {
+              "trend": 0.8333333333333334,
+              "event": 0.75,
+              "volatility": 0.45
+            },
+            "forecast_mae_mbps": 2.669200897216797,
+            "association_throughput_norm_regret": 0.010180864793558916
+          }
+        },
+        {
+          "epoch": 19,
+          "validation": {
+            "admission_accuracy": 0.7461538461538462,
+            "admission_balanced_accuracy": 0.6389394965703564,
+            "admission_per_label_recall": {
+              "0": 0.8611111111111112,
+              "1": 0.23880597014925373,
+              "2": 0.8169014084507042
+            },
+            "traffic_accuracy": {
+              "trend": 0.9,
+              "event": 0.7166666666666667,
+              "volatility": 0.5333333333333333
+            },
+            "forecast_mae_mbps": 2.5175158977508545,
+            "association_throughput_norm_regret": 0.010180864793558916
+          }
+        },
+        {
+          "epoch": 20,
+          "validation": {
+            "admission_accuracy": 0.7512820512820513,
+            "admission_balanced_accuracy": 0.612366014772994,
+            "admission_per_label_recall": {
+              "0": 0.9007936507936508,
+              "1": 0.11940298507462686,
+              "2": 0.8169014084507042
+            },
+            "traffic_accuracy": {
+              "trend": 0.8833333333333333,
+              "event": 0.75,
+              "volatility": 0.5333333333333333
+            },
+            "forecast_mae_mbps": 2.4980170726776123,
+            "association_throughput_norm_regret": 0.010180864793558916
+          }
+        },
+        {
+          "epoch": 21,
+          "validation": {
+            "admission_accuracy": 0.7230769230769231,
+            "admission_balanced_accuracy": 0.6141155946180121,
+            "admission_per_label_recall": {
+              "0": 0.8373015873015873,
+              "1": 0.08955223880597014,
+              "2": 0.9154929577464789
+            },
+            "traffic_accuracy": {
+              "trend": 0.8833333333333333,
+              "event": 0.7333333333333333,
+              "volatility": 0.45
+            },
+            "forecast_mae_mbps": 2.501248836517334,
+            "association_throughput_norm_regret": 0.010180864793558916
+          }
+        },
+        {
+          "epoch": 22,
+          "validation": {
+            "admission_accuracy": 0.7282051282051282,
+            "admission_balanced_accuracy": 0.6243461320715893,
+            "admission_per_label_recall": {
+              "0": 0.8373015873015873,
+              "1": 0.13432835820895522,
+              "2": 0.9014084507042254
+            },
+            "traffic_accuracy": {
+              "trend": 0.9,
+              "event": 0.7833333333333333,
+              "volatility": 0.45
+            },
+            "forecast_mae_mbps": 2.5454816818237305,
+            "association_throughput_norm_regret": 0.010180864793558916
+          }
+        },
+        {
+          "epoch": 23,
+          "validation": {
+            "admission_accuracy": 0.7487179487179487,
+            "admission_balanced_accuracy": 0.62312153740575,
+            "admission_per_label_recall": {
+              "0": 0.8849206349206349,
+              "1": 0.22388059701492538,
+              "2": 0.7605633802816901
+            },
+            "traffic_accuracy": {
+              "trend": 0.9166666666666666,
+              "event": 0.7666666666666667,
+              "volatility": 0.55
+            },
+            "forecast_mae_mbps": 2.6378486156463623,
+            "association_throughput_norm_regret": 0.010180864793558916
+          }
+        },
+        {
+          "epoch": 24,
+          "validation": {
+            "admission_accuracy": 0.7461538461538462,
+            "admission_balanced_accuracy": 0.6341659687255651,
+            "admission_per_label_recall": {
+              "0": 0.8650793650793651,
+              "1": 0.16417910447761194,
+              "2": 0.8732394366197183
+            },
+            "traffic_accuracy": {
+              "trend": 0.9166666666666666,
+              "event": 0.75,
+              "volatility": 0.5833333333333334
+            },
+            "forecast_mae_mbps": 2.6302905082702637,
+            "association_throughput_norm_regret": 0.010180864793558916
+          }
+        },
+        {
+          "epoch": 25,
+          "validation": {
+            "admission_accuracy": 0.7384615384615385,
+            "admission_balanced_accuracy": 0.5908624772404466,
+            "admission_per_label_recall": {
+              "0": 0.8968253968253969,
+              "1": 0.04477611940298507,
+              "2": 0.8309859154929577
+            },
+            "traffic_accuracy": {
+              "trend": 0.8833333333333333,
+              "event": 0.7666666666666667,
+              "volatility": 0.55
+            },
+            "forecast_mae_mbps": 2.506924867630005,
+            "association_throughput_norm_regret": 0.010180864793558916
+          }
+        },
+        {
+          "epoch": 26,
+          "validation": {
+            "admission_accuracy": 0.7435897435897436,
+            "admission_balanced_accuracy": 0.6078371834100235,
+            "admission_per_label_recall": {
+              "0": 0.8888888888888888,
+              "1": 0.08955223880597014,
+              "2": 0.8450704225352113
+            },
+            "traffic_accuracy": {
+              "trend": 0.9166666666666666,
+              "event": 0.7833333333333333,
+              "volatility": 0.55
+            },
+            "forecast_mae_mbps": 2.5085954666137695,
+            "association_throughput_norm_regret": 0.010180864793558916
+          }
+        },
+        {
+          "epoch": 27,
+          "validation": {
+            "admission_accuracy": 0.7307692307692307,
+            "admission_balanced_accuracy": 0.6346553616892066,
+            "admission_per_label_recall": {
+              "0": 0.8333333333333334,
+              "1": 0.2537313432835821,
+              "2": 0.8169014084507042
+            },
+            "traffic_accuracy": {
+              "trend": 0.9333333333333333,
+              "event": 0.8166666666666667,
+              "volatility": 0.6
+            },
+            "forecast_mae_mbps": 2.625389814376831,
+            "association_throughput_norm_regret": 0.010180864793558916
+          }
+        },
+        {
+          "epoch": 28,
+          "validation": {
+            "admission_accuracy": 0.7564102564102564,
+            "admission_balanced_accuracy": 0.6296210096399292,
+            "admission_per_label_recall": {
+              "0": 0.8928571428571429,
+              "1": 0.1791044776119403,
+              "2": 0.8169014084507042
+            },
+            "traffic_accuracy": {
+              "trend": 0.9333333333333333,
+              "event": 0.7666666666666667,
+              "volatility": 0.6166666666666667
+            },
+            "forecast_mae_mbps": 2.5823724269866943,
+            "association_throughput_norm_regret": 0.010180864793558916
+          }
+        },
+        {
+          "epoch": 29,
+          "validation": {
+            "admission_accuracy": 0.7230769230769231,
+            "admission_balanced_accuracy": 0.5764534692955966,
+            "admission_per_label_recall": {
+              "0": 0.8849206349206349,
+              "1": 0.23880597014925373,
+              "2": 0.6056338028169014
+            },
+            "traffic_accuracy": {
+              "trend": 0.9166666666666666,
+              "event": 0.7833333333333333,
+              "volatility": 0.6
+            },
+            "forecast_mae_mbps": 2.4982542991638184,
+            "association_throughput_norm_regret": 0.010180864793558916
+          }
+        },
+        {
+          "epoch": 30,
+          "validation": {
+            "admission_accuracy": 0.7333333333333333,
+            "admission_balanced_accuracy": 0.5806233197971689,
+            "admission_per_label_recall": {
+              "0": 0.9007936507936508,
+              "1": 0.1791044776119403,
+              "2": 0.6619718309859155
+            },
+            "traffic_accuracy": {
+              "trend": 0.9166666666666666,
+              "event": 0.8333333333333334,
+              "volatility": 0.5666666666666667
+            },
+            "forecast_mae_mbps": 2.599324941635132,
+            "association_throughput_norm_regret": 0.010180864793558916
+          }
+        }
+      ],
+      "test": {
+        "admission_accuracy": 0.7294871794871794,
+        "admission_balanced_accuracy": 0.6020984873469004,
+        "admission_per_label_recall": {
+          "0": 0.8546845124282982,
+          "1": 0.1937984496124031,
+          "2": 0.7578125
+        },
+        "traffic_accuracy": {
+          "trend": 0.925,
+          "event": 0.8333333333333334,
+          "volatility": 0.6083333333333333
+        },
+        "forecast_mae_mbps": 2.7948219776153564,
+        "association_throughput_norm_regret": 0.019628133249676064
+      }
+    }
+  ],
+  "admission_protocol": "heterogeneous best-effort priorities; all 13 initial levels; hold included; scene-disjoint splits",
+  "limits": [
+    "Counterfactual price-level coverage is not deployment prevalence",
+    "Traffic and admission inputs remain synthetic; Chronos inference uses real pinned weights",
+    "Shared/separate cores differ in parameter count, which is explicitly reported",
+    "Association head selects fleet throughput among four candidates, not arbitrary language missions"
+  ]
+}

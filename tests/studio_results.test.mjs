@@ -13,6 +13,39 @@ test('missing results stay missing', () => {
   assert.equal(render({}), '');
 });
 
+test('warehouse v2 displays actual archived results with their limits', () => {
+  const report = JSON.parse(readFileSync(new URL('../artifacts/warehouse_v2/snapshot.json', import.meta.url)));
+  const html = render({warehouse_v2: report});
+  assert.match(html, /Three compact-model training seeds/);
+  assert.match(html, /instant_mlp/);
+  assert.match(html, /strongest_scan/);
+  assert.match(html, /No physical-car result or SOTA claim is established/);
+  assert.match(html, /does not establish benefit to every robot/);
+});
+
+test('horizon results retain budget context and rejected learned branches', () => {
+  const report = JSON.parse(readFileSync(new URL('../artifacts/warehouse_horizon/snapshot.json', import.meta.url)));
+  const selector = JSON.parse(readFileSync(new URL('../artifacts/warehouse_horizon/selector/snapshot.json', import.meta.url)));
+  const html = render({warehouse_horizon: report, warehouse_horizon_selector: selector});
+  assert.match(html, /Thirty-second route-aware planning/);
+  assert.match(html, /0\/6 learned models accepted/);
+  assert.match(html, /not a hardware rate limit/);
+  assert.match(html, /0\.326/);
+  assert.match(html, /not independent learned successes/);
+  assert.match(html, /interface writes proposals only/);
+});
+
+test('v3 displays actual contract and packet evidence without cross-protocol claims', () => {
+  const report = JSON.parse(readFileSync(new URL('../artifacts/warehouse_v3/snapshot.json', import.meta.url)));
+  const html = render({warehouse_v3: report});
+  assert.match(html, /Compositional missions and radio representations/);
+  assert.match(html, /Native moving Wi-Fi audit/);
+  assert.match(html, /eight-second route prefix/);
+  assert.match(html, /different small text sets/);
+  assert.match(html, /implementation remains Wi-Fi-specific/);
+  assert.match(html, /attack diagnostics do not certify deletion/);
+});
+
 test('E1 displays real confidence intervals and pending stages', () => {
   const lora = JSON.parse(readFileSync(new URL('../artifacts/radiojev/e1_radio_lora.json', import.meta.url)));
   const noLlm = JSON.parse(readFileSync(new URL('../artifacts/radiojev/e1_no_llm.json', import.meta.url)));
@@ -86,4 +119,22 @@ test('completed E4/E5 shows measured results without certifying deletion', () =>
   assert.match(html, /does not certify deletion/);
   assert.match(html, /no separate final release gate/);
   assert.match(html, /No shared merge was accepted in E4/);
+});
+
+test('full-window native results retain rejected gates and constant risk-label limits', () => {
+  const report = JSON.parse(readFileSync(new URL('../artifacts/warehouse_native/snapshot.json', import.meta.url)));
+  report.postrun_audit = JSON.parse(readFileSync(new URL('../artifacts/warehouse_native/postrun_audit.json', import.meta.url)));
+  const html = render({warehouse_native: report});
+  assert.match(html, /58 native simulations/);
+  assert.match(html, /6 trained models/);
+  assert.match(html, /0\.6980/);
+  assert.match(html, /0\.7010/);
+  assert.match(html, /interval includes zero/);
+  assert.match(html, /0\/6 neural models/);
+  assert.match(html, /Every critical-floor event label is a miss/);
+  assert.match(html, /always-miss predictor/);
+  assert.match(html, /no measured handover/);
+  const pending = render({warehouse_native: {state: 'running'}});
+  assert.match(pending, /Progress is not a held-out result/);
+  assert.doesNotMatch(pending, /0\.7010/);
 });
