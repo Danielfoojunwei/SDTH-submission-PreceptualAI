@@ -120,3 +120,21 @@ test('completed E4/E5 shows measured results without certifying deletion', () =>
   assert.match(html, /no separate final release gate/);
   assert.match(html, /No shared merge was accepted in E4/);
 });
+
+test('full-window native results retain rejected gates and constant risk-label limits', () => {
+  const report = JSON.parse(readFileSync(new URL('../artifacts/warehouse_native/snapshot.json', import.meta.url)));
+  report.postrun_audit = JSON.parse(readFileSync(new URL('../artifacts/warehouse_native/postrun_audit.json', import.meta.url)));
+  const html = render({warehouse_native: report});
+  assert.match(html, /58 native simulations/);
+  assert.match(html, /6 trained models/);
+  assert.match(html, /0\.6980/);
+  assert.match(html, /0\.7010/);
+  assert.match(html, /interval includes zero/);
+  assert.match(html, /0\/6 neural models/);
+  assert.match(html, /Every critical-floor event label is a miss/);
+  assert.match(html, /always-miss predictor/);
+  assert.match(html, /no measured handover/);
+  const pending = render({warehouse_native: {state: 'running'}});
+  assert.match(pending, /Progress is not a held-out result/);
+  assert.doesNotMatch(pending, /0\.7010/);
+});

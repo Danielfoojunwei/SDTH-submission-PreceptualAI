@@ -147,3 +147,16 @@ def test_resume_reuses_sealed_validation_and_rejects_tampering(tmp_path):
     (tmp_path/'validation.json').write_text(json.dumps({'timing_ms':1.26}))
     with pytest.raises(RuntimeError,match='validation.json'):
         module.frozen_selection(tmp_path)
+
+
+def test_risk_audit_distinguishes_constant_labels_from_discrimination():
+    import importlib.util
+    from pathlib import Path
+    path=Path(__file__).resolve().parents[1]/'scripts/audit_warehouse_native_results.py'
+    spec=importlib.util.spec_from_file_location('native_result_audit',path);module=importlib.util.module_from_spec(spec);spec.loader.exec_module(module)
+    counts=module.event_counts({'all_miss':[True,True],'all_met':[False,False],'mixed':[True,False]})
+    assert not counts['all_miss']['discrimination_testable']
+    assert counts['all_miss']['always_miss_brier']==0.
+    assert not counts['all_met']['discrimination_testable']
+    assert counts['mixed']['discrimination_testable']
+    assert counts['mixed']['always_miss_brier']==.5

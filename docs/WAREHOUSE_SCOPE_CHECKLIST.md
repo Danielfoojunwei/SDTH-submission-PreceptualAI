@@ -3,8 +3,9 @@
 This maps the user's pasted six-direction plan to executed work. "Executed"
 does not mean a learned method won or a physical release is qualified. Current
 results are in `WAREHOUSE_V3_RESULTS.md`; historical evidence stays separate.
-The targeted native-supervision continuation in `WAREHOUSE_NATIVE.md` is running
-and is not yet an additional completed result.
+The targeted native-supervision continuation is also complete; see
+`WAREHOUSE_NATIVE_RESULTS.md`. Forecasts improved, control acceptance failed,
+and the constant critical-floor labels do not validate risk discrimination.
 
 | Requested direction | Concrete implementation and evidence | Acceptance boundary |
 |---|---|---|

@@ -6,36 +6,38 @@ The cloud development environment has Python 3.12, locked dependencies and a
 CPU-only test/simulation workflow. See Git history and the associated review
 branch for commit/push status; external publications are tracked separately.
 
-## Active native packet-supervision continuation
+## Completed native packet-supervision campaign
 
-The v4 campaign at `/workspace/training/warehouse-v4-native` is **running**,
-not completed. See `WAREHOUSE_NATIVE.md` and the timestamped snapshot under
-`artifacts/warehouse_native/`. It uses the full thirty-second window, public
-known-map inputs without twin scans, native endpoint labels, eight training /
-three validation / six test scenes, and three seeds each for an MLP and graph.
-A fitted linear specialist accompanies the numerical and signal baselines.
+The v4 campaign at `/workspace/training/warehouse-v4-native` completed on
+31 October 2026 at 17:50 Singapore time. All 37 development and 21 test native
+runs, all six model fits, frozen selection, evaluation and verified archival
+finished. The collector, supervisor and archiver have exited. Do not restart
+completed runs. See `WAREHOUSE_NATIVE_RESULTS.md` for the final findings.
 
-The development collector and supervisor have separate PID/status files and
-locks. The supervisor waits for all 37 distinct development native runs, then
-trains six checkpoints, seals selection, and starts fresh test collection.
-Check `status.json`, `collection-development.json`, `progress-development.json`,
-`collection-test.json`, and `run.log`. Do not start duplicate workers or rerun
-completed historical experiments. Native runs can take many minutes on this CPU.
+The portable `artifacts/warehouse_native/` archive contains 214 verified report
+files, six finite checkpoints and three source capsules. The separate
+`postrun_audit.json` recomputes all endpoint targets and records constant risk
+labels. The original results remain unchanged. Verify without retraining:
 
-The collector freezes the existing Python sources as well as its scientific
-inputs. Until collection completes, changes to those source files make its
-protocol checks reject a resume/test invocation. New model/training modules
-have their own frozen capsule. Resume from the executed sources if necessary;
-do not silently replace a capsule or reuse outputs under changed physics.
-A pre-training supervisor attempt is retained under `attempts/`: recovery now
-reuses sealed validation results rather than regenerating timing-dependent
-hashes. Native collection and its protocol were unchanged.
+```sh
+.venv/bin/python scripts/audit_warehouse_native_results.py
+```
 
-After completion, `scripts/archive_warehouse_native.py` verifies raw endpoint
-labels, finite checkpoints, frozen selection and source capsules before
-archiving. Its `--follow` mode can watch the existing supervisor. Archived
-results still need review/commit and Studio export; there is no unattended
-Git push or merge. The experiment has no actual handover or hardware access.
+The full thirty-second known-map study uses eight training scenes, three
+validation scenes and six test scenes, with three seeds each for MLP and graph.
+Neural forecast RMSE is about 0.158 versus numerical 0.413. Learned utility is
+0.7010 versus numerical 0.6980, with difference interval [-0.0078, 0.0139].
+All six choose identical test plans. The linear specialist reaches 0.7015.
+No neural candidate or linear specialist passed validation; numerical remains
+the default. Every aggregate critical-floor label is a miss, so the zero
+neural Brier score does not establish discrimination or meaningful risk.
+
+Executed source capsules remain immutable, including the pre-training
+supervisor recovery attempt. Current reporting/export code may differ from
+the collection capsule; do not regenerate caches with changed sources.
+Studio bundle and standalone publication are separate from native completion.
+No physical car, actual WPA/DHCP handover or persistent native roaming loop
+was qualified. Both JEVs remain Wi-Fi-specific.
 
 ## Compositional mission and radio audit
 

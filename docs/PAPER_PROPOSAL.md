@@ -24,6 +24,22 @@ unlearning is compared with actual retained-data retraining, not presented as
 certified erasure. Physical-car qualification remains a prerequisite for fleet
 deployment claims, and the implementation remains Wi-Fi-specific.
 
+## Full-window native packet learning
+
+The completed v4 study (`WAREHOUSE_NATIVE_RESULTS.md`) uses 58 actual ns-3
+runs and six independently fitted compact models over a matched thirty-second
+window. Native supervision cuts forecast RMSE from about 0.413 to 0.158.
+Mean learned utility is 0.7010 versus numerical 0.6980, with a difference
+interval [-0.0078, 0.0139] crossing zero. The linear specialist reaches 0.7015.
+No learned candidate passes frozen validation. Numerical remains default;
+do not lead the paper with a learned-control superiority claim.
+
+All aggregate critical-floor labels are misses, so zero neural Brier/ECE does
+not establish event discrimination or meaningful risk calibration. Preserve
+this negative finding, the original reports and the separate post-run audit.
+This known-map, fixed-association simulation does not qualify physical robots,
+actual handovers or persistent roaming.
+
 ## Thirty-second horizon evidence
 
 The separate protocol in `WAREHOUSE_HORIZON.md` uses six route-conditioned

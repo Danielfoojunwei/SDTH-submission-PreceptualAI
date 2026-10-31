@@ -1,0 +1,162 @@
+{
+  "frozen_before_test": true,
+  "frozen_at": "2026-10-31T08:48:02.775014+00:00",
+  "protocol_sha256": "c473ba2b070fc760e672f7f05c21af6e717ab903645e5696270ee62f540d9641",
+  "training_protocol_sha256": "003fd0d7e5364f517ed591ef8fdafd2ba8092553996ec8fdc890c37e14590c8b",
+  "development_sha256": "b4f8157b9865352dd6b18de643f79a3040a39af380baae85b1d5150d5fdbae48",
+  "validation_sha256": "ca5b8a2cd6aefd5b03a1d4d957e5d45e68532fca9f591a2d1f121b1ec1c2c402",
+  "ridge_sha256": "9153213b837efc57dae9e6c744a98575821cff6eddb1accb23634516c9b1631d",
+  "gates": {
+    "ridge": {
+      "accepted": false,
+      "utility_difference": {
+        "mean": 0.004794001579284668,
+        "ci95": [
+          0.0,
+          0.014382004737854004
+        ],
+        "clusters": 3,
+        "method": "scene_cluster_percentile_bootstrap"
+      },
+      "minimum_tail_difference": 0.0,
+      "minimum_critical_difference": 0.0,
+      "scenes": [
+        191000,
+        191001,
+        191002
+      ],
+      "rule": "Positive scene-bootstrap lower utility bound AND no scene worsens tail or critical service"
+    },
+    "mlp-0": {
+      "accepted": false,
+      "utility_difference": {
+        "mean": 0.004794001579284668,
+        "ci95": [
+          0.0,
+          0.014382004737854004
+        ],
+        "clusters": 3,
+        "method": "scene_cluster_percentile_bootstrap"
+      },
+      "minimum_tail_difference": 0.0,
+      "minimum_critical_difference": 0.0,
+      "scenes": [
+        191000,
+        191001,
+        191002
+      ],
+      "rule": "Positive scene-bootstrap lower utility bound AND no scene worsens tail or critical service"
+    },
+    "mlp-1": {
+      "accepted": false,
+      "utility_difference": {
+        "mean": 0.004794001579284668,
+        "ci95": [
+          0.0,
+          0.014382004737854004
+        ],
+        "clusters": 3,
+        "method": "scene_cluster_percentile_bootstrap"
+      },
+      "minimum_tail_difference": 0.0,
+      "minimum_critical_difference": 0.0,
+      "scenes": [
+        191000,
+        191001,
+        191002
+      ],
+      "rule": "Positive scene-bootstrap lower utility bound AND no scene worsens tail or critical service"
+    },
+    "mlp-2": {
+      "accepted": false,
+      "utility_difference": {
+        "mean": 0.004794001579284668,
+        "ci95": [
+          0.0,
+          0.014382004737854004
+        ],
+        "clusters": 3,
+        "method": "scene_cluster_percentile_bootstrap"
+      },
+      "minimum_tail_difference": 0.0,
+      "minimum_critical_difference": 0.0,
+      "scenes": [
+        191000,
+        191001,
+        191002
+      ],
+      "rule": "Positive scene-bootstrap lower utility bound AND no scene worsens tail or critical service"
+    },
+    "graph-0": {
+      "accepted": false,
+      "utility_difference": {
+        "mean": 0.004794001579284668,
+        "ci95": [
+          0.0,
+          0.014382004737854004
+        ],
+        "clusters": 3,
+        "method": "scene_cluster_percentile_bootstrap"
+      },
+      "minimum_tail_difference": 0.0,
+      "minimum_critical_difference": 0.0,
+      "scenes": [
+        191000,
+        191001,
+        191002
+      ],
+      "rule": "Positive scene-bootstrap lower utility bound AND no scene worsens tail or critical service"
+    },
+    "graph-1": {
+      "accepted": false,
+      "utility_difference": {
+        "mean": -0.0025115013122558594,
+        "ci95": [
+          -0.007534503936767578,
+          0.0
+        ],
+        "clusters": 3,
+        "method": "scene_cluster_percentile_bootstrap"
+      },
+      "minimum_tail_difference": -0.026378147304058075,
+      "minimum_critical_difference": -0.003022491931915283,
+      "scenes": [
+        191000,
+        191001,
+        191002
+      ],
+      "rule": "Positive scene-bootstrap lower utility bound AND no scene worsens tail or critical service"
+    },
+    "graph-2": {
+      "accepted": false,
+      "utility_difference": {
+        "mean": 0.004794001579284668,
+        "ci95": [
+          0.0,
+          0.014382004737854004
+        ],
+        "clusters": 3,
+        "method": "scene_cluster_percentile_bootstrap"
+      },
+      "minimum_tail_difference": 0.0,
+      "minimum_critical_difference": 0.0,
+      "scenes": [
+        191000,
+        191001,
+        191002
+      ],
+      "rule": "Positive scene-bootstrap lower utility bound AND no scene worsens tail or critical service"
+    }
+  },
+  "research_default": "numerical",
+  "checkpoints": {
+    "mlp-0.pt": "cdef8b48df558c417d1ba13160d4e90f8ce7e2c83b88bd2c892b690fd3fefe75",
+    "mlp-1.pt": "0ffa67fcea654a669ea96c4777e11dacb6bb9c1a5584d1d17473cb345b507b2e",
+    "mlp-2.pt": "9a462319f3ec82caeb609c42d18b3fd8571694feeaa154ac4a2ff02262616266",
+    "graph-0.pt": "5b5b484c57f1364fcc16168b6f7149d3fa6125399965f0763128ac8b8339a237",
+    "graph-1.pt": "5b658b42112858fff3eeae1143f8b4d92949550b4810f332290f729fc6bce731",
+    "graph-2.pt": "767b7bf525cb4a7aceaeb81650f686877ba2a99c16b0d9c5db9d7b2baa135d63"
+  },
+  "hardware_qualified": false,
+  "test_used_for_model_selection": false
+}

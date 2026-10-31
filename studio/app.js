@@ -212,6 +212,33 @@ function regretRows(m, label, hl) {
 }
 function researchResults() {
   let html = "";
+  const native = B.warehouse_native;
+  if (native?.state === "completed") {
+    const groups = [["Stay", ["stay"]], ["Map signal", ["budgeted_map_signal"]],
+      ["Numerical", ["numerical"]], ["Linear residual", ["ridge"]],
+      ["MLP · three seeds", ["mlp-0", "mlp-1", "mlp-2"]],
+      ["AP/channel graph · three seeds", ["graph-0", "graph-1", "graph-2"]]];
+    const average = (names, key) => {
+      const values = names.map((name) => native.summary[name]?.[key]).filter((v) => Number.isFinite(v));
+      return values.length ? values.reduce((a, b) => a + b, 0) / values.length : null;
+    };
+    const interval = native.crossed_family_differences.graph;
+    const audit = native.postrun_audit;
+    const overlapsZero = interval.ci95[0] <= 0 && interval.ci95[1] >= 0;
+    const allMiss = audit && Object.values(audit.critical_floor_event_counts).every((c) => c.n > 0 && c.miss === c.n);
+    html += `<div class="card" style="margin-top:16px"><h3>Full-window native packet learning</h3>
+      <p class="sub">${native.native_progress.development.completed + native.native_progress.test.completed} native simulations · ${native.robots} simulated robots · ${native.duration_s}-second decisions · ${native.model_checkpoints_finished} trained models · ${native.test_scenes} fresh test scenes.</p>
+      ${table(["Method", "Utility ↑", "Mean service ↑", "Timely critical demand ↑", "Worst decile ↑", "Forecast RMSE ↓"],
+        groups.map(([name, methods]) => [esc(name), ...["utility", "mean_service", "critical_ontime_demand_fraction", "worst_decile_service", "forecast_rmse"].map((key) => {
+          const value = average(methods, key); return value === null ? "—" : fmt(value, 4);
+        })]))}
+      <p class="note">Validation-selected default: <b>${esc(native.research_default)}</b>. Graph utility difference versus numerical: ${fmt(interval.mean, 4)}, with 95% crossed seed/scene interval [${fmt(interval.ci95[0], 4)}, ${fmt(interval.ci95[1], 4)}]. ${overlapsZero ? "This interval includes zero. A reliable learned-controller advantage is not established." : "This interval excludes zero; qualification still follows the frozen validation gates."}</p>
+      <p class="note">${audit ? `Validation accepted ${audit.trained_models_accepted_on_validation}/6 neural models. ${audit.all_six_models_choose_identical_test_plans ? "All six models chose identical test plans; these are repeated model evaluations on the same six scenes." : "Training seeds share native scene outcomes."}` : "Post-run label audit unavailable."}</p>
+      <p class="note">${allMiss ? "Every critical-floor event label is a miss. Zero neural Brier/ECE matches an always-miss predictor and does not demonstrate risk discrimination or calibrated physical risk." : "Risk metrics require a separate label and calibration audit."}</p>
+      <p class="note">Utility gives equal weight to service and critical demand met within 50 ms. Known-map simulation, one fixed-association intervention and assumed four-second application muting; no measured handover, WPA/DHCP, persistent roaming, physical-car qualification or SOTA claim.</p></div>`;
+  } else if (native) {
+    html += `<div class="card" style="margin-top:16px"><h3>Native packet campaign: ${esc(native.state)}</h3><p class="note">Data collection, training or evaluation remains incomplete. Progress is not a held-out result.</p></div>`;
+  }
   const audit = B.warehouse_v3;
   if (audit) {
     html += `<div class="card" style="margin-top:16px"><h3>Compositional missions and radio representations</h3>

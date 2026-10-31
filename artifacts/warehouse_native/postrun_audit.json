@@ -1,0 +1,95 @@
+{
+  "source": "post_completion_audit_of_unchanged_native_evidence",
+  "audited_at": "2026-10-31T20:29:26.663369+00:00",
+  "archive_manifest_sha256": "718be72482c4c61ca2acfe588bfca8024c664670963c5184307e1a91ddf53baa",
+  "audit_source_sha256": "9b7eacc7d39bd664a2db8e42b4f461e587babe732e7ef2d8344681f90970bb0e",
+  "verified_reports": 214,
+  "verified_checkpoints": 6,
+  "verified_source_capsules": 3,
+  "verified_native_runs": 58,
+  "endpoint_targets_recomputed": true,
+  "critical_floor_event_counts": {
+    "train": {
+      "miss": 2600,
+      "met": 0,
+      "n": 2600,
+      "discrimination_testable": false,
+      "always_miss_brier": 0.0
+    },
+    "validation": {
+      "miss": 1100,
+      "met": 0,
+      "n": 1100,
+      "discrimination_testable": false,
+      "always_miss_brier": 0.0
+    },
+    "test": {
+      "miss": 2100,
+      "met": 0,
+      "n": 2100,
+      "discrimination_testable": false,
+      "always_miss_brier": 0.0
+    }
+  },
+  "risk_discrimination_testable": false,
+  "observed_critical_floor_ratios": [
+    1.0
+  ],
+  "risk_limit": "Observed aggregate critical floor ratios are [1.0]; all cases miss the floor. Zero neural Brier/ECE matches a constant always-miss predictor; it does not establish event discrimination or calibrated physical risk.",
+  "all_six_models_choose_identical_test_plans": true,
+  "test_decisions": {
+    "mlp-0": [
+      2,
+      3,
+      2,
+      3,
+      3,
+      3
+    ],
+    "mlp-1": [
+      2,
+      3,
+      2,
+      3,
+      3,
+      3
+    ],
+    "mlp-2": [
+      2,
+      3,
+      2,
+      3,
+      3,
+      3
+    ],
+    "graph-0": [
+      2,
+      3,
+      2,
+      3,
+      3,
+      3
+    ],
+    "graph-1": [
+      2,
+      3,
+      2,
+      3,
+      3,
+      3
+    ],
+    "graph-2": [
+      2,
+      3,
+      2,
+      3,
+      3,
+      3
+    ]
+  },
+  "frozen_default": "numerical",
+  "trained_models_accepted_on_validation": 0,
+  "baseline_specialist_accepted_on_validation": false,
+  "original_results_changed": false,
+  "test_used_to_change_thresholds_or_selection": false
+}

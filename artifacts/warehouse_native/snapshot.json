@@ -1,13 +1,13 @@
 {
   "version": 4,
   "source": "ns3_packet_events",
-  "snapshot_at": "2026-10-31T07:21:29.594718+00:00",
-  "state": "running",
-  "stage": "collecting_native_development",
+  "snapshot_at": "2026-10-31T09:51:22.363458+00:00",
+  "state": "completed",
+  "stage": null,
   "robots": 100,
   "duration_s": 30,
   "planned_model_checkpoints": 6,
-  "model_checkpoints_finished": 0,
+  "model_checkpoints_finished": 6,
   "training_seeds": 3,
   "training_scenes": 8,
   "validation_scenes": 3,
@@ -25,13 +25,242 @@
   ],
   "native_progress": {
     "development": {
-      "completed": 7,
+      "completed": 37,
       "total": 37
     },
     "test": {
-      "completed": 0,
-      "total": null
+      "completed": 21,
+      "total": 21
     }
   },
-  "supervisor_alive": true
+  "summary": {
+    "numerical": {
+      "utility": 0.698047916094462,
+      "candidate_regret": 0.00688218077023824,
+      "mean_service": 0.7688164313634237,
+      "critical_ontime_demand_fraction": 0.6272794306278229,
+      "worst_decile_service": 0.16499906840423742,
+      "critical_floor_miss_fraction": 1.0,
+      "moves": 12.0,
+      "forecast_rmse": 0.41269958515961963,
+      "inference_ms": 0.01580649889850368,
+      "risk_brier": 0.6326666666666666,
+      "risk_ece": 0.6522666666666666
+    },
+    "ridge": {
+      "utility": 0.7015061179796854,
+      "candidate_regret": 0.003423978885014852,
+      "mean_service": 0.7715713977813721,
+      "critical_ontime_demand_fraction": 0.6314408381779989,
+      "worst_decile_service": 0.19130211882293224,
+      "critical_floor_miss_fraction": 1.0,
+      "moves": 12.0,
+      "forecast_rmse": 0.20744864262926418,
+      "inference_ms": 0.0804424998932518
+    },
+    "mlp-0": {
+      "utility": 0.7010436952114105,
+      "candidate_regret": 0.003886401653289795,
+      "mean_service": 0.7709288001060486,
+      "critical_ontime_demand_fraction": 0.6311586002508799,
+      "worst_decile_service": 0.19195754639804363,
+      "critical_floor_miss_fraction": 1.0,
+      "moves": 10.833333333333334,
+      "forecast_rmse": 0.1599417751034101,
+      "inference_ms": 0.27710666715089854,
+      "risk_brier": 0.0,
+      "risk_ece": 0.0
+    },
+    "mlp-1": {
+      "utility": 0.7010436952114105,
+      "candidate_regret": 0.003886401653289795,
+      "mean_service": 0.7709288001060486,
+      "critical_ontime_demand_fraction": 0.6311586002508799,
+      "worst_decile_service": 0.19195754639804363,
+      "critical_floor_miss_fraction": 1.0,
+      "moves": 10.833333333333334,
+      "forecast_rmse": 0.15520394717653593,
+      "inference_ms": 0.23440800093036765,
+      "risk_brier": 0.0,
+      "risk_ece": 0.0
+    },
+    "mlp-2": {
+      "utility": 0.7010436952114105,
+      "candidate_regret": 0.003886401653289795,
+      "mean_service": 0.7709288001060486,
+      "critical_ontime_demand_fraction": 0.6311586002508799,
+      "worst_decile_service": 0.19195754639804363,
+      "critical_floor_miss_fraction": 1.0,
+      "moves": 10.833333333333334,
+      "forecast_rmse": 0.15668963144222894,
+      "inference_ms": 0.21862349846439125,
+      "risk_brier": 0.0,
+      "risk_ece": 0.0
+    },
+    "graph-0": {
+      "utility": 0.7010436952114105,
+      "candidate_regret": 0.003886401653289795,
+      "mean_service": 0.7709288001060486,
+      "critical_ontime_demand_fraction": 0.6311586002508799,
+      "worst_decile_service": 0.19195754639804363,
+      "critical_floor_miss_fraction": 1.0,
+      "moves": 10.833333333333334,
+      "forecast_rmse": 0.1584971696138382,
+      "inference_ms": 0.5801421672610255,
+      "risk_brier": 0.0,
+      "risk_ece": 0.0
+    },
+    "graph-1": {
+      "utility": 0.7010436952114105,
+      "candidate_regret": 0.003886401653289795,
+      "mean_service": 0.7709288001060486,
+      "critical_ontime_demand_fraction": 0.6311586002508799,
+      "worst_decile_service": 0.19195754639804363,
+      "critical_floor_miss_fraction": 1.0,
+      "moves": 10.833333333333334,
+      "forecast_rmse": 0.1571412111322085,
+      "inference_ms": 1.2259755009533062,
+      "risk_brier": 0.0,
+      "risk_ece": 0.0
+    },
+    "graph-2": {
+      "utility": 0.7010436952114105,
+      "candidate_regret": 0.003886401653289795,
+      "mean_service": 0.7709288001060486,
+      "critical_ontime_demand_fraction": 0.6311586002508799,
+      "worst_decile_service": 0.19195754639804363,
+      "critical_floor_miss_fraction": 1.0,
+      "moves": 10.833333333333334,
+      "forecast_rmse": 0.16188542793194452,
+      "inference_ms": 0.5981556678307243,
+      "risk_brier": 0.0,
+      "risk_ece": 0.0
+    },
+    "stay": {
+      "utility": 0.663073887427648,
+      "candidate_regret": 0.04185620943705241,
+      "mean_service": 0.7351280252138773,
+      "critical_ontime_demand_fraction": 0.5910197198390961,
+      "worst_decile_service": 0.10929789394140244,
+      "critical_floor_miss_fraction": 1.0,
+      "moves": 0.0
+    },
+    "budgeted_map_signal": {
+      "utility": 0.6872300306955973,
+      "candidate_regret": 0.017700066169102985,
+      "mean_service": 0.7630314032236735,
+      "critical_ontime_demand_fraction": 0.6114286382993063,
+      "worst_decile_service": 0.17810911250611147,
+      "critical_floor_miss_fraction": 1.0,
+      "moves": 12.0
+    },
+    "numerical_tail": {
+      "utility": 0.6935822864373525,
+      "candidate_regret": 0.011347810427347818,
+      "mean_service": 0.7651908993721008,
+      "critical_ontime_demand_fraction": 0.6219736635684967,
+      "worst_decile_service": 0.18730851573248705,
+      "critical_floor_miss_fraction": 1.0,
+      "moves": 8.0
+    },
+    "candidate_oracle": {
+      "utility": 0.7049300968647003,
+      "candidate_regret": 0.0,
+      "mean_service": 0.7745652993520101,
+      "critical_ontime_demand_fraction": 0.6352949142456055,
+      "worst_decile_service": 0.18750118277966976,
+      "critical_floor_miss_fraction": 1.0,
+      "moves": 12.0
+    }
+  },
+  "paired_differences": {
+    "ridge": {
+      "mean": 0.0034582018852233887,
+      "ci95": [
+        -0.006896783908208211,
+        0.013896236817042032
+      ],
+      "clusters": 6,
+      "method": "scene_cluster_percentile_bootstrap"
+    },
+    "mlp-0": {
+      "mean": 0.0029957791169484458,
+      "ci95": [
+        -0.00777280330657959,
+        0.01376436154047648
+      ],
+      "clusters": 6,
+      "method": "scene_cluster_percentile_bootstrap"
+    },
+    "mlp-1": {
+      "mean": 0.0029957791169484458,
+      "ci95": [
+        -0.00777280330657959,
+        0.01376436154047648
+      ],
+      "clusters": 6,
+      "method": "scene_cluster_percentile_bootstrap"
+    },
+    "mlp-2": {
+      "mean": 0.0029957791169484458,
+      "ci95": [
+        -0.00777280330657959,
+        0.01376436154047648
+      ],
+      "clusters": 6,
+      "method": "scene_cluster_percentile_bootstrap"
+    },
+    "graph-0": {
+      "mean": 0.0029957791169484458,
+      "ci95": [
+        -0.00777280330657959,
+        0.01376436154047648
+      ],
+      "clusters": 6,
+      "method": "scene_cluster_percentile_bootstrap"
+    },
+    "graph-1": {
+      "mean": 0.0029957791169484458,
+      "ci95": [
+        -0.00777280330657959,
+        0.01376436154047648
+      ],
+      "clusters": 6,
+      "method": "scene_cluster_percentile_bootstrap"
+    },
+    "graph-2": {
+      "mean": 0.0029957791169484458,
+      "ci95": [
+        -0.00777280330657959,
+        0.01376436154047648
+      ],
+      "clusters": 6,
+      "method": "scene_cluster_percentile_bootstrap"
+    }
+  },
+  "crossed_family_differences": {
+    "mlp": {
+      "mean": 0.0029957791169484458,
+      "ci95": [
+        -0.00777280330657959,
+        0.013896236817042032
+      ],
+      "training_seeds": 3,
+      "test_scenes": 6,
+      "method": "crossed_training_seed_scene_percentile_bootstrap",
+      "limits": "Exploratory small-scene interval; one native RNG run per scene/action, no hardware replication"
+    },
+    "graph": {
+      "mean": 0.0029957791169484458,
+      "ci95": [
+        -0.00777280330657959,
+        0.013896236817042032
+      ],
+      "training_seeds": 3,
+      "test_scenes": 6,
+      "method": "crossed_training_seed_scene_percentile_bootstrap",
+      "limits": "Exploratory small-scene interval; one native RNG run per scene/action, no hardware replication"
+    }
+  },
+  "research_default": "numerical"
 }
