@@ -149,6 +149,8 @@ def build(run_dir: Path | None = None) -> dict:
         "training_run": (training_snapshot(run_dir) if run_dir
                          else _load("artifacts/radiojev_cloud/snapshot.json")),
         "warehouse_v2": _load("artifacts/warehouse_v2/snapshot.json"),
+        "warehouse_horizon": _load("artifacts/warehouse_horizon/snapshot.json"),
+        "warehouse_horizon_selector": _load("artifacts/warehouse_horizon/selector/snapshot.json"),
         "closedloop_10car": _slim_closedloop(_load("artifacts/closedloop.json")),
         "closedloop_warehouse": _slim_closedloop(_load("artifacts/closedloop_warehouse.json")),
         "papers": _paper_map(),

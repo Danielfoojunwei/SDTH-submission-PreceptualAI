@@ -15,6 +15,17 @@ E6, general robotics, custom on-air waveforms and satellite work remain excluded
 Physical-car qualification remains pending; no foundation-model or SOTA claim
 follows from these experiments.
 
+The [30-second horizon extension](docs/WAREHOUSE_HORIZON.md) now trains six
+compact forecasters, plans partial switches under explicit mission budgets,
+and exposes a validated, proposal-only CLI. On three fresh simulated scenes,
+route-aware numerical planning raises mean service from 0.237 to 0.326 against
+budgeted strongest-signal roaming. All six learned residuals fail the
+closed-loop acceptance checks and fall back to that numerical planner.
+The twelve-switch cap is an operator-policy scenario, not a hardware rate
+limit; unconstrained roaming performs better on service in the original
+horizon holdout. Read the [full results](docs/WAREHOUSE_HORIZON_RESULTS.md)
+and [prospective selector audit](docs/WAREHOUSE_HORIZON_SELECTOR.md).
+
 Mission-conditioned Wi-Fi coordination for a 10-car Raspbot fleet. A frozen open System One model chooses the fleet plan. Exact numerical oracles teach and score it. A swarm protocol shares what the cars learn.
 
 Milestone 1 runs entirely in a digital twin. Nothing here touches a car, a radio or a network.

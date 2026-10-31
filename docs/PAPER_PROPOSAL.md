@@ -6,6 +6,27 @@ are in `docs/WAREHOUSE_RESULTS.md`. The subsequently authorised warehouse v2
 campaign is described below; general foundation-model, custom on-air PHY,
 robotics and space extensions remain deferred.
 
+## Thirty-second horizon evidence
+
+The separate protocol in `WAREHOUSE_HORIZON.md` uses six route-conditioned
+five-second forecasts, an observation-only numerical belief, hard switch
+budgets and three independently trained seeds for both compact architectures.
+Every model seed is evaluated on every one of three held-out environments.
+Forecast error improves, but learned closed-loop mission-utility intervals
+include zero improvement and worst-decile service declines. These results
+support the numerical planning baseline, not a learned-controller headline.
+
+A selector designed after that holdout rejects all six residuals using six
+validation environments. On three fresh audit environments the numerical
+fallback raises mean service from 0.237 to 0.326 against budgeted strongest
+signal, with fewer critical-rate-proxy violations. Eighteen identical
+fallback evaluations do not constitute eighteen independent learned fleets.
+The twelve-switch cap is an operator-policy scenario; unconstrained roaming
+has higher service in the original horizon holdout. This experiment does not
+establish superiority under unrestricted switching or physical reliability.
+See `WAREHOUSE_HORIZON_RESULTS.md` and `WAREHOUSE_HORIZON_SELECTOR.md` for
+the negative results, full comparisons, provenance and limits.
+
 ## Subsequent warehouse v2 evidence
 
 The user later authorised a separate warehouse research campaign, documented

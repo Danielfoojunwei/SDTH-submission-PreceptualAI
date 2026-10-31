@@ -212,6 +212,24 @@ function regretRows(m, label, hl) {
 }
 function researchResults() {
   let html = "";
+  const horizon = B.warehouse_horizon;
+  if (horizon) {
+    html += `<div class="card" style="margin-top:16px"><h3>Thirty-second route-aware planning</h3>
+      <p class="sub">Six forecast offsets · three independent model seeds crossed with three held-out simulated environments.</p>
+      ${table(["Controller", "Runs", "Service fraction ↑", "Worst-decile service ↑", "Critical-violation robot-steps ↓", "Budget violations"],
+        horizon.summary.map((r) => [esc(r.method), r.runs, fmt(r.mean_service), fmt(r.worst_decile_service),
+          fmt(r.critical_violation_robot_steps, 1), r.constraint_violations]))}
+      <p class="note">Twelve switches per decision is an operator-policy scenario, not a hardware rate limit. Unconstrained strongest-scan has higher service and violates that budget. Learned residuals improve forecasts but do not reliably improve closed-loop control; their worst-decile service regresses. All observations and actions are simulated.</p></div>`;
+  }
+  const selector = B.warehouse_horizon_selector;
+  if (selector) {
+    html += `<div class="card" style="margin-top:16px"><h3>Prospective proposal guard · ${selector.accepted_learned_models}/${selector.candidate_models} learned models accepted</h3>
+      <p class="sub">${selector.validation_rollouts} validation rollouts, then ${selector.audit_rollouts} audit rollouts on three fresh environments. Designed after the original holdout; sealed before this audit.</p>
+      ${table(["Audit controller", "Runs", "Service fraction ↑", "Worst-decile service ↑", "Critical-violation robot-steps ↓"],
+        selector.summary.map((r) => [esc(r.method), r.runs, fmt(r.mean_service), fmt(r.worst_decile_service),
+          fmt(r.critical_violation_robot_steps, 1)]))}
+      <p class="note">Rejected residuals use the numerical planner. The ${selector.verified_identical_fallbacks} identical fallback outcomes are not independent learned successes. The interface writes proposals only; no physical-car qualification or safety guarantee is established.</p></div>`;
+  }
   const next = B.warehouse_v2;
   if (next) {
     html += `<div class="card" style="margin-top:16px"><h3>Warehouse v2 · observed-input research</h3>

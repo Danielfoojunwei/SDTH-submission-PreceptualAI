@@ -6,6 +6,39 @@ The cloud development environment has Python 3.12, locked dependencies and a
 CPU-only test/simulation workflow. See Git history and the associated review
 branch for commit/push status; external publications are tracked separately.
 
+## Route-aware horizon continuation
+
+The subsequent "continue building" request adds the protocol in
+`docs/WAREHOUSE_HORIZON.md`, with results in `WAREHOUSE_HORIZON_RESULTS.md`
+and `WAREHOUSE_HORIZON_SELECTOR.md`. The six independently trained compact
+checkpoints and exact executed sources are portable in
+`artifacts/warehouse_horizon/`; original E1–E5/E7 and v2 evidence is untouched.
+The CPU campaign completed on 31 October 2026 at 09:48 Singapore time; its
+fresh-scene selector audit completed at 10:00. No training worker needs restarting.
+
+`/workspace/training/warehouse-horizon` contains the full training campaign
+(18 training, six validation, three held-out environments; three seeds per
+architecture; 30 full-cross control rollouts). The selector at
+`/workspace/training/warehouse-horizon-selector` contains 42 validation and
+24 fresh audit rollouts. It was designed after the original holdout; its
+policy was sealed before audit environments 143000–143002 were evaluated.
+An earlier validation-only selector attempt in `warehouse-horizon-gate`
+was stopped before audit access; `superseded.json` explains the whole-schedule
+replacement. That failed attempt is not a completed experiment.
+
+All six residuals fail the closed-loop checks. The proposal CLI therefore
+uses numerical planning, including when a rejected residual is requested.
+An explicit `--research-residual` option permits simulated-input research
+only. Actual d3 inference interprets the declared controlled mission grammar;
+caller-supplied contracts are labelled separately. No car command is sent.
+The observation schema does not authenticate a self-reported hardware origin.
+
+On the fresh audit, numerical mean service is 0.326 versus 0.237 for budgeted
+strongest-signal roaming. The twelve-switch cap is a declared operator-policy
+scenario, not the existing concurrent transaction limit or a physical rate
+limit. Unconstrained roaming has higher service in the original holdout.
+These results do not qualify all robots, actual hardware or SOTA performance.
+
 ## Warehouse v2 continuation
 
 The user subsequently authorised all six warehouse research directions and

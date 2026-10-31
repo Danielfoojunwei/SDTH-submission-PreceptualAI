@@ -23,6 +23,18 @@ test('warehouse v2 displays actual archived results with their limits', () => {
   assert.match(html, /does not establish benefit to every robot/);
 });
 
+test('horizon results retain budget context and rejected learned branches', () => {
+  const report = JSON.parse(readFileSync(new URL('../artifacts/warehouse_horizon/snapshot.json', import.meta.url)));
+  const selector = JSON.parse(readFileSync(new URL('../artifacts/warehouse_horizon/selector/snapshot.json', import.meta.url)));
+  const html = render({warehouse_horizon: report, warehouse_horizon_selector: selector});
+  assert.match(html, /Thirty-second route-aware planning/);
+  assert.match(html, /0\/6 learned models accepted/);
+  assert.match(html, /not a hardware rate limit/);
+  assert.match(html, /0\.326/);
+  assert.match(html, /not independent learned successes/);
+  assert.match(html, /interface writes proposals only/);
+});
+
 test('E1 displays real confidence intervals and pending stages', () => {
   const lora = JSON.parse(readFileSync(new URL('../artifacts/radiojev/e1_radio_lora.json', import.meta.url)));
   const noLlm = JSON.parse(readFileSync(new URL('../artifacts/radiojev/e1_no_llm.json', import.meta.url)));
