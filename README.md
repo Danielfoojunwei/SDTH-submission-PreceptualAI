@@ -36,6 +36,13 @@ the failed gates and separate simulations from hardware measurements.
 Both implementations currently target Wi-Fi; [protocol-independent adapters
 are not implemented](docs/PROTOCOL_BOUNDARY.md).
 
+A separate [native packet-supervision campaign](docs/WAREHOUSE_NATIVE.md) is
+running to address the remaining learned-controller gap. It aligns native
+labels and the decision window at thirty seconds, uses 100 simulated robots,
+and freezes three seeds per neural architecture before six fresh test scenes.
+The [status snapshot](artifacts/warehouse_native/snapshot.json) is timestamped;
+running jobs are not completed results or physical qualification.
+
 WirelessJEV turns warehouse missions into typed constraints and priorities for
 planning. RadioJEV learns radio consequences from observations and proposed
 actions. The current proposal path uses the complete controlled language and

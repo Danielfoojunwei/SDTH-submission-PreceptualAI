@@ -1,0 +1,37 @@
+{
+  "version": 4,
+  "source": "ns3_packet_events",
+  "snapshot_at": "2026-10-31T07:19:41.490219+00:00",
+  "state": "running",
+  "stage": "collecting_native_development",
+  "robots": 100,
+  "duration_s": 30,
+  "planned_model_checkpoints": 6,
+  "model_checkpoints_finished": 0,
+  "training_seeds": 3,
+  "training_scenes": 8,
+  "validation_scenes": 3,
+  "test_scenes": 6,
+  "hardware_qualified": false,
+  "sota_established": false,
+  "persistent_closed_loop_executed": false,
+  "limits": [
+    "Known log-distance map without racks/materials",
+    "One fixed-association decision per thirty-second simulation, not persistent closed-loop roaming",
+    "Four-second application mute is assumed, not actual Wi-Fi association/WPA/DHCP",
+    "Map eligibility is not measured scan availability; no car action is generated",
+    "Eight training, three validation, six held-out simulated environments; correlated robot labels",
+    "RTS enabled for all arms, chosen using the completed earlier audit, not this holdout"
+  ],
+  "native_progress": {
+    "development": {
+      "completed": 5,
+      "total": 37
+    },
+    "test": {
+      "completed": 0,
+      "total": null
+    }
+  },
+  "supervisor_alive": true
+}

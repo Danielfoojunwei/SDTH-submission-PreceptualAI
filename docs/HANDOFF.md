@@ -6,6 +6,37 @@ The cloud development environment has Python 3.12, locked dependencies and a
 CPU-only test/simulation workflow. See Git history and the associated review
 branch for commit/push status; external publications are tracked separately.
 
+## Active native packet-supervision continuation
+
+The v4 campaign at `/workspace/training/warehouse-v4-native` is **running**,
+not completed. See `WAREHOUSE_NATIVE.md` and the timestamped snapshot under
+`artifacts/warehouse_native/`. It uses the full thirty-second window, public
+known-map inputs without twin scans, native endpoint labels, eight training /
+three validation / six test scenes, and three seeds each for an MLP and graph.
+A fitted linear specialist accompanies the numerical and signal baselines.
+
+The development collector and supervisor have separate PID/status files and
+locks. The supervisor waits for all 37 distinct development native runs, then
+trains six checkpoints, seals selection, and starts fresh test collection.
+Check `status.json`, `collection-development.json`, `progress-development.json`,
+`collection-test.json`, and `run.log`. Do not start duplicate workers or rerun
+completed historical experiments. Native runs can take many minutes on this CPU.
+
+The collector freezes the existing Python sources as well as its scientific
+inputs. Until collection completes, changes to those source files make its
+protocol checks reject a resume/test invocation. New model/training modules
+have their own frozen capsule. Resume from the executed sources if necessary;
+do not silently replace a capsule or reuse outputs under changed physics.
+A pre-training supervisor attempt is retained under `attempts/`: recovery now
+reuses sealed validation results rather than regenerating timing-dependent
+hashes. Native collection and its protocol were unchanged.
+
+After completion, `scripts/archive_warehouse_native.py` verifies raw endpoint
+labels, finite checkpoints, frozen selection and source capsules before
+archiving. Its `--follow` mode can watch the existing supervisor. Archived
+results still need review/commit and Studio export; there is no unattended
+Git push or merge. The experiment has no actual handover or hardware access.
+
 ## Compositional mission and radio audit
 
 The user's pasted six-direction request is mapped to executed evidence and
