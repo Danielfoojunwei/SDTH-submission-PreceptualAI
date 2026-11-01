@@ -70,6 +70,13 @@ class Policy:
     cadence_roam: bool = False    # fire planned roams right after a control delivery
     adaptive_video: bool = False  # video bitrate follows the predicted link
     online_map: bool = False      # RadioJEV map keeps learning from robots' measurements
+    # Mission-compiled knobs (see intent_policy); defaults reproduce earlier runs.
+    roam_gain_db: float = 5.0
+    load_penalty: float = 0.15
+    focus_robots: tuple = ()      # robot indices the mission names
+    dual_focus_only: bool = False # second radio only on focus robots
+    avoid_occupied: float = 0.0   # penalty for links on channels with protected equipment
+    video_share: float = 0.6      # adaptive video encodes at this share of predicted goodput
 
 
 SCAN_S = 0.03
@@ -242,6 +249,10 @@ def simulate(world: World, policy: Policy, *, seed: int = 0, curves: LinkCurves 
     prev_gap = np.zeros(n)
     video_rate = world.video_mbps.copy()
     dual = policy.kind == "native" and policy.dual_radio
+    focus = np.zeros(n, dtype=bool)
+    focus[list(policy.focus_robots)] = True
+    dual_mask = (focus if policy.dual_focus_only else np.ones(n, dtype=bool)) if dual else np.zeros(n, dtype=bool)
+    occ_pen = policy.avoid_occupied * (1 - world.avail[world.domain])      # (S,3)
     site2 = np.full(n, -1)
     outage2_until = np.zeros(n, dtype=int)
     mcs2 = {b: np.zeros(n, dtype=int) for b in range(3)}
@@ -252,6 +263,7 @@ def simulate(world: World, policy: Policy, *, seed: int = 0, curves: LinkCurves 
 
     def move_primary(i, target, cost_s):
         nonlocal swaps
+        dual = bool(dual_mask[i])
         if policy.cadence_roam and cost_s < CONTROL_PERIOD * SLOT and not (dual and site2[i] == target):
             pending_roam[i] = target       # executed right after the next control delivery
             return
@@ -362,10 +374,10 @@ def simulate(world: World, policy: Policy, *, seed: int = 0, curves: LinkCurves 
                 w = np.array([1, 1, 1, 1, 1, 1, 0, 0, 0], dtype=float)
                 score = (fc.max(axis=3) * w[None, :, None]).sum(1) / w.sum()   # (N,S)
                 load = np.bincount(site, minlength=s).astype(float)
-                score = score - 0.15 * load[None, :]
+                score = score - policy.load_penalty * load[None, :]
                 best = np.argmax(score, axis=1)
                 gain = score[ar, best] - score[ar, site]
-                go = (gain >= 5.0) & (best != site) & (outage_until <= k)
+                go = (gain >= policy.roam_gain_db) & (best != site) & (outage_until <= k)
                 if policy.gate:
                     sb = sigma_now * policy.belief_scale                     # (N,S,3)
                     sbest = sb.max(axis=2)
@@ -448,21 +460,24 @@ def simulate(world: World, policy: Policy, *, seed: int = 0, curves: LinkCurves 
                     mcs[b] = _mcs_for(curves, band, meas[:, b] - 2.0 - 3.0 * (second_link >= 0))
             tput = np.stack([curves.rates(BANDS[b])[mcs[b]] *
                              curves.success(BANDS[b], mcs[b], est[:, b]) for b in range(3)], 1)
+            tput = tput * (1 - occ_pen[site] / max(policy.avoid_occupied, 1e-9) * min(policy.avoid_occupied, 1.0))
             bulk_link = np.argmax(tput, axis=1)                    # TTLM: bulk on the fast link
             if policy.adaptive_video:
                 # Encode for 60% of the predicted goodput on the bulk link, never above demand.
                 g = np.array([curves.rates(BANDS[b])[mcs[b][i]] * curves.success(BANDS[b], mcs[b][i:i + 1], est[i:i + 1, b])[0]
                               for i, b in enumerate(bulk_link)]) * MAC_EFF
+                share = np.where(focus, 1.0, policy.video_share)
                 video_rate = np.where(world.video_mbps > 0,
-                                      np.minimum(world.video_mbps, np.maximum(0.5, 0.6 * g)), 0.0)
+                                      np.minimum(world.video_mbps, np.maximum(0.5, share * g)), 0.0)
             if policy.power_control:
                 # Politeness: a robot with a very strong link lowers its power so
                 # co-channel APs elsewhere hear less of it; never below the MCS ceiling.
                 top = np.array([th90[b][-1] for b in BANDS])
                 head = est[ar, bulk_link] - tx_adj - top[bulk_link]
                 tx_adj = -np.clip(np.floor((head - 3.0) / 5.0) * 5.0, 0.0, 10.0)
+                tx_adj[focus] = 0.0                                    # never quieten a named robot
             if policy.reflex:
-                margin_now = est - np.array([th99[b][0] for b in BANDS])[None, :]
+                margin_now = est - np.array([th99[b][0] for b in BANDS])[None, :] - occ_pen[site]
                 ctrl_link = np.where(margin_now[ar, ctrl_link] < 3.0,
                                      np.argmax(margin_now, axis=1), ctrl_link)
 
@@ -512,7 +527,7 @@ def simulate(world: World, policy: Policy, *, seed: int = 0, curves: LinkCurves 
         else:
             pc_dom = np.zeros(n_dom)
         q_ctrl = None if policy.sched_control else 1 - pc_dom[doms[ar, ctrl_link]]
-        up2 = dual & (site2 >= 0) & (outage2_until <= k)
+        up2 = dual_mask & (site2 >= 0) & (outage2_until <= k)
         if not dual:
             up2 = np.zeros(n, dtype=bool)
 
@@ -652,6 +667,11 @@ def simulate(world: World, policy: Policy, *, seed: int = 0, curves: LinkCurves 
         "safety_stop_fraction": stopped_slots / (n_slots * n), "safety_stops": stop_events,
         "video_delivered_vs_requested": video_ok / max(video_req_bits, 1e-9),
         "map_updates": map_updates,
+        "per_robot_control_miss": (ctrl_miss_r / np.maximum(ctrl_total_r, 1)).round(6).tolist(),
+        "per_robot_video_on_time": (video_ok_r / np.maximum(video_gen_r, 1e-9)).round(6).tolist(),
+        "focus_control_miss": float(ctrl_miss_r[focus].sum() / max(ctrl_total_r[focus].sum(), 1)) if focus.any() else None,
+        "focus_video_on_time": float(video_ok_r[focus & has_video].sum() / max(video_gen_r[focus & has_video].sum(), 1e-9))
+        if (focus & has_video).any() else None,
     }
 
 
