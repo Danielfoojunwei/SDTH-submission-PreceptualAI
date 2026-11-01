@@ -5,7 +5,11 @@
     scan       read-only: stream the existing SmartCatScan.py for N seconds
     capabilities  read-only: what the BE200, its driver, nearby APs and Bluetooth support
     propose    local only: WirelessJEV scores the visible BSSIDs; sends nothing
-    switch     the only mutation: one operator-confirmed BSSID connect
+    switch     one operator-confirmed BSSID connect (SmartCarCmd); --timing
+               records stage times and the outage around it
+    handover-probe  read-only: can this car roam inside one connection?
+    roam       one operator-confirmed fast roam (wpa_supplicant D-Bus Roam,
+               same connection, same IP, no password sent), always timed
 
 Every step appends JSON lines to artifacts/onecar/<timestamp>-<step>.jsonl.
 """
@@ -23,6 +27,8 @@ from .carlink import (BSSID_RE, READONLY_COMMANDS, CarLink, OutcomeUnknown, Remo
                       ideas_enabled, known_hosts_has, load_wifi_json, run_readonly,
                       summarise_capabilities)
 from .execution import redact
+from . import handover as ho
+from .measurement import switch_timing
 
 LOG_DIR = Path("artifacts/onecar")
 
@@ -167,8 +173,8 @@ def cmd_propose(args) -> int:
 
 def cmd_switch(args, link=None, ask=input) -> int:
     log = Log("switch")
-    target = args.bssid.lower()
-    if not BSSID_RE.match(target):
+    target = None if args.bssid.lower() == "any" else args.bssid.lower()
+    if target is not None and not BSSID_RE.match(target):
         log.write("cancelled", reason="invalid BSSID")
         return 1
     profiles = load_wifi_json(args.wifi_json)
@@ -184,30 +190,177 @@ def cmd_switch(args, link=None, ask=input) -> int:
         if before.get("interface") != "wlan1" or before.get("role") != "WIFI":
             log.write("cancelled", reason="unexpected interface/role")
             return 2
+        if target is not None and before.get("bssid") == target:
+            log.write("cancelled", reason="already on target BSSID")
+            return 0
+        if target is None:
+            typed = ask(f"Reconnect wlan1 to {args.ssid!r} with no BSSID lock (any AP). "
+                        f"Re-type the SSID to confirm: ").strip()
+            expected = args.ssid
+        else:
+            typed = ask(f"Switch wlan1 from {before.get('bssid')} to {target} on "
+                        f"{args.ssid!r}. Re-type the target BSSID to confirm: ").strip().lower()
+            expected = target
+        if typed != expected:
+            log.write("cancelled", reason="confirmation did not match; nothing sent")
+            return 1
+        started = time.monotonic()
+
+        def mutate():
+            log.write("connect_sent", ssid=args.ssid, bssid=target, from_bssid=before.get("bssid"))
+            try:
+                result = link.connect_bssid(profiles[args.ssid], target)
+                log.write("connect_reply", outcome="APPLIED", bssid=result.get("bssid"),
+                          seconds=round(time.monotonic() - started, 2))
+                return "APPLIED", None
+            except RemoteRefused as exc:
+                outcome = ("NOT_APPLIED" if exc.activation_attempted is False else "UNKNOWN")
+                log.write("connect_refused", outcome=outcome, code=exc.code, error=str(exc),
+                          seconds=round(time.monotonic() - started, 2))
+                return outcome, None
+            except OutcomeUnknown as exc:
+                log.write("connect_unknown", outcome="UNKNOWN", error=str(exc),
+                          seconds=round(time.monotonic() - started, 2))
+                return "UNKNOWN", None
+
+        outcome = (_timed(link, log, mutate, args.window) if getattr(args, "timing", False)
+                   else mutate()[0])
+        # Verify / reconcile from status only. The connect is never resent.
+        verified = None
+        for i in range(args.verify_reads):
+            try:
+                st = link.status()
+            except Exception as exc:
+                log.write("verify_error", i=i, error=str(exc))
+                time.sleep(1.0)
+                continue
+            log.write("verify", i=i, bssid=st.get("bssid"), connected=st.get("connected"),
+                      signal_dbm=st.get("signal_dbm"), tx_bitrate_mbps=st.get("tx_bitrate_mbps"))
+            if (verified is None and st.get("connected") is True
+                    and (st.get("bssid") == target if target else st.get("ssid") == args.ssid)):
+                verified = round(time.monotonic() - started, 2)
+            time.sleep(1.0)
+        final = ("APPLIED" if verified is not None else
+                 "NOT_APPLIED" if outcome == "NOT_APPLIED" else
+                 "UNKNOWN" if outcome == "UNKNOWN" else "APPLIED_BUT_NOT_VERIFIED")
+        log.write("switch_result", outcome=final, verified_after_s=verified,
+                  connects_sent=1, log=str(log.path))
+        return 0 if final in ("APPLIED", "NOT_APPLIED") else 1
+    finally:
+        link.close()
+
+
+def _timed(link, log, mutate, window_s: int):
+    """Run `mutate()` with a gateway ping monitor and journal capture.
+
+    `mutate` returns (outcome, car_submit_epoch or None). Returns outcome."""
+    raw = {k: ho.run_handover_readonly(link, k) for k in ("wlan1_addr", "wlan1_route")}
+    gw = ho.summarise_handover(raw)["gateway"]
+    ip_before = ho.summarise_handover(raw)["wlan1_ipv4"]
+    offset = ho.clock_offset(link)
+    log.write("timing_setup", gateway=gw, ipv4_before=ip_before, car_minus_mac_s=round(offset, 4))
+    monitor = ho.PingMonitor(link, gw, window_s).start() if gw else None
+    time.sleep(1.5)                                    # baseline replies before the change
+    mac_send = time.time()
+    outcome, car_submit = mutate()
+    submitted = car_submit if car_submit is not None else mac_send + offset
+    text = monitor.finish(window_s + 2) if monitor else ""
+    replies = ho.parse_ping(text)
+    # Mac-to-car send-time mapping carries a few ms of error, so look for the
+    # teardown slightly before submission; stage times are clipped later.
+    journal = ho.parse_journal(ho.read_journal(link, submitted - 2), submitted - 0.5)
+    ip_after = ho.summarise_handover({"wlan1_addr": ho.run_handover_readonly(link, "wlan1_addr")})["wlan1_ipv4"]
+    gap = ho.gap_around(replies, submitted)
+    first = submitted + gap["first_reply_after_s"] if gap["first_reply_after_s"] is not None else None
+    events = ho.stage_events(submitted, journal, first, gw or "")
+    try:
+        timing = switch_timing(events)
+    except ValueError as exc:
+        timing = {"validation_error": str(exc)}
+    log.write("handover_timing", outcome=outcome, submit_clock=("car" if car_submit else "mac+offset"),
+              stages_s={k: (None if v is None else round(v, 3))
+                        for k, v in timing.get("seconds_since_submission", {}).items()},
+              missing_stages=timing.get("missing_stages"), validation=timing.get("validation_error"),
+              teardown_seen=journal["teardown"] is not None, ping_replies=len(replies), **gap,
+              ipv4_before=ip_before, ipv4_after=ip_after, ip_retained=ip_before == ip_after)
+    return outcome
+
+
+def cmd_handover_probe(args, link=None) -> int:
+    """Read-only: preconditions for roaming inside one connection."""
+    log = Log("handover-probe")
+    link = link or _link(args)
+    raw = {}
+    try:
+        for key in ho.HANDOVER_READONLY:
+            try:
+                raw[key] = ho.run_handover_readonly(link, key)
+            except Exception as exc:
+                raw[key] = ""
+                log.write("probe_error", probe=key, error=str(exc))
+    finally:
+        link.close()
+    summary = ho.summarise_handover(raw)
+    log.write("handover_capabilities", **summary)
+    log.write("fast_roam_ready", **ho.fast_roam_ready(summary))
+    raw_path = log.path.with_suffix(".raw.txt")
+    raw_path.write_text("\n\n".join(f"### {k}\n{v}" for k, v in raw.items()))
+    log.write("raw_output_saved", path=str(raw_path))
+    return 0
+
+
+def cmd_roam(args, link=None, ask=input) -> int:
+    """One operator-confirmed fast roam inside the active connection."""
+    log = Log("roam")
+    target = args.bssid.lower()
+    if not BSSID_RE.match(target):
+        log.write("cancelled", reason="invalid BSSID")
+        return 1
+    link = link or _link(args)
+    try:
+        before = link.status()
+        log.write("precondition", bssid=before.get("bssid"), ssid=before.get("ssid"),
+                  signal_dbm=before.get("signal_dbm"), interface=before.get("interface"),
+                  role=before.get("role"), connected=before.get("connected"))
+        if before.get("interface") != "wlan1" or before.get("role") != "WIFI" or not before.get("connected"):
+            log.write("cancelled", reason="wlan1 not connected in the WIFI role")
+            return 2
         if before.get("bssid") == target:
             log.write("cancelled", reason="already on target BSSID")
             return 0
-        typed = ask(f"Switch wlan1 from {before.get('bssid')} to {target} on "
-                    f"{args.ssid!r}. Re-type the target BSSID to confirm: ").strip().lower()
+        raw = {k: ho.run_handover_readonly(link, k) for k in
+               ("wpa_interface_methods", "active_profile", "wlan1_addr", "wlan1_route", "scan_cache")}
+        summary = ho.summarise_handover(raw)
+        ready = ho.fast_roam_ready(summary)
+        log.write("fast_roam_ready", **ready)
+        if not ready["ready"]:
+            log.write("cancelled", reason="fast-roam preconditions not met; nothing sent")
+            return 1
+        seen = ho.scan_target(raw["scan_cache"], target)
+        log.write("target_in_scan_cache", target=target, **(seen or {"ssid": None}))
+        if seen is None or seen["ssid"] != before.get("ssid"):
+            log.write("cancelled", reason="target not in scan cache for the current SSID; nothing sent")
+            return 1
+        typed = ask(f"Roam wlan1 from {before.get('bssid')} to {target} inside the current "
+                    f"connection on {before.get('ssid')!r}. Re-type the target BSSID to confirm: "
+                    ).strip().lower()
         if typed != target:
             log.write("cancelled", reason="confirmation did not match; nothing sent")
             return 1
-        log.write("connect_sent", ssid=args.ssid, bssid=target, from_bssid=before.get("bssid"))
+
+        def mutate():
+            log.write("roam_sent", bssid=target, from_bssid=before.get("bssid"))
+            try:
+                return "SUBMITTED", ho.send_roam(link, target)
+            except ho.RoamRefused as exc:
+                log.write("roam_refused", outcome="NOT_APPLIED", error=str(exc)[:300])
+                return "NOT_APPLIED", exc.submitted
+            except OutcomeUnknown as exc:
+                log.write("roam_unknown", outcome="UNKNOWN", error=str(exc)[:300])
+                return "UNKNOWN", None
+
         started = time.monotonic()
-        try:
-            result = link.connect_bssid(profiles[args.ssid], target)
-            outcome = "APPLIED"
-            log.write("connect_reply", outcome=outcome, bssid=result.get("bssid"),
-                      seconds=round(time.monotonic() - started, 2))
-        except RemoteRefused as exc:
-            outcome = ("NOT_APPLIED" if exc.activation_attempted is False else "UNKNOWN")
-            log.write("connect_refused", outcome=outcome, code=exc.code, error=str(exc),
-                      seconds=round(time.monotonic() - started, 2))
-        except OutcomeUnknown as exc:
-            outcome = "UNKNOWN"
-            log.write("connect_unknown", outcome=outcome, error=str(exc),
-                      seconds=round(time.monotonic() - started, 2))
-        # Verify / reconcile from status only. The connect is never resent.
+        outcome = _timed(link, log, mutate, args.window)
         verified = None
         for i in range(args.verify_reads):
             try:
@@ -223,9 +376,8 @@ def cmd_switch(args, link=None, ask=input) -> int:
             time.sleep(1.0)
         final = ("APPLIED" if verified is not None else
                  "NOT_APPLIED" if outcome == "NOT_APPLIED" else
-                 "UNKNOWN" if outcome == "UNKNOWN" else "APPLIED_BUT_NOT_VERIFIED")
-        log.write("switch_result", outcome=final, verified_after_s=verified,
-                  connects_sent=1, log=str(log.path))
+                 "UNKNOWN" if outcome == "UNKNOWN" else "SUBMITTED_NOT_VERIFIED")
+        log.write("roam_result", outcome=final, roams_sent=1, log=str(log.path))
         return 0 if final in ("APPLIED", "NOT_APPLIED") else 1
     finally:
         link.close()
@@ -281,13 +433,24 @@ def main(argv=None) -> int:
     p.add_argument("--ssid", required=True)
     p.add_argument("--bssid", required=True)
     p.add_argument("--verify-reads", type=int, default=10)
+    p.add_argument("--timing", action="store_true",
+                   help="ping the wlan1 gateway and read the journal to time each stage")
+    p.add_argument("--window", type=int, default=20)
+    p = sub.add_parser("handover-probe")
+    p.add_argument("--known-hosts", required=True)
+    p = sub.add_parser("roam")
+    p.add_argument("--known-hosts", required=True)
+    p.add_argument("--bssid", required=True)
+    p.add_argument("--verify-reads", type=int, default=5)
+    p.add_argument("--window", type=int, default=10)
     args = ap.parse_args(argv)
-    if args.cmd == "switch" and not sys.stdin.isatty():
+    if args.cmd in ("switch", "roam") and not sys.stdin.isatty():
         print("switch needs an interactive terminal for the typed confirmation", file=sys.stderr)
         return 1
     return {"preflight": cmd_preflight, "status": cmd_status, "scan": cmd_scan,
             "propose": cmd_propose, "switch": cmd_switch,
-            "capabilities": cmd_capabilities}[args.cmd](args)
+            "capabilities": cmd_capabilities, "handover-probe": cmd_handover_probe,
+            "roam": cmd_roam}[args.cmd](args)
 
 
 if __name__ == "__main__":

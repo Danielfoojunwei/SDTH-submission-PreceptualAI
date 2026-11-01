@@ -176,12 +176,16 @@ class CarLink:
     def status(self, timeout: float = 10.0) -> dict:
         return self.request({"action": "status"}, timeout)
 
-    def connect_bssid(self, profile: WifiProfile, bssid: str, timeout: float = 150.0) -> dict:
-        bssid = bssid.lower()
-        if not BSSID_RE.match(bssid):
-            raise ValueError("invalid BSSID")
-        payload = {"action": "connect", "ssid": profile.ssid, "bssid": bssid,
+    def connect_bssid(self, profile: WifiProfile, bssid: str | None, timeout: float = 150.0) -> dict:
+        """bssid=None connects by SSID alone: SmartCarCmd then builds a profile
+        with no BSSID lock, which the fast-roam path needs."""
+        payload = {"action": "connect", "ssid": profile.ssid,
                    "security": profile.security, "password": profile.password}
+        if bssid is not None:
+            bssid = bssid.lower()
+            if not BSSID_RE.match(bssid):
+                raise ValueError("invalid BSSID")
+            payload["bssid"] = bssid
         return self.request(payload, timeout)
 
     # --- read-only scan stream (existing SmartCatScan.py) ---------------------
