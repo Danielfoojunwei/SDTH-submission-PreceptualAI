@@ -129,19 +129,21 @@ def training_snapshot(run_dir: Path) -> dict:
 def _native_stack() -> dict | None:
     """Fleet means per arm (and condition) from the native-stack campaigns."""
     keys = ("control_miss", "control_miss_worst_decile", "control_gap_p99_ms",
-            "video_on_time", "airtime_domain_sum", "roams")
+            "video_on_time", "airtime_domain_sum", "roams", "availability_1s", "safety_stop_fraction")
 
     def means(rows, by):
         groups = {}
         for r in rows:
             groups.setdefault(tuple(r.get(k) for k in by), []).append(r)
         return [{**dict(zip(by, g)), "scenes": len(rs),
-                 **{k: sum(r[k] for r in rs) / len(rs) for k in keys}} for g, rs in groups.items()]
+                 **{k: (sum(r[k] for r in rs) / len(rs) if all(k in r for r in rs) else None)
+                    for k in keys}} for g, rs in groups.items()]
 
     out = {}
     for name, rel, by in (("stack", "artifacts/native/campaign.json", ("arm",)),
                           ("gate", "artifacts/native/gate_campaign.json", ("condition", "arm")),
-                          ("learned", "artifacts/native/learned_campaign.json", ("condition", "arm"))):
+                          ("learned", "artifacts/native/learned_campaign.json", ("condition", "arm")),
+                          ("vs5g", "artifacts/native/wifi_vs_5g.json", ("condition", "arm"))):
         rep = _load(rel)
         if rep:
             out[name] = {"protocol": rep.get("protocol"), "evaluation": rep.get("evaluation"),

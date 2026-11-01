@@ -71,7 +71,7 @@ def main():
     rep = {"protocol": "docs/WIFI_VS_5G.md", "duration_s": args.duration, "elapsed_s": time.time() - t,
            "rows": rows, "evaluation": evaluate(rows)}
     (OUT / "wifi_vs_5g.json").write_text(json.dumps(rep, indent=1, default=float))
-    print(json.dumps(rep["evaluation"], indent=1))
+    print(json.dumps(rep["evaluation"], indent=1, default=int))
 
 
 if __name__ == "__main__":

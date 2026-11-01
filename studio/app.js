@@ -467,6 +467,13 @@ function nativePage() {
     ${table(["Survey", "Map RMSE (dB)", "Bias (dB)", "Predicted std (dB)", "90% interval coverage"], [...new Set(cal.map((x) => x.condition))].map((c) => [esc(c), fmt(cm("rmse_db", c), 2), fmt(cm("bias_db", c), 2), fmt(cm("mean_predicted_std_db", c), 2), pct(cm("coverage_90", c), 0)]))}
     ${conds.map((c) => `<h3 style="margin-top:12px">${esc(c)}</h3>${table(ARM_HEAD, armRows(l.arms, c, "gated_learned"))}`).join("")}</div>`;
   } else s += `<div class="callout">RadioJEV map v0 campaign not in this bundle yet.</div>`;
+  const v = N.vs5g;
+  if (v) {
+    const conds = [...new Set(v.arms.map((a) => a.condition))];
+    s += `<div class="card" style="margin-top:16px"><h3>Vertical Wi-Fi stack vs private 5G · scenes 530–535</h3><div class="sub">${esc(v.protocol)} · 5G modelled generously: scheduled, licensed, 23 dBm devices, no inter-cell interference</div>${verdicts(v.evaluation, ["V1", "V2", "V3", "V4", "V5"])}
+    ${conds.map((c) => `<h3 style="margin-top:12px">${esc(c)}</h3>${table(["Arm", "Misses / million", "Worst-decile robot", "p99 gap (ms)", "1 s uptime", "Safety-stop time"], v.arms.filter((a) => a.condition === c).map((a) => ({ hl: a.arm === "vertical_client", cells: [esc(a.arm), fmt(1e6 * a.control_miss, 1), pct(a.control_miss_worst_decile, 3), fmt(a.control_gap_p99_ms, 0), pct(a.availability_1s, 3), pct(a.safety_stop_fraction, 3)] })))}`).join("")}
+    <p class="note">With a second client radio per robot (make-before-break across APs), Wi-Fi beats the 5G model in the main and lenient conditions. Existing single-radio hardware does not (V4), and heavy contention with a noisy 2.4 GHz band still favours 5G (V5).</p></div>`;
+  }
   if (N.phy) {
     s += `<div class="card" style="margin-top:16px"><h3>Layered modulation (Sionna LDPC, hierarchical 16-QAM)</h3><div class="sub">SNR (dB) for 1% block error, equal symbols and power</div>${table(["Channel", "Scheme", "Critical bits", "Bulk bits"], Object.entries(N.phy).flatMap(([ch, v]) => Object.entries(v).map(([k, r]) => [esc(ch), esc(k), fmt(r.critical, 0), fmt(r.bulk, 0)])))}<p class="note">Real link-level gain for critical bits; little system-level value where Wi-Fi retries already protect control.</p></div>`;
   }
