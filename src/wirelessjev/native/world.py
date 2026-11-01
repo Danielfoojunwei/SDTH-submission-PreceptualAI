@@ -43,6 +43,8 @@ class World:
     duration_s: float
     sigma_map: float
     blind: bool
+    sigma_belief: np.ndarray = None   # (D, N, S, 3) true local map-error std at decision positions
+    noise_db: np.ndarray = None       # (3,) noise plus interference floor per band
 
 
 def _error_field(rng, sites, sigma):
@@ -75,7 +77,8 @@ def _path_losses(scene, aps5, aps2, xs, ys):
 
 
 def build_world(seed: int, *, duration_s: float = 300.0, n_robots: int = 100,
-                sigma_map: float = 4.0, blind: bool = False) -> World:
+                sigma_map: float = 4.0, blind: bool = False, hetero: bool = False,
+                noise_2g_extra_db: float = 0.0) -> World:
     scene = make_warehouse(seed, n_robots=n_robots)
     aps5 = [a for a in scene.aps if a.band == "5g"]
     aps2 = [a for a in scene.aps if a.band == "2g"]
@@ -100,7 +103,10 @@ def build_world(seed: int, *, duration_s: float = 300.0, n_robots: int = 100,
         cars = mob.advance(cars, POS_DT)
 
     pl = _path_losses(scene, aps5, aps2, pos[..., 0], pos[..., 1])
+    # Optional 2.4 GHz interference-plus-noise rise (Bluetooth, scanners,
+    # microwaves): the base twin models 2.4 GHz occupancy as airtime only.
     noise = np.array([NOISE_DBM[b] for b in BANDS], dtype=np.float32)
+    noise[0] += noise_2g_extra_db
     snr = (CLIENT_TX_DBM - pl - noise).astype(np.float32)
     rssi_dl = (np.array([tx[b] for b in BANDS], dtype=np.float32) - pl).astype(np.float32)
 
@@ -108,9 +114,16 @@ def build_world(seed: int, *, duration_s: float = 300.0, n_robots: int = 100,
     field = _error_field(rng, sites, sigma_map) if sigma_map > 0 else None
     plf = _path_losses(scene, aps5, aps2, plan[..., 0], plan[..., 1])
     fc = CLIENT_TX_DBM - plf - noise
+    mult = np.ones(plan.shape[:-1] + (len(sites), 3))
+    if hetero:
+        # Spatially varying map quality: log-normal multiplier with RMS 1.
+        g = _error_field(np.random.default_rng(20_000 + seed), sites, 0.8)
+        lg = g(plan[..., 0], plan[..., 1])
+        mult = np.exp(lg) / math.sqrt(np.mean(np.exp(2 * lg)))
     if field is not None:
-        fc = fc + field(plan[..., 0], plan[..., 1])
+        fc = fc + field(plan[..., 0], plan[..., 1]) * mult
     forecast = fc.astype(np.float32)
+    sigma_belief = (sigma_map * mult[:, :, 0]).astype(np.float32)
 
     # Contention domains per band: same channel and carrier-sensed (as twin).
     r = scene.radio()
@@ -153,4 +166,4 @@ def build_world(seed: int, *, duration_s: float = 300.0, n_robots: int = 100,
     bulk = np.array([sum(f.demand_mbps for f in c.flows if f.name == "map_upload")
                      for c in scene.cars])
     return World(seed, n_robots, sites, snr, rssi_dl, forecast, domain, np.array(avail),
-                 video, bulk, duration_s, sigma_map, blind)
+                 video, bulk, duration_s, sigma_map, blind, sigma_belief, noise)

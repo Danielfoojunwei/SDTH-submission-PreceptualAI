@@ -58,6 +58,9 @@ class Policy:
     layered_gain_db: float = 4.0
     risk_threshold: float = 0.05
     static_split: bool = False    # mlo_split: control pinned to 2.4 GHz
+    gate: bool = False            # trust gate on planned roams (NATIVE_GATE.md)
+    gate_z: float = 2.0
+    belief_scale: float = 1.0     # <1: overconfident about the map
 
 
 SCAN_S = 0.03
@@ -115,6 +118,23 @@ def _mrr_chain(link, mcs, ar):
     return links, np.stack([m, np.maximum(m - 2, 0), np.zeros_like(m)], 1)
 
 
+def hidden_draws(world: World, n_slots: int, blockage_rate: float = BLOCKAGE_RATE_PER_MIN):
+    """Fading (dB) and blockage per 100 ms block, never seen by any policy."""
+    n, s = world.n, world.sites.shape[0]
+    hid = np.random.default_rng(77 + world.seed)
+    n_blocks = n_slots // BLOCK_SLOTS + 1
+    fade_db = 10 * np.log10(hid.gamma(FADE_M, 1 / FADE_M, size=(n_blocks, n, s, 3))).astype(np.float32)
+    p_on = blockage_rate / 60 * (BLOCK_SLOTS * SLOT) / 4   # ~4 relevant sites
+    p_off = (BLOCK_SLOTS * SLOT) / BLOCKAGE_MEAN_S
+    blocked = np.zeros((n_blocks, n, s), dtype=bool)
+    state = np.zeros((n, s), dtype=bool)
+    for k in range(n_blocks):
+        u = hid.random((n, s))
+        state = np.where(state, u > p_off, u < p_on)
+        blocked[k] = state
+    return fade_db, blocked, hid
+
+
 def simulate(world: World, policy: Policy, *, seed: int = 0, curves: LinkCurves | None = None,
              duration_s: float | None = None, blockage_rate: float = BLOCKAGE_RATE_PER_MIN) -> dict:
     curves = curves or LinkCurves()
@@ -131,17 +151,7 @@ def simulate(world: World, policy: Policy, *, seed: int = 0, curves: LinkCurves 
     ar = np.arange(n)
 
     # Hidden processes, identical across policies (own RNG streams).
-    hid = np.random.default_rng(77 + world.seed)
-    n_blocks = n_slots // BLOCK_SLOTS + 1
-    fade_db = 10 * np.log10(hid.gamma(FADE_M, 1 / FADE_M, size=(n_blocks, n, s, 3))).astype(np.float32)
-    p_on = blockage_rate / 60 * (BLOCK_SLOTS * SLOT) / 4   # ~4 relevant sites
-    p_off = (BLOCK_SLOTS * SLOT) / BLOCKAGE_MEAN_S
-    blocked = np.zeros((n_blocks, n, s), dtype=bool)
-    state = np.zeros((n, s), dtype=bool)
-    for k in range(n_blocks):
-        u = hid.random((n, s))
-        state = np.where(state, u > p_off, u < p_on)
-        blocked[k] = state
+    fade_db, blocked, hid = hidden_draws(world, n_slots, blockage_rate)
     scan_phase = hid.integers(0, 10_000, size=n)
 
     def true_snr(k_slot, sites_idx=None):
@@ -248,6 +258,23 @@ def simulate(world: World, policy: Policy, *, seed: int = 0, curves: LinkCurves 
                 best = np.argmax(score, axis=1)
                 gain = score[ar, best] - score[ar, site]
                 go = (gain >= 5.0) & (best != site) & (outage_until <= k)
+                if policy.gate:
+                    sb = world.sigma_belief[d] * policy.belief_scale        # (N,S,3)
+                    sbest = sb.max(axis=2)
+                    z = gain / np.sqrt(sbest[ar, site] ** 2 + sbest[ar, best] ** 2 + 1e-9)
+                    confident = z >= policy.gate_z
+                    go = go & confident
+                    # Not confident: the reactive rule decides for this robot.
+                    r = rssi_dl(max(0, k - BLOCK_SLOTS))
+                    cur = r[ar, site].max(axis=1)
+                    rbest = np.argmax(r.max(axis=2), axis=1)
+                    rgain = r[ar, rbest].max(axis=1) - cur
+                    rgo = (~confident) & (cur < -75.0) & (rgain >= 8.0) & (rbest != site) & (outage_until <= k)
+                    for i in np.nonzero(rgo)[0]:
+                        site[i] = rbest[i]
+                        outage_until[i] = k + int(round(0.06 / SLOT))
+                        roams[i] += 1
+                        roam_log.append(k)
                 budget = {}
                 for i in np.nonzero(go)[0]:
                     if policy.stagger and budget.get(best[i], 0) >= 2:
