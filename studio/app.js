@@ -429,6 +429,54 @@ function evidencePage() {
   return s;
 }
 
+function verdicts(ev, keys) {
+  if (!ev) return "";
+  return `<div class="legend">${keys.filter((k) => ev[k]).map((k) => `<span><b>${k}</b> ${ev[k].pass ? '<span class="badge ok">PASS</span>' : '<span class="badge bad">FAIL</span>'}</span>`).join("")}</div>`;
+}
+function armRows(arms, cond, focus) {
+  return arms.filter((a) => !cond || a.condition === cond).map((a) => ({
+    hl: a.arm === focus,
+    cells: [esc(a.arm), pct(a.control_miss, 3), pct(a.control_miss_worst_decile, 3), fmt(a.control_gap_p99_ms, 0), fmt(a.airtime_domain_sum, 2), fmt(a.roams, 0)],
+  }));
+}
+const ARM_HEAD = ["Arm", "Control misses", "Worst-decile robot", "p99 gap (ms)", "Airtime", "Roams"];
+
+function nativePage() {
+  const N = B.native_stack;
+  let s = `<h1>Native stack</h1><p class="lede">WirelessJEV and RadioJEV acting across the Wi-Fi stack: multi-link traffic mapping, planned pre-keyed roams, a learned radio map, and a trust gate that falls back to a fixed rule where the map is uncertain. Every campaign was pre-registered before its test scenes ran. Simulation only; no car or radio was touched.</p>`;
+  if (!N) return s + missing("Native-stack campaigns", "uv run python -m wirelessjev.native.run");
+  const st = N.stack, byArm = Object.fromEntries((st?.arms || []).map((a) => [a.arm, a]));
+  if (st) {
+    s += `<div class="grid k4">${[["Legacy, 4 s roam", "legacy"], ["802.11r, 60 ms", "ft11r"], ["Default multi-link", "mlo_default"], ["Native stack", "native"]].map(([l, k], i) =>
+      kpi(l, pct(byArm[k]?.control_miss, 3), "control packets missed", i === 3 ? "good" : "")).join("")}</div>
+    <div class="card" style="margin-top:16px"><h3>Native stack · scenes 500–505</h3><div class="sub">${esc(st.protocol)} · fleet means over six scenes, 100 robots, 300 s each</div>${verdicts(st.evaluation, ["H1", "H2", "H3", "H4", "H5"])}${table(ARM_HEAD, armRows(st.arms, null, "native"))}
+    <p class="note">Handover cost dominates; a fixed control/bulk split (mlo_split) captures most of the multi-link gain. Route-as-pilot (H4) and risk-gated duplication were falsified. Under uniform map error only; see the trust gate below for realistic maps.</p></div>`;
+  }
+  const g = N.gate;
+  if (g) {
+    const conds = [...new Set(g.arms.map((a) => a.condition))];
+    s += `<div class="card" style="margin-top:16px"><h3>Trust gate · scenes 510–515</h3><div class="sub">${esc(g.protocol)} · spatially varying map error; the gate was given the true local error</div>${verdicts(g.evaluation, ["G1", "G2", "B1"])}${conds.map((c) => `<h3 style="margin-top:12px">${esc(c)}</h3>${table(ARM_HEAD, armRows(g.arms, c, "native_gated"))}`).join("")}
+    <p class="note">Ungated planning fails under realistic map error; the gated planner beats the fixed rule in every condition. The layered safety broadcast (B1) failed against plain MCS 0 multicast.</p></div>`;
+  }
+  const l = N.learned;
+  if (l) {
+    const conds = [...new Set(l.arms.map((a) => a.condition))];
+    const cal = l.calibration || [];
+    const cm = (k, c) => { const v = cal.filter((x) => x.condition === c).map((x) => x[k]); return v.length ? v.reduce((a, b) => a + b, 0) / v.length : null; };
+    s += `<div class="card" style="margin-top:16px"><h3>RadioJEV map v0 drives the gate · scenes 520–525</h3><div class="sub">${esc(l.protocol)} · map and uncertainty learned from capped robot scans (censored Tobit EM + held-out discrepancy)</div>${verdicts(l.evaluation, ["L1", "L2", "L3", "L4"])}
+    ${table(["Survey", "Map RMSE (dB)", "Bias (dB)", "Predicted std (dB)", "90% interval coverage"], [...new Set(cal.map((x) => x.condition))].map((c) => [esc(c), fmt(cm("rmse_db", c), 2), fmt(cm("bias_db", c), 2), fmt(cm("mean_predicted_std_db", c), 2), pct(cm("coverage_90", c), 0)]))}
+    ${conds.map((c) => `<h3 style="margin-top:12px">${esc(c)}</h3>${table(ARM_HEAD, armRows(l.arms, c, "gated_learned"))}`).join("")}</div>`;
+  } else s += `<div class="callout">RadioJEV map v0 campaign not in this bundle yet.</div>`;
+  if (N.phy) {
+    s += `<div class="card" style="margin-top:16px"><h3>Layered modulation (Sionna LDPC, hierarchical 16-QAM)</h3><div class="sub">SNR (dB) for 1% block error, equal symbols and power</div>${table(["Channel", "Scheme", "Critical bits", "Bulk bits"], Object.entries(N.phy).flatMap(([ch, v]) => Object.entries(v).map(([k, r]) => [esc(ch), esc(k), fmt(r.critical, 0), fmt(r.bulk, 0)])))}<p class="note">Real link-level gain for critical bits; little system-level value where Wi-Fi retries already protect control.</p></div>`;
+  }
+  const h = B.handover_tooling;
+  if (h) {
+    s += `<div class="card" style="margin-top:16px"><h3>Handover on the SmartCar · <span class="badge">${esc(h.status.toUpperCase())}</span></h3><p>${esc(h.root_cause)}</p>${table(["Command", "What it does", "Changes the car?"], h.commands.map(([c, d, m]) => [`<code>onecar ${esc(c)}</code>`, esc(d), esc(m)]))}</div>`;
+  }
+  return s;
+}
+
 function swarmPage() {
   const sw = B.bench_10car?.swarm;
   let s = `<h1>Swarm &amp; trust</h1><p class="lede">Serverless merge following Li/Wang/Shen/Lam's swarm-learning DSA: admission check, leader by performance score, weighted merge, and validation against the <b>currently live</b> release before anything is released. Cars violating their contract (MSN 2024 reputation rule) are excluded from merges and pinned to their BSSID.</p>`;
@@ -479,7 +527,7 @@ uv run python -m wirelessjev.studio_data</pre></div></div>
 }
 
 // ------------------------------------------------------------------ router
-const PAGES = { overview: ["Overview", overview], map: ["Fleet map", mapPage], decisions: ["Decisions", decisionsPage], evidence: ["Evidence", evidencePage], swarm: ["Swarm & trust", swarmPage], execution: ["Execution", executionPage], research: ["Research map", researchPage], data: ["Hardware & data", dataPage] };
+const PAGES = { overview: ["Overview", overview], map: ["Fleet map", mapPage], decisions: ["Decisions", decisionsPage], evidence: ["Evidence", evidencePage], native: ["Native stack", nativePage], swarm: ["Swarm & trust", swarmPage], execution: ["Execution", executionPage], research: ["Research map", researchPage], data: ["Hardware & data", dataPage] };
 
 function route() {
   if (player) { clearInterval(player); player = null; }

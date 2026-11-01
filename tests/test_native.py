@@ -78,3 +78,17 @@ def test_legacy_roam_cost_creates_outage(world):
     fast = simulate(world, replace(pol["legacy"], roam_cost_s=0.06))
     assert slow["roams"] == fast["roams"] or slow["roams"] <= fast["roams"]
     assert slow["ctrl_pending_slots_down"] >= fast["ctrl_pending_slots_down"]
+
+
+def test_learned_map_survey_and_calibration_shapes():
+    w = build_world(400, duration_s=5.0, n_robots=10, survey_s=10)
+    c = w.map_calibration
+    assert c["links"] > 0 and 0 <= c["coverage_90"] <= 1 and c["rmse_db"] > 0
+    assert w.sigma_belief.shape == (w.forecast.shape[0], 10, 16, 3)
+    assert np.all(w.sigma_belief > 0)
+
+
+def test_studio_native_section_reads_campaigns():
+    from wirelessjev.studio_data import _native_stack
+    n = _native_stack()
+    assert n is None or all("arms" in v for k, v in n.items() if k != "phy")

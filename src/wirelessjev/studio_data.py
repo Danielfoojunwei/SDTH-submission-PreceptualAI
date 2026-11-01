@@ -126,6 +126,36 @@ def training_snapshot(run_dir: Path) -> dict:
             "results": results, "snapshot": True}
 
 
+def _native_stack() -> dict | None:
+    """Fleet means per arm (and condition) from the native-stack campaigns."""
+    keys = ("control_miss", "control_miss_worst_decile", "control_gap_p99_ms",
+            "video_on_time", "airtime_domain_sum", "roams")
+
+    def means(rows, by):
+        groups = {}
+        for r in rows:
+            groups.setdefault(tuple(r.get(k) for k in by), []).append(r)
+        return [{**dict(zip(by, g)), "scenes": len(rs),
+                 **{k: sum(r[k] for r in rs) / len(rs) for k in keys}} for g, rs in groups.items()]
+
+    out = {}
+    for name, rel, by in (("stack", "artifacts/native/campaign.json", ("arm",)),
+                          ("gate", "artifacts/native/gate_campaign.json", ("condition", "arm")),
+                          ("learned", "artifacts/native/learned_campaign.json", ("condition", "arm"))):
+        rep = _load(rel)
+        if rep:
+            out[name] = {"protocol": rep.get("protocol"), "evaluation": rep.get("evaluation"),
+                         "arms": means(rep["rows"], by)}
+            if name == "gate":
+                out[name]["broadcast"] = rep.get("broadcast")
+            if name == "learned":
+                out[name]["calibration"] = rep.get("calibration")
+    phy = _load("artifacts/native/phy_layered.json")
+    if phy:
+        out["phy"] = {k: v["snr_for_1pct_bler"] for k, v in phy.items() if isinstance(v, dict)}
+    return out or None
+
+
 def build(run_dir: Path | None = None) -> dict:
     layout = {
         "width": W.WIDTH, "height": W.HEIGHT, "rack_rows": list(W.RACK_ROWS),
@@ -161,6 +191,7 @@ def build(run_dir: Path | None = None) -> dict:
         "warehouse_horizon_selector": _load("artifacts/warehouse_horizon/selector/snapshot.json"),
         "warehouse_v3": _load("artifacts/warehouse_v3/snapshot.json"),
         "warehouse_native": _native_results(),
+        "native_stack": _native_stack(),
         "closedloop_10car": _slim_closedloop(_load("artifacts/closedloop.json")),
         "closedloop_warehouse": _slim_closedloop(_load("artifacts/closedloop_warehouse.json")),
         "papers": _paper_map(),
@@ -179,6 +210,15 @@ def build(run_dir: Path | None = None) -> dict:
                 "UNKNOWN": "timeout or channel loss after send; reconcile by status, never resend",
             },
         },
+        "handover_tooling": {
+            "status": "built; tested against a fake car only",
+            "root_cause": "SmartCarCmd activates a per-BSSID NetworkManager profile, so every switch "
+                          "tears the connection down and redoes association, handshake and DHCP.",
+            "commands": [
+                ["handover-probe", "read-only: D-Bus Roam, profile BSSID lock, IP and gateway, 802.11r APs", "no"],
+                ["switch --timing", "times today's switch: stages, ping outage, teardown, IP kept", "one supervised switch"],
+                ["switch --bssid any", "SSID-only reconnect for an unlocked profile", "one supervised reconnect"],
+                ["roam", "wpa_supplicant D-Bus Roam inside the connection, same IP, no password", "one supervised roam"]]},
         "one_car_test": {"status": "not yet run",
                          "plan": "docs/ONE_CAR_TEST.md",
                          "logs": sorted(p.name for p in (ROOT / "artifacts" / "onecar").glob("*.jsonl")
