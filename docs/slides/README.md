@@ -1,4 +1,11 @@
-# Current-system architecture deck
+# Current-system presentation
+
+The primary presentation is the **[10-slide visual deck](concise/README.md)**:
+real Blender models, cinematic warehouse scenes, an exploded architecture,
+spatial radio state and independent AP paths. It includes PDF, editable
+PowerPoint, a standalone browser deck and an interactive 3D model explorer.
+
+## Technical appendix
 
 This deck explains **RadioMap + WirelessJEV as it is implemented in the canonical native-stack source**, with a separate boundary around supervised vehicle tools. It focuses on design rationale, interfaces, mechanisms and evidence. It has no development timeline or version-comparison section.
 

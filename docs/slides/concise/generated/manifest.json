@@ -1,0 +1,177 @@
+{
+  "title": "RadioMap + WirelessJEV",
+  "base_commit": "998fe3736a28d30cf04931e9ef182bda8cd4caf8",
+  "built_at": "2026-11-01T19:52:05.476798+08:00",
+  "slide_count": 10,
+  "source_sha256": {
+    "artifacts/native/intent_flip.json": "b38085245979d29a03a071fea9e22e5ffb1da414d802222ae30dca99c36447f1",
+    "artifacts/native/learned_campaign.json": "4f266cee00617d43e97d54e3e23f9056402a61288ed5c15f5da06eb9e2f40a3f",
+    "artifacts/native/wifi_vs_5g.json": "321852221d0bd83ed3793fb02626a549c050897ccd02bc867873b80ec62f9989",
+    "docs/BOM.md": "cb8eff05cdb3b8b77a0d4509a6e5d142e4824a311cd8c637b1d8807431641f45",
+    "docs/CROSS_AP.md": "f73b634fd81ecd8e62b642ab4c086b6e53436c8d76e903ba8717324758dc19a2",
+    "docs/NATIVE_LEARNED_MAP_RESULTS.md": "872cc73dac139f75023aca39146805bbefd94584c250353db2defaab05f84337",
+    "docs/ONE_CAR_TEST.md": "d8938121c2e07c94056a13dc8ff1634c1fd6fb044b8d585653722de07f05688a",
+    "docs/VERTICAL_STACK.md": "c3ef6731ad9d039c70b27d080913b27bfcfa007ccd8574f5b64a5b02ba9d7a2a",
+    "docs/WIFI_VS_5G.md": "2c09ff655611ad7383a36a8c1567c3c78b099cb135de6033ba79acf4c1856e7a",
+    "docs/WIFI_VS_5G_RESULTS.md": "7639536f55116bce41672b471c7a5b65711d3252ece963e19e7403d4f644f27f",
+    "docs/slides/concise/assets/scene_data.json": "68adec33bf3f7ba51bc31d90152b7e822416929a5cd2cbbbafed74a71b19ac66",
+    "docs/slides/concise/deck.json": "795be1b811963c1caff4de3dcc9333002364b7f1c1b83a0c9eaeadd67ccdef06",
+    "docs/slides/concise/render_models.py": "4c9a009077b7432af2530451ebb9b7895a5251276a2b82bd517d900d13d28234",
+    "docs/slides/concise/vendor/LICENSE": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30",
+    "docs/slides/concise/vendor/gainmap.LICENSE": "7fb8f722609c6669a9c9a4865e2a86205c7760e7dc7a039b0fb9913c3e62c6cc",
+    "docs/slides/concise/vendor/lit.LICENSE": "45d31799d0db956cc3eb5469346abbd9b7025babc5ff29fab10d7095da992ef1",
+    "docs/slides/concise/vendor/model-viewer.min.js": "774edda21e1be2a0934e460ca5943af1fe3f88da130a9f98bd6a9d611576cacf",
+    "docs/slides/concise/vendor/package.json": "4b748ab5b8f812dd3235a8dbacf05c3f37d0701ea2727a1b86707127d66b0369",
+    "docs/slides/concise/vendor/provenance.json": "4abb2d7250b34fbea40e6f1a1ca8d116493c511b198353a5ac6ec67257f2ba94",
+    "docs/slides/concise/vendor/three.LICENSE": "4c40a1ef62450b857c3b2aaf294936304cd552d965fbcd9d32d4c5bcf4ba4454",
+    "scripts/build_research_deck.py": "1d8b446e0394ed7daf22a66863b1e0c886f5f7fee6320d03c1e7de32a5fbebf1",
+    "scripts/build_visual_deck.py": "81b0f08a505a2ad38668814c5546597dc6db0e1c758732525fbe36c759fa4f3e",
+    "scripts/prepare_visual_deck_data.py": "a007468535625873cc9c2c65436ad95ee1fbe8dd665969ff7a40dc60fe05751d",
+    "src/wirelessjev/handover.py": "15b2d8c7e32470e39f74c0be2c4333ba1bfc5af6793f88840744b086bdc69a51",
+    "src/wirelessjev/native/intent_policy.py": "d5af1b433eba0390e9e074fe58d731e84b7cd2ed915d54c0213553de1e40de8b",
+    "src/wirelessjev/native/radiomap.py": "8eabc40270d6dbb915100db58ea62730083a25440fa42d47a455b4086060189f",
+    "src/wirelessjev/native/sim.py": "2d44c20ad392b33ddc65060260d57218bb4b1b69bd93382be4dbaac45096d4f8",
+    "src/wirelessjev/native/world.py": "42e1f7a0ce18f6298d4ff063f5d57b1c003e6058e768474bdcf42b6af27e92df"
+  },
+  "outputs_sha256": {
+    "architecture.model.json": "3829cc21c765de7d53655863c1e17829ee8b276464dac4f2ca00fc4d639a8f80",
+    "architecture.png": "8bef55ba12c0e90e5afb75933679e77e15f1e4c06523f63edcc7243934be48df",
+    "composites/architecture.jpg": "9c92e08e17ae8a52a92b93d91f47b1d462f848d0236b98b40d907a16793d25dc",
+    "composites/diversity.jpg": "995003f8f84009bcedada2d89cb78ce0eae33384a3947b604567960de5af065e",
+    "composites/envelope.jpg": "9964daa6f32283cf7707e0602fffe810acb7a7dc0503603f9b4f58da336fdbe9",
+    "composites/gate.jpg": "fefb5f64f0e27a3215f4253318d6c1c0e5ba5337eae32df8b667a490bed74903",
+    "composites/mission.jpg": "bad9b46fa7694aad06334d149066b80612c67bae481ca745a064e831b6b251c6",
+    "composites/radiomap.jpg": "3e8f07dfe36283da8839e7080d68e8dbbc9d57f601563a9d97a7fbbf4165fe7c",
+    "composites/result.jpg": "99df5f826b69ce1a4fd43f967d3fc040d95ec952e3dc4f1575becc1411586cef",
+    "composites/stack.jpg": "f466cbf29502532770ffc85d8ab9b52d4c38e30ebb1d1c08fcb31b52168e964e",
+    "composites/validation.jpg": "09b4f21d8f7f81feafd4dd5dd0cd7d890ce45105f5f8a33f8db5343341a0d30b",
+    "composites/warehouse.jpg": "d7845caf55a095f38b77786cda37622be0c4882404c11fd692c8da3ce955c62e",
+    "contact_sheet.jpg": "06dacfac4b8fc253c2d301dec87a920d848bcb9a16c4460a6c5c3d5a5d7fbdc1",
+    "contact_sheet_01.jpg": "9ac233f4847c3513830e5b669f6bde638fa5905f4ec93b1132fb037472f38924",
+    "contact_sheet_02.jpg": "5abf790156765a13e3c62d0929fa8ca807908ed75de33466f64c6bed4338dfa8",
+    "diversity.model.json": "0ee2ca0427e73f36536111335b2d9a858e160a877544f5b500d5c36a8d058e8a",
+    "diversity.png": "23b924da385169b3045f2ef50dd09713bba19eb899dcde600e41baa002d4d98f",
+    "envelope.model.json": "e17307d2ff4c81b7833f730ee6cca5e67f5c2c609650d25175ae72c7dbc6f836",
+    "envelope.png": "328a2a34595335ed6e5648882612fabecd584193e40a00299767e5b868963fb1",
+    "explore_3d.html": "3d4d4051d95ef86897a155a3674b4893d342f9e55e8975ccfaf542dabff4225d",
+    "gate.model.json": "217e8e3eb1aa0ac8d1aad4eea8c77d0726719e16cb72c26affd4a2d6464a43ca",
+    "gate.png": "bc637cbf7aa909342a8629ecb1625eb7b27a18fb9f25d4b86503ddfd51be2800",
+    "mission.model.json": "5f45892a7553953de04caf6bb71f8b0b38acaddf0c852e6af8daff31fea419d3",
+    "mission.png": "c2d681f3f2bda8b65f373bd2194ea8661b9dfffdfa85734bcd59ffe4cf0ffef9",
+    "models/architecture.blend": "976b78616944488bb9f4c729e67568974a899c9afd1572372358bdb7139e2333",
+    "models/architecture.glb": "bb82afe9cac3d4c7e61f7aed61151b551da7695fcfcfb92bf875f37a383b46bd",
+    "models/diversity.blend": "223decf938a73a24d36446a257d645e673c2e0d070b6ddb786d547718d599c4f",
+    "models/diversity.glb": "5edcb1879ff81ece1258d61fafc42396957ecbb609d73183899d75121920a4af",
+    "models/warehouse.blend": "08465a336fc50650159c617fc205eceed7b6b0c460212dd98237993fb111f32f",
+    "models/warehouse.glb": "62f3def5e7a25336b3f558185327943f9b40f62aa20df8fe48136e85815f9a2a",
+    "radiomap.model.json": "f4f11ab035e46f5932e6e03cc87708ad27b5741774cade393011a2f0b00a32c1",
+    "radiomap.png": "e1ad6d585a20f120a6a181e1dd5bb399dcced6d6c62b13c0c1e7c754b21b1afd",
+    "result.model.json": "0baff66c405c31ffcb9806770ca04ced6d8642559a3b557422199f46ae317778",
+    "result.png": "9b0bc28302b2ee30897c29d192d847b0e4bef5d208c9a01e0fe8963b1c3c9840",
+    "slides/01.png": "a568c22db1b00a67aebdb8f38711a44c020e401acc3fe533d8c73bc14cbeb46a",
+    "slides/02.png": "e28c123bced5929b8df3d381766b10cf0e70ea5561458c85ffc6dbe5dfefb6a5",
+    "slides/03.png": "f997cff489e0e99870f5fc8c7b5309ded8e9f80e864654cf5f0b846be6b7f0bc",
+    "slides/04.png": "79f1ef2874e45e1d77b7e278ca3471d34fc2331fb955377f5a58a8edc2e2f8f5",
+    "slides/05.png": "8276dbf301da83b515ecfd2827289178bda9f602c6d15e1c14d9311b1e1a4cc5",
+    "slides/06.png": "c97b2190eca42d3b44eae175a5ccc01c97b6b8823746cddd0e6805c4a30c9465",
+    "slides/07.png": "93a51119a73fb3480bf68e809b2613f789375a372d17fa97f55611cd8068a648",
+    "slides/08.png": "abbd24af7887de13f7325825e49a0b6971ce02e7e801f3f8cb817246278a4e66",
+    "slides/09.png": "7e9554dec4f61ee66645c72399cf9efb3ea967f344271d1ba01e61dd91bc23c4",
+    "slides/10.png": "0dd3af933975fd550ba72964391439b17290f55f3b3c32f276460f627419b7ff",
+    "stack.model.json": "fbd9ab992153598c1a151bf2d1751fa6cb3d6cb0f1fa49b2d3abe3afd7efaa5a",
+    "stack.png": "6899b53c7fe5c3c271031ff50aa73ae6a3d10b0bdc2001e589bd9351e9e4dc3c",
+    "validation.model.json": "92d7d7e48375804b88cb45b3cf65520ea0147405c4c8c5c2436d6cc1789b19bc",
+    "validation.png": "205dcbdc2fa660d0175a550a3edd687e0905533997b2d7a6e46f1273f089d85a",
+    "warehouse.model.json": "37f2df748cfb3114afb778b5d0735631065ae80396ca5eedadf902e2efe72b20",
+    "warehouse.png": "d0350e35ab0fbc2f9768c4c8b6e6856777d251e8b6ade4121baa11c84a8914f3",
+    "wirelessjev_10_slides.html": "f5d0ab3d467122b82be595350071933e72de8d048a663286fe11de849ad0e421",
+    "wirelessjev_10_slides.pdf": "d177d98703ba6248a4c1df0d385e652f861b184a4b39355aad5bd6afb40f67ab",
+    "wirelessjev_10_slides.pptx": "ca0dfc3437aa71602b8424c218a7eecf86c19f5c24c30a90febb34c864e4890d"
+  },
+  "quality_checks": [
+    {
+      "id": "warehouse",
+      "real_3d_geometry": true,
+      "mesh_objects": 1322,
+      "editable_text_and_notes": true
+    },
+    {
+      "id": "architecture",
+      "real_3d_geometry": true,
+      "mesh_objects": 457,
+      "editable_text_and_notes": true
+    },
+    {
+      "id": "radiomap",
+      "real_3d_geometry": true,
+      "mesh_objects": 389,
+      "editable_text_and_notes": true
+    },
+    {
+      "id": "mission",
+      "real_3d_geometry": true,
+      "mesh_objects": 29,
+      "editable_text_and_notes": true
+    },
+    {
+      "id": "gate",
+      "real_3d_geometry": true,
+      "mesh_objects": 20,
+      "editable_text_and_notes": true
+    },
+    {
+      "id": "diversity",
+      "real_3d_geometry": true,
+      "mesh_objects": 27,
+      "editable_text_and_notes": true
+    },
+    {
+      "id": "stack",
+      "real_3d_geometry": true,
+      "mesh_objects": 34,
+      "editable_text_and_notes": true
+    },
+    {
+      "id": "result",
+      "real_3d_geometry": true,
+      "mesh_objects": 985,
+      "editable_text_and_notes": true
+    },
+    {
+      "id": "envelope",
+      "real_3d_geometry": true,
+      "mesh_objects": 1233,
+      "editable_text_and_notes": true
+    },
+    {
+      "id": "validation",
+      "real_3d_geometry": true,
+      "mesh_objects": 127,
+      "editable_text_and_notes": true
+    }
+  ],
+  "main_results": {
+    "vertical_client": {
+      "misses": 11,
+      "commands": 3600000,
+      "ppm": 3.055555555555556,
+      "availability_1s": 0.99995
+    },
+    "nr_30ms": {
+      "misses": 190,
+      "commands": 3600000,
+      "ppm": 52.77777777777778,
+      "availability_1s": 0.9993277777777777
+    }
+  },
+  "main_ratio": 17.27272727272727,
+  "models_are_schematic": true,
+  "external_claude_deck_republished": false,
+  "limitations": [
+    "Simulation evidence only, six paired scenes",
+    "Successful arm assumes a second client radio",
+    "Scaled cellular comparator, not a real 3GPP deployment",
+    "Stress condition favors the cellular model",
+    "The GLB explorer uses real geometry, not measurements"
+  ]
+}
