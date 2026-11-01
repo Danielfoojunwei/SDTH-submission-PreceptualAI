@@ -57,3 +57,9 @@ On development scene 400 (main condition, 120 s):
 - **Stress condition:** `vertical_shared` with the levers had 100 per million; without them (`vertical_shared-levers`) it had 25. The levers may *hurt* under stress, and the test reports this ablation in every condition.
 
 No thresholds or arms were changed after this check.
+
+## 10-robot replication (added before it ran)
+The same arms, conditions and hypotheses X1–X6 are run with 10 robots on the same warehouse scenes 540–545 (`--robots 10`, output `artifacts/native/cross_ap_10robots.json`).
+- **Purpose:** check whether the conclusions hold for a 10-car fleet, the SmartCar milestone size.
+- **Difference from the original 10-car twin:** this is the warehouse twin with 10 robots, not the earlier 3-AP 10-car twin.
+- **Fewer fixed video robots:** the warehouse's three fixed video robots (indices 16, 41 and 77) do not exist in a 10-robot fleet, so video comes only from the random 4%. In the `heavy` condition, 15% of robots stream.

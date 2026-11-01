@@ -47,10 +47,11 @@ def heavy(world):
     return world
 
 
-def run_scene(seed: int, duration: float):
+def run_scene(seed: int, duration: float, robots: int = 100):
     rows = []
     for cond, c in CONDITIONS.items():
-        w = build_world(seed, duration_s=duration, survey_s=60, noise_2g_extra_db=c["noise"])
+        w = build_world(seed, duration_s=duration, survey_s=60, noise_2g_extra_db=c["noise"],
+                        n_robots=robots)
         if c["heavy"]:
             w = heavy(w)
         for name, p in arms().items():
@@ -79,14 +80,17 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--duration", type=float, default=300.0)
     ap.add_argument("--workers", type=int, default=3)
+    ap.add_argument("--robots", type=int, default=100)
     args = ap.parse_args()
     t = time.time()
     with ProcessPoolExecutor(args.workers) as pool:
-        rows = [r for part in pool.map(run_scene, TEST_SCENES, [args.duration] * len(TEST_SCENES))
-                for r in part]
-    rep = {"protocol": "docs/CROSS_AP.md", "duration_s": args.duration, "elapsed_s": time.time() - t,
+        rows = [r for part in pool.map(run_scene, TEST_SCENES, [args.duration] * len(TEST_SCENES),
+                                       [args.robots] * len(TEST_SCENES)) for r in part]
+    rep = {"protocol": "docs/CROSS_AP.md", "robots": args.robots, "duration_s": args.duration,
+           "elapsed_s": time.time() - t,
            "rows": rows, "evaluation": evaluate(rows)}
-    (OUT / "cross_ap.json").write_text(json.dumps(rep, indent=1, default=float))
+    name = "cross_ap.json" if args.robots == 100 else f"cross_ap_{args.robots}robots.json"
+    (OUT / name).write_text(json.dumps(rep, indent=1, default=float))
     print(json.dumps(rep["evaluation"], indent=1, default=int))
 
 
