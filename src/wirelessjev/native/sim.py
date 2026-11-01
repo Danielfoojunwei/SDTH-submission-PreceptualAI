@@ -37,6 +37,10 @@ BLOCKAGE_DB = 15.0
 BLOCKAGE_RATE_PER_MIN = 1.5  # per robot, spread over its sites
 BLOCKAGE_MEAN_S = 2.0
 FADE_M = 2
+CAUSES = ("no_radio_up", "all_paths_blocked", "weak_link", "contention", "other")
+SHARED_SWITCH_S = 0.002      # retune to the second AP's channel and back
+ONBOARD_SNR_DB = -5.0        # 1x1 (no combining gain) and a weaker PCB antenna
+WIFI8_HYST_DB = 3.0          # seamless multi-AP switching hysteresis
 SAFETY_GAP_SLOTS = 20       # robot stops when control is silent for > 200 ms...
 RESTART_S = 1.0             # ...and needs 1 s to resume after control returns
 BULK_BUFFER_S = 20.0       # map uploads queue on the robot; deferral sends later
@@ -77,6 +81,11 @@ class Policy:
     dual_focus_only: bool = False # second radio only on focus robots
     avoid_occupied: float = 0.0   # penalty for links on channels with protected equipment
     video_share: float = 0.6      # adaptive video encodes at this share of predicted goodput
+    radio2: str = "be200"         # second association: "be200" (second card), "onboard" (Pi
+                                  # CYW43455: 1x1 Wi-Fi 5, no 6 GHz, PCB antenna), or "shared"
+                                  # (time-shared on the same BE200 / Wi-Fi 8 multi-AP: used only
+                                  # after the primary chain fails, plus a channel-switch cost)
+    cadence_scan: bool = False    # background scans start right after a control delivery
 
 
 SCAN_S = 0.03
@@ -114,6 +123,18 @@ def _mcs_for(curves, band, snr, target=None):
     th = curves.threshold_db(band, 0.9 if target is None else target)
     idx = np.searchsorted(th, snr, side="right") - 1
     return np.clip(idx, 0, len(th) - 1)
+
+
+def _tally(store, flags, mask):
+    """Attribute each missed packet to the most serious condition it met."""
+    for i in np.nonzero(mask)[0]:
+        f = flags[i]
+        for bit, name in enumerate(CAUSES[:-1]):
+            if f & (1 << bit):
+                store[name] += 1
+                break
+        else:
+            store["other"] += 1
 
 
 def _chain(curves, links, mcss, snr_eff, str_mode, q=None):
@@ -179,6 +200,7 @@ def simulate(world: World, policy: Policy, *, seed: int = 0, curves: LinkCurves 
     rates = {b: curves.rates(b) for b in BANDS}
     th90 = {b: curves.threshold_db(b, 0.9) for b in BANDS}
     th99 = {b: curves.threshold_db(b, 0.99) for b in BANDS}
+    th99_0 = np.array([th99[b][0] for b in BANDS])
     n_dom = len(world.avail)
     ar = np.arange(n)
 
@@ -244,6 +266,10 @@ def simulate(world: World, policy: Policy, *, seed: int = 0, curves: LinkCurves 
     ctrl_down = ctrl_fail = ctrl_congested = 0
     win_miss = np.zeros(n, dtype=bool)
     windows = clean_windows = 0
+    due = np.zeros(n, dtype=bool)                # cadence_scan: a scan is waiting for a quiet moment
+    scan_until = np.zeros(n, dtype=int)
+    cause_flags = np.zeros(n, dtype=int)         # bit per cause seen while a packet waits
+    miss_causes = {c: 0 for c in CAUSES}
     stopped_slots = 0
     stop_events = 0
     prev_gap = np.zeros(n)
@@ -251,6 +277,7 @@ def simulate(world: World, policy: Policy, *, seed: int = 0, curves: LinkCurves 
     dual = policy.kind == "native" and policy.dual_radio
     focus = np.zeros(n, dtype=bool)
     focus[list(policy.focus_robots)] = True
+    r2_off = ONBOARD_SNR_DB if policy.radio2 == "onboard" else 0.0
     dual_mask = (focus if policy.dual_focus_only else np.ones(n, dtype=bool)) if dual else np.zeros(n, dtype=bool)
     occ_pen = policy.avoid_occupied * (1 - world.avail[world.domain])      # (S,3)
     site2 = np.full(n, -1)
@@ -347,6 +374,23 @@ def simulate(world: World, policy: Policy, *, seed: int = 0, curves: LinkCurves 
                 roams[i] += 1
                 roam_log.append(k)
 
+        if policy.kind == "wifi8" and k % BLOCK_SLOTS == 0:
+            # Wi-Fi 8 seamless mobility (generous): one radio, any AP of the
+            # domain, switched every 100 ms on lagged measurements, no outage.
+            lag = true_snr(max(0, k - BLOCK_SLOTS))                      # (N,S,3)
+            best_site = np.argmax(lag.max(axis=2), axis=1)
+            cur = lag[ar, site].max(axis=1)
+            switch = lag[ar, best_site].max(axis=1) > cur + WIFI8_HYST_DB
+            roams += switch
+            site = np.where(switch, best_site, site)
+            meas = true_snr(max(0, k - BLOCK_SLOTS), site)
+            for b in range(3):
+                mcs[b] = _mcs_for(curves, BANDS[b], meas[:, b] - 2.0)
+            tput = np.stack([curves.rates(BANDS[b])[mcs[b]] *
+                             curves.success(BANDS[b], mcs[b], meas[:, b]) for b in range(3)], 1)
+            bulk_link = np.argmax(tput, axis=1)
+            ctrl_link = np.argmax(meas - th99_0[None, :], axis=1)
+
         if policy.kind == "mlo_default" and k % BLOCK_SLOTS == 0:
             tput = np.stack([curves.rates(BANDS[b])[mcs[b]] *
                              curves.success(BANDS[b], mcs[b], meas[:, b]) for b in range(3)], 1)
@@ -391,7 +435,8 @@ def simulate(world: World, policy: Policy, *, seed: int = 0, curves: LinkCurves 
                     rgain = r[ar, rbest].max(axis=1) - cur
                     rgo = (~confident) & (cur < -75.0) & (rgain >= 8.0) & (rbest != site) & (outage_until <= k)
                     for i in np.nonzero(rgo)[0]:
-                        move_primary(i, rbest[i], 0.06)
+                        # Still our client: pre-keyed and cadence-timed like a planned roam.
+                        move_primary(i, rbest[i], policy.roam_cost_s)
                 budget = {}
                 for i in np.nonzero(go)[0]:
                     if policy.stagger and budget.get(best[i], 0) >= 2:
@@ -482,19 +527,28 @@ def simulate(world: World, policy: Policy, *, seed: int = 0, curves: LinkCurves 
                                      np.argmax(margin_now, axis=1), ctrl_link)
 
         if dual and k % BLOCK_SLOTS == 0:
-            meas2 = true_snr(max(0, k - BLOCK_SLOTS), np.maximum(site2, 0))
+            meas2 = true_snr(max(0, k - BLOCK_SLOTS), np.maximum(site2, 0)) + r2_off
             for b in range(3):
                 mcs2[b] = _mcs_for(curves, BANDS[b], meas2[:, b] - 2.0)
-            link2 = np.argmax(meas2 - np.array([th99[b][0] for b in BANDS])[None, :], axis=1)
+            m2 = meas2 - np.array([th99[b][0] for b in BANDS])[None, :]
+            if policy.radio2 == "onboard":
+                m2[:, 2] = -np.inf                                  # no 6 GHz on the onboard chip
+            link2 = np.argmax(m2, axis=1)
 
         # ---------------- scans ------------------------------------------------
-        scanning = ((k + scan_phase) % int(round(policy.scan_period_s / SLOT))) < int(round(SCAN_S / SLOT))
+        if policy.cadence_scan:
+            due |= ((k + scan_phase) % int(round(policy.scan_period_s / SLOT))) == 0
+            scanning = scan_until > k
+        else:
+            scanning = ((k + scan_phase) % int(round(policy.scan_period_s / SLOT))) < int(round(SCAN_S / SLOT))
         up = (outage_until <= k) & ~scanning
 
         # ---------------- traffic arrivals -------------------------------------
         new_ctrl = ((k + scan_phase) % CONTROL_PERIOD) == 0
         if new_ctrl.any():
             stale = new_ctrl & (ctrl_age >= 0)                    # previous not delivered
+            _tally(miss_causes, cause_flags, stale)
+            cause_flags = np.where(new_ctrl, 0, cause_flags)
             ctrl_missed += int(stale.sum())
             ctrl_miss_r += stale
             win_miss |= stale
@@ -528,6 +582,8 @@ def simulate(world: World, policy: Policy, *, seed: int = 0, curves: LinkCurves 
             pc_dom = np.zeros(n_dom)
         q_ctrl = None if policy.sched_control else 1 - pc_dom[doms[ar, ctrl_link]]
         up2 = dual_mask & (site2 >= 0) & (outage2_until <= k)
+        if policy.radio2 == "shared":
+            up2 &= ~scanning                       # same radio: a scan blocks both associations
         if not dual:
             up2 = np.zeros(n, dtype=bool)
 
@@ -567,11 +623,15 @@ def simulate(world: World, policy: Policy, *, seed: int = 0, curves: LinkCurves 
         np.add.at(air_ctrl, doms[ar, sl], pend * str_mode * air2)
         if dual:
             s2 = np.maximum(site2, 0)
-            snr2 = true_snr(k, s2)
+            snr2 = true_snr(k, s2) + r2_off
             d2 = world.domain[s2][ar, link2]
             l3, m3 = _mrr_chain(link2, mcs2, ar)
             q2 = None if policy.sched_control else 1 - pc_dom[d2]
-            ok3, air3 = _chain(curves, l3, m3, snr2, np.zeros(n, dtype=bool), q2)
+            ok3, air3 = _chain(curves, l3, m3, snr2, np.full(n, policy.radio2 == "onboard"), q2)
+            if policy.radio2 == "shared":
+                # One radio: the second AP is tried only when the primary chain
+                # failed, after retuning; the primary must also be up to retune from.
+                air3 = (1 - ok) * (air3 + SHARED_SWITCH_S / SLOT)
             ok3 = np.where(up2, ok3, 0.0)
             ok = 1 - (1 - ok) * (1 - ok3)
             np.add.at(air_ctrl, d2, pend * up2 * air3)
@@ -579,10 +639,20 @@ def simulate(world: World, policy: Policy, *, seed: int = 0, curves: LinkCurves 
         scale_c = np.minimum(1.0, world.avail / np.maximum(air_ctrl, 1e-12))
         grant_c = np.ones(n) if policy.sched_control else scale_c[doms[ar, ctrl_link]]
         delivered = pend & (rng.random(n) < ok * grant_c)
+        # Forensics: what this waiting packet is up against right now.
+        waiting = ctrl_age >= 0
+        kb_now = k // BLOCK_SLOTS
+        blk_p = blocked[kb_now][ar, site]
+        blk_2 = blocked[kb_now][ar, np.maximum(site2, 0)] | ~up2
+        weak_p = snr_eff[ar, ctrl_link] < th99_0[ctrl_link]
+        cont = (pc_dom[doms[ar, ctrl_link]] > 0.05) | (grant_c < 1)
+        cause_flags |= waiting * (((~(up | up2)) * 1) | ((blk_p & blk_2) * 2) | (weak_p * 4) | (cont * 8))
         ctrl_fail += int((pend & ~delivered).sum())
         ctrl_congested += int((pend & (grant_c < 1)).sum())
         ctrl_age = np.where(delivered, -1, np.where(ctrl_age >= 0, ctrl_age + 1, -1))
         late = ctrl_age >= CONTROL_DEADLINE
+        _tally(miss_causes, cause_flags, late)
+        cause_flags = np.where(late | delivered, 0, cause_flags)
         ctrl_missed += int(late.sum())
         ctrl_miss_r += late
         win_miss |= late
@@ -598,6 +668,10 @@ def simulate(world: World, policy: Policy, *, seed: int = 0, curves: LinkCurves 
         stopped_slots += resumed.sum() * int(RESTART_S / SLOT)
         stop_events += int(resumed.sum())
         prev_gap = gap_cur.copy()
+        if policy.cadence_scan:
+            go_scan = delivered & due
+            scan_until = np.where(go_scan, k + 1 + int(round(SCAN_S / SLOT)), scan_until)
+            due &= ~go_scan
         if policy.cadence_roam:
             fire = delivered & (pending_roam >= 0) & (outage_until <= k)
             for i in np.nonzero(fire)[0]:
@@ -666,7 +740,7 @@ def simulate(world: World, policy: Policy, *, seed: int = 0, curves: LinkCurves 
         "interference": interference, "mean_tx_reduction_db": float(-tx_adj.mean()),
         "safety_stop_fraction": stopped_slots / (n_slots * n), "safety_stops": stop_events,
         "video_delivered_vs_requested": video_ok / max(video_req_bits, 1e-9),
-        "map_updates": map_updates,
+        "map_updates": map_updates, "miss_causes": miss_causes,
         "per_robot_control_miss": (ctrl_miss_r / np.maximum(ctrl_total_r, 1)).round(6).tolist(),
         "per_robot_video_on_time": (video_ok_r / np.maximum(video_gen_r, 1e-9)).round(6).tolist(),
         "focus_control_miss": float(ctrl_miss_r[focus].sum() / max(ctrl_total_r[focus].sum(), 1)) if focus.any() else None,
@@ -715,6 +789,8 @@ def simulate_nr(world: World, policy: Policy, *, seed: int = 0, curves: LinkCurv
     gap_max = np.zeros(n)
     win_miss = np.zeros(n, dtype=bool)
     windows = clean = 0
+    cause_flags = np.zeros(n, dtype=int)
+    miss_causes = {c: 0 for c in CAUSES}
     stopped = stop_events = 0
     prev_gap = np.zeros(n)
     vq = np.zeros((n, VIDEO_DEADLINE))
@@ -740,6 +816,8 @@ def simulate_nr(world: World, policy: Policy, *, seed: int = 0, curves: LinkCurv
         new = ((k + phase) % CONTROL_PERIOD) == 0
         if new.any():
             stale = new & (ctrl_age >= 0)
+            _tally(miss_causes, cause_flags, stale)
+            cause_flags = np.where(new, 0, cause_flags)
             ctrl_missed += int(stale.sum())
             ctrl_miss_r += stale
             win_miss |= stale
@@ -755,8 +833,13 @@ def simulate_nr(world: World, policy: Policy, *, seed: int = 0, curves: LinkCurv
         ok = 1 - (1 - p[0]) * (1 - p[1]) * (1 - p[2])
         pend = (ctrl_age >= 0) & up
         delivered = pend & (rng.random(n) < ok)
+        kb_now = k // BLOCK_SLOTS
+        cause_flags |= (ctrl_age >= 0) * ((~up) * 1 | blocked[kb_now][ar, serv] * 2
+                                          | (x < th[0]) * 4)
         ctrl_age = np.where(delivered, -1, np.where(ctrl_age >= 0, ctrl_age + 1, -1))
         late = ctrl_age >= CONTROL_DEADLINE
+        _tally(miss_causes, cause_flags, late)
+        cause_flags = np.where(late | delivered, 0, cause_flags)
         ctrl_missed += int(late.sum())
         ctrl_miss_r += late
         win_miss |= late
@@ -813,4 +896,5 @@ def simulate_nr(world: World, policy: Policy, *, seed: int = 0, curves: LinkCurv
         "interference": False, "mean_tx_reduction_db": 0.0,
         "safety_stop_fraction": stopped / (n_slots * n), "safety_stops": stop_events,
         "video_delivered_vs_requested": video_ok / max(video_gen, 1e-9),
+        "miss_causes": miss_causes,
     }
