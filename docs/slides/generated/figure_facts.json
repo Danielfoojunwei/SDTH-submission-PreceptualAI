@@ -1,0 +1,55 @@
+{
+  "scan_learning": {
+    "scene": 530,
+    "robot": 0,
+    "source": "actual simulator survey() output",
+    "heard_rssi_dbm": [
+      -67.11174103989431,
+      -67.21846679306846,
+      -67.23844746782744,
+      -79.06331826774544,
+      -81.02532586309621,
+      -86.08835697494388,
+      -88.32341312908855,
+      -88.83083074606957
+    ],
+    "censor_bound_dbm": -88.83083074606957,
+    "field_measurement": false
+  },
+  "map_accuracy": {
+    "scene": 530,
+    "ap_site": 5,
+    "illustrative_model_render": true,
+    "coverage_90_percent": [
+      66.60702704610185,
+      56.89862603421892
+    ]
+  },
+  "retry_trace": {
+    "scene": 530,
+    "robot": 13,
+    "start_s": 166.70000000000002,
+    "selected_for_many_opportunities": true,
+    "fleet_alternative_available_fraction_when_primary_below_reference": 0.8414677591734948,
+    "threshold_db": 4.75,
+    "not_packet_miss_counts": true
+  },
+  "forensics": {
+    "source": "docs/CROSS_AP.md development scene 400 table",
+    "not_a_fresh_test_result": true,
+    "arms": 4
+  },
+  "main_results": {
+    "commands_per_arm_condition": 3600000,
+    "dual_ppm": 3.0555555555555562,
+    "cellular_30ms_ppm": 52.77777777777778,
+    "ratio": 17.27272727272727,
+    "independent_scene_realisations": 6,
+    "packet_iid_intervals_used": false
+  },
+  "wifi8": {
+    "illustrative_timing_not_measurement": true,
+    "development_only": true,
+    "fresh_cross_ap_results_archived": false
+  }
+}

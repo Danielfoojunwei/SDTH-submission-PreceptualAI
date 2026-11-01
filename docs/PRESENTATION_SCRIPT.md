@@ -1,165 +1,293 @@
-# Presenter script: WirelessJEV vs Private 5G
+# Presenter script: current RadioMap + WirelessJEV system
 
-Speaker notes from the deck, in slide order. Deck: https://claude.ai/artifact/NNiER9MJbK5MARW2F9iH53
+Canonical evidence base: PR #7, commit `998fe3736a28d30cf04931e9ef182bda8cd4caf8`. This deck explains the current architecture and design rationale; it does not present a development timeline or version comparisons.
 
-Current system: RadioMap + WirelessJEV. All results: 100-robot warehouse simulation; every system in a comparison ran the same scenes, routes, fading and blockage.
+Files: [PowerPoint](slides/generated/wirelessjev_system_architecture.pptx), [PDF](slides/generated/wirelessjev_system_architecture.pdf), [browser deck](slides/generated/wirelessjev_system_architecture.html). All headline measurements are simulation evidence, with explicitly separate software-tool and field-validation boundaries.
 
-# Part: The problem fleets pay private 5G to solve, and what actually breaks robot links
+## 1. RadioMap + WirelessJEV: coordinated warehouse connectivity
 
-## 1. Private-5G reliability for robot fleets, on the Wi-Fi you already have
+**Core insight:** A comprehensive feedback architecture connects radio state, intent, decisions and outcomes.
 
-The image behind the title is real output from our simulator: the 5 GHz coverage of the 100-robot test warehouse, with the steel rack rows, the sixteen AP sites in orange and the robots as white dots. Open with the promise in buyer terms: the reliability people buy private 5G for, delivered on the Wi-Fi they already have. Then say immediately that this is a simulation result, pre-registered and like-for-like, and that the deck ends with the hardware plan that turns it into a field result.
+Open with the system, not the benchmark. We are building a warehouse connectivity controller that learns a site radio map, interprets the operator mission and chooses how robots use their links. The most important measured lever is another path through a different access point. All numerical comparisons in this deck are simulations. No physical robot fleet, Wi-Fi 8 product or private-5G installation has been qualified.
 
-## 2. Fleets pay for a second network just to get four guarantees
+**Evidence:** SIMULATION + SOFTWARE PROTOTYPE
+**Sources:** `docs/VERTICAL_STACK.md`, `docs/WIFI_VS_5G_RESULTS.md`
 
-**Why you should care:** If Wi-Fi delivers these four guarantees, you skip the second network entirely.
+## 2. A robot needs commands on time—not just a fast link
 
-Frame the buyer’s reasoning fairly. Private 5G is bought for predictability, not speed: on-time commands, no stops while moving, clean air and an uptime SLA. The cost is a whole second network. Our proposition is simple: deliver the same four guarantees on the Wi-Fi the site already runs.
+**Core insight:** Reliability is a path-continuity problem before it is a peak-rate problem.
 
-## 3. Robot links break when the only AP path dies, not from congestion
+The slot simulator generates 600-byte control messages at 20 Hz and gives them a 50 ms deadline. Video and bulk traffic compete for airtime, but missing a short control deadline is a different failure from delivering fewer megabytes. Uptime here means robot-seconds without a missed command; safety-stop time is a model based on command silence, not a certified safety function. These definitions shape the architecture.
 
-**Why you should care:** More spectrum or airtime won’t fix it. A second path through another AP does, and that is what we built.
+**Evidence:** MODELLED APPLICATION REQUIREMENTS
+**Sources:** `src/wirelessjev/native/sim.py`, `docs/WIFI_VS_5G.md`
 
-We tagged every missed control packet in the simulator with what it was up against. Contention caused none of them: Wi-Fi retries absorb collisions. What kills packets is a moment when the robot’s only AP path is dead, from a deep fade, a person or forklift in the way, or a noisy band. Wi-Fi 8 and our one-radio version suffer that; private 5G less so; a second path through a different AP almost removes it. Source: development scene 400, 120 s, 100 robots, realistic collisions and interference.
+## 3. Each system requirement has a corresponding control mechanism
 
-# Part: Our answer: RadioMap and WirelessJEV, seen working, with every capability and its measured outcome
+**Core insight:** Comprehensiveness means covering distinct failure modes—not adding unrelated features.
 
-## 4. One system senses, decides and acts across the whole Wi-Fi stack
+Explain the construction from requirements. Unknown coverage requires a map learned from scans. Different operator goals require mission interpretation and explicit knobs. Imperfect estimates require a confidence gate and reactive fallback. A transiently dead AP path requires recovery through another attachment. Uncertain physical outcomes require clocked measurement and an operator-controlled adapter. These are complementary mechanisms in the current architecture; none is presented as a historical version or an automatic guarantee.
 
-**Why you should care:** Runs on the Wi-Fi 7 network you already need: no spectrum, no core network, no AP changes.
+**Evidence:** CURRENT IMPLEMENTATION DESIGN
+**Sources:** `docs/VERTICAL_STACK.md`, `src/wirelessjev/native/sim.py`, `src/wirelessjev/native/radiomap.py`, `src/wirelessjev/handover.py`
 
-Walk the numbers in order. One: robots drive for a minute and report ordinary capped scans. Two: RadioMap turns those into a map of every AP link, including what robots failed to hear, and attaches an error estimate to every spot. Three: WirelessJEV’s d3-lite JEV reads the operator’s mission in plain language. Four: it plans every robot’s AP, links and timing once a second. Five: the trust gate only lets it act where the map is confident, otherwise a safe fixed rule decides. Six: every action is verified exactly. Seven: on each robot the plan becomes actions at every layer, the key one being that a failed packet is retried through a second AP within ten milliseconds. Eight: the robots’ live measurements flow back and the map keeps learning.
+## 4. RadioMap estimates; WirelessJEV decides; the executor recovers
 
-## 5. When one AP path fades, the second path saves the packet
+**Core insight:** Clear interfaces keep uncertainty, decisions and physical outcomes from being confused.
 
-**Why you should care:** Your robots keep getting safety and motion commands through fades and blockages, instead of stopping.
+RadioMap estimates the mean signal and uncertainty of each AP link from survey measurements and known geometry. WirelessJEV interprets the mission, compiles policy parameters and selects numerical radio actions under a confidence gate. The simulated executor handles retries, queues and delivery accounting. Supervised car tooling exposes a separate physical boundary. The connection between these components is the system: a map alone cannot recover a packet, and a retry rule alone cannot express an operator mission.
 
-This is one robot, robot 14, for twenty seconds of test scene 530, with the same hidden fading and blockage every system faced. The blue line is its best AP path, the orange its second path through a different AP. Below the dashed line a packet on that path is lost even at the most robust rate. Orange circles are moments the best path was down but the second was fine: those packets are rescued. Black crosses are the rare moments both were down. Across all 100 robots over 300 seconds, 84% of best-path drop-outs had a working second path.
+**Evidence:** CURRENT CANONICAL SYSTEM
+**Sources:** `docs/VERTICAL_STACK.md`, `src/wirelessjev/native/radiomap.py`, `src/wirelessjev/native/intent_policy.py`, `src/wirelessjev/native/sim.py`
 
-## 6. One minute of ordinary driving maps your site’s radio
+## 5. The system learns, plans, gates and closes the loop
 
-**Why you should care:** No survey project before go-live, and the map keeps updating as racks and stock move.
+**Core insight:** The map’s uncertainty controls where planning is allowed to act.
 
-Left is the true signal map of one access point in the test warehouse, which no system ever sees. Right is RadioMap’s map after robots drove normally for sixty seconds, reporting only ordinary capped scans. The racks’ shadows and the coverage shape come through. Measured map error is about 3.5 to 3.8 dB; its uncertainty estimate is still somewhat overconfident, which we report on the limits slide.
+Follow the solid arrows: scans and site geometry feed RadioMap; the mission reader compiles weights into native policy knobs; the planner combines these with routes and lagged measurements; confidence gating chooses planned or reactive action; the simulated link executor retries and updates the map. Dashed boundaries identify the separate compositional proposal interface and the supervised car adapter. The native policy uses explicit numerical heuristics; it is not a formally verified global optimizer.
 
-## 7. Only the models that measured best made it into the product
+**Evidence:** EXECUTABLE SIMULATOR + SEPARATE TOOLS
+**Sources:** `src/wirelessjev/native/world.py`, `src/wirelessjev/native/radiomap.py`, `src/wirelessjev/native/sim.py`, `src/wirelessjev/native/intent_policy.py`
 
-**Why you should care:** You deploy what was proven best. What did not pay off stays in the lab.
+## 6. Separate fast packet recovery from slower mission planning
 
-Orange rows are WirelessJEV: the d3-lite JEV that reads the mission, the exact planner and the trust gate. Blue is RadioMap, the Bayesian radio map learned from robot scans that the product uses today; it is not RadioJEV. Grey rows did not earn a place: a cross-site prior added nothing once 100 robots survey, and RadioJEV as tested in E1–E5, a d3-lite JEV with radio tokens, lost to intent plus planning (0.107 vs 0.014 regret). The proposed RadioJEV, a JEPA encoder feeding radio tokens into a JEV, is not built; it would sit where RadioMap sits and only ships if it beats RadioMap under the same trust contract.
+**Core insight:** Language interpretation belongs outside the per-packet path.
 
-## 8. Each capability fixes one failure, with a measured result
+The 10 ms slot handles retry and delivery accounting. Link measurements and link adaptation update on 100 ms blocks. Native planning runs once per second and online map updates every ten seconds. Mission interpretation runs when the mission changes. A robot-edge deployment split is an implementation target, not a measured placement result. These multiple cadences let us test the whole controller without putting a language model in every packet decision.
 
-**Why you should care:** Every claim maps to a number you can audit, not to a feature list.
+**Evidence:** EXECUTED SIMULATOR CADENCES
+**Sources:** `src/wirelessjev/native/sim.py`, `src/wirelessjev/native/intent_flip.py`
 
-Read across each row: capability, the technology behind it, and the number we measured in pre-registered simulation. The first row carries the headline. The others make it safe and steerable. The intent row is exploratory, from a single scene; the rest come from pre-registered campaigns on fresh scenes.
+## 7. Every policy sees the same hidden warehouse conditions
 
-## 9. Fleet trust and learning, built on peer-reviewed research
+**Core insight:** Shared scenes isolate policy differences within the model—not reality error.
 
-**Why you should care:** One rogue robot or bad update can’t degrade your fleet, and a site’s data can be removed.
+The physical layout is a 120 by 80 metre racked warehouse. Each site has modelled 2.4, 5 and 6 GHz links. Routes, mean propagation, fading and blockage are shared across compared policies, while hidden instantaneous radio state is not supplied to their planners. The main comparison uses six fresh scenes of 300 seconds. Pairing supports a controlled policy comparison, but it does not validate the building, device or interference model against hardware.
 
-This is the research lineage: Bowen Shen, Feng Li and Kwok-Yan Lam’s published work on swarm spectrum access, reputation, unlearning, traffic prediction and spectrum pricing, reused as exact rules. Venues: swarm consensus WCNC 2025 and IEEE IoT-J 2025; reputation MSN 2024; unlearning ICAIIC 2025; trend-aware traffic IEEE IoT-J 2025; pricing IEEE TWC 2025. Unlearning is approximate, not certified. Admission is barely above chance and the efficiency levers barely move reliability; we show both.
+**Evidence:** CONTROLLED SIMULATION
+**Sources:** `src/wirelessjev/native/world.py`, `src/wirelessjev/native/sim.py`, `docs/WIFI_VS_5G.md`
 
-# Part: What is new, and the like-for-like 100-robot test
+## 8. Standard link curves anchor a simplified slot model
 
-## 10. Known building blocks, combined in a way no one ships today
+**Core insight:** This cross-layer Python simulator is not full ns-3 Wi-Fi or a 3GPP NR stack.
 
-**Why you should care:** You get 5G-class reliability without waiting for a new standard or new radios.
+The link lookup tables are actual archived ns-3 NIST packet-error curves for VHT80 and HT20, two streams and 1200-byte payloads. Six GHz is extrapolated by doubling the 5 GHz rate at a 160 MHz width, not by simulating a full EHT implementation. The slot model also uses those curves for smaller control packets and for its stylised cellular baseline. These approximations need calibration. A separate Sionna chain evaluates coded modulation; it is not a custom waveform running on stock Wi-Fi hardware.
 
-Be precise with a technical audience. We do not claim to have invented path diversity or radio maps. The new part is the combination, running on today’s Wi-Fi 7 clients, orchestrated across a fleet from plain-language intent, with a learned map whose own error decides when the AI is allowed to act, plus the measured comparison against 5G and Wi-Fi 8. This is a literature position, not a patent search.
+**Evidence:** MODEL ASSUMPTIONS SHOWN
+**Sources:** `src/wirelessjev/native/phy.py`, `src/wirelessjev/native/sim.py`, `artifacts/warehouse_v2/studies/wifi_link_curves.json`
 
-## 11. Every system faced the same warehouse, routes, fades and blockages
+## 9. A capped scan is evidence—not a list of invented measurements
 
-**Why you should care:** A strict like-for-like test. Where it bends the rules, it bends them in 5G’s favour.
+**Core insight:** Correct censoring is essential before trusting any learned radio map.
 
-The image is the real simulated warehouse: coverage heat, steel rack rows, the sixteen AP sites and the robots. Each system replays identical routes and exactly the same random fading and blockage, generated from the same seeds and never visible to any system. The three conditions are applied identically to every Wi-Fi system. Private 5G is modelled generously: licensed spectrum untouched by Wi-Fi collisions or 2.4 GHz noise, perfect scheduling, 23 dBm devices and no inter-cell interference.
+The map uses per-BSS geometry coefficients and random Fourier features for local structure. It fits heard RSSI readings and treats omitted APs as censored evidence. A capped scan does not imply every unheard AP is below the receiver floor: the list may already be filled with stronger APs. The prototype also estimates a discrepancy term using held-out robot measurements. This is how the system converts incomplete sensing into a usable spatial estimate. No hardware survey has yet calibrated the pipeline.
 
-# Part: Results against private 5G and Wi-Fi 8, including where 5G still wins
+**Evidence:** IMPLEMENTED BAYESIAN MAP
+**Sources:** `src/wirelessjev/native/radiomap.py`, `docs/NATIVE_LEARNED_MAP.md`
 
-## 12. 17× fewer missed commands than private 5G in realistic conditions
+## 10. One minute learns useful structure—but uncertainty undercovers
 
-**Why you should care:** Fewer missed commands means fewer robot stops, on Wi-Fi alone, with no second network.
+**Core insight:** More data improves mean error while structural uncertainty can become overconfident.
 
-Each bar is measured over 3.6 million control packets on six fresh test scenes, with exact 95% intervals. In realistic conditions WirelessJEV with two AP paths missed 3.1 per million against 52.8 for the 30 ms-handover 5G model and 45 with make-before-break; the intervals do not overlap. In clean radio conditions the gap is larger. In the hardest condition 5G wins, which the next slides address directly. Note the light orange bar: without the second path we do not beat 5G.
+The map figure is an illustrative simulator rendering, not a field RF survey. The adjacent plots use the frozen learned-map campaign: a 60-second survey has mean error about 3.8 dB, falling to about 3.5 after 300 seconds. Nominal 90% interval coverage is only about 67% and 57%, respectively. The map is useful for ranking alternatives, but its uncertainty cannot be described as a calibrated failure probability.
 
-## 13. Ahead on every number an SLA is written in
+**Evidence:** FROZEN HELD-OUT SIMULATION
+**Sources:** `docs/NATIVE_LEARNED_MAP_RESULTS.md`, `artifacts/native/learned_campaign.json`
 
-**Why you should care:** These are the terms you would put in a 5G contract, met on Wi-Fi.
+## 11. Mission text becomes explicit policy knobs
 
-Translate the result into contract language. Uptime: the share of robot-seconds with no missed command. Safety stops: time robots spend stopped because commands went silent for more than 200 ms. Longest gap at the 99th percentile. And the worst-served tenth of the fleet, because SLAs fail on the tail, not the average. All four favour our system in this test, and the pre-registered verdicts passed on all six scenes.
+**Core insight:** The native mission adapter is a weight compiler; the richer contract tool is separate.
 
-## 14. Per-packet diversity beats Wi-Fi 8’s seamless switching by 24×
+The heatmap uses actual cached d3-lite readings from four author-written missions. Native intent_policy maps those weights into roaming thresholds, load penalties, gate confidence, protected-channel penalties, video share and scarce second-radio allocation. The named robot can receive priority without retraining a classifier for that mission. This result is exploratory on one development scene. The separate compositional contract compiler supports explicit groups and floors, but its exact checks are not automatically proof of every native simulator action.
 
-**Why you should care:** No need to wait for Wi-Fi 8 or replace your APs: this works on Wi-Fi 7 now.
+**Evidence:** ACTUAL MODEL INFERENCE / EXPLORATORY
+**Sources:** `src/wirelessjev/native/intent_policy.py`, `artifacts/native/intent_flip.json`, `scripts/plan_warehouse_contract.py`
 
-Wi-Fi 8’s multi-AP features are the strongest future competitor, so we modelled them generously: switching to any AP costs nothing. It still misses about 24 times more control packets than our two-path system on the same scene, because it picks an AP every 100 ms rather than per packet. These figures are from a development scene; the pre-registered fresh-scene test was still running when the deck was built.
+## 12. One planning step chooses AP, control link and data behavior
 
-## 15. In the most crowded, noisiest air, 5G’s licensed band still wins
+**Core insight:** Different traffic classes need different decisions over the same physical links.
 
-**Why you should care:** We tell you where 5G is still the better buy: very dense, very noisy sites. Elsewhere, Wi-Fi wins.
+Trace the native planner in code. For AP choice it scores the near-term predicted best-link signal and subtracts an AP load penalty. A gain threshold controls planned roaming, and the trust gate may defer to a reactive rule. For control, the policy chooses a link using a conservative minimum over the near-term forecast. For bulk it chooses predicted goodput; application timing can queue bulk for a better upcoming link. These are explicit numerical heuristics with distinct objectives, not a global exact-optimization claim.
 
-Lead with the limit rather than letting a skeptic find it. In the hardest condition we tested, licensed spectrum wins because it never sees Wi-Fi contention or 2.4 GHz noise. We already have a lead on closing the gap, and the pre-registered test is running. For buyers, this is a clear rule of thumb about where each technology fits.
+**Evidence:** EXECUTABLE NATIVE POLICY
+**Sources:** `src/wirelessjev/native/sim.py`, `src/wirelessjev/native/intent_policy.py`
 
-# Part: Why the numbers can be trusted: grounding, robustness and the full experiment trail
+## 13. A confidence gate prevents uncertain maps from steering freely
 
-## 16. Built on standard simulators, with every assumption stress-tested
+**Core insight:** The gate is a decision safeguard, not a certificate of calibrated safety.
 
-**Why you should care:** You can audit every input. Calibration on real robots is the next step, and it is planned.
+The decision rule forms a gain-to-uncertainty ratio using the current and candidate AP map standard deviations. A high-enough ratio permits a planned roam. Otherwise a reactive rule can decide using lagged observed signal. The learned-map campaign shows fewer control misses than the fixed split baseline, including noisy 2.4 GHz. Uncertainty still undercovers, so the right interpretation is that its ranking is useful in this model, not that the gate proves a physical risk bound.
 
-Answer “is this simulation real?” directly. Left: the parts that come from standard external tools or from our actual hardware and code, plus the rigour: pass marks committed before each test run, and very large samples on scenes never used for tuning. Right: what we had to assume, and the range we swept for each. Nothing has yet been calibrated on the real car; the probes to do that are built and in the validation plan.
+**Evidence:** FROZEN HELD-OUT SIMULATION
+**Sources:** `src/wirelessjev/native/sim.py`, `docs/NATIVE_LEARNED_MAP_RESULTS.md`, `artifacts/native/learned_campaign.json`
 
-## 17. Change the assumptions and the ranking holds, with one exception
+## 14. A teardown and a within-connection roam are different paths
 
-**Why you should care:** The advantage doesn’t hang on one lucky assumption, and we name the one case where it flips.
+**Core insight:** Measure the interruption before claiming a fast-roam result on hardware.
 
-A skeptic will say the assumptions decide the answer, so we varied them. The ranking holds across map error, a learned map, a noisy 2.4 GHz band and no collisions. It flips in one place, heavy contention plus noise, shown in blue. Each row compares systems on the same scenes, routes, fading and blockage. Percentages are missed control packets; “/ M” is per million.
+SmartCarCmd activates a per-BSSID NetworkManager profile, which can tear the connection down and request a new DHCP lease. The new tool can inspect the active profile, collect journal stages and ping timing, and issue an operator-confirmed wpa_supplicant D-Bus roam within the existing connection. That path is tested against a fake car only. The chart compares assumed 4-second and 60-millisecond roam costs in simulation; it is not a measured SmartCar handover distribution. Management wlan0 remains outside the automatic control path.
 
-## 18. Six pre-registered tests passed and failed in public; the claims that remain survived
+**Evidence:** SOFTWARE TOOL / NO HARDWARE TRIAL
+**Sources:** `src/wirelessjev/handover.py`, `src/wirelessjev/onecar.py`, `docs/ONE_CAR_TEST.md`, `docs/NATIVE_STACK_RESULTS.md`
 
-**Why you should care:** We publish our failures, so you can trust the results we keep.
+## 15. MLO protects bands; a second AP path protects attachment
 
-We did not run one flattering experiment. Each test had its pass marks committed to git before its fresh test scenes ran, and every failure is kept. The failures shaped the product: route forecasting was not the lever, our map’s uncertainty was overconfident, a cross-site prior added nothing at fleet scale, and a single radio is not enough to beat 5G. The cross-AP test of the no-new-hardware routes was still running when the deck was built.
+**Core insight:** Cross-AP diversity is the decisive new lever in the model.
 
-# Part: Hard questions, cost and what is not yet proven
+Ordinary multi-link operation is modelled as several bands attached to one AP site. Blockage is shared across a robot-to-site path, so those links can fail together. A second client association to a different site provides another blockage path and allows make-before-break. The main successful comparison assumes a second client radio. Sharing one BE200 or using the onboard chip are unverified alternatives with separate protocols; standard Wi-Fi 7 support alone does not prove two simultaneous AP attachments.
 
-## 19. The four questions a skeptic asks first, answered with evidence
+**Evidence:** SIMULATED CAPABILITY / HARDWARE CONDITIONAL
+**Sources:** `src/wirelessjev/native/sim.py`, `docs/WIFI_VS_5G_RESULTS.md`, `docs/CROSS_AP.md`
 
-**Why you should care:** The evidence was built to survive scrutiny, not to impress.
+## 16. When one AP path fades, a second path can remain usable
 
-Take these one at a time and point back to the evidence slides. On the 5G objection, every simplification in our 5G model helps 5G. On tuning, mention the concrete case: a threshold tuned on a development scene looked better and then lost on fresh scenes, and we kept the pre-registered one anyway. On Wi-Fi 8, the comparison is from a development scene; the fresh-scene test is running.
+**Core insight:** The reference line is a 99% single-attempt operating point—not certain packet loss.
 
-## 20. And the four that come next
+This diagnostic is generated from the same test-scene model but is not a new pre-registered outcome. We select an illustrative robot window with many recovery opportunities and disclose that selection. A point below the SNR reference has lower than the selected single-attempt reliability target; retries can still deliver it. The alternative-path availability calculation is a channel-block proxy, not a count of rescued end-to-end control packets. The actual packet result comes from the frozen campaign.
 
-**Why you should care:** You get straight answers, including where our own ideas didn’t pay off.
+**Evidence:** POST-HOC SIMULATOR ILLUSTRATION
+**Sources:** `docs/figures/make_deck_figures.py`, `src/wirelessjev/native/sim.py`, `src/wirelessjev/native/phy.py`
 
-The second-radio question is the one buyers press hardest: answer with the three routes and say which need hardware verification. On the AI question, the learning is in RadioMap and its uncertainty, which is what makes autonomous planning safe, while the d3-lite JEV turns mission text into priorities. We do not claim a learned controller beats exact planning.
+## 17. Single-AP outages dominate the observed failure modes
 
-## 21. The fewest new things to buy, and the best measured reliability
+**Core insight:** Do not generalise zero contention-attributed misses to every workload.
 
-**Why you should care:** Lowest new spend: no spectrum, no core, no new radio sites, maybe no new robot hardware.
+The stacked chart reproduces the documented 120-second, 100-robot diagnostic-scene breakdown. Retry chains absorb collisions at this particular load, while deep path fades and blockages remain. A second AP reduces the dominant failure mode. This is why adding scheduling or power controls moved the result only slightly. Attribution is generated by the simulator rules and the category precedence; it is not independent RF capture or proof that congestion cannot cause a miss elsewhere.
 
-The cost argument is structural and needs no invented prices. Private 5G adds spectrum, a core network, new radio sites and a modem per robot. Wi-Fi 8 adds new APs and new clients that are not shipping yet. We add software to the Wi-Fi 7 network the site already needs, plus at most a cheap second client radio per robot, possibly none if the car probes confirm a second association on the existing card. Fill the price row with real vendor quotes before presenting externally.
+**Evidence:** EXPLORATORY SINGLE-SCENE DIAGNOSTIC
+**Sources:** `docs/CROSS_AP.md`, `src/wirelessjev/native/sim.py`
 
-## 22. Proven in simulation; the field proof is the next step
+## 18. The second path matters more than the extra knobs
 
-**Why you should care:** You know exactly what is proven, and exactly what the next phase will prove.
+**Core insight:** Show every lever’s measured contribution—including no measurable effect.
 
-Draw the line yourself before someone else draws it. The left column is what the pre-registered campaigns support. Every item on the right maps to a step in the validation plan on the next slide.
+The full single-radio stack has about 294 misses per million, while the dual-radio version has about 3.1 in the main condition. Removing online learning or power politeness changes the dual-radio mean only to about 3.6. Removing cadence timing or adaptive video changes almost nothing, as does scheduled control. These findings distinguish an implemented capability from a capability responsible for the headline gain. They prevent the architecture diagram from becoming a list of equally important features.
 
-# Part: Validation plan, bill of materials and the ask
+**Evidence:** FROZEN HELD-OUT SIMULATION
+**Sources:** `artifacts/native/wifi_vs_5g.json`, `docs/WIFI_VS_5G_RESULTS.md`
 
-## 23. Four steps from simulation to a field-proven claim
+## 19. The command path makes uncertain outcomes explicit
 
-**Why you should care:** Steps 1 and 2 need only the robot we already have; the tooling is built and tested.
+**Core insight:** UNKNOWN means observe and reconcile—not automatically resend a radio-changing command.
 
-Each step de-risks the next. Step one is read-only and decides whether we need any new client radios. Step two measures the handover we have only assumed so far. Step three feeds real measurements back into the simulator and reruns every pre-registered test. Step four is the fleet trial, then a real head-to-head on a private 5G test site.
+The physical adapter is intentionally separate from the simulator. Fixed read-only probes inspect the customer interface, active profile and available methods. A supervised change uses typed confirmation and one request. Outcomes distinguish applied, not applied and unknown; an unknown result is reconciled by reading status, without blindly repeating the request. Management wlan0 is excluded. These controls are implemented and tested against a fake car. They do not substitute for the first real supervised hardware trial.
 
-## 24. A small, mostly off-the-shelf list to prove it in the field
+**Evidence:** SOFTWARE TOOL / FAKE-CAR TESTED
+**Sources:** `src/wirelessjev/handover.py`, `src/wirelessjev/carlink.py`, `src/wirelessjev/onecar.py`, `docs/ONE_CAR_TEST.md`
 
-**Why you should care:** A field proof costs a few access points and robots, not a network build.
+## 20. Fleet state, decisions and evidence are inspectable
 
-Required items make the 10-robot trial possible. Conditional items depend on step one of the plan: if the car probe shows the existing card can hold two client connections, we skip the adapters and the management rework. The private 5G site turns “beats a 5G model” into “beats 5G”. Prices need quotes; the full list is in docs/BOM.md.
+**Core insight:** Observability is a system capability—not a substitute for a live hardware trial.
 
-## 25. Help us turn a simulated win into a field-proven one
+This is an actual browser capture of the implemented Studio, not a fabricated product mockup. The fleet-map view plays recorded warehouse-twin data and lets an operator inspect robots, mission changes, links and utility. Other views expose decisions, execution outcomes and native research evidence. The screenshot is not live car telemetry or a replay of the new dual-radio packet campaign. It shows the operator-facing software boundary that accompanies the control modules.
 
-Close on the ask. The results are strong and carefully earned; what remains is measurement on hardware. We need the equipment on the bill of materials, access to a private 5G test site for a real comparison, and one pilot floor.
+**Evidence:** ACTUAL STUDIO SCREEN / RECORDED SIMULATION
+**Sources:** `studio/app.js`, `docs/slides/assets/studio_fleet_map.png`, `scripts/check_research_deck_browser.mjs`
+
+## 21. The cellular comparator is a model—not a private-5G network
+
+**Core insight:** A simulated advantage does not establish commercial-5G superiority.
+
+The model uses n78, 100 MHz, 23 dBm UEs, clean licensed spectrum, no inter-cell interference and ideal scheduled control access on the same sites. It includes 30-millisecond or zero-interruption handovers and retry-based delivery. It reuses the archived Wi-Fi link curves with rate and SNR scaling; it is not a calibrated 3GPP NR PHY, RAN stack or measured private network. Favorable assumptions are not a mathematical guarantee that every model bias favors 5G. A real comparison remains a validation step.
+
+**Evidence:** STYLISED CELLULAR BASELINE
+**Sources:** `docs/WIFI_VS_5G.md`, `src/wirelessjev/native/sim.py`
+
+## 22. Compare the same control task under the same hidden conditions
+
+**Core insight:** 3.6 million commands per arm still come from only six independent scene realisations.
+
+The current primary comparison uses scenes 530 to 535, with 100 robots for 300 seconds and 20 control commands per second. That is 3.6 million commands per arm and condition. Every arm uses the same routes, fading and blockage for its scene. The declared conditions are clean radio, main interference and heavier collision plus 2.4 GHz noise. Control miss rate, robot-second availability, worst-decile robots and command gaps describe different aspects of continuity. Large packet counts do not remove scene correlation; the plots expose the actual paired scene results.
+
+**Evidence:** FROZEN PAIRED SIMULATION
+**Sources:** `docs/WIFI_VS_5G.md`, `src/wirelessjev/native/run_5g.py`, `artifacts/native/wifi_vs_5g.json`
+
+## 23. Two AP paths reduce modelled misses by about 17×
+
+**Core insight:** The headline depends on cross-AP diversity, not existing single-radio hardware.
+
+Every dot is one of the six paired held-out scenes; the bars show their means. The dual-radio controller has about 3.1 misses per million compared with 52.8 for the 30-millisecond cellular model and 45 for its zero-interruption version. The existing single-radio version is about 294, which does not beat either cellular comparator. This chart uses one consistent campaign and interference condition. It demonstrates the specific contribution of an independent AP attachment within the declared model, not universal superiority over commercial cellular networks.
+
+**Evidence:** FROZEN SIX-SCENE SIMULATION
+**Sources:** `artifacts/native/wifi_vs_5g.json`, `docs/WIFI_VS_5G_RESULTS.md`
+
+## 24. The same experiment measures the tail and interruption
+
+**Core insight:** These are operational proxies—not a field uptime SLA or safety certification.
+
+Read the four panels as complementary model outcomes. One-second availability is the share of robot-seconds with no missed command. The p99 gap is the 99th percentile of robots’ longest command gaps, not per-packet latency. Worst-decile performance prevents a fleet mean from hiding poorly served robots. Safety-stop time comes from the declared command-silence and restart model. The dual-radio results are favorable in the main condition, but none of these quantities is a physical fleet guarantee.
+
+**Evidence:** FROZEN SIX-SCENE SIMULATION
+**Sources:** `artifacts/native/wifi_vs_5g.json`, `docs/WIFI_VS_5G_RESULTS.md`
+
+## 25. The cellular model wins in the hardest interference regime
+
+**Core insight:** The supported claim has an operating envelope.
+
+Under the declared stress condition, the dual-radio Wi-Fi controller has about 91 misses per million versus about 53 for the licensed-spectrum cellular model. In the clean and main conditions it does better. This boundary is part of the result, not an appendix caveat. The model does not support claiming that Wi-Fi replaces private 5G in arbitrary warehouses or under arbitrary contention.
+
+**Evidence:** FROZEN SIX-SCENE SIMULATION
+**Sources:** `artifacts/native/wifi_vs_5g.json`, `docs/WIFI_VS_5G_RESULTS.md`
+
+## 26. Three hardware routes can expose a second AP path
+
+**Core insight:** Probe capability first; do not assume Wi-Fi 7 means two usable associations.
+
+Route one asks whether the existing BE200 can hold another station association and retune fast enough; support is unverified. Route two uses the onboard Wi-Fi chip, which would require moving management off the protected hotspot and accepting a weaker link. Route three adds a second client adapter, which is the assumed capability in the completed dual-radio campaign. The capability probe decides which paths exist on the actual car. Driver support, IP handling, power and AP configuration still need measurement.
+
+**Evidence:** HARDWARE OPTIONS / NOT QUALIFIED
+**Sources:** `docs/CROSS_AP.md`, `docs/BOM.md`, `docs/ONE_CAR_TEST.md`
+
+## 27. Per-packet path recovery differs from 100 ms steering
+
+**Core insight:** This comparison tests policy granularity—not a fundamental Wi-Fi 8 standard limit.
+
+The diagnostic scene compares about 304 misses per million for a stylised seamless Wi-Fi 8 policy with 12.5 for a two-radio path-diverse policy. The distinguishing assumption is 100-millisecond AP selection versus packet-level recovery. This does not establish a general limit of the Wi-Fi 8 standard or a vendor implementation. The visual explains the mechanism; a fresh-scene protocol exists, but its result files are absent from the pinned snapshot, so the figure remains explicitly exploratory.
+
+**Evidence:** EXPLORATORY MODEL COMPARISON
+**Sources:** `docs/CROSS_AP.md`, `src/wirelessjev/native/sim.py`
+
+## 28. Control, video and bulk share a radio—but not a policy
+
+**Core insight:** Cross-layer control connects application deadlines to link and queue decisions.
+
+Control is served first and can use robust retries or another AP path. Video is subject to an explicit deadline and can be limited to a chosen share of predicted goodput. Bulk can be deferred when the route forecast predicts a materially better link; it stays buffered rather than being discarded. The simulator also models airtime sharing and power politeness. These mechanisms make the system comprehensive, while the ablation slide honestly separates their implementation from the amount each contributes to the reliability headline.
+
+**Evidence:** EXECUTED SIMULATOR CAPABILITY
+**Sources:** `src/wirelessjev/native/sim.py`, `src/wirelessjev/native/intent_policy.py`, `docs/WIFI_VS_5G.md`
+
+## 29. The system covers estimation, decisions, recovery and operations
+
+**Core insight:** The connected simulation is comprehensive; the field-execution boundary remains measurable.
+
+Use the matrix to locate each current capability. Site estimation, mission compilation, AP planning, link mapping, retries, traffic timing and telemetry feedback execute in the simulation. The richer contract proposal interface and supervised handover diagnostics exist as separate software tools. No row is presented as field-qualified, and the native controller is not described as a formally verified global optimizer. This is a coverage map of the current system, not a roadmap or comparison between historical versions.
+
+**Evidence:** CURRENT IMPLEMENTATION TRACEABILITY
+**Sources:** `docs/VERTICAL_STACK.md`, `src/wirelessjev/native`, `scripts/plan_warehouse_contract.py`, `src/wirelessjev/handover.py`
+
+## 30. Four evidence gates turn the model into a field claim
+
+**Core insight:** Real hardware is the next evidence source—not another favorable simulation.
+
+Start with read-only probes on the customer radio and preserve management access. Next measure supervised association, authentication, IP readiness, first packet, scan interruption and power. Then calibrate the simulator with those measurements and rerun frozen comparisons. Finally run a small fleet before the 100-robot deployment claim, and compare with an actual private-5G test network on the same route. Missing stage times remain missing; they are not inferred from request completion.
+
+**Evidence:** VALIDATION PLAN / NOT EXECUTED
+**Sources:** `docs/ONE_CAR_TEST.md`, `docs/BOM.md`, `docs/WIFI_VS_5G_RESULTS.md`
+
+## 31. A bounded pilot needs equipment—not invented prices
+
+**Core insight:** The second-radio bill depends on the first capability probe.
+
+The source bill requests four Wi-Fi 7 APs and nine additional matching SmartCars to bring the milestone fleet to ten. Twelve client adapters include two spares, but their purchase is conditional on probing the existing card and onboard option. It also lists ten out-of-band management paths, two monitor adapters and a laptop, two power meters, and access to a private-5G test network with modems. We make no dollar savings claim before obtaining vendor quotes.
+
+**Evidence:** BILL OF MATERIALS / QUOTES PENDING
+**Sources:** `docs/BOM.md`
+
+## 32. Validate the paths, calibrate the model, then scale
+
+**Core insight:** Current system: RadioMap + WirelessJEV. Next milestone: measured warehouse continuity.
+
+Close on the architectural lesson: site learning helps planning, uncertainty limits autonomy, and independent AP paths address the dominant modelled outage. The completed comparisons support a bounded simulation claim, including a stress case where the cellular model wins. They do not support a universal foundation model, a real-5G win or a physical 100-car guarantee. The ask is hardware access, independent measurement and a partner pilot that can falsify the assumptions.
+
+**Evidence:** BOUNDED CLAIM + NEXT MILESTONE
+**Sources:** `docs/WIFI_VS_5G_RESULTS.md`, `docs/BOM.md`, `docs/VERTICAL_STACK.md`

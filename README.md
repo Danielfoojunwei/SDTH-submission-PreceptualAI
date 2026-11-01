@@ -1,5 +1,13 @@
 # WirelessJEV
 
+The [current system architecture](docs/SYSTEM_ARCHITECTURE.md) is **RadioMap +
+WirelessJEV**: site learning, mission-aware numerical policies, confidence-gated
+actions and cross-AP recovery in the simulator, with separate supervised car
+tools. The [32-slide architecture deck](docs/slides/README.md) explains the
+modules, their interfaces, why they are needed and the evidence behind them.
+PowerPoint, vector PDF, browser presentation and individual research figures
+are included. Performance claims remain simulation-only.
+
 Source: [Danielfoojunwei/SDTH-submission-PreceptualAI](https://github.com/Danielfoojunwei/SDTH-submission-PreceptualAI).
 Current experiment status and restart prerequisites are in [docs/HANDOFF.md](docs/HANDOFF.md).
 The restored didjital R6.1 reference and its executed software checks are
