@@ -32,6 +32,7 @@ FLOOR_DBM = -90.0
 CENSOR_THIN = 5           # keep non-report bounds from every 5th scan...
 CENSOR_WEIGHT = 5.0       # ...and weight them back up
 EM_ITERS = 12
+DISC_SCALE_M = 8.0        # discrepancy grows with distance from reports
 
 
 class RadioMap:
@@ -65,6 +66,7 @@ class RadioMap:
         w = np.linalg.solve(A0, P0 @ m0 + Phi.T @ r / NOISE_DB ** 2)   # reports-only start
         A = A0 + CENSOR_WEIGHT * Pc.T @ Pc / NOISE_DB ** 2
         Ainv = np.linalg.inv(A)
+        rhs = P0 @ m0 + Phi.T @ r / NOISE_DB ** 2
         for _ in range(EM_ITERS if len(cx) else 0):
             # E-step: expected value of a censored reading given the current
             # mean, E[y | y < bound] for a Gaussian measurement.
@@ -72,9 +74,9 @@ class RadioMap:
             a = (cb - mu) / NOISE_DB
             from scipy.stats import norm
             imputed = mu - NOISE_DB * norm.pdf(a) / np.maximum(norm.cdf(a), 1e-12)
-            w = Ainv @ (P0 @ m0 + Phi.T @ r / NOISE_DB ** 2
-                        + CENSOR_WEIGHT * Pc.T @ imputed / NOISE_DB ** 2)
-        return w, Ainv
+            rhs = P0 @ m0 + Phi.T @ r / NOISE_DB ** 2 + CENSOR_WEIGHT * Pc.T @ imputed / NOISE_DB ** 2
+            w = Ainv @ rhs
+        return w, Ainv, A, rhs
 
     def fit(self, obs: dict, cens: dict | None = None, holdout: np.ndarray | None = None) -> "RadioMap":
         """obs[(s, b)] = (x, y, rssi, robot); cens[(s, b)] = (x, y, bound, robot).
@@ -83,6 +85,7 @@ class RadioMap:
         those robots' reports and the final map is refitted on everyone."""
         cens = cens or {}
         empty = (np.zeros(0),) * 4
+        self.seen = {}
 
         def fit_all(keep):
             for s in range(len(self.sites)):
@@ -91,8 +94,41 @@ class RadioMap:
                     cx, cy, cb, crob = cens.get((s, b), empty)
                     k, kc = keep(rob), keep(crob)
                     self.post[(s, b)] = self._fit_one(s, b, x[k], y[k], r[k], cx[kc], cy[kc], cb[kc])
+                    self.seen[(s, b)] = np.column_stack([x[k], y[k]]) if k.any() else np.zeros((0, 2))
 
         self.disc_var = 0.0
+        self.disc_far = 0.0
+        if isinstance(holdout, str) and holdout == "spatial":
+            # Hold out whole quadrants: residual variance as a function of the
+            # distance to the nearest training report of that BSS.
+            from scipy.spatial import cKDTree
+            mx, my = self.sites[:, 0].mean(), self.sites[:, 1].mean()
+            rows = []
+            for fold in range(4):
+                def inside(x, y, fold=fold):
+                    return ((x >= mx) == bool(fold & 1)) & ((y >= my) == bool(fold & 2))
+                for s in range(len(self.sites)):
+                    for b in range(3):
+                        x, y, r, rob = obs.get((s, b), empty)
+                        if len(x) == 0:
+                            continue
+                        cx, cy, cb, crob = cens.get((s, b), empty)
+                        tr, te = ~inside(x, y), inside(x, y)
+                        trc = ~inside(cx, cy) if len(cx) else np.zeros(0, dtype=bool)
+                        if not te.any() or not tr.any():
+                            continue
+                        w, Ainv = self._fit_one(s, b, x[tr], y[tr], r[tr], cx[trc], cy[trc], cb[trc])[:2]
+                        Phi = self._features(s, b, x[te], y[te])
+                        d = cKDTree(np.column_stack([x[tr], y[tr]])).query(np.column_stack([x[te], y[te]]))[0]
+                        pv = np.einsum("ij,jk,ik->i", Phi, Ainv, Phi)
+                        rows.append(np.column_stack([(r[te] - Phi @ w) ** 2 - NOISE_DB ** 2 - pv,
+                                                     1 - np.exp(-d / DISC_SCALE_M)]))
+            if rows:
+                R = np.concatenate(rows)
+                X = np.column_stack([np.ones(len(R)), R[:, 1]])
+                from scipy.optimize import nnls
+                (self.disc_var, self.disc_far), _ = nnls(X, R[:, 0])
+            holdout = None
         if holdout is not None and len(holdout):
             fit_all(lambda rob: ~np.isin(rob, holdout))
             res, pv = [], []
@@ -101,7 +137,7 @@ class RadioMap:
                 if not k.any():
                     continue
                 Phi = self._features(s, b, x[k], y[k])
-                w, Ainv = self.post[(s, b)]
+                w, Ainv = self.post[(s, b)][:2]
                 res.append(r[k] - Phi @ w)
                 pv.append(np.einsum("ij,jk,ik->i", Phi, Ainv, Phi))
             res, pv = np.concatenate(res), np.concatenate(pv)
@@ -110,16 +146,38 @@ class RadioMap:
         fit_all(lambda rob: np.ones(len(rob), dtype=bool))
         return self
 
+    def update(self, s: int, b: int, x: np.ndarray, y: np.ndarray, r: np.ndarray) -> None:
+        """Add reports gathered during operation (Bayesian linear update)."""
+        if len(x) == 0:
+            return
+        w, Ainv, A, rhs = self.post[(s, b)]
+        Phi = self._features(s, b, x, y)
+        A = A + Phi.T @ Phi / NOISE_DB ** 2
+        rhs = rhs + Phi.T @ r / NOISE_DB ** 2
+        Ainv = np.linalg.inv(A)
+        self.post[(s, b)] = (Ainv @ rhs, Ainv, A, rhs)
+        new = np.column_stack([x, y])
+        self.seen[(s, b)] = np.vstack([self.seen.get((s, b), np.zeros((0, 2))), new])
+
     def predict(self, x: np.ndarray, y: np.ndarray):
         """Mean RSSI and posterior std of the mean, shape x.shape + (S, 3)."""
         fx, fy = x.ravel(), y.ravel()
         mean = np.empty(fx.shape + (len(self.sites), 3), dtype=np.float32)
         std = np.empty_like(mean)
-        for (s, b), (w, Ainv) in self.post.items():
+        from scipy.spatial import cKDTree
+        for (s, b), post in self.post.items():
+            w, Ainv = post[:2]
             Phi = self._features(s, b, fx, fy)
             mean[:, s, b] = Phi @ w
-            std[:, s, b] = np.sqrt(np.maximum(np.einsum("ij,jk,ik->i", Phi, Ainv, Phi), 1e-6)
-                                   + self.disc_var)
+            var = np.maximum(np.einsum("ij,jk,ik->i", Phi, Ainv, Phi), 1e-6) + self.disc_var
+            seen = getattr(self, "seen", {}).get((s, b))
+            if getattr(self, "disc_far", 0.0) > 0:
+                if seen is not None and len(seen):
+                    d = cKDTree(seen).query(np.column_stack([fx, fy]))[0]
+                else:
+                    d = np.full(len(fx), np.inf)
+                var = var + self.disc_far * (1 - np.exp(-d / DISC_SCALE_M))
+            std[:, s, b] = np.sqrt(var)
         return mean.reshape(x.shape + mean.shape[1:]), std.reshape(x.shape + std.shape[1:])
 
 

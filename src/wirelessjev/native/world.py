@@ -46,6 +46,11 @@ class World:
     sigma_belief: np.ndarray = None   # (D, N, S, 3) true local map-error std at decision positions
     noise_db: np.ndarray = None       # (3,) noise plus interference floor per band
     map_calibration: dict = None      # learned map only: error and interval coverage
+    channel: np.ndarray = None        # (S, 3) channel number per site and band
+    rmap: object = None               # learned RadioMap (survey_s > 0), for online updates
+    plan: np.ndarray = None           # (D, N, H, 2) planned positions at each decision
+    pos: np.ndarray = None            # (T, N, 2) true positions every POS_DT
+    tx_dl: np.ndarray = None          # (3,) AP transmit power per band
 
 
 def _error_field(rng, sites, sigma):
@@ -79,7 +84,8 @@ def _path_losses(scene, aps5, aps2, xs, ys):
 
 def build_world(seed: int, *, duration_s: float = 300.0, n_robots: int = 100,
                 sigma_map: float = 4.0, blind: bool = False, hetero: bool = False,
-                noise_2g_extra_db: float = 0.0, survey_s: float = 0.0) -> World:
+                noise_2g_extra_db: float = 0.0, survey_s: float = 0.0,
+                map_calibration: str = "robots") -> World:
     """survey_s > 0: robots first drive for survey_s seconds reporting capped
     scans; a learned RadioMap then supplies forecasts and their uncertainty
     (sigma_map/hetero are ignored)."""
@@ -134,13 +140,15 @@ def build_world(seed: int, *, duration_s: float = 300.0, n_robots: int = 100,
     forecast = fc.astype(np.float32)
     sigma_belief = (sigma_map * mult[:, :, 0]).astype(np.float32)
     calib = None
+    rmap = None
     if survey_s > 0:
         from .radiomap import RadioMap, calibration, survey
         sp = np.array(survey_pos)
         txv = np.array([tx[b] for b in BANDS], dtype=np.float32)
         truth_s = txv - _path_losses(scene, aps5, aps2, sp[..., 0], sp[..., 1])
         obs, cens = survey(truth_s, sp, np.random.default_rng(40_000 + seed))
-        holdout = np.random.default_rng(50_000 + seed).choice(n_robots, n_robots // 5, replace=False)
+        holdout = ("spatial" if map_calibration == "spatial" else
+                   np.random.default_rng(50_000 + seed).choice(n_robots, n_robots // 5, replace=False))
         rmap = RadioMap(sites, aps5, seed).fit(obs, cens, holdout)
         mean, std = rmap.predict(plan[..., 0], plan[..., 1])
         forecast = (mean - txv + CLIENT_TX_DBM - noise).astype(np.float32)
@@ -154,6 +162,7 @@ def build_world(seed: int, *, duration_s: float = 300.0, n_robots: int = 100,
     r = scene.radio()
     ap_index = {a.ap_id: j for j, a in enumerate(scene.aps)}
     domain = np.zeros((len(sites), 3), dtype=int)
+    channel = np.zeros((len(sites), 3), dtype=int)
     avail = []
     for b, band in enumerate(BANDS):
         if band == "6g":
@@ -166,6 +175,7 @@ def build_world(seed: int, *, duration_s: float = 300.0, n_robots: int = 100,
             chans = [a.channel for a in ref]
             extra = 0.0
             occ = [scene.external_occupancy.get((band, a.channel), 0.0) for a in ref]
+        channel[:, b] = chans
         parent = list(range(len(sites)))
 
         def find(i):
@@ -191,4 +201,5 @@ def build_world(seed: int, *, duration_s: float = 300.0, n_robots: int = 100,
     bulk = np.array([sum(f.demand_mbps for f in c.flows if f.name == "map_upload")
                      for c in scene.cars])
     return World(seed, n_robots, sites, snr, rssi_dl, forecast, domain, np.array(avail),
-                 video, bulk, duration_s, sigma_map, blind, sigma_belief, noise, calib)
+                 video, bulk, duration_s, sigma_map, blind, sigma_belief, noise, calib, channel,
+                 rmap, plan, pos, np.array([tx[b] for b in BANDS], dtype=np.float32))
