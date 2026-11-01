@@ -1,0 +1,48 @@
+{
+  "actual_chromium": true,
+  "actual_webgl_models": true,
+  "models": [
+    {
+      "name": "warehouse",
+      "materials": 7,
+      "dimensions": [
+        14.800000190734863,
+        3.6010156869888306,
+        10
+      ],
+      "loaded": true,
+      "alt": "Schematic 3D model of the RadioMap and WirelessJEV system"
+    },
+    {
+      "name": "architecture",
+      "materials": 10,
+      "dimensions": [
+        11.100000143051147,
+        5.44507060945034,
+        7.5
+      ],
+      "loaded": true,
+      "alt": "Exploded architecture — schematic model"
+    },
+    {
+      "name": "diversity",
+      "materials": 8,
+      "dimensions": [
+        13,
+        4.265525326132774,
+        8
+      ],
+      "loaded": true,
+      "alt": "Cross-AP paths — schematic model"
+    }
+  ],
+  "checks": [
+    "All three embedded GLBs render",
+    "Materials and model dimensions are nonempty",
+    "Model selection buttons",
+    "Pointer drag rotates actual camera",
+    "No external asset dependencies"
+  ],
+  "camera_drag_changed_orbit": true,
+  "external_requests": []
+}
