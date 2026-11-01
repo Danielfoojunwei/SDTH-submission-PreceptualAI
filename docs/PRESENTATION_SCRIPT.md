@@ -2,6 +2,8 @@
 
 Speaker notes from the deck, in slide order. Deck: https://claude.ai/artifact/NNiER9MJbK5MARW2F9iH53
 
+All results: 100-robot warehouse simulation; every system in a table ran the same scenes, routes, fading and blockage.
+
 ## 1. Wi-Fi that out-performs private 5G for indoor robot fleets
 
 Open with the claim, then immediately qualify it: everything you will see is simulation, every campaign was pre-registered before its test scenes ran, and the comparison systems are modelled generously. The point of this deck is to show why the result is credible and exactly what hardware test turns it into a measured fact.
@@ -10,29 +12,29 @@ Open with the claim, then immediately qualify it: everything you will see is sim
 
 Frame the buyer’s reasoning fairly. Private 5G is not bought for speed; it is bought for predictability. Everything that follows tests Wi-Fi against exactly these four guarantees, using the metrics a 5G SLA would be written in: on-time control delivery, uptime, worst-robot tails and safety stops.
 
-## 3. We tagged every missed packet with its cause. Contention never broke a link.
-
-This slide explains why the system looks the way it does. We instrumented the simulator so every missed control packet records what it was up against. Contention caused zero misses: Wi-Fi’s retries absorb collisions. The misses come from moments when the single AP path is dead. Wi-Fi 8 and our one-radio system both suffer those; 5G suffers them less thanks to clean spectrum and higher power; a second path through another AP almost eliminates them. This is development-scene evidence that led to the pre-registered campaigns.
-
-## 4. One system, two models: RadioJEV senses, WirelessJEV decides
+## 3. One system, two models: RadioJEV senses, WirelessJEV decides
 
 Walk left to right. RadioJEV is the sensing half: it learns the site’s radio map from ordinary robot scans, including the uncertainty, and keeps learning. WirelessJEV is the deciding half: it reads the mission, plans the whole fleet, refuses to act on parts of the map it doesn’t trust, and verifies each action exactly before it is sent. On the robot, those decisions become concrete actions at every layer, the most important being a second AP association used per packet.
 
-## 5. Each capability targets a failure, and each was measured
+## 4. Each capability targets a failure, and each was measured
 
 This is the honest map. The highlighted row is what carries the result: a second association to a different AP, used packet by packet. The next rows are what make planning safe and intelligent. The last row matters for credibility: several capabilities we built barely move reliability, and we say so, because the miss forensics show contention is not what breaks links at this load.
 
-## 6. Built on current state of the art, each piece chosen for a reason
+## 5. Built on current state of the art, each piece chosen for a reason
 
 Nothing here is invented infrastructure. The decision model is a pinned open model; the packet error curves come from ns-3, the standard network simulator; the coded physical layer comes from NVIDIA Sionna; the Wi-Fi actions are standard features shipping today. Our contribution is how these are combined and controlled, which is the next slide.
 
-## 7. What exists already, and what we believe is new
+## 6. What exists already, and what we believe is new
 
 Be precise here, because a technical audience will know 5G duplication and Wi-Fi 8. We do not claim to have invented path diversity. We claim a system that delivers it on today’s Wi-Fi clients, orchestrated across a fleet from plain-language intent, with a learned map whose uncertainty decides when the system acts, and we claim the measured comparison. The footer is deliberate: this is a literature position, not a freedom-to-operate opinion.
 
-## 8. Every system faces the same warehouse, the same fades, the same blockages
+## 7. Every system faces the same warehouse, the same fades, the same blockages
 
 The fairness argument: all systems face exactly the same site, routes, fading draws and blockage events, generated from the same random streams, and none of them can see those hidden processes. The rigour argument: hypotheses and pass marks were committed to git before the test scenes ran, the tuning happened only on separate development scenes, and the sample sizes are large: 3.6 million control packets per system per condition at 100 robots.
+
+## 8. The test environment: one warehouse, identical for every system
+
+Before any result, show the arena. This is the 100-robot warehouse every system was tested in: eleven rows of steel racks, sixteen AP sites each with 2.4, 5 and 6 GHz links, and a hundred robots on real pick-and-drop routes. The key point for fairness: each system replays the same routes and exactly the same random fading and blockage, generated from the same seeds and hidden from every system. The three conditions on the right are applied identically to every Wi-Fi system; private 5G uses licensed spectrum, so Wi-Fi collisions and 2.4 GHz noise do not touch it, which is generous to 5G.
 
 ## 9. What the simulator rests on, and what we stress because it is assumed
 
@@ -45,6 +47,10 @@ This is the headline. On six fresh scenes with realistic collisions and interfer
 ## 11. Across radio conditions: ahead in two, behind in the hardest
 
 Be upfront here. In clean and realistic conditions we lead by one to two orders of magnitude. In the hardest condition, heavy contention plus a noisy 2.4 GHz band, the generous 5G model wins, because licensed spectrum does not see Wi-Fi contention at all. We are testing a lead from a development scene that some of our own levers hurt under stress; that campaign is running and its result will be added.
+
+## 12. We tagged every missed packet with its cause. Contention never broke a link.
+
+This slide explains why the system looks the way it does. We instrumented the simulator so every missed control packet records what it was up against. Contention caused zero misses: Wi-Fi’s retries absorb collisions. The misses come from moments when the single AP path is dead. Wi-Fi 8 and our one-radio system both suffer those; 5G suffers them less thanks to clean spectrum and higher power; a second path through another AP almost eliminates them. This is development-scene evidence that led to the pre-registered campaigns.
 
 ## 13. Against Wi-Fi 8: per-packet diversity beats seamless switching
 
