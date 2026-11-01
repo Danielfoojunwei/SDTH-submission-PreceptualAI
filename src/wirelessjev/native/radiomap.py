@@ -35,10 +35,20 @@ EM_ITERS = 12
 DISC_SCALE_M = 8.0        # discrepancy grows with distance from reports
 
 
+GENERIC_PRIOR = {b: {"mean": np.array([-40.0, -33.0, -3.5]),
+                     "var": np.array([30.0 ** 2, 30.0 ** 2, 10.0 ** 2]),
+                     "shadow_db": SHADOW_PRIOR_DB} for b in range(3)}
+
+
 class RadioMap:
-    def __init__(self, sites: np.ndarray, aps5, seed: int = 0):
+    def __init__(self, sites: np.ndarray, aps5, seed: int = 0, prior: dict | None = None):
+        """prior: per band {"mean": (3,), "var": (3,), "shadow_db": float} for
+        the geometry coefficients (intercept, log10 distance, rack rows) and
+        the shadowing features. The generic default knows only free-space
+        physics; `native.foundation.learn_prior` learns one across sites."""
         self.sites = sites
         self.aps5 = aps5
+        self.prior = prior or GENERIC_PRIOR
         rng = np.random.default_rng(30_000 + seed)
         self.w = rng.normal(0, 1 / RFF_SCALE_M, size=(len(sites), 3, N_RFF, 2))
         self.ph = rng.uniform(0, 2 * math.pi, size=(len(sites), 3, N_RFF))
@@ -51,15 +61,15 @@ class RadioMap:
         rff = math.sqrt(2.0 / N_RFF) * np.cos(arg)
         return np.column_stack([np.ones_like(x), np.log10(d), racks, rff])
 
-    def _prior_precision(self) -> np.ndarray:
-        var = np.concatenate([[30.0 ** 2, 30.0 ** 2, 10.0 ** 2],
-                              np.full(N_RFF, SHADOW_PRIOR_DB ** 2)])
+    def _prior_precision(self, b: int = 1) -> np.ndarray:
+        pr = self.prior[b]
+        var = np.concatenate([pr["var"], np.full(N_RFF, pr["shadow_db"] ** 2)])
         return np.diag(1 / var)
 
     def _fit_one(self, s, b, x, y, r, cx, cy, cb):
-        P0 = self._prior_precision()
+        P0 = self._prior_precision(b)
         m0 = np.zeros(P0.shape[0])
-        m0[0], m0[1], m0[2] = -40.0, -33.0, -3.5      # free-space-like prior law
+        m0[:3] = self.prior[b]["mean"]
         Phi = self._features(s, b, x, y) if len(x) else np.zeros((0, P0.shape[0]))
         Pc = self._features(s, b, cx, cy) if len(cx) else np.zeros((0, P0.shape[0]))
         A0 = P0 + Phi.T @ Phi / NOISE_DB ** 2

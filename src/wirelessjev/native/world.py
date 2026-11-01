@@ -85,11 +85,15 @@ def _path_losses(scene, aps5, aps2, xs, ys):
 def build_world(seed: int, *, duration_s: float = 300.0, n_robots: int = 100,
                 sigma_map: float = 4.0, blind: bool = False, hetero: bool = False,
                 noise_2g_extra_db: float = 0.0, survey_s: float = 0.0,
-                map_calibration: str = "robots") -> World:
+                map_calibration: str = "robots", site_params: dict | None = None,
+                map_prior: dict | None = None) -> World:
     """survey_s > 0: robots first drive for survey_s seconds reporting capped
     scans; a learned RadioMap then supplies forecasts and their uncertainty
     (sigma_map/hetero are ignored)."""
-    scene = make_warehouse(seed, n_robots=n_robots)
+    sp = site_params or {}
+    scene = make_warehouse(seed, n_robots=n_robots, rack_scale=sp.get("rack_scale", 1.0))
+    scene.pl_coef = sp.get("pl_coef", scene.pl_coef)
+    scene.shadow_db = sp.get("shadow_db", scene.shadow_db)
     aps5 = [a for a in scene.aps if a.band == "5g"]
     aps2 = [a for a in scene.aps if a.band == "2g"]
     sites = np.array([[a.x, a.y] for a in aps5])
@@ -149,7 +153,7 @@ def build_world(seed: int, *, duration_s: float = 300.0, n_robots: int = 100,
         obs, cens = survey(truth_s, sp, np.random.default_rng(40_000 + seed))
         holdout = ("spatial" if map_calibration == "spatial" else
                    np.random.default_rng(50_000 + seed).choice(n_robots, n_robots // 5, replace=False))
-        rmap = RadioMap(sites, aps5, seed).fit(obs, cens, holdout)
+        rmap = RadioMap(sites, aps5, seed, map_prior).fit(obs, cens, holdout)
         mean, std = rmap.predict(plan[..., 0], plan[..., 1])
         forecast = (mean - txv + CLIENT_TX_DBM - noise).astype(np.float32)
         sigma_belief = std[:, :, 0].astype(np.float32)
