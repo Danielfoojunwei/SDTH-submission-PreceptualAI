@@ -176,12 +176,16 @@ class CarLink:
     def status(self, timeout: float = 10.0) -> dict:
         return self.request({"action": "status"}, timeout)
 
-    def connect_bssid(self, profile: WifiProfile, bssid: str, timeout: float = 150.0) -> dict:
-        bssid = bssid.lower()
-        if not BSSID_RE.match(bssid):
-            raise ValueError("invalid BSSID")
-        payload = {"action": "connect", "ssid": profile.ssid, "bssid": bssid,
+    def connect_bssid(self, profile: WifiProfile, bssid: str | None, timeout: float = 150.0) -> dict:
+        """bssid=None connects by SSID alone: SmartCarCmd then builds a profile
+        with no BSSID lock, which the fast-roam path needs."""
+        payload = {"action": "connect", "ssid": profile.ssid,
                    "security": profile.security, "password": profile.password}
+        if bssid is not None:
+            bssid = bssid.lower()
+            if not BSSID_RE.match(bssid):
+                raise ValueError("invalid BSSID")
+            payload["bssid"] = bssid
         return self.request(payload, timeout)
 
     # --- read-only scan stream (existing SmartCatScan.py) ---------------------
@@ -234,6 +238,8 @@ READONLY_COMMANDS = {
     "phy_info": "iw phy \"$(iw dev wlan1 info | awk '/wiphy/{print \"phy\"$2}')\" info",
     "survey": "iw dev wlan1 survey dump",
     "scan_cache": "sudo -n iw dev wlan1 scan dump",
+    "power_save": "iw dev wlan1 get power_save",
+    "phy_txq": "iw phy \"$(iw dev wlan1 info | awk '/wiphy/{print \"phy\"$2}')\" get txq 2>&1 || true",
     "bluetooth": "bluetoothctl show 2>/dev/null || hciconfig -a 2>/dev/null || echo none",
     "bt_list": "bluetoothctl list 2>/dev/null || echo none",
 }
@@ -284,7 +290,37 @@ def summarise_capabilities(raw: dict[str, str]) -> dict:
         "driver": raw.get("wlan1_driver", "").strip().rsplit("/", 1)[-1],
         "pci_id": " ".join(raw.get("wlan1_pci", "").split()),
         "kernel": raw.get("kernel", "").strip(),
+        # Client-side levers the native stack would use (read-only evidence;
+        # whether a setting can be changed is only known by trying, which the
+        # probe never does).
+        "tx_power_dbm": _float(r"txpower ([\d.]+) dBm", raw.get("wlan1_info", "")),
+        "retry_short_limit": _float(r"Retry short limit: (\d+)", phy),
+        "retry_long_limit": _float(r"Retry long limit: (\d+)", phy),
+        "rts_threshold": (re.search(r"RTS threshold: (\S+)", phy) or [None, None])[1],
+        "power_save": (re.search(r"Power save: (\w+)", raw.get("power_save", "")) or [None, None])[1],
+        "txq_params_readable": "Packet limit" in raw.get("phy_txq", "") or "limit" in raw.get("phy_txq", "").lower(),
+        "mlo_links_active": len(re.findall(r"\blink \d+:|Link \d+", raw.get("wlan1_info", ""))),
+        # Cross-AP diversity on one card needs two client (managed) interfaces
+        # on different channels at once: read from the valid interface combinations.
+        **_combinations(phy),
     }
+
+
+def _combinations(phy: str) -> dict:
+    best_managed, best_channels = 0, 0
+    # iw wraps a combination over several lines: take each "* #{...}" entry up
+    # to the next entry or the next section heading.
+    for line in re.findall(r"\*\s*(#\{.*?)(?=\n\s*\*\s*#\{|\n\t\S|\Z)", phy, re.S):
+        managed = sum(int(n) for n in re.findall(r"#\{[^}]*\bmanaged\b[^}]*\}\s*<=\s*(\d+)", line))
+        chans = re.search(r"#channels\s*<=\s*(\d+)", line)
+        if managed > best_managed or (managed == best_managed and chans and int(chans.group(1)) > best_channels):
+            best_managed, best_channels = managed, int(chans.group(1)) if chans else 1
+    return {"max_client_interfaces": best_managed, "max_concurrent_channels": best_channels}
+
+
+def _float(pattern: str, text: str):
+    m = re.search(pattern, text)
+    return float(m.group(1)) if m else None
 
 
 IDEA_REQUIREMENTS = {
@@ -293,9 +329,14 @@ IDEA_REQUIREMENTS = {
     "Bluetooth heartbeat relay during reconnects": ("bluetooth_controller", "bluetooth_le"),
     "no-outage switching (Wi-Fi 7 multi-link)": ("multi_link_mlo", "aps_wifi7"),
     "6 GHz channels": ("band_6ghz_usable", "aps_on_6ghz"),
+    "transmit-power politeness (power reported)": ("tx_power_dbm",),
+    "retry and RTS tuning (limits reported)": ("retry_short_limit",),
+    "cross-AP diversity on one card (two client connections)": ("two_clients_two_channels",),
 }
 
 
 def ideas_enabled(summary: dict) -> dict:
+    summary = {**summary, "two_clients_two_channels":
+               summary.get("max_client_interfaces", 0) >= 2 and summary.get("max_concurrent_channels", 0) >= 2}
     return {idea: all(bool(summary.get(k)) for k in keys)
             for idea, keys in IDEA_REQUIREMENTS.items()}

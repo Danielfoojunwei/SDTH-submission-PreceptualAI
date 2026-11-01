@@ -101,6 +101,68 @@ WirelessJEV (frozen d3-lite) scores the visible BSSIDs, described by band, signa
 ### 5. Return to the original BSSID (also supervised)
 This is the same `switch` command with the original BSSID from step 1, again with typed confirmation. It is a second, separate single request, not an automatic rollback.
 
+## Handover measurement and fast roam (`src/wirelessjev/handover.py`)
+**Why a switch is slow today.** SmartCarCmd.py builds one NetworkManager
+profile *per BSSID* and activates it with `nmcli connection up`. Every switch
+tears the old connection down, then repeats association, the 4-way handshake
+and DHCP. The fast path roams *inside* the active connection with
+wpa_supplicant's D-Bus `Roam` method:
+- NetworkManager keeps the connection and IP;
+- no password is sent.
+
+### 1c. Handover probe (read-only)
+```bash
+~/.local/bin/uv run python -m wirelessjev.onecar handover-probe --known-hosts ~/smartcar_known_hosts
+```
+**Reports:**
+- the wpa_supplicant and NetworkManager versions;
+- whether D-Bus `Roam` exists;
+- whether the active profile is BSSID-locked;
+- the wlan1 IP and gateway;
+- how many APs advertise 802.11r (Mobility Domain).
+
+`fast_roam_ready` lists each precondition.
+
+### 4t. Time the existing switch
+Add `--timing` to step 4 to time it:
+```bash
+~/.local/bin/uv run python -m wirelessjev.onecar switch --timing --known-hosts ~/smartcar_known_hosts --wifi-json ~/WiFi.json --ssid "<SSID>" --bssid <aa:bb:cc:dd:ee:ff>
+```
+- **Capture:** `sudo -n ping -D` to the wlan1 gateway (20 Hz) runs on a second SSH channel. Afterwards, the NetworkManager/wpa_supplicant journal is read.
+- **Logged in `handover_timing`, on the car's clock:**
+  - stage times: association, key exchange, DHCP, IP ready, first ping reply;
+  - the ping outage around the switch;
+  - whether a teardown happened;
+  - whether the IP was kept.
+- **Validation:** results go through `measurement.switch_timing`.
+- **Clock:** the Mac-side send time is mapped with a measured car–Mac clock offset.
+
+### 4f. Prepare an unlocked profile (one supervised reconnect)
+Fast roam needs a profile without a BSSID lock. Connect once by SSID only; you
+re-type the SSID to confirm:
+```bash
+~/.local/bin/uv run python -m wirelessjev.onecar switch --timing --known-hosts ~/smartcar_known_hosts --wifi-json ~/WiFi.json --ssid "<SSID>" --bssid any
+```
+
+### 4r. Fast roam (one supervised mutation, always timed)
+```bash
+~/.local/bin/uv run python -m wirelessjev.onecar roam --known-hosts ~/smartcar_known_hosts --bssid <aa:bb:cc:dd:ee:ff>
+```
+**Refuses, sending nothing, unless all of these hold:**
+- wlan1 is connected in the WIFI role;
+- `Roam` exists;
+- the profile is unlocked;
+- the target is in the scan cache under the *current* SSID (run step 2 first if the cache is empty);
+- you re-type the target BSSID.
+
+**Sending:** one `Roam` is sent, with the car-side submission time.
+
+**Outcomes:**
+- **D-Bus rejection:** NOT_APPLIED.
+- **Ambiguous failure or channel loss:** UNKNOWN. It is never resent.
+
+**Verification and comparison:** status reads verify the result. Compare `handover_timing` with step 4t.
+
 ## Abort and recovery
 - At any point, Ctrl-C stops the tool. A connect already sent is logged as UNKNOWN; run `status` to see the truth.
 - If the car loses its customer Wi-Fi, the management hotspot stays up, because it is a different radio. Re-run `switch` back to the original BSSID, or use the existing SmartCar PC app.
