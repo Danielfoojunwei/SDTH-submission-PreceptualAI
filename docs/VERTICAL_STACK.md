@@ -5,6 +5,8 @@ Status: design and research programme. The cross-layer simulator in
 simulation unless a section says otherwise; no claim is made about real
 hardware until the one-car test runs.
 
+> **Naming (current system).** Every native-stack and 5G-comparison result runs on **RadioMap + WirelessJEV**. RadioMap is the Bayesian radio map learned from robot scans, with uncertainty and online updates. WirelessJEV is the d3-lite JEV reading the mission, plus the exact planner and the trust gate. **RadioJEV** exists only as the E1–E5 experiments (a d3-lite JEV with radio tokens, which lost to intent plus planning) and as a proposed JEPA-encoder model, not yet built. If built, it would sit where RadioMap sits and must beat RadioMap under the same trust contract to replace it.
+
 ## Why we are not seeing new capabilities yet
 The learned models have so far only been asked to do these things:
 - re-learn the simulator that the numerical planner already encodes;

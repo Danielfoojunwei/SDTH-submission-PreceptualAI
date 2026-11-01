@@ -1,4 +1,4 @@
-"""RadioJEV v1: a radio prior learned across many sites.
+"""RadioMap v1 (cross-site prior): a radio prior learned across many sites.
 
 Every warehouse differs in rack density, path-loss slope and shadowing, but
 the *way* radio behaves in this class of building transfers. Past deployments

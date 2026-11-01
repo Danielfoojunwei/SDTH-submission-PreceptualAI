@@ -1,4 +1,4 @@
-# RadioJEV map v0 drives the trust gate: pre-registered protocol
+# RadioMap v0 drives the trust gate: pre-registered protocol
 
 Follows [NATIVE_GATE_RESULTS.md](NATIVE_GATE_RESULTS.md), where the gate was
 *given* the true map error. Here the map and its uncertainty are learned.

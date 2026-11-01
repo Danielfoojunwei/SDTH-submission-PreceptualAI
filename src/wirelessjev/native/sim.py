@@ -1,5 +1,5 @@
 """Cross-layer slot simulator (10 ms) with legacy, 802.11r, default multi-link
-and the native WirelessJEV + RadioJEV stack.
+and the native WirelessJEV + RadioMap stack.
 
 Layers modelled per slot:
 - L1/L2: per-MCS packet success from ns-3 curves; STR dual-link halves each
@@ -73,7 +73,7 @@ class Policy:
     power_control: bool = False   # fleet transmit-power politeness (needs interference=True)
     cadence_roam: bool = False    # fire planned roams right after a control delivery
     adaptive_video: bool = False  # video bitrate follows the predicted link
-    online_map: bool = False      # RadioJEV map keeps learning from robots' measurements
+    online_map: bool = False      # RadioMap keeps learning from robots' measurements
     # Mission-compiled knobs (see intent_policy); defaults reproduce earlier runs.
     roam_gain_db: float = 5.0
     load_penalty: float = 0.15

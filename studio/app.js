@@ -443,7 +443,7 @@ const ARM_HEAD = ["Arm", "Control misses", "Worst-decile robot", "p99 gap (ms)",
 
 function nativePage() {
   const N = B.native_stack;
-  let s = `<h1>Native stack</h1><p class="lede">WirelessJEV and RadioJEV acting across the Wi-Fi stack: multi-link traffic mapping, planned pre-keyed roams, a learned radio map, and a trust gate that falls back to a fixed rule where the map is uncertain. Every campaign was pre-registered before its test scenes ran. Simulation only; no car or radio was touched.</p>`;
+  let s = `<h1>Native stack</h1><p class="lede">WirelessJEV and RadioMap acting across the Wi-Fi stack: multi-link traffic mapping, planned pre-keyed roams, a learned radio map, and a trust gate that falls back to a fixed rule where the map is uncertain. Every campaign was pre-registered before its test scenes ran. Simulation only; no car or radio was touched.</p>`;
   if (!N) return s + missing("Native-stack campaigns", "uv run python -m wirelessjev.native.run");
   const CANON = { nr_30ms: "Private 5G (30 ms handover)", nr_daps: "Private 5G (make-before-break)", wifi8: "Wi-Fi 8 seamless multi-AP", mlo_split: "Wi-Fi 7 fixed rule", vertical_single: "WirelessJEV, one radio", vertical_shared: "WirelessJEV, second association on the same card", vertical_onboard: "WirelessJEV + onboard radio", vertical_client: "WirelessJEV + second BE200", "vertical_shared-levers": "Same, extra levers off" };
   const canon = (c, label) => c ? `<div class="card" style="margin-top:16px"><h3>${label}</h3><div class="sub">${esc(c.protocol)} · fresh scenes 540–545, 300 s each · misses = control packets later than 50 ms</div>${verdicts(c.evaluation, ["X1", "X2", "X3", "X4", "X5", "X6"])}
@@ -468,10 +468,10 @@ function nativePage() {
     const conds = [...new Set(l.arms.map((a) => a.condition))];
     const cal = l.calibration || [];
     const cm = (k, c) => { const v = cal.filter((x) => x.condition === c).map((x) => x[k]); return v.length ? v.reduce((a, b) => a + b, 0) / v.length : null; };
-    s += `<div class="card" style="margin-top:16px"><h3>RadioJEV map v0 drives the gate · scenes 520–525</h3><div class="sub">${esc(l.protocol)} · map and uncertainty learned from capped robot scans (censored Tobit EM + held-out discrepancy)</div>${verdicts(l.evaluation, ["L1", "L2", "L3", "L4"])}
+    s += `<div class="card" style="margin-top:16px"><h3>RadioMap v0 drives the gate · scenes 520–525</h3><div class="sub">${esc(l.protocol)} · map and uncertainty learned from capped robot scans (censored Tobit EM + held-out discrepancy)</div>${verdicts(l.evaluation, ["L1", "L2", "L3", "L4"])}
     ${table(["Survey", "Map RMSE (dB)", "Bias (dB)", "Predicted std (dB)", "90% interval coverage"], [...new Set(cal.map((x) => x.condition))].map((c) => [esc(c), fmt(cm("rmse_db", c), 2), fmt(cm("bias_db", c), 2), fmt(cm("mean_predicted_std_db", c), 2), pct(cm("coverage_90", c), 0)]))}
     ${conds.map((c) => `<h3 style="margin-top:12px">${esc(c)}</h3>${table(ARM_HEAD, armRows(l.arms, c, "gated_learned"))}`).join("")}</div>`;
-  } else s += `<div class="callout">RadioJEV map v0 campaign not in this bundle yet.</div>`;
+  } else s += `<div class="callout">RadioMap v0 campaign not in this bundle yet.</div>`;
   const v = N.vs5g;
   if (v) {
     const conds = [...new Set(v.arms.map((a) => a.condition))];

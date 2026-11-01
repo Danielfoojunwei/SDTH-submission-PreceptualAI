@@ -1,4 +1,4 @@
-# RadioJEV map v0 drives the trust gate: results
+# RadioMap v0 drives the trust gate: results
 
 - **Protocol:** [NATIVE_LEARNED_MAP.md](NATIVE_LEARNED_MAP.md), frozen in `182563f` before the test run.
 - **Runs:** fresh scenes 520–525, 100 robots, 300 s each.
@@ -39,7 +39,7 @@ The ×1.5-inflated gate performed about the same as the calibrated gate (within 
 | L4 | 90% coverage = 0.62 (required at least 0.70) | **Fail** |
 
 ## What it means
-1. **The full loop works end to end without being told the answer.** Robots survey with capped scans, RadioJEV learns a map and its uncertainty, and WirelessJEV plans with the trust gate.
+1. **The full loop works end to end without being told the answer.** Robots survey with capped scans, RadioMap learns a map and its uncertainty, and WirelessJEV plans with the trust gate.
    - It beats the fixed rule **4–5×** in clean conditions and **3.4×** when 2.4 GHz is noisy, with 15% less airtime.
    - Its worst-served robots improve **2–3×**.
 2. **One minute of driving is enough.** A 60 s survey did as well as 300 s, and slightly better on control misses.

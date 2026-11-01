@@ -1,4 +1,4 @@
-"""RadioJEV map v0: a learned per-BSS radio map with calibrated uncertainty.
+"""RadioMap v0: a learned per-BSS radio map with calibrated uncertainty.
 
 Robots report what a real client scan gives: the eight strongest BSSIDs per
 scan, measured RSSI with fast fading and occasional blockage, nothing below

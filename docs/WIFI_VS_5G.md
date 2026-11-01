@@ -19,7 +19,7 @@ uptime, worst-robot tails and safety stops.
   - **Co-channel interference.** Uplink airtime from stations in *other* contention domains on the same channel raises the noise at the AP.
   - **CSMA collisions.** Per-attempt loss is 1 − exp(−λ·(stations − 1)) per domain.
 - **New native capabilities:**
-  - **Online map learning:** robots' beacon measurements update RadioJEV's map every 10 s.
+  - **Online map learning:** robots' beacon measurements update RadioMap's map every 10 s.
   - **Transmit-power politeness:** lower power when there is headroom above the top MCS.
   - **Cadence-timed roams:** planned roams fire right after a control delivery.
   - **Adaptive video:** encoded at 60% of the predicted goodput.

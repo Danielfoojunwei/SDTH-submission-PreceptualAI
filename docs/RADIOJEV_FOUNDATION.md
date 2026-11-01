@@ -1,4 +1,4 @@
-# RadioJEV v1: cross-site radio prior, pre-registered protocol
+# RadioMap v1 (cross-site prior): cross-site radio prior, pre-registered protocol
 
 **What is learned.** 40 training warehouses (seeds 700–739) are drawn with randomised physics:
 - rack loss ×0.5–1.6;
@@ -9,7 +9,7 @@ Each is fully surveyed on a 4 m truth grid, as past deployments would be. Per ba
 - the mean and variance of each BSS's geometry coefficients (intercept, log-distance slope, loss per rack row);
 - the RMS shadowing strength.
 
-**The baseline.** RadioJEV v0's generic prior knows only a free-space-like law: intercept −40, slope −33, −3.5 dB per rack, with broad variances.
+**The baseline.** RadioMap v0's generic prior knows only a free-space-like law: intercept −40, slope −33, −3.5 dB per rack, with broad variances.
 
 **Test.** 6 held-out sites (seeds 600–605, their own random physics) with survey budgets of 10, 30 and 60 s. Each site is mapped twice, once with each prior; everything else is identical (censored fit, held-out-robot discrepancy). Calibration is scored against the fade-free truth, as in L4.
 
@@ -34,4 +34,4 @@ Raw data: [`artifacts/native/foundation.json`](../artifacts/native/foundation.js
 **Implications for the foundation claim:**
 - **Low-data use only.** A cross-site prior can only matter where data is scarce: a single car, a few seconds, or a new area.
 - **Local structure is the real target.** Real gains need a model that predicts *local* structure from site information the robots see before driving: CAD, rack contents, AP mounting.
-- **No foundation claim yet.** RadioJEV is not yet a foundation model in any useful sense.
+- **No foundation claim yet.** The radio model is not yet a foundation model in any useful sense.
