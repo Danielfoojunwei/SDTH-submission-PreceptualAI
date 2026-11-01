@@ -17,7 +17,7 @@ def get(url):
 
 
 def lead(item):
-    ident,expected=item;row={'id':ident,'supplied_title':expected,'checked_at_unix':time.time(),'full_text_read':False,'attempts':[]}
+    ident,expected=item;row={'id':ident,'supplied_title':expected,'checked_at_unix':time.time(),'full_text_retrieved':False,'attempts':[]}
     for base in ['https://arxiv.org/abs/','https://export.arxiv.org/abs/','https://www.alphaxiv.org/abs/']:
         url=base+ident
         try:
@@ -38,11 +38,11 @@ def lead(item):
             doc=pymupdf.open(stream=r.content,filetype='pdf');text='\n'.join(p.get_text() for p in doc)
             if len(text)<300:continue
             (ARCHIVE/(ident+'.pdf')).write_bytes(r.content);(ARCHIVE/(ident+'.txt')).write_text(text)
-            row.update({'full_text_read':True,'pdf_url':url,'pdf_sha256':hashlib.sha256(r.content).hexdigest(),'pages':len(doc),'opening_excerpt':text[:160]})
+            row.update({'full_text_retrieved':True,'pdf_url':url,'pdf_sha256':hashlib.sha256(r.content).hexdigest(),'pages':len(doc),'opening_excerpt':text[:160]})
             terms=['uncertainty','abstain','selective','regret','decision-focused','joint embedding','risk','calibrat']
             row['term_offsets']={term:[m.start() for m in re.finditer(re.escape(term),text,re.I)] for term in terms};doc.close();break
         except (httpx.HTTPError,RuntimeError,ValueError) as e:row['attempts'].append({'url':url,'error':type(e).__name__})
-    row['status']='full_text_verified' if row['full_text_read'] else 'metadata_only' if 'verified_title' in row else 'unverified_access'
+    row['status']='full_text_verified' if row['full_text_retrieved'] else 'metadata_only' if 'verified_title' in row else 'unverified_access'
     if 'verified_title' in row:
         a=set(re.findall('[a-z]+',expected.lower()));b=set(re.findall('[a-z]+',row['verified_title'].lower()));row['title_keyword_overlap']=len(a&b)/max(len(a),1)
         row['supplied_title_match_requires_review']=row['title_keyword_overlap']<.35

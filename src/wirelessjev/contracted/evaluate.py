@@ -88,6 +88,7 @@ def case(task):
     if primary:
         for member in PROTOCOL['training_seeds']:
             for gate in [False,True]:rollout('jepa',gate,'base',base_mission,member)
+            rollout('regret',True,'base',base_mission,member)
         for mission in PROTOCOL['heldout_missions']:
             for family in ['bayesian','jepa','regret']:rollout(family,True,'base',mission)
     report={'completed':True,'scene':seed,'condition':condition,'robots':n,'duration_s':duration,'rows':rows,'forecast_metrics':summaries,'elapsed_s':time.time()-began,'device_history_only':True,'forecast_generation_did_not_receive_truth':True,'known_limit':'Native reactive fallback and attached-link measurement models retain their idealised access; only the world-model predictor is censored-device-side.'}

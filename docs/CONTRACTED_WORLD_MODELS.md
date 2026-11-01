@@ -59,6 +59,11 @@ native studies. Packets within a scene are correlated.
 4. Held-out missions, regret-route ablation and 10-robot/stress/yard comparisons.
    A control gain is an empirical result, not a requirement imposed on outputs.
 
+A pre-test amendment adds five individual regret-member control runs per primary
+scene, paired with the five JEPA members. It changes no fit, checkpoint selection
+or hypothesis; it tests training-seed robustness. The full evaluation contains
+366 rollouts: 34 per primary scene and nine per generalisation scene.
+
 ## Theory acceptance boundary
 
 No distribution-free bound based only on rank correlation exists for this fixed
