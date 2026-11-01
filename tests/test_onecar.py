@@ -207,6 +207,9 @@ def test_wifi_profile_repr_hides_password(env):
 
 
 PHY_OUT = """Wiphy phy1
+	Retry short limit: 7
+	Retry long limit: 4
+	RTS threshold: off
 	Band 1:
 		Frequencies:
 			* 2412.0 MHz [1] (22.0 dBm)
@@ -252,7 +255,9 @@ class ProbeClient:
         from wirelessjev.carlink import READONLY_COMMANDS as R
         table = {R["phy_info"]: PHY_OUT, R["scan_cache"]: SCAN_OUT, R["survey"]: SURVEY_OUT,
                  R["bluetooth"]: BT_OUT, R["wlan1_driver"]: "/sys/bus/pci/drivers/iwlwifi\n",
-                 R["wlan1_pci"]: "0x8086\n0x272b\n", R["kernel"]: "6.6.51+rpt-rpi-2712\n"}
+                 R["wlan1_pci"]: "0x8086\n0x272b\n", R["kernel"]: "6.6.51+rpt-rpi-2712\n",
+                 R["wlan1_info"]: "Interface wlan1\n\twiphy 1\n\ttxpower 22.00 dBm\n",
+                 R["power_save"]: "Power save: on\n"}
         out = table.get(cmd, "")
 
         class S:
@@ -285,6 +290,8 @@ def test_capability_probe_is_whitelisted_and_parses(env):
     assert s["survey_busy_time"] and s["survey_channels_reported"] == 2
     assert s["bluetooth_controller"] and s["bluetooth_le"]
     assert s["driver"] == "iwlwifi" and s["pci_id"] == "0x8086 0x272b"
+    assert s["tx_power_dbm"] == 22.0 and s["retry_short_limit"] == 7 and s["rts_threshold"] == "off"
+    assert s["power_save"] == "on"
     ideas = ideas_enabled(s)
     assert ideas["attenuation from ranging (FTM)"] and not ideas["no-outage switching (Wi-Fi 7 multi-link)"]
 

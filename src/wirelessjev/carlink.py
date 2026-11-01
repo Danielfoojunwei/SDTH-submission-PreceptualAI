@@ -238,6 +238,8 @@ READONLY_COMMANDS = {
     "phy_info": "iw phy \"$(iw dev wlan1 info | awk '/wiphy/{print \"phy\"$2}')\" info",
     "survey": "iw dev wlan1 survey dump",
     "scan_cache": "sudo -n iw dev wlan1 scan dump",
+    "power_save": "iw dev wlan1 get power_save",
+    "phy_txq": "iw phy \"$(iw dev wlan1 info | awk '/wiphy/{print \"phy\"$2}')\" get txq 2>&1 || true",
     "bluetooth": "bluetoothctl show 2>/dev/null || hciconfig -a 2>/dev/null || echo none",
     "bt_list": "bluetoothctl list 2>/dev/null || echo none",
 }
@@ -288,7 +290,22 @@ def summarise_capabilities(raw: dict[str, str]) -> dict:
         "driver": raw.get("wlan1_driver", "").strip().rsplit("/", 1)[-1],
         "pci_id": " ".join(raw.get("wlan1_pci", "").split()),
         "kernel": raw.get("kernel", "").strip(),
+        # Client-side levers the native stack would use (read-only evidence;
+        # whether a setting can be changed is only known by trying, which the
+        # probe never does).
+        "tx_power_dbm": _float(r"txpower ([\d.]+) dBm", raw.get("wlan1_info", "")),
+        "retry_short_limit": _float(r"Retry short limit: (\d+)", phy),
+        "retry_long_limit": _float(r"Retry long limit: (\d+)", phy),
+        "rts_threshold": (re.search(r"RTS threshold: (\S+)", phy) or [None, None])[1],
+        "power_save": (re.search(r"Power save: (\w+)", raw.get("power_save", "")) or [None, None])[1],
+        "txq_params_readable": "Packet limit" in raw.get("phy_txq", "") or "limit" in raw.get("phy_txq", "").lower(),
+        "mlo_links_active": len(re.findall(r"\blink \d+:|Link \d+", raw.get("wlan1_info", ""))),
     }
+
+
+def _float(pattern: str, text: str):
+    m = re.search(pattern, text)
+    return float(m.group(1)) if m else None
 
 
 IDEA_REQUIREMENTS = {
@@ -297,6 +314,8 @@ IDEA_REQUIREMENTS = {
     "Bluetooth heartbeat relay during reconnects": ("bluetooth_controller", "bluetooth_le"),
     "no-outage switching (Wi-Fi 7 multi-link)": ("multi_link_mlo", "aps_wifi7"),
     "6 GHz channels": ("band_6ghz_usable", "aps_on_6ghz"),
+    "transmit-power politeness (power reported)": ("tx_power_dbm",),
+    "retry and RTS tuning (limits reported)": ("retry_short_limit",),
 }
 
 
