@@ -300,7 +300,22 @@ def summarise_capabilities(raw: dict[str, str]) -> dict:
         "power_save": (re.search(r"Power save: (\w+)", raw.get("power_save", "")) or [None, None])[1],
         "txq_params_readable": "Packet limit" in raw.get("phy_txq", "") or "limit" in raw.get("phy_txq", "").lower(),
         "mlo_links_active": len(re.findall(r"\blink \d+:|Link \d+", raw.get("wlan1_info", ""))),
+        # Cross-AP diversity on one card needs two client (managed) interfaces
+        # on different channels at once: read from the valid interface combinations.
+        **_combinations(phy),
     }
+
+
+def _combinations(phy: str) -> dict:
+    best_managed, best_channels = 0, 0
+    # iw wraps a combination over several lines: take each "* #{...}" entry up
+    # to the next entry or the next section heading.
+    for line in re.findall(r"\*\s*(#\{.*?)(?=\n\s*\*\s*#\{|\n\t\S|\Z)", phy, re.S):
+        managed = sum(int(n) for n in re.findall(r"#\{[^}]*\bmanaged\b[^}]*\}\s*<=\s*(\d+)", line))
+        chans = re.search(r"#channels\s*<=\s*(\d+)", line)
+        if managed > best_managed or (managed == best_managed and chans and int(chans.group(1)) > best_channels):
+            best_managed, best_channels = managed, int(chans.group(1)) if chans else 1
+    return {"max_client_interfaces": best_managed, "max_concurrent_channels": best_channels}
 
 
 def _float(pattern: str, text: str):
@@ -316,9 +331,12 @@ IDEA_REQUIREMENTS = {
     "6 GHz channels": ("band_6ghz_usable", "aps_on_6ghz"),
     "transmit-power politeness (power reported)": ("tx_power_dbm",),
     "retry and RTS tuning (limits reported)": ("retry_short_limit",),
+    "cross-AP diversity on one card (two client connections)": ("two_clients_two_channels",),
 }
 
 
 def ideas_enabled(summary: dict) -> dict:
+    summary = {**summary, "two_clients_two_channels":
+               summary.get("max_client_interfaces", 0) >= 2 and summary.get("max_concurrent_channels", 0) >= 2}
     return {idea: all(bool(summary.get(k)) for k in keys)
             for idea, keys in IDEA_REQUIREMENTS.items()}

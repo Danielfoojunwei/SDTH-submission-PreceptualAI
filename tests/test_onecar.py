@@ -222,6 +222,9 @@ PHY_OUT = """Wiphy phy1
 		Frequencies:
 			* 5955.0 MHz [1] (disabled)
 			* 6035.0 MHz [17] (12.0 dBm)
+	valid interface combinations:
+		 * #{ managed } <= 2, #{ AP, P2P-client, P2P-GO } <= 1,
+		   total <= 3, #channels <= 2
 	Supported extended features:
 		* [ FTM_RESPONDER ]: FTM responder
 	Peer measurement:
@@ -292,6 +295,7 @@ def test_capability_probe_is_whitelisted_and_parses(env):
     assert s["driver"] == "iwlwifi" and s["pci_id"] == "0x8086 0x272b"
     assert s["tx_power_dbm"] == 22.0 and s["retry_short_limit"] == 7 and s["rts_threshold"] == "off"
     assert s["power_save"] == "on"
+    assert s["max_client_interfaces"] == 2 and s["max_concurrent_channels"] == 2
     ideas = ideas_enabled(s)
     assert ideas["attenuation from ranging (FTM)"] and not ideas["no-outage switching (Wi-Fi 7 multi-link)"]
 
