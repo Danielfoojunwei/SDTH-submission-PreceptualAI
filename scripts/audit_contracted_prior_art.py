@@ -7,7 +7,9 @@ import pymupdf
 
 ROOT=Path(__file__).resolve().parents[1];OUT=ROOT/'artifacts/contracted/prior_art';ARCHIVE=ROOT.parent/'training/contracted-world-models/literature'
 LEADS={'2610.17584':'RAN-JEPA','2604.06882':'Telecom World Models','2607.09798':'JEPA for AI-native 6G','2606.06373':'LatentWave','2608.10222':'JEPA channel model','2610.13315':'JEPA channel model','2610.04345':'System One Models for Wireless Decision-Making',
-       '1710.08005':'Smart Predict then Optimize','1911.08265':'MuZero','1705.08500':'Selective Classification for Deep Neural Networks','2101.02703':'Risk-Controlling Prediction Sets','2011.03506':'The Value Equivalence Principle for Model-Based Reinforcement Learning'}
+       '1710.08005':'Smart Predict then Optimize','1911.08265':'MuZero','1705.08500':'Selective Classification for Deep Neural Networks','2101.02703':'Risk-Controlling Prediction Sets','2011.03506':'The Value Equivalence Principle for Model-Based Reinforcement Learning',
+       '2401.13206':'Self-Improving Interference Management Based on Deep Learning With Uncertainty Quantification','2005.13239':'MOPO: Model-based Offline Policy Optimization','2005.05951':'MOReL: Model-Based Offline Reinforcement Learning','2307.01928':'Robots That Ask For Help: Uncertainty Alignment for Large Language Model Planners',
+       '2603.20048':'Structured Latent Dynamics in Wireless CSI via Homomorphic World Models','2609.04851':'Coupled Control and Wireless World Models for Resilient Remote Robotic Control'}
 QUERIES=['uncertainty gated selective prediction wireless network control','decision focused learning wireless world model JEPA','value equivalent models decision focused learning','RAN JEPA Telecom World Models']
 
 
