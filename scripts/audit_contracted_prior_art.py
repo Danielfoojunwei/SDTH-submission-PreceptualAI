@@ -60,9 +60,26 @@ def search(query):
     except (httpx.HTTPError,ValueError) as e:return {'query':query,'error':type(e).__name__}
 
 
+def index_search():
+    rows=[];q='("uncertainty-gated" OR "selective prediction" OR abstention) AND (wireless OR "network control")'
+    try:
+        r=httpx.get('https://ieeexplore.ieee.org/search/searchresult.jsp',params={'queryText':q},timeout=20,follow_redirects=True)
+        rows.append({'provider':'IEEE Xplore','query':q,'url':str(r.url),'status':r.status_code,'search_results_verified':False,'note':'Search-page access does not establish authenticated indexed full-text coverage'})
+    except httpx.HTTPError as e:rows.append({'provider':'IEEE Xplore','query':q,'error':type(e).__name__})
+    for q in QUERIES[:2]:
+        try:
+            r=httpx.get('https://api.openalex.org/works',params={'search':q,'per-page':6},timeout=20)
+            row={'provider':'OpenAlex','query':q,'status':r.status_code}
+            if r.status_code==200:row['results']=[{'title':x.get('title'),'doi':x.get('doi'),'year':x.get('publication_year'),'open_access':x.get('open_access')} for x in r.json().get('results',[])]
+            rows.append(row)
+        except httpx.HTTPError as e:rows.append({'provider':'OpenAlex','query':q,'error':type(e).__name__})
+    (OUT/'index_search.json').write_text(json.dumps({'queries':rows,'checked_at_unix':time.time(),'exhaustive_novelty_verified':False},indent=2)+'\n')
+
+
 def main():
     OUT.mkdir(parents=True,exist_ok=True);ARCHIVE.mkdir(parents=True,exist_ok=True)
     with ThreadPoolExecutor(6) as pool:leads=list(pool.map(lead,LEADS.items()));searches=list(pool.map(search,QUERIES))
+    index_search()
     report={'leads':leads,'searches':searches,'exhaustive_novelty_verified':False,'limitations':['IEEE Xplore full-text/index search is not authenticated in this environment','A supplied title is not a verified citation','Identifier/title mismatches are not evidence against a method'],'checked_at_unix':time.time()}
     (OUT/'audit.json').write_text(json.dumps(report,indent=2,ensure_ascii=False)+'\n');print(json.dumps({'leads':[{k:r[k] for k in ['id','status','verified_title'] if k in r} for r in leads],'searches':[{'query':s['query'],'status':s.get('status')} for s in searches]}),flush=True)
 

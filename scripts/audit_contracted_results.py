@@ -9,17 +9,23 @@ ROOT=Path(__file__).resolve().parents[1];OUT=ROOT/'artifacts/contracted'
 def audit():
     manifest=json.loads((OUT/'manifest.json').read_text());summary=json.loads((OUT/'summary.json').read_text());protocol=json.loads((OUT/'protocol.json').read_text())
     for relative,digest in manifest['files_sha256'].items():assert hashlib.sha256((OUT/relative).read_bytes()).hexdigest()==digest,relative
-    for stage in ['training','evaluation']:
+    for stage in ['training','evaluation','analysis','complete']:
         capsule=json.loads((OUT/(stage+'_source.json')).read_text())
         for relative,digest in capsule['source_sha256'].items():assert hashlib.sha256((OUT/(stage+'_source')/relative).read_bytes()).hexdigest()==digest,(stage,relative)
     training=set(protocol['training_sites']);development=set(protocol['development_sites']);testing=set().union(*(set(protocol[k]) for k in ['primary_sites','small_sites','stress_sites','yard_sites']))
     assert not (training&development or training&testing or development&testing)
     fits=list((OUT/'fits').glob('*.json'));assert len(fits)==20
     assert {(r['family'],r['seed']) for r in map(lambda p:json.loads(p.read_text()),fits)}=={(f,s) for f in protocol['families'] for s in range(5)}
+    state_digests={f:set() for f in protocol['families']}
     for file in fits:
         fit=json.loads(file.read_text());assert fit['completed'] and fit['epochs']==12 and not fit['test_accessed']
         path=OUT/'checkpoints'/f'{fit["family"]}-{fit["seed"]}.pt';assert hashlib.sha256(path.read_bytes()).hexdigest()==fit['checkpoint_sha256']
-        state=torch.load(path,weights_only=True,map_location='cpu')['state'];assert all(torch.isfinite(t).all() for t in state.values())
+        checkpoint=torch.load(path,weights_only=True,map_location='cpu');state=checkpoint['state'];assert all(torch.isfinite(t).all() for t in state.values())
+        assert float(state['head.weight'].abs().sum())>0
+        state_digests[fit['family']].add(hashlib.sha256(b''.join(t.numpy().tobytes() for t in state.values())).hexdigest())
+        assert fit['best_development_censored_nll']==min(r['development_censored_nll'] for r in fit['history'])
+        assert fit['history'][checkpoint['epoch']-1]['development_censored_nll']==fit['best_development_censored_nll']
+    assert all(len(v)==5 for v in state_digests.values())
     cases=[json.loads(p.read_text()) for p in (OUT/'cases').glob('*.json')];assert len(cases)==24 and {c['scene'] for c in cases}==testing
     assert sum(len(c['rows']) for c in cases)==366
     primary=[c for c in cases if c['condition']=='main']

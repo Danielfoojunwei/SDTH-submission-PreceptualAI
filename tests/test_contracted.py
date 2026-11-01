@@ -3,7 +3,7 @@ import copy
 import numpy as np
 import torch
 from wirelessjev.contracted.data import capped_scans,examples,make_stream
-from wirelessjev.contracted.model import DeviceJEPA,candidate_utility,regret_weights,update_target
+from wirelessjev.contracted.model import DeviceJEPA,candidate_utility,regret_weights,update_target,loss
 from wirelessjev.contracted.evaluate import corrupt
 from wirelessjev.contracted.theory import lower_bound,rank_counterexample
 from wirelessjev.contracted.runtime import DeviceInputs,forecast
@@ -62,9 +62,26 @@ def test_public_forecast_boundary_rejects_label_dictionaries():
     assert set(DeviceInputs.__dataclass_fields__)=={'context','planned_route','geometric_prior'}
 
 
+def test_only_regret_objective_uses_twin_truth_supervision():
+    torch.manual_seed(20);m=DeviceJEPA();shape=(2,9,6)
+    b={'ctx':torch.randn(2,6,48),'route':torch.randn(2,9,6,5),'prior':torch.zeros(shape),'future_ctx':torch.randn(2,9,6,48),
+       'target':torch.zeros(shape),'bound':torch.zeros(shape),'heard':torch.ones(shape),'valid':torch.ones(shape),'truth':torch.zeros(shape),'current':torch.zeros(2,dtype=torch.int64),'load':torch.zeros(2,2)}
+    changed={**b,'truth':b['truth'].clone()};changed['truth'][...,3:]=40;intent=torch.zeros(2,9)
+    for family in ['jepa','scratch']:torch.testing.assert_close(loss(m,b,intent,family)[0],loss(m,changed,intent,family)[0],rtol=0,atol=0)
+    assert not torch.isclose(loss(m,b,intent,'regret')[0],loss(m,changed,intent,'regret')[0])
+
+
 def test_rank_only_claim_is_false_and_envelope_bound_is_valid():
     examples=rank_counterexample();assert examples[0]['mean_gain']<0<examples[1]['mean_gain'] and examples[2]['mean_gain']==0
     rng=np.random.default_rng(42)
     for _ in range(50):
         result=lower_bound(rng.uniform(-10,10,100),rng.uniform(-20,20,100),rng.uniform(0,5,100),B=20)
         assert result['bound_holds']
+
+
+def test_completed_portable_campaign_has_real_fits_and_reproducible_counts():
+    import importlib.util
+    from pathlib import Path
+    path=Path(__file__).resolve().parents[1]/'scripts/audit_contracted_results.py'
+    spec=importlib.util.spec_from_file_location('contracted_audit',path);m=importlib.util.module_from_spec(spec);spec.loader.exec_module(m)
+    result=m.audit();assert result['passed'] and result['finite_fits']==20 and result['native_rollouts']==366
