@@ -1,5 +1,31 @@
 # WirelessJEV research handoff
 
+## Completed contracted world-model study
+
+On 2 November 2026 (Singapore time), the device-scan JEPA continuation completed
+all 20 twelve-epoch fits and 366 native rollouts across 24 fresh scenes.
+`docs/CONTRACTED_RESULTS.md` is the result record; `docs/CONTRACTED_MODEL.md`
+describes the implemented censoring, route conditioning, EMA and regret losses.
+The portable archive is `artifacts/contracted/`; regenerate only its analysis
+with `scripts/report_contracted_results.py`, and audit without retraining with
+`scripts/audit_contracted_results.py`. Training/evaluation workers have exited.
+
+The 100-robot primary comparison has 622.92 fixed-rule, 92.36 Bayesian-gated,
+114.58 JEPA-ungated, 151.39 JEPA-gated and 150.69 regret-JEPA-gated misses per
+million commands. The regret difference is one command across 1.44 million;
+the five-seed/six-scene interval spans zero. Both JEPA gate arms beat fixed in
+six scenes, so necessity is rejected. Scaling uncertainty changes every scene
+despite preserved ranks; a rank-only guarantee is mathematically insufficient.
+Removing route conditioning improves this particular regret family. Stress
+generalisation fails to beat fixed. These results do not justify replacing RadioMap.
+
+Eighteen open full texts were inspected in the relevant method/evaluation
+sections. Prior art already covers uncertainty-triggered learned/conventional
+switching, intent-aware world-model guardrails and coupled robot/wireless JEPA
+models. `docs/CONTRACTED_PRIOR_ART.md` records the overlap and the failed direct
+IEEE index request. The proposed broad paper claims are not ready.
+RadioMap + WirelessJEV remains the default. No physical car was accessed.
+
 The starting point for this continuation was GitHub `main` at `3c5ce3f` in
 <https://github.com/Danielfoojunwei/SDTH-submission-PreceptualAI>.
 The cloud development environment has Python 3.12, locked dependencies and a

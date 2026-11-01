@@ -5,6 +5,16 @@ Current experiment status and restart prerequisites are in [docs/HANDOFF.md](doc
 The restored didjital R6.1 reference and its executed software checks are
 documented in [docs/R6_COMPATIBILITY.md](docs/R6_COMPATIBILITY.md).
 
+The [contracted world-model study](docs/CONTRACTED_RESULTS.md) completed **20
+device-JEPA fits and 366 native rollouts on 24 fresh scenes**. It adds censored
+scan inputs, future-route conditioning, ensemble uncertainty and a finite
+AP-regret training objective. Ungated JEPA already beats the fixed rule, the
+gate worsens its primary mean, and regret training has no robust advantage.
+The [model](docs/CONTRACTED_MODEL.md), [theory](docs/CONTRACTED_THEORY.md),
+[18-paper review](docs/CONTRACTED_PRIOR_ART.md) and portable checksummed archive
+are included. RadioMap + WirelessJEV remains the default; no hardware or
+foundation-model/SOTA claim follows.
+
 The original completed milestone is **warehouse connectivity: WirelessJEV/RadioJEV
 E1–E5 and corrected E7**; its [results](docs/WAREHOUSE_RESULTS.md) are preserved.
 The new [warehouse v2 campaign](docs/WAREHOUSE_V2.md) adds structured missions,

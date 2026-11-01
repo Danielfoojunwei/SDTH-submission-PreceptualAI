@@ -30,6 +30,8 @@ build-backend = "uv_build"
 [dependency-groups]
 dev = [
     "cmake==4.4.4",
+    "httpx>=0.28",
     "matplotlib>=3.11.2",
     "ninja==1.13.2",
+    "pymupdf>=1.26",
 ]

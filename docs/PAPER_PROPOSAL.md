@@ -6,6 +6,22 @@ are in `docs/WAREHOUSE_RESULTS.md`. The subsequently authorised warehouse v2
 campaign is described below; general foundation-model, custom on-air PHY,
 robotics and space extensions remain deferred.
 
+## Contracted device-JEPA evidence
+
+The separate study in `CONTRACTED_RESULTS.md` completed 20 five-seed model fits
+and 366 native rollouts across 24 fresh simulated scenes. It implements the
+censored, route-conditioned world model and finite AP-regret objective. Both
+gated and ungated JEPA beat the fixed rule in all six primary scenes; the gate
+raises JEPA's mean misses from 114.58 to 151.39 per million. Regret training
+changes the total by one command in 1.44 million, with the crossed training-seed
+and scene interval spanning zero. RadioMap remains default at 92.36 per million.
+
+Do not lead either proposed paper with contract necessity, ranking-only
+guarantees, regret-training superiority or generic JEPA/JEV coupling novelty.
+`CONTRACTED_THEORY.md` and `CONTRACTED_PRIOR_ART.md` explain the counterexample
+and existing uncertainty/fallback/world-model literature. These new compact
+fits do not add independent seeds to the original large-model E1–E5 evidence.
+
 ## Compositional-mission and radio audit
 
 The separately versioned v3 protocol and results are in `WAREHOUSE_V3.md` and

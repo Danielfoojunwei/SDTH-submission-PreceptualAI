@@ -1,0 +1,1008 @@
+{
+  "completed": true,
+  "built_at": "2026-11-02T07:27:17.101603+08:00",
+  "fits": 20,
+  "test_scenes": 24,
+  "native_rollouts": 366,
+  "primary": {
+    "fixed": {
+      "mean": 622.9166666666666,
+      "paired_scene_bootstrap_95": [
+        486.8055555555556,
+        751.3888888888888
+      ],
+      "n_independent_scenes": 6,
+      "misses": 897,
+      "commands": 1440000,
+      "ppm": 622.9166666666667
+    },
+    "bayesian_ungated_base": {
+      "mean": 338.1944444444444,
+      "paired_scene_bootstrap_95": [
+        121.52777777777779,
+        610.4166666666666
+      ],
+      "n_independent_scenes": 6,
+      "misses": 487,
+      "commands": 1440000,
+      "ppm": 338.19444444444446,
+      "rmse_near_db": 8.44257148106893,
+      "coverage_90": 0.3139257330246914,
+      "finite_ap_choice_regret": 0.2337689509925882,
+      "reported_link_rmse_near_db": 3.814378499984741,
+      "unreported_link_rmse_near_db": 9.047355810801188
+    },
+    "bayesian_gated_base": {
+      "mean": 92.3611111111111,
+      "paired_scene_bootstrap_95": [
+        34.02777777777778,
+        159.02777777777774
+      ],
+      "n_independent_scenes": 6,
+      "misses": 133,
+      "commands": 1440000,
+      "ppm": 92.36111111111111,
+      "rmse_near_db": 8.44257148106893,
+      "coverage_90": 0.3139257330246914,
+      "finite_ap_choice_regret": 0.2337689509925882,
+      "reported_link_rmse_near_db": 3.814378499984741,
+      "unreported_link_rmse_near_db": 9.047355810801188
+    },
+    "jepa_ungated_base": {
+      "mean": 114.58333333333333,
+      "paired_scene_bootstrap_95": [
+        40.27777777777778,
+        219.44444444444443
+      ],
+      "n_independent_scenes": 6,
+      "misses": 165,
+      "commands": 1440000,
+      "ppm": 114.58333333333333,
+      "rmse_near_db": 9.709978739420572,
+      "coverage_90": 0.8533116801697531,
+      "finite_ap_choice_regret": 0.15355653484660514,
+      "reported_link_rmse_near_db": 4.752168536186218,
+      "unreported_link_rmse_near_db": 10.359046618143717
+    },
+    "jepa_gated_base": {
+      "mean": 151.38888888888889,
+      "paired_scene_bootstrap_95": [
+        63.88888888888889,
+        240.2777777777778
+      ],
+      "n_independent_scenes": 6,
+      "misses": 218,
+      "commands": 1440000,
+      "ppm": 151.38888888888889,
+      "rmse_near_db": 9.709978739420572,
+      "coverage_90": 0.8533116801697531,
+      "finite_ap_choice_regret": 0.15355653484660514,
+      "reported_link_rmse_near_db": 4.752168536186218,
+      "unreported_link_rmse_near_db": 10.359046618143717
+    },
+    "regret_gated_base": {
+      "mean": 150.69444444444446,
+      "paired_scene_bootstrap_95": [
+        63.88888888888889,
+        238.8888888888889
+      ],
+      "n_independent_scenes": 6,
+      "misses": 217,
+      "commands": 1440000,
+      "ppm": 150.69444444444446,
+      "rmse_near_db": 9.59541368484497,
+      "coverage_90": 0.853929157021605,
+      "finite_ap_choice_regret": 0.14837822575230106,
+      "reported_link_rmse_near_db": 4.90483554204305,
+      "unreported_link_rmse_near_db": 10.217798709869385
+    },
+    "no_route_gated_base": {
+      "mean": 110.41666666666667,
+      "paired_scene_bootstrap_95": [
+        29.166666666666668,
+        195.13888888888889
+      ],
+      "n_independent_scenes": 6,
+      "misses": 159,
+      "commands": 1440000,
+      "ppm": 110.41666666666666,
+      "rmse_near_db": 8.90748389561971,
+      "coverage_90": 0.8541594328703703,
+      "finite_ap_choice_regret": 0.19346726369529468,
+      "reported_link_rmse_near_db": 5.673407077789307,
+      "unreported_link_rmse_near_db": 9.368154287338257
+    },
+    "scratch_ungated_base": {
+      "mean": 100.69444444444444,
+      "paired_scene_bootstrap_95": [
+        35.41666666666667,
+        183.33333333333334
+      ],
+      "n_independent_scenes": 6,
+      "misses": 145,
+      "commands": 1440000,
+      "ppm": 100.69444444444444,
+      "rmse_near_db": 7.019869724909465,
+      "coverage_90": 0.8840378568672839,
+      "finite_ap_choice_regret": 0.15665633008119054,
+      "reported_link_rmse_near_db": 4.60398272673289,
+      "unreported_link_rmse_near_db": 7.3730283578236895
+    },
+    "scratch_gated_base": {
+      "mean": 111.11111111111113,
+      "paired_scene_bootstrap_95": [
+        28.472222222222225,
+        194.44444444444446
+      ],
+      "n_independent_scenes": 6,
+      "misses": 160,
+      "commands": 1440000,
+      "ppm": 111.11111111111111,
+      "rmse_near_db": 7.019869724909465,
+      "coverage_90": 0.8840378568672839,
+      "finite_ap_choice_regret": 0.15665633008119054,
+      "reported_link_rmse_near_db": 4.60398272673289,
+      "unreported_link_rmse_near_db": 7.3730283578236895
+    }
+  },
+  "paper1": {
+    "contracted_vs_fixed": {
+      "mean": -471.52777777777777,
+      "paired_scene_bootstrap_95": [
+        -549.3055555555555,
+        -381.25
+      ],
+      "n_independent_scenes": 6,
+      "candidate_wins": 6,
+      "ties": 0,
+      "comparison": "jepa_gated_base minus fixed",
+      "unit": "misses per million"
+    },
+    "uncontracted_vs_fixed": {
+      "mean": -508.3333333333333,
+      "paired_scene_bootstrap_95": [
+        -577.0833333333334,
+        -427.0833333333334
+      ],
+      "n_independent_scenes": 6,
+      "candidate_wins": 6,
+      "ties": 0,
+      "comparison": "jepa_ungated_base minus fixed",
+      "unit": "misses per million"
+    },
+    "contracted_vs_uncontracted": {
+      "mean": 36.805555555555564,
+      "paired_scene_bootstrap_95": [
+        -20.13888888888889,
+        95.13888888888891
+      ],
+      "n_independent_scenes": 6,
+      "candidate_wins": 2,
+      "ties": 0,
+      "comparison": "jepa_gated_base minus jepa_ungated_base",
+      "unit": "misses per million"
+    },
+    "proposed_5_of_6_gate_claim_passes": true,
+    "ungated_already_wins_5_of_6": true
+  },
+  "uncertainty_interventions": {
+    "base": {
+      "control_ppm": 151.38888888888889,
+      "roams": 1519,
+      "coverage_90": 0.8533116801697531,
+      "ap_score_error_sigma_spearman": -0.3182819022962901,
+      "link_error_sigma_spearman": -0.2834320018781778,
+      "changed_miss_count_scenes": 0,
+      "all_empirical_theory_bounds_hold": true,
+      "mean_empirical_theory_lower_bound": 0.08707786127924917
+    },
+    "half": {
+      "control_ppm": 79.16666666666667,
+      "roams": 1740,
+      "coverage_90": 0.6638161651234568,
+      "ap_score_error_sigma_spearman": -0.3182819022962901,
+      "link_error_sigma_spearman": -0.2834320018781778,
+      "changed_miss_count_scenes": 6,
+      "all_empirical_theory_bounds_hold": true,
+      "mean_empirical_theory_lower_bound": -0.39262934327125554
+    },
+    "double": {
+      "control_ppm": 208.33333333333334,
+      "roams": 1492,
+      "coverage_90": 0.9813001543209876,
+      "ap_score_error_sigma_spearman": -0.3182819022962901,
+      "link_error_sigma_spearman": -0.2834320018781778,
+      "changed_miss_count_scenes": 6,
+      "all_empirical_theory_bounds_hold": true,
+      "mean_empirical_theory_lower_bound": 0.0
+    },
+    "noise": {
+      "control_ppm": 199.30555555555557,
+      "roams": 1508,
+      "coverage_90": 0.7891747685185185,
+      "ap_score_error_sigma_spearman": -0.05360694299187222,
+      "link_error_sigma_spearman": -0.04121079644693169,
+      "changed_miss_count_scenes": 5,
+      "all_empirical_theory_bounds_hold": true,
+      "mean_empirical_theory_lower_bound": 0.014766313600614756
+    },
+    "shuffle": {
+      "control_ppm": 179.16666666666666,
+      "roams": 1509,
+      "coverage_90": 0.8800875289351852,
+      "ap_score_error_sigma_spearman": -0.034386743417749284,
+      "link_error_sigma_spearman": -0.0377871758595494,
+      "changed_miss_count_scenes": 5,
+      "all_empirical_theory_bounds_hold": true,
+      "mean_empirical_theory_lower_bound": 0.06383810713887215
+    }
+  },
+  "forecasts_identical_under_uncertainty_corruption": true,
+  "rank_only_guarantee": "Refuted mathematically; see counterexample and calibrated-envelope theorem",
+  "rank_counterexample": [
+    {
+      "scale": 0.5,
+      "error_rank_correlation": 1.0,
+      "accepted": [
+        true,
+        true
+      ],
+      "mean_gain": -1.5
+    },
+    {
+      "scale": 1.0,
+      "error_rank_correlation": 1.0,
+      "accepted": [
+        true,
+        false
+      ],
+      "mean_gain": 0.5
+    },
+    {
+      "scale": 2.0,
+      "error_rank_correlation": 1.0,
+      "accepted": [
+        false,
+        false
+      ],
+      "mean_gain": 0.0
+    }
+  ],
+  "paper2": {
+    "regret_vs_jepa": {
+      "mean": -0.6944444444444492,
+      "paired_scene_bootstrap_95": [
+        -2.0833333333333477,
+        0.0
+      ],
+      "n_independent_scenes": 6,
+      "candidate_wins": 1,
+      "ties": 5,
+      "comparison": "regret_gated_base minus jepa_gated_base",
+      "unit": "misses per million"
+    },
+    "five_seed_paired_comparison": {
+      "mean": -1.2499999999999984,
+      "crossed_scene_training_seed_bootstrap_95": [
+        -5.555555555555548,
+        1.8055555555555574
+      ],
+      "scenes": 6,
+      "training_seeds": 5
+    },
+    "seed_scene_difference_ppm": [
+      [
+        -16.66666666666666,
+        0.0,
+        0.0,
+        0.0,
+        -4.166666666666669
+      ],
+      [
+        -12.499999999999979,
+        0.0,
+        8.333333333333337,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        -4.166666666666669,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        -8.333333333333337,
+        4.166666666666669,
+        8.333333333333337,
+        0.0,
+        0.0
+      ],
+      [
+        -8.333333333333337,
+        0.0,
+        -4.166666666666641,
+        0.0,
+        0.0
+      ]
+    ],
+    "regret_vs_bayesian": {
+      "mean": 58.333333333333336,
+      "paired_scene_bootstrap_95": [
+        19.444444444444446,
+        97.22222222222221
+      ],
+      "n_independent_scenes": 6,
+      "candidate_wins": 1,
+      "ties": 1,
+      "comparison": "regret_gated_base minus bayesian_gated_base",
+      "unit": "misses per million"
+    },
+    "worse_forecast_better_control_tradeoff": false
+  },
+  "route_ablation": {
+    "mean": 40.27777777777778,
+    "paired_scene_bootstrap_95": [
+      15.972222222222221,
+      65.97222222222221
+    ],
+    "n_independent_scenes": 6,
+    "candidate_wins": 0,
+    "ties": 0,
+    "comparison": "regret_gated_base minus no_route_gated_base",
+    "unit": "misses per million"
+  },
+  "generalisation": {
+    "small": {
+      "arms": {
+        "fixed": {
+          "mean": 625.0000000000001,
+          "paired_scene_bootstrap_95": [
+            402.77777777777777,
+            833.3333333333334
+          ],
+          "n_independent_scenes": 6,
+          "misses": 45,
+          "commands": 72000,
+          "ppm": 625.0
+        },
+        "bayesian_ungated_base": {
+          "mean": 3597.222222222222,
+          "paired_scene_bootstrap_95": [
+            27.777777777777775,
+            10347.222222222223
+          ],
+          "n_independent_scenes": 6,
+          "misses": 259,
+          "commands": 72000,
+          "ppm": 3597.222222222222,
+          "rmse_near_db": 10.17573912938436,
+          "coverage_90": 0.5495273919753086,
+          "finite_ap_choice_regret": 0.9751091102549748,
+          "reported_link_rmse_near_db": 6.202682177225749,
+          "unreported_link_rmse_near_db": 10.756537437438965
+        },
+        "bayesian_gated_base": {
+          "mean": 83.33333333333333,
+          "paired_scene_bootstrap_95": [
+            0.0,
+            222.22222222222226
+          ],
+          "n_independent_scenes": 6,
+          "misses": 6,
+          "commands": 72000,
+          "ppm": 83.33333333333333,
+          "rmse_near_db": 10.17573912938436,
+          "coverage_90": 0.5495273919753086,
+          "finite_ap_choice_regret": 0.9751091102549748,
+          "reported_link_rmse_near_db": 6.202682177225749,
+          "unreported_link_rmse_near_db": 10.756537437438965
+        },
+        "jepa_ungated_base": {
+          "mean": 69.44444444444444,
+          "paired_scene_bootstrap_95": [
+            0.0,
+            152.77777777777777
+          ],
+          "n_independent_scenes": 6,
+          "misses": 5,
+          "commands": 72000,
+          "ppm": 69.44444444444444,
+          "rmse_near_db": 8.313876072565714,
+          "coverage_90": 0.9205574845679013,
+          "finite_ap_choice_regret": 0.17801845375426473,
+          "reported_link_rmse_near_db": 5.881699442863464,
+          "unreported_link_rmse_near_db": 8.667644818623861
+        },
+        "jepa_gated_base": {
+          "mean": 111.11111111111113,
+          "paired_scene_bootstrap_95": [
+            13.888888888888888,
+            236.11111111111111
+          ],
+          "n_independent_scenes": 6,
+          "misses": 8,
+          "commands": 72000,
+          "ppm": 111.11111111111111,
+          "rmse_near_db": 8.313876072565714,
+          "coverage_90": 0.9205574845679013,
+          "finite_ap_choice_regret": 0.17801845375426473,
+          "reported_link_rmse_near_db": 5.881699442863464,
+          "unreported_link_rmse_near_db": 8.667644818623861
+        },
+        "regret_gated_base": {
+          "mean": 111.11111111111113,
+          "paired_scene_bootstrap_95": [
+            13.888888888888888,
+            236.11111111111111
+          ],
+          "n_independent_scenes": 6,
+          "misses": 8,
+          "commands": 72000,
+          "ppm": 111.11111111111111,
+          "rmse_near_db": 8.2502334912618,
+          "coverage_90": 0.9200945216049381,
+          "finite_ap_choice_regret": 0.16603254910196538,
+          "reported_link_rmse_near_db": 5.999825636545817,
+          "unreported_link_rmse_near_db": 8.581161419550577
+        },
+        "no_route_gated_base": {
+          "mean": 69.44444444444444,
+          "paired_scene_bootstrap_95": [
+            0.0,
+            208.33333333333334
+          ],
+          "n_independent_scenes": 6,
+          "misses": 5,
+          "commands": 72000,
+          "ppm": 69.44444444444444,
+          "rmse_near_db": 8.004726012547811,
+          "coverage_90": 0.9020167824074073,
+          "finite_ap_choice_regret": 0.21125034503698747,
+          "reported_link_rmse_near_db": 6.666180769602458,
+          "unreported_link_rmse_near_db": 8.215935389200846
+        },
+        "scratch_ungated_base": {
+          "mean": 55.55555555555555,
+          "paired_scene_bootstrap_95": [
+            0.0,
+            111.1111111111111
+          ],
+          "n_independent_scenes": 6,
+          "misses": 4,
+          "commands": 72000,
+          "ppm": 55.55555555555556,
+          "rmse_near_db": 6.8345381418863935,
+          "coverage_90": 0.8856298225308642,
+          "finite_ap_choice_regret": 0.18640420902919677,
+          "reported_link_rmse_near_db": 5.583201169967651,
+          "unreported_link_rmse_near_db": 7.032765626907349
+        },
+        "scratch_gated_base": {
+          "mean": 69.44444444444444,
+          "paired_scene_bootstrap_95": [
+            0.0,
+            208.33333333333334
+          ],
+          "n_independent_scenes": 6,
+          "misses": 5,
+          "commands": 72000,
+          "ppm": 69.44444444444444,
+          "rmse_near_db": 6.8345381418863935,
+          "coverage_90": 0.8856298225308642,
+          "finite_ap_choice_regret": 0.18640420902919677,
+          "reported_link_rmse_near_db": 5.583201169967651,
+          "unreported_link_rmse_near_db": 7.032765626907349
+        }
+      },
+      "gate_vs_fixed": {
+        "mean": -513.8888888888889,
+        "paired_scene_bootstrap_95": [
+          -736.1111111111112,
+          -319.44444444444446
+        ],
+        "n_independent_scenes": 6,
+        "candidate_wins": 6,
+        "ties": 0,
+        "comparison": "jepa_gated_base minus fixed",
+        "unit": "misses per million"
+      },
+      "gate_vs_ungated": {
+        "mean": 41.666666666666664,
+        "paired_scene_bootstrap_95": [
+          -125.0,
+          222.2222222222222
+        ],
+        "n_independent_scenes": 6,
+        "candidate_wins": 2,
+        "ties": 1,
+        "comparison": "jepa_gated_base minus jepa_ungated_base",
+        "unit": "misses per million"
+      }
+    },
+    "stress": {
+      "arms": {
+        "fixed": {
+          "mean": 8455.555555555555,
+          "paired_scene_bootstrap_95": [
+            4751.979166666667,
+            11933.333333333334
+          ],
+          "n_independent_scenes": 6,
+          "misses": 6088,
+          "commands": 720000,
+          "ppm": 8455.555555555555
+        },
+        "bayesian_ungated_base": {
+          "mean": 11744.444444444443,
+          "paired_scene_bootstrap_95": [
+            8381.944444444443,
+            16806.94444444444
+          ],
+          "n_independent_scenes": 6,
+          "misses": 8456,
+          "commands": 720000,
+          "ppm": 11744.444444444445,
+          "rmse_near_db": 8.741140921910604,
+          "coverage_90": 0.35978761574074075,
+          "finite_ap_choice_regret": 0.19478377194891783,
+          "reported_link_rmse_near_db": 4.046841859817505,
+          "unreported_link_rmse_near_db": 9.356300751368204
+        },
+        "bayesian_gated_base": {
+          "mean": 10901.38888888889,
+          "paired_scene_bootstrap_95": [
+            7511.11111111111,
+            16218.055555555557
+          ],
+          "n_independent_scenes": 6,
+          "misses": 7849,
+          "commands": 720000,
+          "ppm": 10901.388888888889,
+          "rmse_near_db": 8.741140921910604,
+          "coverage_90": 0.35978761574074075,
+          "finite_ap_choice_regret": 0.19478377194891783,
+          "reported_link_rmse_near_db": 4.046841859817505,
+          "unreported_link_rmse_near_db": 9.356300751368204
+        },
+        "jepa_ungated_base": {
+          "mean": 10581.944444444447,
+          "paired_scene_bootstrap_95": [
+            7613.8888888888905,
+            15308.333333333336
+          ],
+          "n_independent_scenes": 6,
+          "misses": 7619,
+          "commands": 720000,
+          "ppm": 10581.944444444443,
+          "rmse_near_db": 9.292388200759888,
+          "coverage_90": 0.8893704668209876,
+          "finite_ap_choice_regret": 0.1516972683776063,
+          "reported_link_rmse_near_db": 7.710376024246216,
+          "unreported_link_rmse_near_db": 9.545187075932821
+        },
+        "jepa_gated_base": {
+          "mean": 15251.388888888889,
+          "paired_scene_bootstrap_95": [
+            10222.22222222222,
+            23393.05555555555
+          ],
+          "n_independent_scenes": 6,
+          "misses": 10981,
+          "commands": 720000,
+          "ppm": 15251.388888888889,
+          "rmse_near_db": 9.292388200759888,
+          "coverage_90": 0.8893704668209876,
+          "finite_ap_choice_regret": 0.1516972683776063,
+          "reported_link_rmse_near_db": 7.710376024246216,
+          "unreported_link_rmse_near_db": 9.545187075932821
+        },
+        "regret_gated_base": {
+          "mean": 15268.055555555555,
+          "paired_scene_bootstrap_95": [
+            10194.444444444443,
+            23472.222222222223
+          ],
+          "n_independent_scenes": 6,
+          "misses": 10993,
+          "commands": 720000,
+          "ppm": 15268.055555555555,
+          "rmse_near_db": 9.238539139429728,
+          "coverage_90": 0.889681037808642,
+          "finite_ap_choice_regret": 0.14583235320772417,
+          "reported_link_rmse_near_db": 7.863953272501628,
+          "unreported_link_rmse_near_db": 9.459822416305542
+        },
+        "no_route_gated_base": {
+          "mean": 12058.333333333334,
+          "paired_scene_bootstrap_95": [
+            7506.944444444444,
+            20011.111111111113
+          ],
+          "n_independent_scenes": 6,
+          "misses": 8682,
+          "commands": 720000,
+          "ppm": 12058.333333333334,
+          "rmse_near_db": 8.903772195180258,
+          "coverage_90": 0.8529918016975307,
+          "finite_ap_choice_regret": 0.1625205038251904,
+          "reported_link_rmse_near_db": 8.015525261561075,
+          "unreported_link_rmse_near_db": 9.051494677861532
+        },
+        "scratch_ungated_base": {
+          "mean": 10268.055555555555,
+          "paired_scene_bootstrap_95": [
+            7294.444444444444,
+            15161.11111111111
+          ],
+          "n_independent_scenes": 6,
+          "misses": 7393,
+          "commands": 720000,
+          "ppm": 10268.055555555557,
+          "rmse_near_db": 7.496648073196411,
+          "coverage_90": 0.878776813271605,
+          "finite_ap_choice_regret": 0.1457604837275377,
+          "reported_link_rmse_near_db": 7.080893198649089,
+          "unreported_link_rmse_near_db": 7.571029345194499
+        },
+        "scratch_gated_base": {
+          "mean": 12997.22222222222,
+          "paired_scene_bootstrap_95": [
+            8862.36111111111,
+            20666.666666666668
+          ],
+          "n_independent_scenes": 6,
+          "misses": 9358,
+          "commands": 720000,
+          "ppm": 12997.222222222223,
+          "rmse_near_db": 7.496648073196411,
+          "coverage_90": 0.878776813271605,
+          "finite_ap_choice_regret": 0.1457604837275377,
+          "reported_link_rmse_near_db": 7.080893198649089,
+          "unreported_link_rmse_near_db": 7.571029345194499
+        }
+      },
+      "gate_vs_fixed": {
+        "mean": 6795.833333333333,
+        "paired_scene_bootstrap_95": [
+          2081.9097222222217,
+          12994.444444444445
+        ],
+        "n_independent_scenes": 6,
+        "candidate_wins": 1,
+        "ties": 0,
+        "comparison": "jepa_gated_base minus fixed",
+        "unit": "misses per million"
+      },
+      "gate_vs_ungated": {
+        "mean": 4669.444444444444,
+        "paired_scene_bootstrap_95": [
+          1701.3888888888894,
+          8381.944444444443
+        ],
+        "n_independent_scenes": 6,
+        "candidate_wins": 1,
+        "ties": 0,
+        "comparison": "jepa_gated_base minus jepa_ungated_base",
+        "unit": "misses per million"
+      }
+    },
+    "yard": {
+      "arms": {
+        "fixed": {
+          "mean": 384.72222222222223,
+          "paired_scene_bootstrap_95": [
+            177.7777777777778,
+            633.4027777777768
+          ],
+          "n_independent_scenes": 6,
+          "misses": 277,
+          "commands": 720000,
+          "ppm": 384.72222222222223
+        },
+        "bayesian_ungated_base": {
+          "mean": 273.61111111111114,
+          "paired_scene_bootstrap_95": [
+            40.24305555555558,
+            559.7222222222222
+          ],
+          "n_independent_scenes": 6,
+          "misses": 197,
+          "commands": 720000,
+          "ppm": 273.61111111111114,
+          "rmse_near_db": 2.4433715656923187,
+          "coverage_90": 0.011286522633744855,
+          "finite_ap_choice_regret": 0.003651167611122446,
+          "reported_link_rmse_near_db": 1.9633888268107915,
+          "unreported_link_rmse_near_db": 2.7410523720741664
+        },
+        "bayesian_gated_base": {
+          "mean": 156.94444444444446,
+          "paired_scene_bootstrap_95": [
+            25.0,
+            318.05555555555554
+          ],
+          "n_independent_scenes": 6,
+          "misses": 113,
+          "commands": 720000,
+          "ppm": 156.94444444444446,
+          "rmse_near_db": 2.4433715656923187,
+          "coverage_90": 0.011286522633744855,
+          "finite_ap_choice_regret": 0.003651167611122446,
+          "reported_link_rmse_near_db": 1.9633888268107915,
+          "unreported_link_rmse_near_db": 2.7410523720741664
+        },
+        "jepa_ungated_base": {
+          "mean": 397.2222222222222,
+          "paired_scene_bootstrap_95": [
+            73.6111111111111,
+            783.3333333333331
+          ],
+          "n_independent_scenes": 6,
+          "misses": 286,
+          "commands": 720000,
+          "ppm": 397.22222222222223,
+          "rmse_near_db": 10.617623964945475,
+          "coverage_90": 0.812420781893004,
+          "finite_ap_choice_regret": 0.10668292166564756,
+          "reported_link_rmse_near_db": 6.652056932449341,
+          "unreported_link_rmse_near_db": 12.757139046986898
+        },
+        "jepa_gated_base": {
+          "mean": 368.0555555555555,
+          "paired_scene_bootstrap_95": [
+            87.5,
+            709.7222222222222
+          ],
+          "n_independent_scenes": 6,
+          "misses": 265,
+          "commands": 720000,
+          "ppm": 368.05555555555554,
+          "rmse_near_db": 10.617623964945475,
+          "coverage_90": 0.812420781893004,
+          "finite_ap_choice_regret": 0.10668292166564756,
+          "reported_link_rmse_near_db": 6.652056932449341,
+          "unreported_link_rmse_near_db": 12.757139046986898
+        },
+        "regret_gated_base": {
+          "mean": 363.88888888888886,
+          "paired_scene_bootstrap_95": [
+            87.5,
+            705.5555555555555
+          ],
+          "n_independent_scenes": 6,
+          "misses": 262,
+          "commands": 720000,
+          "ppm": 363.8888888888889,
+          "rmse_near_db": 11.197108745574951,
+          "coverage_90": 0.7335501543209877,
+          "finite_ap_choice_regret": 0.10596259916104528,
+          "reported_link_rmse_near_db": 7.108741521835327,
+          "unreported_link_rmse_near_db": 13.417519887288412
+        },
+        "no_route_gated_base": {
+          "mean": 291.6666666666667,
+          "paired_scene_bootstrap_95": [
+            56.94444444444445,
+            587.5
+          ],
+          "n_independent_scenes": 6,
+          "misses": 210,
+          "commands": 720000,
+          "ppm": 291.6666666666667,
+          "rmse_near_db": 12.635743618011475,
+          "coverage_90": 0.6477690329218108,
+          "finite_ap_choice_regret": 0.13728248344896493,
+          "reported_link_rmse_near_db": 7.280817588170369,
+          "unreported_link_rmse_near_db": 15.412445545196533
+        },
+        "scratch_ungated_base": {
+          "mean": 386.1111111111111,
+          "paired_scene_bootstrap_95": [
+            83.33333333333333,
+            797.2222222222222
+          ],
+          "n_independent_scenes": 6,
+          "misses": 278,
+          "commands": 720000,
+          "ppm": 386.1111111111111,
+          "rmse_near_db": 16.05215660730998,
+          "coverage_90": 0.4958850308641975,
+          "finite_ap_choice_regret": 0.12997027165599886,
+          "reported_link_rmse_near_db": 9.302794933319092,
+          "unreported_link_rmse_near_db": 19.56060568491618
+        },
+        "scratch_gated_base": {
+          "mean": 254.16666666666666,
+          "paired_scene_bootstrap_95": [
+            56.94444444444445,
+            498.61111111111114
+          ],
+          "n_independent_scenes": 6,
+          "misses": 183,
+          "commands": 720000,
+          "ppm": 254.16666666666666,
+          "rmse_near_db": 16.05215660730998,
+          "coverage_90": 0.4958850308641975,
+          "finite_ap_choice_regret": 0.12997027165599886,
+          "reported_link_rmse_near_db": 9.302794933319092,
+          "unreported_link_rmse_near_db": 19.56060568491618
+        }
+      },
+      "gate_vs_fixed": {
+        "mean": -16.6666666666667,
+        "paired_scene_bootstrap_95": [
+          -94.44444444444444,
+          80.55555555555549
+        ],
+        "n_independent_scenes": 6,
+        "candidate_wins": 4,
+        "ties": 1,
+        "comparison": "jepa_gated_base minus fixed",
+        "unit": "misses per million"
+      },
+      "gate_vs_ungated": {
+        "mean": -29.166666666666657,
+        "paired_scene_bootstrap_95": [
+          -326.38888888888886,
+          233.33333333333334
+        ],
+        "n_independent_scenes": 6,
+        "candidate_wins": 2,
+        "ties": 0,
+        "comparison": "jepa_gated_base minus jepa_ungated_base",
+        "unit": "misses per million"
+      }
+    }
+  },
+  "heldout_missions": {
+    "protect_teleop": {
+      "arms": {
+        "bayesian_gated_base": {
+          "mean": 104.86111111111113,
+          "paired_scene_bootstrap_95": [
+            47.916666666666664,
+            165.2777777777778
+          ],
+          "n_independent_scenes": 6,
+          "misses": 151,
+          "commands": 1440000,
+          "ppm": 104.86111111111111,
+          "rmse_near_db": 8.44257148106893,
+          "coverage_90": 0.3139257330246914,
+          "finite_ap_choice_regret": 0.21575945695331733,
+          "reported_link_rmse_near_db": 3.814378499984741,
+          "unreported_link_rmse_near_db": 9.047355810801188
+        },
+        "jepa_gated_base": {
+          "mean": 168.05555555555554,
+          "paired_scene_bootstrap_95": [
+            79.86111111111113,
+            256.9444444444444
+          ],
+          "n_independent_scenes": 6,
+          "misses": 242,
+          "commands": 1440000,
+          "ppm": 168.05555555555557,
+          "rmse_near_db": 9.84168283144633,
+          "coverage_90": 0.8476512345679011,
+          "finite_ap_choice_regret": 0.14198923575343278,
+          "reported_link_rmse_near_db": 4.6061185995737715,
+          "unreported_link_rmse_near_db": 10.51827041308085
+        },
+        "regret_gated_base": {
+          "mean": 166.66666666666666,
+          "paired_scene_bootstrap_95": [
+            79.86111111111113,
+            254.16666666666666
+          ],
+          "n_independent_scenes": 6,
+          "misses": 240,
+          "commands": 1440000,
+          "ppm": 166.66666666666666,
+          "rmse_near_db": 9.695714155832926,
+          "coverage_90": 0.8512398726851852,
+          "finite_ap_choice_regret": 0.13744983208698225,
+          "reported_link_rmse_near_db": 4.763423522313436,
+          "unreported_link_rmse_near_db": 10.342498779296875
+        }
+      },
+      "regret_vs_jepa": {
+        "mean": -1.3888888888888804,
+        "paired_scene_bootstrap_95": [
+          -2.777777777777761,
+          0.0
+        ],
+        "n_independent_scenes": 6,
+        "candidate_wins": 2,
+        "ties": 4,
+        "comparison": "regret_gated_base minus jepa_gated_base",
+        "unit": "misses per million"
+      }
+    },
+    "protect_worst": {
+      "arms": {
+        "bayesian_gated_base": {
+          "mean": 128.47222222222223,
+          "paired_scene_bootstrap_95": [
+            72.22222222222223,
+            184.0277777777778
+          ],
+          "n_independent_scenes": 6,
+          "misses": 185,
+          "commands": 1440000,
+          "ppm": 128.47222222222223,
+          "rmse_near_db": 8.44257148106893,
+          "coverage_90": 0.3139257330246914,
+          "finite_ap_choice_regret": 0.1587005351432226,
+          "reported_link_rmse_near_db": 3.814378499984741,
+          "unreported_link_rmse_near_db": 9.047355810801188
+        },
+        "jepa_gated_base": {
+          "mean": 189.58333333333334,
+          "paired_scene_bootstrap_95": [
+            93.75,
+            288.1944444444444
+          ],
+          "n_independent_scenes": 6,
+          "misses": 273,
+          "commands": 1440000,
+          "ppm": 189.58333333333331,
+          "rmse_near_db": 9.73652442296346,
+          "coverage_90": 0.8533671392746913,
+          "finite_ap_choice_regret": 0.07863886187932881,
+          "reported_link_rmse_near_db": 4.74915337562561,
+          "unreported_link_rmse_near_db": 10.388675530751547
+        },
+        "regret_gated_base": {
+          "mean": 188.88888888888889,
+          "paired_scene_bootstrap_95": [
+            93.75,
+            286.1111111111111
+          ],
+          "n_independent_scenes": 6,
+          "misses": 272,
+          "commands": 1440000,
+          "ppm": 188.88888888888889,
+          "rmse_near_db": 9.60375690460205,
+          "coverage_90": 0.8555861304012345,
+          "finite_ap_choice_regret": 0.07978535642391794,
+          "reported_link_rmse_near_db": 4.9155168533325195,
+          "unreported_link_rmse_near_db": 10.225996573766073
+        }
+      },
+      "regret_vs_jepa": {
+        "mean": -0.6944444444444402,
+        "paired_scene_bootstrap_95": [
+          -2.0833333333333206,
+          0.0
+        ],
+        "n_independent_scenes": 6,
+        "candidate_wins": 1,
+        "ties": 5,
+        "comparison": "regret_gated_base minus jepa_gated_base",
+        "unit": "misses per million"
+      }
+    }
+  },
+  "limitations": [
+    "Simulation only; no physical car/RAN testbed",
+    "24 randomised training sites and six development sites; not broad vertical pretraining",
+    "One five-member ensemble per family; the primary JEPA/regret comparison also crosses five individual training seeds",
+    "Bayesian baseline pools 60 seconds of fleet scans; each JEPA context is six recent scans from one robot",
+    "Native reactive fallback retains its idealised uncapped measurement model",
+    "Finite AP-score regret is not exact packet-loss regret",
+    "Four cached d3 mission readings; held-out weights do not establish general semantic transfer",
+    "Marginal residual calibration does not certify conditional gain coverage",
+    "One-step theorem is not a cumulative packet-delivery or safety certificate",
+    "Selective fallback and intent-aware world-model planning already exist in prior art"
+  ]
+}
