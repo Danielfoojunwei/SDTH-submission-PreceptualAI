@@ -112,3 +112,9 @@ Airtime is summed over contention domains (lower means more capacity left for ot
 - One realisation per scene; six scenes.
 - The PHY study uses flat block fading with perfect CSI and a 2 dB grid in Rayleigh.
 - None of this has run on the SmartCar.
+
+## Correction from the follow-up campaign
+[NATIVE_GATE_RESULTS.md](NATIVE_GATE_RESULTS.md) adds spatially varying
+map error. There, ungated native is *worse* than the fixed rule even at a mean
+of 4 dB. The robustness reported above, under uniform map error, does not hold
+for realistic maps. The trust-gated planner is the version that holds up.
