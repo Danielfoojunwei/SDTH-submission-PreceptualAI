@@ -143,7 +143,9 @@ def _native_stack() -> dict | None:
     for name, rel, by in (("stack", "artifacts/native/campaign.json", ("arm",)),
                           ("gate", "artifacts/native/gate_campaign.json", ("condition", "arm")),
                           ("learned", "artifacts/native/learned_campaign.json", ("condition", "arm")),
-                          ("vs5g", "artifacts/native/wifi_vs_5g.json", ("condition", "arm"))):
+                          ("vs5g", "artifacts/native/wifi_vs_5g.json", ("condition", "arm")),
+                          ("canonical100", "artifacts/native/cross_ap.json", ("condition", "arm")),
+                          ("canonical10", "artifacts/native/cross_ap_10robots.json", ("condition", "arm"))):
         rep = _load(rel)
         if rep:
             out[name] = {"protocol": rep.get("protocol"), "evaluation": rep.get("evaluation"),
@@ -152,6 +154,15 @@ def _native_stack() -> dict | None:
                 out[name]["broadcast"] = rep.get("broadcast")
             if name == "learned":
                 out[name]["calibration"] = rep.get("calibration")
+            if name.startswith("canonical"):
+                causes = {}
+                for r in rep["rows"]:
+                    key = (r["condition"], r["arm"])
+                    c = causes.setdefault(key, {})
+                    for k, v in (r.get("miss_causes") or {}).items():
+                        c[k] = c.get(k, 0) + v
+                out[name]["causes"] = [{"condition": a, "arm": b, **c} for (a, b), c in causes.items()]
+                out[name]["control_sent"] = {f"{r['condition']}|{r['arm']}": r.get("control_sent") for r in rep["rows"]}
     phy = _load("artifacts/native/phy_layered.json")
     if phy:
         out["phy"] = {k: v["snr_for_1pct_bler"] for k, v in phy.items() if isinstance(v, dict)}

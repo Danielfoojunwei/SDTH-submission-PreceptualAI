@@ -445,6 +445,11 @@ function nativePage() {
   const N = B.native_stack;
   let s = `<h1>Native stack</h1><p class="lede">WirelessJEV and RadioJEV acting across the Wi-Fi stack: multi-link traffic mapping, planned pre-keyed roams, a learned radio map, and a trust gate that falls back to a fixed rule where the map is uncertain. Every campaign was pre-registered before its test scenes ran. Simulation only; no car or radio was touched.</p>`;
   if (!N) return s + missing("Native-stack campaigns", "uv run python -m wirelessjev.native.run");
+  const CANON = { nr_30ms: "Private 5G (30 ms handover)", nr_daps: "Private 5G (make-before-break)", wifi8: "Wi-Fi 8 seamless multi-AP", mlo_split: "Wi-Fi 7 fixed rule", vertical_single: "WirelessJEV, one radio", vertical_shared: "WirelessJEV, second association on the same card", vertical_onboard: "WirelessJEV + onboard radio", vertical_client: "WirelessJEV + second BE200", "vertical_shared-levers": "Same, extra levers off" };
+  const canon = (c, label) => c ? `<div class="card" style="margin-top:16px"><h3>${label}</h3><div class="sub">${esc(c.protocol)} · fresh scenes 540–545, 300 s each · misses = control packets later than 50 ms</div>${verdicts(c.evaluation, ["X1", "X2", "X3", "X4", "X5", "X6"])}
+    ${[...new Set(c.arms.map((a) => a.condition))].map((cond) => `<h3 style="margin-top:12px">${esc(cond)}</h3>${table(["System", "Misses / million", "Worst-decile robot", "p99 gap (ms)", "1 s uptime", "Safety-stop time"], c.arms.filter((a) => a.condition === cond).map((a) => ({ hl: a.arm === "vertical_shared", cells: [esc(CANON[a.arm] || a.arm), fmt(1e6 * a.control_miss, 1), pct(a.control_miss_worst_decile, 3), fmt(a.control_gap_p99_ms, 0), pct(a.availability_1s, 3), pct(a.safety_stop_fraction, 3)] })))}`).join("")}</div>` : "";
+  s += canon(N.canonical100, "Canonical: WirelessJEV vs private 5G and Wi-Fi 8 · 100 robots") + canon(N.canonical10, "Canonical: the same comparison · 10 robots");
+  if (N.canonical100) s += `<h2 style="margin-top:28px">How we got here</h2><p class="lede">Earlier pre-registered campaigns, kept for the record.</p>`;
   const st = N.stack, byArm = Object.fromEntries((st?.arms || []).map((a) => [a.arm, a]));
   if (st) {
     s += `<div class="grid k4">${[["Legacy, 4 s roam", "legacy"], ["802.11r, 60 ms", "ft11r"], ["Default multi-link", "mlo_default"], ["Native stack", "native"]].map(([l, k], i) =>
