@@ -186,7 +186,8 @@ def hidden_draws(world: World, n_slots: int, blockage_rate: float = BLOCKAGE_RAT
 
 def simulate(world: World, policy: Policy, *, seed: int = 0, curves: LinkCurves | None = None,
              duration_s: float | None = None, blockage_rate: float = BLOCKAGE_RATE_PER_MIN,
-             collision_lambda: float = 0.0, interference: bool = False) -> dict:
+             collision_lambda: float = 0.0, interference: bool = False,
+             roam_gate=None, decision_trace=None) -> dict:
     if policy.kind == "nr":
         return simulate_nr(world, policy, seed=seed, curves=curves, duration_s=duration_s,
                            blockage_rate=blockage_rate)
@@ -422,11 +423,19 @@ def simulate(world: World, policy: Policy, *, seed: int = 0, curves: LinkCurves 
                 best = np.argmax(score, axis=1)
                 gain = score[ar, best] - score[ar, site]
                 go = (gain >= policy.roam_gain_db) & (best != site) & (outage_until <= k)
+                decision = None
+                if roam_gate is not None or decision_trace is not None:
+                    from .gate import RoamDecision
+                    decision = RoamDecision.capture(d,site,best,gain,go,score)
+                confident = np.ones(n,dtype=bool)
                 if policy.gate:
                     sb = sigma_now * policy.belief_scale                     # (N,S,3)
                     sbest = sb.max(axis=2)
                     z = gain / np.sqrt(sbest[ar, site] ** 2 + sbest[ar, best] ** 2 + 1e-9)
                     confident = z >= policy.gate_z
+                    if roam_gate is not None:
+                        from .gate import checked_mask
+                        confident = checked_mask(roam_gate(decision),n)
                     go = go & confident
                     # Not confident: the reactive rule decides for this robot.
                     r = rssi_dl(max(0, k - BLOCK_SLOTS))
@@ -443,6 +452,8 @@ def simulate(world: World, policy: Policy, *, seed: int = 0, curves: LinkCurves 
                         continue
                     budget[best[i]] = budget.get(best[i], 0) + 1
                     move_primary(i, best[i], policy.roam_cost_s)
+                if decision_trace is not None:
+                    decision_trace(decision,confident.copy(),site.copy())
             else:
                 r = rssi_dl(max(0, k - BLOCK_SLOTS))
                 cur = r[ar, site].max(axis=1)
