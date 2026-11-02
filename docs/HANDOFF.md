@@ -1,5 +1,53 @@
 # WirelessJEV research handoff
 
+## Completed fleet world-model improvement and independent confirmation
+
+The implementation and results are in `docs/FLEET_WORLD_MODEL_DESIGN.md`,
+`docs/FLEET_WORLD_MODEL_RESULTS.md` and `docs/FLEET_CONFIRMATION_RESULTS.md`.
+Nine 24-epoch fits completed: three independent initialisations each for
+hybrid JEPA, supervised hybrid and standalone fleet JEPA. Training uses 32
+sites and six separate validation sites. Twelve further sites support 432
+native controller-selection runs. The main study contains 296 tests on 32
+fresh sites; independent confirmation adds 32 runs on eight new sites.
+Total new native runs: 760. No historical study was rewritten.
+
+The first study chose standalone Fleet JEPA on development data. Its primary
+100.00 versus 115.10 ppm difference has interval [-48.45, 19.27], so its control
+improvement was not established. It did improve forecast RMSE, 5.63 versus
+8.34 dB, and avoids per-BSS RadioMap fitting. Its measured full CPU forecast
+call is about 191 ms for 100 robots and nine horizons.
+
+The best discovered hybrid was fixed BEFORE opening eight additional sites.
+The independent primary test passes: supervised hybrid has 256 misses versus
+321 for learned-prior RadioMap across 1.92 million commands per arm, or 133.33
+versus 167.19 ppm. This is 20.2% fewer misses; paired 95% interval for the
+difference is [-68.75, -5.73] ppm. Forecast RMSE is 4.57 versus 7.09 dB. The
+secondary JEPA hybrid reaches 128.12 ppm; previous JEPA reaches 126.04. The
+new hybrids improve forecasting but do not establish universal controller
+superiority or the necessity of the JEPA objective.
+
+The explicit `FleetWorldModel(geometry, family="confirmed")` profile keeps the
+preregistered supervised candidate even though the secondary JEPA arm has fewer
+confirmation misses. It checks the evidence/checkpoint identities and refuses
+the profile without a passing independent primary result. The main application
+default remains RadioMap. The hybrid CPU call takes roughly 0.4 seconds per
+100-robot forecast plus periodic map refits; standalone is about 0.19 seconds.
+
+All training/evaluation workers have exited. Source capsules, raw counters,
+checkpoints, selection seals, CPU benchmarks and independent forecast replay
+are in `artifacts/fleet_world_model/` and `artifacts/fleet_confirmation/`.
+Reproduce sequentially with `bash scripts/run_fleet_research.sh`; audit with
+`scripts/audit_fleet_world_model.py` and `scripts/audit_fleet_confirmation.py`.
+Training caches are rebuilt under `/workspace/training/fleet-world-model`.
+
+Limits: simulated mean-field supervision, shared canonical warehouse layout,
+known geometry/localisation/noise floors, precomputed robot trajectories,
+idealised reactive observations and 30 ms native handovers. Forecasts are causal
+but supplied offline; measured inference time is not charged to packet deadlines.
+Real scan costs, asynchronous inference, arbitrary-layout transfer and physical
+smartcar qualification remain open. Stress/yard/drift use fresh seeds from
+families represented in training. The new models are not universal winners.
+
 ## Completed JEPA gate repair
 
 The follow-up in `docs/JEPA_GATE_REPAIR_RESULTS.md` completed 270 native

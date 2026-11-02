@@ -1,0 +1,15 @@
+{
+  "amendment": "Include the existing cross-site foundation RadioMap prior as a stronger reference",
+  "made_before": "closed-loop selection or access to any new test site",
+  "prior": "artifacts/native/foundation.json",
+  "prior_training_sites": "Existing forty-site foundation study; disjoint from this study",
+  "reference_family": "learned_radiomap",
+  "same_observations_and_refresh": true,
+  "gate_options": [0.25,0.5,1.0,2.0,"rescue"],
+  "selection_objective": "Same equal-condition ratios and reference denominators as the core development selection",
+  "strongest_reference": "Choose static, rolling or learned-prior RadioMap using development score only",
+  "additional_selection_rollouts": 60,
+  "additional_test_rollouts": 40,
+  "core_training_and_protocol_unchanged": true,
+  "simulation_only": true
+}
