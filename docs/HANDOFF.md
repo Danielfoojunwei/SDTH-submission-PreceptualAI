@@ -1,5 +1,57 @@
 # WirelessJEV research handoff
 
+## Completed broader optimisation frontier
+
+The new work is in `WORLD_FRONTIER_RESULTS.md`, `FRONTIER_CONFIRMATION_RESULTS.md`,
+`HARDWARE_BUDGET_RESULTS.md` and `HANDOVER_ADMISSION_RESULTS.md`. It adds nine
+18-epoch fits across three compact families and three seeds: distilled,
+route/reliability-loss and temporal/innovation. Density and scan cadence vary
+during training. Fleet sufficient statistics are incremental; RadioMap uses
+the same posterior with faster BLAS covariance evaluation. New inputs include
+absolute report count and AP-local cross-band context.
+
+The main frontier has 96 selection runs and 160 tests on 24 fresh sites.
+Independent compact-model confirmation adds 32 runs on eight sites. A
+hardware-budget search adds 64 development and 32 fresh tests on four sites.
+All-handover admission adds 48 tests on six sites. Total: 432 additional native
+runs, 42 fresh sites. All 184 tests and the evidence audits pass. All owned
+training/evaluation workers have exited; previous evidence is unchanged.
+
+The single distilled model's measured warm service budget is 53.05 ms for
+100 robots/nine horizons, versus 232.74 ms for the frozen three-member hybrid.
+Optimised RadioMap is 67.20 ms. The temporal model won mixed-condition
+development selection but failed its primary control-superiority interval.
+The separately fixed distilled model reaches 228.12 versus 251.04 ppm on eight
+additional sites, interval [-85.94, 39.06]; this does not establish superiority.
+The primary compute improvement is real, but is not a universal control win.
+
+With assumed 4 s handovers, 90 ms scans and 500 ms extra processing delay,
+development selects five-second scans and outage-budget gating for every
+reference. On four fresh sites the distilled model drops from 14.849% to
+7.419% command loss. That experiment keeps the old reactive fallback. A new,
+separate handover-admission hook then filters both planned and reactive
+proposals: on six other sites, distilled loss drops from 8.851% to 5.920%.
+The cohorts differ; do not chain these percentages into one improvement claim.
+High remaining loss fails deployment qualification. Four-second outages are
+not removed by more accurate mean-field prediction.
+
+`wirelessjev.frontier_control.OptimizedWorldModel` and `AsyncForecastService`
+provide a bounded, nonblocking proposal service with real background compute,
+forecast-age interpolation and explicit past-only inputs. No radio actions are
+performed. The main application default remains unchanged. Source-sealed
+research kernels preserve absent-hook packet counters and separate the Boolean
+confidence/fallback decision from physical admission of an outage.
+
+Reproduce with `bash scripts/run_world_frontier.sh`; it verifies and reuses
+sealed timing without recalibration. Each experiment has source capsules,
+checkpoints/weights checksums, raw counters and an independent read-only audit.
+The measured CPU ledger includes tensor packing and periodic processing costs;
+the refit envelope also includes a catch-up probe. These are microbenchmarks.
+Scan/handover durations remain assumptions. Scanner/telemetry availability is
+not fully coupled to radio outages, motion is precomputed, and arbitrary CAD
+or physical smartcars are not qualified. Native counterfactual reward training,
+joint uncertainty and real observation/actuator timing remain open options.
+
 ## Completed fleet world-model improvement and independent confirmation
 
 The implementation and results are in `docs/FLEET_WORLD_MODEL_DESIGN.md`,

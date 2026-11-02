@@ -105,3 +105,20 @@ def test_admission_hook_is_distinct_from_confidence_and_defaults_are_unchanged()
     # Even proposals from the reactive path cannot bypass an explicit denial.
     result=admitted(w,p,roam_gate=lambda c:np.zeros(w.n,dtype=bool),handover_admission=lambda c:np.zeros(w.n,dtype=bool))
     assert result['roams']==0 and result['control_sent']==16*5*20
+
+
+def test_compact_confirmation_preserves_the_original_failed_selection():
+    from pathlib import Path
+    import importlib.util
+    root=Path(__file__).resolve().parents[1];path=root/'scripts/report_frontier_confirmation.py'
+    spec=importlib.util.spec_from_file_location('compact_confirmation_audit',path);module=importlib.util.module_from_spec(spec);spec.loader.exec_module(module)
+    result=module.audit();assert result['passed'] and result['native_runs']==32
+
+
+def test_hardware_budget_and_admission_archives_are_complete():
+    from pathlib import Path
+    import importlib.util
+    root=Path(__file__).resolve().parents[1];path=root/'scripts/report_hardware_controls.py'
+    spec=importlib.util.spec_from_file_location('hardware_controls_audit',path);module=importlib.util.module_from_spec(spec);spec.loader.exec_module(module)
+    a=module.audit('hardware_budget');b=module.audit('handover_admission')
+    assert a['passed'] and a['native_runs']==96 and b['passed'] and b['native_runs']==48

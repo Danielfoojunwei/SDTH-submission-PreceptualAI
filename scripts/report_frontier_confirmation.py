@@ -82,6 +82,12 @@ def audit():
         assert len(c['rows'])==4 and c['latency_sha256']==s['latency_sha256']
         for r in c['rows']:
             z=r['result'];assert z['control_sent']==100*120*20 and z['control_miss']==z['control_misses']/z['control_sent'] and sum(z['miss_causes'].values())==z['control_misses']
+    summary=json.loads((OUT/'summary.json').read_text())
+    for family,a in summary['arms'].items():
+        rs=[next(r['result'] for r in c['rows'] if r['family']==family) for c in cases]
+        assert a['misses']==sum(r['control_misses'] for r in rs) and a['commands']==sum(r['control_sent'] for r in rs)
+        assert np.isclose(a['ppm'],a['misses']/a['commands']*1e6)
+    assert summary['primary_success']==(summary['candidate_vs_reference']['radiomap']['paired_site_bootstrap_95_ppm'][1]<0)
     return {'passed':True,'independent_sites':8,'native_runs':32,'fixed_models_and_timing':True,'original_frontier_preserved':True,'simulation_only':True}
 
 

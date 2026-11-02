@@ -5,6 +5,21 @@ Current experiment status and restart prerequisites are in [docs/HANDOFF.md](doc
 The restored didjital R6.1 reference and its executed software checks are
 documented in [docs/R6_COMPATIBILITY.md](docs/R6_COMPATIBILITY.md).
 
+The [optimisation frontier](docs/WORLD_FRONTIER_RESULTS.md) adds **nine fits,
+432 native runs and 42 fresh test sites** across model, runtime, sensing and
+handover-admission experiments. A distilled single model uses a measured
+**53 ms** warm CPU budget per 100-robot forecast versus **233 ms** for the
+three-member hybrid (4.39× smaller). RadioMap's covariance calculation is
+optimised too. The [independent charged-cost test](docs/FRONTIER_CONFIRMATION_RESULTS.md)
+has 228.12 versus 251.04 misses/million, but its interval spans zero; robust
+control superiority is not established. New simulations charge forecast queues
+and scan outages. Separate [sensing/budget selection](docs/HARDWARE_BUDGET_RESULTS.md)
+and [all-handover admission](docs/HANDOVER_ADMISSION_RESULTS.md) reduce losses
+under assumed four-second handovers. The latter reduces distilled-model loss
+from 8.85% to 5.92% on six fresh sites, still too high for deployment.
+`OptimizedWorldModel` and `AsyncForecastService` expose an opt-in proposal runtime.
+These are simulated results; hardware qualification and broader layouts remain open.
+
 The [fleet world-model study](docs/FLEET_WORLD_MODEL_RESULTS.md) trains nine
 models with causal fleet memory, rack geometry, route conditioning and
 mean-field/AP-score supervision. Its [independent confirmation](docs/FLEET_CONFIRMATION_RESULTS.md)
