@@ -1,0 +1,197 @@
+{
+  "completed": true,
+  "study": "hardware_budget",
+  "fresh_sites": 4,
+  "native_runs": 96,
+  "variants": [
+    "default",
+    "selected"
+  ],
+  "arms": {
+    "radiomap": {
+      "default": {
+        "misses": 69247,
+        "commands": 480000,
+        "ppm": 144264.58333333334,
+        "percent": 14.426458333333333,
+        "scene_ppm": [
+          148775.0,
+          133833.33333333334,
+          146666.66666666666,
+          147783.3333333333
+        ],
+        "bulk_mbps": 488.82225099924085,
+        "video_on_time": 0.8773860245305349,
+        "mean_roams": 155.0,
+        "safety_stop_fraction": 0.11784958333333334
+      },
+      "selected": {
+        "misses": 36446,
+        "commands": 480000,
+        "ppm": 75929.16666666667,
+        "percent": 7.5929166666666665,
+        "scene_ppm": [
+          73158.33333333334,
+          74075.0,
+          82758.33333333334,
+          73725.0
+        ],
+        "bulk_mbps": 493.06311048489465,
+        "video_on_time": 0.9132426039285115,
+        "mean_roams": 103.75,
+        "safety_stop_fraction": 0.07946958333333333
+      }
+    },
+    "previous_jepa": {
+      "default": {
+        "misses": 76728,
+        "commands": 480000,
+        "ppm": 159850.0,
+        "percent": 15.985,
+        "scene_ppm": [
+          156850.0,
+          160266.66666666666,
+          162716.6666666667,
+          159566.66666666666
+        ],
+        "bulk_mbps": 488.98414833838706,
+        "video_on_time": 0.853457715745247,
+        "mean_roams": 180.25,
+        "safety_stop_fraction": 0.13739458333333332
+      },
+      "selected": {
+        "misses": 40471,
+        "commands": 480000,
+        "ppm": 84314.58333333333,
+        "percent": 8.431458333333333,
+        "scene_ppm": [
+          82975.0,
+          80525.0,
+          92016.66666666666,
+          81741.66666666667
+        ],
+        "bulk_mbps": 490.99575137756443,
+        "video_on_time": 0.9152709198232825,
+        "mean_roams": 116.0,
+        "safety_stop_fraction": 0.08983958333333333
+      }
+    },
+    "confirmed_hybrid": {
+      "default": {
+        "misses": 72685,
+        "commands": 480000,
+        "ppm": 151427.0833333333,
+        "percent": 15.142708333333333,
+        "scene_ppm": [
+          157441.6666666667,
+          139691.66666666666,
+          155075.0,
+          153500.0
+        ],
+        "bulk_mbps": 488.34814899872254,
+        "video_on_time": 0.8585258955462209,
+        "mean_roams": 167.25,
+        "safety_stop_fraction": 0.12721375000000001
+      },
+      "selected": {
+        "misses": 35984,
+        "commands": 480000,
+        "ppm": 74966.66666666667,
+        "percent": 7.496666666666667,
+        "scene_ppm": [
+          71583.33333333333,
+          74275.0,
+          78541.66666666666,
+          75466.66666666667
+        ],
+        "bulk_mbps": 492.82531949821674,
+        "video_on_time": 0.9109939829325276,
+        "mean_roams": 103.5,
+        "safety_stop_fraction": 0.07828750000000001
+      }
+    },
+    "distilled": {
+      "default": {
+        "misses": 71274,
+        "commands": 480000,
+        "ppm": 148487.5,
+        "percent": 14.84875,
+        "scene_ppm": [
+          150583.33333333334,
+          141966.66666666666,
+          154341.66666666666,
+          147058.33333333334
+        ],
+        "bulk_mbps": 488.5944013889881,
+        "video_on_time": 0.8617291039734104,
+        "mean_roams": 162.0,
+        "safety_stop_fraction": 0.12330916666666668
+      },
+      "selected": {
+        "misses": 35611,
+        "commands": 480000,
+        "ppm": 74189.58333333334,
+        "percent": 7.418958333333333,
+        "scene_ppm": [
+          67725.0,
+          74808.33333333334,
+          81833.33333333333,
+          72391.66666666667
+        ],
+        "bulk_mbps": 492.9899464228764,
+        "video_on_time": 0.9178905034010915,
+        "mean_roams": 100.75,
+        "safety_stop_fraction": 0.07739625
+      }
+    }
+  },
+  "within_method_comparisons": {
+    "radiomap": {
+      "mean_difference_ppm": -68335.41666666666,
+      "paired_site_bootstrap_95_ppm": [
+        -74837.49999999999,
+        -61833.33333333333
+      ],
+      "wins": 4,
+      "sites": 4
+    },
+    "previous_jepa": {
+      "mean_difference_ppm": -75535.41666666667,
+      "paired_site_bootstrap_95_ppm": [
+        -78783.33333333331,
+        -72287.50000000001
+      ],
+      "wins": 4,
+      "sites": 4
+    },
+    "confirmed_hybrid": {
+      "mean_difference_ppm": -76460.41666666667,
+      "paired_site_bootstrap_95_ppm": [
+        -83527.08333333336,
+        -68570.83333333333
+      ],
+      "wins": 4,
+      "sites": 4
+    },
+    "distilled": {
+      "mean_difference_ppm": -74297.91666666667,
+      "paired_site_bootstrap_95_ppm": [
+        -80270.83333333334,
+        -69035.41666666666
+      ],
+      "wins": 4,
+      "sites": 4
+    }
+  },
+  "primary_comparison": {
+    "mean_difference_ppm": -1739.5833333333358,
+    "paired_site_bootstrap_95_ppm": [
+      -4306.250000000011,
+      216.66666666667516
+    ],
+    "wins": 3,
+    "sites": 4
+  },
+  "primary_success": false,
+  "simulation_only": true
+}

@@ -1,0 +1,19 @@
+{
+  "study": "Separate confidence routing from physical handover admission",
+  "design": "The prior hardware-budget study filtered planned moves but left reactive handovers unrestricted. This test applies the same frozen expected-outage rule to both proposal paths.",
+  "test_sites": [315000,315001,315002,315003,315004,315005],
+  "methods": ["radiomap","previous_jepa","confirmed_hybrid","distilled"],
+  "variants": ["planned_only","all_handovers"],
+  "robots": 100,
+  "duration_seconds": 60,
+  "scan_period_seconds": 5,
+  "scan_outage_seconds": 0.09,
+  "handover_seconds": 4.0,
+  "extra_compute_seconds": 0.5,
+  "gate_rule": "Reuse OutageBudgetGate unchanged; all_handovers checks it after both planned and reactive proposals. It receives only observable candidate/current AP IDs and the causal forecast bank.",
+  "training_or_tuning": false,
+  "primary": "All-handovers minus planned-only control-miss difference for distilled on six fresh sites",
+  "secondary": "Same paired comparison for every reference, plus forecast-model comparisons and throughput tradeoffs",
+  "simulation_only": true,
+  "no_safety_guarantee": true
+}

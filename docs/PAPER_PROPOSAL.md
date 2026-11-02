@@ -6,6 +6,32 @@ are in `docs/WAREHOUSE_RESULTS.md`. The subsequently authorised warehouse v2
 campaign is described below; general foundation-model, custom on-air PHY,
 robotics and space extensions remain deferred.
 
+## Operational-cost and handover-admission frontier
+
+The broader follow-up (`WORLD_FRONTIER_RESULTS.md`) tests distilled,
+route/reliability-loss and temporal models across three seeds each, with
+matched runtime optimisation of RadioMap. It charges a measured asynchronous
+compute queue and assumed scan outages in native packet evaluation. The
+single student uses 53 ms versus 233 ms for the three-member hybrid on this
+CPU, but its independent confirmation (228.12 vs 251.04 ppm) has interval
+[-85.94, 39.06]. Do not turn the compute gain into a control-superiority claim.
+
+The separate hardware-budget and admission studies expose a stronger system
+finding. Under assumed four-second handovers, tuning sensing cadence and
+planned admission reduces distilled loss from 14.849% to 7.419% on four fresh
+sites. On six other fresh sites, applying the same outage rule to both planned
+and reactive proposals reduces 8.851% to 5.920%. This supports separating
+confidence/fallback routing from admission of a physical outage. The effect
+also benefits RadioMap, so it is not evidence of JEPA necessity.
+
+The 432 additional native runs and 42 fresh sites preserve model failures and
+throughput trade-offs. Remaining loss is unacceptable for physical deployment.
+Scanner phases, telemetry delivery and motion remain idealised; hardware timing
+is assumed. The earlier offline-confirmation cohort remains evidence for its
+own conditions, not a guarantee under the stricter frontier. Stronger claims
+need live observation coupling, real handovers, independent CAD and native
+counterfactual reward learning.
+
 ## Fleet-memory world models: confirmed warehouse comparison
 
 `FLEET_WORLD_MODEL_RESULTS.md` and `FLEET_CONFIRMATION_RESULTS.md` record nine

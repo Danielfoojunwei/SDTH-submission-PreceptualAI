@@ -1,0 +1,181 @@
+{
+  "completed": true,
+  "built_at": "2026-11-03T04:45:47.621238+08:00",
+  "candidate": "distilled",
+  "fresh_sites": 8,
+  "native_runs": 32,
+  "arms": {
+    "radiomap": {
+      "misses": 482,
+      "commands": 1920000,
+      "ppm": 251.04166666666666,
+      "scene_ppm": [
+        216.66666666666666,
+        1087.5,
+        0.0,
+        4.166666666666667,
+        0.0,
+        133.33333333333334,
+        8.333333333333334,
+        558.3333333333334
+      ],
+      "forecast_metrics": {
+        "rmse_db": 7.813188254833221,
+        "delta_rmse_db": 2.2862489074468613,
+        "ap_regret": 0.25441414257511497,
+        "coverage_90": 0.39859364149305554
+      },
+      "traffic": {
+        "bulk_mbps": 476.5068862787484,
+        "video_on_time": 0.9802960897084981,
+        "safety_stop_fraction": 0.0003669791666666667
+      }
+    },
+    "previous_jepa": {
+      "misses": 417,
+      "commands": 1920000,
+      "ppm": 217.1875,
+      "scene_ppm": [
+        25.0,
+        1025.0,
+        0.0,
+        4.166666666666667,
+        0.0,
+        12.5,
+        8.333333333333334,
+        662.5
+      ],
+      "forecast_metrics": {
+        "rmse_db": 10.230042099952698,
+        "delta_rmse_db": 2.6936815679073334,
+        "ap_regret": 0.26890861615538597,
+        "coverage_90": 0.8427321686921296
+      },
+      "traffic": {
+        "bulk_mbps": 477.24970927105625,
+        "video_on_time": 0.9806110719677781,
+        "safety_stop_fraction": 0.00038375000000000003
+      }
+    },
+    "confirmed_hybrid": {
+      "misses": 429,
+      "commands": 1920000,
+      "ppm": 223.4375,
+      "scene_ppm": [
+        166.66666666666666,
+        925.0,
+        0.0,
+        4.166666666666667,
+        0.0,
+        129.16666666666666,
+        8.333333333333334,
+        554.1666666666666
+      ],
+      "forecast_metrics": {
+        "rmse_db": 4.960913330316544,
+        "delta_rmse_db": 2.1459934562444687,
+        "ap_regret": 0.18150999303907156,
+        "coverage_90": 0.8893413990162037
+      },
+      "traffic": {
+        "bulk_mbps": 476.8032503089606,
+        "video_on_time": 0.9805768168514786,
+        "safety_stop_fraction": 0.0003452083333333333
+      }
+    },
+    "distilled": {
+      "misses": 438,
+      "commands": 1920000,
+      "ppm": 228.125,
+      "scene_ppm": [
+        158.33333333333331,
+        900.0,
+        0.0,
+        16.666666666666668,
+        0.0,
+        37.5,
+        4.166666666666667,
+        708.3333333333334
+      ],
+      "forecast_metrics": {
+        "rmse_db": 5.112639844417572,
+        "delta_rmse_db": 2.2122138291597366,
+        "ap_regret": 0.24644150398671627,
+        "coverage_90": 0.9046316189236111
+      },
+      "traffic": {
+        "bulk_mbps": 476.69264644897237,
+        "video_on_time": 0.9802223046368055,
+        "safety_stop_fraction": 0.00031354166666666667
+      }
+    }
+  },
+  "candidate_vs_reference": {
+    "radiomap": {
+      "mean_difference_ppm": -22.916666666666668,
+      "paired_site_bootstrap_95_ppm": [
+        -85.9375,
+        39.0625
+      ],
+      "wins": 4,
+      "ties": 2,
+      "sites": 8
+    },
+    "previous_jepa": {
+      "mean_difference_ppm": 10.937500000000004,
+      "paired_site_bootstrap_95_ppm": [
+        -38.02083333333333,
+        56.77083333333334
+      ],
+      "wins": 2,
+      "ties": 2,
+      "sites": 8
+    },
+    "confirmed_hybrid": {
+      "mean_difference_ppm": 4.687500000000011,
+      "paired_site_bootstrap_95_ppm": [
+        -35.416666666666664,
+        54.68750000000003
+      ],
+      "wins": 4,
+      "ties": 2,
+      "sites": 8
+    }
+  },
+  "primary_success": false,
+  "latency_seconds": {
+    "radiomap": {
+      "cold": 0.5597614620346576,
+      "warm": 0.06719516087323427,
+      "refit": 0.6186473113280954
+    },
+    "previous_jepa": {
+      "cold": 0.34020719898398966,
+      "warm": 0.13986420531873592,
+      "refit": 0.1810910243424587
+    },
+    "confirmed_hybrid": {
+      "cold": 0.9290973868919536,
+      "warm": 0.23274229984381234,
+      "refit": 0.8263176426815335
+    },
+    "distilled": {
+      "cold": 0.2533986775175435,
+      "warm": 0.05304532400041353,
+      "refit": 0.10975684623990674
+    },
+    "packet": {
+      "cold": 0.2520732235367177,
+      "warm": 0.057564517381251776,
+      "refit": 0.11034706899663434
+    },
+    "temporal": {
+      "cold": 0.2628848225082038,
+      "warm": 0.06545733097882477,
+      "refit": 0.12123730319726747
+    }
+  },
+  "warm_speed_ratio_vs_hybrid": 4.387611994640619,
+  "charged_compute_and_sensing": true,
+  "simulation_only": true
+}

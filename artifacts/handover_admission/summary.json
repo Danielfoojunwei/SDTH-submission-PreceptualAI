@@ -1,0 +1,213 @@
+{
+  "completed": true,
+  "study": "handover_admission",
+  "fresh_sites": 6,
+  "native_runs": 48,
+  "variants": [
+    "planned_only",
+    "all_handovers"
+  ],
+  "arms": {
+    "radiomap": {
+      "planned_only": {
+        "misses": 64423,
+        "commands": 720000,
+        "ppm": 89476.38888888888,
+        "percent": 8.94763888888889,
+        "scene_ppm": [
+          98125.0,
+          68666.66666666667,
+          103091.66666666667,
+          60666.666666666664,
+          102533.33333333334,
+          103775.0
+        ],
+        "bulk_mbps": 499.21271494752955,
+        "video_on_time": 0.8927126454947486,
+        "mean_roams": 123.66666666666667,
+        "safety_stop_fraction": 0.09596694444444444
+      },
+      "all_handovers": {
+        "misses": 43354,
+        "commands": 720000,
+        "ppm": 60213.88888888888,
+        "percent": 6.021388888888889,
+        "scene_ppm": [
+          62425.0,
+          39608.333333333336,
+          74125.0,
+          29566.666666666668,
+          77675.0,
+          77883.33333333333
+        ],
+        "bulk_mbps": 470.25275258246916,
+        "video_on_time": 0.9109995266958855,
+        "mean_roams": 58.166666666666664,
+        "safety_stop_fraction": 0.07316222222222223
+      }
+    },
+    "previous_jepa": {
+      "planned_only": {
+        "misses": 69081,
+        "commands": 720000,
+        "ppm": 95945.83333333333,
+        "percent": 9.594583333333333,
+        "scene_ppm": [
+          99783.33333333333,
+          80866.66666666667,
+          112641.66666666667,
+          63558.33333333333,
+          105433.33333333334,
+          113391.66666666667
+        ],
+        "bulk_mbps": 498.6836983023,
+        "video_on_time": 0.8917928081850416,
+        "mean_roams": 132.66666666666666,
+        "safety_stop_fraction": 0.10384472222222223
+      },
+      "all_handovers": {
+        "misses": 51090,
+        "commands": 720000,
+        "ppm": 70958.33333333333,
+        "percent": 7.095833333333333,
+        "scene_ppm": [
+          72450.0,
+          65591.66666666667,
+          78166.66666666666,
+          49750.0,
+          74408.33333333334,
+          85383.33333333334
+        ],
+        "bulk_mbps": 489.72477397814964,
+        "video_on_time": 0.9088863242343468,
+        "mean_roams": 85.5,
+        "safety_stop_fraction": 0.07917500000000001
+      }
+    },
+    "confirmed_hybrid": {
+      "planned_only": {
+        "misses": 64707,
+        "commands": 720000,
+        "ppm": 89870.83333333333,
+        "percent": 8.987083333333333,
+        "scene_ppm": [
+          96391.66666666667,
+          67475.0,
+          109683.33333333333,
+          63633.333333333336,
+          104475.0,
+          97566.66666666666
+        ],
+        "bulk_mbps": 500.2409989607416,
+        "video_on_time": 0.889869186159633,
+        "mean_roams": 124.5,
+        "safety_stop_fraction": 0.09658027777777778
+      },
+      "all_handovers": {
+        "misses": 43187,
+        "commands": 720000,
+        "ppm": 59981.944444444445,
+        "percent": 5.998194444444445,
+        "scene_ppm": [
+          60591.66666666667,
+          41308.333333333336,
+          74691.66666666667,
+          28366.666666666664,
+          77133.33333333333,
+          77800.0
+        ],
+        "bulk_mbps": 470.7167772594882,
+        "video_on_time": 0.9096536286392651,
+        "mean_roams": 56.166666666666664,
+        "safety_stop_fraction": 0.07367416666666667
+      }
+    },
+    "distilled": {
+      "planned_only": {
+        "misses": 63728,
+        "commands": 720000,
+        "ppm": 88511.11111111111,
+        "percent": 8.851111111111111,
+        "scene_ppm": [
+          96816.66666666666,
+          67966.66666666666,
+          101125.0,
+          59366.666666666664,
+          101308.33333333333,
+          104483.33333333333
+        ],
+        "bulk_mbps": 499.2920773016453,
+        "video_on_time": 0.8922406746972933,
+        "mean_roams": 122.5,
+        "safety_stop_fraction": 0.09479749999999999
+      },
+      "all_handovers": {
+        "misses": 42624,
+        "commands": 720000,
+        "ppm": 59200.0,
+        "percent": 5.92,
+        "scene_ppm": [
+          55291.66666666667,
+          39433.333333333336,
+          73900.0,
+          27041.666666666664,
+          79416.66666666666,
+          80116.66666666667
+        ],
+        "bulk_mbps": 462.43870852406786,
+        "video_on_time": 0.9103830003600151,
+        "mean_roams": 50.0,
+        "safety_stop_fraction": 0.07489833333333333
+      }
+    }
+  },
+  "within_method_comparisons": {
+    "radiomap": {
+      "mean_difference_ppm": -29262.5,
+      "paired_site_bootstrap_95_ppm": [
+        -32258.333333333332,
+        -26587.50000000001
+      ],
+      "wins": 6,
+      "sites": 6
+    },
+    "previous_jepa": {
+      "mean_difference_ppm": -24987.5,
+      "paired_site_bootstrap_95_ppm": [
+        -30944.44444444445,
+        -18673.611111111106
+      ],
+      "wins": 6,
+      "sites": 6
+    },
+    "confirmed_hybrid": {
+      "mean_difference_ppm": -29888.88888888889,
+      "paired_site_bootstrap_95_ppm": [
+        -34077.77777777778,
+        -24768.05555555555
+      ],
+      "wins": 6,
+      "sites": 6
+    },
+    "distilled": {
+      "mean_difference_ppm": -29311.11111111111,
+      "paired_site_bootstrap_95_ppm": [
+        -34759.72222222221,
+        -24737.5
+      ],
+      "wins": 6,
+      "sites": 6
+    }
+  },
+  "primary_comparison": {
+    "mean_difference_ppm": -29311.11111111111,
+    "paired_site_bootstrap_95_ppm": [
+      -34759.72222222221,
+      -24737.5
+    ],
+    "wins": 6,
+    "sites": 6
+  },
+  "primary_success": true,
+  "simulation_only": true
+}
