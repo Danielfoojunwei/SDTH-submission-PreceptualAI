@@ -66,3 +66,34 @@ def test_calibration_uses_one_sided_error_and_roundtrips():
     m=fit_model(x,y,cx,cy);n=GainCalibrator.from_dict(m.to_dict())
     for a,b in zip(m.estimate(cx),n.estimate(cx)):np.testing.assert_allclose(a,b)
     assert m.quantiles['0.5']<=m.quantiles['0.75']<=m.quantiles['0.9']
+
+
+def test_old_report_refuses_new_kernel_before_mutating_old_evidence():
+    import hashlib
+    root=Path(__file__).resolve().parents[1];source=root/'scripts/report_contracted_results.py'
+    spec=importlib.util.spec_from_file_location('historical_report_guard',source);m=importlib.util.module_from_spec(spec);spec.loader.exec_module(m)
+    old=(root/'artifacts/contracted/summary.json').read_bytes()
+    with pytest.raises(RuntimeError,match='Historical execution source differs'):m.main()
+    assert (root/'artifacts/contracted/summary.json').read_bytes()==old
+
+
+def test_opt_in_profile_uses_development_choice_and_scopes_its_mission():
+    from wirelessjev.jepa_control import controller
+    import json
+    root=Path(__file__).resolve().parents[1];choice=json.loads((root/'artifacts/gate_repair/selection.json').read_text())
+    expected=min(['scale','gain'],key=lambda k:(choice[k]['score'],0 if k=='scale' else 1))
+    assert expected=='scale'
+    policy,hook,profile=controller();assert profile['method']==expected and policy.belief_scale==choice['scale']['parameter'] and hook is None
+    assert policy.gate and not policy.online_map
+    from wirelessjev.native.intent_policy import intent_policy
+    from dataclasses import asdict
+    expected_policy=replace(intent_policy(READINGS['bulk_uploads']['weights'],READINGS['bulk_uploads']['focus'],dual_hardware='none'),online_map=False,gate=True,belief_scale=choice['scale']['parameter'],name=policy.name)
+    assert asdict(policy)==asdict(expected_policy)
+    with pytest.raises(ValueError,match='only been validated'):controller(mission='protect_teleop')
+    with pytest.raises(ValueError,match='ForecastBank'):controller(method='gain')
+
+
+def test_gate_repair_archive_is_complete_and_keeps_forecasts_fixed():
+    root=Path(__file__).resolve().parents[1];path=root/'scripts/audit_jepa_gate_repair.py'
+    spec=importlib.util.spec_from_file_location('gate_repair_archive_audit',path);m=importlib.util.module_from_spec(spec);spec.loader.exec_module(m)
+    r=m.audit();assert r['passed'] and r['fresh_test_runs']==168 and r['historical_replays_matched']==6

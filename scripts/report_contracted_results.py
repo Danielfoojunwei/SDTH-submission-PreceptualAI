@@ -80,7 +80,17 @@ def markdown(s):
     (ROOT/'docs/CONTRACTED_RESULTS.md').write_text('\n'.join(lines)+'\n')
 
 
+def verify_executed_sources():
+    """Refuse a changed kernel before touching any historical output."""
+    for stage in ['training','evaluation']:
+        receipt=json.loads((OUT/(stage+'_source.json')).read_text())
+        for relative,expected in receipt['source_sha256'].items():
+            if hashlib.sha256((ROOT/relative).read_bytes()).hexdigest()!=expected:
+                raise RuntimeError('Historical execution source differs: '+relative+'. Use the frozen source capsule; original outputs were not rewritten.')
+
+
 def main():
+    verify_executed_sources()
     if not (OUT/'evaluation.json').exists():raise RuntimeError('Evaluation has not completed')
     completion=json.loads((OUT/'evaluation.json').read_text());assert completion['completed']
     cases=[json.loads(p.read_text()) for p in sorted((OUT/'cases').glob('*.json'))]
@@ -154,10 +164,6 @@ def main():
     # Include the entire Python import tree, not just the critical-file receipts.
     # The fit/evaluation capsules remain immutable; verify their executed core
     # still matches before supplementing it with unchanged legacy dependencies.
-    for stage in ['training','evaluation']:
-        receipt=json.loads((OUT/(stage+'_source.json')).read_text())
-        for relative,expected in receipt['source_sha256'].items():
-            assert hashlib.sha256((ROOT/relative).read_bytes()).hexdigest()==expected,('Executed source changed',stage,relative)
     complete_paths=list((ROOT/'src/wirelessjev').rglob('*.py'))+[ROOT/'pyproject.toml',ROOT/'uv.lock',OUT/'protocol.json',OUT/'evaluation_amendment.json',ROOT/'artifacts/native/intent_flip.json',ROOT/'artifacts/warehouse_v2/studies/wifi_link_curves.json']
     complete_hashes={}
     for path in complete_paths:

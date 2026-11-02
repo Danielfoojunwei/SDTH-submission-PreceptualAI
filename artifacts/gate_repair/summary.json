@@ -1,0 +1,804 @@
+{
+  "completed": true,
+  "built_at": "2026-11-03T00:55:41.487210+08:00",
+  "study_native_runs": 270,
+  "diagnostic_native_replays": 6,
+  "fresh_test_scenes": 24,
+  "fresh_test_runs": 168,
+  "frozen_jepa_members": 5,
+  "selection": {
+    "scale": {
+      "parameter": 0.25,
+      "score": 0.6142311975509405,
+      "rejection_fraction": 0.4457567804024497
+    },
+    "gain": {
+      "parameter": 0.9,
+      "score": 0.6735671198581523,
+      "rejection_fraction": 0.591535102452133
+    }
+  },
+  "development_best": "scale",
+  "historical_diagnosis": {
+    "opportunities": 19331,
+    "rejected": 19012,
+    "rejection_fraction": 0.9834980083803218,
+    "beneficial_rejected": 18214,
+    "beneficial_rejected_without_rescue": 18214,
+    "harmful_accepted": 0,
+    "median_abs_gain_error_db": 3.0099716186523438,
+    "median_legacy_uncertainty_db": 14.489949226379395,
+    "median_active_band_uncertainty_db": 13.265745162963867,
+    "mean_ensemble_pair_spread_db": 0.507527232170105,
+    "mean_ensemble_independent_spread_db": 0.8291191458702087,
+    "legacy_gain_error_spearman": 0.08099567563287711,
+    "original_counters_reproduced": true
+  },
+  "fresh_results": {
+    "main": {
+      "arms": {
+        "fixed": {
+          "misses": 1410,
+          "sent": 1440000,
+          "ppm": 979.1666666666666
+        },
+        "bayesian": {
+          "misses": 224,
+          "sent": 1440000,
+          "ppm": 155.55555555555557
+        },
+        "ungated": {
+          "misses": 302,
+          "sent": 1440000,
+          "ppm": 209.72222222222223,
+          "decision_diagnostics": {
+            "opportunities": 2139,
+            "rejected": 0,
+            "rejection_fraction": 0.0,
+            "beneficial_rejected": 0,
+            "beneficial_rejected_without_rescue": 0,
+            "harmful_accepted": 303,
+            "median_abs_gain_error_db": 3.5830936431884766,
+            "median_legacy_uncertainty_db": 14.441353797912598,
+            "median_active_band_uncertainty_db": 13.215935707092285,
+            "mean_ensemble_pair_spread_db": 0.49188777804374695,
+            "mean_ensemble_independent_spread_db": 0.8395820260047913,
+            "legacy_gain_error_spearman": 0.17353714542215612
+          }
+        },
+        "legacy": {
+          "misses": 474,
+          "sent": 1440000,
+          "ppm": 329.1666666666667,
+          "decision_diagnostics": {
+            "opportunities": 21927,
+            "rejected": 21620,
+            "rejection_fraction": 0.9859989966707712,
+            "beneficial_rejected": 20945,
+            "beneficial_rejected_without_rescue": 20945,
+            "harmful_accepted": 0,
+            "median_abs_gain_error_db": 3.0827102661132812,
+            "median_legacy_uncertainty_db": 14.737520217895508,
+            "median_active_band_uncertainty_db": 13.221098899841309,
+            "mean_ensemble_pair_spread_db": 0.5146770477294922,
+            "mean_ensemble_independent_spread_db": 0.8337456583976746,
+            "legacy_gain_error_spearman": 0.08195780392917584
+          }
+        },
+        "rescue": {
+          "misses": 163,
+          "sent": 1440000,
+          "ppm": 113.19444444444446,
+          "decision_diagnostics": {
+            "opportunities": 2242,
+            "rejected": 0,
+            "rejection_fraction": 0.0,
+            "beneficial_rejected": 0,
+            "beneficial_rejected_without_rescue": 0,
+            "harmful_accepted": 318,
+            "median_abs_gain_error_db": 3.571784019470215,
+            "median_legacy_uncertainty_db": 14.553863525390625,
+            "median_active_band_uncertainty_db": 13.20987319946289,
+            "mean_ensemble_pair_spread_db": 0.49190667271614075,
+            "mean_ensemble_independent_spread_db": 0.8395420908927917,
+            "legacy_gain_error_spearman": 0.154890057124389
+          }
+        },
+        "scale": {
+          "misses": 160,
+          "sent": 1440000,
+          "ppm": 111.11111111111111,
+          "decision_diagnostics": {
+            "opportunities": 3705,
+            "rejected": 1715,
+            "rejection_fraction": 0.46288798920377866,
+            "beneficial_rejected": 1407,
+            "beneficial_rejected_without_rescue": 1407,
+            "harmful_accepted": 149,
+            "median_abs_gain_error_db": 3.389171600341797,
+            "median_legacy_uncertainty_db": 14.616990089416504,
+            "median_active_band_uncertainty_db": 13.191143035888672,
+            "mean_ensemble_pair_spread_db": 0.4851994812488556,
+            "mean_ensemble_independent_spread_db": 0.8347305059432983,
+            "legacy_gain_error_spearman": 0.13537042909473856
+          }
+        },
+        "gain": {
+          "misses": 192,
+          "sent": 1440000,
+          "ppm": 133.33333333333334,
+          "decision_diagnostics": {
+            "opportunities": 4543,
+            "rejected": 2543,
+            "rejection_fraction": 0.5597622716266784,
+            "beneficial_rejected": 2126,
+            "beneficial_rejected_without_rescue": 2126,
+            "harmful_accepted": 95,
+            "median_abs_gain_error_db": 3.4264450073242188,
+            "median_legacy_uncertainty_db": 14.356145858764648,
+            "median_active_band_uncertainty_db": 13.181663513183594,
+            "mean_ensemble_pair_spread_db": 0.48359382152557373,
+            "mean_ensemble_independent_spread_db": 0.8404368758201599,
+            "legacy_gain_error_spearman": 0.12010050772135153
+          }
+        }
+      },
+      "paired_comparisons": {
+        "scale_vs_legacy": {
+          "mean_ppm": -218.05555555555554,
+          "paired_scene_bootstrap_95_ppm": [
+            -384.02777777777777,
+            -67.3611111111111
+          ],
+          "wins": 6,
+          "ties": 0,
+          "scenes": 6,
+          "relative_reduction": 0.6624472573839663
+        },
+        "gain_vs_legacy": {
+          "mean_ppm": -195.83333333333334,
+          "paired_scene_bootstrap_95_ppm": [
+            -345.1388888888889,
+            -65.27777777777779
+          ],
+          "wins": 6,
+          "ties": 0,
+          "scenes": 6,
+          "relative_reduction": 0.5949367088607596
+        },
+        "scale_vs_ungated": {
+          "mean_ppm": -98.6111111111111,
+          "paired_scene_bootstrap_95_ppm": [
+            -159.02777777777777,
+            -38.19444444444445
+          ],
+          "wins": 5,
+          "ties": 1,
+          "scenes": 6,
+          "relative_reduction": 0.4701986754966887
+        },
+        "gain_vs_ungated": {
+          "mean_ppm": -76.38888888888893,
+          "paired_scene_bootstrap_95_ppm": [
+            -127.77777777777781,
+            -29.16666666666667
+          ],
+          "wins": 5,
+          "ties": 1,
+          "scenes": 6,
+          "relative_reduction": 0.36423841059602646
+        },
+        "scale_vs_rescue": {
+          "mean_ppm": -2.0833333333333255,
+          "paired_scene_bootstrap_95_ppm": [
+            -15.277777777777771,
+            6.944444444444461
+          ],
+          "wins": 1,
+          "ties": 2,
+          "scenes": 6,
+          "relative_reduction": 0.01840490797546024
+        },
+        "gain_vs_rescue": {
+          "mean_ppm": 20.13888888888889,
+          "paired_scene_bootstrap_95_ppm": [
+            -6.250000000000003,
+            48.61111111111111
+          ],
+          "wins": 1,
+          "ties": 2,
+          "scenes": 6,
+          "relative_reduction": -0.1779141104294477
+        },
+        "scale_vs_bayesian": {
+          "mean_ppm": -44.444444444444436,
+          "paired_scene_bootstrap_95_ppm": [
+            -82.63888888888889,
+            -11.111111111111107
+          ],
+          "wins": 3,
+          "ties": 3,
+          "scenes": 6,
+          "relative_reduction": 0.2857142857142858
+        }
+      }
+    },
+    "stress": {
+      "arms": {
+        "fixed": {
+          "misses": 9630,
+          "sent": 720000,
+          "ppm": 13375.0
+        },
+        "bayesian": {
+          "misses": 12536,
+          "sent": 720000,
+          "ppm": 17411.11111111111
+        },
+        "ungated": {
+          "misses": 11748,
+          "sent": 720000,
+          "ppm": 16316.666666666666,
+          "decision_diagnostics": {
+            "opportunities": 1075,
+            "rejected": 0,
+            "rejection_fraction": 0.0,
+            "beneficial_rejected": 0,
+            "beneficial_rejected_without_rescue": 0,
+            "harmful_accepted": 155,
+            "median_abs_gain_error_db": 3.4703893661499023,
+            "median_legacy_uncertainty_db": 13.908220291137695,
+            "median_active_band_uncertainty_db": 13.034302711486816,
+            "mean_ensemble_pair_spread_db": 0.6829476952552795,
+            "mean_ensemble_independent_spread_db": 1.0003745555877686,
+            "legacy_gain_error_spearman": 0.12314466168202454
+          }
+        },
+        "legacy": {
+          "misses": 17058,
+          "sent": 720000,
+          "ppm": 23691.666666666668,
+          "decision_diagnostics": {
+            "opportunities": 8198,
+            "rejected": 8019,
+            "rejection_fraction": 0.9781654061966333,
+            "beneficial_rejected": 7648,
+            "beneficial_rejected_without_rescue": 7648,
+            "harmful_accepted": 0,
+            "median_abs_gain_error_db": 3.129559278488159,
+            "median_legacy_uncertainty_db": 14.104272842407227,
+            "median_active_band_uncertainty_db": 13.032516479492188,
+            "mean_ensemble_pair_spread_db": 0.7077174186706543,
+            "mean_ensemble_independent_spread_db": 1.006729006767273,
+            "legacy_gain_error_spearman": 0.09240367768525365
+          }
+        },
+        "rescue": {
+          "misses": 11154,
+          "sent": 720000,
+          "ppm": 15491.666666666668,
+          "decision_diagnostics": {
+            "opportunities": 1113,
+            "rejected": 0,
+            "rejection_fraction": 0.0,
+            "beneficial_rejected": 0,
+            "beneficial_rejected_without_rescue": 0,
+            "harmful_accepted": 161,
+            "median_abs_gain_error_db": 3.516824722290039,
+            "median_legacy_uncertainty_db": 13.907364845275879,
+            "median_active_band_uncertainty_db": 13.024438858032227,
+            "mean_ensemble_pair_spread_db": 0.685678243637085,
+            "mean_ensemble_independent_spread_db": 1.0040088891983032,
+            "legacy_gain_error_spearman": 0.11173106934903379
+          }
+        },
+        "scale": {
+          "misses": 11005,
+          "sent": 720000,
+          "ppm": 15284.722222222223,
+          "decision_diagnostics": {
+            "opportunities": 1658,
+            "rejected": 656,
+            "rejection_fraction": 0.3956574185765983,
+            "beneficial_rejected": 545,
+            "beneficial_rejected_without_rescue": 545,
+            "harmful_accepted": 85,
+            "median_abs_gain_error_db": 3.339012861251831,
+            "median_legacy_uncertainty_db": 13.920592308044434,
+            "median_active_band_uncertainty_db": 13.046703338623047,
+            "mean_ensemble_pair_spread_db": 0.6853570938110352,
+            "mean_ensemble_independent_spread_db": 1.0079727172851562,
+            "legacy_gain_error_spearman": 0.08229961169166873
+          }
+        },
+        "gain": {
+          "misses": 11084,
+          "sent": 720000,
+          "ppm": 15394.444444444445,
+          "decision_diagnostics": {
+            "opportunities": 2388,
+            "rejected": 1449,
+            "rejection_fraction": 0.6067839195979899,
+            "beneficial_rejected": 1254,
+            "beneficial_rejected_without_rescue": 1254,
+            "harmful_accepted": 51,
+            "median_abs_gain_error_db": 3.307837963104248,
+            "median_legacy_uncertainty_db": 13.789861679077148,
+            "median_active_band_uncertainty_db": 13.00190544128418,
+            "mean_ensemble_pair_spread_db": 0.6721164584159851,
+            "mean_ensemble_independent_spread_db": 1.0031919479370117,
+            "legacy_gain_error_spearman": 0.07216989854328916
+          }
+        }
+      },
+      "paired_comparisons": {
+        "scale_vs_legacy": {
+          "mean_ppm": -8406.944444444443,
+          "paired_scene_bootstrap_95_ppm": [
+            -11536.11111111111,
+            -5200.0
+          ],
+          "wins": 6,
+          "ties": 0,
+          "scenes": 6,
+          "relative_reduction": 0.35484816508383166
+        },
+        "gain_vs_legacy": {
+          "mean_ppm": -8297.22222222222,
+          "paired_scene_bootstrap_95_ppm": [
+            -11437.5,
+            -5116.666666666665
+          ],
+          "wins": 6,
+          "ties": 0,
+          "scenes": 6,
+          "relative_reduction": 0.3502169070230977
+        },
+        "scale_vs_ungated": {
+          "mean_ppm": -1031.9444444444441,
+          "paired_scene_bootstrap_95_ppm": [
+            -1898.8194444444441,
+            -248.61111111111055
+          ],
+          "wins": 5,
+          "ties": 0,
+          "scenes": 6,
+          "relative_reduction": 0.06324480762683005
+        },
+        "gain_vs_ungated": {
+          "mean_ppm": -922.2222222222222,
+          "paired_scene_bootstrap_95_ppm": [
+            -1872.2222222222215,
+            169.4444444444437
+          ],
+          "wins": 5,
+          "ties": 0,
+          "scenes": 6,
+          "relative_reduction": 0.056520258767449705
+        },
+        "scale_vs_rescue": {
+          "mean_ppm": -206.94444444444346,
+          "paired_scene_bootstrap_95_ppm": [
+            -686.11111111111,
+            302.7777777777788
+          ],
+          "wins": 4,
+          "ties": 0,
+          "scenes": 6,
+          "relative_reduction": 0.01335843643535961
+        },
+        "gain_vs_rescue": {
+          "mean_ppm": -97.2222222222215,
+          "paired_scene_bootstrap_95_ppm": [
+            -808.3333333333318,
+            669.4444444444442
+          ],
+          "wins": 3,
+          "ties": 0,
+          "scenes": 6,
+          "relative_reduction": 0.0062757755065447896
+        },
+        "scale_vs_bayesian": {
+          "mean_ppm": -2126.3888888888887,
+          "paired_scene_bootstrap_95_ppm": [
+            -4376.388888888888,
+            -251.388888888889
+          ],
+          "wins": 5,
+          "ties": 0,
+          "scenes": 6,
+          "relative_reduction": 0.1221282705807274
+        }
+      }
+    },
+    "yard": {
+      "arms": {
+        "fixed": {
+          "misses": 357,
+          "sent": 720000,
+          "ppm": 495.83333333333337
+        },
+        "bayesian": {
+          "misses": 171,
+          "sent": 720000,
+          "ppm": 237.5
+        },
+        "ungated": {
+          "misses": 232,
+          "sent": 720000,
+          "ppm": 322.22222222222223,
+          "decision_diagnostics": {
+            "opportunities": 755,
+            "rejected": 0,
+            "rejection_fraction": 0.0,
+            "beneficial_rejected": 0,
+            "beneficial_rejected_without_rescue": 0,
+            "harmful_accepted": 158,
+            "median_abs_gain_error_db": 4.691283226013184,
+            "median_legacy_uncertainty_db": 13.880955696105957,
+            "median_active_band_uncertainty_db": 13.535422325134277,
+            "mean_ensemble_pair_spread_db": 0.8040890097618103,
+            "mean_ensemble_independent_spread_db": 1.899228811264038,
+            "legacy_gain_error_spearman": 0.10852631928219961
+          }
+        },
+        "legacy": {
+          "misses": 391,
+          "sent": 720000,
+          "ppm": 543.0555555555555,
+          "decision_diagnostics": {
+            "opportunities": 12782,
+            "rejected": 12648,
+            "rejection_fraction": 0.9895165075887967,
+            "beneficial_rejected": 12461,
+            "beneficial_rejected_without_rescue": 12461,
+            "harmful_accepted": 0,
+            "median_abs_gain_error_db": 2.746946334838867,
+            "median_legacy_uncertainty_db": 14.266427040100098,
+            "median_active_band_uncertainty_db": 13.879505157470703,
+            "mean_ensemble_pair_spread_db": 0.7706769108772278,
+            "mean_ensemble_independent_spread_db": 1.9731853008270264,
+            "legacy_gain_error_spearman": -0.12347618038721818
+          }
+        },
+        "rescue": {
+          "misses": 173,
+          "sent": 720000,
+          "ppm": 240.2777777777778,
+          "decision_diagnostics": {
+            "opportunities": 780,
+            "rejected": 0,
+            "rejection_fraction": 0.0,
+            "beneficial_rejected": 0,
+            "beneficial_rejected_without_rescue": 0,
+            "harmful_accepted": 155,
+            "median_abs_gain_error_db": 4.564796447753906,
+            "median_legacy_uncertainty_db": 13.868910789489746,
+            "median_active_band_uncertainty_db": 13.495847702026367,
+            "mean_ensemble_pair_spread_db": 0.8128516674041748,
+            "mean_ensemble_independent_spread_db": 1.9001959562301636,
+            "legacy_gain_error_spearman": 0.13236351599728266
+          }
+        },
+        "scale": {
+          "misses": 146,
+          "sent": 720000,
+          "ppm": 202.77777777777777,
+          "decision_diagnostics": {
+            "opportunities": 1314,
+            "rejected": 636,
+            "rejection_fraction": 0.4840182648401826,
+            "beneficial_rejected": 518,
+            "beneficial_rejected_without_rescue": 518,
+            "harmful_accepted": 59,
+            "median_abs_gain_error_db": 3.9761500358581543,
+            "median_legacy_uncertainty_db": 13.99539566040039,
+            "median_active_band_uncertainty_db": 13.719146728515625,
+            "mean_ensemble_pair_spread_db": 0.7453778386116028,
+            "mean_ensemble_independent_spread_db": 1.9575979709625244,
+            "legacy_gain_error_spearman": 0.08019429219182302
+          }
+        },
+        "gain": {
+          "misses": 113,
+          "sent": 720000,
+          "ppm": 156.94444444444446,
+          "decision_diagnostics": {
+            "opportunities": 1670,
+            "rejected": 1039,
+            "rejection_fraction": 0.6221556886227545,
+            "beneficial_rejected": 886,
+            "beneficial_rejected_without_rescue": 886,
+            "harmful_accepted": 19,
+            "median_abs_gain_error_db": 3.7895240783691406,
+            "median_legacy_uncertainty_db": 13.797480583190918,
+            "median_active_band_uncertainty_db": 13.412513732910156,
+            "mean_ensemble_pair_spread_db": 0.8214544057846069,
+            "mean_ensemble_independent_spread_db": 1.8873692750930786,
+            "legacy_gain_error_spearman": 0.08589590801819927
+          }
+        }
+      },
+      "paired_comparisons": {
+        "scale_vs_legacy": {
+          "mean_ppm": -340.27777777777777,
+          "paired_scene_bootstrap_95_ppm": [
+            -680.5555555555555,
+            -115.27777777777777
+          ],
+          "wins": 6,
+          "ties": 0,
+          "scenes": 6,
+          "relative_reduction": 0.6265984654731458
+        },
+        "gain_vs_legacy": {
+          "mean_ppm": -386.11111111111114,
+          "paired_scene_bootstrap_95_ppm": [
+            -733.3333333333335,
+            -136.11111111111111
+          ],
+          "wins": 6,
+          "ties": 0,
+          "scenes": 6,
+          "relative_reduction": 0.710997442455243
+        },
+        "scale_vs_ungated": {
+          "mean_ppm": -119.44444444444447,
+          "paired_scene_bootstrap_95_ppm": [
+            -243.05555555555557,
+            -33.333333333333336
+          ],
+          "wins": 6,
+          "ties": 0,
+          "scenes": 6,
+          "relative_reduction": 0.3706896551724138
+        },
+        "gain_vs_ungated": {
+          "mean_ppm": -165.27777777777774,
+          "paired_scene_bootstrap_95_ppm": [
+            -343.0555555555555,
+            -48.611111111111114
+          ],
+          "wins": 6,
+          "ties": 0,
+          "scenes": 6,
+          "relative_reduction": 0.5129310344827587
+        },
+        "scale_vs_rescue": {
+          "mean_ppm": -37.5,
+          "paired_scene_bootstrap_95_ppm": [
+            -79.16666666666667,
+            -1.3888888888888857
+          ],
+          "wins": 4,
+          "ties": 1,
+          "scenes": 6,
+          "relative_reduction": 0.1560693641618498
+        },
+        "gain_vs_rescue": {
+          "mean_ppm": -83.33333333333334,
+          "paired_scene_bootstrap_95_ppm": [
+            -176.38888888888889,
+            -19.444444444444443
+          ],
+          "wins": 5,
+          "ties": 0,
+          "scenes": 6,
+          "relative_reduction": 0.34682080924855496
+        },
+        "scale_vs_bayesian": {
+          "mean_ppm": -34.72222222222223,
+          "paired_scene_bootstrap_95_ppm": [
+            -118.05555555555559,
+            34.72222222222222
+          ],
+          "wins": 3,
+          "ties": 1,
+          "scenes": 6,
+          "relative_reduction": 0.14619883040935677
+        }
+      }
+    },
+    "small": {
+      "arms": {
+        "fixed": {
+          "misses": 44,
+          "sent": 72000,
+          "ppm": 611.1111111111111
+        },
+        "bayesian": {
+          "misses": 20,
+          "sent": 72000,
+          "ppm": 277.77777777777777
+        },
+        "ungated": {
+          "misses": 8,
+          "sent": 72000,
+          "ppm": 111.11111111111111,
+          "decision_diagnostics": {
+            "opportunities": 101,
+            "rejected": 0,
+            "rejection_fraction": 0.0,
+            "beneficial_rejected": 0,
+            "beneficial_rejected_without_rescue": 0,
+            "harmful_accepted": 8,
+            "median_abs_gain_error_db": 3.0998306274414062,
+            "median_legacy_uncertainty_db": 14.138777732849121,
+            "median_active_band_uncertainty_db": 13.196758270263672,
+            "mean_ensemble_pair_spread_db": 0.49037548899650574,
+            "mean_ensemble_independent_spread_db": 0.8178262710571289,
+            "legacy_gain_error_spearman": 0.05368666278392545
+          }
+        },
+        "legacy": {
+          "misses": 30,
+          "sent": 72000,
+          "ppm": 416.6666666666667,
+          "decision_diagnostics": {
+            "opportunities": 898,
+            "rejected": 879,
+            "rejection_fraction": 0.9788418708240535,
+            "beneficial_rejected": 858,
+            "beneficial_rejected_without_rescue": 858,
+            "harmful_accepted": 0,
+            "median_abs_gain_error_db": 2.8777718544006348,
+            "median_legacy_uncertainty_db": 14.792863845825195,
+            "median_active_band_uncertainty_db": 13.236150741577148,
+            "mean_ensemble_pair_spread_db": 0.5392835140228271,
+            "mean_ensemble_independent_spread_db": 0.8429810404777527,
+            "legacy_gain_error_spearman": 0.0010072030750031427
+          }
+        },
+        "rescue": {
+          "misses": 4,
+          "sent": 72000,
+          "ppm": 55.55555555555556,
+          "decision_diagnostics": {
+            "opportunities": 106,
+            "rejected": 0,
+            "rejection_fraction": 0.0,
+            "beneficial_rejected": 0,
+            "beneficial_rejected_without_rescue": 0,
+            "harmful_accepted": 9,
+            "median_abs_gain_error_db": 2.974325180053711,
+            "median_legacy_uncertainty_db": 14.266189575195312,
+            "median_active_band_uncertainty_db": 13.199926376342773,
+            "mean_ensemble_pair_spread_db": 0.4980503022670746,
+            "mean_ensemble_independent_spread_db": 0.834331750869751,
+            "legacy_gain_error_spearman": 0.014051439655389577
+          }
+        },
+        "scale": {
+          "misses": 4,
+          "sent": 72000,
+          "ppm": 55.55555555555556,
+          "decision_diagnostics": {
+            "opportunities": 166,
+            "rejected": 70,
+            "rejection_fraction": 0.42168674698795183,
+            "beneficial_rejected": 64,
+            "beneficial_rejected_without_rescue": 64,
+            "harmful_accepted": 6,
+            "median_abs_gain_error_db": 3.0653371810913086,
+            "median_legacy_uncertainty_db": 14.583534240722656,
+            "median_active_band_uncertainty_db": 13.209819793701172,
+            "mean_ensemble_pair_spread_db": 0.4920140504837036,
+            "mean_ensemble_independent_spread_db": 0.833838701248169,
+            "legacy_gain_error_spearman": 0.030068668796033347
+          }
+        },
+        "gain": {
+          "misses": 5,
+          "sent": 72000,
+          "ppm": 69.44444444444444,
+          "decision_diagnostics": {
+            "opportunities": 190,
+            "rejected": 92,
+            "rejection_fraction": 0.4842105263157895,
+            "beneficial_rejected": 87,
+            "beneficial_rejected_without_rescue": 87,
+            "harmful_accepted": 6,
+            "median_abs_gain_error_db": 3.0653371810913086,
+            "median_legacy_uncertainty_db": 14.418201446533203,
+            "median_active_band_uncertainty_db": 13.197450637817383,
+            "mean_ensemble_pair_spread_db": 0.4816398322582245,
+            "mean_ensemble_independent_spread_db": 0.8206400871276855,
+            "legacy_gain_error_spearman": 0.0029296627257498022
+          }
+        }
+      },
+      "paired_comparisons": {
+        "scale_vs_legacy": {
+          "mean_ppm": -361.1111111111111,
+          "paired_scene_bootstrap_95_ppm": [
+            -777.7777777777778,
+            -27.777777777777782
+          ],
+          "wins": 3,
+          "ties": 3,
+          "scenes": 6,
+          "relative_reduction": 0.8666666666666667
+        },
+        "gain_vs_legacy": {
+          "mean_ppm": -347.22222222222223,
+          "paired_scene_bootstrap_95_ppm": [
+            -777.7777777777778,
+            -13.888888888888891
+          ],
+          "wins": 3,
+          "ties": 3,
+          "scenes": 6,
+          "relative_reduction": 0.8333333333333334
+        },
+        "scale_vs_ungated": {
+          "mean_ppm": -55.55555555555555,
+          "paired_scene_bootstrap_95_ppm": [
+            -138.88888888888889,
+            0.0
+          ],
+          "wins": 2,
+          "ties": 4,
+          "scenes": 6,
+          "relative_reduction": 0.5
+        },
+        "gain_vs_ungated": {
+          "mean_ppm": -41.666666666666664,
+          "paired_scene_bootstrap_95_ppm": [
+            -138.88888888888889,
+            27.777777777777775
+          ],
+          "wins": 2,
+          "ties": 3,
+          "scenes": 6,
+          "relative_reduction": 0.375
+        },
+        "scale_vs_rescue": {
+          "mean_ppm": 2.3684757858670005e-15,
+          "paired_scene_bootstrap_95_ppm": [
+            -41.666666666666664,
+            41.66666666666667
+          ],
+          "wins": 1,
+          "ties": 4,
+          "scenes": 6,
+          "relative_reduction": 0.0
+        },
+        "gain_vs_rescue": {
+          "mean_ppm": 13.888888888888891,
+          "paired_scene_bootstrap_95_ppm": [
+            -27.777777777777775,
+            55.555555555555564
+          ],
+          "wins": 1,
+          "ties": 3,
+          "scenes": 6,
+          "relative_reduction": -0.25
+        },
+        "scale_vs_bayesian": {
+          "mean_ppm": -222.2222222222222,
+          "paired_scene_bootstrap_95_ppm": [
+            -666.6666666666666,
+            0.0
+          ],
+          "wins": 1,
+          "ties": 5,
+          "scenes": 6,
+          "relative_reduction": 0.8
+        }
+      }
+    }
+  },
+  "selection_sealed_before_tests": true,
+  "limitations": [
+    "Simulation only; the native reactive fallback retains its idealised measurement model",
+    "Native handovers assume 30 ms; stock-car handover timing and field qualification remain pending",
+    "Bulk-upload mission only; no on-car inference or switching was qualified",
+    "The Bayesian reference was not retuned in this JEPA-focused repair",
+    "The absolute uncertainty still undercovers some links; the selected multiplier is a control penalty, not a corrected 90% signal interval",
+    "Gain residual quantiles are empirical and do not give a physical safety certificate",
+    "The gain model is not consistently better than the simpler reactive-rescue ablation",
+    "Neither JEPA model weights nor its mean forecasts changed between gate arms",
+    "The test stress condition still favors fixed split over the repaired JEPA",
+    "Old test scenes were replayed only after the new choice was sealed, solely for diagnosis and exact-counter compatibility"
+  ]
+}

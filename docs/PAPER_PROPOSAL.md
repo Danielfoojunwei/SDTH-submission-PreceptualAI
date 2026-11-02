@@ -8,6 +8,14 @@ robotics and space extensions remain deferred.
 
 ## Contracted device-JEPA evidence
 
+The subsequent `JEPA_GATE_REPAIR_RESULTS.md` isolates and repairs the gate's
+uncertainty mismatch without changing its five JEPA members. Development-only
+selection reduces misses from 329.17 to 111.11 per million on six fresh scenes;
+the gain-bound alternative reaches 133.33. A reactive-rescue ablation reaches
+113.19, so these results do not establish the necessity of a learned uncertainty
+filter. They also do not rehabilitate generic coupling novelty or regret-loss
+superiority. All original study evidence below remains unchanged.
+
 The separate study in `CONTRACTED_RESULTS.md` completed 20 five-seed model fits
 and 366 native rollouts across 24 fresh simulated scenes. It implements the
 censored, route-conditioned world model and finite AP-regret objective. Both

@@ -1,5 +1,9 @@
 # Diagnose and repair the JEPA gate
 
+The study is complete. [Results and causal diagnosis](JEPA_GATE_REPAIR_RESULTS.md)
+include all 270 study runs, six exact historical replays, raw traces and the
+sealed development choice. This file retains the prospective protocol.
+
 This follow-up is designed after the first study. Its old test scenes remain
 historical evidence; no threshold or model is selected on them. Five existing
 JEPA checkpoints remain frozen. New fitting, calibration, closed-loop selection
