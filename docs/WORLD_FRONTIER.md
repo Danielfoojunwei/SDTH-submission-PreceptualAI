@@ -10,6 +10,9 @@ validation chooses a single checkpoint before controller selection. Training
 varies fleet density and scan cadence. A packet-failure loss is explicitly a
 PHY surrogate derived from the archived ns-3 curves, not measured end-to-end
 packet-loss supervision. Native packet results remain the control criterion.
+The temporal candidate also updates a bounded AP/band innovation state from
+strong device reports, compared with the prediction issued before those
+reports existed. The previous prediction is never replaced by a truth label.
 
 All references receive the same optimisation of RadioMap covariance
 prediction. Candidate forecasts must wait in a measured-service-time FIFO

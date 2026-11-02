@@ -35,7 +35,7 @@
   "main_duration_seconds": 120,
   "other_duration_seconds": 60,
   "selection_duration_seconds": 60,
-  "runtime_delay": "Queue measured forecast/refit service times on a single FIFO worker. Planner sees a forecast only after ready time; interpolate its remaining horizons to its actual age. Fast control loop continues while waiting.",
+  "runtime_delay": "Measure p95 warm/cold/refit service times on validation prefixes with one CPU thread and no evaluation workers, then seal these per-method profiles before test access. Queue these measured service costs on a single FIFO worker. Planner sees a forecast only after ready time; interpolate its remaining horizons to its actual age. Fast control loop continues while waiting.",
   "timing_free_ablation": "On the eight primary sites, replay the selected new method and RadioMap without forecast delays and with the former 30-second background scan period",
   "success": "Report paired-site differences versus optimised RadioMap, previous JEPA and confirmed hybrid; intervals crossing zero fail control-superiority claims. Report compute, forecast-delta error, drift, scan cost and every negative result.",
   "simulation_only": true,
