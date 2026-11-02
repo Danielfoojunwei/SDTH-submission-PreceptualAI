@@ -57,3 +57,51 @@ def test_packet_loss_and_temporal_models_have_finite_real_gradients():
         assert torch.isfinite(cost);cost.backward()
         assert all(torch.isfinite(p.grad).all() for p in model.parameters() if p.grad is not None)
         risk=model.phy_risk(t['truth']);assert ((risk>=0)&(risk<=1)).all()
+
+
+def test_zero_cost_kernel_matches_actual_mission_controller():
+    from wirelessjev.native.intent_policy import intent_policy
+    from wirelessjev.contracted.data import READINGS
+    from wirelessjev.gate_repair.gate import reactive_rescue
+    reading=READINGS['bulk_uploads'];policy=replace(intent_policy(reading['weights'],reading['focus'],dual_hardware='none'),online_map=False)
+    w=build_world(299005,duration_s=5,n_robots=8)
+    expected=simulate(w,policy,roam_gate=reactive_rescue)
+    assert timed_simulate(w,policy,roam_gate=reactive_rescue,forecast_queue=ForecastQueue(np.zeros(5)))==expected
+
+
+def test_actual_single_model_worker_is_causal_and_does_not_return_future_results():
+    from wirelessjev.frontier_control import OptimizedWorldModel,AsyncForecastService
+    from wirelessjev.frontier.study import load_student,tensors
+    w,scan,g,o=episode(301000,4,2);history=o.before(60);plan=w.plan[60]
+    model=OptimizedWorldModel(g);b,c=FleetMemory(g).inputs(history,plan)
+    with torch.no_grad():expected=load_student(model.family)(tensors(b,c))['mean'].numpy()
+    service=AsyncForecastService(model)
+    try:
+        assert service.submit(history,plan,60.)
+        # Wait only in this test; the production poll path never waits.
+        service.pending[0][1].result(timeout=10)
+        assert service.poll(59.9) is None
+        mean,std,metadata=service.poll(60.)
+        np.testing.assert_allclose(mean.reshape(expected.shape),expected,rtol=1e-6,atol=1e-6)
+        assert metadata['history_cutoff_exclusive']==60 and np.isfinite(std).all()
+    finally:service.close()
+
+
+def test_frontier_archive_is_complete_and_all_timing_costs_are_sealed():
+    from pathlib import Path
+    import importlib.util
+    root=Path(__file__).resolve().parents[1];path=root/'scripts/audit_world_frontier.py'
+    spec=importlib.util.spec_from_file_location('frontier_archive_audit',path);module=importlib.util.module_from_spec(spec);spec.loader.exec_module(module)
+    result=module.audit();assert result['passed'] and result['fresh_sites']==24
+
+
+def test_admission_hook_is_distinct_from_confidence_and_defaults_are_unchanged():
+    from wirelessjev.admission_sim import simulate as admitted
+    from wirelessjev.gate_repair.gate import reactive_rescue
+    w=build_world(299010,duration_s=5,n_robots=16,site_params={'rack_scale':1.6,'pl_coef':38.,'shadow_db':7.})
+    p=replace({p.name:p for p in policies()}['native'],gate=True,roam_cost_s=4.)
+    expected=timed_simulate(w,p,roam_gate=reactive_rescue)
+    assert admitted(w,p,roam_gate=reactive_rescue)==expected
+    # Even proposals from the reactive path cannot bypass an explicit denial.
+    result=admitted(w,p,roam_gate=lambda c:np.zeros(w.n,dtype=bool),handover_admission=lambda c:np.zeros(w.n,dtype=bool))
+    assert result['roams']==0 and result['control_sent']==16*5*20
