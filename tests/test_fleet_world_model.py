@@ -59,3 +59,22 @@ def test_declared_drift_changes_labels_and_observations_only_after_onset():
     a,_,_,_=episode(279002,2,40,'main');b,_,_,_=episode(279002,2,40,'drift')
     np.testing.assert_array_equal(a.snr[:60*5],b.snr[:60*5])
     assert np.max(np.abs(a.snr[-1]-b.snr[-1]))>1
+
+
+def test_censored_history_affects_memory_without_inventing_measurements(example):
+    full,g,obs,rmap,b=example
+    changed=replace(obs,value=obs.value.copy())
+    # Unknown entries are not zero-dBm radio readings and cannot affect memory.
+    changed.value[~changed.heard]=12345
+    other=inputs(g,changed.before(60),full.plan[60],rmap)
+    for name in ['context','memory','fleet_mean']:
+        np.testing.assert_array_equal(getattr(b,name),getattr(other,name))
+
+
+def test_ema_parameters_receive_no_gradients_and_uncertainty_is_positive(example):
+    full,g,obs,rmap,b=example;t=tensors(b);model=FleetJEPA('hybrid_jepa')
+    t['valid_link']=torch.ones_like(t['context'][...,0]);t['truth']=t['physics'].clone()
+    t['future_context']=t['context'][:,None].expand(-1,9,-1,-1)
+    cost,_=objective(model,t);cost.backward()
+    assert all(p.grad is None for p in model.target_encoder.parameters())
+    assert (model(t)['std']>.25).all()

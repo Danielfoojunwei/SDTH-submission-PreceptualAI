@@ -1,0 +1,29 @@
+{
+  "validation_only": true,
+  "sites": [
+    281000,
+    281001,
+    281002,
+    281003,
+    281004,
+    281005
+  ],
+  "families": {
+    "hybrid_jepa": {
+      "weighted_rmse": 4.93928412587699,
+      "ap_choice_regret_db": 0.30305707454681396,
+      "all_link_rmse": 5.8902482986450195
+    },
+    "hybrid_supervised": {
+      "weighted_rmse": 4.955175819047493,
+      "ap_choice_regret_db": 0.33431047201156616,
+      "all_link_rmse": 5.871249198913574
+    },
+    "fleet_jepa": {
+      "weighted_rmse": 5.02845581342528,
+      "ap_choice_regret_db": 0.25582802295684814,
+      "all_link_rmse": 5.9183783531188965
+    }
+  },
+  "test_accessed": false
+}

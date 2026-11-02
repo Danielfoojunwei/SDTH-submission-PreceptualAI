@@ -28,8 +28,19 @@ AP attenuation changes to the mean field; the schedule is hidden from all
 forecasters. It is a declared simulation intervention, not hardware evidence.
 
 The primary metric is missed control commands per million, with paired-site
-intervals. Forecast RMSE, audible/unheard errors, finite AP-choice regret,
+intervals. Forecast RMSE, positive/nonpositive mean-SNR errors, AP-choice regret,
 traffic delivery and compute are reported too. Failures and the no-JEPA
 ablation are part of the result. All original studies remain immutable.
 
 Protocol: [protocol.json](../artifacts/fleet_world_model/protocol.json).
+
+Before selection or fresh-test access, the reference set was expanded to
+include the existing forty-site learned RadioMap prior. It gets the same
+past scans, rolling refits and independent controller tuning. The strongest
+RadioMap reference is chosen on development scenes only. This adds sixty
+selection runs and forty test runs without changing the core model training.
+See [the amendment](../artifacts/fleet_world_model/strong_reference_amendment.json).
+
+The raw kernel names its SNR>0 split `audible` and its SNR<=0 split `unheard`;
+the final report uses the precise SNR labels. These are not measurements of
+whether a BSSID appeared in a capped scan.
