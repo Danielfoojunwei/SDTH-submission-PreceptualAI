@@ -122,7 +122,7 @@ def report():
         'Mean-field forecast accuracy, control outcomes and the value of the JEPA objective are distinct questions. The supervised hybrid is the primary candidate; the JEPA hybrid and previous model are secondary comparisons. All paired comparisons, traffic metrics and interval coverage are in `summary.json`. A win for the supervised hybrid does not establish that JEPA pretraining is necessary.','',
         '## Reproduction and limits','',
         'Run `uv run --frozen python -m wirelessjev.fleet_confirmation --workers 4`. Source capsules, frozen selection, checkpoint hashes, discovery-case hashes and all confirmation counters are archived in `artifacts/fleet_confirmation`. Audit with `uv run --frozen python scripts/audit_fleet_confirmation.py`.','',
-        'Simulation only, canonical warehouse layout with varied propagation/routes/traffic, idealised reactive observations, known localisation/CAD and a 30 ms handover assumption. The models use synthetic mean-field supervision and the hybrid still requires RadioMap fitting. Physical scanning, on-car inference and stock-car switching remain unqualified.']
+        'Simulation only, canonical warehouse layout with varied propagation/routes/traffic, idealised reactive observations, known localisation/CAD and a 30 ms handover assumption. The models use synthetic mean-field supervision and the hybrid still requires RadioMap fitting. Forecast error includes planned-versus-realised route mismatch; policies share precomputed trajectories. Physical scanning, on-car inference and stock-car switching remain unqualified.']
     (ROOT/'docs/FLEET_CONFIRMATION_RESULTS.md').write_text('\n'.join(lines)+'\n')
     import matplotlib
     matplotlib.use('Agg')
