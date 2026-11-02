@@ -20,4 +20,10 @@ minus learned-prior RadioMap misses per million to lie entirely below zero.
 Forecast accuracy is reported separately. Failure to pass that criterion
 will be reported; the original study will not be relabelled as confirmation.
 
+As in the original study, forecasts use causal histories but are supplied
+offline to the simulator. Inference/refit times are benchmarked separately
+and are not added to packet deadlines. This confirms a simulated controller
+comparison, not physical real-time performance. See the detailed limits in
+[the design](FLEET_WORLD_MODEL_DESIGN.md).
+
 [Frozen protocol](../artifacts/fleet_confirmation/protocol.json).

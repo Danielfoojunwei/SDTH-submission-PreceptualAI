@@ -10,6 +10,9 @@ uv run --frozen python -m wirelessjev.fleet_strong_reference --phase selection -
 uv run --frozen python -m wirelessjev.fleetwm.study --phase test --workers 3
 uv run --frozen python -m wirelessjev.fleet_strong_reference --phase test --workers 3
 uv run --frozen python scripts/verify_fleet_forecasts.py
+uv run --frozen python scripts/benchmark_fleet_runtime.py
 uv run --frozen python scripts/report_fleet_world_model.py
 uv run --frozen python scripts/audit_fleet_world_model.py
+uv run --frozen python -m wirelessjev.fleet_confirmation --workers 4
+uv run --frozen python scripts/audit_fleet_confirmation.py
 uv run --frozen python -m pytest -q

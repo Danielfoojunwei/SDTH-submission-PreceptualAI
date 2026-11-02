@@ -1,0 +1,245 @@
+{
+  "cpu_only": true,
+  "torch_threads": 1,
+  "robots": 100,
+  "query_horizons": 9,
+  "site": 281000,
+  "includes_input_construction_and_refits": true,
+  "checkpoint_loading_separate": true,
+  "no_hardware_inference_qualification": true,
+  "results": {
+    "hybrid_jepa": {
+      "checkpoint_load_seconds": 0.013687045022379607,
+      "initial_forecast_seconds": 0.8298995750374161,
+      "warm_forecast_mean_seconds": 0.3818007115041837,
+      "refresh_forecast_seconds": 0.8489946500048973,
+      "calls": [
+        {
+          "family": "hybrid_jepa",
+          "history_cutoff_exclusive": 60,
+          "total_seconds": 0.8298995750374161,
+          "map_refit_seconds": 0.4444407030241564,
+          "selection_origin": "explicit research family",
+          "research_only": true
+        },
+        {
+          "family": "hybrid_jepa",
+          "history_cutoff_exclusive": 61,
+          "total_seconds": 0.3984715369879268,
+          "map_refit_seconds": 0.0,
+          "selection_origin": "explicit research family",
+          "research_only": true
+        },
+        {
+          "family": "hybrid_jepa",
+          "history_cutoff_exclusive": 62,
+          "total_seconds": 0.3760237040114589,
+          "map_refit_seconds": 0.0,
+          "selection_origin": "explicit research family",
+          "research_only": true
+        },
+        {
+          "family": "hybrid_jepa",
+          "history_cutoff_exclusive": 63,
+          "total_seconds": 0.3776161040295847,
+          "map_refit_seconds": 0.0,
+          "selection_origin": "explicit research family",
+          "research_only": true
+        },
+        {
+          "family": "hybrid_jepa",
+          "history_cutoff_exclusive": 64,
+          "total_seconds": 0.37509150098776445,
+          "map_refit_seconds": 0.0,
+          "selection_origin": "explicit research family",
+          "research_only": true
+        },
+        {
+          "family": "hybrid_jepa",
+          "history_cutoff_exclusive": 80,
+          "total_seconds": 0.8489946500048973,
+          "map_refit_seconds": 0.4568921859608963,
+          "selection_origin": "explicit research family",
+          "research_only": true
+        }
+      ],
+      "ensemble_members": 3
+    },
+    "hybrid_supervised": {
+      "checkpoint_load_seconds": 0.011908594984561205,
+      "initial_forecast_seconds": 0.8228206069907174,
+      "warm_forecast_mean_seconds": 0.42276891274377704,
+      "refresh_forecast_seconds": 0.8970127609791234,
+      "calls": [
+        {
+          "family": "hybrid_supervised",
+          "history_cutoff_exclusive": 60,
+          "total_seconds": 0.8228206069907174,
+          "map_refit_seconds": 0.43968160200165585,
+          "selection_origin": "explicit research family",
+          "research_only": true
+        },
+        {
+          "family": "hybrid_supervised",
+          "history_cutoff_exclusive": 61,
+          "total_seconds": 0.3991888070013374,
+          "map_refit_seconds": 0.0,
+          "selection_origin": "explicit research family",
+          "research_only": true
+        },
+        {
+          "family": "hybrid_supervised",
+          "history_cutoff_exclusive": 62,
+          "total_seconds": 0.39829222700791433,
+          "map_refit_seconds": 0.0,
+          "selection_origin": "explicit research family",
+          "research_only": true
+        },
+        {
+          "family": "hybrid_supervised",
+          "history_cutoff_exclusive": 63,
+          "total_seconds": 0.4899355609668419,
+          "map_refit_seconds": 0.0,
+          "selection_origin": "explicit research family",
+          "research_only": true
+        },
+        {
+          "family": "hybrid_supervised",
+          "history_cutoff_exclusive": 64,
+          "total_seconds": 0.4036590559990145,
+          "map_refit_seconds": 0.0,
+          "selection_origin": "explicit research family",
+          "research_only": true
+        },
+        {
+          "family": "hybrid_supervised",
+          "history_cutoff_exclusive": 80,
+          "total_seconds": 0.8970127609791234,
+          "map_refit_seconds": 0.4912693389924243,
+          "selection_origin": "explicit research family",
+          "research_only": true
+        }
+      ],
+      "ensemble_members": 3
+    },
+    "fleet_jepa": {
+      "checkpoint_load_seconds": 0.013432158040814102,
+      "initial_forecast_seconds": 0.1924877460114658,
+      "warm_forecast_mean_seconds": 0.19120476125681307,
+      "refresh_forecast_seconds": 0.18611462303670123,
+      "calls": [
+        {
+          "family": "fleet_jepa",
+          "history_cutoff_exclusive": 60,
+          "total_seconds": 0.1924877460114658,
+          "map_refit_seconds": 0.0,
+          "selection_origin": "explicit research family",
+          "research_only": true
+        },
+        {
+          "family": "fleet_jepa",
+          "history_cutoff_exclusive": 61,
+          "total_seconds": 0.19544627401046455,
+          "map_refit_seconds": 0.0,
+          "selection_origin": "explicit research family",
+          "research_only": true
+        },
+        {
+          "family": "fleet_jepa",
+          "history_cutoff_exclusive": 62,
+          "total_seconds": 0.1964139660121873,
+          "map_refit_seconds": 0.0,
+          "selection_origin": "explicit research family",
+          "research_only": true
+        },
+        {
+          "family": "fleet_jepa",
+          "history_cutoff_exclusive": 63,
+          "total_seconds": 0.19149815698619932,
+          "map_refit_seconds": 0.0,
+          "selection_origin": "explicit research family",
+          "research_only": true
+        },
+        {
+          "family": "fleet_jepa",
+          "history_cutoff_exclusive": 64,
+          "total_seconds": 0.18146064801840112,
+          "map_refit_seconds": 0.0,
+          "selection_origin": "explicit research family",
+          "research_only": true
+        },
+        {
+          "family": "fleet_jepa",
+          "history_cutoff_exclusive": 80,
+          "total_seconds": 0.18611462303670123,
+          "map_refit_seconds": 0.0,
+          "selection_origin": "explicit research family",
+          "research_only": true
+        }
+      ],
+      "ensemble_members": 3
+    },
+    "rolling_radiomap": {
+      "initial_forecast_seconds": 0.7662128990050405,
+      "warm_forecast_mean_seconds": 0.21205890050623566,
+      "refresh_forecast_seconds": 0.7038211149629205,
+      "calls": [
+        {
+          "total_seconds": 0.7662128990050405,
+          "map_refit_seconds": 0.5662370420177467
+        },
+        {
+          "total_seconds": 0.20991231402149424,
+          "map_refit_seconds": 0
+        },
+        {
+          "total_seconds": 0.20409711200045422,
+          "map_refit_seconds": 0
+        },
+        {
+          "total_seconds": 0.22168072900967672,
+          "map_refit_seconds": 0
+        },
+        {
+          "total_seconds": 0.21254544699331746,
+          "map_refit_seconds": 0
+        },
+        {
+          "total_seconds": 0.7038211149629205,
+          "map_refit_seconds": 0.4978020369890146
+        }
+      ]
+    },
+    "learned_radiomap": {
+      "initial_forecast_seconds": 0.7698158870334737,
+      "warm_forecast_mean_seconds": 0.21327191327873152,
+      "refresh_forecast_seconds": 0.7290959399542771,
+      "calls": [
+        {
+          "total_seconds": 0.7698158870334737,
+          "map_refit_seconds": 0.5376472459756769
+        },
+        {
+          "total_seconds": 0.22400570003082976,
+          "map_refit_seconds": 0
+        },
+        {
+          "total_seconds": 0.21410919702611864,
+          "map_refit_seconds": 0
+        },
+        {
+          "total_seconds": 0.20887522102566436,
+          "map_refit_seconds": 0
+        },
+        {
+          "total_seconds": 0.20609753503231332,
+          "map_refit_seconds": 0
+        },
+        {
+          "total_seconds": 0.7290959399542771,
+          "map_refit_seconds": 0.49235394899733365
+        }
+      ]
+    }
+  }
+}

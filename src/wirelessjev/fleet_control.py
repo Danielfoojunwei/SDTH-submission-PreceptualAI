@@ -26,11 +26,29 @@ class FleetWorldModel:
         if not isinstance(geometry,Geometry):raise TypeError('Use known Geometry')
         selected=json.loads((OUT/'selection.json').read_text())
         if not selected['sealed'] or selected['source_sha256']!=sources():raise RuntimeError('The research profile no longer matches the executed source')
-        if family=='development_best':family=selected['development_best_model']
+        selection_origin='explicit research family'
+        if family=='development_best':
+            family=selected['development_best_model'];selection_origin='closed-loop development selection'
+        if family=='confirmed':
+            path=ROOT/'artifacts/fleet_confirmation/summary.json'
+            if not path.exists() or not json.loads(path.read_text()).get('primary_success'):
+                raise RuntimeError('No independently confirmed improvement profile is available')
+            manifest_path=path.parent/'manifest.json'
+            if not manifest_path.exists():raise RuntimeError('Confirmation evidence has not passed archiving')
+            manifest=json.loads(manifest_path.read_text())
+            for name in ['summary.json','selection.json','protocol.json']:
+                if digest(path.parent/name)!=manifest['files_sha256'][name]:
+                    raise RuntimeError('Confirmation evidence identity differs')
+            evidence=json.loads(path.read_text());choice=json.loads((path.parent/'selection.json').read_text())
+            if evidence['fixed_candidate']!=choice['candidate']:
+                raise RuntimeError('Confirmation candidate identity differs')
+            for name,h in choice['checkpoint_sha256'].items():
+                if digest(ROOT/name)!=h:raise RuntimeError('A confirmed checkpoint changed')
+            family=evidence['fixed_candidate'];selection_origin='independent warehouse confirmation'
         if family not in P['families']:raise ValueError('Unsupported world-model family')
         for name,h in selected['checkpoint_sha256'].items():
             if digest(ROOT/name)!=h:raise RuntimeError('A frozen checkpoint changed')
-        self.geometry=geometry;self.family=family;self.models=load(family)
+        self.geometry=geometry;self.family=family;self.models=load(family);self.selection_origin=selection_origin
         self.gate=selected['choices'][family]['gate'];self.rmap=None;self.refit_at=None;self.last_time=None
 
     def forecast(self,history: Observations,planned_positions):
@@ -48,7 +66,7 @@ class FleetWorldModel:
         b=inputs(self.geometry,history,plan,self.rmap);mean,std=predict(self.models,b)
         self.last_time=t;shape=(len(plan),9,len(self.geometry.sites),3)
         return mean.reshape(shape),std.reshape(shape),{'family':self.family,'history_cutoff_exclusive':t,
-            'total_seconds':time.perf_counter()-started,'map_refit_seconds':refit,'research_only':True}
+            'total_seconds':time.perf_counter()-started,'map_refit_seconds':refit,'selection_origin':self.selection_origin,'research_only':True}
 
     def controller(self,mission='bulk_uploads'):
         if mission!=P['primary_mission']:raise ValueError('The reusable profile is scoped to bulk_uploads')

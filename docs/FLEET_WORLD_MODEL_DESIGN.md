@@ -55,6 +55,10 @@ policy, roam_gate = model.controller()
 verifies checkpoint and execution-source identities against the frozen
 development selection. It never consults test scores to choose a model.
 `family="fleet_jepa"` runs without fitting or evaluating a per-BSS RadioMap.
+`family="confirmed"` exposes the separately fixed confirmation candidate only
+if its independent primary control-improvement criterion passes. Otherwise
+the helper refuses that profile. The development-selected research profile
+remains a distinct choice; it is never silently relabelled as confirmation.
 
 The reusable policy is scoped to the tested bulk-upload mission. The native
 default remains RadioMap. This is an opt-in research interface; the results
@@ -79,3 +83,23 @@ remain hidden. Drift tests alter the mean field with an explicitly declared
 smooth attenuation intervention. Real scan scheduling cost, 4-second stock
 handover behaviour, on-car inference and measured interference remain field
 validation tasks. No synthetic result is presented as a hardware result.
+
+The warehouse seeds share the canonical rack/AP layout while randomising
+propagation, routes and traffic. The outdoor yard supplies a different AP
+topology, but this is not a test of arbitrary warehouse layouts or general
+Earth environments. A broader foundation-model claim needs independent CAD
+layouts and device/channel measurements beyond this simulation family.
+Stress, yard and drift examples are included in training. Their test seeds
+are fresh, but those tests do not hold out the entire environment family.
+
+Forecast labels use the realised future mean SNR, while the query supplies
+planned positions. A plan can end before the realised next task, so route
+mismatch also contributes to forecast error. The reported RMSE is therefore
+future-SNR prediction error, not a pure map-reconstruction error at a fixed
+query coordinate. Every controller follows the same precomputed trajectory;
+the safety-stop metric does not resimulate motion after a radio interruption.
+Forecasts are computed from causal histories, then supplied to the native
+simulation offline. The measured inference and map-refit times are not
+inserted as extra delays in the packet simulator. A live asynchronous
+forecast service and delayed-input evaluation are needed before interpreting
+these results as a real-time robot-control improvement.

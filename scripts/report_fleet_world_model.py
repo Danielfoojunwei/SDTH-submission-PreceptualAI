@@ -54,6 +54,16 @@ def summarize(cases,selection,mission=None,reference='rolling_radiomap'):
             if f==reference:continue
             delta=np.asarray(arms[f]['scene_ppm'])-arms[reference]['scene_ppm']
             comparisons[f+'_vs_'+reference]=paired(delta)|{'relative_reduction':1-arms[f]['ppm']/arms[reference]['ppm'] if arms[reference]['ppm'] else None}
+    for ref in ['static_radiomap','rolling_radiomap','learned_radiomap']:
+        if ref not in arms:continue
+        for f in P['families']:
+            delta=np.asarray(arms[f]['scene_ppm'])-arms[ref]['scene_ppm']
+            comparisons[f+'_vs_'+ref]=paired(delta)|{'relative_reduction':1-arms[f]['ppm']/arms[ref]['ppm'] if arms[ref]['ppm'] else None}
+            if mission is None:
+                errors=[c['forecast_metrics'][f]['rmse_near_db']-c['forecast_metrics'][ref]['rmse_near_db'] for c in cases]
+                evidence=paired(errors)
+                comparisons[f+'_forecast_vs_'+ref]={'mean_rmse_difference_db':evidence['mean_difference_ppm'],
+                    'paired_scene_bootstrap_95_db':evidence['paired_scene_bootstrap_95_ppm'],'wins':evidence['wins'],'scenes':len(cases)}
     if 'hybrid_supervised' in arms:
         comparisons['hybrid_jepa_vs_hybrid_supervised']=paired(np.asarray(arms['hybrid_jepa']['scene_ppm'])-arms['hybrid_supervised']['scene_ppm'])
     return {'scenes':[c['scene'] for c in cases],'arms':arms,'comparisons':comparisons}
@@ -75,9 +85,15 @@ def main():
     heldout=summarize([x for x in cases if x['condition']=='main'],selection,P['heldout_mission'])
     best=selection['development_best_model'];main=groups['main'];comparison=main['comparisons'][best+'_vs_'+reference]
     claim=comparison['paired_scene_bootstrap_95_ppm'][1]<0
+    beats_all=all(main['comparisons'][best+'_vs_'+ref]['paired_scene_bootstrap_95_ppm'][1]<0 for ref in ['static_radiomap','rolling_radiomap','learned_radiomap'])
     limitations=['Simulation only; no physical smartcar qualification',
+        'Warehouse seeds share the canonical rack/AP layout and randomise propagation, routes and traffic; arbitrary warehouse-layout transfer is not tested',
+        'Stress, yard and drift examples appear in training; their fresh-site tests do not establish transfer to entirely unseen environment families',
         'All native controllers retain the same idealised reactive measurement model and 30 ms handover assumption',
         'Known AP positions, perfect robot localisation, CAD rack geometry and configured noise floors are assumed',
+        'Targets use realised future mean SNR while inputs contain planned positions; route mismatch contributes to forecast error, so this is not pure fixed-position map reconstruction',
+        'All policies share precomputed robot trajectories; safety-stop time is measured without resimulating robot motion',
+        'Forecasts are generated causally but supplied to the simulator offline; measured inference/refit time is not charged to packet deadlines',
         'Training uses synthetic mean-field truth for all links; real device-only training has not been established',
         'The hybrid depends on RadioMap fitting; its neural-head time is not an end-to-end compute advantage',
         'The standalone fleet model uses reports-only geometric summaries; its results must be assessed separately',
@@ -92,8 +108,10 @@ def main():
         'core_test_rollouts':completion['test_rollouts'],'test_rollouts':completion['test_rollouts']+40,
         'total_selection_rollouts':completion['selection_rollouts']+60,'total_native_rollouts':completion['test_rollouts']+completion['selection_rollouts']+100,
         'primary_superiority_interval_excludes_zero':claim,'conditions':groups,'heldout_mission':heldout,
+        'primary_beats_all_three_radiomap_references':beats_all,
         'mean_rolling_refit_seconds_per_case':float(np.mean([c['rolling_refits_seconds'] for c in cases])),
-        'parameters_per_member':fits[0]['parameters'],'limitations':limitations}
+        'parameters_per_member':fits[0]['parameters'],'inference_parameters_per_member':fits[0]['parameters']-4800,'limitations':limitations}
+    summary['runtime_benchmark']=json.loads((OUT/'runtime_benchmark.json').read_text())
     write(OUT/'summary.json',summary)
     figure_dir=OUT/'figures';figure_dir.mkdir(exist_ok=True)
     plt.rcParams.update({'font.size':10,'axes.spines.top':False,'axes.spines.right':False})
@@ -150,22 +168,26 @@ def main():
         '## All fresh conditions','',
         '| Condition | '+ ' | '.join(LABELS[f] for f in FAMILIES)+' |','|---|'+'---:|'*len(FAMILIES)]
     for c,group in groups.items():lines.append('| '+c+' | '+' | '.join(f'{group["arms"][f]["ppm"]:.2f}' for f in FAMILIES)+' |')
-    lines+=['','Primary traffic and stop-time metrics (scene means):','',
+    lines+=['','The condition table reports misses per million. Primary has eight sites; other conditions have six. Small has ten robots. Generalisation runs last sixty seconds.','',
+        'Primary traffic and stop-time metrics (scene means):','',
         '| Method | Bulk Mbps | Video on time | Video delivered / requested | Safety-stop fraction |','|---|---:|---:|---:|---:|']
     for f in FAMILIES:
         q=main['arms'][f]['traffic_and_safety']
         lines.append(f'| {LABELS[f]} | {q["bulk_mbps"]:.2f} | {q["video_on_time"]:.4f} | {q["video_delivered_vs_requested"]:.4f} | {q["safety_stop_fraction"]:.6f} |')
-    lines+=['','Values are misses per million. Primary has eight sites; other conditions have six. Small has ten robots. Generalisation runs last sixty seconds.','',
-        '![Tradeoffs](../artifacts/fleet_world_model/figures/tradeoffs.png)','',
+    lines+=['','![Tradeoffs](../artifacts/fleet_world_model/figures/tradeoffs.png)','',
         '## JEPA ablation and held-out mission','',
         'The supervised hybrid is the test of whether the EMA/JEPA objective adds value to the same information and architecture. Full paired comparisons and held-out teleoperation-mission results are in `summary.json`; the development-best designation is never changed using test results.','',
         '## Compute and reproducibility','',
-        'Prediction timings are measured CPU wall time for a complete fleet decision. Hybrid timings include input construction and the neural head but exclude initial map fitting and subsequent map refits, which are reported separately. They do not establish an end-to-end compute advantage over RadioMap. The standalone benchmark pipeline also constructs reference maps for comparisons; a deployment-specific standalone latency has not been qualified.','',
+        'Study prediction timings include input construction and the neural head but exclude map refits. The separate runtime benchmark below times the actual API, including any initial or refresh fit. Each call predicts nine horizons for 100 robots. It uses one CPU thread on this host and four warm calls; these are microbenchmarks, not hardware latency guarantees. Checkpoint loading is recorded separately in `runtime_benchmark.json`. Each member has 23,546 inference parameters; the reported 28,346 total also includes the frozen EMA teacher.','',
+        '| Method | Initial call (ms) | Warm call (ms) | Refresh call (ms) |','|---|---:|---:|---:|']
+    for f,b in summary['runtime_benchmark']['results'].items():
+        lines.append(f'| {LABELS[f]} | {1000*b["initial_forecast_seconds"]:.2f} | {1000*b["warm_forecast_mean_seconds"]:.2f} | {1000*b["refresh_forecast_seconds"]:.2f} |')
+    lines+=['',
         'Run `bash scripts/run_fleet_research.sh` to reproduce the core study, stronger-reference amendment, independent forecast replay, reports, audit and tests sequentially. Dataset receipts hash the deterministic training caches; the caches are rebuilt locally. Checkpoints, histories, all native counters and source capsules are archived under `artifacts/fleet_world_model`. Audit with `uv run --frozen python scripts/audit_fleet_world_model.py`.','',
         '## Limits','']+['- '+s+'.' for s in limitations]
     (ROOT/'docs/FLEET_WORLD_MODEL_RESULTS.md').write_text('\n'.join(lines)+'\n')
     analysis={}
-    for path in [ROOT/'scripts/report_fleet_world_model.py',ROOT/'scripts/audit_fleet_world_model.py',ROOT/'scripts/verify_fleet_forecasts.py',ROOT/'scripts/analyze_fleet_validation.py',ROOT/'scripts/run_fleet_research.sh',ROOT/'src/wirelessjev/fleet_control.py']:
+    for path in [ROOT/'scripts/report_fleet_world_model.py',ROOT/'scripts/audit_fleet_world_model.py',ROOT/'scripts/verify_fleet_forecasts.py',ROOT/'scripts/benchmark_fleet_runtime.py',ROOT/'scripts/analyze_fleet_validation.py',ROOT/'scripts/run_fleet_research.sh',ROOT/'src/wirelessjev/fleet_control.py']:
         name=str(path.relative_to(ROOT));target=OUT/'analysis_source'/name;target.parent.mkdir(parents=True,exist_ok=True);shutil.copyfile(path,target);analysis[name]=digest(path)
     write(OUT/'analysis_source.json',{'source_sha256':analysis})
     files={str(p.relative_to(OUT)):digest(p) for p in sorted(OUT.rglob('*')) if p.is_file() and p.name!='manifest.json'}

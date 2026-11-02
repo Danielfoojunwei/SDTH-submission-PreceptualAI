@@ -78,3 +78,46 @@ def test_ema_parameters_receive_no_gradients_and_uncertainty_is_positive(example
     cost,_=objective(model,t);cost.backward()
     assert all(p.grad is None for p in model.target_encoder.parameters())
     assert (model(t)['std']>.25).all()
+
+
+def test_frozen_runtime_uses_the_same_forecasts_without_fitting_a_reference(example):
+    from wirelessjev.fleet_control import FleetWorldModel
+    from wirelessjev.fleetwm.study import predict
+    full,g,obs,rmap,b=example
+    model=FleetWorldModel(g,family='fleet_jepa')
+    m,s,timing=model.forecast(obs.before(60),full.plan[60]);expected,expected_sd=predict(model.models,b)
+    np.testing.assert_array_equal(m.reshape(expected.shape),expected)
+    np.testing.assert_array_equal(s.reshape(expected_sd.shape),expected_sd)
+    assert timing['map_refit_seconds']==0 and timing['history_cutoff_exclusive']==60
+    pol,hook=model.controller();assert pol.gate and not pol.online_map
+    with pytest.raises(ValueError):model.controller('protect_teleop')
+
+
+def test_fleet_results_archive_is_complete_and_sealed():
+    from pathlib import Path
+    import importlib.util
+    root=Path(__file__).resolve().parents[1];path=root/'scripts/audit_fleet_world_model.py'
+    spec=importlib.util.spec_from_file_location('fleet_evidence_audit',path);module=importlib.util.module_from_spec(spec);spec.loader.exec_module(module)
+    result=module.audit();assert result['passed'] and result['test_rollouts']==296
+
+
+def test_confirmed_profile_keeps_the_preregistered_candidate_instead_of_reranking_tests(example):
+    import json
+    from wirelessjev.fleet_control import FleetWorldModel
+    from wirelessjev.fleetwm.study import ROOT
+    full,g,obs,rmap,b=example
+    evidence=json.loads((ROOT/'artifacts/fleet_confirmation/summary.json').read_text())
+    # The JEPA variant has fewer confirmation misses, but was a secondary arm.
+    assert evidence['arms']['hybrid_jepa']['misses']<evidence['arms']['hybrid_supervised']['misses']
+    model=FleetWorldModel(g,family='confirmed')
+    assert model.family==evidence['fixed_candidate']=='hybrid_supervised'
+    assert model.selection_origin=='independent warehouse confirmation'
+    policy,gate=model.controller();assert gate is not None and policy.gate
+
+
+def test_independent_confirmation_evidence_is_complete():
+    from pathlib import Path
+    import importlib.util
+    root=Path(__file__).resolve().parents[1];path=root/'scripts/audit_fleet_confirmation.py'
+    spec=importlib.util.spec_from_file_location('independent_confirmation_audit',path);module=importlib.util.module_from_spec(spec);spec.loader.exec_module(module)
+    result=module.audit();assert result['passed'] and result['native_runs']==32

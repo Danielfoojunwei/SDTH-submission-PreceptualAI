@@ -6,6 +6,35 @@ are in `docs/WAREHOUSE_RESULTS.md`. The subsequently authorised warehouse v2
 campaign is described below; general foundation-model, custom on-air PHY,
 robotics and space extensions remain deferred.
 
+## Fleet-memory world models: confirmed warehouse comparison
+
+`FLEET_WORLD_MODEL_RESULTS.md` and `FLEET_CONFIRMATION_RESULTS.md` record nine
+three-seed fits and 760 native runs. The richer models pool causal fleet scans,
+known CAD and routes, with mean-field and AP-score supervision. A matched
+rolling RadioMap and the existing learned-prior reference get independent
+development tuning. The supervised ablation keeps the architecture and removes
+the JEPA objective.
+
+Keep the two studies distinct. The first study's development-selected standalone
+model improves forecast RMSE but its primary command-miss interval spans zero.
+The best hybrid on that discovery cohort was frozen before eight additional
+warehouses. Its preregistered independent primary test reduces misses from
+167.19 to 133.33 per million, a 20.2% reduction, with paired-site 95% interval
+[-68.75, -5.73] ppm. Forecast RMSE falls from 7.09 to 4.57 dB. This supports a
+narrow simulated-warehouse comparison against the chosen RadioMap reference.
+
+The secondary hybrid JEPA reaches 128.12 ppm, while previous JEPA reaches
+126.04. Neither a generic JEPA-necessity claim nor universal learned-controller
+superiority follows. The hybrid retains RadioMap fitting and uses about 0.4 s
+per 100-robot forecast on this CPU; the standalone avoids per-BSS map fitting
+and takes about 0.19 s. These timings are measured separately from the offline
+packet simulations and are not charged to their deadlines.
+
+The layout family, simulated supervision, causal-but-free scan streams,
+precomputed motion and 30 ms handover assumption limit transfer claims.
+Independent CAD layouts, measured device channels, real scan/inference timing
+and field qualification are still needed for a broader foundation-model paper.
+
 ## Contracted device-JEPA evidence
 
 The subsequent `JEPA_GATE_REPAIR_RESULTS.md` isolates and repairs the gate's

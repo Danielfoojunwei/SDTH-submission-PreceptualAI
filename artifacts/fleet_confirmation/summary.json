@@ -1,0 +1,167 @@
+{
+  "completed": true,
+  "built_at": "2026-11-03T03:23:21.118899+08:00",
+  "discovery_was_used_for_candidate_selection": true,
+  "independent_confirmation_sites": 8,
+  "native_runs": 32,
+  "fixed_candidate": "hybrid_supervised",
+  "arms": {
+    "learned_radiomap": {
+      "misses": 321,
+      "commands": 1920000,
+      "ppm": 167.1875,
+      "scene_ppm": [
+        137.5,
+        8.333333333333334,
+        220.83333333333331,
+        600.0,
+        20.833333333333332,
+        16.666666666666668,
+        325.0,
+        8.333333333333334
+      ],
+      "forecast_metrics": {
+        "rmse_near_db": 7.087716042995453,
+        "coverage_90": 0.39031401909722224,
+        "ap_choice_regret_db": 0.24583852291107178,
+        "positive_snr_rmse_db": 3.7431818544864655,
+        "nonpositive_snr_rmse_db": 8.429617464542389
+      },
+      "traffic": {
+        "bulk_mbps": 530.3576011934808,
+        "video_on_time": 0.9789214508124531,
+        "video_delivered_vs_requested": 0.9786674502110568,
+        "safety_stop_fraction": 0.00035822916666666664
+      }
+    },
+    "hybrid_supervised": {
+      "misses": 256,
+      "commands": 1920000,
+      "ppm": 133.33333333333334,
+      "scene_ppm": [
+        116.66666666666667,
+        4.166666666666667,
+        87.5,
+        541.6666666666666,
+        25.0,
+        25.0,
+        258.3333333333333,
+        8.333333333333334
+      ],
+      "forecast_metrics": {
+        "rmse_near_db": 4.568592518568039,
+        "coverage_90": 0.9202895326967593,
+        "ap_choice_regret_db": 0.17090510111302137,
+        "positive_snr_rmse_db": 3.1962161660194397,
+        "nonpositive_snr_rmse_db": 5.203745096921921
+      },
+      "traffic": {
+        "bulk_mbps": 530.3583818350642,
+        "video_on_time": 0.9792128926553878,
+        "video_delivered_vs_requested": 0.9789532950986961,
+        "safety_stop_fraction": 0.000263125
+      }
+    },
+    "hybrid_jepa": {
+      "misses": 246,
+      "commands": 1920000,
+      "ppm": 128.125,
+      "scene_ppm": [
+        116.66666666666667,
+        4.166666666666667,
+        87.5,
+        508.3333333333333,
+        25.0,
+        16.666666666666668,
+        258.3333333333333,
+        8.333333333333334
+      ],
+      "forecast_metrics": {
+        "rmse_near_db": 4.595749616622925,
+        "coverage_90": 0.9178761574074074,
+        "ap_choice_regret_db": 0.16943566221743822,
+        "positive_snr_rmse_db": 3.129028022289276,
+        "nonpositive_snr_rmse_db": 5.262638032436371
+      },
+      "traffic": {
+        "bulk_mbps": 530.3759073182055,
+        "video_on_time": 0.9794911039325298,
+        "video_delivered_vs_requested": 0.9792314397564134,
+        "safety_stop_fraction": 0.00023145833333333333
+      }
+    },
+    "previous_jepa": {
+      "misses": 242,
+      "commands": 1920000,
+      "ppm": 126.04166666666666,
+      "scene_ppm": [
+        79.16666666666666,
+        12.5,
+        66.66666666666667,
+        604.1666666666667,
+        33.333333333333336,
+        16.666666666666668,
+        183.33333333333334,
+        12.5
+      ],
+      "forecast_metrics": {
+        "rmse_near_db": 9.656236588954926,
+        "coverage_90": 0.8491956380208333,
+        "ap_choice_regret_db": 0.22222008183598518,
+        "positive_snr_rmse_db": 5.431735157966614,
+        "nonpositive_snr_rmse_db": 11.088549435138702
+      },
+      "traffic": {
+        "bulk_mbps": 531.4806596468377,
+        "video_on_time": 0.9797838778979061,
+        "video_delivered_vs_requested": 0.9795740731473056,
+        "safety_stop_fraction": 0.00023593749999999998
+      }
+    }
+  },
+  "comparisons_ppm": {
+    "hybrid_supervised_vs_learned_radiomap": {
+      "mean_difference": -33.85416666666667,
+      "paired_site_bootstrap_95": [
+        -68.75,
+        -5.729166666666666
+      ],
+      "wins": 5,
+      "ties": 1,
+      "sites": 8
+    },
+    "hybrid_jepa_vs_learned_radiomap": {
+      "mean_difference": -39.0625,
+      "paired_site_bootstrap_95": [
+        -75.52083333333333,
+        -8.333333333333336
+      ],
+      "wins": 5,
+      "ties": 2,
+      "sites": 8
+    },
+    "hybrid_supervised_vs_previous_jepa": {
+      "mean_difference": 7.29166666666665,
+      "paired_site_bootstrap_95": [
+        -18.750000000000043,
+        33.33333333333332
+      ],
+      "wins": 4,
+      "ties": 0,
+      "sites": 8
+    },
+    "hybrid_jepa_vs_hybrid_supervised": {
+      "mean_difference": -5.20833333333333,
+      "paired_site_bootstrap_95": [
+        -13.541666666666659,
+        0.0
+      ],
+      "wins": 2,
+      "ties": 6,
+      "sites": 8
+    }
+  },
+  "primary_success": true,
+  "simulation_only": true,
+  "original_study_preserved": true
+}

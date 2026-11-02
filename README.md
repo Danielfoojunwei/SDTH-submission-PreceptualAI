@@ -5,6 +5,20 @@ Current experiment status and restart prerequisites are in [docs/HANDOFF.md](doc
 The restored didjital R6.1 reference and its executed software checks are
 documented in [docs/R6_COMPATIBILITY.md](docs/R6_COMPATIBILITY.md).
 
+The [fleet world-model study](docs/FLEET_WORLD_MODEL_RESULTS.md) trains nine
+models with causal fleet memory, rack geometry, route conditioning and
+mean-field/AP-score supervision. Its [independent confirmation](docs/FLEET_CONFIRMATION_RESULTS.md)
+fixes the best discovered hybrid before eight additional 100-robot warehouses:
+**167.19 → 133.33 missed commands per million**, **20.2% fewer**, with paired
+95% interval [-68.75, -5.73] ppm. Forecast RMSE falls from 7.09 to 4.57 dB.
+The JEPA hybrid reaches 128.12 ppm as a secondary comparison; the supervised
+primary and previous JEPA prevent a claim that JEPA pretraining is necessary.
+The full follow-up contains **760 native runs and 40 fresh sites**.
+`wirelessjev.fleet_control.FleetWorldModel(..., family="confirmed")` exposes
+the frozen primary candidate explicitly. RadioMap remains the application
+default. The hybrid retains RadioMap's fitting cost; results use offline
+causal forecasts and a 30 ms native handover assumption, not physical cars.
+
 The [JEPA gate repair](docs/JEPA_GATE_REPAIR_RESULTS.md) fixes a mismatch between
 noisy individual-link uncertainty and the uncertainty of an AP-switching gain.
 On six fresh 100-robot scenes, a development-selected gate penalty reduces
@@ -12,7 +26,7 @@ misses from **329.17 to 111.11 per million**; a decision-calibrated gain gate
 reaches 133.33. The frozen forecaster is unchanged. An explicit
 `wirelessjev.jepa_control.controller()` profile exposes the validated research
 configuration; RadioMap remains the default. The 270-run follow-up, six exact
-historical replays and all traces are archived. Stress still favors fixed split,
+historical replays and all traces are archived. In that study, stress favors fixed split,
 and no physical handover or safety guarantee is established.
 
 The original [contracted world-model study](docs/CONTRACTED_RESULTS.md) completed **20
