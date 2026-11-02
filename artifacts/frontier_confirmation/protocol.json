@@ -1,0 +1,23 @@
+{
+  "study": "Independent confirmation of compact world-model control and cost",
+  "discovery_sites": [304000,304001,304002,304003,304004,304005,304006,304007],
+  "candidate_rule": "Lowest charged primary miss count among the three new frontier families; lexical tie break",
+  "candidate": "distilled",
+  "candidate_discovery_misses": 461,
+  "test_sites": [309000,309001,309002,309003,309004,309005,309006,309007],
+  "robots": 100,
+  "duration_seconds": 120,
+  "arms": ["radiomap","previous_jepa","confirmed_hybrid","distilled"],
+  "planner": "native",
+  "scan_period_seconds": 1,
+  "scan_outage_seconds": 0.03,
+  "handover_seconds": 0.03,
+  "timing_profile": "Frozen cadence-1 p95 service ledger from the frontier study; unchanged",
+  "retune_weights_or_policy": false,
+  "primary": "Distilled minus optimised RadioMap paired-site control-miss-rate difference",
+  "primary_success": "95% paired-site bootstrap upper bound below zero",
+  "secondary": ["distilled vs previous_jepa","distilled vs confirmed_hybrid"],
+  "compute": "Report fixed warm/cold budgets, model count and measured forecast errors; do not infer hardware guarantees",
+  "simulation_only": true,
+  "preserve_failed_original_selection": true
+}
