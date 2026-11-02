@@ -1,5 +1,33 @@
 # WirelessJEV research handoff
 
+## Completed JEPA gate repair
+
+The follow-up in `docs/JEPA_GATE_REPAIR_RESULTS.md` completed 270 native
+simulation runs (12 fitting traces, 90 closed-loop selection runs, 168 fresh
+tests on 24 sites) and six additional diagnostic replays. All five JEPA members
+are frozen; no world model was retrained. The six old primary counters reproduce
+exactly and their archived evidence remains unchanged.
+
+The old gate vetoed 19,012 of 19,331 eligible decision opportunities. 18,214
+had positive true AP-score gain without reactive rescue. Median pair uncertainty
+was 14.49 dB against 3.01 dB median actual gain error: the gate treated noisy
+individual-reading dispersion as uncertainty of relative, route-averaged gain.
+
+Development selected a 0.25 gate penalty. On six NEW primary scenes, old gate,
+tuned scale, gain-bound gate, ungated JEPA and reactive rescue produce 329.17,
+111.11, 133.33, 209.72 and 113.19 misses/million respectively. The 66.2% reduction
+versus the old gate wins all six paired scenes. The extra gain model is not
+superior to the simple rescue ablation on the main condition. The repaired
+methods still lose to fixed split under stress.
+
+`wirelessjev.jepa_control.controller()` exposes the development-best research
+profile, checks the frozen model/calibration identity and restricts the validated
+mission to `bulk_uploads`. RadioMap remains default. Native handovers assume
+30 ms; real-car qualification remains pending. Workers have exited. Audit with
+`scripts/audit_jepa_gate_repair.py`. The old report writer now refuses a changed
+execution kernel before mutating historical outputs; use its frozen source
+capsule for exact historical regeneration.
+
 ## Completed contracted world-model study
 
 On 2 November 2026 (Singapore time), the device-scan JEPA continuation completed

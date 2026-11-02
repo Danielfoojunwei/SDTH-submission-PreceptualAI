@@ -5,7 +5,17 @@ Current experiment status and restart prerequisites are in [docs/HANDOFF.md](doc
 The restored didjital R6.1 reference and its executed software checks are
 documented in [docs/R6_COMPATIBILITY.md](docs/R6_COMPATIBILITY.md).
 
-The [contracted world-model study](docs/CONTRACTED_RESULTS.md) completed **20
+The [JEPA gate repair](docs/JEPA_GATE_REPAIR_RESULTS.md) fixes a mismatch between
+noisy individual-link uncertainty and the uncertainty of an AP-switching gain.
+On six fresh 100-robot scenes, a development-selected gate penalty reduces
+misses from **329.17 to 111.11 per million**; a decision-calibrated gain gate
+reaches 133.33. The frozen forecaster is unchanged. An explicit
+`wirelessjev.jepa_control.controller()` profile exposes the validated research
+configuration; RadioMap remains the default. The 270-run follow-up, six exact
+historical replays and all traces are archived. Stress still favors fixed split,
+and no physical handover or safety guarantee is established.
+
+The original [contracted world-model study](docs/CONTRACTED_RESULTS.md) completed **20
 device-JEPA fits and 366 native rollouts on 24 fresh scenes**. It adds censored
 scan inputs, future-route conditioning, ensemble uncertainty and a finite
 AP-regret training objective. Ungated JEPA already beats the fixed rule, the
