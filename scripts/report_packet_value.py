@@ -9,6 +9,7 @@ import hashlib
 import json
 from pathlib import Path
 import shutil
+import subprocess
 
 import numpy as np
 import matplotlib
@@ -23,6 +24,7 @@ LABELS = {'jepa': 'Packet JEPA', 'supervised': 'Matched supervised',
 PRIOR = ('contracted', 'gate_repair', 'fleet_world_model', 'fleet_confirmation',
          'world_frontier', 'frontier_confirmation', 'hardware_budget',
          'handover_admission', 'closed_loop')
+SUPPLEMENT_COMMIT = '352c0938bb5903f669ce50af4ec50b9633408431'
 
 
 def read(path):
@@ -91,6 +93,35 @@ def label_diagnostic(receipts, protocol):
             'factual_replays': sum(int(c['factual_replays']) for c in receipts)}
 
 
+def excluded_pilot():
+    root = OUT/'pilot_ttl10'
+    receipts = [read(f) for f in sorted((root/'labels').glob('*.json'))]
+    return {'excluded': True, 'path': 'artifacts/packet_value/pilot_ttl10',
+            'completed_label_cases': len(receipts),
+            'recorded_native_runs': sum(c['native_runs'] for c in receipts),
+            'recorded_examples': sum(c['examples'] for c in receipts),
+            'reason': 'Forced fast actions could remain pending for ten seconds, while runtime proposals expire after one second',
+            'other_limitations': ['Training density was confounded with drift parity',
+                                  'Both fork times sampled early history only'],
+            'used_for_final_training_calibration_or_confirmation': False}
+
+
+def supplement_record():
+    path = OUT/'acceptance_supplement.json'
+    name = str(path.relative_to(ROOT))
+    committed = subprocess.check_output(['git', 'show', f'{SUPPLEMENT_COMMIT}:{name}'], cwd=ROOT)
+    assert committed == path.read_bytes(), 'Acceptance supplement differs from preregistered Git blob'
+    subprocess.run(['git', 'merge-base', '--is-ancestor', SUPPLEMENT_COMMIT, 'HEAD'], cwd=ROOT, check=True)
+    timestamp = int(subprocess.check_output(['git', 'show', '-s', '--format=%ct', SUPPLEMENT_COMMIT], cwd=ROOT))
+    supplement = read(path)
+    assert supplement['original_primary_unchanged'] and supplement['no_controller_or_data_change']
+    assert supplement['no_test_results_accessed']
+    return {'path': name, 'sha256': digest(path), 'preregistration_commit': SUPPLEMENT_COMMIT,
+            'commit_time_unix': timestamp, 'four_original_primary_comparisons_unchanged': True,
+            'additional_comparisons': 'JEPA minus canonical RadioMap at both costs',
+            'canonical_included_in_tail_veto': True}
+
+
 def row_metrics(case):
     result = case['result']; packet = result['packet_detail']
     misses = np.asarray(packet['misses'], dtype=float)
@@ -111,11 +142,12 @@ def row_metrics(case):
             'cumulative_sent': [int(c['sent']) for c in cumulative]}
 
 
-def family_arrays(cases, family, cost, protocol):
+def family_arrays(cases, family, cost, protocol, *, sites=None):
+    sites = protocol['test_sites'] if sites is None else sites
     seeds = protocol['training_seeds'] if family in protocol['families'] else [None]
     rows = [[next(c for c in cases if c['scene'] == scene and c['family'] == family
                   and float(c['cost']) == float(cost) and c['model_seed'] == seed)
-             for seed in seeds] for scene in protocol['test_sites']]
+             for seed in seeds] for scene in sites]
     metrics = [[row_metrics(c) for c in row] for row in rows]
     return rows, metrics
 
@@ -145,8 +177,61 @@ def summarise_arm(metrics, seeds, protocol):
     return out, matrix, misses, sent
 
 
+def describe_development(cases, protocol, diagnostic, completion):
+    """Negative development evidence; never compute confirmation intervals."""
+    conditions = {}; duration = protocol['development_duration_seconds']
+    for cost in protocol['handover_seconds']:
+        arms = {}; matrices = {}; curves = {}; counts = {}
+        for family in LABELS:
+            rows, metrics = family_arrays(cases, family, cost, protocol, sites=protocol['development_sites'])
+            seeds = protocol['training_seeds'] if family in protocol['families'] else [None]
+            arms[family], matrices[family], curves[family], counts[family] = summarise_arm(metrics, seeds, protocol)
+            if family != 'canonical':
+                controllers = [c['controller'] for row in rows for c in row]
+                committed = sum(len(j['committed_robots']) for c in controllers for j in c['decisions'])
+                eligible = sum(sum(j['eligible']) for c in controllers for j in c['decisions'])
+                arms[family]['controller_diagnostic'] = {
+                    'committed_robot_decisions': committed, 'eligible_switch_proposals': eligible,
+                    'explicit_stays': committed-eligible,
+                    'executed_switches': sum(len(c['executions']) for c in controllers),
+                    'validation_corrections_commands': sorted(set(c['correction_commands'] for c in controllers))}
+        contrasts = {}; trajectories = {}
+        for reference in ('radiomap', 'supervised', 'canonical'):
+            delta = matrices['jepa']-matrices[reference]
+            contrasts[reference] = {'mean_difference_ppm': float(delta.mean()),
+                                    'site_seed_differences_ppm': delta.tolist(),
+                                    'training_seed_means_ppm': delta.mean(0).tolist(),
+                                    'descriptive_development_only': True}
+            excess = curves['jepa']-curves[reference]
+            start = (2*duration)//3
+            j_miss = curves['jepa'][:, :, -1]-curves['jepa'][:, :, start-1]
+            r_miss = curves[reference][:, :, -1]-curves[reference][:, :, start-1]
+            j_sent = counts['jepa'][:, :, -1]-counts['jepa'][:, :, start-1]
+            r_sent = counts[reference][:, :, -1]-counts[reference][:, :, start-1]
+            trajectories[reference] = {
+                'mean_cumulative_excess_misses_per_fleet': excess.mean(axis=(0, 1)).tolist(),
+                'maximum_observed_positive_excess_misses': float(np.maximum(excess, 0).max()),
+                'final_third_mean_excess_ppm': float(((j_miss/np.maximum(j_sent, 1)-r_miss/np.maximum(r_sent, 1))*1e6).mean()),
+                'checkpoints': {str(t): {'mean_excess_misses': float(excess[:, :, t-1].mean()),
+                                       'site_seed_excess_misses': excess[:, :, t-1].tolist()}
+                                for t in protocol['cumulative_metrics_seconds'] if t <= duration},
+                'descriptive_development_only': True}
+        conditions[cost_key(cost)] = {'arms': arms, 'jepa_contrasts': contrasts, 'cumulative_excess': trajectories}
+    return {'completed': True, 'status': 'development_rejected', 'simulation_only': True,
+            'independent_training_fits': 6, 'development_sites': len(protocol['development_sites']),
+            'fresh_sites': 0, 'duration_seconds': duration, 'development_runs': len(cases), 'test_runs': 0,
+            'native_label_runs': diagnostic['native_label_runs'], 'diagnostic': diagnostic,
+            'conditions': conditions, 'primary_evaluated': False, 'primary_success': None,
+            'primary_comparisons': {}, 'additional_promotion_evaluated': False,
+            'additional_promotion_success': None, 'additional_promotion_comparisons': {},
+            'promotion_vetoes': [], 'research_promotion_criterion_passed': False,
+            'physical_deployment_qualified': False, 'universal_or_zero_loss_guarantee': False,
+            'original_study_disposition': 'Rejected on development before confirmation',
+            'rejection_reason': completion.get('reason', 'Controller rejected after development degradation; untouched confirmation cohort not accessed')}
+
+
 def aggregate(cases, protocol, diagnostic):
-    conditions = {}; primary = {}; vetoes = []
+    conditions = {}; primary = {}; additional = {}; vetoes = []
     duration = protocol['confirmation_duration_seconds']
     for cost in protocol['handover_seconds']:
         arms = {}; arrays = {}; curves = {}; sent_curves = {}
@@ -175,26 +260,33 @@ def aggregate(cases, protocol, diagnostic):
                                                  'site_seed_excess_misses': excess[:, :, t-1].tolist()}
                                           for t in protocol['cumulative_metrics_seconds']}}
             trajectories[reference] = trajectory
-            if reference in ('radiomap', 'supervised'):
-                key = f'{cost_key(cost)}:jepa_minus_{reference}'
+            key = f'{cost_key(cost)}:jepa_minus_{reference}'
+            is_primary = reference in ('radiomap', 'supervised')
+            if is_primary:
                 primary[key] = contrast
-                lo, _ = contrast['crossed_bootstrap_95_ppm']
-                if lo > 0:
-                    vetoes.append({'cost': cost, 'reference': reference, 'reason': 'Harmful primary interval excludes zero'})
-                for metric in ('observed_global_maximum_silence_seconds', 'mean_worst_decile_fraction'):
-                    if arms['jepa'][metric] > arms[reference][metric]+1e-12:
-                        vetoes.append({'cost': cost, 'reference': reference, 'reason': 'Observed tail service worsens',
-                                       'metric': metric, 'jepa': arms['jepa'][metric], 'reference_value': arms[reference][metric]})
+            else:
+                additional[key] = contrast
+            lo, _ = contrast['crossed_bootstrap_95_ppm']
+            if lo > 0:
+                reason = 'Harmful primary interval excludes zero' if is_primary else 'Harmful additional promotion interval excludes zero'
+                vetoes.append({'cost': cost, 'reference': reference, 'reason': reason})
+            for metric in ('observed_global_maximum_silence_seconds', 'mean_worst_decile_fraction'):
+                if arms['jepa'][metric] > arms[reference][metric]+1e-12:
+                    vetoes.append({'cost': cost, 'reference': reference, 'reason': 'Observed tail service worsens',
+                                   'metric': metric, 'jepa': arms['jepa'][metric], 'reference_value': arms[reference][metric]})
         conditions[cost_key(cost)] = {'arms': arms, 'jepa_contrasts': contrasts, 'cumulative_excess': trajectories}
     success = all(c['crossed_bootstrap_95_ppm'][1] < 0 for c in primary.values())
+    supplementary_success = all(c['crossed_bootstrap_95_ppm'][1] < 0 for c in additional.values())
     return {'completed': True, 'status': 'evaluated', 'simulation_only': True,
             'independent_training_fits': len(protocol['families'])*len(protocol['training_seeds']),
             'fresh_sites': len(protocol['test_sites']), 'duration_seconds': duration,
             'development_runs': len(protocol['development_sites'])*len(protocol['handover_seconds'])*8,
             'test_runs': len(cases), 'native_label_runs': diagnostic['native_label_runs'],
             'diagnostic': diagnostic, 'conditions': conditions, 'primary_comparisons': primary,
-            'primary_success': success, 'promotion_vetoes': vetoes,
-            'research_promotion_criterion_passed': bool(success and not vetoes),
+            'primary_evaluated': True, 'primary_success': success,
+            'additional_promotion_evaluated': True, 'additional_promotion_comparisons': additional,
+            'additional_promotion_success': supplementary_success, 'promotion_vetoes': vetoes,
+            'research_promotion_criterion_passed': bool(success and supplementary_success and not vetoes),
             'physical_deployment_qualified': False, 'universal_or_zero_loss_guarantee': False}
 
 
@@ -209,7 +301,7 @@ def figures(summary):
         ax.set_title(f'Native training labels · {float(cost):g} s interruption')
         ax.set_ylabel('Observed stay/switch counterfactuals')
     fig.tight_layout(); fig.savefig(dest/'packet_label_balance.png', dpi=180); plt.close(fig)
-    if summary['status'] != 'evaluated':
+    if summary['status'] not in ('evaluated', 'development_rejected'):
         return
     fig, axes = plt.subplots(1, 2, figsize=(12, 4.7))
     colors = {'jepa': '#239b8c', 'supervised': '#9576b4', 'radiomap': '#3e79ad', 'canonical': '#c8a16b'}
@@ -221,8 +313,10 @@ def figures(summary):
         ax.set_xticks(range(4), [LABELS[f] for f in group['arms']], rotation=15, ha='right')
         ax.set_ylabel('Commands missing deadline (%)'); ax.set_title(f'{float(cost):g} s assumed handover')
         ax.grid(axis='y', alpha=.15); ax.set_axisbelow(True)
-    fig.suptitle('100 simulated robots · 300 seconds · all three fitted seeds retained')
-    fig.tight_layout(); fig.savefig(dest/'packet_confirmation.png', dpi=180); plt.close(fig)
+    scope = 'development only' if summary['status'] == 'development_rejected' else 'independent confirmation'
+    fig.suptitle(f'100 simulated robots · {summary["duration_seconds"]} seconds · {scope}')
+    filename = 'packet_development.png' if summary['status'] == 'development_rejected' else 'packet_confirmation.png'
+    fig.tight_layout(); fig.savefig(dest/filename, dpi=180); plt.close(fig)
     fig, axes = plt.subplots(1, 2, figsize=(12, 4.3))
     for ax, (cost, group) in zip(axes, summary['conditions'].items()):
         for reference in ('radiomap', 'supervised', 'canonical'):
@@ -250,9 +344,56 @@ def result_document(summary, protocol):
         for cost, values in costs.items():
             lines.append(f'| {split} | {float(cost):g} | {values["beneficial"]} | {values["ties"]} | {values["harmful"]} |')
     lines += ['']
-    if summary['status'] != 'evaluated':
+    pilot = summary['excluded_pilot']
+    lines += [f'An excluded pre-fitting pilot is preserved separately: **{pilot["completed_label_cases"]} completed label cases, '
+              f'{pilot["recorded_native_runs"]:,} recorded native runs and {pilot["recorded_examples"]:,} action examples**. '
+              'Its forced fast actions could remain pending ten seconds, while runtime proposals expire after one second. '
+              'Its alternating robot counts also confounded density with drift, and both fork times used early history. '
+              'These records are excluded from the final label, calibration, fit and confirmation counts. '
+              'Before fitting or development/holdout access, an explicit protocol amendment aligned action expiry, balanced '
+              'density across conditions and added a mature-history fork. Original pilot sources/data remain untouched.', '']
+    if summary['status'] == 'diagnostic_failed':
         lines += ['The prespecified diagnostic gate failed: at least one physical cost has no beneficial training action. '
                   'Training and confirmation stopped. No JEPA superiority, decision discrimination or all-stay-controller success is claimed.', '']
+    elif summary['status'] == 'development_rejected':
+        lines += ['## Rejected on development; confirmation not run', '',
+                  'The label diagnostic passed and all six matched fits completed. The frozen controller was then rejected '
+                  f'after all {summary["development_runs"]} development runs on {summary["development_sites"]} sites, '
+                  f'100 robots each and {summary["duration_seconds"]} seconds per run. '
+                  '**The original four primary comparisons and two additional promotion comparisons were NOT EVALUATED.** '
+                  'No confirmation confidence intervals are reported, no test source capsule exists and no holdout cases ran. '
+                  'This is a development rejection, not a failed independent confirmation.', '',
+                  '![Descriptive development results](../artifacts/packet_value/figures/packet_development.png)', '',
+                  str(summary['rejection_reason']), '']
+        for cost, group in summary['conditions'].items():
+            lines += [f'### Development: {float(cost):g} second handover', '',
+                      '| Method | Loss % | Mean roams / fleet | Worst-decile loss % | Max silence seconds |',
+                      '|---|---:|---:|---:|---:|']
+            for family, arm in group['arms'].items():
+                lines.append(f'| {LABELS[family]} | {arm["mean_percent"]:.3f} | {arm["mean_roams"]:.2f} | '
+                             f'{100*arm["mean_worst_decile_fraction"]:.3f} | {arm["observed_global_maximum_silence_seconds"]:.2f} |')
+            lines += ['']
+            for family in ('jepa', 'supervised'):
+                seed_rates = ', '.join(f'{seed}: {stats["mean_ppm"]:.2f} ppm' for seed, stats in group['arms'][family]['per_training_seed'].items())
+                lines += [f'{LABELS[family]}, all fitted seeds: {seed_rates}.', '']
+            for family in ('jepa', 'supervised', 'radiomap'):
+                d = group['arms'][family]['controller_diagnostic']
+                lines += [f'{LABELS[family]}: {d["eligible_switch_proposals"]:,} eligible switch proposals among '
+                          f'{d["committed_robot_decisions"]:,} committed robot decisions; '
+                          f'{d["executed_switches"]:,} executed handovers. Validation corrections: '
+                          +', '.join(f'{v:.2f}' for v in d['validation_corrections_commands'])+' commands.', '']
+        lines += ['![Development cumulative excess](../artifacts/packet_value/figures/cumulative_excess.png)', '',
+                  'The failure exposes a control-interface problem: when empirical uncertainty corrections or the '
+                  'immediate-link guard reject a proposal, the new controller commits to staying and suppresses the '
+                  'canonical roaming policy. Its conservative rejection does not restore canonical recovery. '
+                  'Large missed-opportunity costs can therefore accumulate despite few executed switches. '
+                  'The same issue affects the numerical common-controller arm; development degradation cannot be '
+                  'attributed to JEPA alone. This mechanism is consistent with the observed counters; its individual '
+                  'causal contributions need a separate ablation.', '',
+                  'The original controller, fits, calibration, sources and negative development trajectories remain '
+                  'unchanged evidence. A baseline-preserving rescue requires a separately versioned controller and '
+                  'acceptance record, development-only selection and a new pre-holdout seal. '
+                  'The unaccessed confirmation seeds are not successful tests of this rejected profile.', '']
     else:
         lines += [f'Six independent fits completed: three JEPA and three matched supervised initialisations. '
                   f'{summary["development_runs"]} development runs precede {summary["test_runs"]} confirmation runs on '
@@ -269,17 +410,43 @@ def result_document(summary, protocol):
             lines += ['']
             for reference in ('radiomap', 'supervised', 'canonical'):
                 c = group['jepa_contrasts'][reference]
-                lines += [f'JEPA minus {LABELS[reference]}: **{c["mean_difference_ppm"]:.2f} ppm**, '
+                role = 'additional promotion comparison' if reference == 'canonical' else 'original primary comparison'
+                lines += [f'JEPA minus {LABELS[reference]} ({role}): **{c["mean_difference_ppm"]:.2f} ppm**, '
                           f'crossed site/training-seed 95% interval **{ci_text(c)}**.', '']
         lines += ['![Cumulative excess misses](../artifacts/packet_value/figures/cumulative_excess.png)', '',
                   'The four prespecified primary comparisons '+('all pass.' if summary['primary_success'] else 'do not all pass.'), '',
+                  'The two additional canonical-RadioMap promotion comparisons '
+                  +('both pass.' if summary['additional_promotion_success'] else 'do not both pass.'), '',
                   f'The observed tail-service veto records **{len(summary["promotion_vetoes"])}** violations. '
-                  'Research promotion requires both the four-way primary conjunction and no veto. '
+                  'Research promotion requires all four original primary comparisons, both additional canonical-RadioMap '
+                  'comparisons and no tail veto against any of the three references. '
                   f'That combined criterion **{"passes" if summary["research_promotion_criterion_passed"] else "does not pass"}**. '
                   'Physical deployment remains unqualified.', '',
                   'All seed-specific rates, cumulative checkpoints at 60/120/180/240/300 seconds, maximum positive cumulative excess, '
                   'final-third excess rates, and p99 of robot maximum silence are in `summary.json`. '
                   'The p99 statistic describes per-robot maximum silence, not a per-packet latency distribution.', '']
+    lines += ['The stricter canonical-RadioMap criterion was committed before any fitting, development or holdout access '
+              'in `acceptance_supplement.json` (Git commit `352c093`). It adds claim requirements without changing '
+              'the controller, data or four original primary comparisons. Beating only the new shared-controller '
+              'RadioMap cannot support a broad better-than-RadioMap claim.', '']
+    if summary['status']=='development_rejected' and (OUT/'diagnosis.json').exists():
+        diagnosis=read(OUT/'diagnosis.json')
+        lines += ['## Validation diagnosis', '',
+                  'This is a post-hoc explanation of development failure, not a newly selected controller or confirmation result.', '',
+                  '| Handover seconds | Numeric MAE, commands | JEPA mean MAE | Supervised mean MAE |',
+                  '|---|---:|---:|---:|']
+        for cost,rows in diagnosis['conditions'].items():
+            j=np.mean([v['validation_mae_commands'] for k,v in rows.items() if k.startswith('jepa-')])
+            s=np.mean([v['validation_mae_commands'] for k,v in rows.items() if k.startswith('supervised-')])
+            lines.append(f'| {float(cost):g} | {rows["radiomap"]["validation_mae_commands"]:.2f} | {j:.2f} | {s:.2f} |')
+        row=diagnosis['conditions']['0.03']['jepa-0']
+        lines += ['',f'For JEPA seed zero at 30 ms, raw values and the immediate-link check admit {row["raw_feasible_admissions"]} validation actions '
+                  f'({row["raw_admission_beneficial"]} beneficial, {row["raw_admission_neutral"]} neutral, {row["raw_admission_harmful"]} harmful). '
+                  f'The unconditional +{row["correction_commands"]:.2f}-command correction leaves {row["corrected_feasible_admissions"]}. '
+                  'This demonstrates suppression on those validation examples. It does not validate removing the correction or overriding canonical control.', '',
+                  'The separate `ShadowPacketAdmission` interface returns the baseline mask unchanged and uses a bounded background worker. '
+                  'The qualification guard refuses this development-rejected profile. Neither safeguard activates learned switching or establishes a learned benefit; '
+                  'physical runtime deadlines remain unqualified. See `PACKET_VALUE_SAFETY.md`.', '']
     lines += ['## Interpretation and physical limits', '',
               'The one-radio, 90 ms scan and 50 ms command-deadline assumptions impose about one forced missed command per '
               'isolated scan. At five-second scanning this is approximately a 1% loss floor. Four-second handovers force '
@@ -295,6 +462,8 @@ def result_document(summary, protocol):
               'before proposals become visible. All physical scan/handover times remain assumptions.', '',
               'These are native Python packet simulations using archived ns-3 PHY curves. The CAD family, precomputed motion, '
               'shared warm start, out-of-band pose/routes, reserved control-frame telemetry and modeled channels limit transfer. '
+              'The corrected training corpus crosses stationary/drifting conditions with 24/100-robot densities and samples '
+              'early and mature histories; it still covers only those two densities and the existing CAD family. '
               'No arbitrary-robot, protocol-agnostic, hardware, universal-JEPA, certified-risk or zero-loss claim follows.', '',
               'The frozen design is in `PACKET_VALUE_DESIGN.md`; protocol, checkpoints, labels, per-robot trajectories, source '
               'capsules and weight identities are under `artifacts/packet_value/`. Earlier evidence trees are unchanged.', '']
@@ -308,13 +477,17 @@ def archive(summary):
     (ROOT/'docs/PACKET_VALUE_RESULTS.md').write_text(result_document(summary, protocol))
     source = OUT/'analysis_source'; source.mkdir(exist_ok=True)
     shutil.copyfile(__file__, source/'report_packet_value.py')
+    for name in ('diagnose_packet_value.py','review_packet_development.py','run_packet_value.sh'):
+        path=ROOT/'scripts'/name
+        if path.exists():shutil.copyfile(path,source/name)
     manifest = {'files_sha256': {str(f.relative_to(OUT)): digest(f) for f in sorted(OUT.rglob('*'))
                                 if f.is_file() and f.name != 'manifest.json'},
                 'previous_manifests': {str((ROOT/'artifacts'/name/'manifest.json').relative_to(ROOT)):
                                        digest(ROOT/'artifacts'/name/'manifest.json') for name in PRIOR},
                 'document_sha256': digest(ROOT/'docs/PACKET_VALUE_RESULTS.md'),
                 'design_sha256': digest(ROOT/'docs/PACKET_VALUE_DESIGN.md'),
-                'checkpoint_sha256': read(OUT/'selection.json')['checkpoint_sha256'] if summary['status'] == 'evaluated' else {},
+                'checkpoint_sha256': read(OUT/'selection.json')['checkpoint_sha256'] if summary['status'] != 'diagnostic_failed' else {},
+                'acceptance_supplement': supplement_record(),
                 'simulation_only': True}
     write(OUT/'manifest.json', manifest)
 
@@ -326,25 +499,33 @@ def report():
     if not diagnostic['gate_passed']:
         assert completion.get('diagnostic_failed') or completion.get('status') == 'diagnostic_failed'
         summary = {'completed': True, 'status': 'diagnostic_failed', 'diagnostic': diagnostic,
-                   'primary_success': False, 'research_promotion_criterion_passed': False,
+                   'primary_success': False, 'additional_promotion_success': False,
+                   'research_promotion_criterion_passed': False,
                    'physical_deployment_qualified': False, 'simulation_only': True}
+    elif completion.get('development_rejected') or completion.get('status') == 'development_rejected':
+        assert completion.get('completed')
+        assert not list((OUT/'cases').glob('test-*.json')) and not (OUT/'test_source.json').exists()
+        cases = [read(f) for f in sorted((OUT/'cases').glob('development-*.json'))]
+        summary = describe_development(cases, protocol, diagnostic, completion)
     else:
         assert completion.get('completed')
         cases = [read(f) for f in sorted((OUT/'cases').glob('test-*.json'))]
         summary = aggregate(cases, protocol, diagnostic)
+    summary['excluded_pilot'] = excluded_pilot()
     archive(summary)
     print(json.dumps({'completed': True, 'status': summary['status'], 'primary_success': summary['primary_success'],
                       'research_promotion_criterion_passed': summary['research_promotion_criterion_passed']}, indent=2))
 
 
-def audit_labels(protocol, receipts, receipt):
+def audit_labels(protocol, receipts, receipt, *, root=None, require_complete=True):
+    root = OUT if root is None else root
     expected = {(split, scene, float(cost)) for split in ('training', 'validation')
                 for scene in protocol[split+'_sites'] for cost in protocol['handover_seconds']}
     actual = {(c['split'], c['scene'], float(c['cost'])) for c in receipts}
-    assert actual == expected and len(actual) == len(receipts)
+    assert (actual == expected if require_complete else actual <= expected) and len(actual) == len(receipts)
     for c in receipts:
         assert c['completed'] and c['source_sha256'] == receipt['source_sha256']
-        data = OUT/'data'/f'{c["split"]}-{c["scene"]}-{c["cost"]}.npz'
+        data = root/'data'/f'{c["split"]}-{c["scene"]}-{c["cost"]}.npz'
         assert digest(data) == c['data_sha256']
         assert c['examples'] == len(c['records'])
         assert c['factual_replays'] == len(protocol['fork_seconds'])
@@ -452,7 +633,24 @@ def audit():
     for name, expected in manifest['previous_manifests'].items(): assert digest(ROOT/name) == expected, name
     assert digest(ROOT/'docs/PACKET_VALUE_RESULTS.md') == manifest['document_sha256']
     assert digest(ROOT/'docs/PACKET_VALUE_DESIGN.md') == manifest['design_sha256']
-    stages = ['data'] if summary['status'] == 'diagnostic_failed' else ['data', 'training', 'development', 'test']
+    assert manifest['acceptance_supplement'] == supplement_record()
+    if (OUT/'diagnosis.json').exists():
+        diagnosis=read(OUT/'diagnosis.json')
+        assert diagnosis['posthoc_validation_diagnostic'] and not diagnosis['new_controller_selected']
+        assert diagnosis['calibration_sha256']==digest(OUT/'calibration.json')
+    pilot_root = OUT/'pilot_ttl10'; pilot = read(pilot_root/'data_source.json')
+    for name, expected in pilot['source_sha256'].items():
+        # Compare historical copies only: these were superseded before fitting.
+        assert digest(pilot_root/'data_source'/name) == expected, name
+    pilot_receipts = [read(f) for f in sorted((pilot_root/'labels').glob('*.json'))]
+    audit_labels(read(pilot_root/'protocol.json'), pilot_receipts, pilot, root=pilot_root, require_complete=False)
+    assert summary['excluded_pilot'] == excluded_pilot()
+    assert summary['excluded_pilot']['completed_label_cases'] == 30
+    assert summary['excluded_pilot']['recorded_native_runs'] == 1021
+    assert not list((pilot_root/'fits').glob('*.json')) and not list((pilot_root/'cases').glob('test-*.json'))
+    stages = ['data'] if summary['status'] == 'diagnostic_failed' else ['data', 'training', 'development']
+    if summary['status'] == 'evaluated':
+        stages.append('test')
     snapshots = {}
     for stage in stages:
         receipt = snapshots[stage] = read(OUT/(stage+'_source.json'))
@@ -482,11 +680,16 @@ def audit():
         return {'passed': True, 'status': 'diagnostic_failed', 'native_label_runs': recomputed_diagnostic['native_label_runs'],
                 'no_unsupported_training_or_superiority_claim': True, 'simulation_only': True}
     assert recomputed_diagnostic['gate_passed'] and completion['completed']
+    for stage in stages[1:]:
+        assert manifest['acceptance_supplement']['commit_time_unix'] < snapshots[stage]['time_unix']
     selected = read(OUT/'selection.json')
     assert selected['sealed'] and not selected['test_accessed']
     assert selected['no_development_tuning'] and selected['all_training_seeds_retained'] == protocol['training_seeds']
-    assert snapshots['development']['time_unix'] < selected['sealed_at_unix'] < snapshots['test']['time_unix']
-    assert selected['source_sha256'] == snapshots['development']['source_sha256'] == snapshots['test']['source_sha256']
+    assert snapshots['development']['time_unix'] < selected['sealed_at_unix']
+    assert selected['source_sha256'] == snapshots['development']['source_sha256']
+    if summary['status'] == 'evaluated':
+        assert selected['sealed_at_unix'] < snapshots['test']['time_unix']
+        assert selected['source_sha256'] == snapshots['test']['source_sha256']
     checkpoint_hashes = selected['checkpoint_sha256']; assert len(checkpoint_hashes) == 6
     assert checkpoint_hashes == manifest['checkpoint_sha256']
     for name, expected in checkpoint_hashes.items(): assert digest(ROOT/name) == expected, name
@@ -531,7 +734,7 @@ def audit():
         raw = latency['forecast_raw_seconds'][kind]
         assert latency['forecast_seconds'][kind] == max(old, float(np.quantile(raw, .95)) if raw else old)
     cases = [read(f) for f in sorted((OUT/'cases').glob('*.json'))]
-    for stage in ('development', 'test'):
+    for stage in ('development', 'test') if summary['status'] == 'evaluated' else ('development',):
         expected = {(scene, float(cost), family, seed)
                     for scene in protocol[stage+'_sites'] for cost in protocol['handover_seconds']
                     for family in LABELS for seed in (protocol['training_seeds'] if family in protocol['families'] else [None])}
@@ -546,10 +749,25 @@ def audit():
                 head = 'neural' if case['family'] in protocol['families'] else 'radiomap'
                 assert case['controller']['charged_head_seconds'] == latency['head_seconds'][head]
     tests = [c for c in cases if c['stage'] == 'test']
+    if summary['status'] == 'development_rejected':
+        assert completion['development_rejected'] and completion['test_runs'] == 0 and not tests
+        assert not (OUT/'test_source.json').exists() and len(cases) == 64
+        assert completion['fits'] == 6 and completion['development_runs'] == 64
+        assert completion['label_native_runs'] == recomputed_diagnostic['native_label_runs']
+        recomputed = describe_development(cases, protocol, recomputed_diagnostic, completion)
+        recomputed['excluded_pilot'] = excluded_pilot()
+        assert recomputed == summary
+        assert summary['primary_success'] is None and not summary['primary_evaluated']
+        return {'passed': True, 'status': 'development_rejected', 'independent_fits': 6,
+                'development_runs': 64, 'test_runs': 0, 'fresh_sites': 0,
+                'original_primary_not_evaluated': True, 'simulation_only': True}
     assert len(tests) == 128 and len(cases)-len(tests) == 64
     assert completion['fits'] == 6 and completion['development_runs'] == 64 and completion['test_runs'] == 128
     assert completion['fresh_sites'] == 8 and completion['label_native_runs'] == recomputed_diagnostic['native_label_runs']
-    assert aggregate(tests, protocol, recomputed_diagnostic) == summary
+    recomputed = aggregate(tests, protocol, recomputed_diagnostic)
+    assert len(recomputed['primary_comparisons']) == 4 and len(recomputed['additional_promotion_comparisons']) == 2
+    recomputed['excluded_pilot'] = excluded_pilot()
+    assert recomputed == summary
     return {'passed': True, 'status': 'evaluated', 'independent_fits': 6, 'development_runs': 64,
             'test_runs': 128, 'fresh_sites': 8, 'crossed_training_seed_and_site_intervals': True,
             'physical_floor_not_subtracted': True, 'simulation_only': True}

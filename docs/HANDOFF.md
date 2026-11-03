@@ -1,5 +1,50 @@
 # WirelessJEV research handoff
 
+## Packet-action JEPA: six fits complete, rejected on development
+
+`PACKET_VALUE_DESIGN.md` and `PACKET_VALUE_RESULTS.md` record actual JEPA
+EMA future-latent training against a matched supervised ablation. Each has
+three independent initialisations, the same 23,860 inference parameters and
+the same RadioMap route assistance. Forty epochs per fit completed. The
+counterfactual corpus contains 744 training and 186 naturally sampled validation
+examples from 1,370 native packet runs, with 80 exact factual suffix replays.
+State forks preserve full-duration channel draws, packet RNG, queues, pending
+scans/reports, forecaster and controller state. Only public observations enter
+the models; future observable context is a training target.
+
+Training crosses 24/100-robot densities with stationary/drifting conditions and
+samples both five-second and 65-second states. A superseded TTL-ten pilot
+(30 completed cases, 1,021 recorded native runs) remains under
+`artifacts/packet_value/pilot_ttl10/` and is excluded from fitting and validation.
+The corrected forced action uses the same one-second expiry as runtime.
+
+All 64 development runs finished on four sites, 100 robots, 120 seconds, both
+30 ms and four-second handovers. At 30 ms, JEPA averages 24.598% command loss,
+supervised 26.576%, common-controller RadioMap 12.698%, canonical RadioMap
+1.045%. At four seconds: 12.780%, 15.719%, 14.158%, 7.515%. These are descriptive
+development results. All eight confirmation sites remain unused; no primary
+confirmation interval was computed and no JEPA superiority is claimed.
+
+The replacement controller turns rejected uncertain proposals into ten-second
+stays and suppresses canonical recovery. Unconditional calibration corrections
+of 65–113 commands eliminate many useful fast moves. Raw learned packet values
+also trail numerical values on validation, so relaxing the gate alone is not
+a validated remedy. Cumulative losses and silence bursts worsen substantially.
+The modeled-risk ledger is not a bound on factual regret.
+
+`wirelessjev.packet_control.ShadowPacketAdmission` preserves baseline admission
+and evaluates critic advice in one bounded background worker; it has no active
+override mode. `require_confirmed_packet_profile()` rejects this candidate.
+These safeguards retain canonical recovery without claiming learned benefit
+or physical deadline qualification. See `PACKET_VALUE_SAFETY.md`.
+
+Reproduce the development evidence with `bash scripts/run_packet_value.sh`.
+It deliberately does not invoke the rejected profile's reserved confirmation.
+All 221 software tests and the independent evidence audit pass. The original
+frozen package and negative evidence remain intact. Further active
+critic research needs baseline-continuation counterfactuals and a new controller
+seal before the untouched tests. No owned training/evaluation jobs remain.
+
 ## Completed delivered-telemetry confirmation
 
 `CLOSED_LOOP_DESIGN.md` and `CLOSED_LOOP_RESULTS.md` describe 24 development

@@ -6,6 +6,29 @@ are in `docs/WAREHOUSE_RESULTS.md`. The subsequently authorised warehouse v2
 campaign is described below; general foundation-model, custom on-air PHY,
 robotics and space extensions remain deferred.
 
+## Packet-action JEPA: negative development evidence
+
+`PACKET_VALUE_RESULTS.md` trains three actual JEPA and three matched supervised
+packet-value heads on 930 same-state native counterfactual action labels. The
+models share RadioMap assistance and identical inference graphs. A commitment
+ledger, immediate-link checks and empirical uncertainty corrections do not
+establish safe control: the replacement interface suppresses necessary roaming
+when uncertainty causes rejection.
+
+Across 64 development evaluations, JEPA loses 24.598% versus canonical
+RadioMap's 1.045% at 30 ms handovers, and 12.780% versus 7.515% at four seconds.
+The common-controller numerical arm also degrades. Raw learned action values
+trail the numerical estimator on validation. These findings reject this
+controller configuration and provide no JEPA-necessity claim. Independent
+confirmation was not run; all eight reserved sites remain untouched.
+
+The useful system finding is that rejecting an untrusted proposal must retain
+baseline recovery. It must not impose a persistent stay. The new shadow-only
+interface preserves baseline decisions and blocks activation of the rejected
+profile. It does not establish an active learned-controller improvement. A
+baseline-preserving intervention changes policy continuation, requiring new
+counterfactual labels and development validation before any confirmation.
+
 ## Delivered observations and outage-aware control
 
 `CLOSED_LOOP_RESULTS.md` confirms a narrower control result after coupling

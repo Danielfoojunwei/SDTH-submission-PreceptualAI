@@ -1,0 +1,138 @@
+{
+  "posthoc_validation_diagnostic": true,
+  "new_controller_selected": false,
+  "conditions": {
+    "0.03": {
+      "radiomap": {
+        "validation_mae_commands": 15.637050622253009,
+        "correction_commands": 34.56443786621094,
+        "raw_feasible_admissions": 14,
+        "corrected_feasible_admissions": 3,
+        "raw_admission_beneficial": 11,
+        "raw_admission_harmful": 1,
+        "raw_admission_neutral": 2
+      },
+      "jepa-0": {
+        "validation_mae_commands": 21.36388485406035,
+        "correction_commands": 94.41635513305664,
+        "raw_feasible_admissions": 19,
+        "corrected_feasible_admissions": 0,
+        "raw_admission_beneficial": 11,
+        "raw_admission_harmful": 0,
+        "raw_admission_neutral": 8
+      },
+      "jepa-1": {
+        "validation_mae_commands": 20.595373532784883,
+        "correction_commands": 82.26125717163086,
+        "raw_feasible_admissions": 21,
+        "corrected_feasible_admissions": 0,
+        "raw_admission_beneficial": 12,
+        "raw_admission_harmful": 0,
+        "raw_admission_neutral": 9
+      },
+      "jepa-2": {
+        "validation_mae_commands": 19.740146788057462,
+        "correction_commands": 65.62618255615234,
+        "raw_feasible_admissions": 17,
+        "corrected_feasible_admissions": 2,
+        "raw_admission_beneficial": 11,
+        "raw_admission_harmful": 0,
+        "raw_admission_neutral": 6
+      },
+      "supervised-0": {
+        "validation_mae_commands": 19.995435135979807,
+        "correction_commands": 74.09581756591797,
+        "raw_feasible_admissions": 19,
+        "corrected_feasible_admissions": 0,
+        "raw_admission_beneficial": 11,
+        "raw_admission_harmful": 1,
+        "raw_admission_neutral": 7
+      },
+      "supervised-1": {
+        "validation_mae_commands": 21.319075922812186,
+        "correction_commands": 92.94706726074219,
+        "raw_feasible_admissions": 19,
+        "corrected_feasible_admissions": 0,
+        "raw_admission_beneficial": 11,
+        "raw_admission_harmful": 0,
+        "raw_admission_neutral": 8
+      },
+      "supervised-2": {
+        "validation_mae_commands": 22.358045987224067,
+        "correction_commands": 113.09796524047852,
+        "raw_feasible_admissions": 23,
+        "corrected_feasible_admissions": 0,
+        "raw_admission_beneficial": 11,
+        "raw_admission_harmful": 1,
+        "raw_admission_neutral": 11
+      }
+    },
+    "4.0": {
+      "radiomap": {
+        "validation_mae_commands": 17.422000946537143,
+        "correction_commands": 44.402183532714844,
+        "raw_feasible_admissions": 14,
+        "corrected_feasible_admissions": 6,
+        "raw_admission_beneficial": 12,
+        "raw_admission_harmful": 2,
+        "raw_admission_neutral": 0
+      },
+      "jepa-0": {
+        "validation_mae_commands": 21.16942754227628,
+        "correction_commands": 82.14585876464844,
+        "raw_feasible_admissions": 11,
+        "corrected_feasible_admissions": 3,
+        "raw_admission_beneficial": 9,
+        "raw_admission_harmful": 2,
+        "raw_admission_neutral": 0
+      },
+      "jepa-1": {
+        "validation_mae_commands": 20.758290130925435,
+        "correction_commands": 87.04457092285156,
+        "raw_feasible_admissions": 14,
+        "corrected_feasible_admissions": 6,
+        "raw_admission_beneficial": 12,
+        "raw_admission_harmful": 2,
+        "raw_admission_neutral": 0
+      },
+      "jepa-2": {
+        "validation_mae_commands": 22.67254138249223,
+        "correction_commands": 66.2347412109375,
+        "raw_feasible_admissions": 15,
+        "corrected_feasible_admissions": 7,
+        "raw_admission_beneficial": 13,
+        "raw_admission_harmful": 2,
+        "raw_admission_neutral": 0
+      },
+      "supervised-0": {
+        "validation_mae_commands": 20.150561517284764,
+        "correction_commands": 77.63712310791016,
+        "raw_feasible_admissions": 15,
+        "corrected_feasible_admissions": 3,
+        "raw_admission_beneficial": 13,
+        "raw_admission_harmful": 2,
+        "raw_admission_neutral": 0
+      },
+      "supervised-1": {
+        "validation_mae_commands": 21.454760746289324,
+        "correction_commands": 89.67241668701172,
+        "raw_feasible_admissions": 11,
+        "corrected_feasible_admissions": 3,
+        "raw_admission_beneficial": 9,
+        "raw_admission_harmful": 2,
+        "raw_admission_neutral": 0
+      },
+      "supervised-2": {
+        "validation_mae_commands": 21.847665217614942,
+        "correction_commands": 87.33350372314453,
+        "raw_feasible_admissions": 14,
+        "corrected_feasible_admissions": 0,
+        "raw_admission_beneficial": 12,
+        "raw_admission_harmful": 2,
+        "raw_admission_neutral": 0
+      }
+    }
+  },
+  "calibration_sha256": "4d8e23a2ebc8ed2efbbf18365d47aec47bf9786db5022a2e9ff278e424ae8b81",
+  "interpretation": "An unconditional residual correction can reject useful feasible moves. Raw learned values also trail the numerical estimator. Removing the correction is not a validated remedy."
+}

@@ -15,7 +15,8 @@ controller memory and packet RNG state. Branches retain the original complete
 channel draws and release phase. A shorter branch uses a stop slot; changing
 the original draw duration would change the random experiment.
 
-One focal robot either stays or switches once and commits for ten seconds.
+One focal robot either stays or proposes a switch with the same one-second
+expiry as runtime, then holds its association for the ten-second label window.
 Other robots continue the same declared controller. The label is its actual
 post-fork missed-command difference, including packets already pending at the
 fork, plus the branch-window maximum-silence difference. Shared prefixes and
@@ -24,8 +25,10 @@ JEPA latent target only during training; hidden channels never enter inference
 features. Factual suffix replay and action-intervention checks precede use of
 these labels.
 
-Training uses 16 sites, alternating 24 and 100 robots. Four validation sites
-have 100 robots. At seconds 5 and 15, training selects two robots with the
+Training uses 16 sites with robot-count cycle 24, 24, 100, 100, crossing both
+densities with stationary and drifting conditions. Four validation sites have
+100 robots. Eighty-second factual trajectories provide forks at seconds 5 and
+65, covering early and mature delivered-history states. Training selects two robots with the
 lowest observable current margins and two other uniformly sampled available
 robots. Validation samples naturally. Up to three candidates come from actual
 completed local scans: the two strongest and one other visible AP. Unavailable
@@ -35,6 +38,17 @@ Before fitting, the diagnostic publishes beneficial, harmful and tied actions
 at both physical handover costs. If either training cost has no beneficial
 action, the campaign stops and reports insufficient decision evidence. An
 all-stay head on all-zero labels cannot qualify as learned decision success.
+
+An excluded pre-fitting pilot is preserved under
+`artifacts/packet_value/pilot_ttl10/`: 30 completed label cases, 1,021 recorded
+native runs and 691 action examples. Its forced fast actions could wait ten
+seconds for a control delivery, whereas runtime proposals expire after one
+second. Its alternating 24/100 robot counts also correlated density perfectly
+with drift parity, and its forks at seconds 5/15 sampled only early history.
+The explicit pre-fitting protocol amendment corrects all three issues before
+development or holdout access. Pilot sources and data stay unchanged, remain
+auditable and contribute no final training or calibration examples. The report
+counts this excluded work separately from the corrected corpus.
 
 ## Matched model and controller
 
@@ -62,7 +76,8 @@ Full RadioMap forecast costs and action-head CPU service are sealed before
 development. Matched neural heads receive the same conservative measured
 charge. Separate FIFO completion gates prevent forecasts or local decisions
 from becoming visible early; stale origin associations, scans and outages
-invalidate action execution. Actual scan completion and successful control
+invalidate action execution. Proposals and pending cadence moves expire one
+second after their original issue. Actual scan completion and successful control
 exchange determine report delivery. Positions/routes remain out-of-band public
 inputs and initial history is a shared conditional warm start.
 
@@ -81,12 +96,34 @@ and paired training seeds. Every primary upper 95% endpoint must be below
 zero. This conjunction prevents selecting one favorable seed, comparator or
 handover assumption. Robot packets are not independent experimental units.
 
+A stricter acceptance supplement was committed as `352c093` before any model
+fitting, development or confirmation access. The four original primaries stay
+unchanged. Broad promotion additionally requires JEPA to beat the canonical
+RadioMap controller at both physical costs, using the same crossed-bootstrap
+upper-endpoint criterion. These two comparisons are explicitly additional
+promotion requirements. A win over the new shared-controller numerical
+reference alone cannot support a broad better-than-RadioMap claim. The audit
+checks the committed supplement blob and its timestamp against the fitting,
+development and test source receipts.
+
+Development can reject a controller before the independent confirmation stage.
+In that case all completed development cases and fitted models remain archived,
+the report marks the original primaries **NOT EVALUATED**, and no confirmation
+interval is calculated. A development rejection must not be described as a
+failed independent confirmation. The original frozen controller is not repaired
+in place. Any rescue uses a separate versioned controller, development-only
+selection and a new pre-holdout seal. Unknown or rejected learned actions must
+not silently replace the canonical controller's recovery behavior with a long
+physical stay; that coupling is itself a hypothesis requiring an ablation.
+
 The report also retains each trained seed and cumulative excess trajectories
 at 60, 120, 180, 240 and 300 seconds, maximum observed positive excess,
 final-third excess rate, worst-decile robot loss, global maximum silence and
 p99 of per-robot maximum silence. A harmful primary interval or worse observed
-global maximum silence or mean worst-decile service against either common
-reference vetoes broad research promotion. Physical deployment remains
+global maximum silence or mean worst-decile service against common-controller
+RadioMap, canonical RadioMap or the matched supervised reference vetoes broad
+research promotion. All six comparison requirements and the expanded tail
+veto must pass. Physical deployment remains
 unqualified even if this finite research criterion passes.
 
 Absolute loss and excess loss are different quantities. With one radio, a
