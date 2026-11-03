@@ -69,13 +69,30 @@ def prototype_probe(recorder,public):
             reference[row,h,1]=end*.01
     action=torch.zeros((len(ids),3,12));action[:,:,3]=1.
     prior=torch.as_tensor(reference)
+    elapsed=torch.tensor([[1.+(public['slot']-recorder.last_slot)*.01,4.,5.]])
     p=model(**b,actions=action,ap_index=torch.as_tensor(public['current'][ids]),
-            physics_mean=prior,action_elapsed=torch.tensor([[1.,4.,5.]]).expand(len(ids),-1))
+            physics_mean=prior,action_elapsed=elapsed.expand(len(ids),-1))
     assert torch.equal(p['mean'],prior) and p['hazard'] is None
     assert torch.isfinite(p['latent']).all()
     return {'untrained':True,'accuracy_or_control_result':False,'clients':len(ids),
             'inference_parameters':model.inference_parameters,'zero_residual_exact':True,
             'unknown_hazard_is_none':True,'physical_reference':'Known-unavailability lower bounds only; not expected service'}
+
+
+def select_focal(public,history,rng):
+    """Rank last received pilots, never require a new sample at query time."""
+    if not history.rows:raise ValueError('Focal selection requires past radio events')
+    if history.last_slot>public['slot']:raise ValueError('Focal selection cannot use future radio events')
+    _,links,_,observed,_=history.rows[-1]
+    current=np.asarray(public['current']);ar=np.arange(len(current))
+    measured=observed[ar,current,:,3]
+    available=np.flatnonzero((public['outage_remaining']==0)&(public['scan_remaining']==0))
+    best_snr=np.where(measured,links[ar,current,:,3]*30.,-np.inf).max(-1)
+    rankable=available[measured[available].any(-1)]
+    weak=rankable[np.argsort(best_snr[rankable],kind='stable')[:2]]
+    rest=np.setdiff1d(available,weak);chosen=weak.tolist()
+    if len(rest):chosen.append(int(rng.choice(rest)))
+    return chosen
 
 
 def label_case(task):
@@ -102,17 +119,13 @@ def label_case(task):
         np.testing.assert_array_equal(base,saved[slot+1000].observable()['misses'])
         # Availability and weakest *measured* pilot selection use only public
         # pre-intervention state. No future outcome selects the focal robot.
-        available=np.flatnonzero((public['outage_remaining']==0)&(public['scan_remaining']==0))
-        detectable=np.asarray(public['pilot_valid']) & (np.asarray(public['pilot_snr'])+g.noise+g.tx-15>=-90.)
-        margin=np.where(detectable,public['pilot_snr'],-np.inf).max(-1)
-        rankable=available[detectable[available].any(-1)]
-        weak=rankable[np.argsort(margin[rankable],kind='stable')[:2]]
-        rest=np.setdiff1d(available,weak);chosen=weak.tolist()
-        if len(rest):chosen.append(int(rng.choice(rest)))
         history=cp.bundle['hooks'][7].__self__;window=history.window()
+        chosen=select_focal(public,history,rng)
         if probe is None:probe=prototype_probe(history,public)
         for r in chosen:
-            features.append({'slot':slot,'robot':r,**{k:v[r] for k,v in window.items()}})
+            features.append({'slot':slot,'robot':r,'selection_observation_slot':history.last_slot,
+                             'decision_age_seconds':(slot-history.last_slot)*.01,
+                             **{k:v[r] for k,v in window.items()}})
             current=int(public['current'][r]);actions=[('stay',current)]
             heard=np.asarray(public['local_heard'][r]).any(-1)
             candidates=np.flatnonzero(heard & (np.arange(len(g.sites))!=current))
@@ -125,7 +138,8 @@ def label_case(task):
                 detail=result['packet_detail'];misses=int(detail['misses'][r]-prefix[r])
                 baseline_misses=int(base[r]-prefix[r]);gap=int(detail['window_max_gap'][r])
                 baseline_gap=int(bp['window_max_gap'][r])
-                rows.append({'slot':slot,'robot':r,'current':current,'target':target,'kind':kind,
+                rows.append({'slot':slot,'robot':r,'selection_observation_slot':history.last_slot,
+                    'current':current,'target':target,'kind':kind,
                     'hold_slots':100,'canonical_recovery':True,'baseline_misses':baseline_misses,
                     'intervention_misses':misses,'delta_misses':misses-baseline_misses,
                     'baseline_window_max_gap_slots':baseline_gap,'intervention_window_max_gap_slots':gap,

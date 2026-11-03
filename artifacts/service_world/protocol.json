@@ -1,7 +1,8 @@
 {
   "study": "Physics-derived service world-model and canonical-recovery diagnostic",
   "scope": "Architecture/native-contract audit and training-only headroom measurement; not SOTA or novelty certification",
-  "diagnostic_sites": [360000,360001,360002,360003],
+  "diagnostic_sites": [360100,360101,360102,360103],
+  "sampling_revision": "v2: preserve completed v1 in pilot_sampling_v1; rank latest actually observed history, with timestamp and current-AP mask; fresh diagnostic sites",
   "robots": 100,
   "duration_seconds": 80,
   "handover_seconds": [0.03,4.0],
@@ -16,7 +17,7 @@
   "legacy_comparator": "Also run unmodified pending-expiry semantics as a separate numerical reference; any benefit from expiring stale commands is a classical control change, not JEPA",
   "label_horizon_seconds": 10,
   "focal_robots_per_checkpoint": 3,
-  "selection": "Two lowest available observed pilot margins and one uniformly sampled other available robot; never select using future labels",
+  "selection": "Two lowest available latest-observed best-band SNRs from actual 100ms history, masked at the currently associated AP, and one uniformly sampled other available robot; retain observation timestamp and decision age; never select using future labels",
   "interventions": ["temporarily stay on current AP", "move to strongest other AP in completed local scan cache"],
   "factual_comparator": "No forced action: canonical RadioMap continuation with its actual future packets, scans and forecasts",
   "counterfactual_semantics": "Change only one focal action for one second, then restore canonical recovery. Preserve full-duration channel draws, packet RNG, queues, observation delivery and other actors. Baseline is never a forced ten-second stay.",
