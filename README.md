@@ -5,7 +5,23 @@ Current experiment status and restart prerequisites are in [docs/HANDOFF.md](doc
 The restored didjital R6.1 reference and its executed software checks are
 documented in [docs/R6_COMPATIBILITY.md](docs/R6_COMPATIBILITY.md).
 
-The latest [continual radio work](docs/CONTINUAL_RADIO_STATUS.md) completes six
+The [costed RF-to-packet study](docs/CONTINUAL_PACKET_RESULTS.md) completes
+**224 evaluations and six exact replays**, each with 100 simulated robots.
+Neither response memory nor Bayesian updating passes its registered service
+gate. At assumed four-second handovers, canonical RadioMap loses **13.6070%**
+of commands versus **13.8309% / 13.8321%** for staggered memory/Bayesian
+corrections. No primary or information contrast establishes superiority;
+the worst-decile margins also fail. This procedural managed-interference
+study has different conditions from earlier experiments. It adds no JEPA,
+hardware or production claim. RadioMap remains the application default.
+The opt-in [SQLite execution journal](docs/DURABLE_EXECUTION.md) and
+[spawned proposal worker](docs/PROCESS_ISOLATION.md) add local obligation
+recovery and supervised process termination without changing existing services.
+The full suite passes **697 tests**, with one expected fork-misuse warning;
+[the final verifier](scripts/verify_continual_packet.py) reproduces the frozen
+report and checks source, archives and prior evidence.
+
+The [continual response study](docs/CONTINUAL_RADIO_STATUS.md) completes six
 registered response-learning fits on 24 real Sionna RT contexts. **JEPA does
 not beat the numerical controls.** Independent, staggered feedback reduces
 Bayesian response error by **77.1%** versus synchronized feedback at equal
@@ -18,11 +34,11 @@ guards bound work and reject stale forecasts. No learned candidate is production
 qualified. The [research watch](docs/RAN_RESEARCH_WATCH.md) retains 47 live,
 unreviewed leads and configures daily 08:00 Singapore discovery after its
 workflow reaches the default branch. Discovery never promotes a model.
-The final suite passes **582 tests**, including cached pretrained DINOv3
+That milestone's archived suite passes **582 tests**, including cached pretrained DINOv3
 integration. [Verification and evidence hashes](artifacts/ran_research/verification.json)
 bind the completed work; this is software verification, not hardware qualification.
-GitHub CI is currently blocked before job execution by an account billing lock;
-daily discovery also requires that issue resolved and the workflow merged.
+The last recorded GitHub CI attempt was blocked before job execution by an
+account billing lock; daily discovery requires working Actions and the workflow merged.
 
 The latest [representation and DINOv3 work](docs/VISUAL_RADIO_STATUS.md) audits
 six trained critics and completes six new projection-ablation fits. It finds

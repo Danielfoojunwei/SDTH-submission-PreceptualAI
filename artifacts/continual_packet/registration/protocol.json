@@ -1,0 +1,99 @@
+{
+  "study": "Costed managed-interference measurements to100-robot packet service",
+  "scope": "Procedural native warehouse/ns-3-curve simulator; not RT100robot truth, JEPA benefit, hardware, novelty or SOTA",
+  "development_sites": [
+    2002000,
+    2002001
+  ],
+  "confirmation_sites": [
+    2003000,
+    2003001,
+    2003002,
+    2003003,
+    2003004,
+    2003005
+  ],
+  "development_packet_seeds": [
+    0
+  ],
+  "confirmation_packet_seeds": [
+    0,
+    1
+  ],
+  "robots": 100,
+  "mission": "scanner_quiet",
+  "duration_seconds": 80,
+  "handover_seconds": [
+    0.03,
+    4.0
+  ],
+  "arms": {
+    "canonical": [
+      "none",
+      "none"
+    ],
+    "reciprocal_radiomap": [
+      "none",
+      "prior"
+    ],
+    "synchronized_ignored": [
+      "synchronized",
+      "ignore"
+    ],
+    "staggered_ignored": [
+      "staggered",
+      "ignore"
+    ],
+    "synchronized_memory": [
+      "synchronized",
+      "memory"
+    ],
+    "staggered_memory": [
+      "staggered",
+      "memory"
+    ],
+    "synchronized_bayesian": [
+      "synchronized",
+      "bayesian"
+    ],
+    "staggered_bayesian": [
+      "staggered",
+      "bayesian"
+    ]
+  },
+  "world": "Existing episode(seed,100,80,'main') with random_site rack/slope/shadowing and60second capped noisy warm scans. Existing scanner_quiet mission naturally enables power-control politeness; fixed acrossALLarms with original control/video/bulk demands and canonical recovery. Static capability preflight chose this mission before any outcome access; bulk_uploads did not enable powercontrol. Live scans enter only after completion and delivery. Procedural sites share CAD, not measured warehouses.",
+  "sources": "Two fixed managed5GHz sources. Public XY uniform[10,110]x[6,74] from SeedSequence([site,202021]);15dBm each; channel drawn from public5GHz channels. Private kernel coupling reproduces same random_site parameters. No truth World/G/seed-derived propagation reaches predictor.",
+  "activity_plan": "Independent2source duties per100ms block, SeedSequence([site,202022]): zero with probability0.7, otherwise uniform[0.05,0.20]. Plan extends31seconds beyond run. All3probe slots are zero in ALL ordinary plans, so probes never mute scheduled managed data.",
+  "probe_period_slots": 500,
+  "pulse_airtime_fraction": 0.02,
+  "capture_airtime_fraction": 0.0,
+  "report_bytes_per_ap": 128,
+  "report_rate_mbps": 6.5,
+  "report_delay_slots": 2,
+  "measurement_noise_floor_fraction": 0.02,
+  "measurement_missing_probability": 0.05,
+  "shared_receiver_blackout": false,
+  "probe_model": "Three10ms captures in one100ms background block: zero,[1,1],zero synchronized; zero,[1,0],[0,1] staggered, times configured pulse duty/power. Raw AP N+I includes native background. Dedicated monitoring is an unqualified simulation capability; shared-radio blackout separately tested.",
+  "costs": "Native -82dBm per-source AP-assisted carrier-sense rule: a source heard by ANY AP in a native domain makes that whole domain defer. Only sensed-source union duty is reserved there. Hidden source RF during the remaining native window uses max(0,a_hidden-a_sensed_union)/(1-a_sensed_union) for aligned nested source windows. Full deferral has no concurrent RF. Predictor uses the SAME public helper with estimated gains, never the true sense mask. Raw captures still measure all source energy plus ambient. Capture/report reservations enter before actual per-band retry/control/video/bulk allocation. Reliable fixed-rate128byte/AP transport is paid before delayed publication. This AP-assisted rule and mean RF before nonlinear PER are simulator approximations, not proof robot transmitters sense the source.",
+  "prior": "Existing RadioMap fitted only to completed warm/delivered RSSI, evaluated at public sourceXY. Subtract public APTXpower and assume simulator reciprocity. Same reciprocal-map prior/fallback for all corrected arms, never hidden law or RT24 prior.",
+  "estimators": "Bounded ContinualResponseMemory identifies INDIVIDUAL source basis effects needed for nonlinear carrier-sense classification; unknown/stale coefficients fall back to reciprocalRadioMap. A known joint sum does not identify separate gains. Matched2D Gaussian Bayesian update accounts for shared-baseline measurement noise.30seconds/12cycles, delivered raw measurements/exposures only. Nonnegative physical projection and retained map uncertainty do not calibrate service risk. No neural fitting/backbone updates.",
+  "memory_max_age_seconds": 30.0,
+  "compute": "Base archived measured RadioMap cold/warm/refit profile plus existing0.5second delay. All corrected arms share extra0.1seconds during development. Before confirmation seal max(0.1,2*maximum development local-headp95), rounded UP to10ms; no packet outcomes in timing choice. Actual overruns veto promotion. Canonical keeps original faster cost. Original FIFO completion retained.",
+  "development_local_compute_seconds": 0.1,
+  "cumulative_metrics_seconds": [
+    20,
+    40,
+    60,
+    80
+  ],
+  "primary": "Full-run integer command misses/sent for all100robots including probes. Memory and Bayesian each require staggered arm better than canonical, reciprocal_radiomap and staggered_ignored at BOTH costs. Average paired packet seeds per site;20000whole-site bootstrap draws. Report descriptive95% and upper quantile1-0.05/12 across12candidate/cost/reference tests; all required upper endpoints<0.",
+  "information_effect": "For each estimator/cost: (staggered_learned-staggered_ignored)-(synchronized_learned-synchronized_ignored). Claim independent-information benefit only if paired-site bootstrap upper quantile1-0.05/4<0 at both costs.",
+  "veto": "At both costs versus canonical AND reciprocal-map: no worse maximum observed robot silence or mean worst-decile loss; mean video delivered versus ORIGINAL requested demand decreases<=0.01; mean bulk delivery>=0.99reference. Report backlog/overflow/pending controls. Any uncharged local runtime overrun or causality/kernel/replay failure vetoes success. Empirical engineering margins are not a safety certificate.",
+  "secondary": "Every site/packet-seed/cost/arm; p99/max gaps, worst decile, original/encoded/delivered video, bulk generated/delivered/backlog/drop, cumulative excess, paid probe/report resources, measurement age, identified/fallback coverage and actual compute. Endpoint pending packets are right-censored and reported; paired sent counts must match.",
+  "bootstrap_seed": 2004000,
+  "bootstrap_replicates": 20000,
+  "no_confirmation_tuning": true,
+  "old_archives_and_reserved_holdouts_untouched": true,
+  "activation": "Offline only. No hardware bridge/default replacement/production qualification. Report negative/null outcomes without post-test fitting. Preserve old RT24 evidence.",
+  "endpoint_sensitivity": "Report observed counters but require primary superiority also with candidate pending commands counted as misses and reference pending counted as successes. Four-arm information contrast adds pending outcomes only in positive-coefficient arms for the conservative bound. Use conservative bounds for registered one-sided gates and report observed intervals separately. Worst-decile gate uses candidate per-robot pending-as-miss versus reference observed loss. This pre-data amendment rejects gains explained only by endpoint censoring; packets and robots remain nonindependent within sites."
+}

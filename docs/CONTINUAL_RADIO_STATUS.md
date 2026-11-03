@@ -60,9 +60,12 @@ inactive. A stuck Python thread cannot be forcibly terminated by this API.
 The [qualification contract](MODEL_PROMOTION_CONTRACT.md) checks hash-bound
 receipts rather than trusting a paper title or success flag. Actual candidates
 are listed in [qualification_status.json](../artifacts/ran_research/qualification_status.json).
-None is production eligible. Physical timing, rare-event/correlation evidence,
-capability checks, durable transaction crash recovery and process-level fault
-containment remain requirements; software unit tests do not supply them.
+None is production eligible. The later opt-in [durable execution wrapper](DURABLE_EXECUTION.md)
+and [spawned proposal worker](PROCESS_ISOLATION.md) add tested local obligation
+recovery and supervised inference-process termination. They are separate from
+the original in-memory ledger and thread services. Physical timing,
+rare-event/correlation evidence, capability checks and deployment integration
+remain requirements; software unit tests do not supply them.
 
 ## Continuous research, without automatic model promotion
 

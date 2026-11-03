@@ -5,6 +5,10 @@ and idempotent reservation settlement. This fixes concrete software failure
 paths; it does not qualify a real radio controller or supply crash recovery.
 No hardware command or network session was used to implement or test this change.
 
+The later opt-in [durable wrapper](DURABLE_EXECUTION.md) adds local SQLite
+obligation recovery around this API. The process-local limits below describe
+the core ledger; callers need the wrapper for its tested restart behavior.
+
 ## Active version and historical evidence
 
 [`execution.py`](../src/wirelessjev/execution.py) declares
