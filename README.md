@@ -5,6 +5,19 @@ Current experiment status and restart prerequisites are in [docs/HANDOFF.md](doc
 The restored didjital R6.1 reference and its executed software checks are
 documented in [docs/R6_COMPATIBILITY.md](docs/R6_COMPATIBILITY.md).
 
+The [delivered-telemetry confirmation](docs/CLOSED_LOOP_RESULTS.md) adds **120
+native evaluations on eight fresh test sites**, each with 100 simulated robots.
+Actual scan completion, packet delivery, local neighbor caches and queued
+forecasts now form a feedback loop. Frozen models are compared without more
+training. A development-selected outage-utility controller reduces compact-model
+command loss from **5.849% to 5.635%** under assumed four-second handovers;
+the paired-site interval excludes zero. At assumed 30 ms handovers it worsens
+loss from **1.035% to 1.318%** on all eight sites. RadioMap reaches 5.603% with
+the slow utility profile; model control superiority remains unconfirmed.
+All **192 tests pass**, and four selected cases replay with identical forecasts,
+report deliveries and packet counts. Remaining loss is too high for deployment.
+The [design](docs/CLOSED_LOOP_DESIGN.md) records observation and timing assumptions.
+
 The [optimisation frontier](docs/WORLD_FRONTIER_RESULTS.md) adds **nine fits,
 432 native runs and 42 fresh test sites** across model, runtime, sensing and
 handover-admission experiments. A distilled single model uses a measured

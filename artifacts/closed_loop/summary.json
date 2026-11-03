@@ -1,0 +1,530 @@
+{
+  "completed": true,
+  "fresh_sites": 8,
+  "development_runs": 24,
+  "test_runs": 96,
+  "native_runs": 120,
+  "conditions": {
+    "4.0": {
+      "arms": {
+        "radiomap": {
+          "ideal_reports": {
+            "misses": 55939,
+            "commands": 960000,
+            "ppm": 58269.791666666664,
+            "percent": 5.826979166666667,
+            "scene_ppm": [
+              68700.0,
+              32125.0,
+              64525.0,
+              85925.0,
+              63183.33333333333,
+              75441.66666666667,
+              45550.0,
+              30708.333333333336
+            ],
+            "mean_roams": 41.5,
+            "bulk_mbps": 474.0362056390823,
+            "video_on_time": 0.9135452900778709,
+            "safety_stop_fraction": 0.0786025,
+            "forecast_rmse_db": 8.483057085818762,
+            "current_rmse_db": 8.322633789446748,
+            "route_delta_rmse_db": 5.227835472526679,
+            "mean_reports_delivered": 1130.875,
+            "mean_report_age_seconds": 0.10960754207123082,
+            "miss_causes": {
+              "no_radio_up": 35019,
+              "all_paths_blocked": 2334,
+              "weak_link": 18584,
+              "contention": 2,
+              "other": 0
+            }
+          },
+          "delivered_reports": {
+            "misses": 54855,
+            "commands": 960000,
+            "ppm": 57140.625,
+            "percent": 5.7140625,
+            "scene_ppm": [
+              66800.0,
+              32400.0,
+              60691.666666666664,
+              86975.0,
+              60083.333333333336,
+              75933.33333333334,
+              43575.0,
+              30666.666666666664
+            ],
+            "mean_roams": 40.25,
+            "bulk_mbps": 475.51738994524817,
+            "video_on_time": 0.9134154148043212,
+            "safety_stop_fraction": 0.07663770833333333,
+            "forecast_rmse_db": 8.540001652295212,
+            "current_rmse_db": 8.376299497577422,
+            "route_delta_rmse_db": 5.225436416537557,
+            "mean_reports_delivered": 1131.125,
+            "mean_report_age_seconds": 0.10956324116378328,
+            "miss_causes": {
+              "no_radio_up": 34202,
+              "all_paths_blocked": 2429,
+              "weak_link": 18224,
+              "contention": 0,
+              "other": 0
+            }
+          },
+          "delivered_utility": {
+            "misses": 53785,
+            "commands": 960000,
+            "ppm": 56026.041666666664,
+            "percent": 5.602604166666667,
+            "scene_ppm": [
+              64366.66666666667,
+              32400.0,
+              56566.666666666664,
+              89033.33333333334,
+              58075.0,
+              75775.0,
+              41325.0,
+              30666.666666666664
+            ],
+            "mean_roams": 39.125,
+            "bulk_mbps": 479.2203669459344,
+            "video_on_time": 0.9138704360126889,
+            "safety_stop_fraction": 0.07492041666666666,
+            "forecast_rmse_db": 8.538973342666146,
+            "current_rmse_db": 8.375317289246578,
+            "route_delta_rmse_db": 5.225314520563981,
+            "mean_reports_delivered": 1131.5,
+            "mean_report_age_seconds": 0.10997594461964752,
+            "miss_causes": {
+              "no_radio_up": 33632,
+              "all_paths_blocked": 2274,
+              "weak_link": 17879,
+              "contention": 0,
+              "other": 0
+            }
+          }
+        },
+        "distilled": {
+          "ideal_reports": {
+            "misses": 55958,
+            "commands": 960000,
+            "ppm": 58289.583333333336,
+            "percent": 5.8289583333333335,
+            "scene_ppm": [
+              70775.0,
+              31050.0,
+              61983.333333333336,
+              88041.66666666667,
+              57641.666666666664,
+              84141.66666666667,
+              41550.0,
+              31133.333333333332
+            ],
+            "mean_roams": 34.625,
+            "bulk_mbps": 460.30099042624227,
+            "video_on_time": 0.9045790407933385,
+            "safety_stop_fraction": 0.08340208333333334,
+            "forecast_rmse_db": 6.654392530371836,
+            "current_rmse_db": 6.352137051922233,
+            "route_delta_rmse_db": 5.1230344563039205,
+            "mean_reports_delivered": 1131.125,
+            "mean_report_age_seconds": 0.11193429564590014,
+            "miss_causes": {
+              "no_radio_up": 30786,
+              "all_paths_blocked": 2706,
+              "weak_link": 22452,
+              "contention": 14,
+              "other": 0
+            }
+          },
+          "delivered_reports": {
+            "misses": 56153,
+            "commands": 960000,
+            "ppm": 58492.70833333333,
+            "percent": 5.849270833333333,
+            "scene_ppm": [
+              71691.66666666667,
+              30875.0,
+              59550.0,
+              90125.0,
+              60141.66666666667,
+              84416.66666666667,
+              40033.33333333333,
+              31108.333333333336
+            ],
+            "mean_roams": 33.125,
+            "bulk_mbps": 455.8785436044807,
+            "video_on_time": 0.9063141760129775,
+            "safety_stop_fraction": 0.08474020833333334,
+            "forecast_rmse_db": 6.701685244311171,
+            "current_rmse_db": 6.40074647333253,
+            "route_delta_rmse_db": 5.122764546304592,
+            "mean_reports_delivered": 1131.75,
+            "mean_report_age_seconds": 0.1153507242156907,
+            "miss_causes": {
+              "no_radio_up": 30036,
+              "all_paths_blocked": 2740,
+              "weak_link": 23346,
+              "contention": 31,
+              "other": 0
+            }
+          },
+          "delivered_utility": {
+            "misses": 54093,
+            "commands": 960000,
+            "ppm": 56346.875,
+            "percent": 5.6346875,
+            "scene_ppm": [
+              68475.0,
+              30875.0,
+              56566.666666666664,
+              87816.66666666667,
+              56441.666666666664,
+              82716.66666666666,
+              36775.0,
+              31108.333333333336
+            ],
+            "mean_roams": 30.875,
+            "bulk_mbps": 459.7310028820078,
+            "video_on_time": 0.9074369321170558,
+            "safety_stop_fraction": 0.08171937500000001,
+            "forecast_rmse_db": 6.7010543048921445,
+            "current_rmse_db": 6.400407727766989,
+            "route_delta_rmse_db": 5.12272185041509,
+            "mean_reports_delivered": 1132.5,
+            "mean_report_age_seconds": 0.11460084536440299,
+            "miss_causes": {
+              "no_radio_up": 28838,
+              "all_paths_blocked": 2712,
+              "weak_link": 22522,
+              "contention": 21,
+              "other": 0
+            }
+          }
+        }
+      },
+      "utility_comparisons": {
+        "radiomap": {
+          "mean_difference_ppm": -1114.583333333333,
+          "paired_site_bootstrap_95_ppm": [
+            -2392.708333333333,
+            189.6093750000019
+          ],
+          "wins": 5,
+          "ties": 2,
+          "sites": 8
+        },
+        "distilled": {
+          "mean_difference_ppm": -2145.8333333333358,
+          "paired_site_bootstrap_95_ppm": [
+            -3044.791666666669,
+            -1162.500000000001
+          ],
+          "wins": 6,
+          "ties": 2,
+          "sites": 8
+        }
+      },
+      "feedback_comparisons": {
+        "radiomap": {
+          "mean_difference_ppm": -1129.166666666666,
+          "paired_site_bootstrap_95_ppm": [
+            -2333.333333333332,
+            22.94270833333319
+          ],
+          "wins": 5,
+          "ties": 0,
+          "sites": 8
+        },
+        "distilled": {
+          "mean_difference_ppm": 203.12500000000045,
+          "paired_site_bootstrap_95_ppm": [
+            -886.4843750000006,
+            1260.4166666666697
+          ],
+          "wins": 4,
+          "ties": 0,
+          "sites": 8
+        }
+      },
+      "model_comparison": {
+        "mean_difference_ppm": 320.8333333333312,
+        "paired_site_bootstrap_95_ppm": [
+          -1853.1250000000018,
+          2777.0833333333294
+        ],
+        "wins": 4,
+        "ties": 1,
+        "sites": 8
+      }
+    },
+    "0.03": {
+      "arms": {
+        "radiomap": {
+          "ideal_reports": {
+            "misses": 10104,
+            "commands": 960000,
+            "ppm": 10525.0,
+            "percent": 1.0525,
+            "scene_ppm": [
+              10125.0,
+              10125.0,
+              10583.333333333334,
+              11783.333333333334,
+              10275.0,
+              10708.333333333334,
+              10050.0,
+              10550.0
+            ],
+            "mean_roams": 135.25,
+            "bulk_mbps": 526.8158566042853,
+            "video_on_time": 0.970216863454523,
+            "safety_stop_fraction": 0.0012008333333333333,
+            "forecast_rmse_db": 8.483057085818762,
+            "current_rmse_db": 8.322633789446748,
+            "route_delta_rmse_db": 5.227835472526679,
+            "mean_reports_delivered": 1138.25,
+            "mean_report_age_seconds": 0.10008752100445767,
+            "miss_causes": {
+              "no_radio_up": 9590,
+              "all_paths_blocked": 340,
+              "weak_link": 174,
+              "contention": 0,
+              "other": 0
+            }
+          },
+          "delivered_reports": {
+            "misses": 10152,
+            "commands": 960000,
+            "ppm": 10575.0,
+            "percent": 1.0574999999999999,
+            "scene_ppm": [
+              10125.0,
+              10258.333333333332,
+              10666.666666666666,
+              12425.0,
+              10216.666666666668,
+              10358.333333333334,
+              10041.666666666668,
+              10508.333333333334
+            ],
+            "mean_roams": 135.0,
+            "bulk_mbps": 526.8417727544447,
+            "video_on_time": 0.9695683542928487,
+            "safety_stop_fraction": 0.0013289583333333335,
+            "forecast_rmse_db": 8.537286496595144,
+            "current_rmse_db": 8.373870161145897,
+            "route_delta_rmse_db": 5.2249428726014795,
+            "mean_reports_delivered": 1138.25,
+            "mean_report_age_seconds": 0.10014777516747259,
+            "miss_causes": {
+              "no_radio_up": 9591,
+              "all_paths_blocked": 414,
+              "weak_link": 147,
+              "contention": 0,
+              "other": 0
+            }
+          },
+          "delivered_utility": {
+            "misses": 12501,
+            "commands": 960000,
+            "ppm": 13021.875,
+            "percent": 1.3021875,
+            "scene_ppm": [
+              11916.666666666668,
+              10300.0,
+              13458.333333333332,
+              24358.333333333332,
+              12066.666666666666,
+              10991.666666666666,
+              10291.666666666666,
+              10791.666666666666
+            ],
+            "mean_roams": 160.75,
+            "bulk_mbps": 517.2147772921353,
+            "video_on_time": 0.9660602653326325,
+            "safety_stop_fraction": 0.006559583333333334,
+            "forecast_rmse_db": 8.537720998043316,
+            "current_rmse_db": 8.3743260388445,
+            "route_delta_rmse_db": 5.22491517037451,
+            "mean_reports_delivered": 1138.25,
+            "mean_report_age_seconds": 0.10082484395913144,
+            "miss_causes": {
+              "no_radio_up": 9597,
+              "all_paths_blocked": 1048,
+              "weak_link": 1856,
+              "contention": 0,
+              "other": 0
+            }
+          }
+        },
+        "distilled": {
+          "ideal_reports": {
+            "misses": 9946,
+            "commands": 960000,
+            "ppm": 10360.416666666668,
+            "percent": 1.0360416666666667,
+            "scene_ppm": [
+              10166.666666666666,
+              10033.333333333334,
+              10558.333333333332,
+              11266.666666666666,
+              10233.333333333334,
+              10575.0,
+              10041.666666666668,
+              10008.333333333332
+            ],
+            "mean_roams": 142.25,
+            "bulk_mbps": 527.5346013914298,
+            "video_on_time": 0.9715442857836718,
+            "safety_stop_fraction": 0.0006954166666666667,
+            "forecast_rmse_db": 6.654392530371836,
+            "current_rmse_db": 6.352137051922233,
+            "route_delta_rmse_db": 5.1230344563039205,
+            "mean_reports_delivered": 1138.25,
+            "mean_report_age_seconds": 0.1000514489476801,
+            "miss_causes": {
+              "no_radio_up": 9590,
+              "all_paths_blocked": 261,
+              "weak_link": 95,
+              "contention": 0,
+              "other": 0
+            }
+          },
+          "delivered_reports": {
+            "misses": 9939,
+            "commands": 960000,
+            "ppm": 10353.125,
+            "percent": 1.0353124999999999,
+            "scene_ppm": [
+              10125.0,
+              10000.0,
+              10383.333333333332,
+              11883.333333333332,
+              10225.0,
+              10150.0,
+              10041.666666666668,
+              10016.666666666666
+            ],
+            "mean_roams": 140.25,
+            "bulk_mbps": 527.5935864593561,
+            "video_on_time": 0.9718476626613746,
+            "safety_stop_fraction": 0.0006579166666666667,
+            "forecast_rmse_db": 6.70010363854553,
+            "current_rmse_db": 6.398288654151303,
+            "route_delta_rmse_db": 5.122683600474427,
+            "mean_reports_delivered": 1138.25,
+            "mean_report_age_seconds": 0.10005804521342823,
+            "miss_causes": {
+              "no_radio_up": 9589,
+              "all_paths_blocked": 308,
+              "weak_link": 42,
+              "contention": 0,
+              "other": 0
+            }
+          },
+          "delivered_utility": {
+            "misses": 12654,
+            "commands": 960000,
+            "ppm": 13181.25,
+            "percent": 1.318125,
+            "scene_ppm": [
+              12308.333333333332,
+              10083.333333333334,
+              12491.666666666666,
+              25558.333333333332,
+              11883.333333333332,
+              11991.666666666666,
+              10375.0,
+              10758.333333333334
+            ],
+            "mean_roams": 179.0,
+            "bulk_mbps": 521.2425570664465,
+            "video_on_time": 0.9653297347610602,
+            "safety_stop_fraction": 0.0069052083333333335,
+            "forecast_rmse_db": 6.6998154073787735,
+            "current_rmse_db": 6.398132424388148,
+            "route_delta_rmse_db": 5.122622024986707,
+            "mean_reports_delivered": 1138.25,
+            "mean_report_age_seconds": 0.1009228553644152,
+            "miss_causes": {
+              "no_radio_up": 9599,
+              "all_paths_blocked": 1015,
+              "weak_link": 2039,
+              "contention": 1,
+              "other": 0
+            }
+          }
+        }
+      },
+      "utility_comparisons": {
+        "radiomap": {
+          "mean_difference_ppm": 2446.8749999999995,
+          "paired_site_bootstrap_95_ppm": [
+            616.640624999999,
+            5342.786458333326
+          ],
+          "wins": 0,
+          "ties": 0,
+          "sites": 8
+        },
+        "distilled": {
+          "mean_difference_ppm": 2828.125,
+          "paired_site_bootstrap_95_ppm": [
+            871.8750000000005,
+            6087.499999999999
+          ],
+          "wins": 0,
+          "ties": 0,
+          "sites": 8
+        }
+      },
+      "feedback_comparisons": {
+        "radiomap": {
+          "mean_difference_ppm": 50.0,
+          "paired_site_bootstrap_95_ppm": [
+            -114.58333333333348,
+            249.99999999999977
+          ],
+          "wins": 4,
+          "ties": 1,
+          "sites": 8
+        },
+        "distilled": {
+          "mean_difference_ppm": -7.2916666666667425,
+          "paired_site_bootstrap_95_ppm": [
+            -181.25000000000023,
+            204.1666666666663
+          ],
+          "wins": 5,
+          "ties": 1,
+          "sites": 8
+        }
+      },
+      "model_comparison": {
+        "mean_difference_ppm": 159.375,
+        "paired_site_bootstrap_95_ppm": [
+          -293.7499999999993,
+          606.2499999999995
+        ],
+        "wins": 4,
+        "ties": 0,
+        "sites": 8
+      }
+    }
+  },
+  "primary_comparison": {
+    "mean_difference_ppm": -2145.8333333333358,
+    "paired_site_bootstrap_95_ppm": [
+      -3044.791666666669,
+      -1162.500000000001
+    ],
+    "wins": 6,
+    "ties": 2,
+    "sites": 8
+  },
+  "primary_success": true,
+  "simulation_only": true,
+  "no_training_or_test_tuning": true
+}

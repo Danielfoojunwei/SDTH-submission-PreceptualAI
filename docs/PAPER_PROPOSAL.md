@@ -6,6 +6,32 @@ are in `docs/WAREHOUSE_RESULTS.md`. The subsequently authorised warehouse v2
 campaign is described below; general foundation-model, custom on-air PHY,
 robotics and space extensions remain deferred.
 
+## Delivered observations and outage-aware control
+
+`CLOSED_LOOP_RESULTS.md` confirms a narrower control result after coupling
+fleet-model observations to actual simulated scanning and packet deliveries.
+Local neighbor knowledge comes from completed noisy scans, current-link pilots
+freeze during radio outages, and only strictly past report deliveries reach
+the queued forecaster. Four development sites fix one shared utility horizon
+before 96 tests on eight new 100-robot warehouse seeds. Models remain frozen.
+
+At assumed four-second handovers, a switch-loss objective including the full
+outage reduces compact-model command loss 5.849% → 5.635%, with paired-site
+interval [-3044.79, -1162.50] ppm. With the same utility controller RadioMap is
+5.603%; the model interval spans zero. Better forecast RMSE (6.70 vs 8.54 dB)
+still does not establish superior control. At 30 ms handovers the selected
+utility harms every site for both models, raising compact loss 1.035% → 1.318%.
+Its main transferable finding is the dependence of useful predictive control
+on physical interruption cost and observation delivery. It does not establish
+the necessity of JEPA or a universally better learned wireless controller.
+
+The study adds 120 native evaluations and four exact replays. All 192 software
+tests pass. Shared warm-start history, out-of-band pose/routes, reserved
+control-frame telemetry, fixed CAD/motion and assumed hardware timing limit
+transfer. High residual loss fails deployment qualification. Cost-dependent
+routing, immediate-link guards and packet-supervised risk are future tests,
+not demonstrated improvements.
+
 ## Operational-cost and handover-admission frontier
 
 The broader follow-up (`WORLD_FRONTIER_RESULTS.md`) tests distilled,

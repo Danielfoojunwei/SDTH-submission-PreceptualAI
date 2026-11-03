@@ -102,3 +102,28 @@ def test_live_forecasts_obey_fifo_and_report_cutoff_in_actual_kernel():
     assert all(e['delivery_slot']<100*e['first_usable_decision'] for e in history.events)
     assert history.summary()['reports_delivered']<=history.summary()['scans_started']
     assert np.isfinite(live.mean).all()
+
+
+def test_single_family_runtime_preserves_the_frozen_forecast_values():
+    from wirelessjev.frontier.study import Predictors
+    torch.set_num_threads(1)
+    full,_,g,o=episode(301001,4,22)
+    o=mask_scans(o,5)
+    reference=Predictors(g)
+    predictors={f:SinglePredictor(g,f) for f in ('radiomap','distilled')}
+    for t in (60,61,80):
+        expected,_,_=reference.step(o.before(t),full.plan[t])
+        for family,pred in predictors.items():
+            mean,sd,_,_=pred.step(o.before(t),full.plan[t])
+            np.testing.assert_allclose(mean.reshape(expected[family][0].shape),expected[family][0],rtol=3e-5,atol=3e-5)
+            np.testing.assert_allclose(sd.reshape(expected[family][1].shape),expected[family][1],rtol=3e-5,atol=3e-5)
+
+
+def test_delivered_observation_archive_is_complete_causal_and_replayable():
+    import importlib.util
+    from pathlib import Path
+    path=Path(__file__).resolve().parents[1]/'scripts/report_closed_loop.py'
+    spec=importlib.util.spec_from_file_location('closed_loop_archive_audit',path)
+    module=importlib.util.module_from_spec(spec);spec.loader.exec_module(module)
+    result=module.audit()
+    assert result['passed'] and result['native_runs']==120 and result['fresh_sites']==8

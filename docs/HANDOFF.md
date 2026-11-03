@@ -1,5 +1,47 @@
 # WirelessJEV research handoff
 
+## Completed delivered-telemetry confirmation
+
+`CLOSED_LOOP_DESIGN.md` and `CLOSED_LOOP_RESULTS.md` describe 24 development
+evaluations and 96 fresh tests on eight seeds, with 100 simulated robots per
+run. Four sites are stationary and four have the existing hidden drift process.
+No weights were retrained. Scan measurements now share the native packet
+channel; completed local scans inform neighbor selection, and fleet memory
+receives only reports carried by a successful existing control exchange.
+Current-link pilots freeze during scan/handover outages. Model inputs use
+strictly past delivery bins and original measurement positions. Missing reports
+remain missing. Forecasts become visible only after a charged FIFO completes.
+
+Four development sites selected one shared 30-second outage-utility horizon
+across RadioMap and the compact model. Under assumed four-second handovers,
+compact loss falls 5.849% → 5.635% (3.67% fewer misses), paired-site 95% interval
+[-3044.79, -1162.50] ppm, six wins and two ties. The identical utility controller
+with RadioMap reaches 5.603%; the model comparison spans zero. Compact forecast
+RMSE is 6.70 versus 8.54 dB, which still does not establish better control.
+
+At 30 ms handovers utility harms all eight sites for both models: compact loss
+rises 1.035% → 1.318%, with more roams and lower bulk throughput. Of its 2,715
+additional misses, 2,704 are attributed to weak-link/blockage conditions.
+Do not promote the slow-cost controller as a universal default. Its primary
+confirmation is a within-model controller comparison. An automatic cost router,
+immediate-link constraints and native packet-supervised risk need independent
+development/test cohorts before any improvement claim.
+
+All 192 tests pass. Four selected test arms replay exactly, including all 60
+forecasts, delivered report events and per-robot packet counters. Protocol,
+source/weight identities, latency, development selection, FIFO ledger, raw
+causes and figures are archived in `artifacts/closed_loop/`. Reproduce with
+`bash scripts/run_closed_loop.sh`; completed cases are reused with identity
+checks. All owned evaluation jobs finished. Earlier archives are unchanged.
+
+Loss remains too high for deployment. Initial history is a shared conditional
+warm start, and pose/routes remain out-of-band. Reports reserve 128 bytes in
+an existing 600-byte bidirectional control exchange; separate uplink/ACK loss
+is not modeled. CAD and motion remain fixed/precomputed. CPU costs are sealed
+microbenchmarks; handover/scan timings are assumed. Scanner encoding and
+controller scoring still lack separate CPU deadlines. Physical-car trials,
+independent layouts, PHY transfer and safety qualification remain open.
+
 ## Completed broader optimisation frontier
 
 The new work is in `WORLD_FRONTIER_RESULTS.md`, `FRONTIER_CONFIRMATION_RESULTS.md`,
