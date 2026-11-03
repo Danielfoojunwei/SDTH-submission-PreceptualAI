@@ -5,6 +5,10 @@ learned packet critic, alter RadioMap admission, change radio settings, or
 establish hardware qualification. Existing research source capsules, evidence,
 checkpoints and latency profiles remain unchanged.
 
+The separate [spawned proposal worker](PROCESS_ISOLATION.md) now implements
+supervised terminate/kill/reap for proposal computation. The thread services
+described here retain their original behavior and are not migrated by it.
+
 ## Forecast proposals
 
 `AsyncForecastService` owns one real `ThreadPoolExecutor` worker and a bounded

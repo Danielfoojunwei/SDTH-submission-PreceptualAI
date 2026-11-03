@@ -2,6 +2,9 @@
 
 The earlier 77.1% Bayesian response-error reduction did not establish better packet delivery. This study tests that missing link in complete 100-robot trajectories using the native procedural warehouse and archived ns-3 NIST curves. It is not 100-robot ray tracing or physical SmartCar evidence.
 
+The [completed results](CONTINUAL_PACKET_RESULTS.md) retain all 224 main cases
+and six exact replays. Neither adapter passes the registered service gate.
+
 ```mermaid
 flowchart LR
   Public[Public source activity and geometry] --> Prior[Reciprocal RadioMap prior]
@@ -28,3 +31,11 @@ The [registered protocol](../artifacts/continual_packet/registration/protocol.js
 No-probe and schedule-matched ignored-response controls separate information from physical scheduling. Whole-site uncertainty and fixed service/timing vetoes determine claims. Original requested video, bulk backlog/overflow and pending endpoint commands remain visible. Null or harmful outcomes are retained.
 
 The separate opt-in [durable journal](DURABLE_EXECUTION.md) and [spawned proposal worker](PROCESS_ISOLATION.md) address local crashes and stuck inference. They change no physical-radio default or authorization. Hardware capability, physical deadlines, risk calibration and deployment qualification remain separate requirements.
+
+## What this adapter leaves unrepresented
+
+The implemented correction uses estimated carrier-sense busy time to compute residual RF, but does not pass a typed future airtime/resource state into the planner. The kernel still charges actual busy time. This is an RF forecast correction, not a learned MAC scheduler.
+
+The public managed-source plan changes every 100 ms, while RadioMap uses integer-second forecast horizons and delayed completion. Sparse RF samples are subsequently age-interpolated. Identifying a gain therefore does not establish that its fast effect reaches the right control decision. These are source-level limitations of this registered model, not permission to retrofit its held-out results.
+
+A time- and resource-aware replacement would need its own causal interface, measured compute budget, action trace and fresh registered validation. Current packet counts and diagnostic cause flags cannot certify indefinite stability or prove a particular miss was inevitable.

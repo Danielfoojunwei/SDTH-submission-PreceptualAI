@@ -1,6 +1,50 @@
 # WirelessJEV research handoff
 
-## Latest: continual response experiment, execution recovery and research watch
+## Latest: completed costed RF-to-packet confirmation
+
+[CONTINUAL_PACKET_RESULTS.md](CONTINUAL_PACKET_RESULTS.md) records all **32
+development + 192 confirmation evaluations and six exact replays**. Each run
+has 100 simulated robots for 80 seconds. Six confirmation sites are procedural
+instances sharing CAD, with two paired packet seeds and two handover costs.
+No neural models were fitted in this follow-up. The earlier six response fits
+and original RT evidence remain unchanged.
+
+Neither response memory nor Bayesian updating passes the registered service
+gate. All 12 primary and four information contrasts fail even before endpoint
+sensitivity. At four-second handovers, canonical command loss is 13.6070%,
+staggered memory 13.8309% and staggered Bayesian 13.8321%. Worst-decile margins
+fail; silence/video/bulk margins pass. Source/accounting checks and all six
+replays pass, with no development/confirmation runtime overrun. No candidate
+is promoted. RadioMap remains the application default.
+
+The frozen adapter corrects RF power but passes no typed future busy-airtime
+state to the planner. Public source activity changes every 100 ms while the
+forecast samples integer seconds and is delayed. These are representation
+limitations, not proven causal explanations or grounds for post-test tuning.
+A replacement needs a separate resource/time interface and fresh validation.
+
+The opt-in [durable journal](DURABLE_EXECUTION.md) and
+[spawned worker](PROCESS_ISOLATION.md) are implemented and tested separately.
+They retain ambiguous command obligations and support supervised inference
+termination, respectively. They do not persist learned memory, migrate old
+thread services, qualify hardware or activate physical commands.
+
+Final software validation: **697 passed, one expected warning, no skips**.
+[The verification manifest](../artifacts/continual_packet/verification/manifest.json)
+binds source, documents and evidence, including all 284 source and 148 evidence
+hashes retained from PR #17. The supervisor exited before report generation;
+only deterministic aggregation was restarted from completed archives. No
+scientific run or model was rerun because of that interruption. No owned
+training/evaluation job needs to remain running.
+
+Draft PR #18 is stacked on #17; neither is merged into `main`. No GitHub checks
+are reported for #18 under the current workflow path filters. The last recorded
+Actions attempts were blocked before job execution by account billing. Daily
+research-watch activation still requires working Actions and default-branch
+merge. Hardware timing, capability, risk calibration and field recovery remain
+open deployment requirements.
+
+## Completed response experiment, execution recovery and research watch
 
 `CONTINUAL_RADIO_STATUS.md` indexes the completed work. Six fixed 30-epoch
 response JEPA/supervised fits use 24 actual RT contexts in one warehouse,
@@ -21,8 +65,11 @@ updates and action-specific identifiability. It does not fine-tune a backbone
 online or create risk guarantees. `PRODUCTION_EXECUTION_FIXES.md` identifies
 active execution semantics v2; old snapshots/results retain v1 behavior.
 `PRODUCTION_RUNTIME_FIXES.md` covers bounded/age-checked forecasts and
-baseline-preserving shadow faults. Durable transaction crash recovery and
-hard termination of hung worker threads remain open deployment requirements.
+baseline-preserving shadow faults. The later opt-in
+[SQLite journal](DURABLE_EXECUTION.md) recovers local execution obligations;
+the [spawned proposal worker](PROCESS_ISOLATION.md) supports supervised
+terminate/kill/reap. Existing thread services remain unchanged. Deployment
+integration, physical timing and hardware recovery remain open requirements.
 
 `RAN_RESEARCH_WATCH.md` records a successful live run: 10/10 requests and
 47 unreviewed leads. Daily 08:00 Singapore discovery is configured, with

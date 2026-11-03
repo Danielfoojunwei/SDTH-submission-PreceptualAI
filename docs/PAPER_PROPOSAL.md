@@ -6,6 +6,35 @@ are in `docs/WAREHOUSE_RESULTS.md`. The subsequently authorised warehouse v2
 campaign is described below; general foundation-model, custom on-air PHY,
 robotics and space extensions remain deferred.
 
+## Costed RF learning: no confirmed packet-service advantage
+
+[CONTINUAL_PACKET_RESULTS.md](CONTINUAL_PACKET_RESULTS.md) completes 32
+development and 192 confirmation evaluations, plus six exact replays, using
+100 simulated robots per run. Eight fixed arms isolate reciprocal-map priors,
+probe schedules and response assimilation with paid sensing, reporting and
+compute. Six procedural confirmation sites, each with two paired packet seeds,
+are the independent analysis units. Source and criteria were committed before
+data access; development selected only the registered 100 ms extra head charge.
+
+Neither numerical response-memory nor Bayesian correction passes the service
+gate. All twelve primary and four information contrasts fail on observed
+outcomes as well as conservative endpoint bounds. At assumed four-second
+handovers, canonical command loss is 13.6070%, staggered memory 13.8309% and
+staggered Bayesian 13.8321%. Worst-decile margins fail. Integrity, replay and
+timing checks pass. This does not establish that improved RF identification
+improves packet decisions after costs, and supplies no new JEPA result.
+
+The tested adapter represents RF correction but exposes no predicted busy
+airtime/resource state to the planner. A known public 100 ms activity plan is
+represented through sparse integer-second, delayed forecasts. These source-level
+limitations motivate a new time/resource interface; their causal contribution
+is not isolated by this experiment. Dedicated monitoring, AP-assisted sensing,
+reliable reporting and slot-average PHY are simulation assumptions. The study
+uses procedural propagation and archived ns-3 curves, not full-fleet RT or
+physical-car measurements. No model promotion, SOTA, novelty or production
+claim follows. Opt-in execution journaling and process containment are separately
+software-tested engineering contributions.
+
 ## Continual response learning: a measurement-design result
 
 `CONTINUAL_RADIO_RESULTS.md` reports six registered response JEPA/supervised
