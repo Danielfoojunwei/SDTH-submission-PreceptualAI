@@ -94,3 +94,9 @@ source and evidence hashes and the retained full test log. The archived study
 also reproduces its summary/completion bytes without additional fits. These
 checks establish the stated software and offline evidence, not physical-device
 reliability, SOTA or a live scheduled GitHub run.
+
+GitHub rejected the push and PR jobs before any steps due to an **account
+billing lock**. The [CI receipt](../artifacts/ran_research/ci/status.json) retains
+the exact annotations and a separate successful local initial-restore check
+against actual GitHub metadata. Daily discovery requires billing resolution
+and default-branch merge; it is not currently running on GitHub.

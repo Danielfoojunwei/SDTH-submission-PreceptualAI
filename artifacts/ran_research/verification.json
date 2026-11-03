@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "verified_at_utc": "2026-11-03T16:08:42.753402+00:00",
+  "verified_at_utc": "2026-11-03T16:12:28.405313+00:00",
   "preregistration_commits": [
     "e68dd04",
     "2d79799"
@@ -49,6 +49,32 @@
     "daily_time": "08:00 Asia/Singapore",
     "scheduled_activation": "requires workflow on default branch and Actions enabled",
     "automatic_model_promotion": false
+  },
+  "github_actions": {
+    "observed_at_utc": "2026-11-03T16:12:14.033689+00:00",
+    "tested_source_head": "861401f46739e84f4b51b3b78a1c842de70cb106",
+    "github_jobs_started": false,
+    "blocker": "The job was not started because your account is locked due to a billing issue.",
+    "push_run": "https://github.com/Danielfoojunwei/SDTH-submission-PreceptualAI/actions/runs/41671278827",
+    "pull_request_run": "https://github.com/Danielfoojunwei/SDTH-submission-PreceptualAI/actions/runs/41671318938",
+    "daily_schedule_active": false,
+    "required": [
+      "Resolve GitHub account billing lock",
+      "Merge workflow to default branch with Actions enabled"
+    ],
+    "live_github_initial_restore": {
+      "command": "PYTHONPATH=src uv run --frozen python scripts/restore_research_watch.py --output-dir /tmp/continual-radio-live-restore --repository Danielfoojunwei/SDTH-submission-PreceptualAI --default-branch main --run-id 41671278827",
+      "exit_code": 0,
+      "result": {
+        "network_used": true,
+        "no_prior_default_branch_runs": true,
+        "source": "initial_genesis_committed_seed"
+      },
+      "restored_snapshot_sha256": "1f864dc085b73b801d6842f9aeddf8fa98dc2a0a31835d46ac76e6c4dfd1e09a",
+      "retained_provider_response_bodies_verified": 10,
+      "leads": 47,
+      "actual_previous_workflow_artifact_recovery_exercised": false
+    }
   },
   "production_qualified": false,
   "hardware_commands_executed": false,
@@ -439,6 +465,9 @@
     "artifacts/continual_radio/registration/collection_v2.json": "9e469fd26833f9f5a749424abab3fa47a44331855981b645492e6d85558c0cc7",
     "artifacts/continual_radio/registration/protocol.json": "7a8b0ba84dc97fe24f9b3d843c8619805ec45544d1cbf7dbe06813f494bec6df",
     "artifacts/continual_radio/summary.json": "a0c50f281b500343907972b854d2fba66ee2edac5c29b47dff4f4ce6388a496d",
+    "artifacts/ran_research/ci/pr-annotations.json": "e1f97e98d339f241accde8cafed2f686e89d8dd60f359522c87bdc361db0b004",
+    "artifacts/ran_research/ci/push-annotations.json": "e1f97e98d339f241accde8cafed2f686e89d8dd60f359522c87bdc361db0b004",
+    "artifacts/ran_research/ci/status.json": "0ddd93e35fb2773d9b724928146469886d39d5b6499bf78dac3ac1d74fb36cc0",
     "artifacts/ran_research/lwm_temporal/LICENSE": "db8d07cbbc61a50354d22437da225c2803af9b7eae56a4e0baf89d2f37c63df2",
     "artifacts/ran_research/lwm_temporal/download_manifest.json": "26f3ccbfd4ab9fcf3b2bb8a658c9ce6f487a2f9270d5b287910c20931c8c20fd",
     "artifacts/ran_research/lwm_temporal/fixture_forward.npz": "99c5d9c5678dc8612c365942256b77d1a8db48fe4a7e4bd8a1eb4217d3bc1d94",

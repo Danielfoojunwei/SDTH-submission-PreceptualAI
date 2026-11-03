@@ -40,6 +40,14 @@ Actionlint 1.7.7 validates the workflow. `artifacts/ran_research/verification.js
 records source/evidence hashes and the final test log. Training is complete;
 no training job needs to remain running.
 
+Draft PR #17 is published. GitHub rejected push run `41671278827` and PR run
+`41671318938` before any job step because the account is locked for billing.
+`artifacts/ran_research/ci/status.json` and annotation bodies retain this blocker.
+The initial restore path did succeed locally against the actual GitHub API and
+verified all ten retained response bodies. That is bootstrap evidence, not a
+live recovery of a prior workflow artifact. Resolve billing before expecting
+Actions to run; daily scheduling still needs default-branch merge.
+
 ## Latest: representation diagnosis, actual DINOv3 and physical hierarchy
 
 `VISUAL_RADIO_STATUS.md` indexes the implementation and evidence. The frozen

@@ -21,6 +21,8 @@ workflow reaches the default branch. Discovery never promotes a model.
 The final suite passes **582 tests**, including cached pretrained DINOv3
 integration. [Verification and evidence hashes](artifacts/ran_research/verification.json)
 bind the completed work; this is software verification, not hardware qualification.
+GitHub CI is currently blocked before job execution by an account billing lock;
+daily discovery also requires that issue resolved and the workflow merged.
 
 The latest [representation and DINOv3 work](docs/VISUAL_RADIO_STATUS.md) audits
 six trained critics and completes six new projection-ablation fits. It finds

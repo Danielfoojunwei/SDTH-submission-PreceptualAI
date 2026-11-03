@@ -133,3 +133,17 @@ paths; they are not evidence of a live GitHub disaster-recovery exercise.
 
 Nothing in the workflow opens a PR, comments on an issue, downloads a model,
 executes discovered code or changes the radio controller.
+
+## Observed GitHub execution blocker
+
+The initial push and PR checks did not execute any step. GitHub's annotation
+states: **“The job was not started because your account is locked due to a
+billing issue.”** [Retained CI receipts](../artifacts/ran_research/ci/status.json)
+link both runs and their actual annotation bodies. Billing resolution is an
+additional activation requirement; local tests cannot bypass the account lock.
+
+A local read-only invocation of the restore helper against actual GitHub API
+metadata succeeded with `initial_genesis_committed_seed`, verified ten response
+bodies and retained 47 leads. It confirmed no prior default-branch runs existed.
+Recovery from an actual prior workflow artifact remains unexercised live; its
+failure/recovery cases are covered by explicit temporary ZIP/API fixtures.
