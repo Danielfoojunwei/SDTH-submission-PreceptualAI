@@ -1,6 +1,9 @@
 """The auxiliary projection changes training only, with real native-label smoke."""
 import copy
+import importlib.util
+import json
 from pathlib import Path
+import shutil
 
 import numpy as np
 import pytest
@@ -162,3 +165,83 @@ def test_constant_stats_and_invalid_variant_are_explicit():
     assert latent_stats(np.zeros((8, 48)))['entropy_effective_rank'] == 0
     with pytest.raises(ValueError, match='shared or projected'):
         ProjectedPacketValueModel('something_else')
+
+
+def archive_runner():
+    root = Path(__file__).resolve().parents[1]
+    spec = importlib.util.spec_from_file_location('current_representation_repair_archive_runner', root/'scripts/train_representation_repair.py')
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    return root, module
+
+
+def test_completed_archive_verifies_exact_metrics_read_only_and_distinguishes_source_history():
+    root, runner = archive_runner()
+    out = root/'artifacts/representation_repair'
+    before = {str(p.relative_to(out)): runner.digest(p) for p in out.rglob('*')
+              if p.is_file() and '__pycache__' not in p.parts}
+    result = runner.verify_archive(root)
+    after = {str(p.relative_to(out)): runner.digest(p) for p in out.rglob('*')
+             if p.is_file() and '__pycache__' not in p.parts}
+    assert before == after
+    assert result['verified_fits'] == 6 and result['fixed_final_epoch'] == 40
+    assert result['exact_checkpoint_metric_recomputation']
+    assert result['new_optimizer_steps'] == 0
+    assert result['execution_source_copies_verified'] == 10
+    assert result['exposed_input_and_receipt_files_verified'] == 80
+    assert result['current_model_source_matches_execution']
+    assert result['frozen_execution_source_copies_unchanged']
+    assert result['current_support_differs_from_execution'] == [
+        'scripts/train_representation_repair.py', 'tests/test_representation_repair.py']
+    assert not result['reserved_holdout_inputs_opened']
+    # The earlier verification is retained with its original point-in-time
+    # meaning; current support changes are not called unchanged execution code.
+    historical = json.loads((out/'verification_at_execution.json').read_text())
+    assert historical['all_frozen_hashes_unchanged']
+    assert runner.digest(out/'verification_at_execution.json') == result['verification_at_execution_sha256']
+
+
+def test_nested_registration_preserves_original_bytes_and_declares_exact_exposed_data_reuse():
+    root, runner = archive_runner()
+    out = root/'artifacts/representation_repair'
+    assert not (out/'protocol.json').exists()
+    path = out/'registration/protocol.json'
+    protocol = json.loads(path.read_text())
+    manifest = json.loads((out/'preregistration.json').read_text())
+    assert runner.digest(path) == manifest['source_sha256']['artifacts/representation_repair/protocol.json']
+    assert path.read_bytes() == (out/'executed_source/artifacts/representation_repair/protocol.json').read_bytes()
+    assert runner.digest(root/'src/wirelessjev/representation_repair.py') == manifest['source_sha256']['src/wirelessjev/representation_repair.py']
+    original = json.loads((root/'artifacts/packet_value/protocol.json').read_text())
+    runner.validate_reuse_registration(protocol, original)
+    assert protocol['training_sites'] == list(range(340000, 340016))
+    assert protocol['validation_sites'] == list(range(341000, 341004))
+
+
+@pytest.mark.parametrize('relative', [
+    'checkpoints/shared-0.pt', 'logs/projected-1.jsonl',
+    'executed_source/scripts/train_representation_repair.py',
+])
+def test_archive_verifier_rejects_changed_historical_evidence_before_loading_data(tmp_path, relative):
+    root, runner = archive_runner()
+    original = root/'artifacts/representation_repair'
+    copied = tmp_path/'artifacts/representation_repair'
+    shutil.copytree(original, copied, ignore=shutil.ignore_patterns('__pycache__'))
+    target = copied/relative
+    target.write_bytes(target.read_bytes()+b'corruption')
+    with pytest.raises(ValueError, match='Archived evidence changed'):
+        runner.verify_archive(tmp_path)
+
+
+def test_reuse_registration_cannot_rename_or_substitute_reserved_scenes():
+    root, runner = archive_runner()
+    original = json.loads((root/'artifacts/packet_value/protocol.json').read_text())
+    protocol = json.loads((root/'artifacts/representation_repair/registration/protocol.json').read_text())
+    protocol['validation_sites'][0] = original['test_sites'][0]
+    with pytest.raises(ValueError, match='original validation scene identities'):
+        runner.validate_reuse_registration(protocol, original)
+
+
+def test_current_runner_refuses_unregistered_new_training(tmp_path):
+    _, runner = archive_runner()
+    with pytest.raises(ValueError, match='Reproduce fresh training from preregistration commit'):
+        runner.verify_archive(tmp_path)

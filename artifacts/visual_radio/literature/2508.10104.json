@@ -1,0 +1,30 @@
+{
+  "id": "2508.10104",
+  "checked_at_unix": 1793695915.3243833,
+  "attempts": [
+    {
+      "url": "https://arxiv.org/abs/2508.10104",
+      "status": 200,
+      "bytes": 45945,
+      "sha256": "7448886306126e4507912333c981dc50bcd93b086423e10334709204a64bb1b9"
+    },
+    {
+      "url": "https://arxiv.org/pdf/2508.10104",
+      "status": 200,
+      "bytes": 15823906,
+      "sha256": "c68dc50b1f73e1641a592f777984fc360759e84b7fe65ac4f6e1377927f20b2e"
+    }
+  ],
+  "sections_reviewed": [
+    "Section 3.2 and Eq. 1 (PDF pp. 9–10): DINO/iBOT/distributed KoLeo objective",
+    "Section 4.1–4.3 and Eqs. 2–3 (pp. 11–13): patch consistency, Gram anchoring and higher-resolution teacher"
+  ],
+  "title": "DINOv3",
+  "citation_date": "2025/08/13",
+  "pages": 67,
+  "summary": "DINOv3 combines cross-view image-level DINO, masked-patch iBOT and distributed KoLeo, with Sinkhorn-Knopp teacher targets. Extended training can improve CLS classification while degrading patch locality. Gram anchoring preserves within-image pairwise normalized patch similarities using a separate Gram teacher, with periodic refresh and higher-resolution targets.",
+  "limits": "Static visual representation learning, not a radio observation model, temporal action-conditioned world model, calibrated service-risk estimator or proof that image features identify electromagnetic state.",
+  "cutoff_date": "2026-11-03",
+  "review_scope": "targeted_primary_fulltext",
+  "fulltext_redistributed": false
+}

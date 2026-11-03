@@ -1,5 +1,35 @@
 # WirelessJEV research handoff
 
+## Latest: representation diagnosis, actual DINOv3 and physical hierarchy
+
+`VISUAL_RADIO_STATUS.md` indexes the implementation and evidence. The frozen
+critic audit finds low effective rank but nonconstant, action-sensitive and
+informative latents. Its probes use prior training scenes; they are not model
+holdouts. Six new preregistered fits compare the original shared latent with
+a training-only future projection. Future MSE relative to a training-target
+constant improves from 1.623 to 0.580 without target collapse, while mean
+validation miss MAE worsens from 23.322 to 23.710 commands. The service gate
+fails; the new critic is not qualified for control. Original held-out sites
+and previous evidence remain untouched.
+
+`DINOV3_ACCESS.md` records real pretrained weights, their license/checksums and
+actual dense-feature extraction on two licensed warehouse/robot photographs.
+Original Facebook access returned 401; the public timm DINOv3 conversion was
+downloaded legitimately. `timm==1.0.30` is isolated outside the root environment.
+Images with unknown capture times cannot become fresh temporal RF inputs.
+
+`VISUAL_RADIO_PHYSICS.md` and `VISUAL_RADIO_HIERARCHY.md` document receiver-centric
+interference factors, calibrated geometry, per-link spatial fusion and finite
+option planning. Computation completion, expiry and observation freshness gate
+proposals; unknown service preserves canonical continuation. Fusion is
+untrained, and no physical radio execution bridge is supplied. Synchronized
+warehouse visual/RF logs and matched held-out comparisons remain necessary.
+`VISUAL_RADIO_RT.md` adds a real CPU Sionna RT/Mitsuba fixture with all 53
+warehouse objects, two explicit blocker poses, actual 2 × 2 channel couplings
+and DINOv3 encoding of the same rendered images. All desired/cross couplings
+are nonzero. The first zero-path placement is preserved and excluded. These
+are static simulated inputs, not a timed robot dataset or a learned RF result.
+
 ## Latest: physics-anchored service prototype and causal diagnostic
 
 `SERVICE_WORLD_RESULTS.md` records the finite diagnostic, with source/input

@@ -1,0 +1,571 @@
+{
+  "completed": true,
+  "status": "real_full_warehouse_rt_and_rgb_completed",
+  "stage": "complete",
+  "started_at_unix": 1793697862.4012573,
+  "simulation_only": true,
+  "scope": "Real full-warehouse CPU ray-tracing/render synchronization feasibility only",
+  "versions": {
+    "sionna": "2.2.0",
+    "sionna-rt": "2.2.0",
+    "mitsuba": "3.9.1",
+    "drjit": "1.5.0"
+  },
+  "script_sha256": "10c7be153add0cec333f396003a6b48cfbd491b6a5f5bcbe2b92648bd53987a7",
+  "poses": [
+    {
+      "pose_index": 0,
+      "blocker_position_m": [
+        0.0,
+        -3.0,
+        1.5
+      ],
+      "cir_shape": [
+        2,
+        1,
+        2,
+        1,
+        12,
+        1
+      ],
+      "all_channel_coefficients_finite": true,
+      "incoherent_path_power_rx_tx": [
+        [
+          5.626966981253645e-08,
+          1.326945152868575e-06
+        ],
+        [
+          1.347007241747633e-06,
+          4.2875782924056693e-08
+        ]
+      ],
+      "coherent_center_frequency_power_rx_tx": [
+        [
+          3.3633618556905276e-08,
+          1.0915251777987578e-06
+        ],
+        [
+          5.149754542799201e-07,
+          4.467641545602419e-08
+        ]
+      ],
+      "valid_path_counts_rx_tx": [
+        [
+          5,
+          12
+        ],
+        [
+          12,
+          4
+        ]
+      ],
+      "channels_path": "/workspace/training/visual-radio/rt/pose_0_channels.npz",
+      "channels_sha256": "4a4bab861af2ac948537ff8c5489f647666838dbba60ecc3d081d81450943289",
+      "rgb_path": "/workspace/training/visual-radio/rt/pose_0_rgb.png",
+      "rgb_sha256": "1d18946fee70c2657460f79dd673b8080962f3fcff3e640480f99c66c4cf49cd",
+      "same_scene_and_pose_for_rgb_and_channels": true,
+      "power_interpretation": "Incoherent sum |a_path|\u00b2 and coherent |sum a_path|\u00b2 are separately recorded; neither is throughput or observed interference traffic."
+    },
+    {
+      "pose_index": 1,
+      "blocker_position_m": [
+        0.0,
+        0.0,
+        1.5
+      ],
+      "cir_shape": [
+        2,
+        1,
+        2,
+        1,
+        12,
+        1
+      ],
+      "all_channel_coefficients_finite": true,
+      "incoherent_path_power_rx_tx": [
+        [
+          1.1098773029516451e-06,
+          7.255639502545819e-07
+        ],
+        [
+          7.404751727335679e-07,
+          1.5149903447309043e-06
+        ]
+      ],
+      "coherent_center_frequency_power_rx_tx": [
+        [
+          5.297429197526071e-07,
+          1.1703889413183788e-06
+        ],
+        [
+          5.581869118032046e-07,
+          1.1774842505474226e-06
+        ]
+      ],
+      "valid_path_counts_rx_tx": [
+        [
+          8,
+          12
+        ],
+        [
+          11,
+          11
+        ]
+      ],
+      "channels_path": "/workspace/training/visual-radio/rt/pose_1_channels.npz",
+      "channels_sha256": "788fa00a31746fe70dd8259a1edacb6da6f4a954369230bf6f8a8112ad4654f2",
+      "rgb_path": "/workspace/training/visual-radio/rt/pose_1_rgb.png",
+      "rgb_sha256": "1d85944e47be2f36c262257b41599aa8b46f1c7f71c7df5e2aabba1a803d5cf6",
+      "same_scene_and_pose_for_rgb_and_channels": true,
+      "power_interpretation": "Incoherent sum |a_path|\u00b2 and coherent |sum a_path|\u00b2 are separately recorded; neither is throughput or observed interference traffic."
+    }
+  ],
+  "source": {
+    "repository": "https://github.com/ICONgroupCWC/Gazebo-Sionna-RT-Integration",
+    "commit": "2d37c650bde5af6e5f69e899aa4e4b01243d3160",
+    "license": "MIT",
+    "scene_path": "/workspace/upstream/service-world-reference/coupled_raytracer/environments/aws_warehouse/sionna/warehouse.xml",
+    "files_sha256": {
+      "meshes/aws_robomaker_warehouse_Bucket_01_visual_node.ply": "6de1fd251b5be24b1840218b181a266ea4a6f1e8e5f83762a11df6f25be3b1f8",
+      "meshes/aws_robomaker_warehouse_Bucket_01_visual_node_001.ply": "a6d8003643d37f12e581700c126449adce4eea12f8ba44da832b5157eb29b046",
+      "meshes/aws_robomaker_warehouse_Bucket_01_visual_node_002.ply": "7dbc88f3046e98cdd9bf6b11573406b5649f23803dd5822b8d12e52825be4d65",
+      "meshes/aws_robomaker_warehouse_ClutteringA_01_visual_node-itu_chipboard-001.ply": "adfe6f917392b1a5480d257d36a222e8ef69a6e084aae443e71f3650ef16bfdd",
+      "meshes/aws_robomaker_warehouse_ClutteringA_01_visual_node-itu_chipboard-002.ply": "e271fb0bfa2e6f01248d18165f147405bcae2b4ff53f00fb1068186ec9e5106f",
+      "meshes/aws_robomaker_warehouse_ClutteringA_01_visual_node-itu_chipboard.ply": "0ec8dca0b2a019db33c78043b81461773ca023a2595d7a34e4fda8d729b692c8",
+      "meshes/aws_robomaker_warehouse_ClutteringA_01_visual_node_001-itu_chipboard-001.ply": "89ca48c382219eba9baccf0df0831e7cfd59e813b012b7d18e75660bdd6935af",
+      "meshes/aws_robomaker_warehouse_ClutteringA_01_visual_node_001-itu_chipboard-002.ply": "95e543a3092ebf40d901b545137dbd80d7735675e885b34024636a037f8cf9d8",
+      "meshes/aws_robomaker_warehouse_ClutteringA_01_visual_node_001-itu_chipboard.ply": "d1a865b958fb19c0d72239acfe9539f95896059ee45dc2c09ae59349beab2c0b",
+      "meshes/aws_robomaker_warehouse_ClutteringA_01_visual_node_002-itu_chipboard-001.ply": "cdd803f196880e6d0d490af995c421983576615e739d393871d20889a8adcc4c",
+      "meshes/aws_robomaker_warehouse_ClutteringA_01_visual_node_002-itu_chipboard-002.ply": "aeba19111f1fff99897b4ece37801a65f639c162188cdf291942efd20e105a30",
+      "meshes/aws_robomaker_warehouse_ClutteringA_01_visual_node_002-itu_chipboard.ply": "76ca3a828ef78f59771090a446fb07418eac095d4e42b6de57c2f038b0b07be3",
+      "meshes/aws_robomaker_warehouse_ClutteringC_01_visual_node.ply": "8be164e98fef8cd5834762b6508c165384932590a1b02b3f1d61243f1973452a",
+      "meshes/aws_robomaker_warehouse_ClutteringC_01_visual_node_001.ply": "5a3b478633fd1ece83ccc67951f3b963cd241ab72fff04d704880c8a0aa9eda2",
+      "meshes/aws_robomaker_warehouse_ClutteringC_01_visual_node_002.ply": "d4b6a52fd9332e9ae268c102a51a408487e47e9de6683bcd7733e87c25795350",
+      "meshes/aws_robomaker_warehouse_ClutteringC_01_visual_node_003.ply": "7b256894e602f5c4e1a274b30f0ded199a5a44efdb81b96f61e2216a2594f21b",
+      "meshes/aws_robomaker_warehouse_ClutteringC_01_visual_node_004.ply": "45221c2facd47617f73af907de39c020248b05f276c122df41cbbeb402c314b4",
+      "meshes/aws_robomaker_warehouse_ClutteringC_01_visual_node_005.ply": "51a7eea2a2e51f8f19b0e6600d711c8ef2475e4fed94d863613c96b5368bfbbe",
+      "meshes/aws_robomaker_warehouse_ClutteringD_01_visual_node.ply": "47634d976d088ac03e2049e55901e52cef69583af862ca2eadc91cb35695e270",
+      "meshes/aws_robomaker_warehouse_GroundB_01_visual_node-itu_concrete-001.ply": "1f13fd019f9be0d7f9c74c220af1fe06e72696f84fce3180ac2785b46297cab3",
+      "meshes/aws_robomaker_warehouse_GroundB_01_visual_node-itu_concrete.ply": "d8db2b3a83934e12687e734680f87e8a6d159d1d40d6e551f815cf328c34ee97",
+      "meshes/aws_robomaker_warehouse_Lamp_01_visual_node.ply": "7420c49bd48fc8103d30ea5fbe7de111bdfbe4722c3ea71cd4a77ee038814cd9",
+      "meshes/aws_robomaker_warehouse_PalletJackB_01_visual_node-itu_metal-001.ply": "d8d543f773ca4f03f1366247bd08efb4a5fd7f618fa50e8f6832836e868d7823",
+      "meshes/aws_robomaker_warehouse_PalletJackB_01_visual_node-itu_metal.ply": "981c3b7141e8c9461e4d0e31a6cf9f346a6a7afdf06fc006aa685f46ac8808c0",
+      "meshes/aws_robomaker_warehouse_ShelfD_01_visual_node-itu_chipboard-001.ply": "c55e61ce7dd429b4f32fd2dbd837952f0fefa0595fa1b78ebd0d7b98965d514c",
+      "meshes/aws_robomaker_warehouse_ShelfD_01_visual_node-itu_chipboard-002.ply": "11ac5c5b57486ec802d54aeedbaab887d458e548f833d9b577f69224ffdd475b",
+      "meshes/aws_robomaker_warehouse_ShelfD_01_visual_node-itu_chipboard.ply": "0180aa870d43f973a08634ab73c015002fe7621bab9f81a8df7310878ba3f1ab",
+      "meshes/aws_robomaker_warehouse_ShelfD_01_visual_node-itu_metal.ply": "0ce4672be8e6b46fe930290bb4f43ebcb2b288cdd9c2cd4a29076452106419a3",
+      "meshes/aws_robomaker_warehouse_ShelfD_01_visual_node_001-itu_chipboard-001.ply": "34ef9924b64e79adec5277ca8d0c81a9b4dec7bd60ebb231b039d247eb5d7ac0",
+      "meshes/aws_robomaker_warehouse_ShelfD_01_visual_node_001-itu_chipboard-002.ply": "988e728e9c67c469f53c170ed77bd1b610e423f7ebc47fa8fe44565e207f3f45",
+      "meshes/aws_robomaker_warehouse_ShelfD_01_visual_node_001-itu_chipboard.ply": "8c3433048a0c57a602592441adec5bea3a557eca5fcbce15cd90cb5e7ad7714b",
+      "meshes/aws_robomaker_warehouse_ShelfD_01_visual_node_001-itu_metal.ply": "bb0855c206fe7b89e96b64b898bc46f3708d8cd3dca3fa363e31bba1b15087e0",
+      "meshes/aws_robomaker_warehouse_ShelfD_01_visual_node_002-itu_chipboard-001.ply": "e098743e6a49534d9e2a2f182c22cef20066e03fbe3abb2572335ea6b01b7dcf",
+      "meshes/aws_robomaker_warehouse_ShelfD_01_visual_node_002-itu_chipboard-002.ply": "a0e0a0355fe0afb6d8245a21e36c82cd78cf24bf9832e7dc5fc08c788b065463",
+      "meshes/aws_robomaker_warehouse_ShelfD_01_visual_node_002-itu_chipboard.ply": "e043d462c02773ee310c038b02414bd34958b72fba0264b2bfec410dba49b4c9",
+      "meshes/aws_robomaker_warehouse_ShelfD_01_visual_node_002-itu_metal.ply": "c7353b618c16c79b2fd3b741d5b57d5820d4bb82f35689ed1fac0cf41f8872de",
+      "meshes/aws_robomaker_warehouse_ShelfE_01_visual_node-itu_chipboard-001.ply": "e49a86ab9610444d78fe2af1878e018418bad7092a075e23158483e3ade8872d",
+      "meshes/aws_robomaker_warehouse_ShelfE_01_visual_node-itu_chipboard-002.ply": "70b9ab7592fa00b87658c58f931c38f9ede84d27f4d10feb58caa54eb407f596",
+      "meshes/aws_robomaker_warehouse_ShelfE_01_visual_node-itu_chipboard.ply": "b949bd9a999e72297dc47bb82056303b01c622677eede745e89befef875c3032",
+      "meshes/aws_robomaker_warehouse_ShelfE_01_visual_node-itu_metal.ply": "3f64e6e76336fcdcec46f5550300f75bc3501073b483630be3560b4442e1cd56",
+      "meshes/aws_robomaker_warehouse_ShelfE_01_visual_node_001-itu_chipboard-001.ply": "48abc3d60131f46bd8863a04180fd62e65fc3ee31e57f40936cc6442911537d8",
+      "meshes/aws_robomaker_warehouse_ShelfE_01_visual_node_001-itu_chipboard-002.ply": "6f7dd7f04554de56c9f91a38467087614405365364b3a250942cde144f1c418f",
+      "meshes/aws_robomaker_warehouse_ShelfE_01_visual_node_001-itu_chipboard.ply": "4e5b0f8122e81ee6f6815070a095b270ab3b26ded260ece1e29605062cfdd9e2",
+      "meshes/aws_robomaker_warehouse_ShelfE_01_visual_node_001-itu_metal.ply": "51a529683f8bdaea5c2be2c35bb1e4b00ad99ef5ebf5341c56d2648d3b80d730",
+      "meshes/aws_robomaker_warehouse_ShelfE_01_visual_node_002-itu_chipboard-001.ply": "9cebae612d6e140c26d26846a8cb29a7408eca4960454c3fe581295dd242d7d2",
+      "meshes/aws_robomaker_warehouse_ShelfE_01_visual_node_002-itu_chipboard-002.ply": "a372e2860b92425ea092527442f6faaabecb63f82ca578815586e623397daf14",
+      "meshes/aws_robomaker_warehouse_ShelfE_01_visual_node_002-itu_chipboard.ply": "f6af87aa4c722ba80a46835aaeb98ee2977b35f282bc1fd0da6cd32542ba9d90",
+      "meshes/aws_robomaker_warehouse_ShelfE_01_visual_node_002-itu_metal.ply": "ddb8e77c41956e292ae1fb772c36cdc3cba3c2fa91cce952708335427678413d",
+      "meshes/aws_robomaker_warehouse_ShelfF_01_visual_node-itu_chipboard.ply": "a179772f75cb08851309ee4d78d7473a00a737a2c2d6ce607d52bf994cc24233",
+      "meshes/aws_robomaker_warehouse_ShelfF_01_visual_node-itu_metal.ply": "8e4ec8d7a2ff6b6827289283b360753da98aa22d8cee3477dd0168c3a1f17239",
+      "meshes/aws_robomaker_warehouse_ShelfF_01_visual_node-itu_plywood.ply": "45771ae34538c4cea80987235ecfd6717c84c58df502fc4dc48b9153b9582dff",
+      "meshes/aws_robomaker_warehouse_TrashCanC_01_visual_node.ply": "c86c743ccf6062436e4e1c98aa0863a02e945a6230fed2a02b2543f30241ce83",
+      "meshes/aws_robomaker_warehouse_WallB_01_visual_node.ply": "a612bb21b0eac583c64f06f9a7d6b9faf4a76ca197b0145a241256ed4c20f1c9",
+      "textures/aws_robomaker_warehouse_GroundB_01.png": "dbf33c84bb6ff1254bd2e66606b4a55525b6475735ad6ab753dbdf6a5963507f",
+      "textures/aws_robomaker_warehouse_Lamp_01.png": "fc4c8c47947883a63a746329b28b6a3ca159a1b2db8af786d7877391902ecedb",
+      "textures/aws_robomaker_warehouse_WallB_01.png": "61f07381e9f886bc533caa2cbd3fd8e25cdedb62b0b27bf7f87003ec8d2c3a05",
+      "warehouse.xml": "b932ef12b00513a632c7574a4e3ff45b71b4dd893345ed80293bb570675e2c32"
+    }
+  },
+  "claim_boundary": {
+    "real_hardware_validation": false,
+    "trained_visual_predictor": false,
+    "rf_material_calibrated_to_real_site": false,
+    "sota_established": false,
+    "hidden_radio_labels_painted_into_images": false,
+    "synthetic_channel_fallback": false
+  },
+  "mitsuba_variant": "llvm_ad_mono_polarized",
+  "llvm_backend_available": true,
+  "elapsed_seconds": 6.174701690673828,
+  "original_scene_objects": 53,
+  "world_bbox": "BoundingBox3f[\n  min = [-6.99023, -10.4533, -0.0900939],\n  max = [7.00988, 10.4681, 10.0181]\n]",
+  "radio_materials": {
+    "itu_metal": {
+      "relative_permittivity": 1.0,
+      "conductivity_s_per_m": 10000000.0
+    },
+    "itu_chipboard": {
+      "relative_permittivity": 2.5799999237060547,
+      "conductivity_s_per_m": 0.08549359440803528
+    },
+    "itu_plywood": {
+      "relative_permittivity": 2.7100000381469727,
+      "conductivity_s_per_m": 0.33000001311302185
+    },
+    "itu_brick": {
+      "relative_permittivity": 3.9100000858306885,
+      "conductivity_s_per_m": 0.03153010830283165
+    },
+    "itu_concrete": {
+      "relative_permittivity": 5.239999771118164,
+      "conductivity_s_per_m": 0.18272389471530914
+    },
+    "itu_glass": {
+      "relative_permittivity": 6.309999942779541,
+      "conductivity_s_per_m": 0.037917353212833405
+    },
+    "itu_wood": {
+      "relative_permittivity": 1.9900000095367432,
+      "conductivity_s_per_m": 0.030927157029509544
+    }
+  },
+  "radio_configuration": {
+    "frequency_hz": 5800000000.0,
+    "tx_positions_m": [
+      [
+        -1.0,
+        -6.0,
+        1.8
+      ],
+      [
+        1.0,
+        -6.0,
+        1.8
+      ]
+    ],
+    "rx_positions_m": [
+      [
+        1.0,
+        -1.0,
+        1.0
+      ],
+      [
+        -1.0,
+        -1.0,
+        1.0
+      ]
+    ],
+    "antenna": "Single isotropic V-polarized element",
+    "desired_links": [
+      [
+        0,
+        0
+      ],
+      [
+        1,
+        1
+      ]
+    ],
+    "cross_interference_links": [
+      [
+        0,
+        1
+      ],
+      [
+        1,
+        0
+      ]
+    ],
+    "coupling_index_order": "[receiver, transmitter]",
+    "transmit_power": "Unit-power channel coupling; no MAC/scheduling/noise/SINR model"
+  },
+  "camera": {
+    "position_world_m": [
+      2.0,
+      -7.0,
+      3.7
+    ],
+    "look_at_world_m": [
+      0.0,
+      -3.0,
+      1.3
+    ],
+    "resolution_wh": [
+      256,
+      192
+    ],
+    "horizontal_fov_degrees": 60.0,
+    "K_pixel_centers_at_integer_plus_half": [
+      [
+        221.7025033688163,
+        0.0,
+        128.0
+      ],
+      [
+        0.0,
+        221.7025033688163,
+        96.0
+      ],
+      [
+        0.0,
+        0.0,
+        1.0
+      ]
+    ],
+    "camera_to_world_mitsuba": [
+      [
+        -0.8944272994995117,
+        -0.21147209405899048,
+        -0.39405494928359985,
+        2.0
+      ],
+      [
+        -0.4472132921218872,
+        0.4229445457458496,
+        0.7881104946136475,
+        -7.0
+      ],
+      [
+        2.066964022162665e-08,
+        0.8811340928077698,
+        -0.47286632657051086,
+        3.700000047683716
+      ],
+      [
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ]
+    ],
+    "camera_to_world_opencv": [
+      [
+        0.8944272994995117,
+        0.21147209405899048,
+        -0.39405494928359985,
+        2.0
+      ],
+      [
+        0.4472132921218872,
+        -0.4229445457458496,
+        0.7881104946136475,
+        -7.0
+      ],
+      [
+        -2.066964022162665e-08,
+        -0.8811340928077698,
+        -0.47286632657051086,
+        3.700000047683716
+      ],
+      [
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ]
+    ],
+    "sensor_local_rays_center_right_down": [
+      [
+        1.4064699405125225e-09,
+        2.8028109611000218e-08,
+        1.0
+      ],
+      [
+        -0.49999991059303284,
+        1.699670448829238e-08,
+        0.8660253882408142
+      ],
+      [
+        1.3503747009480094e-09,
+        -0.39735960960388184,
+        0.9176629185676575
+      ]
+    ],
+    "convention": "Mitsuba local +X left,+Y up,+Z forward; OpenCV +X right,+Y down,+Z forward. Raster origin upper left. Sensor center/right/down rays checked.",
+    "simulation_calibration": true,
+    "measured_camera_calibration": false
+  },
+  "solver": {
+    "max_depth": 2,
+    "samples_per_src": 2048,
+    "max_num_paths_per_src": 4096,
+    "los": true,
+    "specular_reflection": true,
+    "refraction": false,
+    "diffuse_reflection": false,
+    "diffraction": false,
+    "seed": 42,
+    "convergence_established": false,
+    "render_samples_per_pixel": 4
+  },
+  "blocker": {
+    "mesh_path": "/workspace/training/visual-radio/rt/explicit_metal_blocker.ply",
+    "mesh_sha256": "99c4a203d4f484b9bf2907ca1ca0fa668b3745f0ef877d32fcc7090a28bd3f52",
+    "dimensions_m": [
+      0.5,
+      2.0,
+      3.0
+    ],
+    "material": "itu_metal",
+    "positions_m": [
+      [
+        0.0,
+        -3.0,
+        1.5
+      ],
+      [
+        0.0,
+        0.0,
+        1.5
+      ]
+    ],
+    "visual_color_semantics": "Renderer material only; no channel/power/blockage labels overlaid"
+  },
+  "placement_development": {
+    "initial_receipt_path": "artifacts/visual_radio/rt_probe/initial_geometry_attempt.json",
+    "initial_receipt_sha256": "189641243c341ddfe28f625c99fae436b192ee941d751e3fa5d4c375d2d3a940",
+    "reason": "Initial devices across densely obstructed warehouse produced zero found paths at the bounded solver setting; not useful training evidence. Devices were repositioned into an aisle using geometry-only floor-ray checks. Both original blocker poses are unchanged.",
+    "used_as_performance_comparison": false
+  },
+  "dinov3": {
+    "model": {
+      "repository": "timm/vit_small_patch16_dinov3.lvd1689m",
+      "revision": "3bf4720a82ec2066db88137180ff1f83a675cef0",
+      "weights_sha256": "2a1ec16ae28ffa07bc0ead0241ee7df9fc26451fe6f9f839b7b3afa0a906b040",
+      "config_sha256": "8eb1eeb3a94a3faddfcdd9ae693607a9cd9c8b91c34381578f7f0a48ce454eef",
+      "license_sha256": "25d122eb8f5b880fd23c736fb6ea8018ee45c12237e00b8a86d14c653904999e",
+      "license": "DINOv3 License",
+      "model_class": "timm.models.eva.Eva",
+      "implementation_file_sha256": "a8c9807ef5e8dabc725c1e2a89439760a900d6af6cdafefea18fc121173643a2",
+      "timm_version": "1.0.30",
+      "preprocess": {
+        "tag": "lvd1689m",
+        "custom_load": false,
+        "input_size": [
+          3,
+          256,
+          256
+        ],
+        "min_input_size": [
+          3,
+          128,
+          128
+        ],
+        "fixed_input_size": false,
+        "interpolation": "bicubic",
+        "crop_pct": 1.0,
+        "crop_mode": "center",
+        "mean": [
+          0.485,
+          0.456,
+          0.406
+        ],
+        "std": [
+          0.229,
+          0.224,
+          0.225
+        ],
+        "num_classes": 0,
+        "pool_size": null,
+        "first_conv": "patch_embed.proj",
+        "classifier": "head",
+        "license": "dinov3"
+      },
+      "parameter_count": 21586944,
+      "patch_size": [
+        16,
+        16
+      ],
+      "prefix_tokens_excluded": 5,
+      "strict_checkpoint_load": true,
+      "frozen": true,
+      "radio_or_geometry_accuracy_established": false
+    },
+    "patch_tokens_shape": [
+      2,
+      256,
+      384
+    ],
+    "feature_path": "/workspace/training/visual-radio/rt/rt_dinov3_features.npz",
+    "feature_sha256": "3c1b9e68e1295d74d283358fa01d29313fcb3e8b5cb20736b67c50ab9017ea21",
+    "image_geometry": [
+      {
+        "original_size_wh": [
+          256,
+          192
+        ],
+        "resized_size_wh": [
+          341,
+          256
+        ],
+        "crop_box_resized_xyxy": [
+          42,
+          0,
+          298,
+          256
+        ],
+        "processed_size_wh": [
+          256,
+          256
+        ],
+        "calibrated_camera_geometry": false
+      },
+      {
+        "original_size_wh": [
+          256,
+          192
+        ],
+        "resized_size_wh": [
+          341,
+          256
+        ],
+        "crop_box_resized_xyxy": [
+          42,
+          0,
+          298,
+          256
+        ],
+        "processed_size_wh": [
+          256,
+          256
+        ],
+        "calibrated_camera_geometry": false
+      }
+    ],
+    "provenance": [
+      {
+        "frame_id": "rt-static-pose-0",
+        "camera_id": "calibrated-simulation-camera",
+        "source_uri": "/workspace/training/visual-radio/rt/pose_0_rgb.png",
+        "license": "MIT upstream warehouse assets; original blocker geometry",
+        "source_file_sha256": "1d18946fee70c2657460f79dd673b8080962f3fcff3e640480f99c66c4cf49cd",
+        "canonical_rgb_sha256": "804bbe81e9600068e825201919f5cb8b2cbfa0549e8ba65f0bdadf145c4dd3eb"
+      },
+      {
+        "frame_id": "rt-static-pose-1",
+        "camera_id": "calibrated-simulation-camera",
+        "source_uri": "/workspace/training/visual-radio/rt/pose_1_rgb.png",
+        "license": "MIT upstream warehouse assets; original blocker geometry",
+        "source_file_sha256": "1d85944e47be2f36c262257b41599aa8b46f1c7f71c7df5e2aabba1a803d5cf6",
+        "canonical_rgb_sha256": "3da92a31a037338c61832db1cfd806bed6437c587d82113f9bfaf2abaf850a63"
+      }
+    ],
+    "capture_time_known": [
+      false,
+      false
+    ],
+    "all_features_finite": true,
+    "between_pose_token_l2": 74.40556335449219,
+    "time_semantics": "Independent static simulated poses; unknown capture time. Delivery field is probe ingestion only, not a timed robot stream.",
+    "radio_labels_supplied_to_encoder": false,
+    "rf_predictor_trained": false
+  },
+  "validation": {
+    "nonzero_desired_links_in_pose_1": true,
+    "nonzero_cross_links": true,
+    "coupling_changes_across_poses": true,
+    "rendered_image_changes_across_poses": true,
+    "same_geometry_used_for_radio_and_rgb": true,
+    "camera_projection_convention_checked": true
+  },
+  "geometry_radio_validation_passed": true
+}

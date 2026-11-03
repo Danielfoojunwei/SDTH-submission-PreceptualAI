@@ -1,0 +1,502 @@
+{
+  "completed": true,
+  "scope": "Actual pretrained dense visual encoder executability only",
+  "model": {
+    "repository": "timm/vit_small_patch16_dinov3.lvd1689m",
+    "revision": "3bf4720a82ec2066db88137180ff1f83a675cef0",
+    "weights_sha256": "2a1ec16ae28ffa07bc0ead0241ee7df9fc26451fe6f9f839b7b3afa0a906b040",
+    "config_sha256": "8eb1eeb3a94a3faddfcdd9ae693607a9cd9c8b91c34381578f7f0a48ce454eef",
+    "license_sha256": "25d122eb8f5b880fd23c736fb6ea8018ee45c12237e00b8a86d14c653904999e",
+    "license": "DINOv3 License",
+    "model_class": "timm.models.eva.Eva",
+    "implementation_file_sha256": "a8c9807ef5e8dabc725c1e2a89439760a900d6af6cdafefea18fc121173643a2",
+    "timm_version": "1.0.30",
+    "preprocess": {
+      "tag": "lvd1689m",
+      "custom_load": false,
+      "input_size": [
+        3,
+        256,
+        256
+      ],
+      "min_input_size": [
+        3,
+        128,
+        128
+      ],
+      "fixed_input_size": false,
+      "interpolation": "bicubic",
+      "crop_pct": 1.0,
+      "crop_mode": "center",
+      "mean": [
+        0.485,
+        0.456,
+        0.406
+      ],
+      "std": [
+        0.229,
+        0.224,
+        0.225
+      ],
+      "num_classes": 0,
+      "pool_size": null,
+      "first_conv": "patch_embed.proj",
+      "classifier": "head",
+      "license": "dinov3"
+    },
+    "parameter_count": 21586944,
+    "patch_size": [
+      16,
+      16
+    ],
+    "prefix_tokens_excluded": 5,
+    "strict_checkpoint_load": true,
+    "frozen": true,
+    "radio_or_geometry_accuracy_established": false
+  },
+  "official_facebook_access": {
+    "repo_id": "facebook/dinov3-vits16-pretrain-lvd1689m",
+    "checked_at_unix": 1793695889.057529,
+    "revision": "114c1379950215c8b35dfcd4e90a5c251dde0d32",
+    "gated": "manual",
+    "card_data": {
+      "base_model": "facebook/dinov3-vit7b16-pretrain-lvd1689m",
+      "language": [
+        "en"
+      ],
+      "library_name": "transformers",
+      "license": "other",
+      "license_name": "dinov3-license",
+      "license_link": "https://ai.meta.com/resources/models-and-libraries/dinov3-license",
+      "pipeline_tag": "image-feature-extraction",
+      "tags": [
+        "dino",
+        "dinov3",
+        "arxiv:2508.10104"
+      ],
+      "extra_gated_fields": {
+        "First Name": "text",
+        "Last Name": "text",
+        "Date of birth": "date_picker",
+        "Country": "country",
+        "Affiliation": "text",
+        "Job title": {
+          "type": "select",
+          "options": [
+            "Student",
+            "Research Graduate",
+            "AI researcher",
+            "AI developer/engineer",
+            "Reporter",
+            "Other"
+          ]
+        },
+        "geo": "ip_location",
+        "By clicking Submit below I accept the terms of the license and acknowledge that the information I provide will be collected stored processed and shared in accordance with the Meta Privacy Policy": "checkbox"
+      },
+      "extra_gated_description": "The information you provide will be collected, stored, processed and shared in accordance with the [Meta Privacy Policy](https://www.facebook.com/privacy/policy/).",
+      "extra_gated_button_content": "Submit"
+    },
+    "siblings": [
+      {
+        "name": ".gitattributes",
+        "size": 1519,
+        "blob_id": "a6344aac8c09253b3b630fb776ae94478aa0275b",
+        "lfs": null
+      },
+      {
+        "name": "LICENSE.md",
+        "size": 7503,
+        "blob_id": "f531b1e6b5ab2318957bbf8ad1bda9f800a23e17",
+        "lfs": null
+      },
+      {
+        "name": "README.md",
+        "size": 14519,
+        "blob_id": "e1b5c4aff2cb20b55b90fc6c496d462358d0f620",
+        "lfs": null
+      },
+      {
+        "name": "config.json",
+        "size": 743,
+        "blob_id": "fdff48569812f3cbadf253762565c4ce9dacddac",
+        "lfs": null
+      },
+      {
+        "name": "model.safetensors",
+        "size": 86406384,
+        "blob_id": "9fa02654fee68b92a010d13bb2f7cc2405657ae7",
+        "lfs": {
+          "size": 86406384,
+          "sha256": "4610ad75edef83e75afdebf162d148dc628045ea6cbb83d67d4708c709c4f91d",
+          "pointer_size": 133
+        }
+      },
+      {
+        "name": "preprocessor_config.json",
+        "size": 585,
+        "blob_id": "0126173c1ab7b75bbd9102e37de8a56ffe0a012b",
+        "lfs": null
+      }
+    ],
+    "pretrained_weights_access": {
+      "status": "error",
+      "exception": "GatedRepoError",
+      "http_status": 401,
+      "message": "401 Client Error. (Request ID: 955afca1-0efc-4e57-a747-fc07449e9b3c)\n\nCannot access gated repo for url https://huggingface.co/facebook/dinov3-vits16-pretrain-lvd1689m/resolve/114c1379950215c8b35dfcd4e90a5c251dde0d32/model.safetensors.\nAccess to model facebook/dinov3-vits16-pretrain-lvd1689m is restricted. You must have access to it and be authenticated to access it. Please log in."
+    }
+  },
+  "public_timm_access": {
+    "repo_id": "timm/vit_small_patch16_dinov3.lvd1689m",
+    "checked_at_unix": 1793695889.5516791,
+    "revision": "3bf4720a82ec2066db88137180ff1f83a675cef0",
+    "gated": false,
+    "card_data": {
+      "datasets": [
+        "lvd-1689m"
+      ],
+      "library_name": "timm",
+      "license": "other",
+      "license_name": "dinov3-license",
+      "license_link": "https://ai.meta.com/resources/models-and-libraries/dinov3-license",
+      "pipeline_tag": "image-feature-extraction",
+      "tags": [
+        "image-feature-extraction",
+        "timm",
+        "transformers"
+      ]
+    },
+    "siblings": [
+      {
+        "name": ".gitattributes",
+        "size": 1519,
+        "blob_id": "a6344aac8c09253b3b630fb776ae94478aa0275b",
+        "lfs": null
+      },
+      {
+        "name": "LICENSE.md",
+        "size": 7503,
+        "blob_id": "f531b1e6b5ab2318957bbf8ad1bda9f800a23e17",
+        "lfs": null
+      },
+      {
+        "name": "README.md",
+        "size": 7892,
+        "blob_id": "037f5f4992703dcc267718f6d6ee127140cd9847",
+        "lfs": null
+      },
+      {
+        "name": "config.json",
+        "size": 670,
+        "blob_id": "3ffe9c85d38c30e7920af2d98ca629b03143c905",
+        "lfs": null
+      },
+      {
+        "name": "model.safetensors",
+        "size": 86362376,
+        "blob_id": "851512e7d2f0799cb09b93c0eb360614cfc6d6bd",
+        "lfs": {
+          "size": 86362376,
+          "sha256": "2a1ec16ae28ffa07bc0ead0241ee7df9fc26451fe6f9f839b7b3afa0a906b040",
+          "pointer_size": 133
+        }
+      },
+      {
+        "name": "pytorch_model.bin",
+        "size": 86407250,
+        "blob_id": "fee410af742340727c31da03d5f704ce6c681732",
+        "lfs": {
+          "size": 86407250,
+          "sha256": "b7e7b7d1518a4dad2d92304ff47967c3dfee806f863552a06870de1e7498e7a2",
+          "pointer_size": 133
+        }
+      }
+    ],
+    "downloads": {
+      "config.json": {
+        "path": "/workspace/.cache/huggingface/hub/models--timm--vit_small_patch16_dinov3.lvd1689m/snapshots/3bf4720a82ec2066db88137180ff1f83a675cef0/config.json",
+        "bytes": 670,
+        "sha256": "8eb1eeb3a94a3faddfcdd9ae693607a9cd9c8b91c34381578f7f0a48ce454eef"
+      },
+      "README.md": {
+        "path": "/workspace/.cache/huggingface/hub/models--timm--vit_small_patch16_dinov3.lvd1689m/snapshots/3bf4720a82ec2066db88137180ff1f83a675cef0/README.md",
+        "bytes": 7892,
+        "sha256": "14a645d8a6a71f5658e86e2d21778beb207af79cffe44d8e48b0ef9c8b7e761f"
+      },
+      "LICENSE.md": {
+        "path": "/workspace/.cache/huggingface/hub/models--timm--vit_small_patch16_dinov3.lvd1689m/snapshots/3bf4720a82ec2066db88137180ff1f83a675cef0/LICENSE.md",
+        "bytes": 7503,
+        "sha256": "25d122eb8f5b880fd23c736fb6ea8018ee45c12237e00b8a86d14c653904999e"
+      },
+      "model.safetensors": {
+        "path": "/workspace/.cache/huggingface/hub/models--timm--vit_small_patch16_dinov3.lvd1689m/snapshots/3bf4720a82ec2066db88137180ff1f83a675cef0/model.safetensors",
+        "bytes": 86362376,
+        "sha256": "2a1ec16ae28ffa07bc0ead0241ee7df9fc26451fe6f9f839b7b3afa0a906b040"
+      }
+    }
+  },
+  "official_paper": {
+    "url": "https://arxiv.org/abs/2508.10104",
+    "pdf_sha256": "c68dc50b1f73e1641a592f777984fc360759e84b7fe65ac4f6e1377927f20b2e",
+    "reviewed_scope": "Abstract, introduction, section 4 dense-feature degradation/Gram anchoring and distillation passages"
+  },
+  "official_source_metadata": [
+    {
+      "repository": "facebookresearch/dinov3",
+      "commit": "6876159a11b4df116f30f667f8c9888617df0751",
+      "commit_date": "2026-07-15T13:56:56Z",
+      "files": {
+        "README.md": {
+          "url": "https://raw.githubusercontent.com/facebookresearch/dinov3/6876159a11b4df116f30f667f8c9888617df0751/README.md",
+          "status": 200,
+          "sha256": "da4e6e2fa1f2580be9a782338dc108ae68f98b6c9d10636583f97d8a340e664d",
+          "path": "/workspace/training/visual-radio/dinov3/facebookresearch__dinov3__README.md"
+        },
+        "LICENSE": {
+          "error": "HTTP Error 404: Not Found"
+        },
+        "LICENSE.md": {
+          "url": "https://raw.githubusercontent.com/facebookresearch/dinov3/6876159a11b4df116f30f667f8c9888617df0751/LICENSE.md",
+          "sha256": "25d122eb8f5b880fd23c736fb6ea8018ee45c12237e00b8a86d14c653904999e",
+          "bytes": 7503
+        }
+      }
+    },
+    {
+      "repository": "huggingface/pytorch-image-models",
+      "commit": "03b76b6ed7d98a844afc5529669b761b3ac5f562",
+      "commit_date": "2026-10-30T20:09:35Z",
+      "files": {
+        "LICENSE": {
+          "url": "https://raw.githubusercontent.com/huggingface/pytorch-image-models/03b76b6ed7d98a844afc5529669b761b3ac5f562/LICENSE",
+          "status": 200,
+          "sha256": "71b111620fa32c17a80ccd6db2da759d31a591e497d8b5f382174f59d1b59d49",
+          "path": "/workspace/training/visual-radio/dinov3/huggingface__pytorch-image-models__LICENSE"
+        },
+        "timm/models/vision_transformer.py": {
+          "url": "https://raw.githubusercontent.com/huggingface/pytorch-image-models/03b76b6ed7d98a844afc5529669b761b3ac5f562/timm/models/vision_transformer.py",
+          "status": 200,
+          "sha256": "61f96ca28efc806ca9cfa4b40659ee9e0b4019c48a0107981ea0e575225d6e05",
+          "path": "/workspace/training/visual-radio/dinov3/huggingface__pytorch-image-models__timm__models__vision_transformer.py"
+        }
+      }
+    }
+  ],
+  "images": [
+    {
+      "title": "Modern warehouse with pallet rack storage system",
+      "url": "https://upload.wikimedia.org/wikipedia/commons/a/a2/Modern_warehouse_with_pallet_rack_storage_system.jpg",
+      "descriptionurl": "https://commons.wikimedia.org/wiki/File:Modern_warehouse_with_pallet_rack_storage_system.jpg",
+      "sha256": "a79d4c296058bfe72f01351f1bfe46f2b239cd380f2d9d70206880c53edc760e",
+      "author": "Axisadman",
+      "license": "CC BY-SA 3.0",
+      "license_url": "https://creativecommons.org/licenses/by-sa/3.0",
+      "local_path": "/workspace/training/visual-radio/dinov3/public_image_0.jpg",
+      "bytes": 1469113,
+      "image_size_wh": [
+        2400,
+        1870
+      ],
+      "access": {
+        "cached": true
+      },
+      "capture_time_known": false,
+      "observation_time_semantics": "Probe ingestion only",
+      "calibrated_camera_or_pose": false,
+      "paired_radio_labels": false
+    },
+    {
+      "title": "BRS2 Amazon fulfilment centre drive unit robot",
+      "url": "https://upload.wikimedia.org/wikipedia/commons/e/e8/BRS2_Amazon_fulfilment_centre_drive_unit_robot.jpg",
+      "descriptionurl": "https://commons.wikimedia.org/wiki/File:BRS2_Amazon_fulfilment_centre_drive_unit_robot.jpg",
+      "sha256": "264aeb7fce4e00053ad90915d95ad65515c8ce55c66469a4935e24bb3c01a42e",
+      "author": "Auledas",
+      "license": "CC BY 4.0",
+      "license_url": "https://creativecommons.org/licenses/by/4.0",
+      "local_path": "/workspace/training/visual-radio/dinov3/public_image_1.jpg",
+      "bytes": 3566824,
+      "image_size_wh": [
+        4080,
+        3060
+      ],
+      "access": {
+        "cached": true
+      },
+      "capture_time_known": false,
+      "observation_time_semantics": "Probe ingestion only",
+      "calibrated_camera_or_pose": false,
+      "paired_radio_labels": false
+    }
+  ],
+  "timm_package_release_metadata": {
+    "version": "1.0.30",
+    "license": "Apache-2.0",
+    "urls": [
+      {
+        "filename": "timm-1.0.30-py3-none-any.whl",
+        "url": "https://files.pythonhosted.org/packages/f5/85/b897716d0fa016af23b11e6526f5ef76d2013e8bc36b9c7ce15d9200e456/timm-1.0.30-py3-none-any.whl",
+        "digests": {
+          "blake2b_256": "f585b897716d0fa016af23b11e6526f5ef76d2013e8bc36b9c7ce15d9200e456",
+          "md5": "0f9384008e6268c35eafd77c9740ac42",
+          "sha256": "c8e27adf6801a2fdfb570dbbdd171f2f084756eefc673df8cfaab06bd14864f3"
+        }
+      },
+      {
+        "filename": "timm-1.0.30.tar.gz",
+        "url": "https://files.pythonhosted.org/packages/0e/ab/49041213990e48edcb6013463b18ef86d8d3c5d6ac5b408802c480443025/timm-1.0.30.tar.gz",
+        "digests": {
+          "blake2b_256": "0eab49041213990e48edcb6013463b18ef86d8d3c5d6ac5b408802c480443025",
+          "md5": "9462f67221de8ac16d41672d7dcc4be7",
+          "sha256": "1444a3af7e17fdba5440ac2bcf6e4b728da96dd62289ed9e1bcba31a545f5935"
+        }
+      }
+    ]
+  },
+  "output": {
+    "patch_tokens_shape": [
+      2,
+      256,
+      384
+    ],
+    "grid_shape": [
+      16,
+      16
+    ],
+    "cls_shape": [
+      2,
+      384
+    ],
+    "patch_boxes_shape": [
+      2,
+      256,
+      4
+    ],
+    "capture_time_known": [
+      false,
+      false
+    ],
+    "dense_statistics_by_image": [
+      {
+        "finite": true,
+        "mean_patch_l2_norm": 7.565054416656494,
+        "mean_spatial_feature_std": 0.20493517816066742,
+        "centered_spatial_effective_rank": 9.25615406036377,
+        "mean_off_diagonal_patch_cosine": 0.6648349761962891,
+        "scope": "Descriptive within-image variation only; not a collapse, semantics, geometry or RF-accuracy benchmark"
+      },
+      {
+        "finite": true,
+        "mean_patch_l2_norm": 7.291689395904541,
+        "mean_spatial_feature_std": 0.2338891178369522,
+        "centered_spatial_effective_rank": 15.290106773376465,
+        "mean_off_diagonal_patch_cosine": 0.5670136213302612,
+        "scope": "Descriptive within-image variation only; not a collapse, semantics, geometry or RF-accuracy benchmark"
+      }
+    ],
+    "feature_array_path": "/workspace/training/visual-radio/dinov3/probe_features.npz",
+    "feature_array_sha256": "accdb19b3150d231dbaafcad979188e74b66057a82502b5e45d5dd51ecd7efc3",
+    "feature_array_bytes": 737775,
+    "image_geometry": [
+      {
+        "original_size_wh": [
+          2400,
+          1870
+        ],
+        "resized_size_wh": [
+          328,
+          256
+        ],
+        "crop_box_resized_xyxy": [
+          36,
+          0,
+          292,
+          256
+        ],
+        "processed_size_wh": [
+          256,
+          256
+        ],
+        "calibrated_camera_geometry": false
+      },
+      {
+        "original_size_wh": [
+          4080,
+          3060
+        ],
+        "resized_size_wh": [
+          341,
+          256
+        ],
+        "crop_box_resized_xyxy": [
+          42,
+          0,
+          298,
+          256
+        ],
+        "processed_size_wh": [
+          256,
+          256
+        ],
+        "calibrated_camera_geometry": false
+      }
+    ],
+    "provenance": [
+      {
+        "frame_id": "public-probe-0",
+        "camera_id": "public-photo-camera-unknown",
+        "source_uri": "https://commons.wikimedia.org/wiki/File:Modern_warehouse_with_pallet_rack_storage_system.jpg",
+        "license": "CC BY-SA 3.0",
+        "source_file_sha256": "a79d4c296058bfe72f01351f1bfe46f2b239cd380f2d9d70206880c53edc760e",
+        "canonical_rgb_sha256": "e498c988689a1e89b5c2b6d1337ba5b76d859ee068b69c94f267cc9f67737506"
+      },
+      {
+        "frame_id": "public-probe-1",
+        "camera_id": "public-photo-camera-unknown",
+        "source_uri": "https://commons.wikimedia.org/wiki/File:BRS2_Amazon_fulfilment_centre_drive_unit_robot.jpg",
+        "license": "CC BY 4.0",
+        "source_file_sha256": "264aeb7fce4e00053ad90915d95ad65515c8ce55c66469a4935e24bb3c01a42e",
+        "canonical_rgb_sha256": "7ad4226940bea26d23a76df2d0412a87b93cb4ca66d176ef490a7c1e2a05bc60"
+      }
+    ]
+  },
+  "checks": {
+    "strict_pretrained_checkpoint_load": true,
+    "all_parameters_frozen": true,
+    "repeat_max_absolute_token_difference": 0.0,
+    "preprocess_max_absolute_difference_vs_timm": 0.0,
+    "masked_tokens_exactly_zero": true,
+    "no_model_gradient": true
+  },
+  "cpu_execution": {
+    "torch_version": "2.14.1+cu130",
+    "timm_version": "1.0.30",
+    "platform": "Linux-6.18.57-x86_64-with-glibc2.41",
+    "torch_threads": 2,
+    "device": "cpu",
+    "unique_real_images": 2,
+    "forward_calls": 3,
+    "model_load_seconds": 1.9440951769938692,
+    "first_two_image_batch_forward_seconds": 0.5037228100118227,
+    "scope": "One worker diagnostic timing; no repeated latency benchmark or fleet control timing"
+  },
+  "claim_boundary": {
+    "random_weights_used_as_dinov3": false,
+    "trained_here": false,
+    "warehouse_visual_rf_accuracy_established": false,
+    "hierarchical_world_model_validated": false,
+    "sota_established": false,
+    "collapse_eliminated_or_impossible": false,
+    "notes": [
+      "No paired RF, depth/pose, material labels or temporal robot sequence is supplied by these static photographs.",
+      "Retaining a spatial grid preserves information needed for grounding; pixels are not metric 3D geometry.",
+      "DINOv3 Gram anchoring addresses dense-feature degradation during its pretraining; it does not guarantee a downstream wireless learner cannot collapse.",
+      "Public timm conversion retains the DINOv3 license and documents RoPE precision/QKV-bias differences from the original implementation."
+    ]
+  },
+  "reproduction": {
+    "command": "PYTHONPATH=/workspace/upstream/dinov3-python-deps:src .venv/bin/python scripts/probe_dinov3.py --offline",
+    "isolated_dependency": "timm==1.0.30 at /workspace/upstream/dinov3-python-deps; no core package downgrade",
+    "adapter_sha256": "f3b8f8a54cb1d3a88a742734861f1e287b124246407f7e1218a82d1c80a8890f",
+    "probe_script_sha256": "5c1ade2467f1eca1f591ed9620738814d4cf545895ac0f356f783847688ed760"
+  }
+}
