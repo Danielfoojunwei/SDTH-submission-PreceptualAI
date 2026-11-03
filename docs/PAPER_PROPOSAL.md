@@ -6,6 +6,37 @@ are in `docs/WAREHOUSE_RESULTS.md`. The subsequently authorised warehouse v2
 campaign is described below; general foundation-model, custom on-air PHY,
 robotics and space extensions remain deferred.
 
+## Service-native candidate: implemented mechanics, unestablished advance
+
+`SERVICE_WORLD_RESULTS.md` reports a simulation-only capability/headroom
+diagnostic. A new 68,021-parameter prototype preserves AP/band structure,
+measurement masks and event clocks; predicts action-conditioned Gaussian latent
+transitions; and initializes service corrections to zero around an explicit
+numerical reference. It is untrained and inactive. Unit identities and
+hindsight action labels do not establish learned prediction/control quality.
+
+`SERVICE_WORLD_FIRST_PRINCIPLES.md` derives why packet age, known unavailability,
+receiver freshness and canonical recovery matter for deadline-sensitive
+warehouse control. Exact guaranteed misses during fully unavailable service
+windows are lower bounds, not a full service model. The decoder anchors each
+output separately; latent rollout error can still accumulate. No theorem or
+measurement currently establishes bounded long-horizon error.
+
+The 18-source audit in `SERVICE_WORLD_PRIOR_ART.md` finds that RAN-JEPA already
+combines action-conditioned wireless JEPA, mechanistic residuals and matched
+counterfactual evaluation. Related work covers coupled robot/wireless models,
+delivered memory, graph stochastic dynamics and baseline fallback. Broad
+architectural novelty is unsupported. Any contribution must be precisely
+defined and established against that literature rather than asserted from a
+combination of established components.
+
+Official component execution in `SERVICE_WORLD_BASELINES.md` verifies limited
+upstream code access, not a common warehouse leaderboard. The present study
+does not establish SOTA, superiority over RadioMap, a new foundation model or
+physical 100-car qualification. Matched trained baselines, independently
+trained seeds, sealed sites, calibration and end-to-end control/compute
+measurements remain outstanding.
+
 ## Packet-action JEPA: negative development evidence
 
 `PACKET_VALUE_RESULTS.md` trains three actual JEPA and three matched supervised

@@ -1,0 +1,41 @@
+{
+  "completed": true,
+  "recorded_at_utc": "2026-11-03T08:25:09.351364+00:00",
+  "test_command": "OPENBLAS_NUM_THREADS=1 OMP_NUM_THREADS=1 MKL_NUM_THREADS=1 uv run --frozen pytest -q",
+  "test_result": "318 passed in 83.76s",
+  "passed_tests": 318,
+  "failed_tests": 0,
+  "skipped_tests": 0,
+  "test_receipt_scope": "Observed output from the actual completed full pytest invocation; tests establish software mechanics, not learned performance.",
+  "test_sha256": {
+    "tests/test_service_world_archive.py": "8a06df14e16abf314eca27ba128b26de70b5ef76d2ac281ec251171249d37a06",
+    "tests/test_service_world_features.py": "4d4fd14442df240cc2bbf3e9e860a65648d7b9f62ca906a32cf7a043133fdf4c",
+    "tests/test_service_world_kernel.py": "f30b26670a70a718529b0aba0aa16e74299ab0657a3e59711ce3513183a221cd",
+    "tests/test_service_world_model.py": "b3eb9d80ce53275284e7fd4b87d75fea04dcb51efc46f2edd56f6cdebf30fccb",
+    "tests/test_service_world_physics.py": "94abb1958483c24c0cd0306d31b42d31550b18172c455e6b7636e43bc5400ca8",
+    "tests/test_service_world_selection.py": "53ee56ce832e35a5c07992e25ff1994c69a613e4716ae2a0f3a18c387bca51b2"
+  },
+  "executed_source_manifest_sha256": "dda941274f1d0defb85c605cf123f3a09e2c13a3834372424faa8be300ae6bff",
+  "completion_sha256": "317de6a63c50cc26ab42f5f11d4f8d1e0ffdf56777ae5e94fd319c98181f6150",
+  "summary_sha256": "390d23dbbacd852431e591dabf92af09db76c662d9f44366e47c665a3dee1dc0",
+  "integrity_check_sha256": "37d8a5a17f6e5eba5648aceccc0a7e0d418f387ed85efa1a49b8b47c4f85734d",
+  "prior_evidence_preserved": {
+    "base_commit": "8618ea9",
+    "git_diff_exit_code": 0,
+    "paths": [
+      "artifacts/packet_value",
+      "artifacts/closed_loop",
+      "artifacts/world_frontier",
+      "artifacts/fleet_world_model",
+      "src/wirelessjev/packet_value",
+      "src/wirelessjev/closed_loop",
+      "pyproject.toml",
+      "uv.lock"
+    ]
+  },
+  "excluded_pilot_all_88_file_hashes_verified": true,
+  "trained_models": 0,
+  "learned_policy_evaluations": 0,
+  "sota_established": false,
+  "novelty_established": false
+}

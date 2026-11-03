@@ -1,0 +1,1713 @@
+{
+  "completed": true,
+  "status": "native_diagnostic_complete_untrained_prototype",
+  "generated_at_utc": "2026-11-03T08:21:45.091073+00:00",
+  "simulation_only": true,
+  "diagnostic_only": true,
+  "robots_per_case": 100,
+  "duration_seconds_per_case": 80,
+  "diagnostic_sites": [
+    360100,
+    360101,
+    360102,
+    360103
+  ],
+  "trained_models": 0,
+  "learned_policy_evaluations": 0,
+  "learned_accuracy_or_control_score": null,
+  "learned_policy_qualified": false,
+  "original_holdouts_unused": true,
+  "sota_established": false,
+  "novelty_established": false,
+  "sampling": {
+    "selection": "Two lowest available latest-observed best-band SNRs from actual 100ms history, masked at the currently associated AP, and one uniformly sampled other available robot; retain observation timestamp and decision age; never select using future labels",
+    "revision": "v2: preserve completed v1 in pilot_sampling_v1; rank latest actually observed history, with timestamp and current-AP mask; fresh diagnostic sites",
+    "excluded_pilot_path": "artifacts/service_world/pilot_sampling_v1",
+    "excluded_pilot_used_for_training": false
+  },
+  "counts": {
+    "cases": 8,
+    "native_runs": 184,
+    "exact_factual_suffix_replays": 24,
+    "input_windows": 72,
+    "recorded_interventions": 144
+  },
+  "replay_check_scope": "Study asserts equality of per-robot cumulative miss counters against the factual endpoint; reporter checks receipts/source and does not rerun the simulator.",
+  "by_cost": {
+    "0.03": {
+      "handover_seconds": 0.03,
+      "cases": 4,
+      "factual_expiring_proposals": {
+        "misses": 6640,
+        "sent": 640000,
+        "miss_fraction": 0.010375,
+        "misses_per_million_sent": 10375.0
+      },
+      "legacy_unbounded_pending": {
+        "misses": 6640,
+        "sent": 640000,
+        "miss_fraction": 0.010375,
+        "misses_per_million_sent": 10375.0
+      },
+      "factual_kernel_attributed_miss_causes": {
+        "no_radio_up": 6391,
+        "all_paths_blocked": 246,
+        "weak_link": 3,
+        "contention": 0,
+        "other": 0
+      },
+      "classical_pending_expiry_ablation": {
+        "factual_ttl_seconds": 1,
+        "legacy_ttl_seconds": null,
+        "delta_misses_factual_minus_legacy": 0,
+        "delta_misses_per_million_sent": 0.0,
+        "learned_model_contribution": false
+      },
+      "interventions": {
+        "actions": 72,
+        "beneficial": 3,
+        "harmful": 3,
+        "zero": 66,
+        "minimum_delta_misses": -21,
+        "maximum_delta_misses": 2
+      },
+      "interventions_by_kind": {
+        "stay": {
+          "actions": 36,
+          "beneficial": 0,
+          "harmful": 1,
+          "zero": 35,
+          "minimum_delta_misses": 0,
+          "maximum_delta_misses": 1
+        },
+        "move": {
+          "actions": 36,
+          "beneficial": 3,
+          "harmful": 2,
+          "zero": 31,
+          "minimum_delta_misses": -21,
+          "maximum_delta_misses": 2
+        }
+      },
+      "checkpoint_robot_groups": 36,
+      "groups_with_a_negative_recorded_action": 3
+    },
+    "4.0": {
+      "handover_seconds": 4.0,
+      "cases": 4,
+      "factual_expiring_proposals": {
+        "misses": 40173,
+        "sent": 640000,
+        "miss_fraction": 0.0627703125,
+        "misses_per_million_sent": 62770.31249999999
+      },
+      "legacy_unbounded_pending": {
+        "misses": 40173,
+        "sent": 640000,
+        "miss_fraction": 0.0627703125,
+        "misses_per_million_sent": 62770.31249999999
+      },
+      "factual_kernel_attributed_miss_causes": {
+        "no_radio_up": 27364,
+        "all_paths_blocked": 1836,
+        "weak_link": 10973,
+        "contention": 0,
+        "other": 0
+      },
+      "classical_pending_expiry_ablation": {
+        "factual_ttl_seconds": 1,
+        "legacy_ttl_seconds": null,
+        "delta_misses_factual_minus_legacy": 0,
+        "delta_misses_per_million_sent": 0.0,
+        "learned_model_contribution": false
+      },
+      "interventions": {
+        "actions": 72,
+        "beneficial": 5,
+        "harmful": 31,
+        "zero": 36,
+        "minimum_delta_misses": -105,
+        "maximum_delta_misses": 158
+      },
+      "interventions_by_kind": {
+        "stay": {
+          "actions": 36,
+          "beneficial": 0,
+          "harmful": 0,
+          "zero": 36,
+          "minimum_delta_misses": 0,
+          "maximum_delta_misses": 0
+        },
+        "move": {
+          "actions": 36,
+          "beneficial": 5,
+          "harmful": 31,
+          "zero": 0,
+          "minimum_delta_misses": -105,
+          "maximum_delta_misses": 158
+        }
+      },
+      "checkpoint_robot_groups": 36,
+      "groups_with_a_negative_recorded_action": 5
+    }
+  },
+  "cases": [
+    {
+      "scene": 360100,
+      "cost_seconds": 0.03,
+      "robots": 100,
+      "duration_seconds": 80,
+      "factual_expiring_proposals": {
+        "misses": 1755,
+        "sent": 160000,
+        "miss_fraction": 0.01096875,
+        "misses_per_million_sent": 10968.75
+      },
+      "legacy_unbounded_pending": {
+        "misses": 1755,
+        "sent": 160000,
+        "miss_fraction": 0.01096875,
+        "misses_per_million_sent": 10968.75
+      },
+      "classical_factual_minus_legacy_misses": 0,
+      "interventions": {
+        "actions": 18,
+        "beneficial": 2,
+        "harmful": 1,
+        "zero": 15,
+        "minimum_delta_misses": -21,
+        "maximum_delta_misses": 2
+      },
+      "native_runs": 23,
+      "exact_factual_suffix_replays": 3,
+      "input_windows": 9,
+      "prototype": {
+        "untrained": true,
+        "accuracy_or_control_result": false,
+        "clients": 8,
+        "inference_parameters": 68021,
+        "zero_residual_exact": true,
+        "unknown_hazard_is_none": true,
+        "physical_reference": "Known-unavailability lower bounds only; not expected service"
+      }
+    },
+    {
+      "scene": 360100,
+      "cost_seconds": 4.0,
+      "robots": 100,
+      "duration_seconds": 80,
+      "factual_expiring_proposals": {
+        "misses": 13004,
+        "sent": 160000,
+        "miss_fraction": 0.081275,
+        "misses_per_million_sent": 81275.0
+      },
+      "legacy_unbounded_pending": {
+        "misses": 13004,
+        "sent": 160000,
+        "miss_fraction": 0.081275,
+        "misses_per_million_sent": 81275.0
+      },
+      "classical_factual_minus_legacy_misses": 0,
+      "interventions": {
+        "actions": 18,
+        "beneficial": 0,
+        "harmful": 9,
+        "zero": 9,
+        "minimum_delta_misses": 0,
+        "maximum_delta_misses": 158
+      },
+      "native_runs": 23,
+      "exact_factual_suffix_replays": 3,
+      "input_windows": 9,
+      "prototype": {
+        "untrained": true,
+        "accuracy_or_control_result": false,
+        "clients": 8,
+        "inference_parameters": 68021,
+        "zero_residual_exact": true,
+        "unknown_hazard_is_none": true,
+        "physical_reference": "Known-unavailability lower bounds only; not expected service"
+      }
+    },
+    {
+      "scene": 360101,
+      "cost_seconds": 0.03,
+      "robots": 100,
+      "duration_seconds": 80,
+      "factual_expiring_proposals": {
+        "misses": 1647,
+        "sent": 160000,
+        "miss_fraction": 0.01029375,
+        "misses_per_million_sent": 10293.75
+      },
+      "legacy_unbounded_pending": {
+        "misses": 1647,
+        "sent": 160000,
+        "miss_fraction": 0.01029375,
+        "misses_per_million_sent": 10293.75
+      },
+      "classical_factual_minus_legacy_misses": 0,
+      "interventions": {
+        "actions": 18,
+        "beneficial": 0,
+        "harmful": 0,
+        "zero": 18,
+        "minimum_delta_misses": 0,
+        "maximum_delta_misses": 0
+      },
+      "native_runs": 23,
+      "exact_factual_suffix_replays": 3,
+      "input_windows": 9,
+      "prototype": {
+        "untrained": true,
+        "accuracy_or_control_result": false,
+        "clients": 8,
+        "inference_parameters": 68021,
+        "zero_residual_exact": true,
+        "unknown_hazard_is_none": true,
+        "physical_reference": "Known-unavailability lower bounds only; not expected service"
+      }
+    },
+    {
+      "scene": 360101,
+      "cost_seconds": 4.0,
+      "robots": 100,
+      "duration_seconds": 80,
+      "factual_expiring_proposals": {
+        "misses": 8964,
+        "sent": 160000,
+        "miss_fraction": 0.056025,
+        "misses_per_million_sent": 56025.0
+      },
+      "legacy_unbounded_pending": {
+        "misses": 8964,
+        "sent": 160000,
+        "miss_fraction": 0.056025,
+        "misses_per_million_sent": 56025.0
+      },
+      "classical_factual_minus_legacy_misses": 0,
+      "interventions": {
+        "actions": 18,
+        "beneficial": 1,
+        "harmful": 8,
+        "zero": 9,
+        "minimum_delta_misses": -37,
+        "maximum_delta_misses": 80
+      },
+      "native_runs": 23,
+      "exact_factual_suffix_replays": 3,
+      "input_windows": 9,
+      "prototype": {
+        "untrained": true,
+        "accuracy_or_control_result": false,
+        "clients": 8,
+        "inference_parameters": 68021,
+        "zero_residual_exact": true,
+        "unknown_hazard_is_none": true,
+        "physical_reference": "Known-unavailability lower bounds only; not expected service"
+      }
+    },
+    {
+      "scene": 360102,
+      "cost_seconds": 0.03,
+      "robots": 100,
+      "duration_seconds": 80,
+      "factual_expiring_proposals": {
+        "misses": 1606,
+        "sent": 160000,
+        "miss_fraction": 0.0100375,
+        "misses_per_million_sent": 10037.5
+      },
+      "legacy_unbounded_pending": {
+        "misses": 1606,
+        "sent": 160000,
+        "miss_fraction": 0.0100375,
+        "misses_per_million_sent": 10037.5
+      },
+      "classical_factual_minus_legacy_misses": 0,
+      "interventions": {
+        "actions": 18,
+        "beneficial": 1,
+        "harmful": 0,
+        "zero": 17,
+        "minimum_delta_misses": -5,
+        "maximum_delta_misses": 0
+      },
+      "native_runs": 23,
+      "exact_factual_suffix_replays": 3,
+      "input_windows": 9,
+      "prototype": {
+        "untrained": true,
+        "accuracy_or_control_result": false,
+        "clients": 8,
+        "inference_parameters": 68021,
+        "zero_residual_exact": true,
+        "unknown_hazard_is_none": true,
+        "physical_reference": "Known-unavailability lower bounds only; not expected service"
+      }
+    },
+    {
+      "scene": 360102,
+      "cost_seconds": 4.0,
+      "robots": 100,
+      "duration_seconds": 80,
+      "factual_expiring_proposals": {
+        "misses": 7137,
+        "sent": 160000,
+        "miss_fraction": 0.04460625,
+        "misses_per_million_sent": 44606.25
+      },
+      "legacy_unbounded_pending": {
+        "misses": 7137,
+        "sent": 160000,
+        "miss_fraction": 0.04460625,
+        "misses_per_million_sent": 44606.25
+      },
+      "classical_factual_minus_legacy_misses": 0,
+      "interventions": {
+        "actions": 18,
+        "beneficial": 2,
+        "harmful": 7,
+        "zero": 9,
+        "minimum_delta_misses": -9,
+        "maximum_delta_misses": 79
+      },
+      "native_runs": 23,
+      "exact_factual_suffix_replays": 3,
+      "input_windows": 9,
+      "prototype": {
+        "untrained": true,
+        "accuracy_or_control_result": false,
+        "clients": 8,
+        "inference_parameters": 68021,
+        "zero_residual_exact": true,
+        "unknown_hazard_is_none": true,
+        "physical_reference": "Known-unavailability lower bounds only; not expected service"
+      }
+    },
+    {
+      "scene": 360103,
+      "cost_seconds": 0.03,
+      "robots": 100,
+      "duration_seconds": 80,
+      "factual_expiring_proposals": {
+        "misses": 1632,
+        "sent": 160000,
+        "miss_fraction": 0.0102,
+        "misses_per_million_sent": 10200.0
+      },
+      "legacy_unbounded_pending": {
+        "misses": 1632,
+        "sent": 160000,
+        "miss_fraction": 0.0102,
+        "misses_per_million_sent": 10200.0
+      },
+      "classical_factual_minus_legacy_misses": 0,
+      "interventions": {
+        "actions": 18,
+        "beneficial": 0,
+        "harmful": 2,
+        "zero": 16,
+        "minimum_delta_misses": 0,
+        "maximum_delta_misses": 1
+      },
+      "native_runs": 23,
+      "exact_factual_suffix_replays": 3,
+      "input_windows": 9,
+      "prototype": {
+        "untrained": true,
+        "accuracy_or_control_result": false,
+        "clients": 8,
+        "inference_parameters": 68021,
+        "zero_residual_exact": true,
+        "unknown_hazard_is_none": true,
+        "physical_reference": "Known-unavailability lower bounds only; not expected service"
+      }
+    },
+    {
+      "scene": 360103,
+      "cost_seconds": 4.0,
+      "robots": 100,
+      "duration_seconds": 80,
+      "factual_expiring_proposals": {
+        "misses": 11068,
+        "sent": 160000,
+        "miss_fraction": 0.069175,
+        "misses_per_million_sent": 69175.0
+      },
+      "legacy_unbounded_pending": {
+        "misses": 11068,
+        "sent": 160000,
+        "miss_fraction": 0.069175,
+        "misses_per_million_sent": 69175.0
+      },
+      "classical_factual_minus_legacy_misses": 0,
+      "interventions": {
+        "actions": 18,
+        "beneficial": 2,
+        "harmful": 7,
+        "zero": 9,
+        "minimum_delta_misses": -105,
+        "maximum_delta_misses": 158
+      },
+      "native_runs": 23,
+      "exact_factual_suffix_replays": 3,
+      "input_windows": 9,
+      "prototype": {
+        "untrained": true,
+        "accuracy_or_control_result": false,
+        "clients": 8,
+        "inference_parameters": 68021,
+        "zero_residual_exact": true,
+        "unknown_hazard_is_none": true,
+        "physical_reference": "Known-unavailability lower bounds only; not expected service"
+      }
+    }
+  ],
+  "best_negative_action_per_checkpoint_robot": [
+    {
+      "scene": 360100,
+      "cost_seconds": 0.03,
+      "slot": 558,
+      "robot": 44,
+      "actions_recorded": 2,
+      "best_negative_action": null,
+      "tied_best_actions": [],
+      "selection": "NONCAUSAL hindsight from independent forks",
+      "joint_fleet_policy_result": false
+    },
+    {
+      "scene": 360100,
+      "cost_seconds": 0.03,
+      "slot": 558,
+      "robot": 60,
+      "actions_recorded": 2,
+      "best_negative_action": null,
+      "tied_best_actions": [],
+      "selection": "NONCAUSAL hindsight from independent forks",
+      "joint_fleet_policy_result": false
+    },
+    {
+      "scene": 360100,
+      "cost_seconds": 0.03,
+      "slot": 558,
+      "robot": 91,
+      "actions_recorded": 2,
+      "best_negative_action": null,
+      "tied_best_actions": [],
+      "selection": "NONCAUSAL hindsight from independent forks",
+      "joint_fleet_policy_result": false
+    },
+    {
+      "scene": 360100,
+      "cost_seconds": 0.03,
+      "slot": 3558,
+      "robot": 64,
+      "actions_recorded": 2,
+      "best_negative_action": null,
+      "tied_best_actions": [],
+      "selection": "NONCAUSAL hindsight from independent forks",
+      "joint_fleet_policy_result": false
+    },
+    {
+      "scene": 360100,
+      "cost_seconds": 0.03,
+      "slot": 3558,
+      "robot": 69,
+      "actions_recorded": 2,
+      "best_negative_action": {
+        "scene": 360100,
+        "cost_seconds": 0.03,
+        "record_index": 7,
+        "slot": 3558,
+        "robot": 69,
+        "selection_observation_slot": 3550,
+        "current": 14,
+        "target": 13,
+        "kind": "move",
+        "hold_slots": 100,
+        "canonical_recovery": true,
+        "baseline_misses": 27,
+        "intervention_misses": 6,
+        "delta_misses": -21,
+        "baseline_window_max_gap_slots": 60,
+        "intervention_window_max_gap_slots": 33,
+        "delta_window_max_gap_slots": -27
+      },
+      "tied_best_actions": [
+        {
+          "scene": 360100,
+          "cost_seconds": 0.03,
+          "record_index": 7,
+          "slot": 3558,
+          "robot": 69,
+          "selection_observation_slot": 3550,
+          "current": 14,
+          "target": 13,
+          "kind": "move",
+          "hold_slots": 100,
+          "canonical_recovery": true,
+          "baseline_misses": 27,
+          "intervention_misses": 6,
+          "delta_misses": -21,
+          "baseline_window_max_gap_slots": 60,
+          "intervention_window_max_gap_slots": 33,
+          "delta_window_max_gap_slots": -27
+        }
+      ],
+      "selection": "NONCAUSAL hindsight from independent forks",
+      "joint_fleet_policy_result": false
+    },
+    {
+      "scene": 360100,
+      "cost_seconds": 0.03,
+      "slot": 3558,
+      "robot": 94,
+      "actions_recorded": 2,
+      "best_negative_action": null,
+      "tied_best_actions": [],
+      "selection": "NONCAUSAL hindsight from independent forks",
+      "joint_fleet_policy_result": false
+    },
+    {
+      "scene": 360100,
+      "cost_seconds": 0.03,
+      "slot": 6558,
+      "robot": 18,
+      "actions_recorded": 2,
+      "best_negative_action": null,
+      "tied_best_actions": [],
+      "selection": "NONCAUSAL hindsight from independent forks",
+      "joint_fleet_policy_result": false
+    },
+    {
+      "scene": 360100,
+      "cost_seconds": 0.03,
+      "slot": 6558,
+      "robot": 47,
+      "actions_recorded": 2,
+      "best_negative_action": {
+        "scene": 360100,
+        "cost_seconds": 0.03,
+        "record_index": 13,
+        "slot": 6558,
+        "robot": 47,
+        "selection_observation_slot": 6550,
+        "current": 2,
+        "target": 3,
+        "kind": "move",
+        "hold_slots": 100,
+        "canonical_recovery": true,
+        "baseline_misses": 13,
+        "intervention_misses": 4,
+        "delta_misses": -9,
+        "baseline_window_max_gap_slots": 53,
+        "intervention_window_max_gap_slots": 13,
+        "delta_window_max_gap_slots": -40
+      },
+      "tied_best_actions": [
+        {
+          "scene": 360100,
+          "cost_seconds": 0.03,
+          "record_index": 13,
+          "slot": 6558,
+          "robot": 47,
+          "selection_observation_slot": 6550,
+          "current": 2,
+          "target": 3,
+          "kind": "move",
+          "hold_slots": 100,
+          "canonical_recovery": true,
+          "baseline_misses": 13,
+          "intervention_misses": 4,
+          "delta_misses": -9,
+          "baseline_window_max_gap_slots": 53,
+          "intervention_window_max_gap_slots": 13,
+          "delta_window_max_gap_slots": -40
+        }
+      ],
+      "selection": "NONCAUSAL hindsight from independent forks",
+      "joint_fleet_policy_result": false
+    },
+    {
+      "scene": 360100,
+      "cost_seconds": 0.03,
+      "slot": 6558,
+      "robot": 76,
+      "actions_recorded": 2,
+      "best_negative_action": null,
+      "tied_best_actions": [],
+      "selection": "NONCAUSAL hindsight from independent forks",
+      "joint_fleet_policy_result": false
+    },
+    {
+      "scene": 360100,
+      "cost_seconds": 4.0,
+      "slot": 558,
+      "robot": 44,
+      "actions_recorded": 2,
+      "best_negative_action": null,
+      "tied_best_actions": [],
+      "selection": "NONCAUSAL hindsight from independent forks",
+      "joint_fleet_policy_result": false
+    },
+    {
+      "scene": 360100,
+      "cost_seconds": 4.0,
+      "slot": 558,
+      "robot": 83,
+      "actions_recorded": 2,
+      "best_negative_action": null,
+      "tied_best_actions": [],
+      "selection": "NONCAUSAL hindsight from independent forks",
+      "joint_fleet_policy_result": false
+    },
+    {
+      "scene": 360100,
+      "cost_seconds": 4.0,
+      "slot": 558,
+      "robot": 91,
+      "actions_recorded": 2,
+      "best_negative_action": null,
+      "tied_best_actions": [],
+      "selection": "NONCAUSAL hindsight from independent forks",
+      "joint_fleet_policy_result": false
+    },
+    {
+      "scene": 360100,
+      "cost_seconds": 4.0,
+      "slot": 3558,
+      "robot": 24,
+      "actions_recorded": 2,
+      "best_negative_action": null,
+      "tied_best_actions": [],
+      "selection": "NONCAUSAL hindsight from independent forks",
+      "joint_fleet_policy_result": false
+    },
+    {
+      "scene": 360100,
+      "cost_seconds": 4.0,
+      "slot": 3558,
+      "robot": 37,
+      "actions_recorded": 2,
+      "best_negative_action": null,
+      "tied_best_actions": [],
+      "selection": "NONCAUSAL hindsight from independent forks",
+      "joint_fleet_policy_result": false
+    },
+    {
+      "scene": 360100,
+      "cost_seconds": 4.0,
+      "slot": 3558,
+      "robot": 69,
+      "actions_recorded": 2,
+      "best_negative_action": null,
+      "tied_best_actions": [],
+      "selection": "NONCAUSAL hindsight from independent forks",
+      "joint_fleet_policy_result": false
+    },
+    {
+      "scene": 360100,
+      "cost_seconds": 4.0,
+      "slot": 6558,
+      "robot": 25,
+      "actions_recorded": 2,
+      "best_negative_action": null,
+      "tied_best_actions": [],
+      "selection": "NONCAUSAL hindsight from independent forks",
+      "joint_fleet_policy_result": false
+    },
+    {
+      "scene": 360100,
+      "cost_seconds": 4.0,
+      "slot": 6558,
+      "robot": 47,
+      "actions_recorded": 2,
+      "best_negative_action": null,
+      "tied_best_actions": [],
+      "selection": "NONCAUSAL hindsight from independent forks",
+      "joint_fleet_policy_result": false
+    },
+    {
+      "scene": 360100,
+      "cost_seconds": 4.0,
+      "slot": 6558,
+      "robot": 92,
+      "actions_recorded": 2,
+      "best_negative_action": null,
+      "tied_best_actions": [],
+      "selection": "NONCAUSAL hindsight from independent forks",
+      "joint_fleet_policy_result": false
+    },
+    {
+      "scene": 360101,
+      "cost_seconds": 0.03,
+      "slot": 558,
+      "robot": 12,
+      "actions_recorded": 2,
+      "best_negative_action": null,
+      "tied_best_actions": [],
+      "selection": "NONCAUSAL hindsight from independent forks",
+      "joint_fleet_policy_result": false
+    },
+    {
+      "scene": 360101,
+      "cost_seconds": 0.03,
+      "slot": 558,
+      "robot": 60,
+      "actions_recorded": 2,
+      "best_negative_action": null,
+      "tied_best_actions": [],
+      "selection": "NONCAUSAL hindsight from independent forks",
+      "joint_fleet_policy_result": false
+    },
+    {
+      "scene": 360101,
+      "cost_seconds": 0.03,
+      "slot": 558,
+      "robot": 94,
+      "actions_recorded": 2,
+      "best_negative_action": null,
+      "tied_best_actions": [],
+      "selection": "NONCAUSAL hindsight from independent forks",
+      "joint_fleet_policy_result": false
+    },
+    {
+      "scene": 360101,
+      "cost_seconds": 0.03,
+      "slot": 3558,
+      "robot": 38,
+      "actions_recorded": 2,
+      "best_negative_action": null,
+      "tied_best_actions": [],
+      "selection": "NONCAUSAL hindsight from independent forks",
+      "joint_fleet_policy_result": false
+    },
+    {
+      "scene": 360101,
+      "cost_seconds": 0.03,
+      "slot": 3558,
+      "robot": 65,
+      "actions_recorded": 2,
+      "best_negative_action": null,
+      "tied_best_actions": [],
+      "selection": "NONCAUSAL hindsight from independent forks",
+      "joint_fleet_policy_result": false
+    },
+    {
+      "scene": 360101,
+      "cost_seconds": 0.03,
+      "slot": 3558,
+      "robot": 88,
+      "actions_recorded": 2,
+      "best_negative_action": null,
+      "tied_best_actions": [],
+      "selection": "NONCAUSAL hindsight from independent forks",
+      "joint_fleet_policy_result": false
+    },
+    {
+      "scene": 360101,
+      "cost_seconds": 0.03,
+      "slot": 6558,
+      "robot": 18,
+      "actions_recorded": 2,
+      "best_negative_action": null,
+      "tied_best_actions": [],
+      "selection": "NONCAUSAL hindsight from independent forks",
+      "joint_fleet_policy_result": false
+    },
+    {
+      "scene": 360101,
+      "cost_seconds": 0.03,
+      "slot": 6558,
+      "robot": 41,
+      "actions_recorded": 2,
+      "best_negative_action": null,
+      "tied_best_actions": [],
+      "selection": "NONCAUSAL hindsight from independent forks",
+      "joint_fleet_policy_result": false
+    },
+    {
+      "scene": 360101,
+      "cost_seconds": 0.03,
+      "slot": 6558,
+      "robot": 76,
+      "actions_recorded": 2,
+      "best_negative_action": null,
+      "tied_best_actions": [],
+      "selection": "NONCAUSAL hindsight from independent forks",
+      "joint_fleet_policy_result": false
+    },
+    {
+      "scene": 360101,
+      "cost_seconds": 4.0,
+      "slot": 558,
+      "robot": 66,
+      "actions_recorded": 2,
+      "best_negative_action": null,
+      "tied_best_actions": [],
+      "selection": "NONCAUSAL hindsight from independent forks",
+      "joint_fleet_policy_result": false
+    },
+    {
+      "scene": 360101,
+      "cost_seconds": 4.0,
+      "slot": 558,
+      "robot": 83,
+      "actions_recorded": 2,
+      "best_negative_action": null,
+      "tied_best_actions": [],
+      "selection": "NONCAUSAL hindsight from independent forks",
+      "joint_fleet_policy_result": false
+    },
+    {
+      "scene": 360101,
+      "cost_seconds": 4.0,
+      "slot": 558,
+      "robot": 94,
+      "actions_recorded": 2,
+      "best_negative_action": null,
+      "tied_best_actions": [],
+      "selection": "NONCAUSAL hindsight from independent forks",
+      "joint_fleet_policy_result": false
+    },
+    {
+      "scene": 360101,
+      "cost_seconds": 4.0,
+      "slot": 3558,
+      "robot": 62,
+      "actions_recorded": 2,
+      "best_negative_action": {
+        "scene": 360101,
+        "cost_seconds": 4.0,
+        "record_index": 7,
+        "slot": 3558,
+        "robot": 62,
+        "selection_observation_slot": 3550,
+        "current": 6,
+        "target": 10,
+        "kind": "move",
+        "hold_slots": 100,
+        "canonical_recovery": true,
+        "baseline_misses": 119,
+        "intervention_misses": 82,
+        "delta_misses": -37,
+        "baseline_window_max_gap_slots": 54,
+        "intervention_window_max_gap_slots": 422,
+        "delta_window_max_gap_slots": 368
+      },
+      "tied_best_actions": [
+        {
+          "scene": 360101,
+          "cost_seconds": 4.0,
+          "record_index": 7,
+          "slot": 3558,
+          "robot": 62,
+          "selection_observation_slot": 3550,
+          "current": 6,
+          "target": 10,
+          "kind": "move",
+          "hold_slots": 100,
+          "canonical_recovery": true,
+          "baseline_misses": 119,
+          "intervention_misses": 82,
+          "delta_misses": -37,
+          "baseline_window_max_gap_slots": 54,
+          "intervention_window_max_gap_slots": 422,
+          "delta_window_max_gap_slots": 368
+        }
+      ],
+      "selection": "NONCAUSAL hindsight from independent forks",
+      "joint_fleet_policy_result": false
+    },
+    {
+      "scene": 360101,
+      "cost_seconds": 4.0,
+      "slot": 3558,
+      "robot": 67,
+      "actions_recorded": 2,
+      "best_negative_action": null,
+      "tied_best_actions": [],
+      "selection": "NONCAUSAL hindsight from independent forks",
+      "joint_fleet_policy_result": false
+    },
+    {
+      "scene": 360101,
+      "cost_seconds": 4.0,
+      "slot": 3558,
+      "robot": 74,
+      "actions_recorded": 2,
+      "best_negative_action": null,
+      "tied_best_actions": [],
+      "selection": "NONCAUSAL hindsight from independent forks",
+      "joint_fleet_policy_result": false
+    },
+    {
+      "scene": 360101,
+      "cost_seconds": 4.0,
+      "slot": 6558,
+      "robot": 4,
+      "actions_recorded": 2,
+      "best_negative_action": null,
+      "tied_best_actions": [],
+      "selection": "NONCAUSAL hindsight from independent forks",
+      "joint_fleet_policy_result": false
+    },
+    {
+      "scene": 360101,
+      "cost_seconds": 4.0,
+      "slot": 6558,
+      "robot": 6,
+      "actions_recorded": 2,
+      "best_negative_action": null,
+      "tied_best_actions": [],
+      "selection": "NONCAUSAL hindsight from independent forks",
+      "joint_fleet_policy_result": false
+    },
+    {
+      "scene": 360101,
+      "cost_seconds": 4.0,
+      "slot": 6558,
+      "robot": 95,
+      "actions_recorded": 2,
+      "best_negative_action": null,
+      "tied_best_actions": [],
+      "selection": "NONCAUSAL hindsight from independent forks",
+      "joint_fleet_policy_result": false
+    },
+    {
+      "scene": 360102,
+      "cost_seconds": 0.03,
+      "slot": 558,
+      "robot": 5,
+      "actions_recorded": 2,
+      "best_negative_action": null,
+      "tied_best_actions": [],
+      "selection": "NONCAUSAL hindsight from independent forks",
+      "joint_fleet_policy_result": false
+    },
+    {
+      "scene": 360102,
+      "cost_seconds": 0.03,
+      "slot": 558,
+      "robot": 40,
+      "actions_recorded": 2,
+      "best_negative_action": null,
+      "tied_best_actions": [],
+      "selection": "NONCAUSAL hindsight from independent forks",
+      "joint_fleet_policy_result": false
+    },
+    {
+      "scene": 360102,
+      "cost_seconds": 0.03,
+      "slot": 558,
+      "robot": 48,
+      "actions_recorded": 2,
+      "best_negative_action": {
+        "scene": 360102,
+        "cost_seconds": 0.03,
+        "record_index": 1,
+        "slot": 558,
+        "robot": 48,
+        "selection_observation_slot": 550,
+        "current": 3,
+        "target": 6,
+        "kind": "move",
+        "hold_slots": 100,
+        "canonical_recovery": true,
+        "baseline_misses": 7,
+        "intervention_misses": 2,
+        "delta_misses": -5,
+        "baseline_window_max_gap_slots": 32,
+        "intervention_window_max_gap_slots": 9,
+        "delta_window_max_gap_slots": -23
+      },
+      "tied_best_actions": [
+        {
+          "scene": 360102,
+          "cost_seconds": 0.03,
+          "record_index": 1,
+          "slot": 558,
+          "robot": 48,
+          "selection_observation_slot": 550,
+          "current": 3,
+          "target": 6,
+          "kind": "move",
+          "hold_slots": 100,
+          "canonical_recovery": true,
+          "baseline_misses": 7,
+          "intervention_misses": 2,
+          "delta_misses": -5,
+          "baseline_window_max_gap_slots": 32,
+          "intervention_window_max_gap_slots": 9,
+          "delta_window_max_gap_slots": -23
+        }
+      ],
+      "selection": "NONCAUSAL hindsight from independent forks",
+      "joint_fleet_policy_result": false
+    },
+    {
+      "scene": 360102,
+      "cost_seconds": 0.03,
+      "slot": 3558,
+      "robot": 40,
+      "actions_recorded": 2,
+      "best_negative_action": null,
+      "tied_best_actions": [],
+      "selection": "NONCAUSAL hindsight from independent forks",
+      "joint_fleet_policy_result": false
+    },
+    {
+      "scene": 360102,
+      "cost_seconds": 0.03,
+      "slot": 3558,
+      "robot": 54,
+      "actions_recorded": 2,
+      "best_negative_action": null,
+      "tied_best_actions": [],
+      "selection": "NONCAUSAL hindsight from independent forks",
+      "joint_fleet_policy_result": false
+    },
+    {
+      "scene": 360102,
+      "cost_seconds": 0.03,
+      "slot": 3558,
+      "robot": 56,
+      "actions_recorded": 2,
+      "best_negative_action": null,
+      "tied_best_actions": [],
+      "selection": "NONCAUSAL hindsight from independent forks",
+      "joint_fleet_policy_result": false
+    },
+    {
+      "scene": 360102,
+      "cost_seconds": 0.03,
+      "slot": 6558,
+      "robot": 29,
+      "actions_recorded": 2,
+      "best_negative_action": null,
+      "tied_best_actions": [],
+      "selection": "NONCAUSAL hindsight from independent forks",
+      "joint_fleet_policy_result": false
+    },
+    {
+      "scene": 360102,
+      "cost_seconds": 0.03,
+      "slot": 6558,
+      "robot": 59,
+      "actions_recorded": 2,
+      "best_negative_action": null,
+      "tied_best_actions": [],
+      "selection": "NONCAUSAL hindsight from independent forks",
+      "joint_fleet_policy_result": false
+    },
+    {
+      "scene": 360102,
+      "cost_seconds": 0.03,
+      "slot": 6558,
+      "robot": 96,
+      "actions_recorded": 2,
+      "best_negative_action": null,
+      "tied_best_actions": [],
+      "selection": "NONCAUSAL hindsight from independent forks",
+      "joint_fleet_policy_result": false
+    },
+    {
+      "scene": 360102,
+      "cost_seconds": 4.0,
+      "slot": 558,
+      "robot": 40,
+      "actions_recorded": 2,
+      "best_negative_action": null,
+      "tied_best_actions": [],
+      "selection": "NONCAUSAL hindsight from independent forks",
+      "joint_fleet_policy_result": false
+    },
+    {
+      "scene": 360102,
+      "cost_seconds": 4.0,
+      "slot": 558,
+      "robot": 46,
+      "actions_recorded": 2,
+      "best_negative_action": null,
+      "tied_best_actions": [],
+      "selection": "NONCAUSAL hindsight from independent forks",
+      "joint_fleet_policy_result": false
+    },
+    {
+      "scene": 360102,
+      "cost_seconds": 4.0,
+      "slot": 558,
+      "robot": 71,
+      "actions_recorded": 2,
+      "best_negative_action": null,
+      "tied_best_actions": [],
+      "selection": "NONCAUSAL hindsight from independent forks",
+      "joint_fleet_policy_result": false
+    },
+    {
+      "scene": 360102,
+      "cost_seconds": 4.0,
+      "slot": 3558,
+      "robot": 4,
+      "actions_recorded": 2,
+      "best_negative_action": null,
+      "tied_best_actions": [],
+      "selection": "NONCAUSAL hindsight from independent forks",
+      "joint_fleet_policy_result": false
+    },
+    {
+      "scene": 360102,
+      "cost_seconds": 4.0,
+      "slot": 3558,
+      "robot": 22,
+      "actions_recorded": 2,
+      "best_negative_action": null,
+      "tied_best_actions": [],
+      "selection": "NONCAUSAL hindsight from independent forks",
+      "joint_fleet_policy_result": false
+    },
+    {
+      "scene": 360102,
+      "cost_seconds": 4.0,
+      "slot": 3558,
+      "robot": 87,
+      "actions_recorded": 2,
+      "best_negative_action": null,
+      "tied_best_actions": [],
+      "selection": "NONCAUSAL hindsight from independent forks",
+      "joint_fleet_policy_result": false
+    },
+    {
+      "scene": 360102,
+      "cost_seconds": 4.0,
+      "slot": 6558,
+      "robot": 7,
+      "actions_recorded": 2,
+      "best_negative_action": {
+        "scene": 360102,
+        "cost_seconds": 4.0,
+        "record_index": 13,
+        "slot": 6558,
+        "robot": 7,
+        "selection_observation_slot": 6550,
+        "current": 1,
+        "target": 3,
+        "kind": "move",
+        "hold_slots": 100,
+        "canonical_recovery": true,
+        "baseline_misses": 91,
+        "intervention_misses": 82,
+        "delta_misses": -9,
+        "baseline_window_max_gap_slots": 58,
+        "intervention_window_max_gap_slots": 412,
+        "delta_window_max_gap_slots": 354
+      },
+      "tied_best_actions": [
+        {
+          "scene": 360102,
+          "cost_seconds": 4.0,
+          "record_index": 13,
+          "slot": 6558,
+          "robot": 7,
+          "selection_observation_slot": 6550,
+          "current": 1,
+          "target": 3,
+          "kind": "move",
+          "hold_slots": 100,
+          "canonical_recovery": true,
+          "baseline_misses": 91,
+          "intervention_misses": 82,
+          "delta_misses": -9,
+          "baseline_window_max_gap_slots": 58,
+          "intervention_window_max_gap_slots": 412,
+          "delta_window_max_gap_slots": 354
+        }
+      ],
+      "selection": "NONCAUSAL hindsight from independent forks",
+      "joint_fleet_policy_result": false
+    },
+    {
+      "scene": 360102,
+      "cost_seconds": 4.0,
+      "slot": 6558,
+      "robot": 30,
+      "actions_recorded": 2,
+      "best_negative_action": null,
+      "tied_best_actions": [],
+      "selection": "NONCAUSAL hindsight from independent forks",
+      "joint_fleet_policy_result": false
+    },
+    {
+      "scene": 360102,
+      "cost_seconds": 4.0,
+      "slot": 6558,
+      "robot": 92,
+      "actions_recorded": 2,
+      "best_negative_action": {
+        "scene": 360102,
+        "cost_seconds": 4.0,
+        "record_index": 15,
+        "slot": 6558,
+        "robot": 92,
+        "selection_observation_slot": 6550,
+        "current": 1,
+        "target": 2,
+        "kind": "move",
+        "hold_slots": 100,
+        "canonical_recovery": true,
+        "baseline_misses": 87,
+        "intervention_misses": 81,
+        "delta_misses": -6,
+        "baseline_window_max_gap_slots": 62,
+        "intervention_window_max_gap_slots": 402,
+        "delta_window_max_gap_slots": 340
+      },
+      "tied_best_actions": [
+        {
+          "scene": 360102,
+          "cost_seconds": 4.0,
+          "record_index": 15,
+          "slot": 6558,
+          "robot": 92,
+          "selection_observation_slot": 6550,
+          "current": 1,
+          "target": 2,
+          "kind": "move",
+          "hold_slots": 100,
+          "canonical_recovery": true,
+          "baseline_misses": 87,
+          "intervention_misses": 81,
+          "delta_misses": -6,
+          "baseline_window_max_gap_slots": 62,
+          "intervention_window_max_gap_slots": 402,
+          "delta_window_max_gap_slots": 340
+        }
+      ],
+      "selection": "NONCAUSAL hindsight from independent forks",
+      "joint_fleet_policy_result": false
+    },
+    {
+      "scene": 360103,
+      "cost_seconds": 0.03,
+      "slot": 558,
+      "robot": 27,
+      "actions_recorded": 2,
+      "best_negative_action": null,
+      "tied_best_actions": [],
+      "selection": "NONCAUSAL hindsight from independent forks",
+      "joint_fleet_policy_result": false
+    },
+    {
+      "scene": 360103,
+      "cost_seconds": 0.03,
+      "slot": 558,
+      "robot": 85,
+      "actions_recorded": 2,
+      "best_negative_action": null,
+      "tied_best_actions": [],
+      "selection": "NONCAUSAL hindsight from independent forks",
+      "joint_fleet_policy_result": false
+    },
+    {
+      "scene": 360103,
+      "cost_seconds": 0.03,
+      "slot": 558,
+      "robot": 86,
+      "actions_recorded": 2,
+      "best_negative_action": null,
+      "tied_best_actions": [],
+      "selection": "NONCAUSAL hindsight from independent forks",
+      "joint_fleet_policy_result": false
+    },
+    {
+      "scene": 360103,
+      "cost_seconds": 0.03,
+      "slot": 3558,
+      "robot": 6,
+      "actions_recorded": 2,
+      "best_negative_action": null,
+      "tied_best_actions": [],
+      "selection": "NONCAUSAL hindsight from independent forks",
+      "joint_fleet_policy_result": false
+    },
+    {
+      "scene": 360103,
+      "cost_seconds": 0.03,
+      "slot": 3558,
+      "robot": 79,
+      "actions_recorded": 2,
+      "best_negative_action": null,
+      "tied_best_actions": [],
+      "selection": "NONCAUSAL hindsight from independent forks",
+      "joint_fleet_policy_result": false
+    },
+    {
+      "scene": 360103,
+      "cost_seconds": 0.03,
+      "slot": 3558,
+      "robot": 93,
+      "actions_recorded": 2,
+      "best_negative_action": null,
+      "tied_best_actions": [],
+      "selection": "NONCAUSAL hindsight from independent forks",
+      "joint_fleet_policy_result": false
+    },
+    {
+      "scene": 360103,
+      "cost_seconds": 0.03,
+      "slot": 6558,
+      "robot": 17,
+      "actions_recorded": 2,
+      "best_negative_action": null,
+      "tied_best_actions": [],
+      "selection": "NONCAUSAL hindsight from independent forks",
+      "joint_fleet_policy_result": false
+    },
+    {
+      "scene": 360103,
+      "cost_seconds": 0.03,
+      "slot": 6558,
+      "robot": 50,
+      "actions_recorded": 2,
+      "best_negative_action": null,
+      "tied_best_actions": [],
+      "selection": "NONCAUSAL hindsight from independent forks",
+      "joint_fleet_policy_result": false
+    },
+    {
+      "scene": 360103,
+      "cost_seconds": 0.03,
+      "slot": 6558,
+      "robot": 82,
+      "actions_recorded": 2,
+      "best_negative_action": null,
+      "tied_best_actions": [],
+      "selection": "NONCAUSAL hindsight from independent forks",
+      "joint_fleet_policy_result": false
+    },
+    {
+      "scene": 360103,
+      "cost_seconds": 4.0,
+      "slot": 558,
+      "robot": 10,
+      "actions_recorded": 2,
+      "best_negative_action": null,
+      "tied_best_actions": [],
+      "selection": "NONCAUSAL hindsight from independent forks",
+      "joint_fleet_policy_result": false
+    },
+    {
+      "scene": 360103,
+      "cost_seconds": 4.0,
+      "slot": 558,
+      "robot": 27,
+      "actions_recorded": 2,
+      "best_negative_action": null,
+      "tied_best_actions": [],
+      "selection": "NONCAUSAL hindsight from independent forks",
+      "joint_fleet_policy_result": false
+    },
+    {
+      "scene": 360103,
+      "cost_seconds": 4.0,
+      "slot": 558,
+      "robot": 51,
+      "actions_recorded": 2,
+      "best_negative_action": null,
+      "tied_best_actions": [],
+      "selection": "NONCAUSAL hindsight from independent forks",
+      "joint_fleet_policy_result": false
+    },
+    {
+      "scene": 360103,
+      "cost_seconds": 4.0,
+      "slot": 3558,
+      "robot": 19,
+      "actions_recorded": 2,
+      "best_negative_action": {
+        "scene": 360103,
+        "cost_seconds": 4.0,
+        "record_index": 7,
+        "slot": 3558,
+        "robot": 19,
+        "selection_observation_slot": 3550,
+        "current": 5,
+        "target": 9,
+        "kind": "move",
+        "hold_slots": 100,
+        "canonical_recovery": true,
+        "baseline_misses": 187,
+        "intervention_misses": 82,
+        "delta_misses": -105,
+        "baseline_window_max_gap_slots": 461,
+        "intervention_window_max_gap_slots": 417,
+        "delta_window_max_gap_slots": -44
+      },
+      "tied_best_actions": [
+        {
+          "scene": 360103,
+          "cost_seconds": 4.0,
+          "record_index": 7,
+          "slot": 3558,
+          "robot": 19,
+          "selection_observation_slot": 3550,
+          "current": 5,
+          "target": 9,
+          "kind": "move",
+          "hold_slots": 100,
+          "canonical_recovery": true,
+          "baseline_misses": 187,
+          "intervention_misses": 82,
+          "delta_misses": -105,
+          "baseline_window_max_gap_slots": 461,
+          "intervention_window_max_gap_slots": 417,
+          "delta_window_max_gap_slots": -44
+        }
+      ],
+      "selection": "NONCAUSAL hindsight from independent forks",
+      "joint_fleet_policy_result": false
+    },
+    {
+      "scene": 360103,
+      "cost_seconds": 4.0,
+      "slot": 3558,
+      "robot": 31,
+      "actions_recorded": 2,
+      "best_negative_action": null,
+      "tied_best_actions": [],
+      "selection": "NONCAUSAL hindsight from independent forks",
+      "joint_fleet_policy_result": false
+    },
+    {
+      "scene": 360103,
+      "cost_seconds": 4.0,
+      "slot": 3558,
+      "robot": 98,
+      "actions_recorded": 2,
+      "best_negative_action": null,
+      "tied_best_actions": [],
+      "selection": "NONCAUSAL hindsight from independent forks",
+      "joint_fleet_policy_result": false
+    },
+    {
+      "scene": 360103,
+      "cost_seconds": 4.0,
+      "slot": 6558,
+      "robot": 13,
+      "actions_recorded": 2,
+      "best_negative_action": null,
+      "tied_best_actions": [],
+      "selection": "NONCAUSAL hindsight from independent forks",
+      "joint_fleet_policy_result": false
+    },
+    {
+      "scene": 360103,
+      "cost_seconds": 4.0,
+      "slot": 6558,
+      "robot": 26,
+      "actions_recorded": 2,
+      "best_negative_action": {
+        "scene": 360103,
+        "cost_seconds": 4.0,
+        "record_index": 13,
+        "slot": 6558,
+        "robot": 26,
+        "selection_observation_slot": 6550,
+        "current": 0,
+        "target": 1,
+        "kind": "move",
+        "hold_slots": 100,
+        "canonical_recovery": true,
+        "baseline_misses": 158,
+        "intervention_misses": 82,
+        "delta_misses": -76,
+        "baseline_window_max_gap_slots": 300,
+        "intervention_window_max_gap_slots": 596,
+        "delta_window_max_gap_slots": 296
+      },
+      "tied_best_actions": [
+        {
+          "scene": 360103,
+          "cost_seconds": 4.0,
+          "record_index": 13,
+          "slot": 6558,
+          "robot": 26,
+          "selection_observation_slot": 6550,
+          "current": 0,
+          "target": 1,
+          "kind": "move",
+          "hold_slots": 100,
+          "canonical_recovery": true,
+          "baseline_misses": 158,
+          "intervention_misses": 82,
+          "delta_misses": -76,
+          "baseline_window_max_gap_slots": 300,
+          "intervention_window_max_gap_slots": 596,
+          "delta_window_max_gap_slots": 296
+        }
+      ],
+      "selection": "NONCAUSAL hindsight from independent forks",
+      "joint_fleet_policy_result": false
+    },
+    {
+      "scene": 360103,
+      "cost_seconds": 4.0,
+      "slot": 6558,
+      "robot": 52,
+      "actions_recorded": 2,
+      "best_negative_action": null,
+      "tied_best_actions": [],
+      "selection": "NONCAUSAL hindsight from independent forks",
+      "joint_fleet_policy_result": false
+    }
+  ],
+  "hindsight_warning": "NONCAUSAL. Each action starts an independent fork of one factual checkpoint. These choices and their miss differences cannot be combined or summed into the result of a joint sequential fleet policy.",
+  "prototype": {
+    "untrained": true,
+    "accuracy_or_control_result": false,
+    "inference_parameter_counts": [
+      68021
+    ],
+    "probe": "Real-input forward/finite-latent, exact zero-residual reference identity, and unknown hazard remaining None; not trained prediction or control performance."
+  },
+  "linkage": {
+    "completion_path": "artifacts/service_world/completion.json",
+    "completion_sha256": "317de6a63c50cc26ab42f5f11d4f8d1e0ffdf56777ae5e94fd319c98181f6150",
+    "executed_source_manifest_path": "artifacts/service_world/executed_source.json",
+    "executed_source_manifest_sha256": "dda941274f1d0defb85c605cf123f3a09e2c13a3834372424faa8be300ae6bff",
+    "protocol_path": "artifacts/service_world/protocol.json",
+    "protocol_sha256": "ff4502b6181d934d3a88e343d195bbb69dcfe466eccb40e03f662e4a3bfce67c",
+    "source_sha256": {
+      "artifacts/contracted/calibration.json": "b76598449f85caf28739ae2db0114672014eb418b221e9eb620b2735b8e70b13",
+      "artifacts/native/foundation.json": "9cfb22f45509dca1583cdb9b00f6fe86809a65c99329d52297cdfcc3c4503443",
+      "artifacts/native/intent_flip.json": "b38085245979d29a03a071fea9e22e5ffb1da414d802222ae30dca99c36447f1",
+      "artifacts/warehouse_v2/studies/wifi_link_curves.json": "e39be10c3c2268f792c1af4cd4df8454013928009bfa23aca6b53e593ab54783",
+      "artifacts/world_frontier/protocol.json": "e4162bd38ba6471c278f799c789158238a74cf9e17837ec872114accd3c86627",
+      "pyproject.toml": "54ba749cf9f01cc3362a80fb679876be2e5912920c0b8cb69cc17618fae44eb9",
+      "src/wirelessjev/contracted/__init__.py": "b45d1bbcaff408a422d3dc5b62794e566f4eb8e6366f42953dd8786dbbff4e67",
+      "src/wirelessjev/contracted/data.py": "90cd9a841e50fec6f18f578c7e82308788f7bf25c59d5b33282970b17d44ad8b",
+      "src/wirelessjev/contracted/evaluate.py": "8b5135120a8df77b7c407f4ef542de0b9e533111fed8b70b449500ec91df1edb",
+      "src/wirelessjev/contracted/model.py": "ee3e2874865accd4a624eec1932e08ac46da35375dce4ba60b6bcda74fb90216",
+      "src/wirelessjev/contracted/runtime.py": "30e1d24562e441c94b139d7e79c30e85a545baf07c87076c3d0f794de86717c4",
+      "src/wirelessjev/contracted/theory.py": "629994d7154f5dc58501b4502e063f27345a2530f5041ef4a3fcdc885d021e5e",
+      "src/wirelessjev/contracted/train.py": "3dc2eb6c1323efcd8c6cccbfceecdc1fcc4b23f042d4bf155eea1a58af647a9c",
+      "src/wirelessjev/fleet_strong_reference.py": "3ad117550ba9aa917ed17df1f9dc4418d6da913cc12bd4ec823e99603e02d8f1",
+      "src/wirelessjev/fleetwm/__init__.py": "dd638e07bd51a9526c4f12bfa2e5eb074d8fbaec14c156a37f431c71bfb92cca",
+      "src/wirelessjev/fleetwm/data.py": "04342b5f5969559823148aa639753f292676a61789995ba712f446bb594cc901",
+      "src/wirelessjev/fleetwm/model.py": "bcf6c3a531fc0fca9d23c239a7aa7dbd818eff4111eb54b4877610fa2f76c80a",
+      "src/wirelessjev/fleetwm/study.py": "ccfd4a97092d92911ea4c6b053d25ac0ff9e38b41407c5b7025546df464a468d",
+      "src/wirelessjev/frontier/__init__.py": "aba185eb6784770374e11f61bc99cf5250a4f9910556d5b30c0564cc4d2d514e",
+      "src/wirelessjev/frontier/fast.py": "eef29ae1afa41f909a7e8109da9ede3bf8125135b4a794f67e69d338dde6a0b9",
+      "src/wirelessjev/frontier/model.py": "d66d484484351c713dd15522c65a1fd12ec765afd9bf1ac26761187b1187b5ff",
+      "src/wirelessjev/frontier/sim.py": "f470ae23f480692dc9b0323f9e2f8da0fac07ec8d4b3e30bcd5496d67869f235",
+      "src/wirelessjev/frontier/study.py": "1afcfd492121d8e0d35470a7b0de4ca0108c5be82fe941f711b5482f533eb684",
+      "src/wirelessjev/frontier/timing.py": "b247451a5a2521f82e09f20fcbc56ce26a81b7f69a60d9fb23ecd126bb1af58c",
+      "src/wirelessjev/gate_repair/gate.py": "3fc1458b093a29e9d2f5ce8038d08cfa3c00cb692610f0f88227da8d6b16d29b",
+      "src/wirelessjev/native/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "src/wirelessjev/native/broadcast.py": "972f57d12360c7d3473d15b7cfdabb0db128607161cf40ef51da8ac27306d038",
+      "src/wirelessjev/native/foundation.py": "a4c4b8578631ffdd33b02dc907e5f2240dccebdc0b0befa93306653a9aef690c",
+      "src/wirelessjev/native/gate.py": "6ffdb3b6fb36accc4911a767b1567fa74ef683e5fed70c505c0e60f735931df8",
+      "src/wirelessjev/native/intent_flip.py": "6ba2880d2c0be843859a9966786e330bb9aa53f95df1a3f9d0cb8fde1c8dfea4",
+      "src/wirelessjev/native/intent_policy.py": "d5af1b433eba0390e9e074fe58d731e84b7cd2ed915d54c0213553de1e40de8b",
+      "src/wirelessjev/native/phy.py": "a1f3063a1144ab45ff5f0884b6add9227472adaa628a92a5a8baf12a5e9a1477",
+      "src/wirelessjev/native/radiomap.py": "8eabc40270d6dbb915100db58ea62730083a25440fa42d47a455b4086060189f",
+      "src/wirelessjev/native/run.py": "daef8658e4fb23d3813efd13c2528f0e96e14127a6b6308558b94ecdb08616d7",
+      "src/wirelessjev/native/run_5g.py": "8876beb0535f028f12728452dd31e6cdbd547b303888fe2801e0e53bba1e571f",
+      "src/wirelessjev/native/run_gate.py": "e58e14818899a758b9f8d4f2b5d02383cf2dccc40676c891ba06f0bf65ad6b23",
+      "src/wirelessjev/native/run_learned.py": "3a557d6d9f93787ff2007f6d9726de5b450dc3b62a6a29489008b20d56614d52",
+      "src/wirelessjev/native/run_x.py": "e84e6c031cf385f7b188f3a0fe8972029662fc976dd47160f29159edb0db7aa4",
+      "src/wirelessjev/native/sim.py": "9f50d6435d4366207b24ba3517ce9504bd94d16e8eb4434b1f3829d3af7795c2",
+      "src/wirelessjev/native/summarise.py": "79240faf7edc7ecd3f9c51cfb96b333ba09d80683af6be9fdbba154756a4aaf4",
+      "src/wirelessjev/native/world.py": "42e1f7a0ce18f6298d4ff063f5d57b1c003e6058e768474bdcf42b6af27e92df",
+      "src/wirelessjev/twin/__init__.py": "03b8031c41ba5f0df979d296e4e5bb6edb424db60c9deca33615576fdeb409d3",
+      "src/wirelessjev/twin/mobility.py": "42eb4168219b425e1aa86969c69a4329c544ee3fc2e2596c877ec1550d1c20c6",
+      "src/wirelessjev/twin/observe.py": "02212e7f48a394ce9e46dfb98e980756118d01cf1a59f67b79e0ac76a00422ff",
+      "src/wirelessjev/twin/radio.py": "ab3ddb214de721b259b8bf0da2d204677810ce99290290e03302ab4533cf437a",
+      "src/wirelessjev/twin/warehouse.py": "d5a61736973e0499cf17c928a7fc13bbd4bb83329e6f828ac7243c844f7e3f61",
+      "src/wirelessjev/warehouse_v3/jepa.py": "bb04e31f5eabeff3818dd40a6de6096ebb6f01a7dbdf6899a02eac0befbfacd6",
+      "uv.lock": "65ba242767e63083605db2a0e4ecad7394745dec9bfaebec1d637e71b03198d9",
+      "src/wirelessjev/service_world/sim.py": "fb08b0365bd5e391582befaa8f0dc068906f4d94036bcc6d28e45932fb2f9380",
+      "src/wirelessjev/service_world/model.py": "7f99a182cbdc4289073e468566fd4a9ce6ba84c13ef9b164bfac7accd7422d7a",
+      "src/wirelessjev/service_world/features.py": "0e63e6696552203d65b1b6c69bf30aad790fc988cfd113a5b995158997799a89",
+      "src/wirelessjev/service_world/physics.py": "76df41cae8978b039b79aab67922bd95df5db54f6820d71dc5e5733f81e1e11a",
+      "src/wirelessjev/service_world/study.py": "42fa833e104d34d3a87fb850069a010d453a246a10d8f68b8676ab1669d5cc3f",
+      "src/wirelessjev/service_world/__init__.py": "cd32fa1daa6b9ae963911105702ac248b666e7867271fee42102b76bc92339dd",
+      "src/wirelessjev/closed_loop/sim.py": "50859b144890be42d43d3768aa2dcaec0a1eee0df6133c77352413360ef67564",
+      "src/wirelessjev/closed_loop/runtime.py": "d37f58ccf91dc4369ab6a90953d1ed3714c59c07205bcc15e30144fea833fdfd",
+      "src/wirelessjev/closed_loop/control.py": "16f7e746ec1894b4d06400db2798579bae9d307cb3b2a25545e6155176d30a60",
+      "src/wirelessjev/closed_loop/telemetry.py": "8ddcaafd5412436f5552f02dd73e4d792427b834fe27c319c1eaa537c138805a",
+      "src/wirelessjev/closed_loop/study.py": "2e2d76b920d4f8f4117db36ed06903feabbfdcb73b3aed534f4cb548d1c71f78",
+      "src/wirelessjev/closed_loop/__init__.py": "83cee08fd06ab9e9a679cf0cdb36e42dcd2a725ef35daa9b1feb04e64f29c64d",
+      "src/wirelessjev/packet_value/study.py": "b5036a64dd6e48f0aed9b90bcdc502ffab7aef783cf4741ef35c7232565a8819",
+      "src/wirelessjev/packet_value/model.py": "ad833a14538e540381e899b7d142e5f087f9afcbc9b6372987a961cf7d8d9580",
+      "src/wirelessjev/packet_value/control.py": "0d012c43f56f046b1a1281a73932c70aec655ae2711ac9873a1b624954237621",
+      "src/wirelessjev/packet_value/features.py": "b08e7433b9e6b004c578b43db072ed9a3bb897197985b2712b92d7847f2b1dc7",
+      "src/wirelessjev/hardware_budget.py": "2ad872304376cf571045b623a89f016153bd2aaf2e7dd62ab984c4ae37c2aee1",
+      "artifacts/service_world/protocol.json": "ff4502b6181d934d3a88e343d195bbb69dcfe466eccb40e03f662e4a3bfce67c",
+      "artifacts/packet_value/latency.json": "23129d7b3f82ed7190a389a7f278308cb00e5742a215e0f7ed441caae2fa5f92"
+    },
+    "archived_and_current_source_files_verified": 67,
+    "case_receipts": [
+      {
+        "path": "artifacts/service_world/cases/360100-0.03.json",
+        "sha256": "cd83e044a8639a16ccfdc17044b5b8b69b6a9eed0d5a4ea9e938f712af1f03f2",
+        "inputs_path": "artifacts/service_world/inputs/360100-0.03.npz",
+        "inputs_sha256": "d25714c7f99e74b57b839def0f80771491d0c5511c9e4f900a74796361ad3a09",
+        "source_manifest_matches_completion": true
+      },
+      {
+        "path": "artifacts/service_world/cases/360100-4.json",
+        "sha256": "7f4f5bbd369975e044385306bb10855c7c9e9c40334bae7aec59a53211b68bc7",
+        "inputs_path": "artifacts/service_world/inputs/360100-4.npz",
+        "inputs_sha256": "6c58a9b10ec623a2d3a1b7749e72598bde49b427ad0b5547359ecf63ceda0ac6",
+        "source_manifest_matches_completion": true
+      },
+      {
+        "path": "artifacts/service_world/cases/360101-0.03.json",
+        "sha256": "a9987203a6cceade1defda2607af43117e3d729834a40d26855dd3267c4e7b0c",
+        "inputs_path": "artifacts/service_world/inputs/360101-0.03.npz",
+        "inputs_sha256": "9c7f3b5424f5f020f7fe3a900bfccae60fb6b9cae726a8f382f40bc0ad33baf0",
+        "source_manifest_matches_completion": true
+      },
+      {
+        "path": "artifacts/service_world/cases/360101-4.json",
+        "sha256": "8a729c64b6430cdc2f8a071ecb3302256189568f669573589dfdf0303dec98d4",
+        "inputs_path": "artifacts/service_world/inputs/360101-4.npz",
+        "inputs_sha256": "4d60b487c80599179541a9b0abe757e0e2d16b32bb0bca04d4068163e011959e",
+        "source_manifest_matches_completion": true
+      },
+      {
+        "path": "artifacts/service_world/cases/360102-0.03.json",
+        "sha256": "93af54f4d114870ac768355acec1ec7237ee4437614ab6492cbacbcf37df5a16",
+        "inputs_path": "artifacts/service_world/inputs/360102-0.03.npz",
+        "inputs_sha256": "fd1b639f430963ee1d251c27822b39cc4f230108c457ed2569db2fea0b6af339",
+        "source_manifest_matches_completion": true
+      },
+      {
+        "path": "artifacts/service_world/cases/360102-4.json",
+        "sha256": "9487da012482e9a90970d74368e5baba9b987b625ca8fbbb87cbf4d110d7d36c",
+        "inputs_path": "artifacts/service_world/inputs/360102-4.npz",
+        "inputs_sha256": "81ed45e94e52465b1b55ac4774b518f910c89275c04ad023f7446de5f0ca8bcb",
+        "source_manifest_matches_completion": true
+      },
+      {
+        "path": "artifacts/service_world/cases/360103-0.03.json",
+        "sha256": "fd557d7b0f63f1a0fac2f518668be548c42a361507aec5bf8d775d756a4af14c",
+        "inputs_path": "artifacts/service_world/inputs/360103-0.03.npz",
+        "inputs_sha256": "20131cde3b269b6b2ad2c725089ccb2185305e4b951e9e9d5ae4660cb7285f17",
+        "source_manifest_matches_completion": true
+      },
+      {
+        "path": "artifacts/service_world/cases/360103-4.json",
+        "sha256": "65e83733729cb3eb705782cc7a6646d2d1f38baddbeed409b7bc821a0241dc8f",
+        "inputs_path": "artifacts/service_world/inputs/360103-4.npz",
+        "inputs_sha256": "31e2fbbc6a1db67c89804386e9b2f714acdb5d68c1a4eb114c7112008d5f1870",
+        "source_manifest_matches_completion": true
+      }
+    ],
+    "reporter_path": "scripts/report_service_world.py",
+    "reporter_sha256": "feee8e4d816321f0deea34d69a4ea1cffdc1423cf8cb62a8b899be08777b4822"
+  }
+}

@@ -210,7 +210,11 @@ def audit(root):
                                       sum(c[arm]['sent'] for c in selected))
         records = [r for r in all_records if r['cost_seconds'] == float(cost)]
         grouped = [r for r in best_rows if r['cost_seconds'] == float(cost)]
+        causes = {cause: sum(c['factual']['miss_causes'].get(cause,0) for c in cases
+                            if float(c['cost'])==float(cost))
+                  for cause in ('no_radio_up','all_paths_blocked','weak_link','contention','other')}
         by_cost[cost_key(cost)] = {'handover_seconds': float(cost), 'cases': len(selected), **arms,
+                                 'factual_kernel_attributed_miss_causes':causes,
                                  'classical_pending_expiry_ablation': {
                                      'factual_ttl_seconds': protocol['proposal_expiry_seconds'],
                                      'legacy_ttl_seconds': None,
@@ -234,6 +238,9 @@ def audit(root):
             'learned_policy_evaluations': 0, 'learned_accuracy_or_control_score': None,
             'learned_policy_qualified': False, 'original_holdouts_unused': True,
             'sota_established': False, 'novelty_established': False,
+            'sampling':{'selection':protocol['selection'],'revision':protocol.get('sampling_revision'),
+                        'excluded_pilot_path':'artifacts/service_world/pilot_sampling_v1',
+                        'excluded_pilot_used_for_training':False},
             'counts': {'cases': len(cases), 'native_runs': completion['native_runs'],
                        'exact_factual_suffix_replays': completion['factual_replays'],
                        'input_windows': sum(c['input_windows'] for c in cases),
@@ -270,6 +277,11 @@ def markdown(summary, root):
              + ', '.join(str(s) for s in summary['diagnostic_sites']) + '. '
              'Original held-out evaluation sites were not accessed. These are descriptive diagnostic counts; '
              'packets and sampled robots are not independent training replications.', '',
+             'The completed [sampling pilot](../artifacts/service_world/pilot_sampling_v1_exclusion.json) '
+             'is preserved separately: strict query-time freshness omitted the intended weak-link cases. '
+             'The present run uses fresh diagnostic sites and ranks the latest actually observed best-band SNR '
+             'at the currently associated AP. Saved observation timestamps and decision ages make the lag explicit; '
+             'current availability remains binding. Neither run trains a model.', '',
              '## Actual factual and legacy packet counts', '',
              'Both arms use the numerical RadioMap controller. The factual arm expires pending proposals '
              'after one second; the legacy arm has no added proposal lifetime (`None`). '
@@ -301,6 +313,17 @@ def markdown(summary, root):
               'and tied best actions for every checkpoint/robot group, including groups with none. '
               'Each action starts an independent fork of a factual checkpoint. Combining these choices or '
               'adding their gains does not produce a joint fleet-policy result. No trained model selected these actions.', '',
+              '## Where factual losses occur', '',
+              '| Handover | No radio available | All paths blocked | Weak link | Contention | Other |',
+              '|---|---:|---:|---:|---:|---:|']
+    for row in summary['by_cost'].values():
+        cause=row['factual_kernel_attributed_miss_causes']
+        lines.append(f'| {row["handover_seconds"]:g} s | '+ ' | '.join(f'{cause[k]:,}' for k in
+                     ('no_radio_up','all_paths_blocked','weak_link','contention','other'))+' |')
+    lines += ['', 'These are the kernel\'s diagnostic attribution categories. They do not establish '
+              'counterfactual inevitability. Exact outage floors require the actual packet phase, pending state '
+              'and merged unavailable intervals; a learned predictor cannot restore service during a '
+              'link-exclusive unavailable interval by itself.', '',
               '## Executed work and source linkage', '',
               f'The audit contains **{counts["cases"]} complete cases, {counts["native_runs"]:,} native simulator runs, '
               f'{counts["exact_factual_suffix_replays"]} factual suffix replay checks, '

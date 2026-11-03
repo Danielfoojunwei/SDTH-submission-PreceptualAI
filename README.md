@@ -5,6 +5,21 @@ Current experiment status and restart prerequisites are in [docs/HANDOFF.md](doc
 The restored didjital R6.1 reference and its executed software checks are
 documented in [docs/R6_COMPATIBILITY.md](docs/R6_COMPATIBILITY.md).
 
+The latest [service-world diagnostic](docs/SERVICE_WORLD_RESULTS.md) adds a
+68,021-parameter **untrained, inactive** model with AP/band memory, causal
+measurement masks and action-conditioned latent dynamics. Its
+[physical contract](docs/SERVICE_WORLD_FIRST_PRINCIPLES.md) checks receiver
+freshness, exact outage/deadline floors and bounded interventions that retain
+canonical recovery. The [primary-source audit](docs/SERVICE_WORLD_PRIOR_ART.md)
+finds direct prior art; novelty and SOTA are **not established**. Official
+upstream component forwards are documented in the
+[baseline-access audit](docs/SERVICE_WORLD_BASELINES.md), with no matched
+trained warehouse comparison. RadioMap remains the active application default.
+The corrected diagnostic completes **184 simulator runs and 144 independent
+interventions** across four fresh 100-robot sites at two handover costs. Eight
+actions reduce focal-robot misses in hindsight; this is sampled headroom, not a
+learned policy result. All **318 software tests** and the source/input audit pass.
+
 The [packet-action JEPA study](docs/PACKET_VALUE_RESULTS.md) completes **six
 matched fits**, 930 native counterfactual labels from 1,370 packet runs, and
 64 development evaluations with 100 simulated robots. It is **rejected on
@@ -15,7 +30,7 @@ confirmation sites remain untouched; JEPA superiority is unconfirmed.
 The [baseline-preserving shadow interface](docs/PACKET_VALUE_SAFETY.md) keeps
 critic advice outside active switching, and a qualification guard rejects this
 profile. The application continues using RadioMap. Pilot mistakes and all
-negative outcomes are preserved explicitly. All **221 software tests** and the
+negative outcomes are preserved explicitly. Its archived **221 software tests** and the
 independent evidence audit pass; that does not qualify the rejected model.
 
 The [delivered-telemetry confirmation](docs/CLOSED_LOOP_RESULTS.md) adds **120
