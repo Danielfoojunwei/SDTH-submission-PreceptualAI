@@ -1,0 +1,30 @@
+{
+  "revision": 2,
+  "scope": "Data-collection coverage amendment before any model fitting; no model outcome selection",
+  "initial_registration_commit": "e68dd04",
+  "initial_data_receipt_sha256": "41cf3e5bca1e44b30a7fa328a8230637384285d05ecf5c788e1bcb0b313a2a28",
+  "initial_source_manifest_sha256": "0740b7146b16c7eb9f94a3b189c202d9202247bc06560687b051759d05a897e0",
+  "reason": "Depth-two solver found no paths for one link in contexts 11,13,15. Preserve original data/protocol/source. Do not silently treat missing paths as complete physical labels.",
+  "cohort": "Same 24 poses, public geometry, original 53-object warehouse, material/antenna/frequency and all context splits. No dropping/replacing contexts.",
+  "solver": {
+    "max_depth": 4,
+    "samples_per_src": 32768,
+    "max_paths_per_src": 65536,
+    "seed": 42,
+    "los": true,
+    "specular_reflection": true,
+    "diffuse_reflection": false,
+    "refraction": false,
+    "diffraction": false,
+    "convergence_established": false
+  },
+  "output": "data_v2/kernels.npz",
+  "receipt": "data_receipt_v2.json",
+  "source": "scripts/collect_continual_radio_v2.py",
+  "model_hyperparameters_changed": false,
+  "model_fits_started": false,
+  "incomplete_paths_gate": "Stop before learning if any of 96 entries still has no found path or nonpositive power.",
+  "simulation_only": true,
+  "no_hardware_probes": true,
+  "no_production_or_sota_claim": true
+}

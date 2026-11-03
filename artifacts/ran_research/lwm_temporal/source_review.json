@@ -1,0 +1,53 @@
+{
+  "schema": "wirelessjev.lwm_temporal_source_review.v1",
+  "reviewed_at_utc": "2026-11-03T15:02:43.584016+00:00",
+  "repository": "wi-lab/lwm-temporal",
+  "revision": "df32f4beb6c7fe11d83031edbe5d6312798b81c3",
+  "license": {
+    "identifier": "MIT",
+    "copyright": "Copyright (c) 2025 Sadjad Alikhani",
+    "root_license_present": true,
+    "project_metadata_license": "MIT",
+    "separate_checkpoint_license_found": false,
+    "notice_preserved_as": "LICENSE"
+  },
+  "read_before_upstream_execution": [
+    "LICENSE",
+    "README.md",
+    "pyproject.toml",
+    "requirements.txt",
+    "setup.py",
+    "LWMTemporal/__init__.py",
+    "LWMTemporal/models/__init__.py",
+    "LWMTemporal/models/config.json",
+    "checkpoints/config.json",
+    "LWMTemporal/models/lwm.py",
+    "LWMTemporal/models/hf.py",
+    "examples/example_reconstruction.py",
+    "examples/inference_channel_prediction.py"
+  ],
+  "executed_upstream_files": [
+    "LWMTemporal/models/lwm.py"
+  ],
+  "executed_file_sha256": "c8ef6e6ccbc5124edf29d79d190d7c065fd98e668af251ff09979ec1d0d39f72",
+  "review_findings": [
+    "Executed module imports standard Python, NumPy and PyTorch; no network or subprocess calls in its model/forward path",
+    "Local torch.load loader is protected by weights_only and strict state coverage enforced by probe",
+    "Avoid upstream package initializer that suppresses all warnings",
+    "No dataset pickle loader, scenario generator, task CLI, setup.py, notebook, or Hugging Face auto_map execution",
+    "Original loader strict=False is followed by strict=True and exact equality for all loaded tensors",
+    "Default learned-position size inferred from checkpoint: 2816",
+    "Default temporal attention includes future offsets; reconstruction is not an online causal forecast",
+    "forward_features returns reconstruction and optional CLS, not hidden token embeddings; CLS is disabled in this checkpoint"
+  ],
+  "dataset_boundary": {
+    "current_public_radio_contract_complex_csi": false,
+    "existing_two_pose_rt_fixture_complex_cir": true,
+    "existing_rt_fixture_timed_multiantenna_sequence": false,
+    "input_for_this_run": "analytical complex shape fixture only",
+    "application_task_accuracy_tested": false
+  },
+  "unrelated_material_reused": false,
+  "dependency_changes": [],
+  "hardware_or_live_radio_access": false
+}

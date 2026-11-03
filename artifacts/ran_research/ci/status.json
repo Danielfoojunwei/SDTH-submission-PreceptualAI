@@ -1,0 +1,26 @@
+{
+  "observed_at_utc": "2026-11-03T16:12:14.033689+00:00",
+  "tested_source_head": "861401f46739e84f4b51b3b78a1c842de70cb106",
+  "github_jobs_started": false,
+  "blocker": "The job was not started because your account is locked due to a billing issue.",
+  "push_run": "https://github.com/Danielfoojunwei/SDTH-submission-PreceptualAI/actions/runs/41671278827",
+  "pull_request_run": "https://github.com/Danielfoojunwei/SDTH-submission-PreceptualAI/actions/runs/41671318938",
+  "daily_schedule_active": false,
+  "required": [
+    "Resolve GitHub account billing lock",
+    "Merge workflow to default branch with Actions enabled"
+  ],
+  "live_github_initial_restore": {
+    "command": "PYTHONPATH=src uv run --frozen python scripts/restore_research_watch.py --output-dir /tmp/continual-radio-live-restore --repository Danielfoojunwei/SDTH-submission-PreceptualAI --default-branch main --run-id 41671278827",
+    "exit_code": 0,
+    "result": {
+      "network_used": true,
+      "no_prior_default_branch_runs": true,
+      "source": "initial_genesis_committed_seed"
+    },
+    "restored_snapshot_sha256": "1f864dc085b73b801d6842f9aeddf8fa98dc2a0a31835d46ac76e6c4dfd1e09a",
+    "retained_provider_response_bodies_verified": 10,
+    "leads": 47,
+    "actual_previous_workflow_artifact_recovery_exercised": false
+  }
+}

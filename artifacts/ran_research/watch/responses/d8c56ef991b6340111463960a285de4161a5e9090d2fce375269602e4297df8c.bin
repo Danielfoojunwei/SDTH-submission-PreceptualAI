@@ -1,0 +1,152 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<feed xmlns:opensearch="http://a9.com/-/spec/opensearch/1.1/" xmlns:arxiv="http://arxiv.org/schemas/atom" xmlns="http://www.w3.org/2005/Atom">
+  <id>https://arxiv.org/api/2tkAHedwT08eqSRtcn37pB87Ly4</id>
+  <title>arXiv Query: search_query=(all:"world model" AND all:"wireless") AND submittedDate:"202601010000 TO 202611031454"&amp;id_list=&amp;start=0&amp;max_results=5</title>
+  <updated>2026-11-03T14:54:15Z</updated>
+  <link href="https://arxiv.org/api/query?search_query=(all:%22world+model%22+AND+all:%22wireless%22)+AND+submittedDate:%22202601010000+TO+202611031454%22&amp;start=0&amp;max_results=5&amp;id_list=" type="application/atom+xml"/>
+  <opensearch:itemsPerPage>5</opensearch:itemsPerPage>
+  <opensearch:totalResults>35</opensearch:totalResults>
+  <opensearch:startIndex>0</opensearch:startIndex>
+  <entry>
+    <id>http://arxiv.org/abs/2610.37391v1</id>
+    <title>JEPA-Inspired Latent Field Prediction for Sparse-Pilot MIMO-OFDM Channel Reconstruction</title>
+    <updated>2026-10-27T15:14:41Z</updated>
+    <link href="https://arxiv.org/abs/2610.37391v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2610.37391v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>Accurate acquisition of full channel state information (CSI) is essential for multiple-input multiple-output orthogonal frequency-division multiplexing (MIMO-OFDM) wireless systems, while dense pilot-based estimation incurs substantial overhead. Directly minimizing the prediction error over raw CSI coefficients is fragile in realistic propagation environments, since small-scale fading, mobility, local scattering, and small spatial perturbations can induce large phase-sensitive variations. Nevertheless, wireless channels contain strong spatial, temporal, and frequency-domain correlations that can be more predictably represented in a latent propagation-field domain. Motivated by this observation, we propose a joint-embedding predictive architecture (JEPA)-inspired field world model, defined as a latent predictive model of the wireless propagation field, for sparse-pilot channel reconstruction. The model maps CSI observations into latent time-frequency tokens, predicts masked or future latent field states from historical multi-band context, and fuses the predicted latent prior with sparse noisy current pilots to reconstruct the full MIMO-OFDM channel. Ray-tracing experiments show that the proposed method improves normalized mean square error (NMSE) over pilot-only and direct reconstruction baselines, supporting latent field prediction as an effective prior for sparse-pilot channel acquisition.</summary>
+    <category term="eess.SP" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.AI" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-10-27T15:14:41Z</published>
+    <arxiv:primary_category term="eess.SP"/>
+    <author>
+      <name>Yuzhi Yang</name>
+    </author>
+    <author>
+      <name>Brahim Mefgouda</name>
+    </author>
+    <author>
+      <name>Hang Zou</name>
+    </author>
+    <author>
+      <name>Lina Bariah</name>
+    </author>
+    <author>
+      <name>Anis Bara</name>
+    </author>
+    <author>
+      <name>Yuhuan Lu</name>
+    </author>
+    <author>
+      <name>Hao Zhang</name>
+    </author>
+    <author>
+      <name>Merouane Debbah</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2610.35813v1</id>
+    <title>World Model for Energy Efficiency Maximization in Dynamic Metasurface Antennas</title>
+    <updated>2026-10-26T17:42:58Z</updated>
+    <link href="https://arxiv.org/abs/2610.35813v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2610.35813v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>Dynamic metasurface antennas (DMAs) have emerged as a promising technology for realizing large-scale antenna arrays in next-generation wireless networks owing to their ability to enable dense and energy-efficient antenna architectures. However, jointly optimizing digital beamforming and DMA element weights under time-varying channel conditions remains challenging due to their coupled effects on the received signal and interference powers. We formulate this problem to maximize time-averaged energy efficiency (EE) under time-varying channel conditions, subject to transmit power constraints, Lorentzian phase limitations, and minimum rate requirements. To enable long-term planning and improve sample efficiency compared with model-free reinforcement learning, we develop a world model framework that learns latent system dynamics from interactions with the environment and jointly optimizes digital beamforming and DMA element weights through imagined trajectories. Furthermore, we incorporate feasibility-preserving action mappings and safety cost signals to ensure constraint satisfaction during policy learning. Simulation results demonstrate that the proposed framework improves the time-averaged EE by approximately 20% compared with the deep Q-network baseline, while achieving higher sample efficiency and more reliable constraint satisfaction.</summary>
+    <category term="cs.IT" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="eess.SY" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-10-26T17:42:58Z</published>
+    <arxiv:primary_category term="cs.IT"/>
+    <author>
+      <name>Abdolrasoul Sakhaei Gharagezlou</name>
+    </author>
+    <author>
+      <name>Mehdi Monemi</name>
+    </author>
+    <author>
+      <name>Matti Latva-aho</name>
+    </author>
+    <author>
+      <name>Mehdi Rasti</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2610.29587v2</id>
+    <title>Guess and Send: World-Model-Guided Semantic Packet Transmission for Robust Video Perception</title>
+    <updated>2026-10-29T19:12:30Z</updated>
+    <link href="https://arxiv.org/abs/2610.29587v2" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2610.29587v2" rel="related" type="application/pdf" title="pdf"/>
+    <summary>Reliable video perception over bandwidth-constrained wireless links requires transmitting information that the receiver cannot already recover from its evolving scene representation. This paper introduces Guess and Send, a world-model-guided semantic packet transmission framework that prioritizes information according to its contribution to the receiver's perception. A shared feature-space world model predicts the receiver's scene state through affine motion compensation and learned residual displacement, while sender-side verification identifies reusable predictions. An acknowledgment-synchronized receiver twin estimates task-impact scores through two counterfactual evaluations, guiding packet selection and unequal error protection over LDPC-coded wireless channels. A compact 3-bit feature representation increases spatial coverage under stringent bandwidth constraints, while predictive fallback sustains perception during packet outages. Experiments on KITTI-MOTS (KITTI) and VisDrone2019-MOT (VisDrone) under Rayleigh fading and AWGN demonstrate substantial gains in low-SNR conditions. On KITTI at a 4.13% reference bandwidth budget, Guess and Send achieves 47.5% J&amp;F at 0 dB Rayleigh SNR, outperforming H.264 by 11.3 percentage points. Controlled ablations show that world-model prediction contributes up to 8.7 points under Rayleigh fading. Object-detection experiments further demonstrate the transferability of receiver-relative predictive transmission across visual perception tasks. These results establish world-model-guided, receiver-state-aware transmission as an effective approach to robust video perception under severe communication constraints.</summary>
+    <category term="cs.MM" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-10-21T11:27:25Z</published>
+    <arxiv:primary_category term="cs.MM"/>
+    <author>
+      <name>Yan Gong</name>
+    </author>
+    <author>
+      <name>Zheng Chu</name>
+    </author>
+    <author>
+      <name>Wei Koong Chai</name>
+    </author>
+    <author>
+      <name>Hari Mohan Pandey</name>
+    </author>
+    <author>
+      <name>Jiankang Zhang</name>
+    </author>
+    <author>
+      <name>Jingrui Hou</name>
+    </author>
+    <author>
+      <name>Miao Zhang</name>
+    </author>
+    <author>
+      <name>Yuanjian Li</name>
+    </author>
+    <author>
+      <name>Pei Xiao</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2610.29534v2</id>
+    <title>Safe World Model for Joint Trajectory and Beamforming Design of Mobile Base Stations</title>
+    <updated>2026-10-29T10:07:39Z</updated>
+    <link href="https://arxiv.org/abs/2610.29534v2" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2610.29534v2" rel="related" type="application/pdf" title="pdf"/>
+    <summary>Mobile base stations (MBSs), including aerial and ground-based platforms, provide flexible wireless coverage through adaptive positioning. However, jointly optimizing their trajectories and digital beamforming is challenging because movement changes channel conditions and interference, while beamforming determines the resulting signal and interference powers. These coupled decisions also account for how current movements affect future positions and communication performance under mobility and safety constraints. We formulate this problem as a constrained Markov decision process that maximizes the time-averaged sum signal-to-interference-plus-noise ratio (SINR), subject to mobility, obstacle region avoidance, and transmit-power constraints. To support long-term planning and reduce the extensive environment interactions required by model-free reinforcement learning, we develop a SafeDreamer-based world model framework that learns latent system dynamics from experience and optimizes a joint trajectory and beamforming policy through imagined trajectories. Feasibility-preserving action mappings and safety cost signals incorporate operational constraints into policy learning. Simulation results demonstrate that the proposed framework achieves higher time-averaged sum SINR than the proximal policy optimization and deep Q-network baselines, while exhibiting improved sample efficiency and more reliable constraint satisfaction.</summary>
+    <category term="eess.SY" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-10-21T10:23:56Z</published>
+    <arxiv:primary_category term="eess.SY"/>
+    <author>
+      <name>Abdolrasoul Sakhaei Gharagezlou</name>
+    </author>
+    <author>
+      <name>Zeinab Askari Donbeh</name>
+    </author>
+    <author>
+      <name>Mehdi Monemi</name>
+    </author>
+    <author>
+      <name>Matti Latva-aho</name>
+    </author>
+    <author>
+      <name>Mehdi Rasti</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2610.29382v1</id>
+    <title>RadioDreamer: A World Model for Radio Map Forecasting and Imagination-Based Optimization</title>
+    <updated>2026-10-21T08:10:49Z</updated>
+    <link href="https://arxiv.org/abs/2610.29382v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2610.29382v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>Radio maps characterize the spatial distribution of wireless conditions and are fundamental to network planning and optimization. However, existing learning-based methods reconstruct isolated radio-map snapshots and do not model how network actions drive the evolution of the radio environment. In this paper, we present RadioDreamer, a two-stage world model that unifies action-conditioned radio-map forecasting and imagination-based network optimization within a latent space. To learn causal environmental transitions from sequential interactions, we introduce a structured spatio-temporal transformer backbone coupled with dynamic-region supervision, enabling accurate modeling of action-sensitive areas. Second, rather than relying on conventional physical trial-and-error, RadioDreamer establishes a general planning paradigm that generates counterfactual latent trajectories to evaluate and optimize long-horizon network parameter configurations. Experiments show that RadioDreamer improves both multi-step rollout forecasting and closed-loop network optimization. It reduces full-map forecasting error by 25.2% on average and achieves approximately 80% accuracy in predicting the evolution direction of radio signals. More importantly, for long-horizon network configuration, imagination-based planning surpasses model-free policies optimized directly on radio-map observations by 8.8% in accumulated return.</summary>
+    <category term="cs.NI" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-10-21T08:10:49Z</published>
+    <arxiv:comment>10 pages, 7 gigures, 5 tables</arxiv:comment>
+    <arxiv:primary_category term="cs.NI"/>
+    <author>
+      <name>Haoye Chai</name>
+    </author>
+    <author>
+      <name>Mugen Peng</name>
+    </author>
+  </entry>
+</feed>

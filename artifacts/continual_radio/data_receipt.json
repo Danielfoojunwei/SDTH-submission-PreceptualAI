@@ -1,0 +1,803 @@
+{
+  "completed": true,
+  "actual_sionna_rt": true,
+  "simulation_only": true,
+  "one_warehouse_only": true,
+  "contexts": 24,
+  "registration_commit_at_collection": "e68dd045c49ccd150fae10fe9fabe9dfb2b03026",
+  "registration_sha256": "7a8b0ba84dc97fe24f9b3d843c8619805ec45544d1cbf7dbe06813f494bec6df",
+  "source_sha256": {
+    "scripts/collect_continual_radio.py": "2bd8602c1f40d34f0206bda7c8529bb9fb659703c1f72db778380e6d8457a51a",
+    "artifacts/continual_radio/registration/protocol.json": "7a8b0ba84dc97fe24f9b3d843c8619805ec45544d1cbf7dbe06813f494bec6df"
+  },
+  "data_sha256": "81e523db3459248961e65444c3e5d623672c34771099e607045ad1e73f6133ca",
+  "path_files_sha256": {
+    "artifacts/continual_radio/data/context-00-cir.npz": "f17d21429cf73686391cebe837ca3ae7684828645f1ad19ab98cffbd54344d9a",
+    "artifacts/continual_radio/data/context-01-cir.npz": "8423a74d1b696907d0e0a050d4c14ad41fd02538a2e8a06b89566c39188c2f81",
+    "artifacts/continual_radio/data/context-02-cir.npz": "6d3649ee3b2a556dce5ba2be020bee0d4f7136dbba2444cc558d689529d6afc2",
+    "artifacts/continual_radio/data/context-03-cir.npz": "be00e9779cddc582a5b6bd1b2bdc97b7b0509e0f91f7927134afbd9a76ed2d8b",
+    "artifacts/continual_radio/data/context-04-cir.npz": "208769c2a871aa0a349e84970798ae0c0b9964719d12a19e7c912c65d33e962e",
+    "artifacts/continual_radio/data/context-05-cir.npz": "816ff99309712a4e0b63fd667ac785f4ac4d9f70be822e60bf742ede08af5965",
+    "artifacts/continual_radio/data/context-06-cir.npz": "17ccae51d55614404fe8de7877a0d336f8c62bb919096e335208d5ba04e41292",
+    "artifacts/continual_radio/data/context-07-cir.npz": "32beb2a4cf188d11dac24ec4c87ad2222dd9b18459248c4237dcaa8ab412079c",
+    "artifacts/continual_radio/data/context-08-cir.npz": "2cbeb3443fee4b3ec8855bd62e3a906cfd3f7c3f65308771a1a0bd111026e1b8",
+    "artifacts/continual_radio/data/context-09-cir.npz": "8036f668869e4ecfb30bc40d7e03158fc7e5e863e249f5f90c161b98624cb46b",
+    "artifacts/continual_radio/data/context-10-cir.npz": "7e4829c121ae5e9a3b593e9c246d0f22d01af005f51cc3a0cda5750fb45fc26f",
+    "artifacts/continual_radio/data/context-11-cir.npz": "b301a80ab8be0915808b50373709b0834eb179502b19b520bdf71be2c01bdaaa",
+    "artifacts/continual_radio/data/context-12-cir.npz": "7ba654cb62b9e9e03590a19260fb9d9d0335b8b8ee377790bf8084ec6d5ef068",
+    "artifacts/continual_radio/data/context-13-cir.npz": "6e7396de70b2b0396d8f2e0cd7dcaa0179c621e730150db0a6d095e722bbbd3b",
+    "artifacts/continual_radio/data/context-14-cir.npz": "1a483dd99c4cf1a34f9d8e56db1d0adb0bfa7f609e1241a798499d21aae476b2",
+    "artifacts/continual_radio/data/context-15-cir.npz": "f7c4c2516fcc95006b12aebbf19f6ce41ca79d1f08f9585e7ff854a353219723",
+    "artifacts/continual_radio/data/context-16-cir.npz": "e655ccb7a54b6fe89b1f3a36a1b75b5de1cd82eb5305cd60ee3f5692592fffc6",
+    "artifacts/continual_radio/data/context-17-cir.npz": "2506cfd06a0f3c205fe4663f353bc46c4bdcb3ac2c890ffab43e06abb10f9c4c",
+    "artifacts/continual_radio/data/context-18-cir.npz": "bfcf6b928153121f82f2831e9d22fd26b7df2d5aa06ab834560ce9c40433d239",
+    "artifacts/continual_radio/data/context-19-cir.npz": "ef7db125c7706df4a10336fbc95b1a184109eab5a4a1701fbc31ce1f5a817ae0",
+    "artifacts/continual_radio/data/context-20-cir.npz": "059edd8251e62b8e882e5b42e9c68df91744543146f5e5cf17e2913f87967d02",
+    "artifacts/continual_radio/data/context-21-cir.npz": "a8ea797410f340a2070337d30e27ad9026333c1dc18ecb2cba6d620c212695a6",
+    "artifacts/continual_radio/data/context-22-cir.npz": "957cbf1f878ca348fe041475a964214ec6af4515223d4e7b4fab7a639d89ba7b",
+    "artifacts/continual_radio/data/context-23-cir.npz": "c3768f42208bfa5ad153ee58f44048148495b57110ff09b8bdbfd57561248325"
+  },
+  "all_couplings_have_found_paths": false,
+  "contexts_detail": [
+    {
+      "context_id": 0,
+      "pose_m": [
+        -0.7,
+        -5.0,
+        1.5
+      ],
+      "path_counts": [
+        [
+          6,
+          8
+        ],
+        [
+          11,
+          7
+        ]
+      ],
+      "power": [
+        [
+          7.59904708047543e-08,
+          6.894206308061257e-07
+        ],
+        [
+          7.650018574167916e-07,
+          1.6438023067166796e-06
+        ]
+      ]
+    },
+    {
+      "context_id": 1,
+      "pose_m": [
+        0.7,
+        -5.0,
+        1.5
+      ],
+      "path_counts": [
+        [
+          7,
+          9
+        ],
+        [
+          11,
+          8
+        ]
+      ],
+      "power": [
+        [
+          1.1028334938600892e-06,
+          6.96495305874123e-07
+        ],
+        [
+          7.556826062682376e-07,
+          9.217943670591922e-07
+        ]
+      ]
+    },
+    {
+      "context_id": 2,
+      "pose_m": [
+        -0.7,
+        -4.363636363636363,
+        1.5
+      ],
+      "path_counts": [
+        [
+          6,
+          13
+        ],
+        [
+          13,
+          7
+        ]
+      ],
+      "power": [
+        [
+          7.165373006046138e-08,
+          1.2223150633872137e-06
+        ],
+        [
+          1.4041567055755877e-06,
+          1.4730969724041643e-06
+        ]
+      ]
+    },
+    {
+      "context_id": 3,
+      "pose_m": [
+        0.7,
+        -4.363636363636363,
+        1.5
+      ],
+      "path_counts": [
+        [
+          6,
+          14
+        ],
+        [
+          12,
+          11
+        ]
+      ],
+      "power": [
+        [
+          1.0893943453993415e-06,
+          1.3892472452425864e-06
+        ],
+        [
+          1.2372248647807282e-06,
+          9.595710253051948e-07
+        ]
+      ]
+    },
+    {
+      "context_id": 4,
+      "pose_m": [
+        -0.7,
+        -3.7272727272727275,
+        1.5
+      ],
+      "path_counts": [
+        [
+          6,
+          13
+        ],
+        [
+          13,
+          8
+        ]
+      ],
+      "power": [
+        [
+          6.926764228865068e-08,
+          1.2223147223267006e-06
+        ],
+        [
+          1.4041570466361009e-06,
+          1.4939654420231818e-06
+        ]
+      ]
+    },
+    {
+      "context_id": 5,
+      "pose_m": [
+        0.7,
+        -3.7272727272727275,
+        1.5
+      ],
+      "path_counts": [
+        [
+          6,
+          13
+        ],
+        [
+          13,
+          6
+        ]
+      ],
+      "power": [
+        [
+          1.0893943453993415e-06,
+          1.3821722859574948e-06
+        ],
+        [
+          1.664429078118701e-06,
+          5.641661005029164e-08
+        ]
+      ]
+    },
+    {
+      "context_id": 6,
+      "pose_m": [
+        -0.7,
+        -3.090909090909091,
+        1.5
+      ],
+      "path_counts": [
+        [
+          8,
+          12
+        ],
+        [
+          13,
+          7
+        ]
+      ],
+      "power": [
+        [
+          6.40005964669399e-07,
+          1.2216130471642828e-06
+        ],
+        [
+          1.4041568192624254e-06,
+          9.23160882848606e-07
+        ]
+      ]
+    },
+    {
+      "context_id": 7,
+      "pose_m": [
+        0.7,
+        -3.090909090909091,
+        1.5
+      ],
+      "path_counts": [
+        [
+          3,
+          13
+        ],
+        [
+          13,
+          7
+        ]
+      ],
+      "power": [
+        [
+          3.5786754892797035e-08,
+          1.3821723996443325e-06
+        ],
+        [
+          1.6644291918055387e-06,
+          6.253517881305015e-07
+        ]
+      ]
+    },
+    {
+      "context_id": 8,
+      "pose_m": [
+        -0.7,
+        -2.4545454545454546,
+        1.5
+      ],
+      "path_counts": [
+        [
+          5,
+          9
+        ],
+        [
+          11,
+          2
+        ]
+      ],
+      "power": [
+        [
+          6.027274821462925e-07,
+          7.17707052899641e-07
+        ],
+        [
+          7.40475513794081e-07,
+          2.239265661785339e-08
+        ]
+      ]
+    },
+    {
+      "context_id": 9,
+      "pose_m": [
+        0.7,
+        -2.4545454545454546,
+        1.5
+      ],
+      "path_counts": [
+        [
+          3,
+          10
+        ],
+        [
+          11,
+          7
+        ]
+      ],
+      "power": [
+        [
+          3.5786754892797035e-08,
+          7.177892484833137e-07
+        ],
+        [
+          7.556824925813999e-07,
+          6.238601031327562e-07
+        ]
+      ]
+    },
+    {
+      "context_id": 10,
+      "pose_m": [
+        -0.7,
+        -1.8181818181818183,
+        1.5
+      ],
+      "path_counts": [
+        [
+          6,
+          9
+        ],
+        [
+          11,
+          3
+        ]
+      ],
+      "power": [
+        [
+          1.0825176559592364e-06,
+          7.177072234298976e-07
+        ],
+        [
+          7.650027100680745e-07,
+          4.211321069647056e-08
+        ]
+      ]
+    },
+    {
+      "context_id": 11,
+      "pose_m": [
+        0.7,
+        -1.8181818181818183,
+        1.5
+      ],
+      "path_counts": [
+        [
+          0,
+          7
+        ],
+        [
+          11,
+          8
+        ]
+      ],
+      "power": [
+        [
+          0.0,
+          6.887187851134513e-07
+        ],
+        [
+          7.556824925813999e-07,
+          6.360893962664704e-07
+        ]
+      ]
+    },
+    {
+      "context_id": 12,
+      "pose_m": [
+        -0.7,
+        -1.1818181818181817,
+        1.5
+      ],
+      "path_counts": [
+        [
+          6,
+          9
+        ],
+        [
+          11,
+          3
+        ]
+      ],
+      "power": [
+        [
+          1.0815226687554969e-06,
+          6.96495305874123e-07
+        ],
+        [
+          7.650018005733727e-07,
+          4.211321069647056e-08
+        ]
+      ]
+    },
+    {
+      "context_id": 13,
+      "pose_m": [
+        0.7,
+        -1.1818181818181817,
+        1.5
+      ],
+      "path_counts": [
+        [
+          0,
+          7
+        ],
+        [
+          11,
+          13
+        ]
+      ],
+      "power": [
+        [
+          0.0,
+          6.887187851134513e-07
+        ],
+        [
+          7.556824925813999e-07,
+          1.535862452328729e-06
+        ]
+      ]
+    },
+    {
+      "context_id": 14,
+      "pose_m": [
+        -0.7,
+        -0.5454545454545459,
+        1.5
+      ],
+      "path_counts": [
+        [
+          6,
+          9
+        ],
+        [
+          11,
+          4
+        ]
+      ],
+      "power": [
+        [
+          1.0806950285768835e-06,
+          6.96495305874123e-07
+        ],
+        [
+          7.650018005733727e-07,
+          4.2417763523872054e-08
+        ]
+      ]
+    },
+    {
+      "context_id": 15,
+      "pose_m": [
+        0.7,
+        -0.5454545454545459,
+        1.5
+      ],
+      "path_counts": [
+        [
+          0,
+          7
+        ],
+        [
+          11,
+          13
+        ]
+      ],
+      "power": [
+        [
+          0.0,
+          6.887187851134513e-07
+        ],
+        [
+          7.556824925813999e-07,
+          1.5350339026554138e-06
+        ]
+      ]
+    },
+    {
+      "context_id": 16,
+      "pose_m": [
+        -0.7,
+        0.09090909090909083,
+        1.5
+      ],
+      "path_counts": [
+        [
+          9,
+          12
+        ],
+        [
+          11,
+          11
+        ]
+      ],
+      "power": [
+        [
+          1.1157852668475243e-06,
+          7.255658260874043e-07
+        ],
+        [
+          7.404754001072433e-07,
+          1.5147521708058775e-06
+        ]
+      ]
+    },
+    {
+      "context_id": 17,
+      "pose_m": [
+        0.7,
+        0.09090909090909083,
+        1.5
+      ],
+      "path_counts": [
+        [
+          9,
+          12
+        ],
+        [
+          11,
+          12
+        ]
+      ],
+      "power": [
+        [
+          1.1299221114313696e-06,
+          7.255658260874043e-07
+        ],
+        [
+          7.404754001072433e-07,
+          1.520898536000459e-06
+        ]
+      ]
+    },
+    {
+      "context_id": 18,
+      "pose_m": [
+        -0.7,
+        0.7272727272727275,
+        1.5
+      ],
+      "path_counts": [
+        [
+          9,
+          12
+        ],
+        [
+          11,
+          14
+        ]
+      ],
+      "power": [
+        [
+          1.1151937542308588e-06,
+          7.255658260874043e-07
+        ],
+        [
+          7.404754001072433e-07,
+          1.895414129648998e-06
+        ]
+      ]
+    },
+    {
+      "context_id": 19,
+      "pose_m": [
+        0.7,
+        0.7272727272727275,
+        1.5
+      ],
+      "path_counts": [
+        [
+          11,
+          12
+        ],
+        [
+          11,
+          12
+        ]
+      ],
+      "power": [
+        [
+          1.4905385796737392e-06,
+          7.255658260874043e-07
+        ],
+        [
+          7.404754001072433e-07,
+          1.5203069096969557e-06
+        ]
+      ]
+    },
+    {
+      "context_id": 20,
+      "pose_m": [
+        -0.7,
+        1.3636363636363633,
+        1.5
+      ],
+      "path_counts": [
+        [
+          9,
+          12
+        ],
+        [
+          11,
+          14
+        ]
+      ],
+      "power": [
+        [
+          1.1146871656819712e-06,
+          7.255658260874043e-07
+        ],
+        [
+          7.404754001072433e-07,
+          1.792648959053622e-06
+        ]
+      ]
+    },
+    {
+      "context_id": 21,
+      "pose_m": [
+        0.7,
+        1.3636363636363633,
+        1.5
+      ],
+      "path_counts": [
+        [
+          11,
+          12
+        ],
+        [
+          11,
+          12
+        ]
+      ],
+      "power": [
+        [
+          1.3877734090783633e-06,
+          7.255658260874043e-07
+        ],
+        [
+          7.404754001072433e-07,
+          1.51980123064277e-06
+        ]
+      ]
+    },
+    {
+      "context_id": 22,
+      "pose_m": [
+        -0.7,
+        2.0,
+        1.5
+      ],
+      "path_counts": [
+        [
+          9,
+          12
+        ],
+        [
+          11,
+          14
+        ]
+      ],
+      "power": [
+        [
+          1.1142496987304185e-06,
+          7.255658260874043e-07
+        ],
+        [
+          7.404754001072433e-07,
+          1.7278183577218442e-06
+        ]
+      ]
+    },
+    {
+      "context_id": 23,
+      "pose_m": [
+        0.7,
+        2.0,
+        1.5
+      ],
+      "path_counts": [
+        [
+          11,
+          12
+        ],
+        [
+          11,
+          12
+        ]
+      ],
+      "power": [
+        [
+          1.3229428077465855e-06,
+          7.255658260874043e-07
+        ],
+        [
+          7.404754001072433e-07,
+          1.519363877378055e-06
+        ]
+      ]
+    }
+  ],
+  "original_scene_objects": 10,
+  "elapsed_seconds": 3.389648914337158,
+  "versions": {
+    "sionna": "2.2.0",
+    "sionna-rt": "2.2.0",
+    "mitsuba": "3.9.1",
+    "drjit": "1.5.0"
+  },
+  "asset_sha256": {
+    "meshes/aws_robomaker_warehouse_Bucket_01_visual_node.ply": "6de1fd251b5be24b1840218b181a266ea4a6f1e8e5f83762a11df6f25be3b1f8",
+    "meshes/aws_robomaker_warehouse_Bucket_01_visual_node_001.ply": "a6d8003643d37f12e581700c126449adce4eea12f8ba44da832b5157eb29b046",
+    "meshes/aws_robomaker_warehouse_Bucket_01_visual_node_002.ply": "7dbc88f3046e98cdd9bf6b11573406b5649f23803dd5822b8d12e52825be4d65",
+    "meshes/aws_robomaker_warehouse_ClutteringA_01_visual_node-itu_chipboard-001.ply": "adfe6f917392b1a5480d257d36a222e8ef69a6e084aae443e71f3650ef16bfdd",
+    "meshes/aws_robomaker_warehouse_ClutteringA_01_visual_node-itu_chipboard-002.ply": "e271fb0bfa2e6f01248d18165f147405bcae2b4ff53f00fb1068186ec9e5106f",
+    "meshes/aws_robomaker_warehouse_ClutteringA_01_visual_node-itu_chipboard.ply": "0ec8dca0b2a019db33c78043b81461773ca023a2595d7a34e4fda8d729b692c8",
+    "meshes/aws_robomaker_warehouse_ClutteringA_01_visual_node_001-itu_chipboard-001.ply": "89ca48c382219eba9baccf0df0831e7cfd59e813b012b7d18e75660bdd6935af",
+    "meshes/aws_robomaker_warehouse_ClutteringA_01_visual_node_001-itu_chipboard-002.ply": "95e543a3092ebf40d901b545137dbd80d7735675e885b34024636a037f8cf9d8",
+    "meshes/aws_robomaker_warehouse_ClutteringA_01_visual_node_001-itu_chipboard.ply": "d1a865b958fb19c0d72239acfe9539f95896059ee45dc2c09ae59349beab2c0b",
+    "meshes/aws_robomaker_warehouse_ClutteringA_01_visual_node_002-itu_chipboard-001.ply": "cdd803f196880e6d0d490af995c421983576615e739d393871d20889a8adcc4c",
+    "meshes/aws_robomaker_warehouse_ClutteringA_01_visual_node_002-itu_chipboard-002.ply": "aeba19111f1fff99897b4ece37801a65f639c162188cdf291942efd20e105a30",
+    "meshes/aws_robomaker_warehouse_ClutteringA_01_visual_node_002-itu_chipboard.ply": "76ca3a828ef78f59771090a446fb07418eac095d4e42b6de57c2f038b0b07be3",
+    "meshes/aws_robomaker_warehouse_ClutteringC_01_visual_node.ply": "8be164e98fef8cd5834762b6508c165384932590a1b02b3f1d61243f1973452a",
+    "meshes/aws_robomaker_warehouse_ClutteringC_01_visual_node_001.ply": "5a3b478633fd1ece83ccc67951f3b963cd241ab72fff04d704880c8a0aa9eda2",
+    "meshes/aws_robomaker_warehouse_ClutteringC_01_visual_node_002.ply": "d4b6a52fd9332e9ae268c102a51a408487e47e9de6683bcd7733e87c25795350",
+    "meshes/aws_robomaker_warehouse_ClutteringC_01_visual_node_003.ply": "7b256894e602f5c4e1a274b30f0ded199a5a44efdb81b96f61e2216a2594f21b",
+    "meshes/aws_robomaker_warehouse_ClutteringC_01_visual_node_004.ply": "45221c2facd47617f73af907de39c020248b05f276c122df41cbbeb402c314b4",
+    "meshes/aws_robomaker_warehouse_ClutteringC_01_visual_node_005.ply": "51a7eea2a2e51f8f19b0e6600d711c8ef2475e4fed94d863613c96b5368bfbbe",
+    "meshes/aws_robomaker_warehouse_ClutteringD_01_visual_node.ply": "47634d976d088ac03e2049e55901e52cef69583af862ca2eadc91cb35695e270",
+    "meshes/aws_robomaker_warehouse_GroundB_01_visual_node-itu_concrete-001.ply": "1f13fd019f9be0d7f9c74c220af1fe06e72696f84fce3180ac2785b46297cab3",
+    "meshes/aws_robomaker_warehouse_GroundB_01_visual_node-itu_concrete.ply": "d8db2b3a83934e12687e734680f87e8a6d159d1d40d6e551f815cf328c34ee97",
+    "meshes/aws_robomaker_warehouse_Lamp_01_visual_node.ply": "7420c49bd48fc8103d30ea5fbe7de111bdfbe4722c3ea71cd4a77ee038814cd9",
+    "meshes/aws_robomaker_warehouse_PalletJackB_01_visual_node-itu_metal-001.ply": "d8d543f773ca4f03f1366247bd08efb4a5fd7f618fa50e8f6832836e868d7823",
+    "meshes/aws_robomaker_warehouse_PalletJackB_01_visual_node-itu_metal.ply": "981c3b7141e8c9461e4d0e31a6cf9f346a6a7afdf06fc006aa685f46ac8808c0",
+    "meshes/aws_robomaker_warehouse_ShelfD_01_visual_node-itu_chipboard-001.ply": "c55e61ce7dd429b4f32fd2dbd837952f0fefa0595fa1b78ebd0d7b98965d514c",
+    "meshes/aws_robomaker_warehouse_ShelfD_01_visual_node-itu_chipboard-002.ply": "11ac5c5b57486ec802d54aeedbaab887d458e548f833d9b577f69224ffdd475b",
+    "meshes/aws_robomaker_warehouse_ShelfD_01_visual_node-itu_chipboard.ply": "0180aa870d43f973a08634ab73c015002fe7621bab9f81a8df7310878ba3f1ab",
+    "meshes/aws_robomaker_warehouse_ShelfD_01_visual_node-itu_metal.ply": "0ce4672be8e6b46fe930290bb4f43ebcb2b288cdd9c2cd4a29076452106419a3",
+    "meshes/aws_robomaker_warehouse_ShelfD_01_visual_node_001-itu_chipboard-001.ply": "34ef9924b64e79adec5277ca8d0c81a9b4dec7bd60ebb231b039d247eb5d7ac0",
+    "meshes/aws_robomaker_warehouse_ShelfD_01_visual_node_001-itu_chipboard-002.ply": "988e728e9c67c469f53c170ed77bd1b610e423f7ebc47fa8fe44565e207f3f45",
+    "meshes/aws_robomaker_warehouse_ShelfD_01_visual_node_001-itu_chipboard.ply": "8c3433048a0c57a602592441adec5bea3a557eca5fcbce15cd90cb5e7ad7714b",
+    "meshes/aws_robomaker_warehouse_ShelfD_01_visual_node_001-itu_metal.ply": "bb0855c206fe7b89e96b64b898bc46f3708d8cd3dca3fa363e31bba1b15087e0",
+    "meshes/aws_robomaker_warehouse_ShelfD_01_visual_node_002-itu_chipboard-001.ply": "e098743e6a49534d9e2a2f182c22cef20066e03fbe3abb2572335ea6b01b7dcf",
+    "meshes/aws_robomaker_warehouse_ShelfD_01_visual_node_002-itu_chipboard-002.ply": "a0e0a0355fe0afb6d8245a21e36c82cd78cf24bf9832e7dc5fc08c788b065463",
+    "meshes/aws_robomaker_warehouse_ShelfD_01_visual_node_002-itu_chipboard.ply": "e043d462c02773ee310c038b02414bd34958b72fba0264b2bfec410dba49b4c9",
+    "meshes/aws_robomaker_warehouse_ShelfD_01_visual_node_002-itu_metal.ply": "c7353b618c16c79b2fd3b741d5b57d5820d4bb82f35689ed1fac0cf41f8872de",
+    "meshes/aws_robomaker_warehouse_ShelfE_01_visual_node-itu_chipboard-001.ply": "e49a86ab9610444d78fe2af1878e018418bad7092a075e23158483e3ade8872d",
+    "meshes/aws_robomaker_warehouse_ShelfE_01_visual_node-itu_chipboard-002.ply": "70b9ab7592fa00b87658c58f931c38f9ede84d27f4d10feb58caa54eb407f596",
+    "meshes/aws_robomaker_warehouse_ShelfE_01_visual_node-itu_chipboard.ply": "b949bd9a999e72297dc47bb82056303b01c622677eede745e89befef875c3032",
+    "meshes/aws_robomaker_warehouse_ShelfE_01_visual_node-itu_metal.ply": "3f64e6e76336fcdcec46f5550300f75bc3501073b483630be3560b4442e1cd56",
+    "meshes/aws_robomaker_warehouse_ShelfE_01_visual_node_001-itu_chipboard-001.ply": "48abc3d60131f46bd8863a04180fd62e65fc3ee31e57f40936cc6442911537d8",
+    "meshes/aws_robomaker_warehouse_ShelfE_01_visual_node_001-itu_chipboard-002.ply": "6f7dd7f04554de56c9f91a38467087614405365364b3a250942cde144f1c418f",
+    "meshes/aws_robomaker_warehouse_ShelfE_01_visual_node_001-itu_chipboard.ply": "4e5b0f8122e81ee6f6815070a095b270ab3b26ded260ece1e29605062cfdd9e2",
+    "meshes/aws_robomaker_warehouse_ShelfE_01_visual_node_001-itu_metal.ply": "51a529683f8bdaea5c2be2c35bb1e4b00ad99ef5ebf5341c56d2648d3b80d730",
+    "meshes/aws_robomaker_warehouse_ShelfE_01_visual_node_002-itu_chipboard-001.ply": "9cebae612d6e140c26d26846a8cb29a7408eca4960454c3fe581295dd242d7d2",
+    "meshes/aws_robomaker_warehouse_ShelfE_01_visual_node_002-itu_chipboard-002.ply": "a372e2860b92425ea092527442f6faaabecb63f82ca578815586e623397daf14",
+    "meshes/aws_robomaker_warehouse_ShelfE_01_visual_node_002-itu_chipboard.ply": "f6af87aa4c722ba80a46835aaeb98ee2977b35f282bc1fd0da6cd32542ba9d90",
+    "meshes/aws_robomaker_warehouse_ShelfE_01_visual_node_002-itu_metal.ply": "ddb8e77c41956e292ae1fb772c36cdc3cba3c2fa91cce952708335427678413d",
+    "meshes/aws_robomaker_warehouse_ShelfF_01_visual_node-itu_chipboard.ply": "a179772f75cb08851309ee4d78d7473a00a737a2c2d6ce607d52bf994cc24233",
+    "meshes/aws_robomaker_warehouse_ShelfF_01_visual_node-itu_metal.ply": "8e4ec8d7a2ff6b6827289283b360753da98aa22d8cee3477dd0168c3a1f17239",
+    "meshes/aws_robomaker_warehouse_ShelfF_01_visual_node-itu_plywood.ply": "45771ae34538c4cea80987235ecfd6717c84c58df502fc4dc48b9153b9582dff",
+    "meshes/aws_robomaker_warehouse_TrashCanC_01_visual_node.ply": "c86c743ccf6062436e4e1c98aa0863a02e945a6230fed2a02b2543f30241ce83",
+    "meshes/aws_robomaker_warehouse_WallB_01_visual_node.ply": "a612bb21b0eac583c64f06f9a7d6b9faf4a76ca197b0145a241256ed4c20f1c9",
+    "textures/aws_robomaker_warehouse_GroundB_01.png": "dbf33c84bb6ff1254bd2e66606b4a55525b6475735ad6ab753dbdf6a5963507f",
+    "textures/aws_robomaker_warehouse_Lamp_01.png": "fc4c8c47947883a63a746329b28b6a3ca159a1b2db8af786d7877391902ecedb",
+    "textures/aws_robomaker_warehouse_WallB_01.png": "61f07381e9f886bc533caa2cbd3fd8e25cdedb62b0b27bf7f87003ec8d2c3a05",
+    "warehouse.xml": "b932ef12b00513a632c7574a4e3ff45b71b4dd893345ed80293bb570675e2c32"
+  },
+  "upstream_fixture_sha256": "37a71504388129a5bc682571f82074e9e30a4749464bcf02d12ad4561362fe5b",
+  "public_context": "blockerXYZ/10 + configured TX XYZ/10 (6) + RX XYZ/10 (6) + carrierGHz/6; 16 values",
+  "physical_quantity": "Incoherent sum of squared complex RT path coefficients, per RX and TX; not measured traffic or packet loss",
+  "solver": {
+    "max_depth": 2,
+    "samples_per_src": 2048,
+    "max_paths_per_src": 4096,
+    "seed": 42,
+    "los": true,
+    "specular": true,
+    "diffraction": false,
+    "diffuse": false,
+    "refraction": false,
+    "convergence_established": false
+  },
+  "limits": [
+    "One fixed warehouse and configured material family. Context holdouts are not unseen warehouses.",
+    "Static kernel contexts, not a measured robot trajectory. Later activity/device/noise episodes are explicitly constructed simulations.",
+    "Unknown channel coupling remains a label/oracle; it cannot be supplied to a learner as a measured inference feature.",
+    "No radio command, active hardware probe, learned-policy qualification or production-reliability claim."
+  ]
+}

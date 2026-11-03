@@ -1,0 +1,21 @@
+{
+  "id": "cyberphysical_sla",
+  "url": "https://www.etsi.org/deliver/etsi_ts/122100_122199/122104/18.04.00_60/ts_122104v180400p.pdf",
+  "checked_at_unix": 1793704152.8847969,
+  "error": "HTTP Error 403: Forbidden",
+  "curl_retry": {
+    "success": true,
+    "checked_at_unix": 1793717411.580397,
+    "request": "GET through inherited proxy; default curl user agent; no custom headers or credentials",
+    "bytes": 1734401,
+    "sha256": "7814340ad696645e116e67262a3187348592d1b4e30be5a1cbf7f33433dc4bc8"
+  },
+  "title": "Service requirements for cyber-physical control applications in vertical domains / ETSI TS122104 V18.4.0",
+  "sections_reviewed": [
+    "Sections1,3.1,5.1/5.2; AnnexA.2.2.3,AnnexC.3,AnnexF; delegated review; direct uncorrelated-errors passage after hash-verified retry"
+  ],
+  "method_summary": "Application service depends on packet delivery, latency, survival time, safe state and recovery.",
+  "adoption_limits": "Requirements are not our measuredSLA. Example availability conversion explicitly assumes uncorrelated errors, often unrealistic.",
+  "review_date": "2026-11-03",
+  "fulltext_redistributed": false
+}

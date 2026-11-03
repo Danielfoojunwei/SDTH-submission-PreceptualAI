@@ -1,5 +1,53 @@
 # WirelessJEV research handoff
 
+## Latest: continual response experiment, execution recovery and research watch
+
+`CONTINUAL_RADIO_STATUS.md` indexes the completed work. Six fixed 30-epoch
+response JEPA/supervised fits use 24 actual RT contexts in one warehouse,
+with explicit constructed probe/noise/device episodes and five held-out poses.
+The JEPA gate fails: staggered K2 errors are 0.146 nW (JEPA), 0.0894 nW
+(supervised), 0.0637 nW (LS), and 0.0309 nW (Bayesian). Bayesian staggered
+feedback improves response MAE by 77.1% over equal-transmitter-airtime
+synchronized feedback. No packet-control/hardware improvement follows.
+
+The initial depth-two collection failed coverage and is preserved. A separately
+committed uniform higher-depth amendment yielded all 96 positive found-path
+couplings before training. Source capsules, both collections, all checkpoints
+and archived-source byte-identical evaluation are retained under
+`artifacts/continual_radio/`. No post-test extra fits or model selection ran.
+
+`CONTINUAL_MEMORY.md` implements bounded per-device/context/radio-epoch state
+updates and action-specific identifiability. It does not fine-tune a backbone
+online or create risk guarantees. `PRODUCTION_EXECUTION_FIXES.md` identifies
+active execution semantics v2; old snapshots/results retain v1 behavior.
+`PRODUCTION_RUNTIME_FIXES.md` covers bounded/age-checked forecasts and
+baseline-preserving shadow faults. Durable transaction crash recovery and
+hard termination of hung worker threads remain open deployment requirements.
+
+`RAN_RESEARCH_WATCH.md` records a successful live run: 10/10 requests and
+47 unreviewed leads. Daily 08:00 Singapore discovery is configured, with
+default-branch merge/Actions required for scheduled activation. Discovery
+does not execute candidate code or promote models. `LWM_TEMPORAL_ACCESS.md`
+records actual licensed pretrained execution and its incompatible complex-CSI,
+future-attention input assumptions. `MODEL_PROMOTION_CONTRACT.md` remains
+fail-closed: all actual candidates are unqualified for production.
+
+Final validation: **582 tests pass** with no skips, including cached pretrained
+DINOv3 integration. All 44 watch/history tests also pass with pytest alone;
+40 qualification tests reject the short-exposure and rare-underprediction cases.
+Independent review closes the four identified qualification/history blockers.
+Actionlint 1.7.7 validates the workflow. `artifacts/ran_research/verification.json`
+records source/evidence hashes and the final test log. Training is complete;
+no training job needs to remain running.
+
+Draft PR #17 is published. GitHub rejected push run `41671278827` and PR run
+`41671318938` before any job step because the account is locked for billing.
+`artifacts/ran_research/ci/status.json` and annotation bodies retain this blocker.
+The initial restore path did succeed locally against the actual GitHub API and
+verified all ten retained response bodies. That is bootstrap evidence, not a
+live recovery of a prior workflow artifact. Resolve billing before expecting
+Actions to run; daily scheduling still needs default-branch merge.
+
 ## Latest: representation diagnosis, actual DINOv3 and physical hierarchy
 
 `VISUAL_RADIO_STATUS.md` indexes the implementation and evidence. The frozen

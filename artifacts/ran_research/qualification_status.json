@@ -1,0 +1,330 @@
+{
+  "schema_version": 1,
+  "checker_source_sha256": "6237fcc28bc8fe44c01a44fb809219f962de3d0472320d1eafe626e7a814cdb2",
+  "read_only_inventory": true,
+  "runtime_activated": false,
+  "candidates": [
+    {
+      "scope": "Development rejected; confirmation sites unused",
+      "existing_evidence": {
+        "artifacts/packet_value/summary.json": {
+          "sha256": "b5b4b426f9ee4ceac42ac12d0cf9d492c2d8f76b39928cc02e73e296c0ab5b9b",
+          "bytes": 96252,
+          "observed_fields": {
+            "status": "development_rejected",
+            "completed": true,
+            "simulation_only": true,
+            "fresh_sites": 0,
+            "test_runs": 0,
+            "primary_evaluated": false,
+            "primary_success": null,
+            "physical_deployment_qualified": false
+          }
+        },
+        "artifacts/packet_value/selection.json": {
+          "sha256": "75e17f87ac6a41590b03448f57fbce258799f96cb0eda881ace941ac5924a2e1",
+          "bytes": 8087,
+          "observed_fields": {}
+        }
+      },
+      "missing_observed_receipts": [],
+      "qualification": {
+        "schema_version": 1,
+        "candidate_id": "packet_action_jepa",
+        "subject_sha256": "45d378605689b393e45380c283206a64669f93c045b833fea8bbd2b7953ccb23",
+        "sandbox_eligible": false,
+        "latency_shadow_eligible": false,
+        "execution_eligible": false,
+        "blockers": [
+          {
+            "code": "limits",
+            "detail": "Candidate receipts do not bind the operator policy limits"
+          },
+          {
+            "code": "identity_source",
+            "detail": "Missing source file manifest"
+          },
+          {
+            "code": "identity_weights",
+            "detail": "Missing weights file manifest"
+          },
+          {
+            "code": "identity_data",
+            "detail": "Missing data file manifest"
+          },
+          {
+            "code": "identity_licenses",
+            "detail": "Missing licenses file manifest"
+          },
+          {
+            "code": "hardware_profile",
+            "detail": "'hardware_profile'"
+          },
+          {
+            "code": "rights",
+            "detail": "'rights'"
+          },
+          {
+            "code": "protocol",
+            "detail": "'protocol'"
+          },
+          {
+            "code": "independence",
+            "detail": "'NoneType' object is not subscriptable"
+          },
+          {
+            "code": "independent_control",
+            "detail": "'evaluation'"
+          },
+          {
+            "code": "risk",
+            "detail": "'risk'"
+          },
+          {
+            "code": "hardware",
+            "detail": "'hardware'"
+          },
+          {
+            "code": "rollback",
+            "detail": "'rollback'"
+          },
+          {
+            "code": "proposal_only",
+            "detail": "Proposal/shadow artifacts are never execution eligible"
+          }
+        ],
+        "verified_files": {},
+        "metrics": {},
+        "limits": {
+          "min_sites": 6,
+          "min_training_seeds": 3,
+          "miss_margin_ppm": 0.0,
+          "max_control_miss_ppm": 10.0,
+          "max_gap_ms": 200.0,
+          "max_latency_p99_ms": 50.0,
+          "min_hardware_samples": 1000,
+          "max_risk_ece": 0.02,
+          "max_rollback_ms": 200.0,
+          "min_control_commands": 100000,
+          "familywise_alpha": 0.05
+        },
+        "runtime_activated": false,
+        "scientific_or_safety_certificate": false
+      }
+    },
+    {
+      "scope": "Pretrained encoder and static RT fixture; fusion untrained",
+      "existing_evidence": {
+        "artifacts/visual_radio/dinov3_access.json": {
+          "sha256": "96298790bd7fa5b77702d93924d706e13ec59c78a7251ab19e1f3faa1f234c82",
+          "bytes": 18252,
+          "observed_fields": {
+            "completed": true
+          }
+        },
+        "artifacts/visual_radio/rt_probe/receipt.json": {
+          "sha256": "37a71504388129a5bc682571f82074e9e30a4749464bcf02d12ad4561362fe5b",
+          "bytes": 21889,
+          "observed_fields": {
+            "status": "real_full_warehouse_rt_and_rgb_completed",
+            "completed": true,
+            "simulation_only": true,
+            "geometry_radio_validation_passed": true
+          }
+        },
+        "artifacts/visual_radio/verification.json": {
+          "sha256": "949c6e5954a99e771eea8ea928d13f4b724063c8a934af771aafef7a0728d8d5",
+          "bytes": 5724,
+          "observed_fields": {
+            "completed": true
+          }
+        }
+      },
+      "missing_observed_receipts": [],
+      "qualification": {
+        "schema_version": 1,
+        "candidate_id": "visual_radio_dinov3_rt_fusion",
+        "subject_sha256": "159af2ed6cec5b1d37a8d094f3e33057e9ad83f602dbd430f3c461238d12e658",
+        "sandbox_eligible": false,
+        "latency_shadow_eligible": false,
+        "execution_eligible": false,
+        "blockers": [
+          {
+            "code": "limits",
+            "detail": "Candidate receipts do not bind the operator policy limits"
+          },
+          {
+            "code": "identity_source",
+            "detail": "Missing source file manifest"
+          },
+          {
+            "code": "identity_weights",
+            "detail": "Missing weights file manifest"
+          },
+          {
+            "code": "identity_data",
+            "detail": "Missing data file manifest"
+          },
+          {
+            "code": "identity_licenses",
+            "detail": "Missing licenses file manifest"
+          },
+          {
+            "code": "hardware_profile",
+            "detail": "'hardware_profile'"
+          },
+          {
+            "code": "rights",
+            "detail": "'rights'"
+          },
+          {
+            "code": "protocol",
+            "detail": "'protocol'"
+          },
+          {
+            "code": "independence",
+            "detail": "'NoneType' object is not subscriptable"
+          },
+          {
+            "code": "independent_control",
+            "detail": "'evaluation'"
+          },
+          {
+            "code": "risk",
+            "detail": "'risk'"
+          },
+          {
+            "code": "hardware",
+            "detail": "'hardware'"
+          },
+          {
+            "code": "rollback",
+            "detail": "'rollback'"
+          },
+          {
+            "code": "proposal_only",
+            "detail": "Proposal/shadow artifacts are never execution eligible"
+          }
+        ],
+        "verified_files": {},
+        "metrics": {},
+        "limits": {
+          "min_sites": 6,
+          "min_training_seeds": 3,
+          "miss_margin_ppm": 0.0,
+          "max_control_miss_ppm": 10.0,
+          "max_gap_ms": 200.0,
+          "max_latency_p99_ms": 50.0,
+          "min_hardware_samples": 1000,
+          "max_risk_ece": 0.02,
+          "max_rollback_ms": 200.0,
+          "min_control_commands": 100000,
+          "familywise_alpha": 0.05
+        },
+        "runtime_activated": false,
+        "scientific_or_safety_certificate": false
+      }
+    },
+    {
+      "scope": "Registered experiment; no independently confirmed production model",
+      "existing_evidence": {
+        "artifacts/continual_radio/registration/protocol.json": {
+          "sha256": "7a8b0ba84dc97fe24f9b3d843c8619805ec45544d1cbf7dbe06813f494bec6df",
+          "bytes": 5188,
+          "observed_fields": {}
+        },
+        "artifacts/continual_radio/completion.json": {
+          "sha256": "dff9243cf36ede316e0a9e5a74deb3b6f1d5da7984e9bc4265f937c74a9d7030",
+          "bytes": 1394,
+          "observed_fields": {
+            "completed": true
+          }
+        }
+      },
+      "missing_observed_receipts": [],
+      "qualification": {
+        "schema_version": 1,
+        "candidate_id": "continual_response_experiment",
+        "subject_sha256": "ab16f6f23e65d1ae3ec9a70b3a1f0da8573de4cb6db96c67c112c63fed057eba",
+        "sandbox_eligible": false,
+        "latency_shadow_eligible": false,
+        "execution_eligible": false,
+        "blockers": [
+          {
+            "code": "limits",
+            "detail": "Candidate receipts do not bind the operator policy limits"
+          },
+          {
+            "code": "identity_source",
+            "detail": "Missing source file manifest"
+          },
+          {
+            "code": "identity_weights",
+            "detail": "Missing weights file manifest"
+          },
+          {
+            "code": "identity_data",
+            "detail": "Missing data file manifest"
+          },
+          {
+            "code": "identity_licenses",
+            "detail": "Missing licenses file manifest"
+          },
+          {
+            "code": "hardware_profile",
+            "detail": "'hardware_profile'"
+          },
+          {
+            "code": "rights",
+            "detail": "'rights'"
+          },
+          {
+            "code": "protocol",
+            "detail": "'protocol'"
+          },
+          {
+            "code": "independence",
+            "detail": "'NoneType' object is not subscriptable"
+          },
+          {
+            "code": "independent_control",
+            "detail": "'evaluation'"
+          },
+          {
+            "code": "risk",
+            "detail": "'risk'"
+          },
+          {
+            "code": "hardware",
+            "detail": "'hardware'"
+          },
+          {
+            "code": "rollback",
+            "detail": "'rollback'"
+          },
+          {
+            "code": "proposal_only",
+            "detail": "Proposal/shadow artifacts are never execution eligible"
+          }
+        ],
+        "verified_files": {},
+        "metrics": {},
+        "limits": {
+          "min_sites": 6,
+          "min_training_seeds": 3,
+          "miss_margin_ppm": 0.0,
+          "max_control_miss_ppm": 10.0,
+          "max_gap_ms": 200.0,
+          "max_latency_p99_ms": 50.0,
+          "min_hardware_samples": 1000,
+          "max_risk_ece": 0.02,
+          "max_rollback_ms": 200.0,
+          "min_control_commands": 100000,
+          "familywise_alpha": 0.05
+        },
+        "runtime_activated": false,
+        "scientific_or_safety_certificate": false
+      }
+    }
+  ]
+}

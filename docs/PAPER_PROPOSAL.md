@@ -6,6 +6,32 @@ are in `docs/WAREHOUSE_RESULTS.md`. The subsequently authorised warehouse v2
 campaign is described below; general foundation-model, custom on-air PHY,
 robotics and space extensions remain deferred.
 
+## Continual response learning: a measurement-design result
+
+`CONTINUAL_RADIO_RESULTS.md` reports six registered response JEPA/supervised
+fits over 24 actual Sionna RT contexts in one configured warehouse. The target
+is an action-conditioned received-power response, with geometry and available
+probe histories as input; true coupling is only a label/oracle. Receiver gains,
+noise and feedback loss are explicitly constructed measurement assumptions.
+
+JEPA fails the prespecified advantage gate. At staggered K2, mean clean errors
+are 0.146 nW (JEPA), 0.0894 nW (supervised), 0.0637 nW (LS) and 0.0309 nW
+(Bayesian). The useful result is a 77.1% response-MAE reduction for Bayesian
+identification when synchronized feedback becomes staggered at equal total
+transmitter-on airtime. This does not establish equal packet-service cost,
+deadline improvement, online backbone learning or transfer across warehouses.
+
+`CONTINUAL_MEMORY.md` further tests action-specific identifiability: a joint
+action effect can be identified while individual coupling coefficients remain
+unknown. This is established linear system identification applied to the
+warehouse control question, not a first-of-kind architecture claim.
+
+Execution reliability fixes are versioned separately. Historical metrics are
+not silently recomputed with corrected transaction semantics. Neither unit
+tests, a SOTA paper nor a passing auxiliary loss establishes production use;
+the scope remains research until independent physical timing, risk and recovery
+evidence satisfy the documented qualification contract.
+
 ## Physical representation and hierarchy: diagnosis before a claim
 
 `VISUAL_RADIO_STATUS.md` describes the frozen-model collapse audit, six new

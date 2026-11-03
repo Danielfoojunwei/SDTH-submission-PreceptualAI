@@ -1,0 +1,153 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<feed xmlns:opensearch="http://a9.com/-/spec/opensearch/1.1/" xmlns:arxiv="http://arxiv.org/schemas/atom" xmlns="http://www.w3.org/2005/Atom">
+  <id>https://arxiv.org/api/wmhftFWQ9vz6VCJIMxYW7ebDxK4</id>
+  <title>arXiv Query: search_query=(all:"JEPA" AND (all:"wireless" OR all:"radio access") ) AND submittedDate:"202601010000 TO 202611031454"&amp;id_list=&amp;start=0&amp;max_results=5</title>
+  <updated>2026-11-03T14:54:13Z</updated>
+  <link href="https://arxiv.org/api/query?search_query=(all:%22JEPA%22+AND+(all:%22wireless%22+OR+all:%22radio+access%22))+AND+submittedDate:%22202601010000+TO+202611031454%22&amp;start=0&amp;max_results=5&amp;id_list=" type="application/atom+xml"/>
+  <opensearch:itemsPerPage>5</opensearch:itemsPerPage>
+  <opensearch:totalResults>13</opensearch:totalResults>
+  <opensearch:startIndex>0</opensearch:startIndex>
+  <entry>
+    <id>http://arxiv.org/abs/2610.37391v1</id>
+    <title>JEPA-Inspired Latent Field Prediction for Sparse-Pilot MIMO-OFDM Channel Reconstruction</title>
+    <updated>2026-10-27T15:14:41Z</updated>
+    <link href="https://arxiv.org/abs/2610.37391v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2610.37391v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>Accurate acquisition of full channel state information (CSI) is essential for multiple-input multiple-output orthogonal frequency-division multiplexing (MIMO-OFDM) wireless systems, while dense pilot-based estimation incurs substantial overhead. Directly minimizing the prediction error over raw CSI coefficients is fragile in realistic propagation environments, since small-scale fading, mobility, local scattering, and small spatial perturbations can induce large phase-sensitive variations. Nevertheless, wireless channels contain strong spatial, temporal, and frequency-domain correlations that can be more predictably represented in a latent propagation-field domain. Motivated by this observation, we propose a joint-embedding predictive architecture (JEPA)-inspired field world model, defined as a latent predictive model of the wireless propagation field, for sparse-pilot channel reconstruction. The model maps CSI observations into latent time-frequency tokens, predicts masked or future latent field states from historical multi-band context, and fuses the predicted latent prior with sparse noisy current pilots to reconstruct the full MIMO-OFDM channel. Ray-tracing experiments show that the proposed method improves normalized mean square error (NMSE) over pilot-only and direct reconstruction baselines, supporting latent field prediction as an effective prior for sparse-pilot channel acquisition.</summary>
+    <category term="eess.SP" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.AI" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-10-27T15:14:41Z</published>
+    <arxiv:primary_category term="eess.SP"/>
+    <author>
+      <name>Yuzhi Yang</name>
+    </author>
+    <author>
+      <name>Brahim Mefgouda</name>
+    </author>
+    <author>
+      <name>Hang Zou</name>
+    </author>
+    <author>
+      <name>Lina Bariah</name>
+    </author>
+    <author>
+      <name>Anis Bara</name>
+    </author>
+    <author>
+      <name>Yuhuan Lu</name>
+    </author>
+    <author>
+      <name>Hao Zhang</name>
+    </author>
+    <author>
+      <name>Merouane Debbah</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2610.13315v1</id>
+    <title>JEPA-kMMVAE: CSI Prediction for Time-Varying Wireless Channels</title>
+    <updated>2026-10-09T09:58:03Z</updated>
+    <link href="https://arxiv.org/abs/2610.13315v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2610.13315v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>This paper considers channel state information (CSI) prediction using neural networks for time-varying multi-antenna channels from noisy historical observations. The main challenge is to exploit temporal correlation while distinguishing channel evolution from observation noise. We propose JEPA-kMMVAE, which combines a joint-embedding predictive architecture with a k-memory Markov variational autoencoder to predict future CSI through temporally structured latent representations. The framework supports direct prediction and residual corrections relative to the latest latent state and noisy CSI observation. Simulation results show that the residual configuration outperforms the evaluated baselines at moderate and high input CSI signal-to-noise ratios, while sequence baselines remain more accurate under stronger noise.</summary>
+    <category term="eess.SP" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.IT" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.LG" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-10-09T09:58:03Z</published>
+    <arxiv:comment>5 pages, 3 figures, 1 table</arxiv:comment>
+    <arxiv:primary_category term="eess.SP"/>
+    <author>
+      <name>Efstathios Chatziloizos</name>
+    </author>
+    <author>
+      <name>Konstantinos Vandikas</name>
+    </author>
+    <author>
+      <name>Aneta Vulgarakis Feljan</name>
+    </author>
+    <author>
+      <name>Zheng Chen</name>
+    </author>
+    <author>
+      <name>Nikolaos Pappas</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2610.07025v1</id>
+    <title>WiSPER: Pose-Supervised Predictive and Residual Flow Refinement For Multi-Person 3D Pose Estimation With WiFi CSI</title>
+    <updated>2026-10-04T16:57:06Z</updated>
+    <link href="https://arxiv.org/abs/2610.07025v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2610.07025v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>Multi-person 3D pose estimation with WiFi channel state information (CSI) is challenging because reflections from different people overlap without directly identifying individual joints. Existing masked embedding objectives capture wireless relationships without explicit pose supervision, while structured decoders can retain coordinate errors. We propose WiSPER, a two-stage framework combining pose-aware predictive pretraining with conditional residual flow refinement. Pose-Aware Masked Embedding Learning (PAMEL) couples masked latent prediction with auxiliary pose-set supervision on the same CSI context, guiding the encoder toward joint localization from partial observations. Residual Flow refinement with Transformer (ReFT) generates a set of pose candidates to accommodate a variable number of people and refines each candidate through a conditional flow guided by its coarse coordinates and per-joint decoder features. Both stages use paired CSI and pose annotations during training, while inference requires only CSI. Experiments on the PiW3D dataset show that WiSPER achieves an overall mean per-joint position error of 63.72 mm, a 40.0% reduction relative to WiFi-JEPA. For experiments with two and three people, WiSPER reduces MPJPE by 42.1% and 38.1%, respectively. Pose-supervised pretraining configurations obtain lower errors than CSI-only JEPA, and enabling the trained residual refiner reduces overall MPJPE by 13.8-15.6% across the evaluated configurations.</summary>
+    <category term="cs.CV" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-10-04T16:57:06Z</published>
+    <arxiv:primary_category term="cs.CV"/>
+    <author>
+      <name>Gabriel Lee Jun Rong</name>
+    </author>
+    <author>
+      <name>Shanhong Liu</name>
+    </author>
+    <author>
+      <name>Pai Chet Ng</name>
+    </author>
+    <author>
+      <name>Konstantinos N. Plataniotis</name>
+    </author>
+    <author>
+      <name>Jamal Seyedmohammadi</name>
+    </author>
+    <author>
+      <name>S. Mohammad Sheikholeslami</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2609.04851v1</id>
+    <title>Coupled Control and Wireless World Models for Resilient Remote Robotic Control</title>
+    <updated>2026-09-04T08:09:55Z</updated>
+    <link href="https://arxiv.org/abs/2609.04851v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2609.04851v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>Remote robotic systems operating over wireless networks must maintain reliable control despite limited communication resources, changing channel conditions, and environmental disturbances.However, continuously transmitting high-dimensional sensory observations, such as camera images, increases communication overhead and energy consumption while reducing robustness under unreliable connectivity.To address these challenges, this paper proposes a resilient communication-aware remote robotic control framework based on coupled control and wireless Joint Embedding Predictive Architecture (JEPA) world models that jointly capture robot dynamics and wireless channel evolution from visual observations and a combination of raw and structured radio frequency (RF) representations based on spectrograms and Persistence Images(PIs).The learned latent representations enable predictive communication scheduling by jointly forecasting future robot states and wireless conditions, thereby reducing unnecessary uplink transmissions while maintaining reliable control performance.Furthermore, an adaptive resilience mechanism detects latent prediction discrepancies and efficiently adapts perception embeddings to accommodate wireless and visual environmental changes without retraining the complete control policy.The proposed framework is evaluated in a synchronized Gazebo-Robot Operating System (ROS)-Sionna robot-wireless simulation environment under diverse wireless propagation and perception perturbations.Experimental results demonstrate significant improvements in communication efficiency, robustness, and resilience while maintaining navigation performance compared with conventional Proportional Integral Derivative (PID), model-free Deep Q-Network (DQN), and predictive approaches based on Vision Transformers(ViTs).</summary>
+    <category term="cs.RO" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.LG" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-09-04T08:09:55Z</published>
+    <arxiv:comment>13 pages, 13 figures. Submitted to IEEE Internet of Things Journal</arxiv:comment>
+    <arxiv:primary_category term="cs.RO"/>
+    <author>
+      <name>H. P. Madushanka</name>
+    </author>
+    <author>
+      <name>Sumudu Samarakoon</name>
+    </author>
+    <author>
+      <name>Mehdi Bennis</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2608.16955v1</id>
+    <title>WONDER: A Radio World Model-based Negotiation Framework for Multi-Agent UAV Coverage Optimization</title>
+    <updated>2026-08-16T11:47:34Z</updated>
+    <link href="https://arxiv.org/abs/2608.16955v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2608.16955v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>Post-disaster damage to terrestrial infrastructure can disrupt wireless coverage,while Uncrewed Aerial Vehicle (UAV) swarms provide a promising solution for rapid restoration.However, due to the limitations in local geometry observations hidden radio impact,and inter-UAV communication,there exists a significant gap between locally visible movement choices and swarm-level coverage outcomes.To combat this gap,we propose a raido World-model-based Optimized Negotiation framework for Distributed UAV covERage (WONDER).Particularly, to tackle the unavailability of the future radio field from onboard observations, WONDER uses a Joint-Embedding Predictive Architecture (JEPA)-based radio world model to learn and predict the incremental radio effect of each candidate trajectory from deployment-available information.Multi-round negotiation in WONDER then coordinates ranked proposals by committing one trajectory at a time and re-evaluating the remaining proposals under the updated context. Our theoretical analyses further validate the effectiveness of such a world model-based framework. WONDER also adopts a Proximal Policy Optimization (PPO)-style Actor and alternates between updating the world model and the actor. Furthermore,we build RadioDynamics,a comprehensive simulation environment that integrates UAV mobility,radio propagation, inter-UAV communication modeling,and digital-twin geometry with ray-traced fields in $62$ metropolitan scenes.Experiments on $11$ testing scenes in RadioDynamics show that WONDER achieves the highest balanced score among seven evaluated methods,reaching $0.870$ with a $0.162$ coverage advantage over STACCA, while maintaining $100\%$ connectivity between UAVs.</summary>
+    <category term="cs.MA" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.LG" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-08-16T11:47:34Z</published>
+    <arxiv:primary_category term="cs.MA"/>
+    <author>
+      <name>Jiahao Huang</name>
+    </author>
+    <author>
+      <name>Rongpeng Li</name>
+    </author>
+    <author>
+      <name>Zhifeng Zhao</name>
+    </author>
+    <author>
+      <name>Guoru Ding</name>
+    </author>
+    <author>
+      <name>Honggang Zhang</name>
+    </author>
+  </entry>
+</feed>

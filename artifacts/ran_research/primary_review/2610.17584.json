@@ -1,0 +1,34 @@
+{
+  "id": "2610.17584",
+  "checked_at_unix": 1793703783.1908534,
+  "attempts": [
+    {
+      "url": "https://arxiv.org/abs/2610.17584",
+      "status": 200,
+      "bytes": 43520,
+      "sha256": "abae90457d14c2f1b3da1e0e28ac2800bac002af5fe25a7d8157fcc009787202"
+    },
+    {
+      "url": "https://arxiv.org/pdf/2610.17584",
+      "status": 200,
+      "bytes": 238236,
+      "sha256": "8d5cc23b66404f10f9a5cccc00b7550205b78bd93eb16fe33c231cb6e9defa49"
+    }
+  ],
+  "sections_reviewed": [
+    "Sections 3.1–3.3: staged representation/action learning and mechanistic residual",
+    "Sections 4.1–4.5: operator/testbed data, sampling clocks and matched what-if control"
+  ],
+  "title": "RAN-JEPA: An Action-Conditioned World Model for Energy-efficient Mobile Network Control",
+  "citation_date": "2026/10/13",
+  "arxiv_version_markers": [
+    "arXiv:2610.17584v1"
+  ],
+  "pages": 10,
+  "same_pdf_as_earlier_session": true,
+  "method_summary": "Freeze observation-pretrained, deployment-adapted encoder; fit action-conditioned dynamics from actual controlled responses; compare same-history factual/counterfactual plans.",
+  "adoption_limits": "Five-minute testbed recording and fifteen-minute horizons, not warehouse50ms deadlines. No official code/weights located in bounded current paper/repository checks.",
+  "review_date": "2026-11-03",
+  "fulltext_redistributed": false,
+  "review_scope": "targeted primary sections and/or explicitly identified delegated source review; not full reproduction"
+}

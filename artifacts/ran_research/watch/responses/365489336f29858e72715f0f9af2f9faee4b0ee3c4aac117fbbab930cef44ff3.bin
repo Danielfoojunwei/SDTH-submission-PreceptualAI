@@ -1,0 +1,128 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<feed xmlns:opensearch="http://a9.com/-/spec/opensearch/1.1/" xmlns:arxiv="http://arxiv.org/schemas/atom" xmlns="http://www.w3.org/2005/Atom">
+  <id>https://arxiv.org/api/9WAHPA5yYLNDxLN6sZPCnLN/cmg</id>
+  <title>arXiv Query: search_query=( (all:"wireless" OR all:"radio access network") AND (all:"deadline" OR all:"uncertainty") ) AND submittedDate:"202601010000 TO 202611031454"&amp;id_list=&amp;start=0&amp;max_results=5</title>
+  <updated>2026-11-03T14:54:25Z</updated>
+  <link href="https://arxiv.org/api/query?search_query=((all:%22wireless%22+OR+all:%22radio+access+network%22)+AND+(all:%22deadline%22+OR+all:%22uncertainty%22))+AND+submittedDate:%22202601010000+TO+202611031454%22&amp;start=0&amp;max_results=5&amp;id_list=" type="application/atom+xml"/>
+  <opensearch:itemsPerPage>5</opensearch:itemsPerPage>
+  <opensearch:totalResults>152</opensearch:totalResults>
+  <opensearch:startIndex>0</opensearch:startIndex>
+  <entry>
+    <id>http://arxiv.org/abs/2611.03378v1</id>
+    <title>Non-Coherent Over-the-Air Distributed Consensus: Algorithm Design and Power Control Optimization</title>
+    <updated>2026-11-02T16:20:54Z</updated>
+    <link href="https://arxiv.org/abs/2611.03378v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2611.03378v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>Non-coherent over-the-air (NCOTA) aggregation offers a scalable and communication-efficient approach to distributed average consensus in wireless networks, without requiring instantaneous channel state information (CSI) or phase alignment. However, persistent aggregation errors pose fundamental challenges in achieving exact average consensus under nominal distributed averaging protocols. In this paper, we develop an NCOTA consensus framework that accommodates row-stochastic mixing, without requiring the conventional average-preservation property of doubly stochastic mixing matrices. Building on a distributed optimization formulation of average consensus, we propose a decentralized projected gradient descent with row-stochastic mixing (DPGD-RS) algorithm and establish its mean-square convergence to the exact average of the agents' initial states. We further derive a closed-form upper bound on the mean-square consensus error, characterizing the effects of aggregation uncertainty, network connectivity, and mixing imbalance. Guided by this analysis, we propose a spectral-reshaping power control (SR-PC) scheme that jointly optimizes transmit powers and receive-scaling factors to accelerate convergence by balancing aggregation accuracy and network mixing. Numerical results validate the theoretical convergence guarantees and demonstrate that the proposed power control scheme significantly accelerates convergence compared with full-power transmission and spectral-radius-minimization benchmarks.</summary>
+    <category term="cs.IT" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="eess.SP" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="eess.SY" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-11-02T16:20:54Z</published>
+    <arxiv:comment>13 pages, 4 figures. Extended version of a paper published in Proc. IEEE ICC 2025</arxiv:comment>
+    <arxiv:primary_category term="cs.IT"/>
+    <author>
+      <name>Yuhang Deng</name>
+    </author>
+    <author>
+      <name>Zheng Chen</name>
+    </author>
+    <author>
+      <name>Erik G. Larsson</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2610.40826v1</id>
+    <title>Joint Estimation and Network Configuration in Multi-Agent Systems</title>
+    <updated>2026-10-29T18:06:37Z</updated>
+    <link href="https://arxiv.org/abs/2610.40826v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2610.40826v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>Distributed consensus-based sensing enables a multi-agent system to collaboratively estimate an unknown state by combining local measurements with information received from neighboring agents. In practice, however, the communication network, transmission delays, and finite-rate communication directly affect the disagreement among agents. On the other hand, agreement among agents does not ensure accuracy, particularly when sensors have different measurement uncertainties. We develop a sampled consensus-plus-innovations framework under realistic wireless network constraints that jointly accounts for inter-agent disagreement and estimation inaccuracy. We derive a computable upper bound on the worst-case steady-state estimation error that captures consensus disagreement due to the communication graph, quantization error, and transmission delay, together with estimation inaccuracy, which accounts for measurement uncertainty against the true state. We then use this bound as a network design objective and propose a semi-distributed auction-based algorithm that jointly modifies the communication graph and link-rate allocation. The proposed method preserves connectivity, converges in finite time to a locally auction-stable network configuration, and reduces the bound on the estimation error at every accepted change. The proposed method has been evaluated on various test cases, and the results show that it reduces the estimation error while maintaining fewer links and allocating moderate link rates in a short time.</summary>
+    <category term="eess.SP" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-10-29T18:06:37Z</published>
+    <arxiv:primary_category term="eess.SP"/>
+    <author>
+      <name>Mohammadreza Barzegaran</name>
+    </author>
+    <author>
+      <name>Hamid Jafarkhani</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2610.36905v1</id>
+    <title>Digital Twin-Guided Wireless Localization via Probabilistic Inverse Learning</title>
+    <updated>2026-10-27T09:36:39Z</updated>
+    <link href="https://arxiv.org/abs/2610.36905v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2610.36905v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>This work investigates how site-specific digital twins (DTs) can support wireless localization using simplified distributed infrastructure. We propose PRISM (Probabilistic Refinement using Inverse learning and a Site-specific Model), a DT-guided probabilistic localization scheme with single-antenna access points (APs). Localization is formulated as a probabilistic inverse problem in which a conditional proposal distribution over UE locations is learned from multi-node channel impulse responses (CIRs). The proposal generates candidate locations, with its spread regularized during training and DT consistency used to reweight candidates and refine the estimate at inference. The DT serves as an approximate forward-consistency model, avoiding assumptions of exact channel fidelity or differentiability with respect to user position. Numerical experiments demonstrate gains over data-driven and classical fingerprinting benchmarks, while achieving a median error of approximately $0.7$ m using 10 single-antenna APs. Without retraining, PRISM remains effective under degraded inference-time DT features. PRISM also yields uncertainty estimates from its proposal covariance, with empirical $χ^2$ calibration approaching ideal behavior as APs increase.</summary>
+    <category term="cs.IT" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="eess.SP" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-10-27T09:36:39Z</published>
+    <arxiv:primary_category term="cs.IT"/>
+    <author>
+      <name>Mahmoud Saad Abouamer</name>
+    </author>
+    <author>
+      <name>Henrik C. M. Frederiksen</name>
+    </author>
+    <author>
+      <name>Robin J. Williams</name>
+    </author>
+    <author>
+      <name>Shashi Raj Pandey</name>
+    </author>
+    <author>
+      <name>Petar Popovski</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2610.37717v1</id>
+    <title>Learning Graph Beliefs for Active Radio Mapping With Decision-Certified Multi-Step Sensing</title>
+    <updated>2026-10-27T05:50:42Z</updated>
+    <link href="https://arxiv.org/abs/2610.37717v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2610.37717v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>Radio maps provide essential wireless propagation knowledge for network optimization and autonomous platforms. Acquiring dense measurements, however, is prohibitively costly, requiring active sampling to prioritize informative measurements. Existing active sampling methods typically rely on variances from prescribed spatial models or learned pointwise uncertainty, which may not fully capture the spatial correlation of different measurements. This paper proposes GraphBARC, a graph-structured active radio map construction framework that integrates learned spatial modeling with analytical Bayesian inference. A graph network learns correlated node and edge factors using only acquired measurements, inducing a joint full-map belief that supports analytical observation updates without retraining. Rather than immediate one-step acquisition, it adopts a nonmyopic sensing strategy that evaluates joint map-wide Bayes risk reduction over feasible multi-step routes, accounting for information redundancy among planned measurements. We reuse candidate responses and derive residual-based bounds directly on route-value differences, retaining shared response-error structure to avoid uniformly high-accuracy evaluation. An error-aware continuation bound screens unpromising prefixes, after which only responses needed for unresolved comparisons are refined. We further establish a computable decision-gap bound and show that certified exclusions remain valid during refinement. Experiments show that GraphBARC reduces mean root-mean-square error (RMSE) by over 16% relative to the evaluated baselines and core planning time by 56% compared with the fixed-accuracy, unpruned implementation.</summary>
+    <category term="cs.NI" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.LG" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-10-27T05:50:42Z</published>
+    <arxiv:primary_category term="cs.NI"/>
+    <author>
+      <name>Wangqian Chen</name>
+    </author>
+    <author>
+      <name>Hao Wang</name>
+    </author>
+    <author>
+      <name>Yumeng Zhang</name>
+    </author>
+    <author>
+      <name>Chenghong Bian</name>
+    </author>
+    <author>
+      <name>Junting Chen</name>
+    </author>
+    <author>
+      <name>Jun Zhang</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2610.36406v1</id>
+    <title>Adaptive Calibration of RF Digital Twins via Budget-Constrained Radio Measurement Selection</title>
+    <updated>2026-10-26T23:40:54Z</updated>
+    <link href="https://arxiv.org/abs/2610.36406v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2610.36406v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>Radio-frequency (RF) digital twins (DTs) enable site-specific wireless propagation prediction by explicitly reconstructing the physical environment and modeling electromagnetic interactions. Although physics-based DTs reduce reliance on exhaustive measurements, systematic bias relative to real radio data arises from environmental uncertainty, material inaccuracies, and geometric abstractions. Calibration using field measurements is therefore necessary but costly under limited sampling budgets. This paper studies active RF DT calibration, in which measurement locations are selected sequentially and in an online manner to estimate a calibration offset under strict measurement budget constraints. A physics-based RF DT pipeline is developed, integrating semantic geospatial data from OpenStreetMap, 3D modeling in Blender, and deterministic ray tracing in Sionna to capture dominant building and foliage effects. This RF DT is calibrated using path-loss measurements collected with software-defined radios. Multiple online calibration strategies that select radio measurement locations are compared, including random sampling, rank-structured sampling with balanced coverage, quasi-Monte Carlo ranked selection, progressive structure-aware allocation, and fully adaptive uncertainty-driven sampling with estimator stabilization. Results demonstrate that adaptive and structure-aware schemes significantly improve both mean and worst-case calibration accuracy, particularly in the low-budget regime for radio measurements.</summary>
+    <category term="cs.NI" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="eess.SP" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-10-26T23:40:54Z</published>
+    <arxiv:primary_category term="cs.NI"/>
+    <author>
+      <name>Yalin E. Sagduyu</name>
+    </author>
+    <author>
+      <name>Tugba Erpek</name>
+    </author>
+    <author>
+      <name>Hossein Jafari</name>
+    </author>
+  </entry>
+</feed>

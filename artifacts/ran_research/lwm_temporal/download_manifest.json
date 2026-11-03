@@ -1,0 +1,356 @@
+{
+  "repository": "wi-lab/lwm-temporal",
+  "revision": "df32f4beb6c7fe11d83031edbe5d6312798b81c3",
+  "source_directory": "/workspace/upstream/continual-radio/lwm-temporal",
+  "metadata_url": "https://huggingface.co/api/models/wi-lab/lwm-temporal/revision/df32f4beb6c7fe11d83031edbe5d6312798b81c3?blobs=true",
+  "metadata_sha256": "bf1af54332eee961a4d7ce5113f5471f9c003a82a5996d5dfdb14ee3408a6854",
+  "downloaded_at_utc": "2026-11-03T15:00:55.612292+00:00",
+  "omitted_files": [
+    "notebooks/tutorial.ipynb"
+  ],
+  "files": [
+    {
+      "path": ".gitattributes",
+      "bytes": 200,
+      "sha256": "c0ca963f6d2ea2f1c139577078fcc142a08cd88d3e2cd7fbc1587ca3f83a89fd",
+      "url": "https://huggingface.co/wi-lab/lwm-temporal/resolve/df32f4beb6c7fe11d83031edbe5d6312798b81c3/.gitattributes",
+      "git_blob_id": "d98ae3a5905f90d543a5d1107a8f39d4f96f89ce",
+      "lfs_sha256_verified": false,
+      "git_blob_verified": true
+    },
+    {
+      "path": ".gitignore",
+      "bytes": 975,
+      "sha256": "8c06003089f82a753b4bbb00a9dc467f78f998119c74f839324e8abe6840516c",
+      "url": "https://huggingface.co/wi-lab/lwm-temporal/resolve/df32f4beb6c7fe11d83031edbe5d6312798b81c3/.gitignore",
+      "git_blob_id": "3da6bb3fad3a2779648c62f13a6a52ae3bdd879c",
+      "lfs_sha256_verified": false,
+      "git_blob_verified": true
+    },
+    {
+      "path": "LICENSE",
+      "bytes": 1073,
+      "sha256": "db8d07cbbc61a50354d22437da225c2803af9b7eae56a4e0baf89d2f37c63df2",
+      "url": "https://huggingface.co/wi-lab/lwm-temporal/resolve/df32f4beb6c7fe11d83031edbe5d6312798b81c3/LICENSE",
+      "git_blob_id": "61ca9c51501e1ff313478e96ea6d613303ad40b0",
+      "lfs_sha256_verified": false,
+      "git_blob_verified": true
+    },
+    {
+      "path": "LWMTemporal/__init__.py",
+      "bytes": 233,
+      "sha256": "221a6bca3e63da9a79aed83bbdf4d2770c7c6d4a9bcc1d85b5c107af3a518635",
+      "url": "https://huggingface.co/wi-lab/lwm-temporal/resolve/df32f4beb6c7fe11d83031edbe5d6312798b81c3/LWMTemporal/__init__.py",
+      "git_blob_id": "1bd05f3adb1c298c1d1fee4e9b6e2f8b7d4e999d",
+      "lfs_sha256_verified": false,
+      "git_blob_verified": true
+    },
+    {
+      "path": "LWMTemporal/cli/__init__.py",
+      "bytes": 63,
+      "sha256": "8957df5db4c107bc935ef75b4600eef838fb89a688d100cbe01c236b00eac35d",
+      "url": "https://huggingface.co/wi-lab/lwm-temporal/resolve/df32f4beb6c7fe11d83031edbe5d6312798b81c3/LWMTemporal/cli/__init__.py",
+      "git_blob_id": "a2252565f069d0b638681f671915994d67404ec8",
+      "lfs_sha256_verified": false,
+      "git_blob_verified": true
+    },
+    {
+      "path": "LWMTemporal/cli/channel_prediction.py",
+      "bytes": 7577,
+      "sha256": "88c0e78d59631dd1fa8b5274c70af6d0cd5dde9dd08bf9f4fde9918592f18326",
+      "url": "https://huggingface.co/wi-lab/lwm-temporal/resolve/df32f4beb6c7fe11d83031edbe5d6312798b81c3/LWMTemporal/cli/channel_prediction.py",
+      "git_blob_id": "34658b07df9844c0b9275e96b38d1943e6ffece4",
+      "lfs_sha256_verified": false,
+      "git_blob_verified": true
+    },
+    {
+      "path": "LWMTemporal/cli/generate_dynamic_data.py",
+      "bytes": 11173,
+      "sha256": "b29d0e2eee3f20b6345b6dea24219f45c0b80f12bcdcf41f6818200a87e62afc",
+      "url": "https://huggingface.co/wi-lab/lwm-temporal/resolve/df32f4beb6c7fe11d83031edbe5d6312798b81c3/LWMTemporal/cli/generate_dynamic_data.py",
+      "git_blob_id": "6e704d2caec6b8b8d9e004fab93936a76d361bc3",
+      "lfs_sha256_verified": false,
+      "git_blob_verified": true
+    },
+    {
+      "path": "LWMTemporal/cli/pretrain.py",
+      "bytes": 850,
+      "sha256": "8067d1b0c9af36b44553d9461650da1532da55e4dde865d5b7f884b5c315ecb9",
+      "url": "https://huggingface.co/wi-lab/lwm-temporal/resolve/df32f4beb6c7fe11d83031edbe5d6312798b81c3/LWMTemporal/cli/pretrain.py",
+      "git_blob_id": "09ac95dfa59003d6072f39fc6878c547f5a63bf6",
+      "lfs_sha256_verified": false,
+      "git_blob_verified": true
+    },
+    {
+      "path": "LWMTemporal/data/__init__.py",
+      "bytes": 915,
+      "sha256": "ce2800f3742b78f2b42037da86667da1073cfb5fda4da4c67d5669d4ce1f04fd",
+      "url": "https://huggingface.co/wi-lab/lwm-temporal/resolve/df32f4beb6c7fe11d83031edbe5d6312798b81c3/LWMTemporal/data/__init__.py",
+      "git_blob_id": "f6a693c42919a798cbd06d4ad34bd43647b5151d",
+      "lfs_sha256_verified": false,
+      "git_blob_verified": true
+    },
+    {
+      "path": "LWMTemporal/data/angle_delay.py",
+      "bytes": 17143,
+      "sha256": "fa8114a74fff1212ed5ed02b2fd75371a8f2a6a6afbc80923879aa57ae0e0edd",
+      "url": "https://huggingface.co/wi-lab/lwm-temporal/resolve/df32f4beb6c7fe11d83031edbe5d6312798b81c3/LWMTemporal/data/angle_delay.py",
+      "git_blob_id": "4931f402421a0d3ae14959bdffc6446a08b1c26e",
+      "lfs_sha256_verified": false,
+      "git_blob_verified": true
+    },
+    {
+      "path": "LWMTemporal/data/datasets.py",
+      "bytes": 7220,
+      "sha256": "0165597ba5ccb2da02435aca76f6f9a1106e422290adbbceb1b730816d16e3fb",
+      "url": "https://huggingface.co/wi-lab/lwm-temporal/resolve/df32f4beb6c7fe11d83031edbe5d6312798b81c3/LWMTemporal/data/datasets.py",
+      "git_blob_id": "7913643f23a51b5ad21725a2c1aea85f9074f0df",
+      "lfs_sha256_verified": false,
+      "git_blob_verified": true
+    },
+    {
+      "path": "LWMTemporal/data/deepmimo_adapter.py",
+      "bytes": 8403,
+      "sha256": "07c2814c1ee48c31148bfd936ff25dcf1a40b0487f2eee190e0d7523da374b33",
+      "url": "https://huggingface.co/wi-lab/lwm-temporal/resolve/df32f4beb6c7fe11d83031edbe5d6312798b81c3/LWMTemporal/data/deepmimo_adapter.py",
+      "git_blob_id": "1959012113355105938fd3d22e756993b8e60c0a",
+      "lfs_sha256_verified": false,
+      "git_blob_verified": true
+    },
+    {
+      "path": "LWMTemporal/data/scenario_generation.py",
+      "bytes": 62614,
+      "sha256": "fc39dc0f46d9143b9dfcceb9faff8ab150c0322468160a646a041c7020d21f25",
+      "url": "https://huggingface.co/wi-lab/lwm-temporal/resolve/df32f4beb6c7fe11d83031edbe5d6312798b81c3/LWMTemporal/data/scenario_generation.py",
+      "git_blob_id": "d5f60a90195ee4816ae0a46a50b5872bc67ab792",
+      "lfs_sha256_verified": false,
+      "git_blob_verified": true
+    },
+    {
+      "path": "LWMTemporal/models/__init__.py",
+      "bytes": 102,
+      "sha256": "9720cbde8a346f28e96758c28321ee5c804f455bf18ad780ba6e69749299bc4a",
+      "url": "https://huggingface.co/wi-lab/lwm-temporal/resolve/df32f4beb6c7fe11d83031edbe5d6312798b81c3/LWMTemporal/models/__init__.py",
+      "git_blob_id": "455eb356f0e437eea0e84fe331b275aaa27c05b4",
+      "lfs_sha256_verified": false,
+      "git_blob_verified": true
+    },
+    {
+      "path": "LWMTemporal/models/config.json",
+      "bytes": 1032,
+      "sha256": "556fa34bbb1e5649385a97e576ffba81c1c6d4fa21e1635664f72a42d208c392",
+      "url": "https://huggingface.co/wi-lab/lwm-temporal/resolve/df32f4beb6c7fe11d83031edbe5d6312798b81c3/LWMTemporal/models/config.json",
+      "git_blob_id": "eea448b3ececb6e216cc0942dd2213e4164b4f7b",
+      "lfs_sha256_verified": false,
+      "git_blob_verified": true
+    },
+    {
+      "path": "LWMTemporal/models/hf.py",
+      "bytes": 3779,
+      "sha256": "d11119ea6a975143ba067a4ea3b2de7e0edce4f21e7af01ac041bde4a14de0f1",
+      "url": "https://huggingface.co/wi-lab/lwm-temporal/resolve/df32f4beb6c7fe11d83031edbe5d6312798b81c3/LWMTemporal/models/hf.py",
+      "git_blob_id": "ed6e2baa00d70ad4f4a34597d8c4e194114c6398",
+      "lfs_sha256_verified": false,
+      "git_blob_verified": true
+    },
+    {
+      "path": "LWMTemporal/models/lwm.py",
+      "bytes": 25446,
+      "sha256": "c8ef6e6ccbc5124edf29d79d190d7c065fd98e668af251ff09979ec1d0d39f72",
+      "url": "https://huggingface.co/wi-lab/lwm-temporal/resolve/df32f4beb6c7fe11d83031edbe5d6312798b81c3/LWMTemporal/models/lwm.py",
+      "git_blob_id": "cc9ecf1dd9bb2e75063c48574394becfc2c17cbc",
+      "lfs_sha256_verified": false,
+      "git_blob_verified": true
+    },
+    {
+      "path": "LWMTemporal/tasks/channel_prediction.py",
+      "bytes": 29043,
+      "sha256": "fc47e6d88ae4d3bbe7b3c097371da863331678913891894f16f2c320b58dbbc2",
+      "url": "https://huggingface.co/wi-lab/lwm-temporal/resolve/df32f4beb6c7fe11d83031edbe5d6312798b81c3/LWMTemporal/tasks/channel_prediction.py",
+      "git_blob_id": "7a731addfc5fd4b3ca546c89bdbe2843d5f6e7e6",
+      "lfs_sha256_verified": false,
+      "git_blob_verified": true
+    },
+    {
+      "path": "LWMTemporal/tasks/pretraining.py",
+      "bytes": 29310,
+      "sha256": "608a8a0db9465ca2f0a52fc7f296e7407c0ad4e04cf24f4786641032400e5b70",
+      "url": "https://huggingface.co/wi-lab/lwm-temporal/resolve/df32f4beb6c7fe11d83031edbe5d6312798b81c3/LWMTemporal/tasks/pretraining.py",
+      "git_blob_id": "1e0bb65fa598ccbf28270e35b37fb0b666d3da18",
+      "lfs_sha256_verified": false,
+      "git_blob_verified": true
+    },
+    {
+      "path": "LWMTemporal/training/__init__.py",
+      "bytes": 52,
+      "sha256": "1806926f1e7506fa18797d52d9793f74660a452fa89f5f98e6b5a98d4ecc6070",
+      "url": "https://huggingface.co/wi-lab/lwm-temporal/resolve/df32f4beb6c7fe11d83031edbe5d6312798b81c3/LWMTemporal/training/__init__.py",
+      "git_blob_id": "770f99a720e16aa221cd4ed7e2312096a1984105",
+      "lfs_sha256_verified": false,
+      "git_blob_verified": true
+    },
+    {
+      "path": "LWMTemporal/utils/logging.py",
+      "bytes": 1158,
+      "sha256": "6926e78088e17d5685bd41de4457fd469c1a525f461c3896291d1efb9e523f8b",
+      "url": "https://huggingface.co/wi-lab/lwm-temporal/resolve/df32f4beb6c7fe11d83031edbe5d6312798b81c3/LWMTemporal/utils/logging.py",
+      "git_blob_id": "5b388c6cca2587a0adcca6eab380452dc41f6d8d",
+      "lfs_sha256_verified": false,
+      "git_blob_verified": true
+    },
+    {
+      "path": "MANIFEST.in",
+      "bytes": 280,
+      "sha256": "6b5961b80aca4bb40cc2f2083c2bc3fb89c96d4d185021e1663dedc6ee173756",
+      "url": "https://huggingface.co/wi-lab/lwm-temporal/resolve/df32f4beb6c7fe11d83031edbe5d6312798b81c3/MANIFEST.in",
+      "git_blob_id": "9eba22b767e5389b5007522d1e9acbe16a8e44bb",
+      "lfs_sha256_verified": false,
+      "git_blob_verified": true
+    },
+    {
+      "path": "README.md",
+      "bytes": 11381,
+      "sha256": "6ac59d21ecbbb504cc077e70f0348878d9a4a67b513ab41f4d2f2049703dc4fe",
+      "url": "https://huggingface.co/wi-lab/lwm-temporal/resolve/df32f4beb6c7fe11d83031edbe5d6312798b81c3/README.md",
+      "git_blob_id": "6625dd02ad59de374dea699945d00f693bab94ed",
+      "lfs_sha256_verified": false,
+      "git_blob_verified": true
+    },
+    {
+      "path": "checkpoints/config.json",
+      "bytes": 1032,
+      "sha256": "556fa34bbb1e5649385a97e576ffba81c1c6d4fa21e1635664f72a42d208c392",
+      "url": "https://huggingface.co/wi-lab/lwm-temporal/resolve/df32f4beb6c7fe11d83031edbe5d6312798b81c3/checkpoints/config.json",
+      "git_blob_id": "eea448b3ececb6e216cc0942dd2213e4164b4f7b",
+      "lfs_sha256_verified": false,
+      "git_blob_verified": true
+    },
+    {
+      "path": "checkpoints/pytorch_model.bin",
+      "bytes": 1017487,
+      "sha256": "90be5447ee15f13547f1d0819de4d80fc1b49c28737378824513cb293335e0be",
+      "url": "https://huggingface.co/wi-lab/lwm-temporal/resolve/df32f4beb6c7fe11d83031edbe5d6312798b81c3/checkpoints/pytorch_model.bin",
+      "git_blob_id": "5296900207d0a5fedf07b19d6260061544492f58",
+      "lfs_sha256_verified": true,
+      "git_blob_verified": false
+    },
+    {
+      "path": "docs/dynamic_scenario_pipeline.md",
+      "bytes": 18013,
+      "sha256": "7f3c1518e1fac35f2b4fd040d32b6c46c3236a90449f45f427b8f9811d2f949c",
+      "url": "https://huggingface.co/wi-lab/lwm-temporal/resolve/df32f4beb6c7fe11d83031edbe5d6312798b81c3/docs/dynamic_scenario_pipeline.md",
+      "git_blob_id": "073484861cf209a371433d249573ef4bd3b9a467",
+      "lfs_sha256_verified": false,
+      "git_blob_verified": true
+    },
+    {
+      "path": "docs/lwm_temporal_user_guide.md",
+      "bytes": 24343,
+      "sha256": "2c0579713ae8fb5d1ca4e4d947b99c4b56bd686d9ce09187683d589d18e4709a",
+      "url": "https://huggingface.co/wi-lab/lwm-temporal/resolve/df32f4beb6c7fe11d83031edbe5d6312798b81c3/docs/lwm_temporal_user_guide.md",
+      "git_blob_id": "307dae47d1dd5288de4bfcacdd1248619c779336",
+      "lfs_sha256_verified": false,
+      "git_blob_verified": true
+    },
+    {
+      "path": "examples/README.md",
+      "bytes": 1711,
+      "sha256": "f074caa716e1e4d319aec13ed2d9fd94df6ef586526656ab4d17b639054a3260",
+      "url": "https://huggingface.co/wi-lab/lwm-temporal/resolve/df32f4beb6c7fe11d83031edbe5d6312798b81c3/examples/README.md",
+      "git_blob_id": "c3c5412a33c5ccded372a052fb82c9328d250108",
+      "lfs_sha256_verified": false,
+      "git_blob_verified": true
+    },
+    {
+      "path": "examples/__init__.py",
+      "bytes": 144,
+      "sha256": "59fe573da54623b1e38e205eda7dcb06fa6e04ee092be390d21a9ead2bf4da65",
+      "url": "https://huggingface.co/wi-lab/lwm-temporal/resolve/df32f4beb6c7fe11d83031edbe5d6312798b81c3/examples/__init__.py",
+      "git_blob_id": "e0c113496070995efed1971d9f484abb562b6514",
+      "lfs_sha256_verified": false,
+      "git_blob_verified": true
+    },
+    {
+      "path": "examples/ad_temporal_evolution.py",
+      "bytes": 12086,
+      "sha256": "fb73c8e569b35bff7a49caf60a3deda6ab0abf244f735f00699f87b3aab0b3ce",
+      "url": "https://huggingface.co/wi-lab/lwm-temporal/resolve/df32f4beb6c7fe11d83031edbe5d6312798b81c3/examples/ad_temporal_evolution.py",
+      "git_blob_id": "26c86b4891a403b00de52e32c13c5a5e229c6ec9",
+      "lfs_sha256_verified": false,
+      "git_blob_verified": true
+    },
+    {
+      "path": "examples/example_reconstruction.py",
+      "bytes": 4630,
+      "sha256": "ee5ce8fbb83d4aa00140dcd72ca5fb27e2136a1a4198bc227e5ffa0a51798681",
+      "url": "https://huggingface.co/wi-lab/lwm-temporal/resolve/df32f4beb6c7fe11d83031edbe5d6312798b81c3/examples/example_reconstruction.py",
+      "git_blob_id": "209e3d04e2f91c5f1fbb75d48c372efde2837138",
+      "lfs_sha256_verified": false,
+      "git_blob_verified": true
+    },
+    {
+      "path": "examples/inference_channel_prediction.py",
+      "bytes": 1757,
+      "sha256": "c53f6f0f94fc4da8a95dfb18937b6d90acb658c15ec5da262063a93893e63fd7",
+      "url": "https://huggingface.co/wi-lab/lwm-temporal/resolve/df32f4beb6c7fe11d83031edbe5d6312798b81c3/examples/inference_channel_prediction.py",
+      "git_blob_id": "74b1581c3fca6723e41474a2fa0a914d64f817ab",
+      "lfs_sha256_verified": false,
+      "git_blob_verified": true
+    },
+    {
+      "path": "examples/scripts/generate_data.py",
+      "bytes": 454,
+      "sha256": "d5b73d3f3aa0f9277478c1856e30c8b63758ee0fe35bf91615d1e5f38cb20e84",
+      "url": "https://huggingface.co/wi-lab/lwm-temporal/resolve/df32f4beb6c7fe11d83031edbe5d6312798b81c3/examples/scripts/generate_data.py",
+      "git_blob_id": "5bdfb6500ec39769b9cd5e45b734229a6b19ad52",
+      "lfs_sha256_verified": false,
+      "git_blob_verified": true
+    },
+    {
+      "path": "examples/train_channel_prediction.py",
+      "bytes": 2964,
+      "sha256": "de5940fc59209f9b10e6bebaaddbf73f738b3948658a2611cce4e4eaea9f7003",
+      "url": "https://huggingface.co/wi-lab/lwm-temporal/resolve/df32f4beb6c7fe11d83031edbe5d6312798b81c3/examples/train_channel_prediction.py",
+      "git_blob_id": "2bbe4f60cffb547c7b3bccfe5341174fa8bec714",
+      "lfs_sha256_verified": false,
+      "git_blob_verified": true
+    },
+    {
+      "path": "examples/utils/data_utils.py",
+      "bytes": 47462,
+      "sha256": "fef2a47693a228a5045f4738ba744b9e788b2b4ead6ffe91fb041ce7a442f67d",
+      "url": "https://huggingface.co/wi-lab/lwm-temporal/resolve/df32f4beb6c7fe11d83031edbe5d6312798b81c3/examples/utils/data_utils.py",
+      "git_blob_id": "da109257a66b0c0f9a1ad88ded1ac861b5896ea7",
+      "lfs_sha256_verified": false,
+      "git_blob_verified": true
+    },
+    {
+      "path": "pyproject.toml",
+      "bytes": 1730,
+      "sha256": "bcd5686ad4fe045e7fcb21c49b8899f4750ca783bc4df6e6565fde29f38b5e50",
+      "url": "https://huggingface.co/wi-lab/lwm-temporal/resolve/df32f4beb6c7fe11d83031edbe5d6312798b81c3/pyproject.toml",
+      "git_blob_id": "ee4ab51144e38e72c9521e2e055599d7ffc221e5",
+      "lfs_sha256_verified": false,
+      "git_blob_verified": true
+    },
+    {
+      "path": "requirements.txt",
+      "bytes": 46,
+      "sha256": "6db9cea79188009dc9b722744dfa85e5ffb3ba81c31501cfb333fbc5f931da0b",
+      "url": "https://huggingface.co/wi-lab/lwm-temporal/resolve/df32f4beb6c7fe11d83031edbe5d6312798b81c3/requirements.txt",
+      "git_blob_id": "e04d0f599302b2a4f0d7fa1f5b9746c78054566c",
+      "lfs_sha256_verified": false,
+      "git_blob_verified": true
+    },
+    {
+      "path": "setup.py",
+      "bytes": 1961,
+      "sha256": "0d14b732b4f97900af711506419e5e01414f762c941e9fb24b3e04eb14186fbb",
+      "url": "https://huggingface.co/wi-lab/lwm-temporal/resolve/df32f4beb6c7fe11d83031edbe5d6312798b81c3/setup.py",
+      "git_blob_id": "92ac802bf888501ecd8ac37bd77b3a7e63b4aa50",
+      "lfs_sha256_verified": false,
+      "git_blob_verified": true
+    }
+  ],
+  "upstream_code_executed_during_download": false
+}

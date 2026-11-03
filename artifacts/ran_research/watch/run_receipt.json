@@ -1,0 +1,42 @@
+{
+  "live_command": [
+    "PYTHONPATH=src",
+    "uv",
+    "run",
+    "--frozen",
+    "python",
+    "scripts/update_ran_research.py",
+    "--output-dir",
+    "artifacts/ran_research/watch",
+    "--sources",
+    "arxiv",
+    "openalex",
+    "--since",
+    "2026-01-01",
+    "--max-results",
+    "5",
+    "--timeout",
+    "5",
+    "--max-attempts",
+    "1",
+    "--max-run-seconds",
+    "90"
+  ],
+  "cli_exit_code": 0,
+  "source_sha256": {
+    "src/wirelessjev/research_watch.py": "6c352b82c2729a9c4025f8bcfcb9bea814b50b483dedadc4411341ecdd3181af",
+    "scripts/update_ran_research.py": "be773f5926e4ee7a793671d3540a79cc74cc6ada569d735dc2225c29c08f0dbc",
+    "tests/test_research_watch.py": "b66efff5275c4d95cab87e1c41fa419b8e3d159eceade03421c1532974edf586"
+  },
+  "latest_sha256": "1f864dc085b73b801d6842f9aeddf8fa98dc2a0a31835d46ac76e6c4dfd1e09a",
+  "unit_tests": {
+    "passed": 14,
+    "network_free": true
+  },
+  "response_receipts_valid": true,
+  "live_successful_requests": 10,
+  "live_total_requests": 10,
+  "leads": 47,
+  "scientific_review_performed": false,
+  "sota_or_production_claim": false
+}

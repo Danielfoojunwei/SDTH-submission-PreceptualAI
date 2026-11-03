@@ -5,6 +5,25 @@ Current experiment status and restart prerequisites are in [docs/HANDOFF.md](doc
 The restored didjital R6.1 reference and its executed software checks are
 documented in [docs/R6_COMPATIBILITY.md](docs/R6_COMPATIBILITY.md).
 
+The latest [continual radio work](docs/CONTINUAL_RADIO_STATUS.md) completes six
+registered response-learning fits on 24 real Sionna RT contexts. **JEPA does
+not beat the numerical controls.** Independent, staggered feedback reduces
+Bayesian response error by **77.1%** versus synchronized feedback at equal
+transmitter-on airtime; this is a simulation measurement-design result, not a
+packet-service gain. Bounded device/context memory learns identifiable action
+effects while leaving unsupported queries unknown.
+
+Execution semantics v2 fixes duplicate issue and reservation recovery; runtime
+guards bound work and reject stale forecasts. No learned candidate is production
+qualified. The [research watch](docs/RAN_RESEARCH_WATCH.md) retains 47 live,
+unreviewed leads and configures daily 08:00 Singapore discovery after its
+workflow reaches the default branch. Discovery never promotes a model.
+The final suite passes **582 tests**, including cached pretrained DINOv3
+integration. [Verification and evidence hashes](artifacts/ran_research/verification.json)
+bind the completed work; this is software verification, not hardware qualification.
+GitHub CI is currently blocked before job execution by an account billing lock;
+daily discovery also requires that issue resolved and the workflow merged.
+
 The latest [representation and DINOv3 work](docs/VISUAL_RADIO_STATUS.md) audits
 six trained critics and completes six new projection-ablation fits. It finds
 concentrated, informative latents; a separate future projection improves latent
@@ -16,7 +35,7 @@ fusion remains untrained, and cross-warehouse improvement is unconfirmed.
 The [coupled RT probe](docs/VISUAL_RADIO_RT.md) now also computes real Sionna RT
 channels and DINOv3 features from the same warehouse geometry and two blocker
 poses. This supplies paired static simulation inputs, with no learned RF score.
-All **400 software tests pass**, including actual cached pretrained DINOv3
+Its archived **400 software tests pass**, including actual cached pretrained DINOv3
 integration. The [verification receipt](artifacts/visual_radio/verification.json)
 links source and evidence hashes; original experiment archives remain unchanged.
 

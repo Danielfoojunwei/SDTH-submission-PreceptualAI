@@ -1,0 +1,34 @@
+{
+  "id": "2610.13315",
+  "checked_at_unix": 1793703783.192066,
+  "attempts": [
+    {
+      "url": "https://arxiv.org/abs/2610.13315",
+      "status": 200,
+      "bytes": 40164,
+      "sha256": "b4cb123b5611cbd46d40b391af49908abaf457ee99b710bc00c34ad10983a157"
+    },
+    {
+      "url": "https://arxiv.org/pdf/2610.13315",
+      "status": 200,
+      "bytes": 324134,
+      "sha256": "afd0320e7a06dc19210166ad627a7f4163c98dcbe0c7f5e7f7dd657a5cfee8e2"
+    }
+  ],
+  "sections_reviewed": [
+    "Section 3.1–3.3: frozen denoising latent, residual predictor/decoder and noisy-history inference",
+    "Section4.2: noise-dependent comparative results"
+  ],
+  "title": "JEPA-kMMVAE: CSI Prediction for Time-Varying Wireless Channels",
+  "citation_date": "2026/10/09",
+  "arxiv_version_markers": [
+    "arXiv:2610.13315v1"
+  ],
+  "pages": 5,
+  "same_pdf_as_earlier_session": true,
+  "method_summary": "Frozen finite-memory Markov representation; separate latent prediction and future-CSI residual decoding.",
+  "adoption_limits": "Its own GRU/Transformer baselines win at5–10dB observation SNR, residual variant at15–25dB. No official implementation/checkpoint located; CSI differs from packet events.",
+  "review_date": "2026-11-03",
+  "fulltext_redistributed": false,
+  "review_scope": "targeted primary sections and/or explicitly identified delegated source review; not full reproduction"
+}
