@@ -1,0 +1,252 @@
+{
+  "repository": "wi-lab/lwm-cde",
+  "metadata_url": "https://huggingface.co/api/models/wi-lab/lwm-cde?blobs=true",
+  "checked_at_unix": 1793704103.6014183,
+  "files": [
+    {
+      "path": "LICENSE",
+      "url": "https://huggingface.co/wi-lab/lwm-cde/resolve/c5a9451217fd1279db52c56c3df8bf0a90df8040/LICENSE",
+      "status": 200,
+      "bytes": 11358,
+      "sha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30"
+    },
+    {
+      "path": "README.md",
+      "url": "https://huggingface.co/wi-lab/lwm-cde/resolve/c5a9451217fd1279db52c56c3df8bf0a90df8040/README.md",
+      "status": 200,
+      "bytes": 6654,
+      "sha256": "6a02f9eb239737604f601f9ebff99b384dd889d3a160395486af8e73df6745b5"
+    }
+  ],
+  "status": 200,
+  "metadata_sha256": "8456dafb89f24ef524f37c658b90bd670bd1ac86878e91cabca5e03f81d730aa",
+  "revision": "c5a9451217fd1279db52c56c3df8bf0a90df8040",
+  "gated": false,
+  "card_data": {
+    "license": "apache-2.0",
+    "library_name": "pytorch",
+    "tags": [
+      "wireless",
+      "large-wireless-model",
+      "foundation-model",
+      "dataset-distance",
+      "transfer-learning",
+      "deepmimo"
+    ]
+  },
+  "siblings": [
+    {
+      "rfilename": ".gitattributes",
+      "blobId": "a6344aac8c09253b3b630fb776ae94478aa0275b",
+      "size": 1519
+    },
+    {
+      "rfilename": ".gitignore",
+      "blobId": "ca9d3320a90f826f4777689456d1b99fe5654647",
+      "size": 86
+    },
+    {
+      "rfilename": "LICENSE",
+      "blobId": "d645695673349e3947e8e5ae42332d0ac3164cd7",
+      "size": 11358
+    },
+    {
+      "rfilename": "NOTICE",
+      "blobId": "ca126a9d14cf2bf556f78aba11e4f6f0fb140131",
+      "size": 530
+    },
+    {
+      "rfilename": "README.md",
+      "blobId": "80b3216587b4ea351b7567ca5cdf5fd8c89936d8",
+      "size": 6654
+    },
+    {
+      "rfilename": "dataset_distancing/__init__.py",
+      "blobId": "2383a25518977b4bf78d9f59cc161fa07e00ef9b",
+      "size": 1889
+    },
+    {
+      "rfilename": "dataset_distancing/applications.py",
+      "blobId": "42601fc178117539f5526adde356a2e2ee886b51",
+      "size": 3221
+    },
+    {
+      "rfilename": "dataset_distancing/cde.py",
+      "blobId": "186bace956d76e996adbbfa6e10501d049b8933a",
+      "size": 20486
+    },
+    {
+      "rfilename": "dataset_distancing/config.py",
+      "blobId": "485f0c50c5b11fc047adced5ffa3426209af67e1",
+      "size": 3700
+    },
+    {
+      "rfilename": "dataset_distancing/correlation.py",
+      "blobId": "227ff84ecb9db110463612f4b7d7704ee20014b4",
+      "size": 1863
+    },
+    {
+      "rfilename": "dataset_distancing/data.py",
+      "blobId": "e2164e0acfff35ad33f74bde41be79ebc56bdd6f",
+      "size": 17575
+    },
+    {
+      "rfilename": "dataset_distancing/distances.py",
+      "blobId": "03ae497671f984241468dae2942d4c98bb9d3794",
+      "size": 17823
+    },
+    {
+      "rfilename": "dataset_distancing/embeddings.py",
+      "blobId": "94967f51168c3b6c6a28ce4025bd7339c6e41e48",
+      "size": 9694
+    },
+    {
+      "rfilename": "dataset_distancing/performance.py",
+      "blobId": "679a09508eec7af0629c1abaf91afcc4b8e5f18e",
+      "size": 19880
+    },
+    {
+      "rfilename": "dataset_distancing/selection.py",
+      "blobId": "941d84d2bb8ef6b70580d092da04286950edf9e3",
+      "size": 6018
+    },
+    {
+      "rfilename": "examples/quickstart.py",
+      "blobId": "f23e078f5e77196d1ce3842d027bc54c38b51907",
+      "size": 5008
+    },
+    {
+      "rfilename": "experiments/README.md",
+      "blobId": "a3b6aecdcfa4f84f5c163c8971acd88aa62330a4",
+      "size": 1672
+    },
+    {
+      "rfilename": "experiments/cross_band.py",
+      "blobId": "eab88f3c2c2aafd2013f9db6889de888cd741ebf",
+      "size": 10894
+    },
+    {
+      "rfilename": "experiments/pretrain_subset.py",
+      "blobId": "dc146e15f81890f917dcd1fc78fc07b63294faad",
+      "size": 20636
+    },
+    {
+      "rfilename": "experiments/source_selection_payoff.py",
+      "blobId": "4c09948907124dea5de21a35a32a727e9a461bd7",
+      "size": 11069
+    },
+    {
+      "rfilename": "pyproject.toml",
+      "blobId": "ba97c2914d8172910716a9f505e30504234d553d",
+      "size": 852
+    },
+    {
+      "rfilename": "requirements.txt",
+      "blobId": "94b629e57fbf1bc45bcef9b0fa6e36bb2fb892e7",
+      "size": 138
+    },
+    {
+      "rfilename": "scripts/download_lwm.py",
+      "blobId": "5a626218fac2c69dd24fde959c1828a937d5f5f4",
+      "size": 1121
+    },
+    {
+      "rfilename": "third_party/lwm-1.1/config.json",
+      "blobId": "04cb8f95f21e700f9e488992eb74d067a6d6c583",
+      "size": 191
+    },
+    {
+      "rfilename": "third_party/lwm-1.1/lwm/__init__.py",
+      "blobId": "8b033acff5f1ca3fdce12d080c8b3864a05ed8d9",
+      "size": 884
+    },
+    {
+      "rfilename": "third_party/lwm-1.1/lwm/configuration_lwm.py",
+      "blobId": "96e2a59498ed88a6da68d01a3e72a5e62fa26723",
+      "size": 3486
+    },
+    {
+      "rfilename": "third_party/lwm-1.1/lwm/data/__init__.py",
+      "blobId": "e4beaa5ddfa562a45d571668941441a9c917bc66",
+      "size": 455
+    },
+    {
+      "rfilename": "third_party/lwm-1.1/lwm/data/deepmimo.py",
+      "blobId": "ac2e43b3891e6969562c149d5df8324b510ec90a",
+      "size": 20529
+    },
+    {
+      "rfilename": "third_party/lwm-1.1/lwm/data/scenarios.py",
+      "blobId": "22a404c3e8daa39d0940805cd69a253e628416ab",
+      "size": 4393
+    },
+    {
+      "rfilename": "third_party/lwm-1.1/lwm/modeling_lwm.py",
+      "blobId": "69dbebecf2453672daaed92ad5f8880b112732a5",
+      "size": 12812
+    },
+    {
+      "rfilename": "third_party/lwm-1.1/lwm/pipelines.py",
+      "blobId": "301b571956420724d4d2614a720c1849cfe7cc57",
+      "size": 35758
+    },
+    {
+      "rfilename": "third_party/lwm-1.1/lwm/processing_lwm.py",
+      "blobId": "7683c1032a29e7678e9a23429a2daea107083201",
+      "size": 9643
+    },
+    {
+      "rfilename": "third_party/lwm-1.1/lwm/training/__init__.py",
+      "blobId": "e2b1e86eb5165ef67fd1d165fe2d571eccecd35c",
+      "size": 801
+    },
+    {
+      "rfilename": "third_party/lwm-1.1/lwm/training/downstream_config.py",
+      "blobId": "c388ef0cf58f9b79ca2a683404dd44272556cde2",
+      "size": 10718
+    },
+    {
+      "rfilename": "third_party/lwm-1.1/lwm/training/finetune.py",
+      "blobId": "82d0a0bbc216bf191839af760a760dcd8e3d748f",
+      "size": 14273
+    },
+    {
+      "rfilename": "third_party/lwm-1.1/lwm/training/pretrain.py",
+      "blobId": "1d7f85dff4ac4dadea9643180d378e5b6a78d57b",
+      "size": 9148
+    },
+    {
+      "rfilename": "third_party/lwm-1.1/lwm/utils/__init__.py",
+      "blobId": "9f49939a09a3df6ebd13c3275afce0ff38a73584",
+      "size": 409
+    },
+    {
+      "rfilename": "third_party/lwm-1.1/lwm/utils/data_utils.py",
+      "blobId": "517ba740406390be2129fce6f95ecf1a5fa359f0",
+      "size": 4679
+    },
+    {
+      "rfilename": "third_party/lwm-1.1/lwm/utils/logging.py",
+      "blobId": "84b723dc3694f1e82c389dab5fbb80c712cd377b",
+      "size": 1151
+    },
+    {
+      "rfilename": "third_party/lwm-1.1/lwm/utils/visualization.py",
+      "blobId": "05cb4a8afc83e5aa9097957c8f5dac58388a0a9f",
+      "size": 8715
+    },
+    {
+      "rfilename": "tutorial.ipynb",
+      "blobId": "173b1e3a0da7bd270ffbb83edb221b0034878641",
+      "size": 17585
+    },
+    {
+      "rfilename": "tutorial.py",
+      "blobId": "34565a5410433bcac99c4cfdd7ed4430e7ff5c8f",
+      "size": 14848
+    }
+  ],
+  "review_notes": "Apache2.0 LICENSE and modelcard read. Paper methods/label dependence/crossband failure reviewed. Refined paper checkpoints absent as explicitly stated by release.",
+  "code_executed_by_this_audit": false,
+  "weight_bytes_downloaded_by_this_audit": false
+}

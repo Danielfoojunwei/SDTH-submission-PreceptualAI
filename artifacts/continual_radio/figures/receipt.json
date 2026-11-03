@@ -1,0 +1,32 @@
+{
+  "new_evaluation_or_training": false,
+  "inputs": [
+    {
+      "path": "artifacts/continual_radio/summary.json",
+      "sha256": "a0c50f281b500343907972b854d2fba66ee2edac5c29b47dff4f4ce6388a496d"
+    },
+    {
+      "path": "artifacts/continual_radio/registration/protocol.json",
+      "sha256": "7a8b0ba84dc97fe24f9b3d843c8619805ec45544d1cbf7dbe06813f494bec6df"
+    },
+    {
+      "path": "scripts/plot_continual_radio.py",
+      "sha256": "b605602457335d86033b17c07c1a39e7741b9bfe5de67fedc21bc1e3c8125da1"
+    }
+  ],
+  "outputs": [
+    {
+      "path": "artifacts/continual_radio/figures/response-identification.svg",
+      "sha256": "c2ece374733be6536ab536db5b5c1af408f1008faeff3dbde6a6574dade62be6"
+    },
+    {
+      "path": "artifacts/continual_radio/figures/response-identification.png",
+      "sha256": "f8925def2cc3d00e408eb2ed8d2987d14f12d5865ae2cbaa8479a544b39245b7"
+    },
+    {
+      "path": "artifacts/continual_radio/figures/response-identification.pdf",
+      "sha256": "1f2fd5861cb1508f75e22a496effe08ea08aed94a2c44547fa489bcce0fc68fd"
+    }
+  ],
+  "bayesian_error_reduction_percent": 77.06491477660124
+}

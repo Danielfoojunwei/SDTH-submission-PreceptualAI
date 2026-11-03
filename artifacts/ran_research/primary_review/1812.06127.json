@@ -1,0 +1,33 @@
+{
+  "id": "1812.06127",
+  "checked_at_unix": 1793717428.071901,
+  "attempts": [
+    {
+      "url": "https://arxiv.org/abs/1812.06127",
+      "status": 200,
+      "bytes": 45164,
+      "sha256": "5656865716c8017bf7fca9b27063b4b272bb3813afc7f267cd5c0ed070fc0333"
+    },
+    {
+      "url": "https://arxiv.org/pdf/1812.06127",
+      "status": 200,
+      "bytes": 3203016,
+      "sha256": "c632b05c41d8f8c3f9126d230e7195e5470e2a555a823df1adba7d9e839ea9f2"
+    }
+  ],
+  "sections_reviewed": [
+    "Abstract; Sections1–2",
+    "Section3/Eq1,3.2/Eq2/Algorithm2,4.1–4.2 and bounded-dissimilarity assumptions via delegated primary review",
+    "Official FedProx README/LICENSE/commit metadata via delegated review"
+  ],
+  "title": "Federated Optimization in Heterogeneous Networks",
+  "citation_date": "2018/12/14",
+  "arxiv_version_markers": [
+    "arXiv:1812.06127v5"
+  ],
+  "method_summary": "Local objective F_k(w)+mu/2||w-w_global||² handles heterogeneous clients and unequal local work.",
+  "adoption_limits": "Convergence concerns a stated aggregate objective/assumptions, not continual drift tracking, adaptation delay or catastrophic-forgetting guarantees.",
+  "review_date": "2026-11-03",
+  "fulltext_redistributed": false,
+  "review_scope": "targeted primary sections and/or explicitly identified delegated source review; not full reproduction"
+}

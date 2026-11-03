@@ -1,0 +1,21 @@
+{
+  "id": "oran_architecture",
+  "url": "https://www.etsi.org/deliver/etsi_ts/103900_103999/103982/08.00.00_60/ts_103982v080000p.pdf",
+  "checked_at_unix": 1793704152.884148,
+  "error": "HTTP Error 403: Forbidden",
+  "curl_retry": {
+    "success": true,
+    "checked_at_unix": 1793717411.5392046,
+    "request": "GET through inherited proxy; default curl user agent; no custom headers or credentials",
+    "bytes": 1388713,
+    "sha256": "d8878204061b720b4462d28a2de1990fdf3f3286bdcdf473f810e4c12ee0e044"
+  },
+  "title": "O-RAN Architecture Description / ETSI TS103982 V8.0.0",
+  "sections_reviewed": [
+    "Sections6.2–6.3.2; delegated primary review and direct timing/failure passages after successful hash-verified retry"
+  ],
+  "method_summary": "Separates NonRT>=1s, NearRT10ms–1s and faster E2node execution; available actuation depends on E2 service model.",
+  "adoption_limits": "Baseline E2 service on RIC failure is weaker than a verified application-safe fallback or bounded recovery.",
+  "review_date": "2026-11-03",
+  "fulltext_redistributed": false
+}

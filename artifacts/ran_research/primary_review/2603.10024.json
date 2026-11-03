@@ -1,0 +1,33 @@
+{
+  "id": "2603.10024",
+  "checked_at_unix": 1793717428.0703697,
+  "attempts": [
+    {
+      "url": "https://arxiv.org/abs/2603.10024",
+      "status": 200,
+      "bytes": 42448,
+      "sha256": "8bfd01a97a210995917dad8f04ee068b72af8bcbc0ecc6caa3ee12b34cdb7a38"
+    },
+    {
+      "url": "https://arxiv.org/pdf/2603.10024",
+      "status": 200,
+      "bytes": 11222177,
+      "sha256": "c908f5040c877e661e99b33b4e3fc9110c606848b81cc694076eff7b891a3f14"
+    }
+  ],
+  "sections_reviewed": [
+    "Abstract/introduction",
+    "SectionIII-A: angle-delay transformation; III-D: sparse temporal corridors and causal forecasting",
+    "SectionIV: masked channel pretraining/masking; official pinned model card and MIT LICENSE"
+  ],
+  "title": "LWM-Temporal: Sparse Spatio-Temporal Attention for Wireless Channel Representation Learning",
+  "citation_date": "2026/02/22",
+  "arxiv_version_markers": [
+    "arXiv:2603.10024v1"
+  ],
+  "method_summary": "Angle-delay-time channel representation with local/temporal sparse attention; reconstruction may be bidirectional, forecasting uses causal offsets.",
+  "adoption_limits": "Actual compatibleCSI needed. Per-sampleRMS normalization/amplitude augmentations can discard absolute power needed for service unless retained separately. Catalog checkpoint listed, not downloaded/executed here; no warehouse service reproduction.",
+  "review_date": "2026-11-03",
+  "fulltext_redistributed": false,
+  "review_scope": "targeted primary sections and/or explicitly identified delegated source review; not full reproduction"
+}

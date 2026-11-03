@@ -1,0 +1,151 @@
+{
+  "repository": "wi-lab/lwm-v1.1",
+  "metadata_url": "https://huggingface.co/api/models/wi-lab/lwm-v1.1?blobs=true",
+  "checked_at_unix": 1793704103.6005602,
+  "files": [
+    {
+      "path": "README.md",
+      "url": "https://huggingface.co/wi-lab/lwm-v1.1/resolve/1b68512dbe97de56841301206eacb780fcd76011/README.md",
+      "status": 200,
+      "bytes": 49014,
+      "sha256": "fe950822b519f8e4133bcde49cba485d30565b7b6ce9db586bcbfca079619526"
+    },
+    {
+      "path": "config.json",
+      "url": "https://huggingface.co/wi-lab/lwm-v1.1/resolve/1b68512dbe97de56841301206eacb780fcd76011/config.json",
+      "status": 200,
+      "bytes": 113,
+      "sha256": "5e315abe363ce608112ac490d553d6dd22a559db126369dcbb1fc72d2285b4f6"
+    }
+  ],
+  "status": 200,
+  "metadata_sha256": "90e392c106633521a5195a23f9c82025a14ce9c02bff7bee3433f01dc7bc1a3b",
+  "revision": "1b68512dbe97de56841301206eacb780fcd76011",
+  "gated": false,
+  "card_data": {
+    "tags": [
+      "transformers",
+      "wireless-communication",
+      "few-shot-learning",
+      "limited-data",
+      "feature-extraction",
+      "pytorch"
+    ],
+    "datasets": [
+      "DeepMIMO"
+    ],
+    "base_model": [
+      "wi-lab/lwm"
+    ]
+  },
+  "siblings": [
+    {
+      "rfilename": ".gitattributes",
+      "blobId": "97853ecc76b3058d64aaa3a3a74aade1b7791606",
+      "size": 1568
+    },
+    {
+      "rfilename": ".gitignore",
+      "blobId": "29996bae844240b9ca483767c53df88fd73522de",
+      "size": 20
+    },
+    {
+      "rfilename": "README.md",
+      "blobId": "f168685767b2baf06b88d2c787f54e67e4b1de8b",
+      "size": 49014
+    },
+    {
+      "rfilename": "config.json",
+      "blobId": "f36e03bb37a7ddb672e4fd6785b7b5df654c9d1a",
+      "size": 113
+    },
+    {
+      "rfilename": "downstream.py",
+      "blobId": "ff94e922def9a2904dfb51b322626fcb27954839",
+      "size": 5614
+    },
+    {
+      "rfilename": "images/bp_embedding_FT.png",
+      "blobId": "8ea92d1f93592ba61af5fbbb8ca2c1ae53040858",
+      "size": 440473
+    },
+    {
+      "rfilename": "images/bp_embedding_noFT.png",
+      "blobId": "6e67c1d8d02d0d8489520a1e9dfbe9cc4430c8de",
+      "size": 513243
+    },
+    {
+      "rfilename": "images/bp_raw.png",
+      "blobId": "907a67a30c5843819efa811656adcce95a2a0359",
+      "size": 649922
+    },
+    {
+      "rfilename": "images/los_embedding_FT.png",
+      "blobId": "e3e3ea77754e354612f298004c07eb802b498594",
+      "size": 316405
+    },
+    {
+      "rfilename": "images/los_embedding_noFT.png",
+      "blobId": "a6d9ace0e7f7d43c075d69c1112b9d05c39aeb52",
+      "size": 362984
+    },
+    {
+      "rfilename": "images/los_perf.png",
+      "blobId": "111ef67cadf7a9600f8bb46ba2789e455a4c6871",
+      "size": 2119621,
+      "lfs": {
+        "sha256": "688be5ebfb77c689d87364b750fb97b9a0924e4fa728cf013b4f65a6de7695b2",
+        "size": 2119621,
+        "pointerSize": 132
+      }
+    },
+    {
+      "rfilename": "images/los_raw.png",
+      "blobId": "84e7c9af3254fdc5e13c1da3c8d04a65417ad264",
+      "size": 529044
+    },
+    {
+      "rfilename": "inference.py",
+      "blobId": "67d8767c310b36552b98f59452d4db2e16a4fdfe",
+      "size": 1980
+    },
+    {
+      "rfilename": "input_preprocess.py",
+      "blobId": "6dfe3c9f574423f210a80048ebdc59a3887aeae1",
+      "size": 32913
+    },
+    {
+      "rfilename": "lwm_model.py",
+      "blobId": "1e94fadfc208976f5749b2c2e22d293a449b8382",
+      "size": 5719
+    },
+    {
+      "rfilename": "main.py",
+      "blobId": "c8d26da8e923ce02ef7085f6d35150a1c952cbf3",
+      "size": 3494
+    },
+    {
+      "rfilename": "models/model.pth",
+      "blobId": "63812d70e316e8c1eb81d0b2402e43ed69f0eff0",
+      "size": 9960738,
+      "lfs": {
+        "sha256": "485611f1a0f819f9c673827b8e613887b39672e97072bd7a412866b49d8dd40f",
+        "size": 9960738,
+        "pointerSize": 132
+      }
+    },
+    {
+      "rfilename": "train.py",
+      "blobId": "28553b352f168baa875c023a434edf921f1ed698",
+      "size": 17151
+    },
+    {
+      "rfilename": "utils.py",
+      "blobId": "b89489dd6e2165b8ff8cfa964c19a9f711841caf",
+      "size": 10012
+    }
+  ],
+  "review_notes": "Official author-linked HF release inventory/config/README retrieved; catalog weight hash is not an independent content hash. No explicit standalone license verified.",
+  "code_executed_by_this_audit": false,
+  "weight_bytes_downloaded_by_this_audit": false
+}

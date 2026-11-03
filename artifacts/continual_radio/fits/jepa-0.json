@@ -1,0 +1,174 @@
+{
+  "completed": true,
+  "family": "jepa",
+  "seed": 0,
+  "history": [
+    {
+      "epoch": 1,
+      "train_loss": 0.04010297628563075,
+      "validation_noisy_mae_normalized": 0.10966181349829993
+    },
+    {
+      "epoch": 2,
+      "train_loss": 0.026430902847399313,
+      "validation_noisy_mae_normalized": 0.0948351112654559
+    },
+    {
+      "epoch": 3,
+      "train_loss": 0.021941849939702524,
+      "validation_noisy_mae_normalized": 0.08736308727536457
+    },
+    {
+      "epoch": 4,
+      "train_loss": 0.017913481708438622,
+      "validation_noisy_mae_normalized": 0.08033354882340807
+    },
+    {
+      "epoch": 5,
+      "train_loss": 0.01570618718064257,
+      "validation_noisy_mae_normalized": 0.07926717327671545
+    },
+    {
+      "epoch": 6,
+      "train_loss": 0.014452266595548107,
+      "validation_noisy_mae_normalized": 0.07558931880542195
+    },
+    {
+      "epoch": 7,
+      "train_loss": 0.013829304781254558,
+      "validation_noisy_mae_normalized": 0.07895257493499704
+    },
+    {
+      "epoch": 8,
+      "train_loss": 0.013494061583298304,
+      "validation_noisy_mae_normalized": 0.07542935697647146
+    },
+    {
+      "epoch": 9,
+      "train_loss": 0.013036858002167372,
+      "validation_noisy_mae_normalized": 0.07486615019959166
+    },
+    {
+      "epoch": 10,
+      "train_loss": 0.012770017985964105,
+      "validation_noisy_mae_normalized": 0.07575651351341119
+    },
+    {
+      "epoch": 11,
+      "train_loss": 0.012715835412520738,
+      "validation_noisy_mae_normalized": 0.07478339632362975
+    },
+    {
+      "epoch": 12,
+      "train_loss": 0.01253565875369878,
+      "validation_noisy_mae_normalized": 0.07389540523208056
+    },
+    {
+      "epoch": 13,
+      "train_loss": 0.012468192648763457,
+      "validation_noisy_mae_normalized": 0.07440217216101151
+    },
+    {
+      "epoch": 14,
+      "train_loss": 0.012214966972048083,
+      "validation_noisy_mae_normalized": 0.07347504000832696
+    },
+    {
+      "epoch": 15,
+      "train_loss": 0.012033395070050443,
+      "validation_noisy_mae_normalized": 0.07382262289134749
+    },
+    {
+      "epoch": 16,
+      "train_loss": 0.012251464683296425,
+      "validation_noisy_mae_normalized": 0.07666470514592313
+    },
+    {
+      "epoch": 17,
+      "train_loss": 0.011888651820343165,
+      "validation_noisy_mae_normalized": 0.07165220858388778
+    },
+    {
+      "epoch": 18,
+      "train_loss": 0.011912937076496226,
+      "validation_noisy_mae_normalized": 0.07269429177606342
+    },
+    {
+      "epoch": 19,
+      "train_loss": 0.01170323016343727,
+      "validation_noisy_mae_normalized": 0.06987990938496706
+    },
+    {
+      "epoch": 20,
+      "train_loss": 0.011581201028699676,
+      "validation_noisy_mae_normalized": 0.07065637855734863
+    },
+    {
+      "epoch": 21,
+      "train_loss": 0.01137707338091873,
+      "validation_noisy_mae_normalized": 0.06723906876510287
+    },
+    {
+      "epoch": 22,
+      "train_loss": 0.011083166414339627,
+      "validation_noisy_mae_normalized": 0.06607358856736385
+    },
+    {
+      "epoch": 23,
+      "train_loss": 0.010979190280306198,
+      "validation_noisy_mae_normalized": 0.06402289372015732
+    },
+    {
+      "epoch": 24,
+      "train_loss": 0.010751055487032448,
+      "validation_noisy_mae_normalized": 0.06586990087669305
+    },
+    {
+      "epoch": 25,
+      "train_loss": 0.01066749810706824,
+      "validation_noisy_mae_normalized": 0.06582944096079779
+    },
+    {
+      "epoch": 26,
+      "train_loss": 0.01050518458664772,
+      "validation_noisy_mae_normalized": 0.06519794887088032
+    },
+    {
+      "epoch": 27,
+      "train_loss": 0.010458888064715125,
+      "validation_noisy_mae_normalized": 0.06902942508734779
+    },
+    {
+      "epoch": 28,
+      "train_loss": 0.010208630185973431,
+      "validation_noisy_mae_normalized": 0.06600492045800305
+    },
+    {
+      "epoch": 29,
+      "train_loss": 0.009999748834941004,
+      "validation_noisy_mae_normalized": 0.06303654162085912
+    },
+    {
+      "epoch": 30,
+      "train_loss": 0.009864967515958207,
+      "validation_noisy_mae_normalized": 0.07047311842964019
+    }
+  ],
+  "fixed_final_epoch": 30,
+  "inference_parameters": 14820,
+  "source_sha256": {
+    "src/wirelessjev/continual_radio.py": "8d90446a0328505f6cd38b3a0a39ca5f3db1a7661514959b50d142d25799c1eb",
+    "scripts/train_continual_radio.py": "1045d41829af84d1cb85de051c6f0f39da45897926fa8e926e02d8a8425cc01e",
+    "scripts/collect_continual_radio.py": "2bd8602c1f40d34f0206bda7c8529bb9fb659703c1f72db778380e6d8457a51a",
+    "tests/test_continual_radio.py": "060c66d3aa7b697c8e00acf1e6bed54c6dc85dc486db8b63fe705f5cb9bbd5ef",
+    "artifacts/continual_radio/registration/protocol.json": "7a8b0ba84dc97fe24f9b3d843c8619805ec45544d1cbf7dbe06813f494bec6df",
+    "pyproject.toml": "54ba749cf9f01cc3362a80fb679876be2e5912920c0b8cb69cc17618fae44eb9",
+    "uv.lock": "65ba242767e63083605db2a0e4ecad7394745dec9bfaebec1d637e71b03198d9",
+    "scripts/collect_continual_radio_v2.py": "8cd78d6b5a6603a3868216e7f470a79fcaa2c14a20ca79d7c163104fe12f5942",
+    "artifacts/continual_radio/registration/collection_v2.json": "9e469fd26833f9f5a749424abab3fa47a44331855981b645492e6d85558c0cc7"
+  },
+  "data_sha256": "c0e402cc49f85041b3fb09e33972c85e1f32b40d44edf3d26993c8c65d934e74",
+  "checkpoint_sha256": "297638c3aa1e14b352a82bf749e5107ed0c693540a6070845f6ca4a20d19e31a",
+  "elapsed_seconds": 11.390193939208984,
+  "test_accessed": false
+}

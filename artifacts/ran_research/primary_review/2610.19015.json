@@ -1,0 +1,35 @@
+{
+  "id": "2610.19015",
+  "checked_at_unix": 1793703962.0225837,
+  "attempts": [
+    {
+      "url": "https://arxiv.org/abs/2610.19015",
+      "status": 200,
+      "bytes": 42241,
+      "sha256": "3ae61a755a42554d0f60c70438549c5392f0f85e032e2f3756e059589442fcd7"
+    },
+    {
+      "url": "https://arxiv.org/pdf/2610.19015",
+      "status": 200,
+      "bytes": 5159256,
+      "sha256": "e872f9e2e6ce671877838c73afb582ba2d1646cb278d02248bf425f3b6104ae1"
+    }
+  ],
+  "sections_reviewed": [
+    "Sections3–4: physical inputs and synthetic generation",
+    "Sections6–8 and discussion: material/support ablation, calibrated real-data transfer and limitations",
+    "Official pinned generator README/tree"
+  ],
+  "title": "Scaling Cheap Synthetic Pretraining Improves Indoor Radio-Map Prediction",
+  "citation_date": "2026/10/13",
+  "arxiv_version_markers": [
+    "arXiv:2610.19015v1"
+  ],
+  "pages": 25,
+  "same_pdf_as_earlier_session": false,
+  "method_summary": "Procedural layouts plus approximate propagation labels pretrain standard map predictors; real-data transfer requires calibration and useful physical inputs.",
+  "adoption_limits": "2D approximate propagation omits diffraction/scattering/3D; small real dataset not deployment evidence. No code license/weights found in inspected generator tree; no6TB corpus download.",
+  "review_date": "2026-11-03",
+  "fulltext_redistributed": false,
+  "review_scope": "targeted primary sections and/or explicitly identified delegated source review; not full reproduction"
+}

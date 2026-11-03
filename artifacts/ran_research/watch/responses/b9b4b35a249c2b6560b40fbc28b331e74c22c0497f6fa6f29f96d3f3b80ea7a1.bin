@@ -1,0 +1,134 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<feed xmlns:opensearch="http://a9.com/-/spec/opensearch/1.1/" xmlns:arxiv="http://arxiv.org/schemas/atom" xmlns="http://www.w3.org/2005/Atom">
+  <id>https://arxiv.org/api/KlKkbXd4bVVCtl/O+JClyZqJVJ4</id>
+  <title>arXiv Query: search_query=( (all:"JEPA" OR all:"joint embedding predictive") AND (all:"network" OR all:"control") ) AND submittedDate:"202601010000 TO 202611031454"&amp;id_list=&amp;start=0&amp;max_results=5</title>
+  <updated>2026-11-03T14:54:19Z</updated>
+  <link href="https://arxiv.org/api/query?search_query=((all:%22JEPA%22+OR+all:%22joint+embedding+predictive%22)+AND+(all:%22network%22+OR+all:%22control%22))+AND+submittedDate:%22202601010000+TO+202611031454%22&amp;start=0&amp;max_results=5&amp;id_list=" type="application/atom+xml"/>
+  <opensearch:itemsPerPage>5</opensearch:itemsPerPage>
+  <opensearch:totalResults>194</opensearch:totalResults>
+  <opensearch:startIndex>0</opensearch:startIndex>
+  <entry>
+    <id>http://arxiv.org/abs/2611.02489v1</id>
+    <title>Cross-Domain Joint-Embedding Pretraining For Heterogeneous Industrial Time Series</title>
+    <updated>2026-11-02T04:05:47Z</updated>
+    <link href="https://arxiv.org/abs/2611.02489v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2611.02489v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>Industrial predictive maintenance and manufacturing tasks frequently contain abundant sensor measurements, but with limited labeled data. We investigate cross-domain self-supervised pretraining using joint-embedding predictive architecture for heterogeneous industrial time series (JEPA-HITS), which learns one encoder from various domains such as battery, semiconductor chemical mechanical planarization (CMP), computer numerical control (CNC) machining, and bearing while preserving dataset-specific temporal scales. We evaluate representation reuse on regression and classification problems under reduced-label downstream training, and leave-one-domain-out (LODO) pretraining. Compared with the same architecture initialized randomly, LODO pretraining reduces RMSE from 10.72 to 7.95 on battery remaining useful life (RUL), 4.34 to 3.89 on CMP, and 13.53 to 11.72 on tool wear regression, while improving bearing fault diagnosis macro-F1 from 0.547 to 0.737. Overall results suggest that unlabeled time series measurements from heterogeneous industrial processes can provide reusable representations for downstream learning with limited labeled data.</summary>
+    <category term="cs.LG" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.AI" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-11-02T04:05:47Z</published>
+    <arxiv:comment>Submitted to International Conference on Acoustics, Speech, and Signal Processing (ICASSP) on Sept. 24, 2026</arxiv:comment>
+    <arxiv:primary_category term="cs.LG"/>
+    <author>
+      <name>Jonathan Adam Rico</name>
+    </author>
+    <author>
+      <name>Nagarajan Raghavan</name>
+    </author>
+    <author>
+      <name>Senthilnath Jayavelu</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2611.00427v1</id>
+    <title>Spoofing the Latent State: Imperceptible Goal-Image Attacks Derail Planning in LeWorldModel</title>
+    <updated>2026-10-30T22:20:51Z</updated>
+    <link href="https://arxiv.org/abs/2611.00427v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2611.00427v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>Joint-embedding predictive architectures (JEPAs) have recently emerged as general-purpose visual world models for control. A prominent example is LeWorldModel (LeWM), which trains end-to-end from pixels using an isotropic Gaussian anti-collapse regularizer (SIGReg) and plans by minimizing the squared Euclidean distance between predicted and goal embeddings. In this work, we investigate the test-time robustness of this latent planning interface. Analyzing the learned metric on Push-T, we first find that task-relevant object state heavily dominates latent distance: shifting the block by a single pixel displaces the embedding $3\times$ further than an equivalent agent shift, and swapping the block pose alone accounts for $99\%$ of the distance between scene pairs. However, because this pose information is distributed across a curved, high-dimensional manifold rather than a fixed linear subspace, the encoder cannot be trivially edited post-hoc to isolate or redirect it. We next demonstrate that this geometry is highly vulnerable at test time. A white-box $\ell_\infty$ perturbation of just $ε{=}4/255$ applied to a single input frame causes the encoder to register the block at an arbitrary, attacker-chosen pose in $73$--$95\%$ of scenes without disturbing the encoded agent state. Perturbing either the goal image or the live camera observation drops Push-T planning success from $87\%$ to $32\%$, whereas uniform random noise at twice the magnitude has negligible impact. This vulnerability persists across all four standard LeWM benchmarks (Push-T, Two-Room, Reacher, and OGBench-Cube). At $ε{=}8/255$, the attack bridges $82$--$97\%$ of the squared latent distance to the target embedding in every environment, inducing planning degradation proportional to each task's reliance on the spoofed entity.</summary>
+    <category term="cs.CV" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.CR" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.LG" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-10-30T22:20:51Z</published>
+    <arxiv:comment>14 pages, 5 figures, 13 tables</arxiv:comment>
+    <arxiv:primary_category term="cs.CV"/>
+    <author>
+      <name>Kunal Bhosikar</name>
+    </author>
+    <author>
+      <name>Nicole Meng</name>
+    </author>
+    <author>
+      <name>Charu Sharma</name>
+    </author>
+    <author>
+      <name>Yingjie Lao</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2610.40356v1</id>
+    <title>JEDI: Joint-Embedding Demonstration Compression for In-Context Imitation Learning</title>
+    <updated>2026-10-29T16:11:05Z</updated>
+    <link href="https://arxiv.org/abs/2610.40356v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2610.40356v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>In-context imitation learning (ICIL) adapts robot policies through test-time demonstrations, but long multimodal trajectories constrain how many examples fit in context. We ask what a compressed demonstration should preserve. We propose JEDI, which compresses demonstrations into latent slots trained to predict the query episode's next-stage keyframe in a frozen video-JEPA space. Task and process counterfactuals help the slots preserve execution details, while the predictor selects demonstrations from a bank. Post-training with keypoint tokens enables human-hand conditioning on robots. Experiments on LIBERO and real robots show that JEDI supports many-shot context; LIBERO objective controls show improved success and demonstration following over action-only compression. These findings support query-future prediction as a training objective for preserving execution-relevant information in compressed demonstrations.</summary>
+    <category term="cs.RO" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-10-29T16:11:05Z</published>
+    <arxiv:primary_category term="cs.RO"/>
+    <author>
+      <name>Jiazhao Liang</name>
+    </author>
+    <author>
+      <name>Zhewen He</name>
+    </author>
+    <author>
+      <name>Shuaihang Yuan</name>
+    </author>
+    <author>
+      <name>Hao Huang</name>
+    </author>
+    <author>
+      <name>Yi Fang</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2610.38508v1</id>
+    <title>SaiVLA-JEPA: Evaluating Future Latent Prediction in JEPA-Conditioned VLA Control</title>
+    <updated>2026-10-28T09:25:24Z</updated>
+    <link href="https://arxiv.org/abs/2610.38508v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2610.38508v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>Joint-embedding predictive architectures (JEPAs) learn to predict representations rather than pixels, offering a compact way to model how visual scenes evolve. We ask whether this predictive objective improves closed-loop control when a vision-language-action (VLA) policy already uses V-JEPA features. We call our JEPA-conditioned flow policy family SaiVLA-JEPA. It combines a vision-language model with a diffusion transformer action expert and receives features from a frozen V-JEPA encoder. Two lightweight auxiliary heads predict future representations during training and are omitted at inference, leaving the action sampler unchanged. We compare policies without JEPA features, with current JEPA conditioning, and with additional future supervision on 10,030 paired LIBERO-Plus episodes. Current JEPA conditioning reaches about 82.5% success versus 71.6% without JEPA, while future supervision provides no detectable aggregate gain at the evaluated training budget. We separately evaluate SaiVLA-JEPA-TCA, which adapts latent context, and SaiVLA-JEPA-TPA, which adapts selected parameters. The context-retry gain is a system-level result under a larger attempt budget; parameter adaptation shows no consistent advantage over the frozen policy and target controls. These results motivate assessing latent-prediction objectives through paired closed-loop rollouts rather than latent loss alone.</summary>
+    <category term="cs.RO" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.AI" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-10-28T09:25:24Z</published>
+    <arxiv:primary_category term="cs.RO"/>
+    <author>
+      <name>Rufeng Xiao</name>
+      <arxiv:affiliation>VLA Research Team, Synthoid.ai</arxiv:affiliation>
+    </author>
+    <author>
+      <name>Ruihao Xiao</name>
+      <arxiv:affiliation>VLA Research Team, Synthoid.ai</arxiv:affiliation>
+    </author>
+    <author>
+      <name>Wei Chen</name>
+      <arxiv:affiliation>VLA Research Team, Synthoid.ai</arxiv:affiliation>
+    </author>
+    <author>
+      <name>Xinhai Sun</name>
+      <arxiv:affiliation>VLA Research Team, Synthoid.ai</arxiv:affiliation>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2610.38445v1</id>
+    <title>DES-JEPA: Learning a Shared Vocabulary for High-Dimensional Discrete Event Sequences</title>
+    <updated>2026-10-28T08:24:09Z</updated>
+    <link href="https://arxiv.org/abs/2610.38445v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2610.38445v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>Temporal foundation models such as Chronos and TimesFM generalize across domains through a shared numerical observation space. In contrast, discrete event sequences (DESs), including operational event logs or patient clinical-event trajectories, have domain-specific event vocabularies whose labels lack a consistent correspondence across domains. Beyond this lack of consistency, the number of distinct events in real-world settings is high enough to challenge both classical temporal point process modeling and current in-context foundation inference models such as FIM-PP. Critically, current foundation models for DESs are limited to a small, fixed number of event types, restricting their applicability to realistic, high-dimensional event streams. To address this, we propose two complementary modules: (i) DES-JEPA, a joint-embedding predictive architecture that learns a shared discrete vocabulary from synthetic stochastic processes with unaligned event vocabularies; and (ii) DES-PFN, a discrete event sequence prior-fitted network that reuses the learned vocabulary for in-context next-event prediction. Without task-specific fine-tuning, this framework achieves competitive zero-shot performance on eight unseen real-world datasets and scales up to 700 distinct event types.</summary>
+    <category term="cs.AI" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-10-28T08:24:09Z</published>
+    <arxiv:comment>5 pages</arxiv:comment>
+    <arxiv:primary_category term="cs.AI"/>
+    <arxiv:journal_ref>NeurIPS 2026 Workshop: Foundation Models for Temporal Systems: From Forecasting to World Modeling</arxiv:journal_ref>
+    <author>
+      <name>Hugo Math</name>
+    </author>
+    <author>
+      <name>Maximilian Forstenhäusler</name>
+    </author>
+    <author>
+      <name>Christos Anagnostopoulos</name>
+    </author>
+  </entry>
+</feed>

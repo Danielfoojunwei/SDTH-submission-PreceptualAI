@@ -29,7 +29,7 @@ import numpy as np
 
 from .candidates import DEFER_ID, generate
 from .execution import (DryRunTransport, Ledger, Transaction, build_connect,
-                        execute, reconcile)
+                        execute, reconcile, EXECUTION_SEMANTICS_VERSION)
 from .hardware import RASPBOT
 from .missions import MISSIONS
 from .oracle import evaluate, mission_utility
@@ -181,8 +181,8 @@ def run(policy: str, *, seed: int, total_s: float, engine=None, log=print,
                 txn_log.append({"t": t, "car": car_id, "outcome": "NOT_ADMITTED"})
                 continue
             execute(txn, ledger, transport)
-            if txn.state in ("COMMITTED", "ABORTED"):
-                ledger.release(txn)
+            # Execution/reconciliation own terminal settlement. In particular,
+            # a clean failure must not subtract another operation's reservation.
             txn_log.append({"t": t, "car": car_id, "outcome": txn.outcome})
 
         new_assoc = dict(transport.state)
@@ -221,7 +221,8 @@ def run(policy: str, *, seed: int, total_s: float, engine=None, log=print,
                  "occupied_channels": [[b, ch] for (b, ch), v in
                                        scene.external_occupancy.items() if v > 0],
                  "txn_log": txn_log}
-    return {**extra, "policy": policy, "timeline": timeline, "decisions": decisions,
+    return {**extra, "execution_semantics_version": EXECUTION_SEMANTICS_VERSION,
+            "policy": policy, "timeline": timeline, "decisions": decisions,
             "transactions": outcomes, "connect_requests_sent": sum(
                 1 for _, r in transport.sent if r["action"] == "connect"),
             "connects_beyond_one_per_txn": unknown_resent,
@@ -280,7 +281,8 @@ def main():
                                                        for d in r["decisions"]] or [0.0])),
             "decisions": int(sum(len(r["decisions"]) for r in rs)),
         }
-    out = {"summary": summary, "adapter": args.adapter,
+    out = {"execution_semantics_version": EXECUTION_SEMANTICS_VERSION,
+           "summary": summary, "adapter": args.adapter,
            "hardware": RASPBOT.customer_radio, "runs": results}
     Path(args.out).parent.mkdir(parents=True, exist_ok=True)
     Path(args.out).write_text(json.dumps(out, indent=1, default=float))

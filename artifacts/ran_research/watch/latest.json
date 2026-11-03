@@ -1,0 +1,3314 @@
+{
+  "schema_version": 1,
+  "generated_at": "2026-11-03T14:54:12.526990Z",
+  "previous_snapshot_sha256": null,
+  "window": {
+    "since": "2026-01-01",
+    "until_utc": "2026-11-03T14:54:12.526990Z"
+  },
+  "coverage": {
+    "complete_for_requested_requests": true,
+    "incomplete_coverage": false,
+    "requested_sources": [
+      "arxiv",
+      "openalex"
+    ],
+    "unqueried_sources": [],
+    "bounded_nonexhaustive_search": true,
+    "requests": 10,
+    "actual_response_retention_enabled": true,
+    "successful_requests": 10,
+    "max_results_per_query": 5,
+    "timeout_seconds": 5.0,
+    "max_attempts": 1,
+    "run_request_budget_seconds": 90.0
+  },
+  "request_results": [
+    {
+      "source": "arxiv",
+      "query_id": "ran_jepa",
+      "topic": "RAN and wireless JEPA",
+      "request_url": "https://export.arxiv.org/api/query?search_query=%28all%3A%22JEPA%22+AND+%28all%3A%22wireless%22+OR+all%3A%22radio+access%22%29%29+AND+submittedDate%3A%5B202601010000+TO+202611031454%5D&start=0&max_results=5&sortBy=submittedDate&sortOrder=descending",
+      "retrieved_at": "2026-11-03T14:54:12.526990Z",
+      "attempts": [
+        {
+          "number": 1,
+          "http_status": 200,
+          "response_url": "https://export.arxiv.org/api/query?search_query=%28all%3A%22JEPA%22+AND+%28all%3A%22wireless%22+OR+all%3A%22radio+access%22%29%29+AND+submittedDate%3A%5B202601010000+TO+202611031454%5D&start=0&max_results=5&sortBy=submittedDate&sortOrder=descending",
+          "response_sha256": "b6e857d0e868a299f81852ee8cf3c07afe80d5e486ad6664cf8f91bf59c11659",
+          "response_bytes": 13285,
+          "response_artifact": "responses/b6e857d0e868a299f81852ee8cf3c07afe80d5e486ad6664cf8f91bf59c11659.bin"
+        }
+      ],
+      "retrieval_status": "success",
+      "response_url": "https://export.arxiv.org/api/query?search_query=%28all%3A%22JEPA%22+AND+%28all%3A%22wireless%22+OR+all%3A%22radio+access%22%29%29+AND+submittedDate%3A%5B202601010000+TO+202611031454%5D&start=0&max_results=5&sortBy=submittedDate&sortOrder=descending",
+      "source_response_sha256": "b6e857d0e868a299f81852ee8cf3c07afe80d5e486ad6664cf8f91bf59c11659",
+      "http_status": 200,
+      "errors": [],
+      "excluded": [],
+      "accepted_entries": 5
+    },
+    {
+      "source": "arxiv",
+      "query_id": "wireless_world_models",
+      "topic": "Wireless world models",
+      "request_url": "https://export.arxiv.org/api/query?search_query=%28all%3A%22world+model%22+AND+all%3A%22wireless%22%29+AND+submittedDate%3A%5B202601010000+TO+202611031454%5D&start=0&max_results=5&sortBy=submittedDate&sortOrder=descending",
+      "retrieved_at": "2026-11-03T14:54:12.526990Z",
+      "attempts": [
+        {
+          "number": 1,
+          "http_status": 200,
+          "response_url": "https://export.arxiv.org/api/query?search_query=%28all%3A%22world+model%22+AND+all%3A%22wireless%22%29+AND+submittedDate%3A%5B202601010000+TO+202611031454%5D&start=0&max_results=5&sortBy=submittedDate&sortOrder=descending",
+          "response_sha256": "d8c56ef991b6340111463960a285de4161a5e9090d2fce375269602e4297df8c",
+          "response_bytes": 13008,
+          "response_artifact": "responses/d8c56ef991b6340111463960a285de4161a5e9090d2fce375269602e4297df8c.bin"
+        }
+      ],
+      "retrieval_status": "success",
+      "response_url": "https://export.arxiv.org/api/query?search_query=%28all%3A%22world+model%22+AND+all%3A%22wireless%22%29+AND+submittedDate%3A%5B202601010000+TO+202611031454%5D&start=0&max_results=5&sortBy=submittedDate&sortOrder=descending",
+      "source_response_sha256": "d8c56ef991b6340111463960a285de4161a5e9090d2fce375269602e4297df8c",
+      "http_status": 200,
+      "errors": [],
+      "excluded": [],
+      "accepted_entries": 5
+    },
+    {
+      "source": "arxiv",
+      "query_id": "jepa_control",
+      "topic": "Predictive representations for network control",
+      "request_url": "https://export.arxiv.org/api/query?search_query=%28%28all%3A%22JEPA%22+OR+all%3A%22joint+embedding+predictive%22%29+AND+%28all%3A%22network%22+OR+all%3A%22control%22%29%29+AND+submittedDate%3A%5B202601010000+TO+202611031454%5D&start=0&max_results=5&sortBy=submittedDate&sortOrder=descending",
+      "retrieved_at": "2026-11-03T14:54:12.526990Z",
+      "attempts": [
+        {
+          "number": 1,
+          "http_status": 200,
+          "response_url": "https://export.arxiv.org/api/query?search_query=%28%28all%3A%22JEPA%22+OR+all%3A%22joint+embedding+predictive%22%29+AND+%28all%3A%22network%22+OR+all%3A%22control%22%29%29+AND+submittedDate%3A%5B202601010000+TO+202611031454%5D&start=0&max_results=5&sortBy=submittedDate&sortOrder=descending",
+          "response_sha256": "b9b4b35a249c2b6560b40fbc28b331e74c22c0497f6fa6f29f96d3f3b80ea7a1",
+          "response_bytes": 12609,
+          "response_artifact": "responses/b9b4b35a249c2b6560b40fbc28b331e74c22c0497f6fa6f29f96d3f3b80ea7a1.bin"
+        }
+      ],
+      "retrieval_status": "success",
+      "response_url": "https://export.arxiv.org/api/query?search_query=%28%28all%3A%22JEPA%22+OR+all%3A%22joint+embedding+predictive%22%29+AND+%28all%3A%22network%22+OR+all%3A%22control%22%29%29+AND+submittedDate%3A%5B202601010000+TO+202611031454%5D&start=0&max_results=5&sortBy=submittedDate&sortOrder=descending",
+      "source_response_sha256": "b9b4b35a249c2b6560b40fbc28b331e74c22c0497f6fa6f29f96d3f3b80ea7a1",
+      "http_status": 200,
+      "errors": [],
+      "excluded": [],
+      "accepted_entries": 5
+    },
+    {
+      "source": "arxiv",
+      "query_id": "ran_control",
+      "topic": "Radio access network control",
+      "request_url": "https://export.arxiv.org/api/query?search_query=%28all%3A%22radio+access+network%22+AND+%28all%3A%22control%22+OR+all%3A%22resource+allocation%22%29%29+AND+submittedDate%3A%5B202601010000+TO+202611031454%5D&start=0&max_results=5&sortBy=submittedDate&sortOrder=descending",
+      "retrieved_at": "2026-11-03T14:54:12.526990Z",
+      "attempts": [
+        {
+          "number": 1,
+          "http_status": 200,
+          "response_url": "https://export.arxiv.org/api/query?search_query=%28all%3A%22radio+access+network%22+AND+%28all%3A%22control%22+OR+all%3A%22resource+allocation%22%29%29+AND+submittedDate%3A%5B202601010000+TO+202611031454%5D&start=0&max_results=5&sortBy=submittedDate&sortOrder=descending",
+          "response_sha256": "0cc065333f0b9586ea5b07efd4a456e0f64b61097abda39f4115df117bd452f1",
+          "response_bytes": 13568,
+          "response_artifact": "responses/0cc065333f0b9586ea5b07efd4a456e0f64b61097abda39f4115df117bd452f1.bin"
+        }
+      ],
+      "retrieval_status": "success",
+      "response_url": "https://export.arxiv.org/api/query?search_query=%28all%3A%22radio+access+network%22+AND+%28all%3A%22control%22+OR+all%3A%22resource+allocation%22%29%29+AND+submittedDate%3A%5B202601010000+TO+202611031454%5D&start=0&max_results=5&sortBy=submittedDate&sortOrder=descending",
+      "source_response_sha256": "0cc065333f0b9586ea5b07efd4a456e0f64b61097abda39f4115df117bd452f1",
+      "http_status": 200,
+      "errors": [],
+      "excluded": [],
+      "accepted_entries": 5
+    },
+    {
+      "source": "arxiv",
+      "query_id": "deadline_uncertainty",
+      "topic": "Wireless deadline risk and uncertainty",
+      "request_url": "https://export.arxiv.org/api/query?search_query=%28%28all%3A%22wireless%22+OR+all%3A%22radio+access+network%22%29+AND+%28all%3A%22deadline%22+OR+all%3A%22uncertainty%22%29%29+AND+submittedDate%3A%5B202601010000+TO+202611031454%5D&start=0&max_results=5&sortBy=submittedDate&sortOrder=descending",
+      "retrieved_at": "2026-11-03T14:54:12.526990Z",
+      "attempts": [
+        {
+          "number": 1,
+          "http_status": 200,
+          "response_url": "https://export.arxiv.org/api/query?search_query=%28%28all%3A%22wireless%22+OR+all%3A%22radio+access+network%22%29+AND+%28all%3A%22deadline%22+OR+all%3A%22uncertainty%22%29%29+AND+submittedDate%3A%5B202601010000+TO+202611031454%5D&start=0&max_results=5&sortBy=submittedDate&sortOrder=descending",
+          "response_sha256": "365489336f29858e72715f0f9af2f9faee4b0ee3c4aac117fbbab930cef44ff3",
+          "response_bytes": 13067,
+          "response_artifact": "responses/365489336f29858e72715f0f9af2f9faee4b0ee3c4aac117fbbab930cef44ff3.bin"
+        }
+      ],
+      "retrieval_status": "success",
+      "response_url": "https://export.arxiv.org/api/query?search_query=%28%28all%3A%22wireless%22+OR+all%3A%22radio+access+network%22%29+AND+%28all%3A%22deadline%22+OR+all%3A%22uncertainty%22%29%29+AND+submittedDate%3A%5B202601010000+TO+202611031454%5D&start=0&max_results=5&sortBy=submittedDate&sortOrder=descending",
+      "source_response_sha256": "365489336f29858e72715f0f9af2f9faee4b0ee3c4aac117fbbab930cef44ff3",
+      "http_status": 200,
+      "errors": [],
+      "excluded": [],
+      "accepted_entries": 5
+    },
+    {
+      "source": "openalex",
+      "query_id": "ran_jepa",
+      "topic": "RAN and wireless JEPA",
+      "request_url": "https://api.openalex.org/works?search=JEPA+wireless&filter=to_publication_date%3A2026-11-03%2Cfrom_publication_date%3A2026-01-01&per-page=5&sort=publication_date%3Adesc&select=id%2Cdoi%2Ctitle%2Cauthorships%2Cpublication_date%2Cupdated_date%2Cids%2Cprimary_location",
+      "retrieved_at": "2026-11-03T14:54:12.526990Z",
+      "attempts": [
+        {
+          "number": 1,
+          "http_status": 200,
+          "response_url": "https://api.openalex.org/works?search=JEPA+wireless&filter=to_publication_date%3A2026-11-03%2Cfrom_publication_date%3A2026-01-01&per-page=5&sort=publication_date%3Adesc&select=id%2Cdoi%2Ctitle%2Cauthorships%2Cpublication_date%2Cupdated_date%2Cids%2Cprimary_location",
+          "response_sha256": "200ffca1508cd1d54f80b0617d0659d386ab1ae84a7ac063429d2ee393cb7071",
+          "response_bytes": 25439,
+          "response_artifact": "responses/200ffca1508cd1d54f80b0617d0659d386ab1ae84a7ac063429d2ee393cb7071.bin"
+        }
+      ],
+      "retrieval_status": "success",
+      "response_url": "https://api.openalex.org/works?search=JEPA+wireless&filter=to_publication_date%3A2026-11-03%2Cfrom_publication_date%3A2026-01-01&per-page=5&sort=publication_date%3Adesc&select=id%2Cdoi%2Ctitle%2Cauthorships%2Cpublication_date%2Cupdated_date%2Cids%2Cprimary_location",
+      "source_response_sha256": "200ffca1508cd1d54f80b0617d0659d386ab1ae84a7ac063429d2ee393cb7071",
+      "http_status": 200,
+      "errors": [],
+      "excluded": [],
+      "accepted_entries": 5
+    },
+    {
+      "source": "openalex",
+      "query_id": "wireless_world_models",
+      "topic": "Wireless world models",
+      "request_url": "https://api.openalex.org/works?search=wireless+world+model&filter=to_publication_date%3A2026-11-03%2Cfrom_publication_date%3A2026-01-01&per-page=5&sort=publication_date%3Adesc&select=id%2Cdoi%2Ctitle%2Cauthorships%2Cpublication_date%2Cupdated_date%2Cids%2Cprimary_location",
+      "retrieved_at": "2026-11-03T14:54:12.526990Z",
+      "attempts": [
+        {
+          "number": 1,
+          "http_status": 200,
+          "response_url": "https://api.openalex.org/works?search=wireless+world+model&filter=to_publication_date%3A2026-11-03%2Cfrom_publication_date%3A2026-01-01&per-page=5&sort=publication_date%3Adesc&select=id%2Cdoi%2Ctitle%2Cauthorships%2Cpublication_date%2Cupdated_date%2Cids%2Cprimary_location",
+          "response_sha256": "09bc11e62bd9e7133ad7f82865f3f7cd984e7444c61f107de0e9ebaedfe6d1c9",
+          "response_bytes": 35045,
+          "response_artifact": "responses/09bc11e62bd9e7133ad7f82865f3f7cd984e7444c61f107de0e9ebaedfe6d1c9.bin"
+        }
+      ],
+      "retrieval_status": "success",
+      "response_url": "https://api.openalex.org/works?search=wireless+world+model&filter=to_publication_date%3A2026-11-03%2Cfrom_publication_date%3A2026-01-01&per-page=5&sort=publication_date%3Adesc&select=id%2Cdoi%2Ctitle%2Cauthorships%2Cpublication_date%2Cupdated_date%2Cids%2Cprimary_location",
+      "source_response_sha256": "09bc11e62bd9e7133ad7f82865f3f7cd984e7444c61f107de0e9ebaedfe6d1c9",
+      "http_status": 200,
+      "errors": [],
+      "excluded": [],
+      "accepted_entries": 5
+    },
+    {
+      "source": "openalex",
+      "query_id": "jepa_control",
+      "topic": "Predictive representations for network control",
+      "request_url": "https://api.openalex.org/works?search=JEPA+network+control&filter=to_publication_date%3A2026-11-03%2Cfrom_publication_date%3A2026-01-01&per-page=5&sort=publication_date%3Adesc&select=id%2Cdoi%2Ctitle%2Cauthorships%2Cpublication_date%2Cupdated_date%2Cids%2Cprimary_location",
+      "retrieved_at": "2026-11-03T14:54:12.526990Z",
+      "attempts": [
+        {
+          "number": 1,
+          "http_status": 200,
+          "response_url": "https://api.openalex.org/works?search=JEPA+network+control&filter=to_publication_date%3A2026-11-03%2Cfrom_publication_date%3A2026-01-01&per-page=5&sort=publication_date%3Adesc&select=id%2Cdoi%2Ctitle%2Cauthorships%2Cpublication_date%2Cupdated_date%2Cids%2Cprimary_location",
+          "response_sha256": "f039312c4e4664c93b45b9d9ae4f45173c525f3d9f451e03722f0ffe51c6a514",
+          "response_bytes": 30466,
+          "response_artifact": "responses/f039312c4e4664c93b45b9d9ae4f45173c525f3d9f451e03722f0ffe51c6a514.bin"
+        }
+      ],
+      "retrieval_status": "success",
+      "response_url": "https://api.openalex.org/works?search=JEPA+network+control&filter=to_publication_date%3A2026-11-03%2Cfrom_publication_date%3A2026-01-01&per-page=5&sort=publication_date%3Adesc&select=id%2Cdoi%2Ctitle%2Cauthorships%2Cpublication_date%2Cupdated_date%2Cids%2Cprimary_location",
+      "source_response_sha256": "f039312c4e4664c93b45b9d9ae4f45173c525f3d9f451e03722f0ffe51c6a514",
+      "http_status": 200,
+      "errors": [],
+      "excluded": [],
+      "accepted_entries": 5
+    },
+    {
+      "source": "openalex",
+      "query_id": "ran_control",
+      "topic": "Radio access network control",
+      "request_url": "https://api.openalex.org/works?search=radio+access+network+control&filter=to_publication_date%3A2026-11-03%2Cfrom_publication_date%3A2026-01-01&per-page=5&sort=publication_date%3Adesc&select=id%2Cdoi%2Ctitle%2Cauthorships%2Cpublication_date%2Cupdated_date%2Cids%2Cprimary_location",
+      "retrieved_at": "2026-11-03T14:54:12.526990Z",
+      "attempts": [
+        {
+          "number": 1,
+          "http_status": 200,
+          "response_url": "https://api.openalex.org/works?search=radio+access+network+control&filter=to_publication_date%3A2026-11-03%2Cfrom_publication_date%3A2026-01-01&per-page=5&sort=publication_date%3Adesc&select=id%2Cdoi%2Ctitle%2Cauthorships%2Cpublication_date%2Cupdated_date%2Cids%2Cprimary_location",
+          "response_sha256": "8d904d10bf8dfda23941e3eeb32b35fe986c5042cae034b54a9bd2c93668b184",
+          "response_bytes": 67618,
+          "response_artifact": "responses/8d904d10bf8dfda23941e3eeb32b35fe986c5042cae034b54a9bd2c93668b184.bin"
+        }
+      ],
+      "retrieval_status": "success",
+      "response_url": "https://api.openalex.org/works?search=radio+access+network+control&filter=to_publication_date%3A2026-11-03%2Cfrom_publication_date%3A2026-01-01&per-page=5&sort=publication_date%3Adesc&select=id%2Cdoi%2Ctitle%2Cauthorships%2Cpublication_date%2Cupdated_date%2Cids%2Cprimary_location",
+      "source_response_sha256": "8d904d10bf8dfda23941e3eeb32b35fe986c5042cae034b54a9bd2c93668b184",
+      "http_status": 200,
+      "errors": [],
+      "excluded": [],
+      "accepted_entries": 5
+    },
+    {
+      "source": "openalex",
+      "query_id": "deadline_uncertainty",
+      "topic": "Wireless deadline risk and uncertainty",
+      "request_url": "https://api.openalex.org/works?search=wireless+deadline+uncertainty&filter=to_publication_date%3A2026-11-03%2Cfrom_publication_date%3A2026-01-01&per-page=5&sort=publication_date%3Adesc&select=id%2Cdoi%2Ctitle%2Cauthorships%2Cpublication_date%2Cupdated_date%2Cids%2Cprimary_location",
+      "retrieved_at": "2026-11-03T14:54:12.526990Z",
+      "attempts": [
+        {
+          "number": 1,
+          "http_status": 200,
+          "response_url": "https://api.openalex.org/works?search=wireless+deadline+uncertainty&filter=to_publication_date%3A2026-11-03%2Cfrom_publication_date%3A2026-01-01&per-page=5&sort=publication_date%3Adesc&select=id%2Cdoi%2Ctitle%2Cauthorships%2Cpublication_date%2Cupdated_date%2Cids%2Cprimary_location",
+          "response_sha256": "a98a8f921d2d1632c3dcacd581016af98e816d657f618da71ebae3887d76a8ad",
+          "response_bytes": 26144,
+          "response_artifact": "responses/a98a8f921d2d1632c3dcacd581016af98e816d657f618da71ebae3887d76a8ad.bin"
+        }
+      ],
+      "retrieval_status": "success",
+      "response_url": "https://api.openalex.org/works?search=wireless+deadline+uncertainty&filter=to_publication_date%3A2026-11-03%2Cfrom_publication_date%3A2026-01-01&per-page=5&sort=publication_date%3Adesc&select=id%2Cdoi%2Ctitle%2Cauthorships%2Cpublication_date%2Cupdated_date%2Cids%2Cprimary_location",
+      "source_response_sha256": "a98a8f921d2d1632c3dcacd581016af98e816d657f618da71ebae3887d76a8ad",
+      "http_status": 200,
+      "errors": [],
+      "excluded": [],
+      "accepted_entries": 5
+    }
+  ],
+  "records": [
+    {
+      "id": "arxiv:2608.16955",
+      "title": "WONDER: A Radio World Model-based Negotiation Framework for Multi-Agent UAV Coverage Optimization",
+      "authors": [
+        "Jiahao Huang",
+        "Rongpeng Li",
+        "Zhifeng Zhao",
+        "Guoru Ding",
+        "Honggang Zhang"
+      ],
+      "published_at": "2026-08-16T11:47:34Z",
+      "updated_at": "2026-08-16T11:47:34Z",
+      "primary_url": "https://arxiv.org/abs/2608.16955",
+      "identifiers": {
+        "arxiv": [
+          "2608.16955"
+        ],
+        "doi": [],
+        "openalex": []
+      },
+      "observations": [
+        {
+          "source": "arxiv",
+          "source_id": "2608.16955",
+          "query_id": "ran_jepa",
+          "title": "WONDER: A Radio World Model-based Negotiation Framework for Multi-Agent UAV Coverage Optimization",
+          "authors": [
+            "Jiahao Huang",
+            "Rongpeng Li",
+            "Zhifeng Zhao",
+            "Guoru Ding",
+            "Honggang Zhang"
+          ],
+          "published_at": "2026-08-16T11:47:34Z",
+          "updated_at": "2026-08-16T11:47:34Z",
+          "identifiers": {
+            "arxiv": [
+              "2608.16955"
+            ],
+            "doi": [],
+            "openalex": []
+          },
+          "primary_url": "https://arxiv.org/abs/2608.16955",
+          "response_url": "https://export.arxiv.org/api/query?search_query=%28all%3A%22JEPA%22+AND+%28all%3A%22wireless%22+OR+all%3A%22radio+access%22%29%29+AND+submittedDate%3A%5B202601010000+TO+202611031454%5D&start=0&max_results=5&sortBy=submittedDate&sortOrder=descending",
+          "source_response_sha256": "b6e857d0e868a299f81852ee8cf3c07afe80d5e486ad6664cf8f91bf59c11659",
+          "retrieved_at": "2026-11-03T14:54:12.526990Z",
+          "retrieval_status": "retrieved_from_official_discovery_endpoint"
+        }
+      ],
+      "first_seen_at": "2026-11-03T14:54:12.526990Z",
+      "last_seen_at": "2026-11-03T14:54:12.526990Z",
+      "seen_in_current_run": true,
+      "retrieval_status": "retrieved",
+      "review": {
+        "status": "lead",
+        "basis": "Unreviewed discovery; no SOTA or production qualification"
+      }
+    },
+    {
+      "id": "arxiv:2609.04851",
+      "title": "Coupled Control and Wireless World Models for Resilient Remote Robotic Control",
+      "authors": [
+        "H. P. Madushanka",
+        "Sumudu Samarakoon",
+        "Mehdi Bennis"
+      ],
+      "published_at": "2026-09-04T08:09:55Z",
+      "updated_at": "2026-09-04T08:09:55Z",
+      "primary_url": "https://arxiv.org/abs/2609.04851",
+      "identifiers": {
+        "arxiv": [
+          "2609.04851"
+        ],
+        "doi": [],
+        "openalex": []
+      },
+      "observations": [
+        {
+          "source": "arxiv",
+          "source_id": "2609.04851",
+          "query_id": "ran_jepa",
+          "title": "Coupled Control and Wireless World Models for Resilient Remote Robotic Control",
+          "authors": [
+            "H. P. Madushanka",
+            "Sumudu Samarakoon",
+            "Mehdi Bennis"
+          ],
+          "published_at": "2026-09-04T08:09:55Z",
+          "updated_at": "2026-09-04T08:09:55Z",
+          "identifiers": {
+            "arxiv": [
+              "2609.04851"
+            ],
+            "doi": [],
+            "openalex": []
+          },
+          "primary_url": "https://arxiv.org/abs/2609.04851",
+          "response_url": "https://export.arxiv.org/api/query?search_query=%28all%3A%22JEPA%22+AND+%28all%3A%22wireless%22+OR+all%3A%22radio+access%22%29%29+AND+submittedDate%3A%5B202601010000+TO+202611031454%5D&start=0&max_results=5&sortBy=submittedDate&sortOrder=descending",
+          "source_response_sha256": "b6e857d0e868a299f81852ee8cf3c07afe80d5e486ad6664cf8f91bf59c11659",
+          "retrieved_at": "2026-11-03T14:54:12.526990Z",
+          "retrieval_status": "retrieved_from_official_discovery_endpoint"
+        }
+      ],
+      "first_seen_at": "2026-11-03T14:54:12.526990Z",
+      "last_seen_at": "2026-11-03T14:54:12.526990Z",
+      "seen_in_current_run": true,
+      "retrieval_status": "retrieved",
+      "review": {
+        "status": "lead",
+        "basis": "Unreviewed discovery; no SOTA or production qualification"
+      }
+    },
+    {
+      "id": "arxiv:2610.07025",
+      "title": "WiSPER: Pose-Supervised Predictive and Residual Flow Refinement For Multi-Person 3D Pose Estimation With WiFi CSI",
+      "authors": [
+        "Gabriel Lee Jun Rong",
+        "Shanhong Liu",
+        "Pai Chet Ng",
+        "Konstantinos N. Plataniotis",
+        "Jamal Seyedmohammadi",
+        "S. Mohammad Sheikholeslami"
+      ],
+      "published_at": "2026-10-04T16:57:06Z",
+      "updated_at": "2026-10-04T16:57:06Z",
+      "primary_url": "https://arxiv.org/abs/2610.07025",
+      "identifiers": {
+        "arxiv": [
+          "2610.07025"
+        ],
+        "doi": [],
+        "openalex": []
+      },
+      "observations": [
+        {
+          "source": "arxiv",
+          "source_id": "2610.07025",
+          "query_id": "ran_jepa",
+          "title": "WiSPER: Pose-Supervised Predictive and Residual Flow Refinement For Multi-Person 3D Pose Estimation With WiFi CSI",
+          "authors": [
+            "Gabriel Lee Jun Rong",
+            "Shanhong Liu",
+            "Pai Chet Ng",
+            "Konstantinos N. Plataniotis",
+            "Jamal Seyedmohammadi",
+            "S. Mohammad Sheikholeslami"
+          ],
+          "published_at": "2026-10-04T16:57:06Z",
+          "updated_at": "2026-10-04T16:57:06Z",
+          "identifiers": {
+            "arxiv": [
+              "2610.07025"
+            ],
+            "doi": [],
+            "openalex": []
+          },
+          "primary_url": "https://arxiv.org/abs/2610.07025",
+          "response_url": "https://export.arxiv.org/api/query?search_query=%28all%3A%22JEPA%22+AND+%28all%3A%22wireless%22+OR+all%3A%22radio+access%22%29%29+AND+submittedDate%3A%5B202601010000+TO+202611031454%5D&start=0&max_results=5&sortBy=submittedDate&sortOrder=descending",
+          "source_response_sha256": "b6e857d0e868a299f81852ee8cf3c07afe80d5e486ad6664cf8f91bf59c11659",
+          "retrieved_at": "2026-11-03T14:54:12.526990Z",
+          "retrieval_status": "retrieved_from_official_discovery_endpoint"
+        }
+      ],
+      "first_seen_at": "2026-11-03T14:54:12.526990Z",
+      "last_seen_at": "2026-11-03T14:54:12.526990Z",
+      "seen_in_current_run": true,
+      "retrieval_status": "retrieved",
+      "review": {
+        "status": "lead",
+        "basis": "Unreviewed discovery; no SOTA or production qualification"
+      }
+    },
+    {
+      "id": "arxiv:2610.13315",
+      "title": "JEPA-kMMVAE: CSI Prediction for Time-Varying Wireless Channels",
+      "authors": [
+        "Efstathios Chatziloizos",
+        "Konstantinos Vandikas",
+        "Aneta Vulgarakis Feljan",
+        "Zheng Chen",
+        "Nikolaos Pappas"
+      ],
+      "published_at": "2026-10-09T09:58:03Z",
+      "updated_at": "2026-10-09T09:58:03Z",
+      "primary_url": "https://arxiv.org/abs/2610.13315",
+      "identifiers": {
+        "arxiv": [
+          "2610.13315"
+        ],
+        "doi": [],
+        "openalex": []
+      },
+      "observations": [
+        {
+          "source": "arxiv",
+          "source_id": "2610.13315",
+          "query_id": "ran_jepa",
+          "title": "JEPA-kMMVAE: CSI Prediction for Time-Varying Wireless Channels",
+          "authors": [
+            "Efstathios Chatziloizos",
+            "Konstantinos Vandikas",
+            "Aneta Vulgarakis Feljan",
+            "Zheng Chen",
+            "Nikolaos Pappas"
+          ],
+          "published_at": "2026-10-09T09:58:03Z",
+          "updated_at": "2026-10-09T09:58:03Z",
+          "identifiers": {
+            "arxiv": [
+              "2610.13315"
+            ],
+            "doi": [],
+            "openalex": []
+          },
+          "primary_url": "https://arxiv.org/abs/2610.13315",
+          "response_url": "https://export.arxiv.org/api/query?search_query=%28all%3A%22JEPA%22+AND+%28all%3A%22wireless%22+OR+all%3A%22radio+access%22%29%29+AND+submittedDate%3A%5B202601010000+TO+202611031454%5D&start=0&max_results=5&sortBy=submittedDate&sortOrder=descending",
+          "source_response_sha256": "b6e857d0e868a299f81852ee8cf3c07afe80d5e486ad6664cf8f91bf59c11659",
+          "retrieved_at": "2026-11-03T14:54:12.526990Z",
+          "retrieval_status": "retrieved_from_official_discovery_endpoint"
+        }
+      ],
+      "first_seen_at": "2026-11-03T14:54:12.526990Z",
+      "last_seen_at": "2026-11-03T14:54:12.526990Z",
+      "seen_in_current_run": true,
+      "retrieval_status": "retrieved",
+      "review": {
+        "status": "lead",
+        "basis": "Unreviewed discovery; no SOTA or production qualification"
+      }
+    },
+    {
+      "id": "arxiv:2610.18570",
+      "title": "Order-Consistent Latent Geometry for Reliable Short-Horizon Planning in World Models",
+      "authors": [
+        "Junlin Wu",
+        "Wen Fan",
+        "Dandan Zhang"
+      ],
+      "published_at": "2026-10-13T00:00:00Z",
+      "updated_at": "2026-10-28T10:33:24.094632Z",
+      "primary_url": "https://arxiv.org/abs/2610.18570",
+      "identifiers": {
+        "arxiv": [
+          "2610.18570"
+        ],
+        "doi": [
+          "10.48550/arxiv.2610.18570"
+        ],
+        "openalex": [
+          "W7221759040"
+        ]
+      },
+      "observations": [
+        {
+          "source": "openalex",
+          "source_id": "W7221759040",
+          "query_id": "ran_jepa",
+          "title": "Order-Consistent Latent Geometry for Reliable Short-Horizon Planning in World Models",
+          "authors": [
+            "Junlin Wu",
+            "Wen Fan",
+            "Dandan Zhang"
+          ],
+          "published_at": "2026-10-13T00:00:00Z",
+          "updated_at": "2026-10-28T10:33:24.094632Z",
+          "identifiers": {
+            "arxiv": [
+              "2610.18570"
+            ],
+            "doi": [
+              "10.48550/arxiv.2610.18570"
+            ],
+            "openalex": [
+              "W7221759040"
+            ]
+          },
+          "primary_url": "https://arxiv.org/abs/2610.18570",
+          "response_url": "https://api.openalex.org/works?search=JEPA+wireless&filter=to_publication_date%3A2026-11-03%2Cfrom_publication_date%3A2026-01-01&per-page=5&sort=publication_date%3Adesc&select=id%2Cdoi%2Ctitle%2Cauthorships%2Cpublication_date%2Cupdated_date%2Cids%2Cprimary_location",
+          "source_response_sha256": "200ffca1508cd1d54f80b0617d0659d386ab1ae84a7ac063429d2ee393cb7071",
+          "retrieved_at": "2026-11-03T14:54:12.526990Z",
+          "retrieval_status": "retrieved_from_official_discovery_endpoint"
+        }
+      ],
+      "first_seen_at": "2026-11-03T14:54:12.526990Z",
+      "last_seen_at": "2026-11-03T14:54:12.526990Z",
+      "seen_in_current_run": true,
+      "retrieval_status": "retrieved",
+      "review": {
+        "status": "lead",
+        "basis": "Unreviewed discovery; no SOTA or production qualification"
+      }
+    },
+    {
+      "id": "arxiv:2610.21013",
+      "title": "LWM-TF: A Wireless Foundation Model on 5G NR Time-Frequency Resource Grids",
+      "authors": [
+        "Namhyun Kim",
+        "Sadjad Alikhani",
+        "Ahmed Alkhateeb"
+      ],
+      "published_at": "2026-10-14T00:00:00Z",
+      "updated_at": "2026-10-28T10:33:24.094632Z",
+      "primary_url": "https://arxiv.org/abs/2610.21013",
+      "identifiers": {
+        "arxiv": [
+          "2610.21013"
+        ],
+        "doi": [
+          "10.48550/arxiv.2610.21013"
+        ],
+        "openalex": [
+          "W7222453158"
+        ]
+      },
+      "observations": [
+        {
+          "source": "openalex",
+          "source_id": "W7222453158",
+          "query_id": "ran_jepa",
+          "title": "LWM-TF: A Wireless Foundation Model on 5G NR Time-Frequency Resource Grids",
+          "authors": [
+            "Namhyun Kim",
+            "Sadjad Alikhani",
+            "Ahmed Alkhateeb"
+          ],
+          "published_at": "2026-10-14T00:00:00Z",
+          "updated_at": "2026-10-28T10:33:24.094632Z",
+          "identifiers": {
+            "arxiv": [
+              "2610.21013"
+            ],
+            "doi": [
+              "10.48550/arxiv.2610.21013"
+            ],
+            "openalex": [
+              "W7222453158"
+            ]
+          },
+          "primary_url": "https://arxiv.org/abs/2610.21013",
+          "response_url": "https://api.openalex.org/works?search=JEPA+wireless&filter=to_publication_date%3A2026-11-03%2Cfrom_publication_date%3A2026-01-01&per-page=5&sort=publication_date%3Adesc&select=id%2Cdoi%2Ctitle%2Cauthorships%2Cpublication_date%2Cupdated_date%2Cids%2Cprimary_location",
+          "source_response_sha256": "200ffca1508cd1d54f80b0617d0659d386ab1ae84a7ac063429d2ee393cb7071",
+          "retrieved_at": "2026-11-03T14:54:12.526990Z",
+          "retrieval_status": "retrieved_from_official_discovery_endpoint"
+        }
+      ],
+      "first_seen_at": "2026-11-03T14:54:12.526990Z",
+      "last_seen_at": "2026-11-03T14:54:12.526990Z",
+      "seen_in_current_run": true,
+      "retrieval_status": "retrieved",
+      "review": {
+        "status": "lead",
+        "basis": "Unreviewed discovery; no SOTA or production qualification"
+      }
+    },
+    {
+      "id": "arxiv:2610.29382",
+      "title": "RadioDreamer: A World Model for Radio Map Forecasting and Imagination-Based Optimization",
+      "authors": [
+        "Haoye Chai",
+        "Mugen Peng"
+      ],
+      "published_at": "2026-10-21T08:10:49Z",
+      "updated_at": "2026-10-21T08:10:49Z",
+      "primary_url": "https://arxiv.org/abs/2610.29382",
+      "identifiers": {
+        "arxiv": [
+          "2610.29382"
+        ],
+        "doi": [
+          "10.48550/arxiv.2610.29382"
+        ],
+        "openalex": [
+          "W7223241766"
+        ]
+      },
+      "observations": [
+        {
+          "source": "arxiv",
+          "source_id": "2610.29382",
+          "query_id": "wireless_world_models",
+          "title": "RadioDreamer: A World Model for Radio Map Forecasting and Imagination-Based Optimization",
+          "authors": [
+            "Haoye Chai",
+            "Mugen Peng"
+          ],
+          "published_at": "2026-10-21T08:10:49Z",
+          "updated_at": "2026-10-21T08:10:49Z",
+          "identifiers": {
+            "arxiv": [
+              "2610.29382"
+            ],
+            "doi": [],
+            "openalex": []
+          },
+          "primary_url": "https://arxiv.org/abs/2610.29382",
+          "response_url": "https://export.arxiv.org/api/query?search_query=%28all%3A%22world+model%22+AND+all%3A%22wireless%22%29+AND+submittedDate%3A%5B202601010000+TO+202611031454%5D&start=0&max_results=5&sortBy=submittedDate&sortOrder=descending",
+          "source_response_sha256": "d8c56ef991b6340111463960a285de4161a5e9090d2fce375269602e4297df8c",
+          "retrieved_at": "2026-11-03T14:54:12.526990Z",
+          "retrieval_status": "retrieved_from_official_discovery_endpoint"
+        },
+        {
+          "source": "openalex",
+          "source_id": "W7223241766",
+          "query_id": "ran_jepa",
+          "title": "RadioDreamer: A World Model for Radio Map Forecasting and Imagination-Based Optimization",
+          "authors": [
+            "Haoye Chai",
+            "Mugen Peng"
+          ],
+          "published_at": "2026-10-21T00:00:00Z",
+          "updated_at": "2026-10-28T10:33:24.094632Z",
+          "identifiers": {
+            "arxiv": [
+              "2610.29382"
+            ],
+            "doi": [
+              "10.48550/arxiv.2610.29382"
+            ],
+            "openalex": [
+              "W7223241766"
+            ]
+          },
+          "primary_url": "https://arxiv.org/abs/2610.29382",
+          "response_url": "https://api.openalex.org/works?search=JEPA+wireless&filter=to_publication_date%3A2026-11-03%2Cfrom_publication_date%3A2026-01-01&per-page=5&sort=publication_date%3Adesc&select=id%2Cdoi%2Ctitle%2Cauthorships%2Cpublication_date%2Cupdated_date%2Cids%2Cprimary_location",
+          "source_response_sha256": "200ffca1508cd1d54f80b0617d0659d386ab1ae84a7ac063429d2ee393cb7071",
+          "retrieved_at": "2026-11-03T14:54:12.526990Z",
+          "retrieval_status": "retrieved_from_official_discovery_endpoint"
+        }
+      ],
+      "first_seen_at": "2026-11-03T14:54:12.526990Z",
+      "last_seen_at": "2026-11-03T14:54:12.526990Z",
+      "seen_in_current_run": true,
+      "retrieval_status": "retrieved",
+      "review": {
+        "status": "lead",
+        "basis": "Unreviewed discovery; no SOTA or production qualification"
+      }
+    },
+    {
+      "id": "arxiv:2610.29534",
+      "title": "Safe World Model for Joint Trajectory and Beamforming Design of Mobile Base Stations",
+      "authors": [
+        "Abdolrasoul Sakhaei Gharagezlou",
+        "Zeinab Askari Donbeh",
+        "Mehdi Monemi",
+        "Matti Latva-aho",
+        "Mehdi Rasti"
+      ],
+      "published_at": "2026-10-21T10:23:56Z",
+      "updated_at": "2026-10-29T10:07:39Z",
+      "primary_url": "https://arxiv.org/abs/2610.29534",
+      "identifiers": {
+        "arxiv": [
+          "2610.29534"
+        ],
+        "doi": [],
+        "openalex": []
+      },
+      "observations": [
+        {
+          "source": "arxiv",
+          "source_id": "2610.29534",
+          "query_id": "wireless_world_models",
+          "title": "Safe World Model for Joint Trajectory and Beamforming Design of Mobile Base Stations",
+          "authors": [
+            "Abdolrasoul Sakhaei Gharagezlou",
+            "Zeinab Askari Donbeh",
+            "Mehdi Monemi",
+            "Matti Latva-aho",
+            "Mehdi Rasti"
+          ],
+          "published_at": "2026-10-21T10:23:56Z",
+          "updated_at": "2026-10-29T10:07:39Z",
+          "identifiers": {
+            "arxiv": [
+              "2610.29534"
+            ],
+            "doi": [],
+            "openalex": []
+          },
+          "primary_url": "https://arxiv.org/abs/2610.29534",
+          "response_url": "https://export.arxiv.org/api/query?search_query=%28all%3A%22world+model%22+AND+all%3A%22wireless%22%29+AND+submittedDate%3A%5B202601010000+TO+202611031454%5D&start=0&max_results=5&sortBy=submittedDate&sortOrder=descending",
+          "source_response_sha256": "d8c56ef991b6340111463960a285de4161a5e9090d2fce375269602e4297df8c",
+          "retrieved_at": "2026-11-03T14:54:12.526990Z",
+          "retrieval_status": "retrieved_from_official_discovery_endpoint"
+        }
+      ],
+      "first_seen_at": "2026-11-03T14:54:12.526990Z",
+      "last_seen_at": "2026-11-03T14:54:12.526990Z",
+      "seen_in_current_run": true,
+      "retrieval_status": "retrieved",
+      "review": {
+        "status": "lead",
+        "basis": "Unreviewed discovery; no SOTA or production qualification"
+      }
+    },
+    {
+      "id": "arxiv:2610.29587",
+      "title": "Guess and Send: World-Model-Guided Semantic Packet Transmission for Robust Video Perception",
+      "authors": [
+        "Yan Gong",
+        "Zheng Chu",
+        "Wei Koong Chai",
+        "Hari Mohan Pandey",
+        "Jiankang Zhang",
+        "Jingrui Hou",
+        "Miao Zhang",
+        "Yuanjian Li",
+        "Pei Xiao"
+      ],
+      "published_at": "2026-10-21T11:27:25Z",
+      "updated_at": "2026-10-29T19:12:30Z",
+      "primary_url": "https://arxiv.org/abs/2610.29587",
+      "identifiers": {
+        "arxiv": [
+          "2610.29587"
+        ],
+        "doi": [],
+        "openalex": []
+      },
+      "observations": [
+        {
+          "source": "arxiv",
+          "source_id": "2610.29587",
+          "query_id": "wireless_world_models",
+          "title": "Guess and Send: World-Model-Guided Semantic Packet Transmission for Robust Video Perception",
+          "authors": [
+            "Yan Gong",
+            "Zheng Chu",
+            "Wei Koong Chai",
+            "Hari Mohan Pandey",
+            "Jiankang Zhang",
+            "Jingrui Hou",
+            "Miao Zhang",
+            "Yuanjian Li",
+            "Pei Xiao"
+          ],
+          "published_at": "2026-10-21T11:27:25Z",
+          "updated_at": "2026-10-29T19:12:30Z",
+          "identifiers": {
+            "arxiv": [
+              "2610.29587"
+            ],
+            "doi": [],
+            "openalex": []
+          },
+          "primary_url": "https://arxiv.org/abs/2610.29587",
+          "response_url": "https://export.arxiv.org/api/query?search_query=%28all%3A%22world+model%22+AND+all%3A%22wireless%22%29+AND+submittedDate%3A%5B202601010000+TO+202611031454%5D&start=0&max_results=5&sortBy=submittedDate&sortOrder=descending",
+          "source_response_sha256": "d8c56ef991b6340111463960a285de4161a5e9090d2fce375269602e4297df8c",
+          "retrieved_at": "2026-11-03T14:54:12.526990Z",
+          "retrieval_status": "retrieved_from_official_discovery_endpoint"
+        }
+      ],
+      "first_seen_at": "2026-11-03T14:54:12.526990Z",
+      "last_seen_at": "2026-11-03T14:54:12.526990Z",
+      "seen_in_current_run": true,
+      "retrieval_status": "retrieved",
+      "review": {
+        "status": "lead",
+        "basis": "Unreviewed discovery; no SOTA or production qualification"
+      }
+    },
+    {
+      "id": "arxiv:2610.32257",
+      "title": "When Simple Is Enough: Resource-Aware Heuristic versus DDQN for O-RAN Mobility Robustness",
+      "authors": [
+        "Ali Deylamy",
+        "Nima Afraz"
+      ],
+      "published_at": "2026-10-23T07:13:57Z",
+      "updated_at": "2026-10-23T07:13:57Z",
+      "primary_url": "https://arxiv.org/abs/2610.32257",
+      "identifiers": {
+        "arxiv": [
+          "2610.32257"
+        ],
+        "doi": [],
+        "openalex": []
+      },
+      "observations": [
+        {
+          "source": "arxiv",
+          "source_id": "2610.32257",
+          "query_id": "ran_control",
+          "title": "When Simple Is Enough: Resource-Aware Heuristic versus DDQN for O-RAN Mobility Robustness",
+          "authors": [
+            "Ali Deylamy",
+            "Nima Afraz"
+          ],
+          "published_at": "2026-10-23T07:13:57Z",
+          "updated_at": "2026-10-23T07:13:57Z",
+          "identifiers": {
+            "arxiv": [
+              "2610.32257"
+            ],
+            "doi": [],
+            "openalex": []
+          },
+          "primary_url": "https://arxiv.org/abs/2610.32257",
+          "response_url": "https://export.arxiv.org/api/query?search_query=%28all%3A%22radio+access+network%22+AND+%28all%3A%22control%22+OR+all%3A%22resource+allocation%22%29%29+AND+submittedDate%3A%5B202601010000+TO+202611031454%5D&start=0&max_results=5&sortBy=submittedDate&sortOrder=descending",
+          "source_response_sha256": "0cc065333f0b9586ea5b07efd4a456e0f64b61097abda39f4115df117bd452f1",
+          "retrieved_at": "2026-11-03T14:54:12.526990Z",
+          "retrieval_status": "retrieved_from_official_discovery_endpoint"
+        }
+      ],
+      "first_seen_at": "2026-11-03T14:54:12.526990Z",
+      "last_seen_at": "2026-11-03T14:54:12.526990Z",
+      "seen_in_current_run": true,
+      "retrieval_status": "retrieved",
+      "review": {
+        "status": "lead",
+        "basis": "Unreviewed discovery; no SOTA or production qualification"
+      }
+    },
+    {
+      "id": "arxiv:2610.35079",
+      "title": "Toward Fast Human Reaction Modeling from High-Frequency Digital Interaction Data",
+      "authors": [
+        "Emanuel Dopater",
+        "Daniel Gavlas",
+        "Lukáš Jochymek",
+        "Kannan Paul",
+        "Miloslav Szczypka",
+        "David Vojáček",
+        "Josef Zacek",
+        "Jan Plucar",
+        "Radek Svoboda",
+        "Ivan Zelinka"
+      ],
+      "published_at": "2026-10-26T00:00:00Z",
+      "updated_at": "2026-10-30T12:39:25.321706Z",
+      "primary_url": "https://arxiv.org/abs/2610.35079",
+      "identifiers": {
+        "arxiv": [
+          "2610.35079"
+        ],
+        "doi": [
+          "10.48550/arxiv.2610.35079"
+        ],
+        "openalex": [
+          "W7223932102"
+        ]
+      },
+      "observations": [
+        {
+          "source": "openalex",
+          "source_id": "W7223932102",
+          "query_id": "ran_jepa",
+          "title": "Toward Fast Human Reaction Modeling from High-Frequency Digital Interaction Data",
+          "authors": [
+            "Emanuel Dopater",
+            "Daniel Gavlas",
+            "Lukáš Jochymek",
+            "Kannan Paul",
+            "Miloslav Szczypka",
+            "David Vojáček",
+            "Josef Zacek",
+            "Jan Plucar",
+            "Radek Svoboda",
+            "Ivan Zelinka"
+          ],
+          "published_at": "2026-10-26T00:00:00Z",
+          "updated_at": "2026-10-30T12:39:25.321706Z",
+          "identifiers": {
+            "arxiv": [
+              "2610.35079"
+            ],
+            "doi": [
+              "10.48550/arxiv.2610.35079"
+            ],
+            "openalex": [
+              "W7223932102"
+            ]
+          },
+          "primary_url": "https://arxiv.org/abs/2610.35079",
+          "response_url": "https://api.openalex.org/works?search=JEPA+wireless&filter=to_publication_date%3A2026-11-03%2Cfrom_publication_date%3A2026-01-01&per-page=5&sort=publication_date%3Adesc&select=id%2Cdoi%2Ctitle%2Cauthorships%2Cpublication_date%2Cupdated_date%2Cids%2Cprimary_location",
+          "source_response_sha256": "200ffca1508cd1d54f80b0617d0659d386ab1ae84a7ac063429d2ee393cb7071",
+          "retrieved_at": "2026-11-03T14:54:12.526990Z",
+          "retrieval_status": "retrieved_from_official_discovery_endpoint"
+        }
+      ],
+      "first_seen_at": "2026-11-03T14:54:12.526990Z",
+      "last_seen_at": "2026-11-03T14:54:12.526990Z",
+      "seen_in_current_run": true,
+      "retrieval_status": "retrieved",
+      "review": {
+        "status": "lead",
+        "basis": "Unreviewed discovery; no SOTA or production qualification"
+      }
+    },
+    {
+      "id": "arxiv:2610.35813",
+      "title": "World Model for Energy Efficiency Maximization in Dynamic Metasurface Antennas",
+      "authors": [
+        "Abdolrasoul Sakhaei Gharagezlou",
+        "Mehdi Monemi",
+        "Matti Latva-aho",
+        "Mehdi Rasti"
+      ],
+      "published_at": "2026-10-26T17:42:58Z",
+      "updated_at": "2026-10-26T17:42:58Z",
+      "primary_url": "https://arxiv.org/abs/2610.35813",
+      "identifiers": {
+        "arxiv": [
+          "2610.35813"
+        ],
+        "doi": [],
+        "openalex": []
+      },
+      "observations": [
+        {
+          "source": "arxiv",
+          "source_id": "2610.35813",
+          "query_id": "wireless_world_models",
+          "title": "World Model for Energy Efficiency Maximization in Dynamic Metasurface Antennas",
+          "authors": [
+            "Abdolrasoul Sakhaei Gharagezlou",
+            "Mehdi Monemi",
+            "Matti Latva-aho",
+            "Mehdi Rasti"
+          ],
+          "published_at": "2026-10-26T17:42:58Z",
+          "updated_at": "2026-10-26T17:42:58Z",
+          "identifiers": {
+            "arxiv": [
+              "2610.35813"
+            ],
+            "doi": [],
+            "openalex": []
+          },
+          "primary_url": "https://arxiv.org/abs/2610.35813",
+          "response_url": "https://export.arxiv.org/api/query?search_query=%28all%3A%22world+model%22+AND+all%3A%22wireless%22%29+AND+submittedDate%3A%5B202601010000+TO+202611031454%5D&start=0&max_results=5&sortBy=submittedDate&sortOrder=descending",
+          "source_response_sha256": "d8c56ef991b6340111463960a285de4161a5e9090d2fce375269602e4297df8c",
+          "retrieved_at": "2026-11-03T14:54:12.526990Z",
+          "retrieval_status": "retrieved_from_official_discovery_endpoint"
+        }
+      ],
+      "first_seen_at": "2026-11-03T14:54:12.526990Z",
+      "last_seen_at": "2026-11-03T14:54:12.526990Z",
+      "seen_in_current_run": true,
+      "retrieval_status": "retrieved",
+      "review": {
+        "status": "lead",
+        "basis": "Unreviewed discovery; no SOTA or production qualification"
+      }
+    },
+    {
+      "id": "arxiv:2610.36406",
+      "title": "Adaptive Calibration of RF Digital Twins via Budget-Constrained Radio Measurement Selection",
+      "authors": [
+        "Yalin E. Sagduyu",
+        "Tugba Erpek",
+        "Hossein Jafari"
+      ],
+      "published_at": "2026-10-26T23:40:54Z",
+      "updated_at": "2026-10-26T23:40:54Z",
+      "primary_url": "https://arxiv.org/abs/2610.36406",
+      "identifiers": {
+        "arxiv": [
+          "2610.36406"
+        ],
+        "doi": [],
+        "openalex": []
+      },
+      "observations": [
+        {
+          "source": "arxiv",
+          "source_id": "2610.36406",
+          "query_id": "deadline_uncertainty",
+          "title": "Adaptive Calibration of RF Digital Twins via Budget-Constrained Radio Measurement Selection",
+          "authors": [
+            "Yalin E. Sagduyu",
+            "Tugba Erpek",
+            "Hossein Jafari"
+          ],
+          "published_at": "2026-10-26T23:40:54Z",
+          "updated_at": "2026-10-26T23:40:54Z",
+          "identifiers": {
+            "arxiv": [
+              "2610.36406"
+            ],
+            "doi": [],
+            "openalex": []
+          },
+          "primary_url": "https://arxiv.org/abs/2610.36406",
+          "response_url": "https://export.arxiv.org/api/query?search_query=%28%28all%3A%22wireless%22+OR+all%3A%22radio+access+network%22%29+AND+%28all%3A%22deadline%22+OR+all%3A%22uncertainty%22%29%29+AND+submittedDate%3A%5B202601010000+TO+202611031454%5D&start=0&max_results=5&sortBy=submittedDate&sortOrder=descending",
+          "source_response_sha256": "365489336f29858e72715f0f9af2f9faee4b0ee3c4aac117fbbab930cef44ff3",
+          "retrieved_at": "2026-11-03T14:54:12.526990Z",
+          "retrieval_status": "retrieved_from_official_discovery_endpoint"
+        }
+      ],
+      "first_seen_at": "2026-11-03T14:54:12.526990Z",
+      "last_seen_at": "2026-11-03T14:54:12.526990Z",
+      "seen_in_current_run": true,
+      "retrieval_status": "retrieved",
+      "review": {
+        "status": "lead",
+        "basis": "Unreviewed discovery; no SOTA or production qualification"
+      }
+    },
+    {
+      "id": "arxiv:2610.36905",
+      "title": "Digital Twin-Guided Wireless Localization via Probabilistic Inverse Learning",
+      "authors": [
+        "Mahmoud Saad Abouamer",
+        "Henrik C. M. Frederiksen",
+        "Robin J. Williams",
+        "Shashi Raj Pandey",
+        "Petar Popovski"
+      ],
+      "published_at": "2026-10-27T09:36:39Z",
+      "updated_at": "2026-10-27T09:36:39Z",
+      "primary_url": "https://arxiv.org/abs/2610.36905",
+      "identifiers": {
+        "arxiv": [
+          "2610.36905"
+        ],
+        "doi": [],
+        "openalex": []
+      },
+      "observations": [
+        {
+          "source": "arxiv",
+          "source_id": "2610.36905",
+          "query_id": "deadline_uncertainty",
+          "title": "Digital Twin-Guided Wireless Localization via Probabilistic Inverse Learning",
+          "authors": [
+            "Mahmoud Saad Abouamer",
+            "Henrik C. M. Frederiksen",
+            "Robin J. Williams",
+            "Shashi Raj Pandey",
+            "Petar Popovski"
+          ],
+          "published_at": "2026-10-27T09:36:39Z",
+          "updated_at": "2026-10-27T09:36:39Z",
+          "identifiers": {
+            "arxiv": [
+              "2610.36905"
+            ],
+            "doi": [],
+            "openalex": []
+          },
+          "primary_url": "https://arxiv.org/abs/2610.36905",
+          "response_url": "https://export.arxiv.org/api/query?search_query=%28%28all%3A%22wireless%22+OR+all%3A%22radio+access+network%22%29+AND+%28all%3A%22deadline%22+OR+all%3A%22uncertainty%22%29%29+AND+submittedDate%3A%5B202601010000+TO+202611031454%5D&start=0&max_results=5&sortBy=submittedDate&sortOrder=descending",
+          "source_response_sha256": "365489336f29858e72715f0f9af2f9faee4b0ee3c4aac117fbbab930cef44ff3",
+          "retrieved_at": "2026-11-03T14:54:12.526990Z",
+          "retrieval_status": "retrieved_from_official_discovery_endpoint"
+        }
+      ],
+      "first_seen_at": "2026-11-03T14:54:12.526990Z",
+      "last_seen_at": "2026-11-03T14:54:12.526990Z",
+      "seen_in_current_run": true,
+      "retrieval_status": "retrieved",
+      "review": {
+        "status": "lead",
+        "basis": "Unreviewed discovery; no SOTA or production qualification"
+      }
+    },
+    {
+      "id": "arxiv:2610.37391",
+      "title": "JEPA-Inspired Latent Field Prediction for Sparse-Pilot MIMO-OFDM Channel Reconstruction",
+      "authors": [
+        "Yuzhi Yang",
+        "Brahim Mefgouda",
+        "Hang Zou",
+        "Lina Bariah",
+        "Anis Bara",
+        "Yuhuan Lu",
+        "Hao Zhang",
+        "Merouane Debbah"
+      ],
+      "published_at": "2026-10-27T15:14:41Z",
+      "updated_at": "2026-10-27T15:14:41Z",
+      "primary_url": "https://arxiv.org/abs/2610.37391",
+      "identifiers": {
+        "arxiv": [
+          "2610.37391"
+        ],
+        "doi": [
+          "10.48550/arxiv.2610.37391"
+        ],
+        "openalex": [
+          "W7224133718"
+        ]
+      },
+      "observations": [
+        {
+          "source": "arxiv",
+          "source_id": "2610.37391",
+          "query_id": "ran_jepa",
+          "title": "JEPA-Inspired Latent Field Prediction for Sparse-Pilot MIMO-OFDM Channel Reconstruction",
+          "authors": [
+            "Yuzhi Yang",
+            "Brahim Mefgouda",
+            "Hang Zou",
+            "Lina Bariah",
+            "Anis Bara",
+            "Yuhuan Lu",
+            "Hao Zhang",
+            "Merouane Debbah"
+          ],
+          "published_at": "2026-10-27T15:14:41Z",
+          "updated_at": "2026-10-27T15:14:41Z",
+          "identifiers": {
+            "arxiv": [
+              "2610.37391"
+            ],
+            "doi": [],
+            "openalex": []
+          },
+          "primary_url": "https://arxiv.org/abs/2610.37391",
+          "response_url": "https://export.arxiv.org/api/query?search_query=%28all%3A%22JEPA%22+AND+%28all%3A%22wireless%22+OR+all%3A%22radio+access%22%29%29+AND+submittedDate%3A%5B202601010000+TO+202611031454%5D&start=0&max_results=5&sortBy=submittedDate&sortOrder=descending",
+          "source_response_sha256": "b6e857d0e868a299f81852ee8cf3c07afe80d5e486ad6664cf8f91bf59c11659",
+          "retrieved_at": "2026-11-03T14:54:12.526990Z",
+          "retrieval_status": "retrieved_from_official_discovery_endpoint"
+        },
+        {
+          "source": "arxiv",
+          "source_id": "2610.37391",
+          "query_id": "wireless_world_models",
+          "title": "JEPA-Inspired Latent Field Prediction for Sparse-Pilot MIMO-OFDM Channel Reconstruction",
+          "authors": [
+            "Yuzhi Yang",
+            "Brahim Mefgouda",
+            "Hang Zou",
+            "Lina Bariah",
+            "Anis Bara",
+            "Yuhuan Lu",
+            "Hao Zhang",
+            "Merouane Debbah"
+          ],
+          "published_at": "2026-10-27T15:14:41Z",
+          "updated_at": "2026-10-27T15:14:41Z",
+          "identifiers": {
+            "arxiv": [
+              "2610.37391"
+            ],
+            "doi": [],
+            "openalex": []
+          },
+          "primary_url": "https://arxiv.org/abs/2610.37391",
+          "response_url": "https://export.arxiv.org/api/query?search_query=%28all%3A%22world+model%22+AND+all%3A%22wireless%22%29+AND+submittedDate%3A%5B202601010000+TO+202611031454%5D&start=0&max_results=5&sortBy=submittedDate&sortOrder=descending",
+          "source_response_sha256": "d8c56ef991b6340111463960a285de4161a5e9090d2fce375269602e4297df8c",
+          "retrieved_at": "2026-11-03T14:54:12.526990Z",
+          "retrieval_status": "retrieved_from_official_discovery_endpoint"
+        },
+        {
+          "source": "openalex",
+          "source_id": "W7224133718",
+          "query_id": "ran_jepa",
+          "title": "JEPA-Inspired Latent Field Prediction for Sparse-Pilot MIMO-OFDM Channel Reconstruction",
+          "authors": [
+            "Yuzhi Yang",
+            "Brahim Mefgouda",
+            "Hang Zou",
+            "Lina Bariah",
+            "Anis Bara",
+            "Yuhuan Lu",
+            "Hao Zhang",
+            "Merouane Abdelkader Debbah"
+          ],
+          "published_at": "2026-10-27T00:00:00Z",
+          "updated_at": "2026-10-31T12:09:11.096373Z",
+          "identifiers": {
+            "arxiv": [
+              "2610.37391"
+            ],
+            "doi": [
+              "10.48550/arxiv.2610.37391"
+            ],
+            "openalex": [
+              "W7224133718"
+            ]
+          },
+          "primary_url": "https://arxiv.org/abs/2610.37391",
+          "response_url": "https://api.openalex.org/works?search=JEPA+wireless&filter=to_publication_date%3A2026-11-03%2Cfrom_publication_date%3A2026-01-01&per-page=5&sort=publication_date%3Adesc&select=id%2Cdoi%2Ctitle%2Cauthorships%2Cpublication_date%2Cupdated_date%2Cids%2Cprimary_location",
+          "source_response_sha256": "200ffca1508cd1d54f80b0617d0659d386ab1ae84a7ac063429d2ee393cb7071",
+          "retrieved_at": "2026-11-03T14:54:12.526990Z",
+          "retrieval_status": "retrieved_from_official_discovery_endpoint"
+        }
+      ],
+      "first_seen_at": "2026-11-03T14:54:12.526990Z",
+      "last_seen_at": "2026-11-03T14:54:12.526990Z",
+      "seen_in_current_run": true,
+      "retrieval_status": "retrieved",
+      "review": {
+        "status": "lead",
+        "basis": "Unreviewed discovery; no SOTA or production qualification"
+      }
+    },
+    {
+      "id": "arxiv:2610.37717",
+      "title": "Learning Graph Beliefs for Active Radio Mapping With Decision-Certified Multi-Step Sensing",
+      "authors": [
+        "Wangqian Chen",
+        "Hao Wang",
+        "Yumeng Zhang",
+        "Chenghong Bian",
+        "Junting Chen",
+        "Jun Zhang"
+      ],
+      "published_at": "2026-10-27T05:50:42Z",
+      "updated_at": "2026-10-27T05:50:42Z",
+      "primary_url": "https://arxiv.org/abs/2610.37717",
+      "identifiers": {
+        "arxiv": [
+          "2610.37717"
+        ],
+        "doi": [],
+        "openalex": []
+      },
+      "observations": [
+        {
+          "source": "arxiv",
+          "source_id": "2610.37717",
+          "query_id": "deadline_uncertainty",
+          "title": "Learning Graph Beliefs for Active Radio Mapping With Decision-Certified Multi-Step Sensing",
+          "authors": [
+            "Wangqian Chen",
+            "Hao Wang",
+            "Yumeng Zhang",
+            "Chenghong Bian",
+            "Junting Chen",
+            "Jun Zhang"
+          ],
+          "published_at": "2026-10-27T05:50:42Z",
+          "updated_at": "2026-10-27T05:50:42Z",
+          "identifiers": {
+            "arxiv": [
+              "2610.37717"
+            ],
+            "doi": [],
+            "openalex": []
+          },
+          "primary_url": "https://arxiv.org/abs/2610.37717",
+          "response_url": "https://export.arxiv.org/api/query?search_query=%28%28all%3A%22wireless%22+OR+all%3A%22radio+access+network%22%29+AND+%28all%3A%22deadline%22+OR+all%3A%22uncertainty%22%29%29+AND+submittedDate%3A%5B202601010000+TO+202611031454%5D&start=0&max_results=5&sortBy=submittedDate&sortOrder=descending",
+          "source_response_sha256": "365489336f29858e72715f0f9af2f9faee4b0ee3c4aac117fbbab930cef44ff3",
+          "retrieved_at": "2026-11-03T14:54:12.526990Z",
+          "retrieval_status": "retrieved_from_official_discovery_endpoint"
+        }
+      ],
+      "first_seen_at": "2026-11-03T14:54:12.526990Z",
+      "last_seen_at": "2026-11-03T14:54:12.526990Z",
+      "seen_in_current_run": true,
+      "retrieval_status": "retrieved",
+      "review": {
+        "status": "lead",
+        "basis": "Unreviewed discovery; no SOTA or production qualification"
+      }
+    },
+    {
+      "id": "arxiv:2610.38445",
+      "title": "DES-JEPA: Learning a Shared Vocabulary for High-Dimensional Discrete Event Sequences",
+      "authors": [
+        "Hugo Math",
+        "Maximilian Forstenhäusler",
+        "Christos Anagnostopoulos"
+      ],
+      "published_at": "2026-10-28T08:24:09Z",
+      "updated_at": "2026-10-28T08:24:09Z",
+      "primary_url": "https://arxiv.org/abs/2610.38445",
+      "identifiers": {
+        "arxiv": [
+          "2610.38445"
+        ],
+        "doi": [],
+        "openalex": []
+      },
+      "observations": [
+        {
+          "source": "arxiv",
+          "source_id": "2610.38445",
+          "query_id": "jepa_control",
+          "title": "DES-JEPA: Learning a Shared Vocabulary for High-Dimensional Discrete Event Sequences",
+          "authors": [
+            "Hugo Math",
+            "Maximilian Forstenhäusler",
+            "Christos Anagnostopoulos"
+          ],
+          "published_at": "2026-10-28T08:24:09Z",
+          "updated_at": "2026-10-28T08:24:09Z",
+          "identifiers": {
+            "arxiv": [
+              "2610.38445"
+            ],
+            "doi": [],
+            "openalex": []
+          },
+          "primary_url": "https://arxiv.org/abs/2610.38445",
+          "response_url": "https://export.arxiv.org/api/query?search_query=%28%28all%3A%22JEPA%22+OR+all%3A%22joint+embedding+predictive%22%29+AND+%28all%3A%22network%22+OR+all%3A%22control%22%29%29+AND+submittedDate%3A%5B202601010000+TO+202611031454%5D&start=0&max_results=5&sortBy=submittedDate&sortOrder=descending",
+          "source_response_sha256": "b9b4b35a249c2b6560b40fbc28b331e74c22c0497f6fa6f29f96d3f3b80ea7a1",
+          "retrieved_at": "2026-11-03T14:54:12.526990Z",
+          "retrieval_status": "retrieved_from_official_discovery_endpoint"
+        }
+      ],
+      "first_seen_at": "2026-11-03T14:54:12.526990Z",
+      "last_seen_at": "2026-11-03T14:54:12.526990Z",
+      "seen_in_current_run": true,
+      "retrieval_status": "retrieved",
+      "review": {
+        "status": "lead",
+        "basis": "Unreviewed discovery; no SOTA or production qualification"
+      }
+    },
+    {
+      "id": "arxiv:2610.38508",
+      "title": "SaiVLA-JEPA: Evaluating Future Latent Prediction in JEPA-Conditioned VLA Control",
+      "authors": [
+        "Rufeng Xiao",
+        "Ruihao Xiao",
+        "Wei Chen",
+        "Xinhai Sun"
+      ],
+      "published_at": "2026-10-28T09:25:24Z",
+      "updated_at": "2026-10-28T09:25:24Z",
+      "primary_url": "https://arxiv.org/abs/2610.38508",
+      "identifiers": {
+        "arxiv": [
+          "2610.38508"
+        ],
+        "doi": [],
+        "openalex": []
+      },
+      "observations": [
+        {
+          "source": "arxiv",
+          "source_id": "2610.38508",
+          "query_id": "jepa_control",
+          "title": "SaiVLA-JEPA: Evaluating Future Latent Prediction in JEPA-Conditioned VLA Control",
+          "authors": [
+            "Rufeng Xiao",
+            "Ruihao Xiao",
+            "Wei Chen",
+            "Xinhai Sun"
+          ],
+          "published_at": "2026-10-28T09:25:24Z",
+          "updated_at": "2026-10-28T09:25:24Z",
+          "identifiers": {
+            "arxiv": [
+              "2610.38508"
+            ],
+            "doi": [],
+            "openalex": []
+          },
+          "primary_url": "https://arxiv.org/abs/2610.38508",
+          "response_url": "https://export.arxiv.org/api/query?search_query=%28%28all%3A%22JEPA%22+OR+all%3A%22joint+embedding+predictive%22%29+AND+%28all%3A%22network%22+OR+all%3A%22control%22%29%29+AND+submittedDate%3A%5B202601010000+TO+202611031454%5D&start=0&max_results=5&sortBy=submittedDate&sortOrder=descending",
+          "source_response_sha256": "b9b4b35a249c2b6560b40fbc28b331e74c22c0497f6fa6f29f96d3f3b80ea7a1",
+          "retrieved_at": "2026-11-03T14:54:12.526990Z",
+          "retrieval_status": "retrieved_from_official_discovery_endpoint"
+        }
+      ],
+      "first_seen_at": "2026-11-03T14:54:12.526990Z",
+      "last_seen_at": "2026-11-03T14:54:12.526990Z",
+      "seen_in_current_run": true,
+      "retrieval_status": "retrieved",
+      "review": {
+        "status": "lead",
+        "basis": "Unreviewed discovery; no SOTA or production qualification"
+      }
+    },
+    {
+      "id": "arxiv:2610.40277",
+      "title": "Towards fNIRS foundation models: A curated corpus of 67 public datasets with channel positions in MNI space",
+      "authors": [
+        "Santiago Posso-Murillo"
+      ],
+      "published_at": "2026-10-29T00:00:00Z",
+      "updated_at": "2026-11-02T09:45:03.842371Z",
+      "primary_url": "https://arxiv.org/abs/2610.40277",
+      "identifiers": {
+        "arxiv": [
+          "2610.40277"
+        ],
+        "doi": [
+          "10.48550/arxiv.2610.40277"
+        ],
+        "openalex": [
+          "W7224739692"
+        ]
+      },
+      "observations": [
+        {
+          "source": "openalex",
+          "source_id": "W7224739692",
+          "query_id": "jepa_control",
+          "title": "Towards fNIRS foundation models: A curated corpus of 67 public datasets with channel positions in MNI space",
+          "authors": [
+            "Santiago Posso-Murillo"
+          ],
+          "published_at": "2026-10-29T00:00:00Z",
+          "updated_at": "2026-11-02T09:45:03.842371Z",
+          "identifiers": {
+            "arxiv": [
+              "2610.40277"
+            ],
+            "doi": [
+              "10.48550/arxiv.2610.40277"
+            ],
+            "openalex": [
+              "W7224739692"
+            ]
+          },
+          "primary_url": "https://arxiv.org/abs/2610.40277",
+          "response_url": "https://api.openalex.org/works?search=JEPA+network+control&filter=to_publication_date%3A2026-11-03%2Cfrom_publication_date%3A2026-01-01&per-page=5&sort=publication_date%3Adesc&select=id%2Cdoi%2Ctitle%2Cauthorships%2Cpublication_date%2Cupdated_date%2Cids%2Cprimary_location",
+          "source_response_sha256": "f039312c4e4664c93b45b9d9ae4f45173c525f3d9f451e03722f0ffe51c6a514",
+          "retrieved_at": "2026-11-03T14:54:12.526990Z",
+          "retrieval_status": "retrieved_from_official_discovery_endpoint"
+        }
+      ],
+      "first_seen_at": "2026-11-03T14:54:12.526990Z",
+      "last_seen_at": "2026-11-03T14:54:12.526990Z",
+      "seen_in_current_run": true,
+      "retrieval_status": "retrieved",
+      "review": {
+        "status": "lead",
+        "basis": "Unreviewed discovery; no SOTA or production qualification"
+      }
+    },
+    {
+      "id": "arxiv:2610.40356",
+      "title": "JEDI: Joint-Embedding Demonstration Compression for In-Context Imitation Learning",
+      "authors": [
+        "Jiazhao Liang",
+        "Zhewen He",
+        "Shuaihang Yuan",
+        "Hao Huang",
+        "Yi Fang"
+      ],
+      "published_at": "2026-10-29T16:11:05Z",
+      "updated_at": "2026-10-29T16:11:05Z",
+      "primary_url": "https://arxiv.org/abs/2610.40356",
+      "identifiers": {
+        "arxiv": [
+          "2610.40356"
+        ],
+        "doi": [],
+        "openalex": []
+      },
+      "observations": [
+        {
+          "source": "arxiv",
+          "source_id": "2610.40356",
+          "query_id": "jepa_control",
+          "title": "JEDI: Joint-Embedding Demonstration Compression for In-Context Imitation Learning",
+          "authors": [
+            "Jiazhao Liang",
+            "Zhewen He",
+            "Shuaihang Yuan",
+            "Hao Huang",
+            "Yi Fang"
+          ],
+          "published_at": "2026-10-29T16:11:05Z",
+          "updated_at": "2026-10-29T16:11:05Z",
+          "identifiers": {
+            "arxiv": [
+              "2610.40356"
+            ],
+            "doi": [],
+            "openalex": []
+          },
+          "primary_url": "https://arxiv.org/abs/2610.40356",
+          "response_url": "https://export.arxiv.org/api/query?search_query=%28%28all%3A%22JEPA%22+OR+all%3A%22joint+embedding+predictive%22%29+AND+%28all%3A%22network%22+OR+all%3A%22control%22%29%29+AND+submittedDate%3A%5B202601010000+TO+202611031454%5D&start=0&max_results=5&sortBy=submittedDate&sortOrder=descending",
+          "source_response_sha256": "b9b4b35a249c2b6560b40fbc28b331e74c22c0497f6fa6f29f96d3f3b80ea7a1",
+          "retrieved_at": "2026-11-03T14:54:12.526990Z",
+          "retrieval_status": "retrieved_from_official_discovery_endpoint"
+        }
+      ],
+      "first_seen_at": "2026-11-03T14:54:12.526990Z",
+      "last_seen_at": "2026-11-03T14:54:12.526990Z",
+      "seen_in_current_run": true,
+      "retrieval_status": "retrieved",
+      "review": {
+        "status": "lead",
+        "basis": "Unreviewed discovery; no SOTA or production qualification"
+      }
+    },
+    {
+      "id": "arxiv:2610.40744",
+      "title": "CLIC: Closed-Loop Intent Consistency for Securing LLM-Driven Control in Open RAN",
+      "authors": [
+        "Sunder Ali Khowaja",
+        "Kapal Dev",
+        "Joongheon Kim",
+        "Angelos Antonopoulos",
+        "Nikolaos Bartzoudis"
+      ],
+      "published_at": "2026-10-29T15:42:29Z",
+      "updated_at": "2026-10-29T15:42:29Z",
+      "primary_url": "https://arxiv.org/abs/2610.40744",
+      "identifiers": {
+        "arxiv": [
+          "2610.40744"
+        ],
+        "doi": [],
+        "openalex": []
+      },
+      "observations": [
+        {
+          "source": "arxiv",
+          "source_id": "2610.40744",
+          "query_id": "ran_control",
+          "title": "CLIC: Closed-Loop Intent Consistency for Securing LLM-Driven Control in Open RAN",
+          "authors": [
+            "Sunder Ali Khowaja",
+            "Kapal Dev",
+            "Joongheon Kim",
+            "Angelos Antonopoulos",
+            "Nikolaos Bartzoudis"
+          ],
+          "published_at": "2026-10-29T15:42:29Z",
+          "updated_at": "2026-10-29T15:42:29Z",
+          "identifiers": {
+            "arxiv": [
+              "2610.40744"
+            ],
+            "doi": [],
+            "openalex": []
+          },
+          "primary_url": "https://arxiv.org/abs/2610.40744",
+          "response_url": "https://export.arxiv.org/api/query?search_query=%28all%3A%22radio+access+network%22+AND+%28all%3A%22control%22+OR+all%3A%22resource+allocation%22%29%29+AND+submittedDate%3A%5B202601010000+TO+202611031454%5D&start=0&max_results=5&sortBy=submittedDate&sortOrder=descending",
+          "source_response_sha256": "0cc065333f0b9586ea5b07efd4a456e0f64b61097abda39f4115df117bd452f1",
+          "retrieved_at": "2026-11-03T14:54:12.526990Z",
+          "retrieval_status": "retrieved_from_official_discovery_endpoint"
+        }
+      ],
+      "first_seen_at": "2026-11-03T14:54:12.526990Z",
+      "last_seen_at": "2026-11-03T14:54:12.526990Z",
+      "seen_in_current_run": true,
+      "retrieval_status": "retrieved",
+      "review": {
+        "status": "lead",
+        "basis": "Unreviewed discovery; no SOTA or production qualification"
+      }
+    },
+    {
+      "id": "arxiv:2610.40826",
+      "title": "Joint Estimation and Network Configuration in Multi-Agent Systems",
+      "authors": [
+        "Mohammadreza Barzegaran",
+        "Hamid Jafarkhani"
+      ],
+      "published_at": "2026-10-29T18:06:37Z",
+      "updated_at": "2026-10-29T18:06:37Z",
+      "primary_url": "https://arxiv.org/abs/2610.40826",
+      "identifiers": {
+        "arxiv": [
+          "2610.40826"
+        ],
+        "doi": [],
+        "openalex": []
+      },
+      "observations": [
+        {
+          "source": "arxiv",
+          "source_id": "2610.40826",
+          "query_id": "deadline_uncertainty",
+          "title": "Joint Estimation and Network Configuration in Multi-Agent Systems",
+          "authors": [
+            "Mohammadreza Barzegaran",
+            "Hamid Jafarkhani"
+          ],
+          "published_at": "2026-10-29T18:06:37Z",
+          "updated_at": "2026-10-29T18:06:37Z",
+          "identifiers": {
+            "arxiv": [
+              "2610.40826"
+            ],
+            "doi": [],
+            "openalex": []
+          },
+          "primary_url": "https://arxiv.org/abs/2610.40826",
+          "response_url": "https://export.arxiv.org/api/query?search_query=%28%28all%3A%22wireless%22+OR+all%3A%22radio+access+network%22%29+AND+%28all%3A%22deadline%22+OR+all%3A%22uncertainty%22%29%29+AND+submittedDate%3A%5B202601010000+TO+202611031454%5D&start=0&max_results=5&sortBy=submittedDate&sortOrder=descending",
+          "source_response_sha256": "365489336f29858e72715f0f9af2f9faee4b0ee3c4aac117fbbab930cef44ff3",
+          "retrieved_at": "2026-11-03T14:54:12.526990Z",
+          "retrieval_status": "retrieved_from_official_discovery_endpoint"
+        }
+      ],
+      "first_seen_at": "2026-11-03T14:54:12.526990Z",
+      "last_seen_at": "2026-11-03T14:54:12.526990Z",
+      "seen_in_current_run": true,
+      "retrieval_status": "retrieved",
+      "review": {
+        "status": "lead",
+        "basis": "Unreviewed discovery; no SOTA or production qualification"
+      }
+    },
+    {
+      "id": "arxiv:2611.00427",
+      "title": "Spoofing the Latent State: Imperceptible Goal-Image Attacks Derail Planning in LeWorldModel",
+      "authors": [
+        "Kunal Bhosikar",
+        "Nicole Meng",
+        "Charu Sharma",
+        "Yingjie Lao"
+      ],
+      "published_at": "2026-10-30T22:20:51Z",
+      "updated_at": "2026-10-30T22:20:51Z",
+      "primary_url": "https://arxiv.org/abs/2611.00427",
+      "identifiers": {
+        "arxiv": [
+          "2611.00427"
+        ],
+        "doi": [],
+        "openalex": []
+      },
+      "observations": [
+        {
+          "source": "arxiv",
+          "source_id": "2611.00427",
+          "query_id": "jepa_control",
+          "title": "Spoofing the Latent State: Imperceptible Goal-Image Attacks Derail Planning in LeWorldModel",
+          "authors": [
+            "Kunal Bhosikar",
+            "Nicole Meng",
+            "Charu Sharma",
+            "Yingjie Lao"
+          ],
+          "published_at": "2026-10-30T22:20:51Z",
+          "updated_at": "2026-10-30T22:20:51Z",
+          "identifiers": {
+            "arxiv": [
+              "2611.00427"
+            ],
+            "doi": [],
+            "openalex": []
+          },
+          "primary_url": "https://arxiv.org/abs/2611.00427",
+          "response_url": "https://export.arxiv.org/api/query?search_query=%28%28all%3A%22JEPA%22+OR+all%3A%22joint+embedding+predictive%22%29+AND+%28all%3A%22network%22+OR+all%3A%22control%22%29%29+AND+submittedDate%3A%5B202601010000+TO+202611031454%5D&start=0&max_results=5&sortBy=submittedDate&sortOrder=descending",
+          "source_response_sha256": "b9b4b35a249c2b6560b40fbc28b331e74c22c0497f6fa6f29f96d3f3b80ea7a1",
+          "retrieved_at": "2026-11-03T14:54:12.526990Z",
+          "retrieval_status": "retrieved_from_official_discovery_endpoint"
+        }
+      ],
+      "first_seen_at": "2026-11-03T14:54:12.526990Z",
+      "last_seen_at": "2026-11-03T14:54:12.526990Z",
+      "seen_in_current_run": true,
+      "retrieval_status": "retrieved",
+      "review": {
+        "status": "lead",
+        "basis": "Unreviewed discovery; no SOTA or production qualification"
+      }
+    },
+    {
+      "id": "arxiv:2611.00635",
+      "title": "From Confounding to Counterfactuals: A Cross-Layer Causal Model for RAN Scheduling",
+      "authors": [
+        "Artin Elhamirad",
+        "Christo Kurisummoottil Thomas",
+        "Ali Tajer"
+      ],
+      "published_at": "2026-10-31T05:01:51Z",
+      "updated_at": "2026-10-31T05:01:51Z",
+      "primary_url": "https://arxiv.org/abs/2611.00635",
+      "identifiers": {
+        "arxiv": [
+          "2611.00635"
+        ],
+        "doi": [],
+        "openalex": []
+      },
+      "observations": [
+        {
+          "source": "arxiv",
+          "source_id": "2611.00635",
+          "query_id": "ran_control",
+          "title": "From Confounding to Counterfactuals: A Cross-Layer Causal Model for RAN Scheduling",
+          "authors": [
+            "Artin Elhamirad",
+            "Christo Kurisummoottil Thomas",
+            "Ali Tajer"
+          ],
+          "published_at": "2026-10-31T05:01:51Z",
+          "updated_at": "2026-10-31T05:01:51Z",
+          "identifiers": {
+            "arxiv": [
+              "2611.00635"
+            ],
+            "doi": [],
+            "openalex": []
+          },
+          "primary_url": "https://arxiv.org/abs/2611.00635",
+          "response_url": "https://export.arxiv.org/api/query?search_query=%28all%3A%22radio+access+network%22+AND+%28all%3A%22control%22+OR+all%3A%22resource+allocation%22%29%29+AND+submittedDate%3A%5B202601010000+TO+202611031454%5D&start=0&max_results=5&sortBy=submittedDate&sortOrder=descending",
+          "source_response_sha256": "0cc065333f0b9586ea5b07efd4a456e0f64b61097abda39f4115df117bd452f1",
+          "retrieved_at": "2026-11-03T14:54:12.526990Z",
+          "retrieval_status": "retrieved_from_official_discovery_endpoint"
+        }
+      ],
+      "first_seen_at": "2026-11-03T14:54:12.526990Z",
+      "last_seen_at": "2026-11-03T14:54:12.526990Z",
+      "seen_in_current_run": true,
+      "retrieval_status": "retrieved",
+      "review": {
+        "status": "lead",
+        "basis": "Unreviewed discovery; no SOTA or production qualification"
+      }
+    },
+    {
+      "id": "arxiv:2611.01862",
+      "title": "Interoperability Assessment of Fronthaul and E2 Interfaces for Multi-Vendor Open RAN Systems",
+      "authors": [
+        "Farhad Mehran",
+        "Charles Turyagyenda",
+        "Dritan Kaleshi"
+      ],
+      "published_at": "2026-11-01T12:54:11Z",
+      "updated_at": "2026-11-01T12:54:11Z",
+      "primary_url": "https://arxiv.org/abs/2611.01862",
+      "identifiers": {
+        "arxiv": [
+          "2611.01862"
+        ],
+        "doi": [],
+        "openalex": []
+      },
+      "observations": [
+        {
+          "source": "arxiv",
+          "source_id": "2611.01862",
+          "query_id": "ran_control",
+          "title": "Interoperability Assessment of Fronthaul and E2 Interfaces for Multi-Vendor Open RAN Systems",
+          "authors": [
+            "Farhad Mehran",
+            "Charles Turyagyenda",
+            "Dritan Kaleshi"
+          ],
+          "published_at": "2026-11-01T12:54:11Z",
+          "updated_at": "2026-11-01T12:54:11Z",
+          "identifiers": {
+            "arxiv": [
+              "2611.01862"
+            ],
+            "doi": [],
+            "openalex": []
+          },
+          "primary_url": "https://arxiv.org/abs/2611.01862",
+          "response_url": "https://export.arxiv.org/api/query?search_query=%28all%3A%22radio+access+network%22+AND+%28all%3A%22control%22+OR+all%3A%22resource+allocation%22%29%29+AND+submittedDate%3A%5B202601010000+TO+202611031454%5D&start=0&max_results=5&sortBy=submittedDate&sortOrder=descending",
+          "source_response_sha256": "0cc065333f0b9586ea5b07efd4a456e0f64b61097abda39f4115df117bd452f1",
+          "retrieved_at": "2026-11-03T14:54:12.526990Z",
+          "retrieval_status": "retrieved_from_official_discovery_endpoint"
+        }
+      ],
+      "first_seen_at": "2026-11-03T14:54:12.526990Z",
+      "last_seen_at": "2026-11-03T14:54:12.526990Z",
+      "seen_in_current_run": true,
+      "retrieval_status": "retrieved",
+      "review": {
+        "status": "lead",
+        "basis": "Unreviewed discovery; no SOTA or production qualification"
+      }
+    },
+    {
+      "id": "arxiv:2611.02489",
+      "title": "Cross-Domain Joint-Embedding Pretraining For Heterogeneous Industrial Time Series",
+      "authors": [
+        "Jonathan Adam Rico",
+        "Nagarajan Raghavan",
+        "Senthilnath Jayavelu"
+      ],
+      "published_at": "2026-11-02T04:05:47Z",
+      "updated_at": "2026-11-02T04:05:47Z",
+      "primary_url": "https://arxiv.org/abs/2611.02489",
+      "identifiers": {
+        "arxiv": [
+          "2611.02489"
+        ],
+        "doi": [],
+        "openalex": []
+      },
+      "observations": [
+        {
+          "source": "arxiv",
+          "source_id": "2611.02489",
+          "query_id": "jepa_control",
+          "title": "Cross-Domain Joint-Embedding Pretraining For Heterogeneous Industrial Time Series",
+          "authors": [
+            "Jonathan Adam Rico",
+            "Nagarajan Raghavan",
+            "Senthilnath Jayavelu"
+          ],
+          "published_at": "2026-11-02T04:05:47Z",
+          "updated_at": "2026-11-02T04:05:47Z",
+          "identifiers": {
+            "arxiv": [
+              "2611.02489"
+            ],
+            "doi": [],
+            "openalex": []
+          },
+          "primary_url": "https://arxiv.org/abs/2611.02489",
+          "response_url": "https://export.arxiv.org/api/query?search_query=%28%28all%3A%22JEPA%22+OR+all%3A%22joint+embedding+predictive%22%29+AND+%28all%3A%22network%22+OR+all%3A%22control%22%29%29+AND+submittedDate%3A%5B202601010000+TO+202611031454%5D&start=0&max_results=5&sortBy=submittedDate&sortOrder=descending",
+          "source_response_sha256": "b9b4b35a249c2b6560b40fbc28b331e74c22c0497f6fa6f29f96d3f3b80ea7a1",
+          "retrieved_at": "2026-11-03T14:54:12.526990Z",
+          "retrieval_status": "retrieved_from_official_discovery_endpoint"
+        }
+      ],
+      "first_seen_at": "2026-11-03T14:54:12.526990Z",
+      "last_seen_at": "2026-11-03T14:54:12.526990Z",
+      "seen_in_current_run": true,
+      "retrieval_status": "retrieved",
+      "review": {
+        "status": "lead",
+        "basis": "Unreviewed discovery; no SOTA or production qualification"
+      }
+    },
+    {
+      "id": "arxiv:2611.03378",
+      "title": "Non-Coherent Over-the-Air Distributed Consensus: Algorithm Design and Power Control Optimization",
+      "authors": [
+        "Yuhang Deng",
+        "Zheng Chen",
+        "Erik G. Larsson"
+      ],
+      "published_at": "2026-11-02T16:20:54Z",
+      "updated_at": "2026-11-02T16:20:54Z",
+      "primary_url": "https://arxiv.org/abs/2611.03378",
+      "identifiers": {
+        "arxiv": [
+          "2611.03378"
+        ],
+        "doi": [],
+        "openalex": []
+      },
+      "observations": [
+        {
+          "source": "arxiv",
+          "source_id": "2611.03378",
+          "query_id": "deadline_uncertainty",
+          "title": "Non-Coherent Over-the-Air Distributed Consensus: Algorithm Design and Power Control Optimization",
+          "authors": [
+            "Yuhang Deng",
+            "Zheng Chen",
+            "Erik G. Larsson"
+          ],
+          "published_at": "2026-11-02T16:20:54Z",
+          "updated_at": "2026-11-02T16:20:54Z",
+          "identifiers": {
+            "arxiv": [
+              "2611.03378"
+            ],
+            "doi": [],
+            "openalex": []
+          },
+          "primary_url": "https://arxiv.org/abs/2611.03378",
+          "response_url": "https://export.arxiv.org/api/query?search_query=%28%28all%3A%22wireless%22+OR+all%3A%22radio+access+network%22%29+AND+%28all%3A%22deadline%22+OR+all%3A%22uncertainty%22%29%29+AND+submittedDate%3A%5B202601010000+TO+202611031454%5D&start=0&max_results=5&sortBy=submittedDate&sortOrder=descending",
+          "source_response_sha256": "365489336f29858e72715f0f9af2f9faee4b0ee3c4aac117fbbab930cef44ff3",
+          "retrieved_at": "2026-11-03T14:54:12.526990Z",
+          "retrieval_status": "retrieved_from_official_discovery_endpoint"
+        }
+      ],
+      "first_seen_at": "2026-11-03T14:54:12.526990Z",
+      "last_seen_at": "2026-11-03T14:54:12.526990Z",
+      "seen_in_current_run": true,
+      "retrieval_status": "retrieved",
+      "review": {
+        "status": "lead",
+        "basis": "Unreviewed discovery; no SOTA or production qualification"
+      }
+    },
+    {
+      "id": "arxiv:2611.03406",
+      "title": "From Reactive to Agentic Resilience: Multi-Timescale AI-RAN Orchestration Under Signaling Storms",
+      "authors": [
+        "Sotiris Chatzimiltis",
+        "Mahdi Boloursaz Mashhadi",
+        "Mohammad Shojafar",
+        "Rahim Tafazolli"
+      ],
+      "published_at": "2026-11-02T16:34:13Z",
+      "updated_at": "2026-11-02T16:34:13Z",
+      "primary_url": "https://arxiv.org/abs/2611.03406",
+      "identifiers": {
+        "arxiv": [
+          "2611.03406"
+        ],
+        "doi": [],
+        "openalex": []
+      },
+      "observations": [
+        {
+          "source": "arxiv",
+          "source_id": "2611.03406",
+          "query_id": "ran_control",
+          "title": "From Reactive to Agentic Resilience: Multi-Timescale AI-RAN Orchestration Under Signaling Storms",
+          "authors": [
+            "Sotiris Chatzimiltis",
+            "Mahdi Boloursaz Mashhadi",
+            "Mohammad Shojafar",
+            "Rahim Tafazolli"
+          ],
+          "published_at": "2026-11-02T16:34:13Z",
+          "updated_at": "2026-11-02T16:34:13Z",
+          "identifiers": {
+            "arxiv": [
+              "2611.03406"
+            ],
+            "doi": [],
+            "openalex": []
+          },
+          "primary_url": "https://arxiv.org/abs/2611.03406",
+          "response_url": "https://export.arxiv.org/api/query?search_query=%28all%3A%22radio+access+network%22+AND+%28all%3A%22control%22+OR+all%3A%22resource+allocation%22%29%29+AND+submittedDate%3A%5B202601010000+TO+202611031454%5D&start=0&max_results=5&sortBy=submittedDate&sortOrder=descending",
+          "source_response_sha256": "0cc065333f0b9586ea5b07efd4a456e0f64b61097abda39f4115df117bd452f1",
+          "retrieved_at": "2026-11-03T14:54:12.526990Z",
+          "retrieval_status": "retrieved_from_official_discovery_endpoint"
+        }
+      ],
+      "first_seen_at": "2026-11-03T14:54:12.526990Z",
+      "last_seen_at": "2026-11-03T14:54:12.526990Z",
+      "seen_in_current_run": true,
+      "retrieval_status": "retrieved",
+      "review": {
+        "status": "lead",
+        "basis": "Unreviewed discovery; no SOTA or production qualification"
+      }
+    },
+    {
+      "id": "doi:10.1007/s00500-026-11515-4",
+      "title": "Scheduling based on data validity in collaborative artificial intelligence of things",
+      "authors": [
+        "Ruiying Zhu",
+        "Linan Ye",
+        "Dongbo Zhang",
+        "Lu Xiong"
+      ],
+      "published_at": "2026-10-30T00:00:00Z",
+      "updated_at": "2026-11-03T10:50:19.383937Z",
+      "primary_url": "https://doi.org/10.1007/s00500-026-11515-4",
+      "identifiers": {
+        "arxiv": [],
+        "doi": [
+          "10.1007/s00500-026-11515-4"
+        ],
+        "openalex": [
+          "W7128812211"
+        ]
+      },
+      "observations": [
+        {
+          "source": "openalex",
+          "source_id": "W7128812211",
+          "query_id": "deadline_uncertainty",
+          "title": "Scheduling based on data validity in collaborative artificial intelligence of things",
+          "authors": [
+            "Ruiying Zhu",
+            "Linan Ye",
+            "Dongbo Zhang",
+            "Lu Xiong"
+          ],
+          "published_at": "2026-10-30T00:00:00Z",
+          "updated_at": "2026-11-03T10:50:19.383937Z",
+          "identifiers": {
+            "arxiv": [],
+            "doi": [
+              "10.1007/s00500-026-11515-4"
+            ],
+            "openalex": [
+              "W7128812211"
+            ]
+          },
+          "primary_url": "https://doi.org/10.1007/s00500-026-11515-4",
+          "response_url": "https://api.openalex.org/works?search=wireless+deadline+uncertainty&filter=to_publication_date%3A2026-11-03%2Cfrom_publication_date%3A2026-01-01&per-page=5&sort=publication_date%3Adesc&select=id%2Cdoi%2Ctitle%2Cauthorships%2Cpublication_date%2Cupdated_date%2Cids%2Cprimary_location",
+          "source_response_sha256": "a98a8f921d2d1632c3dcacd581016af98e816d657f618da71ebae3887d76a8ad",
+          "retrieved_at": "2026-11-03T14:54:12.526990Z",
+          "retrieval_status": "retrieved_from_official_discovery_endpoint"
+        }
+      ],
+      "first_seen_at": "2026-11-03T14:54:12.526990Z",
+      "last_seen_at": "2026-11-03T14:54:12.526990Z",
+      "seen_in_current_run": true,
+      "retrieval_status": "retrieved",
+      "review": {
+        "status": "lead",
+        "basis": "Unreviewed discovery; no SOTA or production qualification"
+      }
+    },
+    {
+      "id": "doi:10.1021/acsphotonics.6c02097",
+      "title": "Design of Monolithic Microcavities for Enhancing Organic Quantum Emitters",
+      "authors": [
+        "Tim Hebenstreit",
+        "Jaime Gimeno Balaguer",
+        "Fridtjof Betz",
+        "Felix Binkowski",
+        "Maja Colautti",
+        "Jan Renger",
+        "Costanza Toninelli",
+        "Sven Burger",
+        "Stephan Götzinger"
+      ],
+      "published_at": "2026-11-02T00:00:00Z",
+      "updated_at": "2026-11-03T10:50:19.383937Z",
+      "primary_url": "https://doi.org/10.1021/acsphotonics.6c02097",
+      "identifiers": {
+        "arxiv": [],
+        "doi": [
+          "10.1021/acsphotonics.6c02097"
+        ],
+        "openalex": [
+          "W7202356913"
+        ]
+      },
+      "observations": [
+        {
+          "source": "openalex",
+          "source_id": "W7202356913",
+          "query_id": "ran_control",
+          "title": "Design of Monolithic Microcavities for Enhancing Organic Quantum Emitters",
+          "authors": [
+            "Tim Hebenstreit",
+            "Jaime Gimeno Balaguer",
+            "Fridtjof Betz",
+            "Felix Binkowski",
+            "Maja Colautti",
+            "Jan Renger",
+            "Costanza Toninelli",
+            "Sven Burger",
+            "Stephan Götzinger"
+          ],
+          "published_at": "2026-11-02T00:00:00Z",
+          "updated_at": "2026-11-03T10:50:19.383937Z",
+          "identifiers": {
+            "arxiv": [],
+            "doi": [
+              "10.1021/acsphotonics.6c02097"
+            ],
+            "openalex": [
+              "W7202356913"
+            ]
+          },
+          "primary_url": "https://doi.org/10.1021/acsphotonics.6c02097",
+          "response_url": "https://api.openalex.org/works?search=radio+access+network+control&filter=to_publication_date%3A2026-11-03%2Cfrom_publication_date%3A2026-01-01&per-page=5&sort=publication_date%3Adesc&select=id%2Cdoi%2Ctitle%2Cauthorships%2Cpublication_date%2Cupdated_date%2Cids%2Cprimary_location",
+          "source_response_sha256": "8d904d10bf8dfda23941e3eeb32b35fe986c5042cae034b54a9bd2c93668b184",
+          "retrieved_at": "2026-11-03T14:54:12.526990Z",
+          "retrieval_status": "retrieved_from_official_discovery_endpoint"
+        }
+      ],
+      "first_seen_at": "2026-11-03T14:54:12.526990Z",
+      "last_seen_at": "2026-11-03T14:54:12.526990Z",
+      "seen_in_current_run": true,
+      "retrieval_status": "retrieved",
+      "review": {
+        "status": "lead",
+        "basis": "Unreviewed discovery; no SOTA or production qualification"
+      }
+    },
+    {
+      "id": "doi:10.1038/s41598-026-73784-1",
+      "title": "Joint communication, computation, and trajectory optimization for UAV-enabled mobile edge computing in smart city IoT networks",
+      "authors": [
+        "Fahad F. Alruwaili",
+        "Hadeel Alsolai",
+        "Mohammed Abdullatif H. Aljaafari",
+        "Muhammad Kashif Saeed",
+        "Salihah Alotaibi",
+        "Sulaiman Alamro",
+        "Shouki A. Ebad"
+      ],
+      "published_at": "2026-10-30T00:00:00Z",
+      "updated_at": "2026-11-01T11:40:01.658920Z",
+      "primary_url": "https://doi.org/10.1038/s41598-026-73784-1",
+      "identifiers": {
+        "arxiv": [],
+        "doi": [
+          "10.1038/s41598-026-73784-1"
+        ],
+        "openalex": [
+          "W7224913612"
+        ]
+      },
+      "observations": [
+        {
+          "source": "openalex",
+          "source_id": "W7224913612",
+          "query_id": "deadline_uncertainty",
+          "title": "Joint communication, computation, and trajectory optimization for UAV-enabled mobile edge computing in smart city IoT networks",
+          "authors": [
+            "Fahad F. Alruwaili",
+            "Hadeel Alsolai",
+            "Mohammed Abdullatif H. Aljaafari",
+            "Muhammad Kashif Saeed",
+            "Salihah Alotaibi",
+            "Sulaiman Alamro",
+            "Shouki A. Ebad"
+          ],
+          "published_at": "2026-10-30T00:00:00Z",
+          "updated_at": "2026-11-01T11:40:01.658920Z",
+          "identifiers": {
+            "arxiv": [],
+            "doi": [
+              "10.1038/s41598-026-73784-1"
+            ],
+            "openalex": [
+              "W7224913612"
+            ]
+          },
+          "primary_url": "https://doi.org/10.1038/s41598-026-73784-1",
+          "response_url": "https://api.openalex.org/works?search=wireless+deadline+uncertainty&filter=to_publication_date%3A2026-11-03%2Cfrom_publication_date%3A2026-01-01&per-page=5&sort=publication_date%3Adesc&select=id%2Cdoi%2Ctitle%2Cauthorships%2Cpublication_date%2Cupdated_date%2Cids%2Cprimary_location",
+          "source_response_sha256": "a98a8f921d2d1632c3dcacd581016af98e816d657f618da71ebae3887d76a8ad",
+          "retrieved_at": "2026-11-03T14:54:12.526990Z",
+          "retrieval_status": "retrieved_from_official_discovery_endpoint"
+        }
+      ],
+      "first_seen_at": "2026-11-03T14:54:12.526990Z",
+      "last_seen_at": "2026-11-03T14:54:12.526990Z",
+      "seen_in_current_run": true,
+      "retrieval_status": "retrieved",
+      "review": {
+        "status": "lead",
+        "basis": "Unreviewed discovery; no SOTA or production qualification"
+      }
+    },
+    {
+      "id": "doi:10.1038/s44459-026-00094-3",
+      "title": "Transform-invariant generative ray path sampling for efficient radio propagation modeling",
+      "authors": [
+        "Jérome Eertmans",
+        "Enrico Maria Vitucci",
+        "Vittorio Degli‐Esposti",
+        "Nicola Di Cicco",
+        "Laurent Jacques",
+        "Claude Oestges"
+      ],
+      "published_at": "2026-11-02T00:00:00Z",
+      "updated_at": "2026-11-03T10:50:19.383937Z",
+      "primary_url": "https://doi.org/10.1038/s44459-026-00094-3",
+      "identifiers": {
+        "arxiv": [],
+        "doi": [
+          "10.1038/s44459-026-00094-3"
+        ],
+        "openalex": [
+          "W7133317351"
+        ]
+      },
+      "observations": [
+        {
+          "source": "openalex",
+          "source_id": "W7133317351",
+          "query_id": "ran_control",
+          "title": "Transform-invariant generative ray path sampling for efficient radio propagation modeling",
+          "authors": [
+            "Jérome Eertmans",
+            "Enrico Maria Vitucci",
+            "Vittorio Degli‐Esposti",
+            "Nicola Di Cicco",
+            "Laurent Jacques",
+            "Claude Oestges"
+          ],
+          "published_at": "2026-11-02T00:00:00Z",
+          "updated_at": "2026-11-03T10:50:19.383937Z",
+          "identifiers": {
+            "arxiv": [],
+            "doi": [
+              "10.1038/s44459-026-00094-3"
+            ],
+            "openalex": [
+              "W7133317351"
+            ]
+          },
+          "primary_url": "https://doi.org/10.1038/s44459-026-00094-3",
+          "response_url": "https://api.openalex.org/works?search=radio+access+network+control&filter=to_publication_date%3A2026-11-03%2Cfrom_publication_date%3A2026-01-01&per-page=5&sort=publication_date%3Adesc&select=id%2Cdoi%2Ctitle%2Cauthorships%2Cpublication_date%2Cupdated_date%2Cids%2Cprimary_location",
+          "source_response_sha256": "8d904d10bf8dfda23941e3eeb32b35fe986c5042cae034b54a9bd2c93668b184",
+          "retrieved_at": "2026-11-03T14:54:12.526990Z",
+          "retrieval_status": "retrieved_from_official_discovery_endpoint"
+        }
+      ],
+      "first_seen_at": "2026-11-03T14:54:12.526990Z",
+      "last_seen_at": "2026-11-03T14:54:12.526990Z",
+      "seen_in_current_run": true,
+      "retrieval_status": "retrieved",
+      "review": {
+        "status": "lead",
+        "basis": "Unreviewed discovery; no SOTA or production qualification"
+      }
+    },
+    {
+      "id": "doi:10.1088/1361-6471/aebca1",
+      "title": "The large Hadron electron collider as a bridge project for CERN",
+      "authors": [
+        "Fazila Ahmadova",
+        "K. D. J. André",
+        "N. Armesto",
+        "G. Azuelos",
+        "O Behnke",
+        "M. Boonekamp",
+        "Marco Bonvini",
+        "D. Britzger",
+        "O. Brüning",
+        "Tamara Alice Bud",
+        "A. M. Cooper-Sarkar",
+        "J. D’Hondt",
+        "M. D’Onofrio",
+        "Oliver Fischer",
+        "L. Forthomme",
+        "F. Giuli",
+        "Claire Gwenlan",
+        "Elie Hammou",
+        "Bernhard Holzer",
+        "Hamzeh Khanpour",
+        "U. Klein",
+        "P. Kostka",
+        "T. Lappi",
+        "Heikki Mäntysaari",
+        "B Mellado",
+        "P. R. Newman",
+        "Fred Olness",
+        "James Osborne",
+        "Y. Papaphilippou",
+        "Hannu Paukkunen",
+        "K. Piotrzkowski",
+        "Alessandro Polini",
+        "Juan Rojo",
+        "M Schott",
+        "S. Schumann",
+        "Christian Schwanenberger",
+        "Anna Maria Stasto",
+        "A. Stocchi",
+        "Simone Tentori",
+        "Mirja Tevio",
+        "C. Wang",
+        "Katarzyna Wichmann",
+        "Y. Yamazaki"
+      ],
+      "published_at": "2026-11-02T00:00:00Z",
+      "updated_at": "2026-11-03T10:50:19.383937Z",
+      "primary_url": "https://doi.org/10.1088/1361-6471/aebca1",
+      "identifiers": {
+        "arxiv": [],
+        "doi": [
+          "10.1088/1361-6471/aebca1"
+        ],
+        "openalex": [
+          "W4415059599"
+        ]
+      },
+      "observations": [
+        {
+          "source": "openalex",
+          "source_id": "W4415059599",
+          "query_id": "ran_control",
+          "title": "The large Hadron electron collider as a bridge project for CERN",
+          "authors": [
+            "Fazila Ahmadova",
+            "K. D. J. André",
+            "N. Armesto",
+            "G. Azuelos",
+            "O Behnke",
+            "M. Boonekamp",
+            "Marco Bonvini",
+            "D. Britzger",
+            "O. Brüning",
+            "Tamara Alice Bud",
+            "A. M. Cooper-Sarkar",
+            "J. D’Hondt",
+            "M. D’Onofrio",
+            "Oliver Fischer",
+            "L. Forthomme",
+            "F. Giuli",
+            "Claire Gwenlan",
+            "Elie Hammou",
+            "Bernhard Holzer",
+            "Hamzeh Khanpour",
+            "U. Klein",
+            "P. Kostka",
+            "T. Lappi",
+            "Heikki Mäntysaari",
+            "B Mellado",
+            "P. R. Newman",
+            "Fred Olness",
+            "James Osborne",
+            "Y. Papaphilippou",
+            "Hannu Paukkunen",
+            "K. Piotrzkowski",
+            "Alessandro Polini",
+            "Juan Rojo",
+            "M Schott",
+            "S. Schumann",
+            "Christian Schwanenberger",
+            "Anna Maria Stasto",
+            "A. Stocchi",
+            "Simone Tentori",
+            "Mirja Tevio",
+            "C. Wang",
+            "Katarzyna Wichmann",
+            "Y. Yamazaki"
+          ],
+          "published_at": "2026-11-02T00:00:00Z",
+          "updated_at": "2026-11-03T10:50:19.383937Z",
+          "identifiers": {
+            "arxiv": [],
+            "doi": [
+              "10.1088/1361-6471/aebca1"
+            ],
+            "openalex": [
+              "W4415059599"
+            ]
+          },
+          "primary_url": "https://doi.org/10.1088/1361-6471/aebca1",
+          "response_url": "https://api.openalex.org/works?search=radio+access+network+control&filter=to_publication_date%3A2026-11-03%2Cfrom_publication_date%3A2026-01-01&per-page=5&sort=publication_date%3Adesc&select=id%2Cdoi%2Ctitle%2Cauthorships%2Cpublication_date%2Cupdated_date%2Cids%2Cprimary_location",
+          "source_response_sha256": "8d904d10bf8dfda23941e3eeb32b35fe986c5042cae034b54a9bd2c93668b184",
+          "retrieved_at": "2026-11-03T14:54:12.526990Z",
+          "retrieval_status": "retrieved_from_official_discovery_endpoint"
+        }
+      ],
+      "first_seen_at": "2026-11-03T14:54:12.526990Z",
+      "last_seen_at": "2026-11-03T14:54:12.526990Z",
+      "seen_in_current_run": true,
+      "retrieval_status": "retrieved",
+      "review": {
+        "status": "lead",
+        "basis": "Unreviewed discovery; no SOTA or production qualification"
+      }
+    },
+    {
+      "id": "doi:10.1093/nsr/nwag688",
+      "title": "A Unified Systematic Framework for Human-AI Collaboration: Technologies, Evaluation Metrics, and a Tiered Taxonomy",
+      "authors": [
+        "Zhang Zhang",
+        "Sizhe Li",
+        "Jiaqi Chen",
+        "Jiehui Wu",
+        "Xing Liu",
+        "Naiming Yao",
+        "Shanmin Pang",
+        "Bochao Zou",
+        "Yu Sun",
+        "Yizhai Zhang",
+        "Hongan Wang",
+        "Jianru Xue",
+        "Liang Wang"
+      ],
+      "published_at": "2026-10-30T00:00:00Z",
+      "updated_at": "2026-11-03T10:50:19.383937Z",
+      "primary_url": "https://doi.org/10.1093/nsr/nwag688",
+      "identifiers": {
+        "arxiv": [],
+        "doi": [
+          "10.1093/nsr/nwag688"
+        ],
+        "openalex": [
+          "W7225007952"
+        ]
+      },
+      "observations": [
+        {
+          "source": "openalex",
+          "source_id": "W7225007952",
+          "query_id": "jepa_control",
+          "title": "A Unified Systematic Framework for Human-AI Collaboration: Technologies, Evaluation Metrics, and a Tiered Taxonomy",
+          "authors": [
+            "Zhang Zhang",
+            "Sizhe Li",
+            "Jiaqi Chen",
+            "Jiehui Wu",
+            "Xing Liu",
+            "Naiming Yao",
+            "Shanmin Pang",
+            "Bochao Zou",
+            "Yu Sun",
+            "Yizhai Zhang",
+            "Hongan Wang",
+            "Jianru Xue",
+            "Liang Wang"
+          ],
+          "published_at": "2026-10-30T00:00:00Z",
+          "updated_at": "2026-11-03T10:50:19.383937Z",
+          "identifiers": {
+            "arxiv": [],
+            "doi": [
+              "10.1093/nsr/nwag688"
+            ],
+            "openalex": [
+              "W7225007952"
+            ]
+          },
+          "primary_url": "https://doi.org/10.1093/nsr/nwag688",
+          "response_url": "https://api.openalex.org/works?search=JEPA+network+control&filter=to_publication_date%3A2026-11-03%2Cfrom_publication_date%3A2026-01-01&per-page=5&sort=publication_date%3Adesc&select=id%2Cdoi%2Ctitle%2Cauthorships%2Cpublication_date%2Cupdated_date%2Cids%2Cprimary_location",
+          "source_response_sha256": "f039312c4e4664c93b45b9d9ae4f45173c525f3d9f451e03722f0ffe51c6a514",
+          "retrieved_at": "2026-11-03T14:54:12.526990Z",
+          "retrieval_status": "retrieved_from_official_discovery_endpoint"
+        }
+      ],
+      "first_seen_at": "2026-11-03T14:54:12.526990Z",
+      "last_seen_at": "2026-11-03T14:54:12.526990Z",
+      "seen_in_current_run": true,
+      "retrieval_status": "retrieved",
+      "review": {
+        "status": "lead",
+        "basis": "Unreviewed discovery; no SOTA or production qualification"
+      }
+    },
+    {
+      "id": "doi:10.1145/3799682.3840088",
+      "title": "TagLLM: A Fine-Grained Tag Generation Approach for Note Recommendation",
+      "authors": [
+        "Zhijian Chen",
+        "Likai Wang",
+        "Lei Chen",
+        "YaGuang DOU",
+        "Jialiang Shi",
+        "Tian Qi",
+        "Dongdong Hao",
+        "Mengying Lu",
+        "Cheng Ye",
+        "Chao Wei"
+      ],
+      "published_at": "2026-11-03T00:00:00Z",
+      "updated_at": "2026-11-03T10:50:19.383937Z",
+      "primary_url": "https://doi.org/10.1145/3799682.3840088",
+      "identifiers": {
+        "arxiv": [],
+        "doi": [
+          "10.1145/3799682.3840088"
+        ],
+        "openalex": [
+          "W7140178505"
+        ]
+      },
+      "observations": [
+        {
+          "source": "openalex",
+          "source_id": "W7140178505",
+          "query_id": "wireless_world_models",
+          "title": "TagLLM: A Fine-Grained Tag Generation Approach for Note Recommendation",
+          "authors": [
+            "Zhijian Chen",
+            "Likai Wang",
+            "Lei Chen",
+            "YaGuang DOU",
+            "Jialiang Shi",
+            "Tian Qi",
+            "Dongdong Hao",
+            "Mengying Lu",
+            "Cheng Ye",
+            "Chao Wei"
+          ],
+          "published_at": "2026-11-03T00:00:00Z",
+          "updated_at": "2026-11-03T10:50:19.383937Z",
+          "identifiers": {
+            "arxiv": [],
+            "doi": [
+              "10.1145/3799682.3840088"
+            ],
+            "openalex": [
+              "W7140178505"
+            ]
+          },
+          "primary_url": "https://doi.org/10.1145/3799682.3840088",
+          "response_url": "https://api.openalex.org/works?search=wireless+world+model&filter=to_publication_date%3A2026-11-03%2Cfrom_publication_date%3A2026-01-01&per-page=5&sort=publication_date%3Adesc&select=id%2Cdoi%2Ctitle%2Cauthorships%2Cpublication_date%2Cupdated_date%2Cids%2Cprimary_location",
+          "source_response_sha256": "09bc11e62bd9e7133ad7f82865f3f7cd984e7444c61f107de0e9ebaedfe6d1c9",
+          "retrieved_at": "2026-11-03T14:54:12.526990Z",
+          "retrieval_status": "retrieved_from_official_discovery_endpoint"
+        }
+      ],
+      "first_seen_at": "2026-11-03T14:54:12.526990Z",
+      "last_seen_at": "2026-11-03T14:54:12.526990Z",
+      "seen_in_current_run": true,
+      "retrieval_status": "retrieved",
+      "review": {
+        "status": "lead",
+        "basis": "Unreviewed discovery; no SOTA or production qualification"
+      }
+    },
+    {
+      "id": "doi:10.1145/3799682.3840593",
+      "title": "Advancing Edge Classification through High-Dimensional Causal Modeling of Node-Edge Interplay",
+      "authors": [
+        "Duanyu Feng",
+        "Li Ding",
+        "Hongru Liang",
+        "Wenqiang Lei"
+      ],
+      "published_at": "2026-11-03T00:00:00Z",
+      "updated_at": "2026-11-03T10:50:19.383937Z",
+      "primary_url": "https://doi.org/10.1145/3799682.3840593",
+      "identifiers": {
+        "arxiv": [],
+        "doi": [
+          "10.1145/3799682.3840593"
+        ],
+        "openalex": [
+          "W7160190135"
+        ]
+      },
+      "observations": [
+        {
+          "source": "openalex",
+          "source_id": "W7160190135",
+          "query_id": "wireless_world_models",
+          "title": "Advancing Edge Classification through High-Dimensional Causal Modeling of Node-Edge Interplay",
+          "authors": [
+            "Duanyu Feng",
+            "Li Ding",
+            "Hongru Liang",
+            "Wenqiang Lei"
+          ],
+          "published_at": "2026-11-03T00:00:00Z",
+          "updated_at": "2026-11-03T10:50:19.383937Z",
+          "identifiers": {
+            "arxiv": [],
+            "doi": [
+              "10.1145/3799682.3840593"
+            ],
+            "openalex": [
+              "W7160190135"
+            ]
+          },
+          "primary_url": "https://doi.org/10.1145/3799682.3840593",
+          "response_url": "https://api.openalex.org/works?search=wireless+world+model&filter=to_publication_date%3A2026-11-03%2Cfrom_publication_date%3A2026-01-01&per-page=5&sort=publication_date%3Adesc&select=id%2Cdoi%2Ctitle%2Cauthorships%2Cpublication_date%2Cupdated_date%2Cids%2Cprimary_location",
+          "source_response_sha256": "09bc11e62bd9e7133ad7f82865f3f7cd984e7444c61f107de0e9ebaedfe6d1c9",
+          "retrieved_at": "2026-11-03T14:54:12.526990Z",
+          "retrieval_status": "retrieved_from_official_discovery_endpoint"
+        }
+      ],
+      "first_seen_at": "2026-11-03T14:54:12.526990Z",
+      "last_seen_at": "2026-11-03T14:54:12.526990Z",
+      "seen_in_current_run": true,
+      "retrieval_status": "retrieved",
+      "review": {
+        "status": "lead",
+        "basis": "Unreviewed discovery; no SOTA or production qualification"
+      }
+    },
+    {
+      "id": "doi:10.1145/3799682.3840747",
+      "title": "When Is Shallow Enough? Adaptive Split Federated Learning with Client-Specific Sufficiency Estimation",
+      "authors": [
+        "Wenhao Yuan",
+        "Chenchen Lin",
+        "Wenhao Hu",
+        "Jian Chen",
+        "Jinfeng Xu",
+        "Shujie Li",
+        "Edith Cheuk Han Ngai"
+      ],
+      "published_at": "2026-11-03T00:00:00Z",
+      "updated_at": "2026-11-03T10:50:19.383937Z",
+      "primary_url": "https://doi.org/10.1145/3799682.3840747",
+      "identifiers": {
+        "arxiv": [],
+        "doi": [
+          "10.1145/3799682.3840747"
+        ],
+        "openalex": [
+          "W7203666835"
+        ]
+      },
+      "observations": [
+        {
+          "source": "openalex",
+          "source_id": "W7203666835",
+          "query_id": "wireless_world_models",
+          "title": "When Is Shallow Enough? Adaptive Split Federated Learning with Client-Specific Sufficiency Estimation",
+          "authors": [
+            "Wenhao Yuan",
+            "Chenchen Lin",
+            "Wenhao Hu",
+            "Jian Chen",
+            "Jinfeng Xu",
+            "Shujie Li",
+            "Edith Cheuk Han Ngai"
+          ],
+          "published_at": "2026-11-03T00:00:00Z",
+          "updated_at": "2026-11-03T10:50:19.383937Z",
+          "identifiers": {
+            "arxiv": [],
+            "doi": [
+              "10.1145/3799682.3840747"
+            ],
+            "openalex": [
+              "W7203666835"
+            ]
+          },
+          "primary_url": "https://doi.org/10.1145/3799682.3840747",
+          "response_url": "https://api.openalex.org/works?search=wireless+world+model&filter=to_publication_date%3A2026-11-03%2Cfrom_publication_date%3A2026-01-01&per-page=5&sort=publication_date%3Adesc&select=id%2Cdoi%2Ctitle%2Cauthorships%2Cpublication_date%2Cupdated_date%2Cids%2Cprimary_location",
+          "source_response_sha256": "09bc11e62bd9e7133ad7f82865f3f7cd984e7444c61f107de0e9ebaedfe6d1c9",
+          "retrieved_at": "2026-11-03T14:54:12.526990Z",
+          "retrieval_status": "retrieved_from_official_discovery_endpoint"
+        }
+      ],
+      "first_seen_at": "2026-11-03T14:54:12.526990Z",
+      "last_seen_at": "2026-11-03T14:54:12.526990Z",
+      "seen_in_current_run": true,
+      "retrieval_status": "retrieved",
+      "review": {
+        "status": "lead",
+        "basis": "Unreviewed discovery; no SOTA or production qualification"
+      }
+    },
+    {
+      "id": "doi:10.1145/3799682.3840943",
+      "title": "Profiling What Matters: Context-Aware Item Profiles from Large-Scale Metadata for LLM Recommenders",
+      "authors": [
+        "Dojun Hwang",
+        "Seunghan Lee",
+        "CheonYoung Park",
+        "Sara Yu",
+        "SeongKu Kang"
+      ],
+      "published_at": "2026-11-03T00:00:00Z",
+      "updated_at": "2026-11-03T10:50:19.383937Z",
+      "primary_url": "https://doi.org/10.1145/3799682.3840943",
+      "identifiers": {
+        "arxiv": [],
+        "doi": [
+          "10.1145/3799682.3840943"
+        ],
+        "openalex": [
+          "W7204120822"
+        ]
+      },
+      "observations": [
+        {
+          "source": "openalex",
+          "source_id": "W7204120822",
+          "query_id": "wireless_world_models",
+          "title": "Profiling What Matters: Context-Aware Item Profiles from Large-Scale Metadata for LLM Recommenders",
+          "authors": [
+            "Dojun Hwang",
+            "Seunghan Lee",
+            "CheonYoung Park",
+            "Sara Yu",
+            "SeongKu Kang"
+          ],
+          "published_at": "2026-11-03T00:00:00Z",
+          "updated_at": "2026-11-03T10:50:19.383937Z",
+          "identifiers": {
+            "arxiv": [],
+            "doi": [
+              "10.1145/3799682.3840943"
+            ],
+            "openalex": [
+              "W7204120822"
+            ]
+          },
+          "primary_url": "https://doi.org/10.1145/3799682.3840943",
+          "response_url": "https://api.openalex.org/works?search=wireless+world+model&filter=to_publication_date%3A2026-11-03%2Cfrom_publication_date%3A2026-01-01&per-page=5&sort=publication_date%3Adesc&select=id%2Cdoi%2Ctitle%2Cauthorships%2Cpublication_date%2Cupdated_date%2Cids%2Cprimary_location",
+          "source_response_sha256": "09bc11e62bd9e7133ad7f82865f3f7cd984e7444c61f107de0e9ebaedfe6d1c9",
+          "retrieved_at": "2026-11-03T14:54:12.526990Z",
+          "retrieval_status": "retrieved_from_official_discovery_endpoint"
+        }
+      ],
+      "first_seen_at": "2026-11-03T14:54:12.526990Z",
+      "last_seen_at": "2026-11-03T14:54:12.526990Z",
+      "seen_in_current_run": true,
+      "retrieval_status": "retrieved",
+      "review": {
+        "status": "lead",
+        "basis": "Unreviewed discovery; no SOTA or production qualification"
+      }
+    },
+    {
+      "id": "doi:10.1145/3799682.3840944",
+      "title": "PERO: Efficient Robust Post-Training Foundation Models for Encrypted Traffic Classification",
+      "authors": [
+        "Wumei Du",
+        "Jiarong Wen",
+        "Kaiyu Zhang",
+        "Zi Yang",
+        "Yiqin Lv",
+        "Longfei Zhang",
+        "Dong Liang",
+        "Zheng Xie"
+      ],
+      "published_at": "2026-11-03T00:00:00Z",
+      "updated_at": "2026-11-03T10:50:19.383937Z",
+      "primary_url": "https://doi.org/10.1145/3799682.3840944",
+      "identifiers": {
+        "arxiv": [],
+        "doi": [
+          "10.1145/3799682.3840944"
+        ],
+        "openalex": [
+          "W7203695447"
+        ]
+      },
+      "observations": [
+        {
+          "source": "openalex",
+          "source_id": "W7203695447",
+          "query_id": "wireless_world_models",
+          "title": "PERO: Efficient Robust Post-Training Foundation Models for Encrypted Traffic Classification",
+          "authors": [
+            "Wumei Du",
+            "Jiarong Wen",
+            "Kaiyu Zhang",
+            "Zi Yang",
+            "Yiqin Lv",
+            "Longfei Zhang",
+            "Dong Liang",
+            "Zheng Xie"
+          ],
+          "published_at": "2026-11-03T00:00:00Z",
+          "updated_at": "2026-11-03T10:50:19.383937Z",
+          "identifiers": {
+            "arxiv": [],
+            "doi": [
+              "10.1145/3799682.3840944"
+            ],
+            "openalex": [
+              "W7203695447"
+            ]
+          },
+          "primary_url": "https://doi.org/10.1145/3799682.3840944",
+          "response_url": "https://api.openalex.org/works?search=wireless+world+model&filter=to_publication_date%3A2026-11-03%2Cfrom_publication_date%3A2026-01-01&per-page=5&sort=publication_date%3Adesc&select=id%2Cdoi%2Ctitle%2Cauthorships%2Cpublication_date%2Cupdated_date%2Cids%2Cprimary_location",
+          "source_response_sha256": "09bc11e62bd9e7133ad7f82865f3f7cd984e7444c61f107de0e9ebaedfe6d1c9",
+          "retrieved_at": "2026-11-03T14:54:12.526990Z",
+          "retrieval_status": "retrieved_from_official_discovery_endpoint"
+        }
+      ],
+      "first_seen_at": "2026-11-03T14:54:12.526990Z",
+      "last_seen_at": "2026-11-03T14:54:12.526990Z",
+      "seen_in_current_run": true,
+      "retrieval_status": "retrieved",
+      "review": {
+        "status": "lead",
+        "basis": "Unreviewed discovery; no SOTA or production qualification"
+      }
+    },
+    {
+      "id": "doi:10.1145/3842721.3849645",
+      "title": "CREWS: Collaborative Robust Edge WiFi Sensing with Asynchronous and Incomplete Observations",
+      "authors": [
+        "Yinan Chen",
+        "Yang Zhou",
+        "Xiaoxia Huang",
+        "Pan Li"
+      ],
+      "published_at": "2026-10-30T00:00:00Z",
+      "updated_at": "2026-11-01T11:40:01.658920Z",
+      "primary_url": "https://doi.org/10.1145/3842721.3849645",
+      "identifiers": {
+        "arxiv": [],
+        "doi": [
+          "10.1145/3842721.3849645"
+        ],
+        "openalex": [
+          "W7163007860"
+        ]
+      },
+      "observations": [
+        {
+          "source": "openalex",
+          "source_id": "W7163007860",
+          "query_id": "deadline_uncertainty",
+          "title": "CREWS: Collaborative Robust Edge WiFi Sensing with Asynchronous and Incomplete Observations",
+          "authors": [
+            "Yinan Chen",
+            "Yang Zhou",
+            "Xiaoxia Huang",
+            "Pan Li"
+          ],
+          "published_at": "2026-10-30T00:00:00Z",
+          "updated_at": "2026-11-01T11:40:01.658920Z",
+          "identifiers": {
+            "arxiv": [],
+            "doi": [
+              "10.1145/3842721.3849645"
+            ],
+            "openalex": [
+              "W7163007860"
+            ]
+          },
+          "primary_url": "https://doi.org/10.1145/3842721.3849645",
+          "response_url": "https://api.openalex.org/works?search=wireless+deadline+uncertainty&filter=to_publication_date%3A2026-11-03%2Cfrom_publication_date%3A2026-01-01&per-page=5&sort=publication_date%3Adesc&select=id%2Cdoi%2Ctitle%2Cauthorships%2Cpublication_date%2Cupdated_date%2Cids%2Cprimary_location",
+          "source_response_sha256": "a98a8f921d2d1632c3dcacd581016af98e816d657f618da71ebae3887d76a8ad",
+          "retrieved_at": "2026-11-03T14:54:12.526990Z",
+          "retrieval_status": "retrieved_from_official_discovery_endpoint"
+        }
+      ],
+      "first_seen_at": "2026-11-03T14:54:12.526990Z",
+      "last_seen_at": "2026-11-03T14:54:12.526990Z",
+      "seen_in_current_run": true,
+      "retrieval_status": "retrieved",
+      "review": {
+        "status": "lead",
+        "basis": "Unreviewed discovery; no SOTA or production qualification"
+      }
+    },
+    {
+      "id": "doi:10.21203/rs.3.rs-10843028/v1",
+      "title": "BAg-IDS: A Blockchain-Enabled Agentic AI Architecture for Trustworthy Intrusion Detection",
+      "authors": [
+        "Mohamed Ala Eddine BAHRI",
+        "Farah Jemili",
+        "Mohamed MOSBAH"
+      ],
+      "published_at": "2026-10-30T00:00:00Z",
+      "updated_at": "2026-11-01T11:40:01.658920Z",
+      "primary_url": "https://doi.org/10.21203/rs.3.rs-10843028/v1",
+      "identifiers": {
+        "arxiv": [],
+        "doi": [
+          "10.21203/rs.3.rs-10843028/v1"
+        ],
+        "openalex": [
+          "W7224757321"
+        ]
+      },
+      "observations": [
+        {
+          "source": "openalex",
+          "source_id": "W7224757321",
+          "query_id": "deadline_uncertainty",
+          "title": "BAg-IDS: A Blockchain-Enabled Agentic AI Architecture for Trustworthy Intrusion Detection",
+          "authors": [
+            "Mohamed Ala Eddine BAHRI",
+            "Farah Jemili",
+            "Mohamed MOSBAH"
+          ],
+          "published_at": "2026-10-30T00:00:00Z",
+          "updated_at": "2026-11-01T11:40:01.658920Z",
+          "identifiers": {
+            "arxiv": [],
+            "doi": [
+              "10.21203/rs.3.rs-10843028/v1"
+            ],
+            "openalex": [
+              "W7224757321"
+            ]
+          },
+          "primary_url": "https://doi.org/10.21203/rs.3.rs-10843028/v1",
+          "response_url": "https://api.openalex.org/works?search=wireless+deadline+uncertainty&filter=to_publication_date%3A2026-11-03%2Cfrom_publication_date%3A2026-01-01&per-page=5&sort=publication_date%3Adesc&select=id%2Cdoi%2Ctitle%2Cauthorships%2Cpublication_date%2Cupdated_date%2Cids%2Cprimary_location",
+          "source_response_sha256": "a98a8f921d2d1632c3dcacd581016af98e816d657f618da71ebae3887d76a8ad",
+          "retrieved_at": "2026-11-03T14:54:12.526990Z",
+          "retrieval_status": "retrieved_from_official_discovery_endpoint"
+        }
+      ],
+      "first_seen_at": "2026-11-03T14:54:12.526990Z",
+      "last_seen_at": "2026-11-03T14:54:12.526990Z",
+      "seen_in_current_run": true,
+      "retrieval_status": "retrieved",
+      "review": {
+        "status": "lead",
+        "basis": "Unreviewed discovery; no SOTA or production qualification"
+      }
+    },
+    {
+      "id": "doi:10.21203/rs.3.rs-11327969/v1",
+      "title": "Reinforcement Learning with World Models in the Era of Scale: From Online Imagination to World Action Models",
+      "authors": [
+        "Wojciech Dąbrowicki",
+        "Andrzej Rusiecki"
+      ],
+      "published_at": "2026-10-29T00:00:00Z",
+      "updated_at": "2026-10-31T12:09:11.096373Z",
+      "primary_url": "https://doi.org/10.21203/rs.3.rs-11327969/v1",
+      "identifiers": {
+        "arxiv": [],
+        "doi": [
+          "10.21203/rs.3.rs-11327969/v1"
+        ],
+        "openalex": [
+          "W7224306034"
+        ]
+      },
+      "observations": [
+        {
+          "source": "openalex",
+          "source_id": "W7224306034",
+          "query_id": "jepa_control",
+          "title": "Reinforcement Learning with World Models in the Era of Scale: From Online Imagination to World Action Models",
+          "authors": [
+            "Wojciech Dąbrowicki",
+            "Andrzej Rusiecki"
+          ],
+          "published_at": "2026-10-29T00:00:00Z",
+          "updated_at": "2026-10-31T12:09:11.096373Z",
+          "identifiers": {
+            "arxiv": [],
+            "doi": [
+              "10.21203/rs.3.rs-11327969/v1"
+            ],
+            "openalex": [
+              "W7224306034"
+            ]
+          },
+          "primary_url": "https://doi.org/10.21203/rs.3.rs-11327969/v1",
+          "response_url": "https://api.openalex.org/works?search=JEPA+network+control&filter=to_publication_date%3A2026-11-03%2Cfrom_publication_date%3A2026-01-01&per-page=5&sort=publication_date%3Adesc&select=id%2Cdoi%2Ctitle%2Cauthorships%2Cpublication_date%2Cupdated_date%2Cids%2Cprimary_location",
+          "source_response_sha256": "f039312c4e4664c93b45b9d9ae4f45173c525f3d9f451e03722f0ffe51c6a514",
+          "retrieved_at": "2026-11-03T14:54:12.526990Z",
+          "retrieval_status": "retrieved_from_official_discovery_endpoint"
+        }
+      ],
+      "first_seen_at": "2026-11-03T14:54:12.526990Z",
+      "last_seen_at": "2026-11-03T14:54:12.526990Z",
+      "seen_in_current_run": true,
+      "retrieval_status": "retrieved",
+      "review": {
+        "status": "lead",
+        "basis": "Unreviewed discovery; no SOTA or production qualification"
+      }
+    },
+    {
+      "id": "doi:10.21203/rs.3.rs-11453571/v1",
+      "title": "Projected Disc-type Phase-change Memory for Analog In-Memory Computing",
+      "authors": [
+        "Syed Ghazi Sarwat",
+        "Loris Coccia",
+        "Vara Prasad Jonnalagadda",
+        "Antonio Massimiliano Mio",
+        "Asit Ray",
+        "Matthew J. BrightSky",
+        "Abu Sebastian"
+      ],
+      "published_at": "2026-11-02T00:00:00Z",
+      "updated_at": "2026-11-03T10:50:19.383937Z",
+      "primary_url": "https://doi.org/10.21203/rs.3.rs-11453571/v1",
+      "identifiers": {
+        "arxiv": [],
+        "doi": [
+          "10.21203/rs.3.rs-11453571/v1"
+        ],
+        "openalex": [
+          "W7204877010"
+        ]
+      },
+      "observations": [
+        {
+          "source": "openalex",
+          "source_id": "W7204877010",
+          "query_id": "ran_control",
+          "title": "Projected Disc-type Phase-change Memory for Analog In-Memory Computing",
+          "authors": [
+            "Syed Ghazi Sarwat",
+            "Loris Coccia",
+            "Vara Prasad Jonnalagadda",
+            "Antonio Massimiliano Mio",
+            "Asit Ray",
+            "Matthew J. BrightSky",
+            "Abu Sebastian"
+          ],
+          "published_at": "2026-11-02T00:00:00Z",
+          "updated_at": "2026-11-03T10:50:19.383937Z",
+          "identifiers": {
+            "arxiv": [],
+            "doi": [
+              "10.21203/rs.3.rs-11453571/v1"
+            ],
+            "openalex": [
+              "W7204877010"
+            ]
+          },
+          "primary_url": "https://doi.org/10.21203/rs.3.rs-11453571/v1",
+          "response_url": "https://api.openalex.org/works?search=radio+access+network+control&filter=to_publication_date%3A2026-11-03%2Cfrom_publication_date%3A2026-01-01&per-page=5&sort=publication_date%3Adesc&select=id%2Cdoi%2Ctitle%2Cauthorships%2Cpublication_date%2Cupdated_date%2Cids%2Cprimary_location",
+          "source_response_sha256": "8d904d10bf8dfda23941e3eeb32b35fe986c5042cae034b54a9bd2c93668b184",
+          "retrieved_at": "2026-11-03T14:54:12.526990Z",
+          "retrieval_status": "retrieved_from_official_discovery_endpoint"
+        }
+      ],
+      "first_seen_at": "2026-11-03T14:54:12.526990Z",
+      "last_seen_at": "2026-11-03T14:54:12.526990Z",
+      "seen_in_current_run": true,
+      "retrieval_status": "retrieved",
+      "review": {
+        "status": "lead",
+        "basis": "Unreviewed discovery; no SOTA or production qualification"
+      }
+    },
+    {
+      "id": "doi:10.21474/ijar01/24405",
+      "title": "HUMAN ROBOT COLLABORATION AND AI-ENABLED WAREHOUSE SAFETY MANAGEMENT FOR SUSTAINABLE LOGISTICS OPERATIONS IN SAUDI ARABIA",
+      "authors": [
+        "Idrees Hafiz Syed Hussaini"
+      ],
+      "published_at": "2026-10-31T00:00:00Z",
+      "updated_at": "2026-11-02T09:45:03.842371Z",
+      "primary_url": "https://doi.org/10.21474/ijar01/24405",
+      "identifiers": {
+        "arxiv": [],
+        "doi": [
+          "10.21474/ijar01/24405"
+        ],
+        "openalex": [
+          "W7225009922"
+        ]
+      },
+      "observations": [
+        {
+          "source": "openalex",
+          "source_id": "W7225009922",
+          "query_id": "deadline_uncertainty",
+          "title": "HUMAN ROBOT COLLABORATION AND AI-ENABLED WAREHOUSE SAFETY MANAGEMENT FOR SUSTAINABLE LOGISTICS OPERATIONS IN SAUDI ARABIA",
+          "authors": [
+            "Idrees Hafiz Syed Hussaini"
+          ],
+          "published_at": "2026-10-31T00:00:00Z",
+          "updated_at": "2026-11-02T09:45:03.842371Z",
+          "identifiers": {
+            "arxiv": [],
+            "doi": [
+              "10.21474/ijar01/24405"
+            ],
+            "openalex": [
+              "W7225009922"
+            ]
+          },
+          "primary_url": "https://doi.org/10.21474/ijar01/24405",
+          "response_url": "https://api.openalex.org/works?search=wireless+deadline+uncertainty&filter=to_publication_date%3A2026-11-03%2Cfrom_publication_date%3A2026-01-01&per-page=5&sort=publication_date%3Adesc&select=id%2Cdoi%2Ctitle%2Cauthorships%2Cpublication_date%2Cupdated_date%2Cids%2Cprimary_location",
+          "source_response_sha256": "a98a8f921d2d1632c3dcacd581016af98e816d657f618da71ebae3887d76a8ad",
+          "retrieved_at": "2026-11-03T14:54:12.526990Z",
+          "retrieval_status": "retrieved_from_official_discovery_endpoint"
+        }
+      ],
+      "first_seen_at": "2026-11-03T14:54:12.526990Z",
+      "last_seen_at": "2026-11-03T14:54:12.526990Z",
+      "seen_in_current_run": true,
+      "retrieval_status": "retrieved",
+      "review": {
+        "status": "lead",
+        "basis": "Unreviewed discovery; no SOTA or production qualification"
+      }
+    },
+    {
+      "id": "doi:10.31223/x5cn6n",
+      "title": "Post-processing Subglacial Physics Model with Per-site JEPA Specialist Models Enable Natural-language Glaciological Intelligence",
+      "authors": [
+        "Aleah Nicholson Sommers",
+        "Mashrekur Rahman"
+      ],
+      "published_at": "2026-10-29T00:00:00Z",
+      "updated_at": "2026-11-01T11:40:01.658920Z",
+      "primary_url": "https://doi.org/10.31223/x5cn6n",
+      "identifiers": {
+        "arxiv": [],
+        "doi": [
+          "10.31223/x5cn6n"
+        ],
+        "openalex": [
+          "W7224494399"
+        ]
+      },
+      "observations": [
+        {
+          "source": "openalex",
+          "source_id": "W7224494399",
+          "query_id": "jepa_control",
+          "title": "Post-processing Subglacial Physics Model with Per-site JEPA Specialist Models Enable Natural-language Glaciological Intelligence",
+          "authors": [
+            "Aleah Nicholson Sommers",
+            "Mashrekur Rahman"
+          ],
+          "published_at": "2026-10-29T00:00:00Z",
+          "updated_at": "2026-11-01T11:40:01.658920Z",
+          "identifiers": {
+            "arxiv": [],
+            "doi": [
+              "10.31223/x5cn6n"
+            ],
+            "openalex": [
+              "W7224494399"
+            ]
+          },
+          "primary_url": "https://doi.org/10.31223/x5cn6n",
+          "response_url": "https://api.openalex.org/works?search=JEPA+network+control&filter=to_publication_date%3A2026-11-03%2Cfrom_publication_date%3A2026-01-01&per-page=5&sort=publication_date%3Adesc&select=id%2Cdoi%2Ctitle%2Cauthorships%2Cpublication_date%2Cupdated_date%2Cids%2Cprimary_location",
+          "source_response_sha256": "f039312c4e4664c93b45b9d9ae4f45173c525f3d9f451e03722f0ffe51c6a514",
+          "retrieved_at": "2026-11-03T14:54:12.526990Z",
+          "retrieval_status": "retrieved_from_official_discovery_endpoint"
+        }
+      ],
+      "first_seen_at": "2026-11-03T14:54:12.526990Z",
+      "last_seen_at": "2026-11-03T14:54:12.526990Z",
+      "seen_in_current_run": true,
+      "retrieval_status": "retrieved",
+      "review": {
+        "status": "lead",
+        "basis": "Unreviewed discovery; no SOTA or production qualification"
+      }
+    },
+    {
+      "id": "doi:10.3389/fnhum.2026.1973838",
+      "title": "A unified fixed-wavelet transformer decodes eight EEG classes across motor imagery, P300, and SSVEP paradigms",
+      "authors": [
+        "Woo-Sung Choi",
+        "Hong Gi Yeom"
+      ],
+      "published_at": "2026-10-29T00:00:00Z",
+      "updated_at": "2026-11-01T11:40:01.658920Z",
+      "primary_url": "https://doi.org/10.3389/fnhum.2026.1973838",
+      "identifiers": {
+        "arxiv": [],
+        "doi": [
+          "10.3389/fnhum.2026.1973838"
+        ],
+        "openalex": [
+          "W7224290091"
+        ]
+      },
+      "observations": [
+        {
+          "source": "openalex",
+          "source_id": "W7224290091",
+          "query_id": "jepa_control",
+          "title": "A unified fixed-wavelet transformer decodes eight EEG classes across motor imagery, P300, and SSVEP paradigms",
+          "authors": [
+            "Woo-Sung Choi",
+            "Hong Gi Yeom"
+          ],
+          "published_at": "2026-10-29T00:00:00Z",
+          "updated_at": "2026-11-01T11:40:01.658920Z",
+          "identifiers": {
+            "arxiv": [],
+            "doi": [
+              "10.3389/fnhum.2026.1973838"
+            ],
+            "openalex": [
+              "W7224290091"
+            ]
+          },
+          "primary_url": "https://doi.org/10.3389/fnhum.2026.1973838",
+          "response_url": "https://api.openalex.org/works?search=JEPA+network+control&filter=to_publication_date%3A2026-11-03%2Cfrom_publication_date%3A2026-01-01&per-page=5&sort=publication_date%3Adesc&select=id%2Cdoi%2Ctitle%2Cauthorships%2Cpublication_date%2Cupdated_date%2Cids%2Cprimary_location",
+          "source_response_sha256": "f039312c4e4664c93b45b9d9ae4f45173c525f3d9f451e03722f0ffe51c6a514",
+          "retrieved_at": "2026-11-03T14:54:12.526990Z",
+          "retrieval_status": "retrieved_from_official_discovery_endpoint"
+        }
+      ],
+      "first_seen_at": "2026-11-03T14:54:12.526990Z",
+      "last_seen_at": "2026-11-03T14:54:12.526990Z",
+      "seen_in_current_run": true,
+      "retrieval_status": "retrieved",
+      "review": {
+        "status": "lead",
+        "basis": "Unreviewed discovery; no SOTA or production qualification"
+      }
+    },
+    {
+      "id": "doi:10.5194/hess-30-6763-2026",
+      "title": "Technical note: Evaluation of snow water equivalent from large-scale land-surface products over Italy",
+      "authors": [
+        "Gökhan Sarigil",
+        "Mattia Neri",
+        "Francesco Avanzi",
+        "Elena Toth"
+      ],
+      "published_at": "2026-11-02T00:00:00Z",
+      "updated_at": "2026-11-03T10:50:19.383937Z",
+      "primary_url": "https://doi.org/10.5194/hess-30-6763-2026",
+      "identifiers": {
+        "arxiv": [],
+        "doi": [
+          "10.5194/hess-30-6763-2026"
+        ],
+        "openalex": [
+          "W7161959941"
+        ]
+      },
+      "observations": [
+        {
+          "source": "openalex",
+          "source_id": "W7161959941",
+          "query_id": "ran_control",
+          "title": "Technical note: Evaluation of snow water equivalent from large-scale land-surface products over Italy",
+          "authors": [
+            "Gökhan Sarigil",
+            "Mattia Neri",
+            "Francesco Avanzi",
+            "Elena Toth"
+          ],
+          "published_at": "2026-11-02T00:00:00Z",
+          "updated_at": "2026-11-03T10:50:19.383937Z",
+          "identifiers": {
+            "arxiv": [],
+            "doi": [
+              "10.5194/hess-30-6763-2026"
+            ],
+            "openalex": [
+              "W7161959941"
+            ]
+          },
+          "primary_url": "https://doi.org/10.5194/hess-30-6763-2026",
+          "response_url": "https://api.openalex.org/works?search=radio+access+network+control&filter=to_publication_date%3A2026-11-03%2Cfrom_publication_date%3A2026-01-01&per-page=5&sort=publication_date%3Adesc&select=id%2Cdoi%2Ctitle%2Cauthorships%2Cpublication_date%2Cupdated_date%2Cids%2Cprimary_location",
+          "source_response_sha256": "8d904d10bf8dfda23941e3eeb32b35fe986c5042cae034b54a9bd2c93668b184",
+          "retrieved_at": "2026-11-03T14:54:12.526990Z",
+          "retrieval_status": "retrieved_from_official_discovery_endpoint"
+        }
+      ],
+      "first_seen_at": "2026-11-03T14:54:12.526990Z",
+      "last_seen_at": "2026-11-03T14:54:12.526990Z",
+      "seen_in_current_run": true,
+      "retrieval_status": "retrieved",
+      "review": {
+        "status": "lead",
+        "basis": "Unreviewed discovery; no SOTA or production qualification"
+      }
+    }
+  ],
+  "changes": {
+    "added": [
+      "arxiv:2608.16955",
+      "arxiv:2609.04851",
+      "arxiv:2610.07025",
+      "arxiv:2610.13315",
+      "arxiv:2610.18570",
+      "arxiv:2610.21013",
+      "arxiv:2610.29382",
+      "arxiv:2610.29534",
+      "arxiv:2610.29587",
+      "arxiv:2610.32257",
+      "arxiv:2610.35079",
+      "arxiv:2610.35813",
+      "arxiv:2610.36406",
+      "arxiv:2610.36905",
+      "arxiv:2610.37391",
+      "arxiv:2610.37717",
+      "arxiv:2610.38445",
+      "arxiv:2610.38508",
+      "arxiv:2610.40277",
+      "arxiv:2610.40356",
+      "arxiv:2610.40744",
+      "arxiv:2610.40826",
+      "arxiv:2611.00427",
+      "arxiv:2611.00635",
+      "arxiv:2611.01862",
+      "arxiv:2611.02489",
+      "arxiv:2611.03378",
+      "arxiv:2611.03406",
+      "doi:10.1007/s00500-026-11515-4",
+      "doi:10.1021/acsphotonics.6c02097",
+      "doi:10.1038/s41598-026-73784-1",
+      "doi:10.1038/s44459-026-00094-3",
+      "doi:10.1088/1361-6471/aebca1",
+      "doi:10.1093/nsr/nwag688",
+      "doi:10.1145/3799682.3840088",
+      "doi:10.1145/3799682.3840593",
+      "doi:10.1145/3799682.3840747",
+      "doi:10.1145/3799682.3840943",
+      "doi:10.1145/3799682.3840944",
+      "doi:10.1145/3842721.3849645",
+      "doi:10.21203/rs.3.rs-10843028/v1",
+      "doi:10.21203/rs.3.rs-11327969/v1",
+      "doi:10.21203/rs.3.rs-11453571/v1",
+      "doi:10.21474/ijar01/24405",
+      "doi:10.31223/x5cn6n",
+      "doi:10.3389/fnhum.2026.1973838",
+      "doi:10.5194/hess-30-6763-2026"
+    ],
+    "updated": [],
+    "not_seen_again": [],
+    "identifier_redirects": {},
+    "deleted": []
+  },
+  "claims": {
+    "automatically_reviewed": false,
+    "production_promoted": false,
+    "sota_established": false
+  }
+}

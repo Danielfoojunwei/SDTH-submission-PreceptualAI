@@ -1,0 +1,122 @@
+{
+  "schema": "wirelessjev.lwm_temporal_probe.v1",
+  "status": "passed",
+  "executed_at_utc": "2026-11-03T15:01:12.927602+00:00",
+  "repository": "wi-lab/lwm-temporal",
+  "revision": "df32f4beb6c7fe11d83031edbe5d6312798b81c3",
+  "license": "MIT",
+  "source_directory": "/workspace/upstream/continual-radio/lwm-temporal",
+  "reviewed_sha256": {
+    "LICENSE": "db8d07cbbc61a50354d22437da225c2803af9b7eae56a4e0baf89d2f37c63df2",
+    "README.md": "6ac59d21ecbbb504cc077e70f0348878d9a4a67b513ab41f4d2f2049703dc4fe",
+    "LWMTemporal/models/lwm.py": "c8ef6e6ccbc5124edf29d79d190d7c065fd98e668af251ff09979ec1d0d39f72",
+    "checkpoints/config.json": "556fa34bbb1e5649385a97e576ffba81c1c6d4fa21e1635664f72a42d208c392",
+    "checkpoints/pytorch_model.bin": "90be5447ee15f13547f1d0819de4d80fc1b49c28737378824513cb293335e0be"
+  },
+  "executed_upstream_files": [
+    "LWMTemporal/models/lwm.py"
+  ],
+  "python": "3.12.14",
+  "torch": "2.14.1+cu130",
+  "numpy": "2.5.4",
+  "device": "cpu",
+  "torch_threads": 2,
+  "dependency_installation": "none; existing torch/numpy; no upstream package installation",
+  "weights_only_deserialization": true,
+  "strict_pretrained_load": true,
+  "missing_keys": [],
+  "unexpected_keys": [],
+  "checkpoint_tensors": 139,
+  "pretrained_parameters": 241634,
+  "all_loaded_tensors_equal_checkpoint": true,
+  "randomly_initialized_parameters_remaining": false,
+  "configuration": {
+    "patch_size": [
+      1,
+      1
+    ],
+    "phase_mode": "real_imag",
+    "embed_dim": 32,
+    "depth": 12,
+    "num_heads": 8,
+    "mlp_ratio": 4.0,
+    "same_frame_window": 2,
+    "same_frame_window_h": null,
+    "same_frame_window_w": null,
+    "same_frame_dilation_h": 1,
+    "same_frame_dilation_w": 1,
+    "temporal_offsets": [
+      -4,
+      -3,
+      -2,
+      -1,
+      1,
+      2,
+      3
+    ],
+    "temporal_spatial_window": 2,
+    "temporal_spatial_window_h": null,
+    "temporal_spatial_window_w": null,
+    "temporal_spatial_dilation_h": 1,
+    "temporal_spatial_dilation_w": 1,
+    "temporal_drift_h": 1,
+    "temporal_drift_w": 1,
+    "spatial_only": false,
+    "routing_topk_enable": true,
+    "routing_topk_fraction": 0.2,
+    "routing_topk_min": 8,
+    "routing_topk_max": 32,
+    "routing_topk_per_head": true,
+    "topk_neighbors": null,
+    "topk_per_head": true,
+    "global_cls": false,
+    "posenc": "learned",
+    "rope_base": 10000.0,
+    "rope_mode": "flat",
+    "rope_base_t": null,
+    "rope_base_h": null,
+    "rope_base_w": null,
+    "max_seq_len": 2816
+  },
+  "input": {
+    "kind": "deterministic analytical complex shape fixture",
+    "measured_or_simulated_csi": false,
+    "shape": [
+      1,
+      11,
+      32,
+      8
+    ],
+    "dtype": "torch.complex64",
+    "masked_tokens": 1690,
+    "total_tokens": 2816
+  },
+  "output": {
+    "shape": [
+      1,
+      2816,
+      2
+    ],
+    "dtype": "torch.float32",
+    "finite": true,
+    "mean": -0.00748426653444767,
+    "std": 0.3281964957714081,
+    "l2_norm": 24.63426399230957,
+    "sha256": "76d5b7ad2de90ca81e8d93e0b2adb0eae042e128cc4b0c295eb017f7cafd90cf",
+    "repeat_max_absolute_difference": 0.0
+  },
+  "timing_seconds": {
+    "model_load_and_strict_check": 0.02434289099983289,
+    "first_forward": 4.216585665000821,
+    "repeat_forward": 1.6358586959995591
+  },
+  "application_radio_observations_used": false,
+  "application_task_accuracy_tested": false,
+  "control_or_service_world_integration": false,
+  "quality_conclusion": "Executability only; fixture outputs do not measure wireless prediction or control quality",
+  "limits": [
+    "No paired complex CSI dataset is supplied by the current application observation contract",
+    "Default checkpoint attention includes future-frame offsets; this reconstruction probe is not a causal forecast",
+    "No downstream channel-prediction checkpoint, fine-tuning, baseline comparison, or hardware measurement was used"
+  ]
+}

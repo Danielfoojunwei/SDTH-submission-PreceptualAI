@@ -1,0 +1,33 @@
+{
+  "id": "2605.24077",
+  "checked_at_unix": 1793717428.0712748,
+  "attempts": [
+    {
+      "url": "https://arxiv.org/abs/2605.24077",
+      "status": 200,
+      "bytes": 42020,
+      "sha256": "392e8e3ea6ba47411a891bd35d5be8b1a241f221d9441fb10231de6720743516"
+    },
+    {
+      "url": "https://arxiv.org/pdf/2605.24077",
+      "status": 200,
+      "bytes": 4251030,
+      "sha256": "80b83efa0e770da675aba91cb45145485c4d44c7695fab833bb059a2fe8ca484"
+    }
+  ],
+  "sections_reviewed": [
+    "SectionsIII–V: representation distances, transfer-matrix-supervised metric refinement and directed extension",
+    "SectionVIII-E/F: label corruption and cross-band failure; discussion of temporal/continual limits",
+    "Official pinned README and Apache2.0 LICENSE"
+  ],
+  "title": "LWM-CDE: A Representation Space for Wireless Data Reasoning and Transferability",
+  "citation_date": "2026/05/22",
+  "arxiv_version_markers": [
+    "arXiv:2605.24077v1"
+  ],
+  "method_summary": "Frozen channel embeddings plus label-aware sliced Wasserstein/centroid distances rank source datasets; optional metric refinement uses measured transfer rankings.",
+  "adoption_limits": "Refined metric fails transfer from sub6 to28GHz in the paper; no universal drift/SLA guarantee. Refined paper checkpoints are explicitly absent from release; standalone weight rights and data dependencies need separate verification.",
+  "review_date": "2026-11-03",
+  "fulltext_redistributed": false,
+  "review_scope": "targeted primary sections and/or explicitly identified delegated source review; not full reproduction"
+}

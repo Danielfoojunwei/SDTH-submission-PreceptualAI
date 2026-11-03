@@ -1,0 +1,127 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<feed xmlns:opensearch="http://a9.com/-/spec/opensearch/1.1/" xmlns:arxiv="http://arxiv.org/schemas/atom" xmlns="http://www.w3.org/2005/Atom">
+  <id>https://arxiv.org/api/Aonvlfuwfhge7ANC1b+6wdUKrM0</id>
+  <title>arXiv Query: search_query=(all:"radio access network" AND (all:"control" OR all:"resource allocation") ) AND submittedDate:"202601010000 TO 202611031454"&amp;id_list=&amp;start=0&amp;max_results=5</title>
+  <updated>2026-11-03T14:54:21Z</updated>
+  <link href="https://arxiv.org/api/query?search_query=(all:%22radio+access+network%22+AND+(all:%22control%22+OR+all:%22resource+allocation%22))+AND+submittedDate:%22202601010000+TO+202611031454%22&amp;start=0&amp;max_results=5&amp;id_list=" type="application/atom+xml"/>
+  <opensearch:itemsPerPage>5</opensearch:itemsPerPage>
+  <opensearch:totalResults>155</opensearch:totalResults>
+  <opensearch:startIndex>0</opensearch:startIndex>
+  <entry>
+    <id>http://arxiv.org/abs/2611.03406v1</id>
+    <title>From Reactive to Agentic Resilience: Multi-Timescale AI-RAN Orchestration Under Signaling Storms</title>
+    <updated>2026-11-02T16:34:13Z</updated>
+    <link href="https://arxiv.org/abs/2611.03406v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2611.03406v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>Next-generation open radio access network (Open RAN) and AI-RAN deployments turn the RAN into a disaggregated, compute-aware platform whose service continuity depends on many control loops acting at different timescales. Resilience in this setting is best seen as a lifecycle spanning anticipation, absorption, adaptation, recovery, and evolution. Yet, existing mechanisms remain stage-specific and are rarely coordinated across the control hierarchy. This paper argues that agentic AI offers an orchestration layer that coordinates this lifecycle, turning operator intent into coordinated action while keeping slow language-model reasoning off the fast control path. Using mass-attachment signaling storms as a running study, we build a discrete-event Open RAN attach simulator that captures retry amplification, shared-compute contention, and non-instantaneous provisioning, and we propose a three-tier framework in which an orchestrator at the service management and orchestration layer sets a standing policy, a per-site non-real-time agent judges storms and anticipates scheduled crowds, and a deterministic near-real-time loop enforces every decision. Across experiments, the agentic controller approaches the resilience of a fully provisioned pool of servers at a quarter of its capacity by reading a scheduled event from a calendar and provisioning ahead of it. No reactive weight setting recovers this once the surge arrives. Free-text operator intents ground into control directives at 94% exact match on previously unseen intents, and a single instruction reshapes live behavior end to end. We also quantify the latency, cost, and contention limits that bound it. The supplementary material provides analytical proof of the derived Theorem on anticipation horizon, as well as the subsequent Corollary results on reactive provisioning limits.</summary>
+    <category term="cs.NI" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.AI" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-11-02T16:34:13Z</published>
+    <arxiv:comment>13 Pages, 9 Figures, 7 Tables. Paper submitted to IEEE for possible publication</arxiv:comment>
+    <arxiv:primary_category term="cs.NI"/>
+    <author>
+      <name>Sotiris Chatzimiltis</name>
+    </author>
+    <author>
+      <name>Mahdi Boloursaz Mashhadi</name>
+    </author>
+    <author>
+      <name>Mohammad Shojafar</name>
+    </author>
+    <author>
+      <name>Rahim Tafazolli</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2611.01862v1</id>
+    <title>Interoperability Assessment of Fronthaul and E2 Interfaces for Multi-Vendor Open RAN Systems</title>
+    <updated>2026-11-01T12:54:11Z</updated>
+    <link href="https://arxiv.org/abs/2611.01862v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2611.01862v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>Open Radio Access Networks (RANs) aim to transform the existing wireless network architectures by adopting open interfaces, disaggregating and virtualising RAN components, and enabling dynamic control of the system via data-driven methods. To accelerate the development of interoperable RAN solutions, rigorous assessment of Open Fronthaul and E2 interfaces based on O-RAN Alliance Interoperability Testing (IOT) specifications plays a key role as the integration of these interfaces seems to be very challenging, e.g. due to the need for alignment of Fronthaul IOT profiles and unforeseen challenges for E2 interface integration as Near-Real-Time RAN Intelligent Controller (Near-RT RIC) is relatively a new component introduced within the RAN architecture. In this paper, selected parts of the latest findings and lessons learned from interoperability assessment of Open Fronthaul and E2 interfaces for 13 multi-vendor Open RAN systems deployed in SmartRAN Open Network Interoperability Centre (SONIC) Labs are presented.</summary>
+    <category term="cs.NI" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="eess.SP" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-11-01T12:54:11Z</published>
+    <arxiv:comment>Proceedings of European Wireless 2025, Sophia Antipolis, France, pp. 91-96. Published by VDE VERLAG</arxiv:comment>
+    <arxiv:primary_category term="cs.NI"/>
+    <author>
+      <name>Farhad Mehran</name>
+    </author>
+    <author>
+      <name>Charles Turyagyenda</name>
+    </author>
+    <author>
+      <name>Dritan Kaleshi</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2611.00635v1</id>
+    <title>From Confounding to Counterfactuals: A Cross-Layer Causal Model for RAN Scheduling</title>
+    <updated>2026-10-31T05:01:51Z</updated>
+    <link href="https://arxiv.org/abs/2611.00635v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2611.00635v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>Data-driven control in radio access networks (RANs) selects resource allocations using associations between control actions and key performance indicators (KPIs) learned from network telemetry. Because the shared radio environment influences both the scheduler's decisions and the resulting performance, a bias known as confounding, such associations overstate the effect of an allocation and misdirect resources toward user equipment (UEs) that cannot benefit. Moreover, individual UEs respond heterogeneously to the same decision, so even a corrected average effect does not identify which UEs gain from additional resources. While causal inference has recently been applied to RANs, existing approaches do not model the cross-layer mechanisms that connect an allocation to its outcome. In this paper, a hierarchical structural causal model (H-SCM) spanning the PHY, MAC, and network layers is proposed that separates cell-load confounding from UE-specific response heterogeneity. In particular, a counterfactual scheduling problem is formulated in which physical resource block (PRB) allocations are selected using per-UE counterfactual goodput rather than observational conditional averages. This problem is solved via a pipeline combining constrained causal discovery, structural-equation fitting, and abduction-action-prediction. Simulations demonstrate that naive observational estimation overstates the full-PRB response by 73.3%, whereas adjustment for cell-load confounding reduces the relative error to 9.8%. Held-out interventions are predicted with a coefficient of determination of 0.988. Counterfactual scheduling achieves a mean relative loss in total cell goodput below 0.5% against the ground-truth optimum, compared with 2.0-2.9% for a neural-network baseline.</summary>
+    <category term="cs.NI" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.LG" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="eess.SP" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-10-31T05:01:51Z</published>
+    <arxiv:comment>6 pages, 4 figures, 1 table. Submitted to IEEE ICC 2027</arxiv:comment>
+    <arxiv:primary_category term="cs.NI"/>
+    <author>
+      <name>Artin Elhamirad</name>
+    </author>
+    <author>
+      <name>Christo Kurisummoottil Thomas</name>
+    </author>
+    <author>
+      <name>Ali Tajer</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2610.40744v1</id>
+    <title>CLIC: Closed-Loop Intent Consistency for Securing LLM-Driven Control in Open RAN</title>
+    <updated>2026-10-29T15:42:29Z</updated>
+    <link href="https://arxiv.org/abs/2610.40744v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2610.40744v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>With the progressive capabilities of large language models (LLMs), researchers are finding ways to integrate them into the control loops of Open Radio Access Network (O-RAN) to enable slicing and resource management through user intents. However, integration of LLMs in the O-RAN control loop via the RAN Intelligent Controller (RIC) makes the system vulnerable to \textit{runtime prompt injection threats}, which manipulate control decisions without violating interface authentication, and \textit{residual virtual prompt injection (VPI)} attacks that plant trigger mechanisms to silently steer the behaviour during fine-tuning. Existing studies address only the runtime threat and do not enforce consistency across the full control path, i.e. from the certified A1 intent, through the multi-step LLM trajectory, to the final E2 action. We propose a closed-loop intent-consistency layer (CLIC) that jointly mitigates both threats. The proposed CLIC defines a formal consistency score using a small quantized language model, which is deployed as a Non-RT rApp for model-integrity certification along with a Near-RT xApp for runtime enforcement. We implement CLIC on the OpenAI Cellular (OAIC) platform and evaluate it under domain-adapted JailbreakBench, AdvBench, and VPI workloads. The experimental results show that the proposed CLIC reduces the attack success rate from 0.92 to 0.29 and residual VPI attacks from 0.37 to 0.04, while improving isolation and fairness at slightly higher latency costs, i.e. approximately 27 ms.</summary>
+    <category term="cs.CR" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.AI" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.NI" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-10-29T15:42:29Z</published>
+    <arxiv:comment>6 pages, 1 figure, 3 tables</arxiv:comment>
+    <arxiv:primary_category term="cs.CR"/>
+    <author>
+      <name>Sunder Ali Khowaja</name>
+    </author>
+    <author>
+      <name>Kapal Dev</name>
+    </author>
+    <author>
+      <name>Joongheon Kim</name>
+    </author>
+    <author>
+      <name>Angelos Antonopoulos</name>
+    </author>
+    <author>
+      <name>Nikolaos Bartzoudis</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2610.32257v1</id>
+    <title>When Simple Is Enough: Resource-Aware Heuristic versus DDQN for O-RAN Mobility Robustness</title>
+    <updated>2026-10-23T07:13:57Z</updated>
+    <link href="https://arxiv.org/abs/2610.32257v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2610.32257v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>Open Radio Access Network (O-RAN) enables mobility-management xApps, but a learned controller is not necessarily the most effective or efficient handover policy. This paper compares standard Event A3, a resource- and mobility-aware heuristic, and a Double Deep Q-Network (DDQN) through a common xApp-oriented interface and paired system-level simulation. The heuristic combines radio quality, target-cell resources, UE mobility, and service class, with weights optimized offline using NSGA-II, while DDQN-Multi uses temporal radio and resource observations. All controllers are evaluated on identical UE trajectories, traffic assignments, and ray-traced radio inputs under Base, High-Mobility, and High-UE scenarios. Performance is assessed using service, handover, resource, energy, and fairness KPIs, complemented by CRITIC--TOPSIS ranking and complexity analysis. Results show that the heuristic achieves the lowest outage in all three scenarios and ranks first in the CRITIC--TOPSIS comparison, while retaining linear online complexity and interpretable decisions. DDQN-Multi improves target feasibility under congestion but requires offline training and produces more handovers and ping-pong events. The results indicate that lightweight resource-aware control can provide a favourable performance-complexity trade-off relative to DDQN under the considered scenarios.</summary>
+    <category term="cs.NI" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-10-23T07:13:57Z</published>
+    <arxiv:comment>accepted for 2026 IEEE Globecom Workshops (GC Wkshps): Workshop on Edge Intelligence meets AI-Native RAN: Theory, Algorithm and Implementation (GC Wkshps 2026-EdgeIntel-AINativeRAN)</arxiv:comment>
+    <arxiv:primary_category term="cs.NI"/>
+    <author>
+      <name>Ali Deylamy</name>
+    </author>
+    <author>
+      <name>Nima Afraz</name>
+    </author>
+  </entry>
+</feed>

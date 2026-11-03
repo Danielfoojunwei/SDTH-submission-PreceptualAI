@@ -1,0 +1,77 @@
+{
+  "repository": "xoren22/cheap-synth-pretrain-neurips26",
+  "checked_at_unix": 1793704036.090799,
+  "attempts": [
+    {
+      "url": "https://api.github.com/repos/xoren22/cheap-synth-pretrain-neurips26",
+      "status": 200,
+      "bytes": 5949,
+      "sha256": "90413b8f8a49b3089215e0e743ea847af9ad9e1446b5a539ad84e6236f19458b"
+    },
+    {
+      "url": "https://api.github.com/repos/xoren22/cheap-synth-pretrain-neurips26/commits/HEAD",
+      "status": 200,
+      "bytes": 302399,
+      "sha256": "b62e4781a649d2d407e63c43a66cab23626303afd5f218eb337c6ecfeb9d5839"
+    },
+    {
+      "url": "https://api.github.com/repos/xoren22/cheap-synth-pretrain-neurips26/git/trees/HEAD?recursive=1",
+      "status": 200,
+      "bytes": 8646,
+      "sha256": "e1ac8e4780460d1a2fcb7155c6cdcc7034b038a4925227739c6f2c034057f575"
+    }
+  ],
+  "default_branch": "master",
+  "description": null,
+  "license": null,
+  "pushed_at": "2026-10-13T17:51:20Z",
+  "commit": "8b4a6fe58f4f46f89777f31e3527bb92aa46f80c",
+  "tree": [
+    ".gitignore",
+    "README.md",
+    "antenna_pattern.py",
+    "approx.py",
+    "generate.py",
+    "models.py",
+    "normal_parser.py",
+    "pattern_function_io.py",
+    "requirements.txt",
+    "room_generator.py",
+    "sbatch_synth_gen.sbatch",
+    "scripts",
+    "scripts/benchmark_grid.py",
+    "scripts/count_samples.py",
+    "scripts/visualize_pattern_catalog.py",
+    "scripts/visualize_pattern_samples.py",
+    "scripts/visualize_radiation_fixes.py",
+    "scripts/visualize_samples.py",
+    "tests",
+    "tests/conftest.py",
+    "tests/test_bucket_output.py",
+    "tests/test_no_try_except_feature_scope.py",
+    "tests/test_npz_roundtrip_function_contract.py",
+    "tests/test_pattern_function_eval_isotropic.py",
+    "tests/test_pattern_function_eval_latent.py",
+    "tests/test_pattern_function_failures.py",
+    "tests/test_pattern_function_generator_coherence.py",
+    "tests/test_pattern_function_perf_sanity.py",
+    "tests/test_pattern_function_schema.py",
+    "tests/test_pattern_geometry_regressions.py",
+    "tests/test_radiation_pattern.py",
+    "tests/test_raytracer_function_contract.py",
+    "unified_runner.py"
+  ],
+  "tree_truncated": false,
+  "files": [
+    {
+      "path": "README.md",
+      "url": "https://raw.githubusercontent.com/xoren22/cheap-synth-pretrain-neurips26/8b4a6fe58f4f46f89777f31e3527bb92aa46f80c/README.md",
+      "status": 200,
+      "bytes": 1172,
+      "sha256": "a42bdf41541bf38256bc2cd6cb451410b54e590ce96f6861e3d7154f01d4f6db"
+    }
+  ],
+  "review_notes": "Official paper-linked generator inventory/README verified. No LICENSE or weights found in tree; no generator execution or corpus download.",
+  "code_executed_by_this_audit": false,
+  "weight_bytes_downloaded_by_this_audit": false
+}
