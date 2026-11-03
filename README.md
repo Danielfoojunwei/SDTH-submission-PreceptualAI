@@ -5,6 +5,19 @@ Current experiment status and restart prerequisites are in [docs/HANDOFF.md](doc
 The restored didjital R6.1 reference and its executed software checks are
 documented in [docs/R6_COMPATIBILITY.md](docs/R6_COMPATIBILITY.md).
 
+The [packet-action JEPA study](docs/PACKET_VALUE_RESULTS.md) completes **six
+matched fits**, 930 native counterfactual labels from 1,370 packet runs, and
+64 development evaluations with 100 simulated robots. It is **rejected on
+development**: JEPA loses 24.598% versus canonical RadioMap's 1.045% at 30 ms
+handovers, and 12.780% versus 7.515% at four seconds. The uncertainty correction
+and ten-second stay commitment suppress necessary recovery. The eight reserved
+confirmation sites remain untouched; JEPA superiority is unconfirmed.
+The [baseline-preserving shadow interface](docs/PACKET_VALUE_SAFETY.md) keeps
+critic advice outside active switching, and a qualification guard rejects this
+profile. The application continues using RadioMap. Pilot mistakes and all
+negative outcomes are preserved explicitly. All **221 software tests** and the
+independent evidence audit pass; that does not qualify the rejected model.
+
 The [delivered-telemetry confirmation](docs/CLOSED_LOOP_RESULTS.md) adds **120
 native evaluations on eight fresh test sites**, each with 100 simulated robots.
 Actual scan completion, packet delivery, local neighbor caches and queued
