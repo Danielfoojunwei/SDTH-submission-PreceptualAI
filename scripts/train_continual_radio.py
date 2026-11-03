@@ -9,6 +9,8 @@ from wirelessjev.continual_radio import ResponseJEPA,response_objective,update_r
 ROOT=Path(__file__).resolve().parents[1];OUT=ROOT/'artifacts/continual_radio'
 P=json.loads((OUT/'registration/protocol.json').read_text())
 PATTERNS=np.array([P['probe_patterns']['synchronized'],P['probe_patterns']['staggered']],dtype=float)
+DATA_PATH=OUT/'data_v2/kernels.npz'
+V1_COMMIT='e68dd045c49ccd150fae10fe9fabe9dfb2b03026'
 
 
 def sha(path):return hashlib.sha256(Path(path).read_bytes()).hexdigest()
@@ -18,22 +20,46 @@ def write(path,value):
 
 def source_hashes():
     names=['src/wirelessjev/continual_radio.py','scripts/train_continual_radio.py','scripts/collect_continual_radio.py',
-           'tests/test_continual_radio.py','artifacts/continual_radio/registration/protocol.json','pyproject.toml','uv.lock']
+           'tests/test_continual_radio.py','artifacts/continual_radio/registration/protocol.json','pyproject.toml','uv.lock',
+           'scripts/collect_continual_radio_v2.py','artifacts/continual_radio/registration/collection_v2.json']
     return {name:sha(ROOT/name) for name in names}
 
 
-def register_sources():
-    dest=OUT/'executed_source/manifest.json';hashes=source_hashes()
+def verify_v1_capsule():
+    """Never replace failed collection or its original byte-for-byte source."""
+    path=OUT/'executed_source/manifest.json';v1=json.loads(path.read_text())
+    for name,expected in v1['source_sha256'].items():
+        assert sha(OUT/'executed_source'/name)==expected, 'Original source capsule changed: '+name
+        if name!='scripts/train_continual_radio.py':
+            assert sha(ROOT/name)==expected, 'Collection amendment changed original model/protocol: '+name
+    return sha(path)
+
+
+def register_sources_v2():
+    previous=verify_v1_capsule();dest=OUT/'executed_source_v2/manifest.json';hashes=source_hashes()
     if dest.exists():assert json.loads(dest.read_text())['source_sha256']==hashes;return
+    assert not list((OUT/'fits').glob('*.json')) and not list((OUT/'checkpoints').glob('*.pt'))
     for name in hashes:
-        target=OUT/'executed_source'/name;target.parent.mkdir(parents=True,exist_ok=True);shutil.copyfile(ROOT/name,target)
-    write(dest,{'registered_before_data_collection':True,'registered_at_unix':time.time(),'source_sha256':hashes})
+        target=OUT/'executed_source_v2'/name;target.parent.mkdir(parents=True,exist_ok=True);shutil.copyfile(ROOT/name,target)
+    write(dest,{'registered_before_v2_data_collection':True,'registered_at_unix':time.time(),'source_sha256':hashes,
+        'original_registration_commit':V1_COMMIT,'original_executed_source_manifest_sha256':previous,
+        'original_failed_data_sha256':sha(OUT/'data/kernels.npz'),
+        'original_failed_receipt_sha256':sha(OUT/'data_receipt.json'),
+        'amendment':'Uniform solver coverage retry after three missing RT links; no fitted model or model metrics existed. '
+                    'Original data/source preserved. Model, splits, noise, priors, objectives and hyperparameters unchanged. '
+                    'Runner explicitly adopts v2 labels and strengthens resume data-hash validation.'})
 
 
 def data():
-    registration=json.loads((OUT/'executed_source/manifest.json').read_text());assert registration['source_sha256']==source_hashes()
-    receipt=json.loads((OUT/'data_receipt.json').read_text());path=OUT/'data/kernels.npz'
+    previous=verify_v1_capsule();registration=json.loads((OUT/'executed_source_v2/manifest.json').read_text())
+    assert registration['source_sha256']==source_hashes() and registration['original_executed_source_manifest_sha256']==previous
+    assert registration['original_failed_data_sha256']==sha(OUT/'data/kernels.npz')
+    assert registration['original_failed_receipt_sha256']==sha(OUT/'data_receipt.json')
+    receipt=json.loads((OUT/'data_receipt_v2.json').read_text());path=DATA_PATH
     assert receipt['actual_sionna_rt'] and receipt['simulation_only'] and receipt['data_sha256']==sha(path)
+    assert receipt['all_couplings_have_found_paths']
+    for name in ('scripts/collect_continual_radio_v2.py','artifacts/continual_radio/registration/collection_v2.json'):
+        assert receipt['source_sha256'][name]==source_hashes()[name]
     with np.load(path) as z:a={k:z[k] for k in z.files}
     g=a['coupling'];assert g.shape==(24,2,2) and a['coupling_valid'].all()
     assert np.isfinite(g).all() and (g>0).all() and a['context'].shape==(24,16)
@@ -82,7 +108,9 @@ def predict(model,a):
 def fit(task):
     family,seed=task;torch.set_num_threads(1);path=OUT/'checkpoints'/f'{family}-{seed}.pt';receipt=OUT/'fits'/f'{family}-{seed}.json'
     if receipt.exists():
-        r=json.loads(receipt.read_text());assert r['source_sha256']==source_hashes() and r['checkpoint_sha256']==sha(path);return r
+        r=json.loads(receipt.read_text())
+        assert r['source_sha256']==source_hashes() and r['checkpoint_sha256']==sha(path) and r['data_sha256']==sha(DATA_PATH)
+        return r
     a,scale,prior,_=data();train=episodes(a,scale,'training');val=episodes(a,scale,'validation')
     torch.manual_seed(seed);rng=np.random.default_rng(seed);model=ResponseJEPA(prior,family=family)
     optimiser=torch.optim.AdamW(model.parameters(),lr=.001,weight_decay=.0001);history=[];started=time.time()
@@ -98,7 +126,7 @@ def fit(task):
         print(json.dumps({'family':family,'seed':seed,**row}),flush=True)
     path.parent.mkdir(parents=True,exist_ok=True);torch.save({'config':model.config,'prior':model.prior,'state':model.state_dict()},path)
     r={'completed':True,'family':family,'seed':seed,'history':history,'fixed_final_epoch':30,'inference_parameters':model.inference_parameters,
-       'source_sha256':source_hashes(),'data_sha256':sha(OUT/'data/kernels.npz'),'checkpoint_sha256':sha(path),
+       'source_sha256':source_hashes(),'data_sha256':sha(DATA_PATH),'checkpoint_sha256':sha(path),
        'elapsed_seconds':time.time()-started,'test_accessed':False}
     write(receipt,r);return r
 
@@ -183,10 +211,13 @@ def evaluate():
         'jepa_specific_gate_passed':all(v['crossed_context_seed_95'][1]<0 for v in comparisons.values()),
         'teacher_diagnostics':collapse,'identifiability':rank,'simulation_only':True,'hardware_qualified':False,
         'backbone_online_updates':False,'local_state_assimilation_only':True,'no_sota_or_novelty_established':True,
-        'source_sha256':source_hashes(),'data_sha256':sha(OUT/'data/kernels.npz')}
+        'source_sha256':source_hashes(),'data_sha256':sha(DATA_PATH),
+        'collection_version':2,'original_failed_collection_preserved':True,
+        'source_manifest_v2_sha256':sha(OUT/'executed_source_v2/manifest.json')}
     write(OUT/'summary.json',summary)
     write(OUT/'completion.json',{'completed':True,'fits':6,'epochs_per_fit':30,'fixed_final_epoch':True,
-        'source_sha256':source_hashes(),'summary_sha256':sha(OUT/'summary.json'),'data_sha256':sha(OUT/'data/kernels.npz')})
+        'source_sha256':source_hashes(),'summary_sha256':sha(OUT/'summary.json'),'data_sha256':sha(DATA_PATH),
+        'collection_version':2,'source_manifest_v2_sha256':sha(OUT/'executed_source_v2/manifest.json')})
     report(summary)
     return summary
 
@@ -196,6 +227,9 @@ def report(s):
         'The experiment uses 24 actual Sionna RT kernels in one warehouse and explicitly constructed probe/noise/device episodes. '
         'Five held-out contexts are new blocker poses in the same scene, not new warehouses or hardware measurements. '
         'There are no test-time backbone weight updates; local learning means conditioning or Bayesian assimilation of received feedback.','',
+        'The original 2,048-sample/depth-two RT attempt failed coverage on three links before any model fit. '
+        'That attempt is preserved. A separately committed collection amendment applies 32,768 samples, depth four and '
+        '65,536 maximum paths uniformly to all 24 contexts, with every model and training choice unchanged.','',
         'Six matched fixed-final-epoch fits completed: three JEPA effect-teacher models and three supervised models, 30 epochs each. '
         'True coupling is never an unmeasured model input. Only training contexts determine units and numerical priors.','',
         '| Probe design / feedback budget | JEPA clean MAE mW | Supervised | Bayesian | Least squares |',
@@ -217,8 +251,8 @@ def report(s):
 
 
 def main():
-    parser=argparse.ArgumentParser();parser.add_argument('--register',action='store_true');parser.add_argument('--workers',type=int,default=3);args=parser.parse_args()
-    if args.register:register_sources();print('CONTINUAL_RESPONSE_SOURCES_REGISTERED');return
+    parser=argparse.ArgumentParser();parser.add_argument('--register-v2',action='store_true');parser.add_argument('--workers',type=int,default=3);args=parser.parse_args()
+    if args.register_v2:register_sources_v2();print('CONTINUAL_RESPONSE_V2_SOURCES_REGISTERED');return
     data();tasks=[(f,s) for f in ('jepa','supervised') for s in (0,1,2)]
     with ProcessPoolExecutor(args.workers) as pool:list(pool.map(fit,tasks))
     torch.set_num_threads(1);s=evaluate();print(json.dumps({'completed':True,'fits':6,'jepa_specific_gate_passed':s['jepa_specific_gate_passed']}))
