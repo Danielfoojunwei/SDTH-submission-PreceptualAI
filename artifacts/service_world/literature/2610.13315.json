@@ -1,0 +1,50 @@
+{
+  "id": "2610.13315",
+  "checked_at_unix": 1793686714.7221818,
+  "attempts": [
+    {
+      "url": "https://arxiv.org/abs/2610.13315",
+      "status": 200,
+      "bytes": 40164,
+      "sha256": "b4cb123b5611cbd46d40b391af49908abaf457ee99b710bc00c34ad10983a157"
+    },
+    {
+      "url": "https://arxiv.org/pdf/2610.13315",
+      "status": 200,
+      "bytes": 324134,
+      "sha256": "afd0320e7a06dc19210166ad627a7f4163c98dcbe0c7f5e7f7dd657a5cfee8e2"
+    }
+  ],
+  "sections_reviewed": [
+    "Abstract",
+    "Section 2.1–2.2 (pp. 2–3): stochastic finite-memory latent channel model",
+    "Section 3.1 (p. 3): frozen encoder, predictor and CSI decoder"
+  ],
+  "verified_title": "JEPA-kMMVAE: CSI Prediction for Time-Varying Wireless Channels",
+  "authors": [
+    "Chatziloizos, Efstathios",
+    "Vandikas, Konstantinos",
+    "Feljan, Aneta Vulgarakis",
+    "Chen, Zheng",
+    "Pappas, Nikolaos"
+  ],
+  "citation_date": "2026/10/09",
+  "metadata_url": "https://arxiv.org/abs/2610.13315",
+  "pages": 5,
+  "pdf_sha256": "afd0320e7a06dc19210166ad627a7f4163c98dcbe0c7f5e7f7dd657a5cfee8e2",
+  "pdf_url": "https://arxiv.org/pdf/2610.13315",
+  "matches_previous_local_pdf": true,
+  "status": "live_metadata_and_fulltext",
+  "metadata_description": "Abstract page for arXiv paper 2610.13315: JEPA-kMMVAE: CSI Prediction for Time-Varying Wireless Channels",
+  "method_summary": "A stochastic latent Markov model with finite-memory Gaussian posterior handles noisy CSI history. JEPA prediction uses the pretrained kMMVAE encoder; only historical noisy observations are inputs, while clean future CSI remains a training/evaluation target. Residual correction is an option.",
+  "direct_overlap": [
+    "wireless JEPA plus stochastic latent dynamics",
+    "noise-aware causal history inputs",
+    "residual channel correction"
+  ],
+  "evidence_and_limits": "CSI simulation rather than packet-level control; the abstract reports sequence baselines stronger under some strong-noise settings. Combining JEPA, stochastic latents and a residual is not itself new.",
+  "review_scope": "targeted_primary_fulltext_sections",
+  "cutoff_date": "2026-11-03",
+  "redistributed_fulltext": false,
+  "license_status": "Not independently cleared for redistribution; PDF/text cached only in execution workspace."
+}

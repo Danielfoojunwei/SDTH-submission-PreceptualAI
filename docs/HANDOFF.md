@@ -1,5 +1,41 @@
 # WirelessJEV research handoff
 
+## Latest: physics-anchored service prototype and causal diagnostic
+
+`SERVICE_WORLD_RESULTS.md` records the finite diagnostic, with source/input
+checksums and independent integrity checks. It evaluates unforced canonical
+continuation in eight cases (four sites, two handover costs), with 184 simulator
+runs, 24 exact miss-counter suffix replays and 144 interventions. All 318
+software tests pass; `artifacts/service_world/verification.json` records scope.
+It compares that continuation against one-second stay/move interventions, followed by canonical
+recovery. A separate numerical comparator retains legacy pending-command
+expiry, so that a classical fix cannot be attributed to JEPA. Original reserved
+confirmation sites remain unused.
+
+The 68,021-parameter prototype has **no trained weights, learned accuracy
+score or active control qualification**. Public AP/band events retain their
+measurement masks and physical timestamps. Power/SINR helpers and exact
+known-outage deadline floors are independently tested. `SERVICE_WORLD_MODEL.md`
+and `SERVICE_WORLD_FIRST_PRINCIPLES.md` describe implementation and limitations.
+The completed first sampling run is retained under
+`artifacts/service_world/pilot_sampling_v1/`; its query-time freshness check
+omitted intended weak-link cases. The corrected protocol uses last-observed
+measurements with explicit ages and fresh diagnostic sites.
+
+`SERVICE_WORLD_PRIOR_ART.md` reviews 18 primary sources and rejects broad
+first-of-kind claims. `SERVICE_WORLD_BASELINES.md` pins official upstream code,
+licenses and real CPU component forwards, including missing code/data and
+runtime gaps. Those forwards are executability checks, not benchmark scores.
+Training independent seeds, matched numerical/non-JEPA/external comparisons,
+sealed evaluation and physical transfer remain necessary for an advance claim.
+The new diagnostics do not overturn the earlier rejected packet-JEPA evidence.
+
+Reproduce with `uv run --frozen python -m wirelessjev.service_world.study --workers 4`,
+then `uv run --frozen python scripts/report_service_world.py` and
+`uv run --frozen python scripts/audit_service_world.py`. Completed cases resume
+only when source/input checksums match. Do not modify sealed source or silently
+reuse a study after changing its policy/observation contract.
+
 ## Packet-action JEPA: six fits complete, rejected on development
 
 `PACKET_VALUE_DESIGN.md` and `PACKET_VALUE_RESULTS.md` record actual JEPA
