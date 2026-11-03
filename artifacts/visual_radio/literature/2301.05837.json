@@ -1,0 +1,30 @@
+{
+  "id": "2301.05837",
+  "checked_at_unix": 1793695915.3260055,
+  "attempts": [
+    {
+      "url": "https://arxiv.org/abs/2301.05837",
+      "status": 200,
+      "bytes": 42589,
+      "sha256": "148304f70f98645a8fe67f467ff552cc772abddd50c5452c8c44a1bfb013b76b"
+    },
+    {
+      "url": "https://arxiv.org/pdf/2301.05837",
+      "status": 200,
+      "bytes": 1141763,
+      "sha256": "040d6f2223a642ed4c05dcb9f78913d224f48e198c82f1cab61ba3e5ba968f3e"
+    }
+  ],
+  "sections_reviewed": [
+    "Section III-B network description (PDF pp. 5–8): PSPNet semantics, target-user location, feature selection and task heads",
+    "Section IV-A (pp. 9–10): CARLA/SUMO and synchronized Wireless InSite labels"
+  ],
+  "title": "Environment Semantics Aided Wireless Communications: A Case Study of mmWave Beam Prediction and Blockage Prediction",
+  "citation_date": "2023/01/14",
+  "pages": 14,
+  "summary": "Pixelwise environment semantics retain object classes, shapes and layout; target-user location disambiguates the client. Selected semantic maps plus auxiliary location train beam/blockage decision heads. CARLA/SUMO and Wireless InSite synchronize images and 28-GHz OFDM channels.",
+  "limits": "Scene semantics for wireless are already studied. This is a synthetic street task, not DINOv3, packet-service calibration or a demonstrated novel warehouse representation. Do not use its model-selection description as permission to tune on our held-out test sites.",
+  "cutoff_date": "2026-11-03",
+  "review_scope": "targeted_primary_fulltext",
+  "fulltext_redistributed": false
+}

@@ -6,6 +6,29 @@ are in `docs/WAREHOUSE_RESULTS.md`. The subsequently authorised warehouse v2
 campaign is described below; general foundation-model, custom on-air PHY,
 robotics and space extensions remain deferred.
 
+## Physical representation and hierarchy: diagnosis before a claim
+
+`VISUAL_RADIO_STATUS.md` describes the frozen-model collapse audit, six new
+preregistered projection fits, real pretrained DINOv3 frontend, receiver-centric
+RF factors and a proposal-only hierarchy. The old action latents are
+concentrated, but remain varying and action-sensitive. A separate auxiliary
+projection substantially improves normalized future matching while retaining
+teacher variance/rank; two of three seeds worsen service prediction. Better
+latent matching therefore does not establish better packet decisions.
+
+The physical hypothesis is to preserve the joint association between transmitter
+activity, receiver-specific coupling and spectral overlap, grounded to local
+visual structure with actual geometry and event timing. A single scene summary
+cannot be assumed to preserve those factors. The new fusion encoder retains
+AP/band axes and measured-feature bypasses, but is untrained. DINOv3 spatial
+pretraining does not make RF material, hidden activity or service risk observable.
+
+The [primary-source review](VISUAL_RADIO_RESEARCH.md) places the design beside
+established visual beam/blockage prediction and coupled wireless world models.
+The contribution is still a hypothesis requiring paired data, matched
+representations/planners, site-level holdouts and measured compute. No unique
+architecture, collapse guarantee, SOTA or physical warehouse gain is claimed.
+
 ## Service-native candidate: implemented mechanics, unestablished advance
 
 `SERVICE_WORLD_RESULTS.md` reports a simulation-only capability/headroom

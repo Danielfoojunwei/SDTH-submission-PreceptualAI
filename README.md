@@ -5,7 +5,22 @@ Current experiment status and restart prerequisites are in [docs/HANDOFF.md](doc
 The restored didjital R6.1 reference and its executed software checks are
 documented in [docs/R6_COMPATIBILITY.md](docs/R6_COMPATIBILITY.md).
 
-The latest [service-world diagnostic](docs/SERVICE_WORLD_RESULTS.md) adds a
+The latest [representation and DINOv3 work](docs/VISUAL_RADIO_STATUS.md) audits
+six trained critics and completes six new projection-ablation fits. It finds
+concentrated, informative latents; a separate future projection improves latent
+matching but **does not consistently improve service prediction**. Real frozen
+DINOv3 now extracts spatial features from licensed warehouse/robot photographs.
+New physical RF factors and a proposal-only hierarchy preserve link identity,
+missing observations, capture/compute timing and canonical recovery. Visual/RF
+fusion remains untrained, and cross-warehouse improvement is unconfirmed.
+The [coupled RT probe](docs/VISUAL_RADIO_RT.md) now also computes real Sionna RT
+channels and DINOv3 features from the same warehouse geometry and two blocker
+poses. This supplies paired static simulation inputs, with no learned RF score.
+All **400 software tests pass**, including actual cached pretrained DINOv3
+integration. The [verification receipt](artifacts/visual_radio/verification.json)
+links source and evidence hashes; original experiment archives remain unchanged.
+
+The [service-world diagnostic](docs/SERVICE_WORLD_RESULTS.md) adds a
 68,021-parameter **untrained, inactive** model with AP/band memory, causal
 measurement masks and action-conditioned latent dynamics. Its
 [physical contract](docs/SERVICE_WORLD_FIRST_PRINCIPLES.md) checks receiver

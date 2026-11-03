@@ -1,0 +1,103 @@
+{
+  "completed": true,
+  "fits": 6,
+  "protocol_sha256": "3d7e9752f85aae86f90adc5c85638c7f2ce5b9f67ebe03ea260b1a4aa15bd911",
+  "preregistration_sha256": "de2dca820950de3cdcbba9f26479e10ceca68aafa3d851187e2c526e4cc231f8",
+  "preregistration_commit": "74c01c7ae13e900b44abca7a3e694f2c5ffdcf4e",
+  "source_sha256": {
+    "src/wirelessjev/representation_repair.py": "740f6d924641a6f5a2b42949605129965bdc6ea3ba37067b3d2c2cdf61d57525",
+    "scripts/train_representation_repair.py": "e9476abb04e98023bd1e26248bc7dad1ac6bee82ad45fdb479cfc88a91dd290b",
+    "tests/test_representation_repair.py": "e136601fcb7393b800f1a4c36588df6e57cc16490fdc75584a16717c9b62b118",
+    "src/wirelessjev/packet_value/model.py": "ad833a14538e540381e899b7d142e5f087f9afcbc9b6372987a961cf7d8d9580",
+    "src/wirelessjev/packet_value/study.py": "b5036a64dd6e48f0aed9b90bcdc502ffab7aef783cf4741ef35c7232565a8819",
+    "src/wirelessjev/packet_value/features.py": "b08e7433b9e6b004c578b43db072ed9a3bb897197985b2712b92d7847f2b1dc7",
+    "artifacts/packet_value/protocol.json": "943f73bc08af792827b7e546bc363225219f536d65c185a35e2c4178d2d52eca",
+    "uv.lock": "65ba242767e63083605db2a0e4ecad7394745dec9bfaebec1d637e71b03198d9",
+    "artifacts/packet_value/training.json": "25516717b861a9962b08cee9fae967f0a73d4477fed5b2ec6a0d4ab8dd9fe283",
+    "artifacts/representation_repair/protocol.json": "3d7e9752f85aae86f90adc5c85638c7f2ce5b9f67ebe03ea260b1a4aa15bd911"
+  },
+  "checkpoint_sha256": {
+    "shared-0": "a67e22230ef219b86ef793df2ee287425dc2ee0115283cd0b0ef96231edfd0f8",
+    "projected-0": "21fa70af50c5ec494ca4a5809ecd6813c26cddecc6487a42ec6a7a7e068d3495",
+    "shared-1": "f6168df9e74f1db00ce1cc3886a28a6c07bfd17900429b02fae7d5ec6170aed8",
+    "projected-1": "6f4c7cef231e3d3d7863403b39b10358cb0616faa06b150556f2c4dba133e528",
+    "shared-2": "63b962f2144eb4ca38e88a8ec7f60b09b73adce03ceedef63e8b29260dc6f935",
+    "projected-2": "552a3f7b05de0eb96a6a943111f5fe245c24790f43696bb89c8143451d7d251a"
+  },
+  "summary": {
+    "paired_seed_results": [
+      {
+        "seed": 0,
+        "validation_projected_minus_shared": {
+          "miss_mae": 1.275598847737875,
+          "gap_mae_seconds": 0.039136476657723906
+        },
+        "future_normalized_mse_improves": true,
+        "target_collapse_guard": {
+          "training": {
+            "target_centered_rms_ratio": 1.0224374218055854,
+            "target_effective_rank_ratio": 1.0084153837258016
+          },
+          "validation": {
+            "target_centered_rms_ratio": 1.0292793197237609,
+            "target_effective_rank_ratio": 1.0087457614482978
+          }
+        },
+        "target_collapse_guard_pass": true,
+        "both_service_maes_nonincreasing": false
+      },
+      {
+        "seed": 1,
+        "validation_projected_minus_shared": {
+          "miss_mae": 0.015106909537827562,
+          "gap_mae_seconds": 0.010065979579042872
+        },
+        "future_normalized_mse_improves": true,
+        "target_collapse_guard": {
+          "training": {
+            "target_centered_rms_ratio": 1.0043559323657507,
+            "target_effective_rank_ratio": 0.9757600148778932
+          },
+          "validation": {
+            "target_centered_rms_ratio": 1.0051492380912759,
+            "target_effective_rank_ratio": 0.9782501883664285
+          }
+        },
+        "target_collapse_guard_pass": true,
+        "both_service_maes_nonincreasing": false
+      },
+      {
+        "seed": 2,
+        "validation_projected_minus_shared": {
+          "miss_mae": -0.1290499841974615,
+          "gap_mae_seconds": -0.0272936334164553
+        },
+        "future_normalized_mse_improves": true,
+        "target_collapse_guard": {
+          "training": {
+            "target_centered_rms_ratio": 0.9964837598492984,
+            "target_effective_rank_ratio": 1.015262759620734
+          },
+          "validation": {
+            "target_centered_rms_ratio": 0.996183471667091,
+            "target_effective_rank_ratio": 1.0091976910612594
+          }
+        },
+        "target_collapse_guard_pass": true,
+        "both_service_maes_nonincreasing": true
+      }
+    ],
+    "all_seeds_future_improve_with_target_guard": true,
+    "all_seeds_both_service_maes_nonincreasing": false,
+    "limits": [
+      "Old validation is exposed development data, never a new confirmation set.",
+      "Projection adds training capacity; shared identity control has no capacity-matching auxiliary parameters.",
+      "Each variant learns a different EMA target; raw cross-variant latent MSE alone is not comparable.",
+      "No DINO visual features, new architecture/novelty claim, reserved holdout or native control evaluation."
+    ]
+  },
+  "reserved_holdouts_accessed": false,
+  "native_control_evaluated": false,
+  "sota_or_novelty_established": false,
+  "fit_wall_seconds_total": 12.983851909637451
+}

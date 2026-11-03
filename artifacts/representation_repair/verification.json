@@ -1,0 +1,126 @@
+{
+  "completed": true,
+  "mode": "Read-only verification/reuse of historical fitted archive",
+  "preregistration_commit": "74c01c7ae13e900b44abca7a3e694f2c5ffdcf4e",
+  "verified_fits": 6,
+  "fixed_final_epoch": 40,
+  "exact_checkpoint_metric_recomputation": true,
+  "execution_source_copies_verified": 10,
+  "immutable_registered_artifacts_verified": 31,
+  "exposed_input_and_receipt_files_verified": 80,
+  "frozen_execution_source_copies_unchanged": true,
+  "current_model_source_matches_execution": true,
+  "current_support_differs_from_execution": [
+    "scripts/train_representation_repair.py",
+    "tests/test_representation_repair.py"
+  ],
+  "current_support_sha256": {
+    "scripts/train_representation_repair.py": "169a8417bff39a6daa49b5ee6d849ec8973244ff5ad5af22a10813b0ad2aa909",
+    "tests/test_representation_repair.py": "7d933f20250e13028559294307680c7b58c0c56f4af89d22b93cc3462cfbd047"
+  },
+  "registration_sha256_preserved": "3d7e9752f85aae86f90adc5c85638c7f2ce5b9f67ebe03ea260b1a4aa15bd911",
+  "registration_path": "artifacts/representation_repair/registration/protocol.json",
+  "layout_migration_sha256": "68206da38870b52cd0aa98f1edfca3337d5dae92d9c22da9aa6e11403757620e",
+  "verification_at_execution_sha256": "3405711b79f416c7bf9e66748a3563c26b5553566c00014cc4b0f678369ed3b9",
+  "completion_sha256": "c8a3a4a5867b1b46671b3cbd1c196aa45c1da251b496ec5b9ef2c5a1bc77764f",
+  "reserved_holdout_inputs_opened": false,
+  "new_optimizer_steps": 0,
+  "old_archives_modified": false,
+  "all_six_original_packet_checkpoints_unchanged": true,
+  "training_scenes_reused": [
+    340000,
+    340001,
+    340002,
+    340003,
+    340004,
+    340005,
+    340006,
+    340007,
+    340008,
+    340009,
+    340010,
+    340011,
+    340012,
+    340013,
+    340014,
+    340015
+  ],
+  "validation_scenes_reused": [
+    341000,
+    341001,
+    341002,
+    341003
+  ],
+  "summary": {
+    "paired_seed_results": [
+      {
+        "seed": 0,
+        "validation_projected_minus_shared": {
+          "miss_mae": 1.275598847737875,
+          "gap_mae_seconds": 0.039136476657723906
+        },
+        "future_normalized_mse_improves": true,
+        "target_collapse_guard": {
+          "training": {
+            "target_centered_rms_ratio": 1.0224374218055854,
+            "target_effective_rank_ratio": 1.0084153837258016
+          },
+          "validation": {
+            "target_centered_rms_ratio": 1.0292793197237609,
+            "target_effective_rank_ratio": 1.0087457614482978
+          }
+        },
+        "target_collapse_guard_pass": true,
+        "both_service_maes_nonincreasing": false
+      },
+      {
+        "seed": 1,
+        "validation_projected_minus_shared": {
+          "miss_mae": 0.015106909537827562,
+          "gap_mae_seconds": 0.010065979579042872
+        },
+        "future_normalized_mse_improves": true,
+        "target_collapse_guard": {
+          "training": {
+            "target_centered_rms_ratio": 1.0043559323657507,
+            "target_effective_rank_ratio": 0.9757600148778932
+          },
+          "validation": {
+            "target_centered_rms_ratio": 1.0051492380912759,
+            "target_effective_rank_ratio": 0.9782501883664285
+          }
+        },
+        "target_collapse_guard_pass": true,
+        "both_service_maes_nonincreasing": false
+      },
+      {
+        "seed": 2,
+        "validation_projected_minus_shared": {
+          "miss_mae": -0.1290499841974615,
+          "gap_mae_seconds": -0.0272936334164553
+        },
+        "future_normalized_mse_improves": true,
+        "target_collapse_guard": {
+          "training": {
+            "target_centered_rms_ratio": 0.9964837598492984,
+            "target_effective_rank_ratio": 1.015262759620734
+          },
+          "validation": {
+            "target_centered_rms_ratio": 0.996183471667091,
+            "target_effective_rank_ratio": 1.0091976910612594
+          }
+        },
+        "target_collapse_guard_pass": true,
+        "both_service_maes_nonincreasing": true
+      }
+    ],
+    "all_seeds_future_improve_with_target_guard": true,
+    "all_seeds_both_service_maes_nonincreasing": false,
+    "limits": [
+      "Old validation is exposed development data, never a new confirmation set.",
+      "Projection adds training capacity; shared identity control has no capacity-matching auxiliary parameters.",
+      "Each variant learns a different EMA target; raw cross-variant latent MSE alone is not comparable.",
+      "No DINO visual features, new architecture/novelty claim, reserved holdout or native control evaluation."
+    ]
+  }
+}

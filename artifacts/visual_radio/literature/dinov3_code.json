@@ -1,0 +1,98 @@
+{
+  "repository": "https://github.com/facebookresearch/dinov3",
+  "commit": "6876159a11b4df116f30f667f8c9888617df0751",
+  "date": 1793695927.9980457,
+  "commit_metadata_sha256": "8e8dc494e5aad59d89a40faa14e38309df4a6bef7837ea3774f77de16614cd46",
+  "files": [
+    {
+      "path": "README.md",
+      "url": "https://raw.githubusercontent.com/facebookresearch/dinov3/6876159a11b4df116f30f667f8c9888617df0751/README.md",
+      "status": 200,
+      "bytes": 36231,
+      "sha256": "da4e6e2fa1f2580be9a782338dc108ae68f98b6c9d10636583f97d8a340e664d"
+    },
+    {
+      "path": "LICENSE",
+      "url": "https://raw.githubusercontent.com/facebookresearch/dinov3/6876159a11b4df116f30f667f8c9888617df0751/LICENSE",
+      "error": "HTTP Error 404: Not Found"
+    },
+    {
+      "path": "dinov3/train/ssl_meta_arch.py",
+      "url": "https://raw.githubusercontent.com/facebookresearch/dinov3/6876159a11b4df116f30f667f8c9888617df0751/dinov3/train/ssl_meta_arch.py",
+      "status": 200,
+      "bytes": 39538,
+      "sha256": "1b11d7f9f94e6292c3be141ac50ebd10d7357103cb63ce4965b69e3da4ff0781"
+    },
+    {
+      "path": "dinov3/loss/dino_clstoken_loss.py",
+      "url": "https://raw.githubusercontent.com/facebookresearch/dinov3/6876159a11b4df116f30f667f8c9888617df0751/dinov3/loss/dino_clstoken_loss.py",
+      "status": 200,
+      "bytes": 4874,
+      "sha256": "2ee114321a3c38b4e9426bb200f3c13de4672e6531a7a3e30c4b399881529166"
+    },
+    {
+      "path": "dinov3/loss/ibot_patch_loss.py",
+      "url": "https://raw.githubusercontent.com/facebookresearch/dinov3/6876159a11b4df116f30f667f8c9888617df0751/dinov3/loss/ibot_patch_loss.py",
+      "status": 200,
+      "bytes": 5521,
+      "sha256": "bfb9e358aaf872949ce3150c22599f89f7dbdafd0137652b7e1944a9853f40d4"
+    },
+    {
+      "path": "dinov3/loss/gram_loss.py",
+      "url": "https://raw.githubusercontent.com/facebookresearch/dinov3/6876159a11b4df116f30f667f8c9888617df0751/dinov3/loss/gram_loss.py",
+      "status": 200,
+      "bytes": 2788,
+      "sha256": "d4ec062c53cc40f039878fb90f88844ceb15c3685e695640038c6f56988a2256"
+    },
+    {
+      "path": "dinov3/loss/koleo_loss.py",
+      "url": "https://raw.githubusercontent.com/facebookresearch/dinov3/6876159a11b4df116f30f667f8c9888617df0751/dinov3/loss/koleo_loss.py",
+      "status": 200,
+      "bytes": 4949,
+      "sha256": "942ccd42b06105c95c04d62ca2105d9e5bf22987b509c19fb81a645fac5a8cf6"
+    },
+    {
+      "path": "dinov3/configs/train/dinov3_vit7b16_gram_anchor.yaml",
+      "url": "https://raw.githubusercontent.com/facebookresearch/dinov3/6876159a11b4df116f30f667f8c9888617df0751/dinov3/configs/train/dinov3_vit7b16_gram_anchor.yaml",
+      "status": 200,
+      "bytes": 4354,
+      "sha256": "189f59b48688d844ca4841a1fcce5c100fc46da3aff6734aba53f0eadd6358ad"
+    },
+    {
+      "path": "dinov3/configs/train/dinov3_vit7b16_pretrain.yaml",
+      "url": "https://raw.githubusercontent.com/facebookresearch/dinov3/6876159a11b4df116f30f667f8c9888617df0751/dinov3/configs/train/dinov3_vit7b16_pretrain.yaml",
+      "status": 200,
+      "bytes": 3634,
+      "sha256": "70824221cff7c6308ec53f3066697b34774e289e6f8fdf47abc44c9e14675086"
+    },
+    {
+      "path": "LICENSE.md",
+      "url": "https://raw.githubusercontent.com/facebookresearch/dinov3/6876159a11b4df116f30f667f8c9888617df0751/LICENSE.md",
+      "status": 200,
+      "bytes": 7503,
+      "sha256": "25d122eb8f5b880fd23c736fb6ea8018ee45c12237e00b8a86d14c653904999e"
+    },
+    {
+      "path": "dinov3/models/vision_transformer.py",
+      "url": "https://raw.githubusercontent.com/facebookresearch/dinov3/6876159a11b4df116f30f667f8c9888617df0751/dinov3/models/vision_transformer.py",
+      "status": 200,
+      "bytes": 15084,
+      "sha256": "1af05405e19bc42188f80bfcb204b87ed1ec72af998e0bbd4658a85d7fae93f2"
+    }
+  ],
+  "review_scope": [
+    "README model sizes and feature availability; no weight download or model execution",
+    "dinov3/models/vision_transformer.py forward_features_list/forward_features: separate normalized CLS, storage and patch tokens",
+    "dinov3/train/ssl_meta_arch.py get_teacher_output/get_gram_teacher_output, compute_losses, teacher updates",
+    "dinov3/loss/dino_clstoken_loss.py DINOLoss.forward and Sinkhorn-Knopp teacher",
+    "dinov3/loss/ibot_patch_loss.py masked patch cross-entropy",
+    "dinov3/loss/gram_loss.py normalized patch-Gram MSE and optional negative-similarity handling",
+    "dinov3/loss/koleo_loss.py nearest-neighbor feature-spreading objective",
+    "dinov3/configs/train/dinov3_vit7b16_{pretrain,gram_anchor}.yaml: configured objective switches/weights/teacher resolution",
+    "LICENSE.md reviewed; custom DINOv3 license, not labeled MIT"
+  ],
+  "objective_summary": "Official code separately computes CLS cross-entropy, masked-patch iBOT cross-entropy, feature-spreading regularization, and optional patch-Gram MSE. Teacher logits use Sinkhorn-Knopp; separate Gram targets may be resized from higher-resolution maps. The configured Gram refinement uses a separate periodically refreshed teacher, not simply the current EMA teacher every update.",
+  "code_copied_into_application": false,
+  "weights_downloaded": false,
+  "model_executed": false
+}

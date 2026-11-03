@@ -1,0 +1,99 @@
+{
+  "analytic_example_only": true,
+  "measured_data_used": false,
+  "warehouse_or_model_score": false,
+  "assumptions": "Declared isotropic far-field free space, flat equal channels, incoherent interference, known binary activity; no scene image or RF measurement is fabricated",
+  "same_separately_pooled_factors": {
+    "mean_activity": 0.5,
+    "mean_interferer_power_dbm": 20.0,
+    "mean_interferer_coupling": 1.0629341704354449e-05
+  },
+  "near_active": {
+    "desired": {
+      "transmitter_id": "desired",
+      "received_mw": 2.1048201394761286e-05,
+      "channel_overlap_fraction": 1.0,
+      "applied_spectral_fraction": 1.0,
+      "distance_m": 10.0,
+      "coupling_origin": "declared_free_space",
+      "unknown_fields": []
+    },
+    "interferers": [
+      {
+        "transmitter_id": "far",
+        "received_mw": 0.0,
+        "channel_overlap_fraction": 1.0,
+        "applied_spectral_fraction": null,
+        "distance_m": 10.0,
+        "coupling_origin": null,
+        "unknown_fields": []
+      },
+      {
+        "transmitter_id": "near",
+        "received_mw": 0.0021048201394761284,
+        "channel_overlap_fraction": 1.0,
+        "applied_spectral_fraction": 1.0,
+        "distance_m": 1.0,
+        "coupling_origin": "declared_free_space",
+        "unknown_fields": []
+      }
+    ],
+    "noise_mw": 1e-09,
+    "known_interference_mw": 0.0021048201394761284,
+    "total_interference_mw": 0.0021048201394761284,
+    "sinr_linear": 0.009999995249002488,
+    "sinr_db": -20.00000206333249,
+    "sinr_upper_bound_linear": 0.009999995249002488,
+    "unknown_interferers": [],
+    "inventory_complete": true,
+    "power_model": "desired transmission conditioned; mean interferer power; rectangular filters unless measured"
+  },
+  "far_active": {
+    "desired": {
+      "transmitter_id": "desired",
+      "received_mw": 2.1048201394761286e-05,
+      "channel_overlap_fraction": 1.0,
+      "applied_spectral_fraction": 1.0,
+      "distance_m": 10.0,
+      "coupling_origin": "declared_free_space",
+      "unknown_fields": []
+    },
+    "interferers": [
+      {
+        "transmitter_id": "far",
+        "received_mw": 2.1048201394761286e-05,
+        "channel_overlap_fraction": 1.0,
+        "applied_spectral_fraction": 1.0,
+        "distance_m": 10.0,
+        "coupling_origin": "declared_free_space",
+        "unknown_fields": []
+      },
+      {
+        "transmitter_id": "near",
+        "received_mw": 0.0,
+        "channel_overlap_fraction": 1.0,
+        "applied_spectral_fraction": null,
+        "distance_m": 1.0,
+        "coupling_origin": null,
+        "unknown_fields": []
+      }
+    ],
+    "noise_mw": 1e-09,
+    "known_interference_mw": 2.1048201394761286e-05,
+    "total_interference_mw": 2.1048201394761286e-05,
+    "sinr_linear": 0.9999524922593858,
+    "sinr_db": -0.00020632839710134213,
+    "sinr_upper_bound_linear": 0.9999524922593858,
+    "unknown_interferers": [],
+    "inventory_complete": true,
+    "power_model": "desired transmission conditioned; mean interferer power; rectangular filters unless measured"
+  },
+  "sinr_difference_db": 19.99979573493539,
+  "unknown_inventory_sinr": null,
+  "conclusion": "Separately pooling activity and coupling loses which transmitter is active. The receiver needs sum_j(P_j * G_jr * activity_j * overlap_jr). Visual appearance alone cannot reveal unseen RF activity.",
+  "source_sha256": {
+    "scripts/check_visual_radio_abstractions.py": "f9d0d8a15cbd6172be9b51204458000bd2f678b5355044d7aff84ba670ba422e",
+    "src/wirelessjev/visual_radio/physics.py": "c09d0cb0f8db08a01297e61b680a9579bac7f7ac8d293c133802afe08bf63e90",
+    "src/wirelessjev/service_world/physics.py": "76df41cae8978b039b79aab67922bd95df5db54f6820d71dc5e5733f81e1e11a"
+  }
+}
