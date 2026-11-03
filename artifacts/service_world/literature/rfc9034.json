@@ -1,0 +1,28 @@
+{
+  "id": "rfc9034",
+  "url": "https://www.rfc-editor.org/rfc/rfc9034.txt",
+  "checked_at_unix": 1793687255.7728615,
+  "sections_reviewed": [
+    "Section 1: industrial delay guarantees and forwarding/scheduling",
+    "Section 4: per-packet deadline and origination-time metadata",
+    "Section 5: deadline-expiry drop/exception flag"
+  ],
+  "status": 200,
+  "content_type": "text/plain;charset=utf-8",
+  "final_url": "https://www.rfc-editor.org/rfc/rfc9034.txt",
+  "bytes": 47236,
+  "sha256": "aa58a25f6468b0650771b03875ea66ee792f56a82fa02babcfc7988b3080aa01",
+  "verified_title": "Packet Delivery Deadline Time in the Routing Header for IPv6 over Low-Power Wireless Personal Area Networks (6LoWPANs)",
+  "citation_date": "2021-06",
+  "primary_url": "https://www.rfc-editor.org/rfc/rfc9034.html",
+  "review_scope": "targeted_primary_fulltext_sections",
+  "method_summary": "Defines an interoperable compressed routing header containing packet deadline and optional origination-time delta for constrained synchronized networks. A sender flag controls dropping after deadline expiry.",
+  "direct_overlap": [
+    "native packet-age and deadline state",
+    "industrial time-bounded wireless delivery",
+    "deadline-expiry behavior"
+  ],
+  "evidence_and_limits": "Protocol specification, not a learned hazard estimator or a benchmark demonstrating model superiority. Primarily synchronized 6LoWPAN/6TiSCH; does not prove arbitrary Wi-Fi or 5G implementations provide these measurements.",
+  "cutoff_date": "2026-11-03",
+  "redistributed_fulltext": false
+}

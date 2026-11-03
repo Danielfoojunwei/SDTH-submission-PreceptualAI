@@ -1,0 +1,908 @@
+{
+  "schema_version": 1,
+  "audited_at_utc": "2026-11-03T06:39:45.970775+00:00",
+  "scope": "Public upstream access, code/license pins, source-data format inspection and untrained CPU core smokes. No training, new held-out evaluation seeds, full task reproduction, external testbed control or warehouse scores.",
+  "claim_status": {
+    "global_sota_established": false,
+    "architectural_novelty_established": false,
+    "same_task_external_reproduction_completed": false,
+    "notes": [
+      "Public access and passing forwards do not establish task accuracy, calibration, control benefit, latency or SOTA.",
+      "No official release located is a bounded search result, not proof a release does not exist.",
+      "Source-data access does not provide the RAN-JEPA downstream controlled corpus or calibrated twin."
+    ]
+  },
+  "environment": {
+    "workspace": "/workspace",
+    "reference_root": "/workspace/upstream/service-world-reference",
+    "python_executable_for_torch_smoke": "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+    "available_cuda_device": false,
+    "network": "HTTP requests and Git clones through existing session proxy/CA configuration; no network environment overrides or credential values recorded.",
+    "isolation": "Additional Torch import dependencies use target directory; Dreamer uses separate CPU venv; root project manifests/locks/source unchanged."
+  },
+  "primary_sources": [
+    {
+      "arxiv_id": "2610.17584",
+      "name": "RAN-JEPA",
+      "paper_url": "https://arxiv.org/abs/2610.17584",
+      "review_scope": "Reviewed PDF code/data links and relevant data/runtime statements",
+      "comparison_status": "method_reference_no_official_release_located",
+      "cached_files": [
+        {
+          "path": "/workspace/training/service-world-literature/2610.17584.pdf",
+          "sha256": "8d5cc23b66404f10f9a5cccc00b7550205b78bd93eb16fe33c231cb6e9defa49"
+        },
+        {
+          "path": "/workspace/training/service-world-literature/2610.17584.txt",
+          "sha256": "19bab6956ae7ec9891890102aab1085acee3925415df6a53e7451d5cbe89decb"
+        }
+      ]
+    },
+    {
+      "arxiv_id": "2609.04851",
+      "name": "Coupled Control and Wireless World Models",
+      "paper_url": "https://arxiv.org/abs/2609.04851",
+      "review_scope": "Reviewed PDF official repository links and released README/model core",
+      "comparison_status": "architectural_adaptation_required",
+      "cached_files": [
+        {
+          "path": "/workspace/training/service-world-literature/2609.04851.pdf",
+          "sha256": "327fc22c1a7878cc5815c85e14e5bb6d5dc63ff458c974ab19ee00362da8363d"
+        },
+        {
+          "path": "/workspace/training/service-world-literature/2609.04851.txt",
+          "sha256": "e928c2eba6fa76469a2f1491cf5810998592069a58136961479c7cdb825feeaa"
+        }
+      ]
+    },
+    {
+      "arxiv_id": "2609.28670",
+      "name": "GDM stochastic graph world model",
+      "paper_url": "https://arxiv.org/abs/2609.28670",
+      "review_scope": "Reviewed PDF source links and future code/data availability statement",
+      "comparison_status": "method_reference_no_official_release_located",
+      "cached_files": [
+        {
+          "path": "/workspace/training/service-world-literature/2609.28670.pdf",
+          "sha256": "3857f417310b2a2d35c9ed323bb1e36b0426a7ea0606c60fb7ce33ec9f8d03c9"
+        },
+        {
+          "path": "/workspace/training/service-world-literature/2609.28670.txt",
+          "sha256": "c13a3d145505df775aff3597286023c54086421646f78c23b5c1fdb031b2bdca"
+        }
+      ]
+    },
+    {
+      "arxiv_id": "2609.14854",
+      "name": "AutoLab",
+      "paper_url": "https://arxiv.org/abs/2609.14854",
+      "review_scope": "Reviewed PDF public lab/tutorial and package statements; read-only lab HTTP retrieval",
+      "comparison_status": "experimental_infrastructure_reference",
+      "cached_files": [
+        {
+          "path": "/workspace/training/service-world-literature/2609.14854.pdf",
+          "sha256": "714778ecbdd336bd73120a9308ef21f8043b8cd1105d4463f1300aef882ef7fc"
+        },
+        {
+          "path": "/workspace/training/service-world-literature/2609.14854.txt",
+          "sha256": "1964a79f153e7b0e0fa896d2e7e58a6734962dfb523ac1e7452c4b203bcf58d7"
+        }
+      ]
+    },
+    {
+      "arxiv_id": "2606.06373",
+      "name": "LatentWave",
+      "paper_url": "https://arxiv.org/abs/2606.06373",
+      "review_scope": "Reviewed PDF repository links, targeted repository searches and returned reading-list mentions",
+      "comparison_status": "method_reference_no_official_release_located",
+      "cached_files": [
+        {
+          "path": "/workspace/training/service-world-literature/2606.06373.pdf",
+          "sha256": "62337e1d29d92ae2fffec3c3597980c327dbcaf0941c5dd1d762781eaf32aeb7"
+        },
+        {
+          "path": "/workspace/training/service-world-literature/2606.06373.txt",
+          "sha256": "586366c38810377210e2251a3bb1128fb6646ec8f4a331f6bcaa7a2dd5481fdf"
+        }
+      ]
+    }
+  ],
+  "repositories": [
+    {
+      "name": "coupled_robot_wireless",
+      "url": "https://github.com/ICONgroupCWC/DreamerV2-Meets-Gazebo",
+      "path": "/workspace/upstream/service-world-reference/coupled_robot_wireless",
+      "commit": "f2f82f88a18569558adc7b9eee35ea467033a754",
+      "commit_date": "2026-09-13T23:21:36+03:00",
+      "clone_returncode": 0,
+      "retrieved_at_unix": 1793687184.0158763,
+      "license": {
+        "status": "no_LICENSE_or_COPYING_located",
+        "spdx": null,
+        "files": []
+      },
+      "tracked_diff": "",
+      "worktree_status": ""
+    },
+    {
+      "name": "coupled_raytracer",
+      "url": "https://github.com/ICONgroupCWC/Gazebo-Sionna-RT-Integration",
+      "path": "/workspace/upstream/service-world-reference/coupled_raytracer",
+      "commit": "2d37c650bde5af6e5f69e899aa4e4b01243d3160",
+      "commit_date": "2026-08-11T19:56:00+03:00",
+      "clone_returncode": 0,
+      "retrieved_at_unix": 1793687184.0161037,
+      "license": {
+        "status": "license_file_found",
+        "spdx": "MIT",
+        "files": [
+          {
+            "file": "LICENSE",
+            "sha256": "e03ecde41d4ac89f2e0426cc56dfd0e3fdff10e9b7ee76616533ef7718ab238d"
+          }
+        ]
+      },
+      "tracked_diff": "",
+      "worktree_status": ""
+    },
+    {
+      "name": "coupled_robot_world",
+      "url": "https://github.com/ICONgroupCWC/jetbot_world",
+      "path": "/workspace/upstream/service-world-reference/coupled_robot_world",
+      "commit": "d30f06b40b4f8af8c74118550a20cee7f2be65d7",
+      "commit_date": "2026-07-06T15:40:06+03:00",
+      "clone_returncode": 0,
+      "retrieved_at_unix": 1793687184.0164962,
+      "license": {
+        "status": "license_file_found",
+        "spdx": "MIT",
+        "files": [
+          {
+            "file": "LICENSE",
+            "sha256": "a27af95879f9bf44e4432f494c74f4185ce8fb2d74b49e4b5f553582b0bd0cac"
+          }
+        ]
+      },
+      "tracked_diff": "",
+      "worktree_status": ""
+    },
+    {
+      "name": "tdmpc2",
+      "url": "https://github.com/nicklashansen/tdmpc2",
+      "path": "/workspace/upstream/service-world-reference/tdmpc2",
+      "commit": "332f19e4aba4bffe2dc736f45ea7f7bdc585903a",
+      "commit_date": "2026-10-20T16:32:30-07:00",
+      "clone_returncode": 0,
+      "retrieved_at_unix": 1793687184.017164,
+      "license": {
+        "status": "license_file_found",
+        "spdx": "MIT",
+        "files": [
+          {
+            "file": "LICENSE",
+            "sha256": "440d4088a83d19c522dff58918bd92ccb9701c278a35295b92db2456373c4759"
+          }
+        ]
+      },
+      "tracked_diff": "",
+      "worktree_status": ""
+    },
+    {
+      "name": "dreamerv3",
+      "url": "https://github.com/danijar/dreamerv3",
+      "path": "/workspace/upstream/service-world-reference/dreamerv3",
+      "commit": "e01491fad6434b2245a3b8ca201dd7faedcc458c",
+      "commit_date": "2026-10-03T22:02:53-07:00",
+      "clone_returncode": 0,
+      "retrieved_at_unix": 1793687184.0179687,
+      "license": {
+        "status": "license_file_found",
+        "spdx": "MIT",
+        "files": [
+          {
+            "file": "LICENSE",
+            "sha256": "9a0db563b71a42110ce6e52c066ec957ca908dd2fbff91e85df09d81a43076d2"
+          }
+        ]
+      },
+      "tracked_diff": "",
+      "worktree_status": ""
+    }
+  ],
+  "dataset_access": {
+    "cetin_article": {
+      "url": "https://doi.org/10.1038/s41597-026-07723-0",
+      "resolved_url": "https://www.nature.com/articles/s41597-026-07723-0?error=cookies_not_supported&code=bc7764ec-6c03-4b0a-a8af-9ca6fa45b112",
+      "status": 200,
+      "sha256": "18ddeec7f02ed154f2b474f49b008e84f55fa20f81e6b6fc31aca5b6369baf57"
+    },
+    "zenodo_record": {
+      "name": "cetin_zenodo",
+      "url": "https://zenodo.org/api/records/17815388",
+      "resolved_url": "https://zenodo.org/api/records/17815388",
+      "status": 200,
+      "sha256": "ab0b43f71350993730f31adb3c6582f1dee39be091306974c632723e2e183862",
+      "bytes": 6356,
+      "checked_at_unix": 1793687771.936296,
+      "title": "Performance Management Counters from Live 5G, 4G and 2G Radio Access Network",
+      "license": {
+        "id": "cc-by-4.0"
+      },
+      "files": [
+        {
+          "key": "Dataset_03.zip",
+          "size": 709421773,
+          "checksum": "md5:f9e3517853f6a21f3b49ad089f1b8da0",
+          "links": {
+            "self": "https://zenodo.org/api/records/17815388/files/Dataset_03.zip/content"
+          }
+        },
+        {
+          "key": "README.md",
+          "size": 2312,
+          "checksum": "md5:092277c2bb7bd59a6635185456f3f406",
+          "links": {
+            "self": "https://zenodo.org/api/records/17815388/files/README.md/content"
+          }
+        },
+        {
+          "key": "Dataset_01.zip",
+          "size": 8333223,
+          "checksum": "md5:cba4e8c2887c0d9382c6a63736fe5ad5",
+          "links": {
+            "self": "https://zenodo.org/api/records/17815388/files/Dataset_01.zip/content"
+          }
+        },
+        {
+          "key": "Dataset_02.zip",
+          "size": 49441996,
+          "checksum": "md5:7d9c1c019e5d18bf318b4e4ad9393d91",
+          "links": {
+            "self": "https://zenodo.org/api/records/17815388/files/Dataset_02.zip/content"
+          }
+        }
+      ]
+    },
+    "readme": {
+      "name": "cetin_readme",
+      "url": "https://zenodo.org/api/records/17815388/files/README.md/content",
+      "status": 200,
+      "sha256": "d42dc2aaf065dbd18f15bd2d997978430e7da4517801743c3ce1506d4d0d72f1",
+      "md5": "092277c2bb7bd59a6635185456f3f406"
+    },
+    "downloaded_subset": {
+      "url": "https://zenodo.org/api/records/17815388/files/Dataset_01.zip/content",
+      "scope": "Source-data access/format inspection only; no training, evaluation or causal intervention labels inferred",
+      "status": 200,
+      "resolved_url": "https://zenodo.org/api/records/17815388/files/Dataset_01.zip/content",
+      "bytes": 8333223,
+      "sha256": "e54a08b7df91526a02b3c214cd54bb42e0ddd938fe4d00e4e91ce44fc6c7abae",
+      "md5": "cba4e8c2887c0d9382c6a63736fe5ad5",
+      "catalog_md5_match": true,
+      "archive_members": [
+        {
+          "name": "Dataset_01/",
+          "bytes": 0
+        },
+        {
+          "name": "Dataset_01/Baseband_02/",
+          "bytes": 0
+        },
+        {
+          "name": "Dataset_01/Baseband_02/Dataset_01_LTE_2100.csv",
+          "bytes": 16594636
+        },
+        {
+          "name": "Dataset_01/Baseband_02/Dataset_01_NR_1800.csv",
+          "bytes": 16109488
+        }
+      ],
+      "csv_headers": {
+        "Dataset_01/Baseband_02/Dataset_01_LTE_2100.csv": "Base station,Sector,Timestamp,Radio unit energy consumption,Baseband energy consumption,4G max active users DL,4G max active users UL,4G data volume DL,4G data volume UL,4G max RRC users,4G RB utilization,4G CQI rank 1,4G CQI rank 2,4G CQI rank 3,4G CQI rank 4,4G RRC users,4G active users UL,4G active users DL,4G MIMO rank DL",
+        "Dataset_01/Baseband_02/Dataset_01_NR_1800.csv": "Base station,Sector,Timestamp,Radio unit energy consumption,Baseband energy consumption,5G max active users DL,5G max active users UL,5G data volume DL,5G data volume UL,5G max RRC users,5G RB utilization,5G CQI rank 1,5G CQI rank 2,5G CQI rank 3,5G CQI rank 4,5G RRC users,5G active users UL,5G active users DL,5G MIMO rank DL"
+      },
+      "checked_at_unix": 1793687856.970749
+    },
+    "other_archives_downloaded": false,
+    "observation_interval_minutes": 15,
+    "causal_action_training_data_established": false,
+    "used_for_training_or_evaluation": false,
+    "rights": "Zenodo metadata and README state CC BY 4.0; cite the data descriptor and version-specific DOI.",
+    "information_limits": [
+      "CQI table configuration is not included.",
+      "Energy counters are radio-unit/baseband level, not direct per-cell energy.",
+      "Missing/zero values are preserved.",
+      "No warehouse robot motion, AP roaming, packet deadlines or controlled sleep interventions established by this format check."
+    ]
+  },
+  "source_searches": {
+    "github_repository_search": [
+      {
+        "query": "RAN-JEPA",
+        "returncode": 0,
+        "checked_at_unix": 1793687200.9200394,
+        "total_count": 2,
+        "items": [
+          {
+            "full_name": "jainaryan/jepa-rank",
+            "html_url": "https://github.com/jainaryan/jepa-rank",
+            "description": "Per-layer effective rank of pretrained self-supervised ViTs (I-JEPA, MAE).",
+            "homepage": null,
+            "default_branch": "main",
+            "updated_at": "2026-10-11T10:02:26Z"
+          },
+          {
+            "full_name": "Blitzwinx/Klasifikasi-Tingkat-JLPT-pada-Teks-Bahasa-Jepang-Menggunakan-Metode-Random-Forest",
+            "html_url": "https://github.com/Blitzwinx/Klasifikasi-Tingkat-JLPT-pada-Teks-Bahasa-Jepang-Menggunakan-Metode-Random-Forest",
+            "description": "skripsi gw njir",
+            "homepage": null,
+            "default_branch": "main",
+            "updated_at": "2026-08-31T17:39:53Z"
+          }
+        ]
+      },
+      {
+        "query": "LatentWave",
+        "returncode": 0,
+        "checked_at_unix": 1793687200.7432818,
+        "total_count": 1,
+        "items": [
+          {
+            "full_name": "LuigiSigillo/LatentWaveletDiffusion",
+            "html_url": "https://github.com/LuigiSigillo/LatentWaveletDiffusion",
+            "description": "[ICLR 2026] Latent Wavelet Diffusion For Ultra-High-Resolution Image Synthesis",
+            "homepage": "https://luigisigillo.github.io/LWD-page/",
+            "default_branch": "main",
+            "updated_at": "2026-09-23T07:27:51Z"
+          }
+        ]
+      },
+      {
+        "query": "\"Beyond Static Graph World Models\"",
+        "returncode": 0,
+        "checked_at_unix": 1793687200.7253268,
+        "total_count": 0,
+        "items": []
+      },
+      {
+        "query": "\"AutoLab\" \"wireless\"",
+        "returncode": 0,
+        "checked_at_unix": 1793687200.7395082,
+        "total_count": 0,
+        "items": []
+      }
+    ],
+    "github_targeted_readme_search": [
+      {
+        "query": "\"RAN-JEPA\" in:readme",
+        "returncode": 0,
+        "checked_at_unix": 1793687555.5177362,
+        "total_count": 0,
+        "items": []
+      },
+      {
+        "query": "\"LatentWave\" wireless in:readme",
+        "returncode": 0,
+        "checked_at_unix": 1793687556.198162,
+        "total_count": 2,
+        "items": [
+          {
+            "full_name": "AI4Wireless/LAM4PHY_6G",
+            "html_url": "https://github.com/AI4Wireless/LAM4PHY_6G",
+            "description": null,
+            "homepage": null
+          },
+          {
+            "full_name": "AI-in-Transportation-Lab/awesome-jepa",
+            "html_url": "https://github.com/AI-in-Transportation-Lab/awesome-jepa",
+            "description": "A carefully curated collection of high-quality tools, libraries, research papers, projects, and tutorials centered around Joint Embedding Predictive Architecture (JEPA).",
+            "homepage": ""
+          }
+        ]
+      },
+      {
+        "query": "\"Beyond Static Graph World Models\" in:readme",
+        "returncode": 0,
+        "checked_at_unix": 1793687556.8694994,
+        "total_count": 0,
+        "items": []
+      }
+    ],
+    "followup_http_requests": [
+      {
+        "name": "latentwave_survey",
+        "url": "https://api.github.com/repos/AI4Wireless/LAM4PHY_6G/readme",
+        "status": 200,
+        "sha256": "c1043dfb72aa4b7595d0cc63bf2dcf96091e115b8ecd3b60995bf47aa1eb504c"
+      },
+      {
+        "name": "latentwave_awesome",
+        "url": "https://api.github.com/repos/AI-in-Transportation-Lab/awesome-jepa/readme",
+        "status": 200,
+        "sha256": "28a8ee16c429da0a7934a0bcbc6d3d8b4e519cd1b87a5cb0a9d06b27adcb84df"
+      },
+      {
+        "name": "cetin_readme",
+        "url": "https://zenodo.org/api/records/17815388/files/README.md/content",
+        "status": 200,
+        "sha256": "d42dc2aaf065dbd18f15bd2d997978430e7da4517801743c3ce1506d4d0d72f1",
+        "md5": "092277c2bb7bd59a6635185456f3f406"
+      }
+    ],
+    "initial_raw_readme_requests": [
+      {
+        "name": "latentwave_survey_readme",
+        "url": "https://raw.githubusercontent.com/AI4Wireless/LAM4PHY_6G/main/README.md",
+        "error": "HTTP Error 404: Not Found",
+        "checked_at_unix": 1793687770.6685817
+      },
+      {
+        "name": "latentwave_awesome_readme",
+        "url": "https://raw.githubusercontent.com/AI-in-Transportation-Lab/awesome-jepa/main/README.md",
+        "error": "HTTP Error 404: Not Found",
+        "checked_at_unix": 1793687770.954418
+      }
+    ],
+    "interpretation": "LatentWave readme results were survey/reading-list mentions linking to arXiv, not an official implementation. No RAN-JEPA or exact GDM-title repository returned by the targeted queries."
+  },
+  "autolab_access": {
+    "http_receipt": {
+      "url": "https://www.6g-private.com/lab",
+      "status": 200,
+      "sha256": "876b4c7f715bb238416979099dfcfe76fb9b92b456cf00ea9dbd5443148738b4",
+      "links": [
+        "/",
+        "chunk-2WPE6H7C.js",
+        "chunk-3I7SCGDG.js",
+        "chunk-D34CJKKT.js",
+        "chunk-FACQ2H6M.js",
+        "chunk-GW5J6WI4.js",
+        "chunk-OOFK3YOJ.js",
+        "chunk-RNMDN42R.js",
+        "favicon.ico",
+        "main-VHTUIFS2.js",
+        "polyfills-5CFQRCPP.js",
+        "styles-OTOCUYSW.css"
+      ],
+      "text_excerpt": " \r\n \r\n \r\n   \r\n   Heatmap \r\n   \r\n   \r\n   \r\n html,body{margin:0;padding:0;height:100%;background:transparent;color:inherit;font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif}      \r\n \r\n    \r\n            \r\n \r\n"
+    },
+    "paper_links": [
+      "https://www.6g-private.com/lab",
+      "https://www.youtube.com/watch?v=3PegjtwTM5o&t=6s"
+    ],
+    "versioned_package_located": false,
+    "testbed_interaction": "read-only landing-page GET only; no physical controls, experiment submission, user messages or hardware run"
+  },
+  "cpu_smokes": {
+    "torch_models": {
+      "torch": "2.14.1+cu130",
+      "cuda": false,
+      "results": [
+        {
+          "name": "coupled_wireless_model",
+          "scope": "Untrained CPU shape/import smoke; not a task reproduction or performance benchmark",
+          "passed": true,
+          "shapes": {
+            "CSI_encoder": [
+              2,
+              2
+            ],
+            "latent_predictor": [
+              2,
+              6,
+              2
+            ],
+            "power_head": [
+              2,
+              1
+            ]
+          },
+          "finite": true,
+          "source": "/workspace/upstream/service-world-reference/coupled_robot_wireless/c_jepa/wireless_jepa/src/utils/models.py"
+        },
+        {
+          "name": "tdmpc2_world_model",
+          "scope": "Untrained CPU shape/import smoke; not a task reproduction or performance benchmark",
+          "passed": true,
+          "shapes": {
+            "encoded": [
+              2,
+              32
+            ],
+            "next": [
+              2,
+              32
+            ],
+            "reward": [
+              2,
+              11
+            ],
+            "Q": [
+              2,
+              1
+            ]
+          },
+          "finite": true,
+          "source": "/workspace/upstream/service-world-reference/tdmpc2/tdmpc2/common/world_model.py"
+        }
+      ]
+    },
+    "dreamer_import": {
+      "scope": "Official DreamerV3 CPU module import only; no trained policy or task reproduction",
+      "passed": true,
+      "jax": "0.4.33",
+      "devices": [
+        "TFRT_CPU_0"
+      ]
+    },
+    "dreamer_rssm": {
+      "scope": "Official untrained DreamerV3 RSSM CPU shape smoke; no warehouse task adaptation or score",
+      "passed": true,
+      "jax": "0.4.33",
+      "devices": [
+        "TFRT_CPU_0"
+      ],
+      "shapes": [
+        {
+          "deter": [
+            2,
+            32
+          ],
+          "stoch": [
+            2,
+            4,
+            4
+          ]
+        },
+        {
+          "deter": [
+            2,
+            3,
+            32
+          ],
+          "stoch": [
+            2,
+            3,
+            4,
+            4
+          ]
+        },
+        {
+          "deter": [
+            2,
+            3,
+            32
+          ],
+          "logit": [
+            2,
+            3,
+            4,
+            4
+          ],
+          "stoch": [
+            2,
+            3,
+            4,
+            4
+          ]
+        }
+      ],
+      "finite": true,
+      "parameter_arrays": 27
+    },
+    "fixture_semantics": "Artificial input tensors and randomly initialized models; shape/import verification only, not generated or substituted benchmark measurements.",
+    "tdmpc2_configuration": {
+      "obs_dim": 16,
+      "action_dim": 2,
+      "latent_dim": 32,
+      "mlp_dim": 64,
+      "num_q": 2,
+      "num_reward_bins": 11,
+      "published_task_configuration": false
+    },
+    "dreamer_configuration": {
+      "batch": 2,
+      "observe_steps": 3,
+      "imagine_steps": 3,
+      "deter": 32,
+      "hidden": 32,
+      "stoch": 4,
+      "classes": 4,
+      "blocks": 4,
+      "action_dim": 2,
+      "token_dim": 8,
+      "published_task_configuration": false
+    },
+    "finiteness_scope": {
+      "coupled_wireless_model": "Final power output checked finite; shape checks on encoder and predictor outputs.",
+      "tdmpc2_world_model": "Final Q output checked finite; shape checks on encoder, transition and reward outputs.",
+      "dreamer_rssm": "Every returned state/entry/imagination array checked finite."
+    }
+  },
+  "dependency_context": {
+    "tdmpc2_upstream_environment": "docker/environment.yaml specifies Torch2.7.1, tensordict0.8.3 and omegaconf2.3.0; core smoke uses worker Torch2.14.1+cu130 with no CUDA device.",
+    "tdmpc2_isolated_target": "/workspace/upstream/service-world-reference/tdmpc2-python-deps",
+    "dreamer_upstream_environment": "requirements.txt defaults to jax[cuda12]==0.4.33 and numpy<2; CPU smoke instead installs jax/jaxlib0.4.33 in a separate environment.",
+    "dreamer_environment": "/workspace/upstream/service-world-reference/dreamerv3-cpu-env",
+    "dreamer_cpu_freeze": [
+      "absl-py==2.5.1",
+      "certifi==2026.10.23",
+      "cffi==2.1.1",
+      "charset-normalizer==3.5.2",
+      "chex==0.1.87",
+      "cloudpickle==3.1.2",
+      "cryptography==50.0.2",
+      "einops==0.8.2",
+      "elements==3.19.1",
+      "etils==1.15.0",
+      "google-api-core==2.43.2",
+      "google-auth==2.62.1",
+      "google-cloud-core==2.8.0",
+      "google-cloud-storage==3.17.1",
+      "google-crc32c==1.9.0",
+      "google-resumable-media==2.11.0",
+      "googleapis-common-protos==1.76.0",
+      "idna==3.20",
+      "jax==0.4.33",
+      "jaxlib==0.4.33",
+      "ml-dtypes==0.5.4",
+      "msgpack==1.2.4",
+      "ninjax==3.5.1",
+      "numpy==1.26.4",
+      "opentelemetry-api==1.45.2",
+      "opt-einsum==3.4.0",
+      "optax==0.2.4",
+      "portal==3.5.0",
+      "proto-plus==1.29.0",
+      "protobuf==7.36.2",
+      "psutil==7.2.2",
+      "pyasn1==0.6.5",
+      "pyasn1-modules==0.4.2",
+      "pycparser==3.12",
+      "requests==2.34.2",
+      "ruamel-yaml==0.19.1",
+      "scipy==1.17.1",
+      "setuptools==84.2.1",
+      "toolz==1.2.0",
+      "typing-extensions==4.16.0",
+      "urllib3==2.8.0"
+    ],
+    "full_upstream_runtime_reproduced": false
+  },
+  "reproduction_harnesses": [
+    {
+      "name": "smoke_torch.py",
+      "path": "/workspace/upstream/service-world-reference/smoke_torch.py",
+      "sha256": "ccc91d7740eb9f59100756ce389632663435630a7115e0b0c9c0aad80b0027a9",
+      "command": "OPENBLAS_NUM_THREADS=1 OMP_NUM_THREADS=1 python /workspace/upstream/service-world-reference/smoke_torch.py",
+      "original_audit_harness_source": "import sys,json,importlib.util,traceback,time\nfrom pathlib import Path\nfrom types import SimpleNamespace\nimport torch\nBASE=Path('/workspace/upstream/service-world-reference');torch.set_num_threads(1);rows=[]\nfor name in ['coupled_wireless_model','tdmpc2_world_model']:\n row={'name':name,'scope':'Untrained CPU shape/import smoke; not a task reproduction or performance benchmark'}\n try:\n  if name=='coupled_wireless_model':\n   path=BASE/'coupled_robot_wireless/c_jepa/wireless_jepa/src/utils/models.py';spec=importlib.util.spec_from_file_location('official_wireless_models',path);m=importlib.util.module_from_spec(spec);spec.loader.exec_module(m)\n   encoder=m.Encoder().eval();predictor=m.Predictor(4,32,1,2).eval();power=m.PowerPredictor().eval()\n   with torch.no_grad():\n    csi=torch.complex(torch.randn(2,384),torch.randn(2,384));z=encoder(csi);forecast,h=predictor(torch.randn(2,6,4));p=power(z)\n   row.update(passed=True,shapes={'CSI_encoder':list(z.shape),'latent_predictor':list(forecast.shape),'power_head':list(p.shape)},finite=bool(torch.isfinite(p).all()),source=str(path))\n  else:\n   sys.path.insert(0,str(BASE/'tdmpc2-python-deps'));sys.path.insert(0,str(BASE/'tdmpc2/tdmpc2'))\n   from common.world_model import WorldModel\n   cfg=SimpleNamespace(multitask=False,task_dim=0,latent_dim=32,action_dim=2,mlp_dim=64,num_bins=11,vmin=-10.,vmax=10.,bin_size=2.,episodic=False,num_q=2,dropout=.01,log_std_min=-10,log_std_max=2,simnorm_dim=8,obs_shape={'state':(16,)},obs='state',num_enc_layers=2,enc_dim=64,tau=.01)\n   model=WorldModel(cfg).eval()\n   with torch.no_grad():\n    z=model.encode(torch.randn(2,16),None);a=torch.zeros(2,2);zn=model.next(z,a,None);r=model.reward(z,a,None);q=model.Q(z,a,None,return_type='avg')\n   row.update(passed=True,shapes={'encoded':list(z.shape),'next':list(zn.shape),'reward':list(r.shape),'Q':list(q.shape)},finite=bool(torch.isfinite(q).all()),source=str(BASE/'tdmpc2/tdmpc2/common/world_model.py'))\n except Exception as e:row.update(passed=False,error_type=type(e).__name__,error=str(e),traceback=traceback.format_exc())\n rows.append(row)\n(BASE/'torch_smoke.json').write_text(json.dumps({'torch':torch.__version__,'cuda':torch.cuda.is_available(),'results':rows},indent=2)+'\\n');print(json.dumps(rows,indent=2))\n",
+      "upstream_sources_modified": false
+    },
+    {
+      "name": "smoke_dreamer.py",
+      "path": "/workspace/upstream/service-world-reference/smoke_dreamer.py",
+      "sha256": "171d0f015b7514458fbd231e06df1b8a72078db2bac34f45a3f2f561d00e0f85",
+      "command": "JAX_PLATFORMS=cpu OMP_NUM_THREADS=1 OPENBLAS_NUM_THREADS=1 XLA_FLAGS=--xla_cpu_multi_thread_eigen=false /workspace/upstream/service-world-reference/dreamerv3-cpu-env/bin/python /workspace/upstream/service-world-reference/smoke_dreamer.py",
+      "original_audit_harness_source": "import sys,json,traceback\nfrom pathlib import Path\nBASE=Path('/workspace/upstream/service-world-reference');sys.path.insert(0,str(BASE/'dreamerv3'))\nr={'scope':'Official untrained DreamerV3 RSSM CPU shape smoke; no warehouse task adaptation or score'}\ntry:\n import jax,jax.numpy as jnp,numpy as np,ninjax as nj,elements\n from dreamerv3.rssm import RSSM\n model=RSSM({'action':elements.Space(np.float32,(2,))},deter=32,hidden=32,stoch=4,classes=4,blocks=4,name='smoke_rssm')\n def forward():\n  c=model.initial(2)\n  c,entries,feat=model.observe(c,jnp.zeros((2,3,8)),{'action':jnp.zeros((2,3,2))},jnp.zeros((2,3),bool),False)\n  c,pred,actions=model.imagine(c,{'action':jnp.zeros((2,3,2))},3,False)\n  return c,entries,pred\n params,out=nj.pure(forward)({},seed=42,create=True)\n r.update(passed=True,jax=jax.__version__,devices=[str(d) for d in jax.devices()],shapes=jax.tree.map(lambda a:list(a.shape),out),finite=bool(all(np.isfinite(np.asarray(a)).all() for a in jax.tree.leaves(out))),parameter_arrays=len(params))\nexcept Exception as e:r.update(passed=False,error_type=type(e).__name__,error=str(e),traceback=traceback.format_exc())\n(BASE/'dreamer_forward_smoke.json').write_text(json.dumps(r,indent=2)+'\\n');print(json.dumps(r,indent=2))\n",
+      "upstream_sources_modified": false
+    }
+  ],
+  "initial_harness_failures": [
+    {
+      "file": "torch_smoke-first.json",
+      "result": {
+        "torch": "2.14.1+cu130",
+        "cuda": false,
+        "results": [
+          {
+            "name": "coupled_wireless_model",
+            "scope": "Untrained CPU shape/import smoke; not a task reproduction or performance benchmark",
+            "passed": true,
+            "shapes": {
+              "CSI_encoder": [
+                2,
+                2
+              ],
+              "latent_predictor": [
+                2,
+                6,
+                2
+              ],
+              "power_head": [
+                2,
+                1
+              ]
+            },
+            "finite": true,
+            "source": "/workspace/upstream/service-world-reference/coupled_robot_wireless/c_jepa/wireless_jepa/src/utils/models.py"
+          },
+          {
+            "name": "tdmpc2_world_model",
+            "scope": "Untrained CPU shape/import smoke; not a task reproduction or performance benchmark",
+            "passed": false,
+            "error_type": "ModuleNotFoundError",
+            "error": "No module named 'cloudpickle'",
+            "traceback": "Traceback (most recent call last):\n  File \"/workspace/upstream/service-world-reference/smoke_torch.py\", line 17, in <module>\n    from common.world_model import WorldModel\n  File \"/workspace/upstream/service-world-reference/tdmpc2/tdmpc2/common/world_model.py\", line 6, in <module>\n    from common import layers, math, init\n  File \"/workspace/upstream/service-world-reference/tdmpc2/tdmpc2/common/layers.py\", line 4, in <module>\n    from tensordict import from_modules\n  File \"/workspace/upstream/service-world-reference/tdmpc2-python-deps/tensordict/__init__.py\", line 74, in <module>\n    from tensordict.nn import as_tensordict_module, TensorDictParams\n  File \"/workspace/upstream/service-world-reference/tdmpc2-python-deps/tensordict/nn/__init__.py\", line 6, in <module>\n    from tensordict.nn.common import (\n  File \"/workspace/upstream/service-world-reference/tdmpc2-python-deps/tensordict/nn/common.py\", line 27, in <module>\n    from cloudpickle import dumps as cloudpickle_dumps, loads as cloudpickle_loads\nModuleNotFoundError: No module named 'cloudpickle'\n"
+          }
+        ]
+      }
+    },
+    {
+      "file": "torch_smoke-second.json",
+      "result": {
+        "torch": "2.14.1+cu130",
+        "cuda": false,
+        "results": [
+          {
+            "name": "coupled_wireless_model",
+            "scope": "Untrained CPU shape/import smoke; not a task reproduction or performance benchmark",
+            "passed": true,
+            "shapes": {
+              "CSI_encoder": [
+                2,
+                2
+              ],
+              "latent_predictor": [
+                2,
+                6,
+                2
+              ],
+              "power_head": [
+                2,
+                1
+              ]
+            },
+            "finite": true,
+            "source": "/workspace/upstream/service-world-reference/coupled_robot_wireless/c_jepa/wireless_jepa/src/utils/models.py"
+          },
+          {
+            "name": "tdmpc2_world_model",
+            "scope": "Untrained CPU shape/import smoke; not a task reproduction or performance benchmark",
+            "passed": false,
+            "error_type": "AttributeError",
+            "error": "'types.SimpleNamespace' object has no attribute 'vmin'",
+            "traceback": "Traceback (most recent call last):\n  File \"/workspace/upstream/service-world-reference/smoke_torch.py\", line 21, in <module>\n    z=model.encode(torch.randn(2,16),None);a=torch.zeros(2,2);zn=model.next(z,a,None);r=model.reward(z,a,None);q=model.Q(z,a,None,return_type='avg')\n                                                                                                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/workspace/upstream/service-world-reference/tdmpc2/tdmpc2/common/world_model.py\", line 215, in Q\n    Q = math.two_hot_inv(out[qidx], self.cfg)\n        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/workspace/upstream/service-world-reference/tdmpc2/tdmpc2/common/math.py\", line 80, in two_hot_inv\n    dreg_bins = torch.linspace(cfg.vmin, cfg.vmax, cfg.num_bins, device=x.device, dtype=x.dtype)\n                               ^^^^^^^^\nAttributeError: 'types.SimpleNamespace' object has no attribute 'vmin'\n"
+          }
+        ]
+      }
+    },
+    {
+      "file": "dreamer_forward_smoke-first.json",
+      "result": {
+        "scope": "Official untrained DreamerV3 RSSM CPU shape smoke; no warehouse task adaptation or score",
+        "passed": false,
+        "error_type": "RuntimeError",
+        "error": "Pass create=True to pure functions to allow them to create new state entries or use nj.init(). You were trying to set smoke_rssm/dynin0/kernel to shape (32, 32).",
+        "traceback": "Traceback (most recent call last):\n  File \"/workspace/upstream/service-world-reference/smoke_dreamer.py\", line 14, in <module>\n    out,params=nj.pure(forward)({},seed=42)\n               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/workspace/upstream/service-world-reference/dreamerv3-cpu-env/lib/python3.12/site-packages/ninjax/ninjax.py\", line 41, in hidewrapper\n    raise e\n  File \"/workspace/upstream/service-world-reference/smoke_dreamer.py\", line 11, in forward\n    c,entries,feat=model.observe(c,jnp.zeros((2,3,8)),{'action':jnp.zeros((2,3,2))},jnp.zeros((2,3),bool),False)\n                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/workspace/upstream/service-world-reference/dreamerv3/dreamerv3/rssm.py\", line 69, in observe\n    carry, (entries, feat) = nj.scan(\n                             ^^^^^^^^\n  File \"/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/contextlib.py\", line 81, in inner\n    return func(*args, **kwds)\n           ^^^^^^^^^^^^^^^^^^^\n  File \"/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/contextlib.py\", line 81, in inner\n    return func(*args, **kwds)\n           ^^^^^^^^^^^^^^^^^^^\n  File \"/workspace/upstream/service-world-reference/dreamerv3/dreamerv3/rssm.py\", line 70, in <lambda>\n    lambda carry, inputs: self._observe(\n                          ^^^^^^^^^^^^^^\n  File \"/workspace/upstream/service-world-reference/dreamerv3/dreamerv3/rssm.py\", line 80, in _observe\n    deter = self._core(deter, stoch, action)\n            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/workspace/upstream/service-world-reference/dreamerv3/dreamerv3/rssm.py\", line 141, in _core\n    x0 = self.sub('dynin0', nn.Linear, self.hidden, **self.kw)(deter)\n         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/workspace/upstream/service-world-reference/dreamerv3/embodied/jax/nets.py\", line 244, in __call__\n    x = x @ self.value('kernel', self._scaled_winit, shape).astype(x.dtype)\n            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/workspace/upstream/service-world-reference/dreamerv3-cpu-env/lib/python3.12/site-packages/ninjax/ninjax.py\", line 95, in __setitem__\n    raise RuntimeError(\nRuntimeError: Pass create=True to pure functions to allow them to create new state entries or use nj.init(). You were trying to set smoke_rssm/dynin0/kernel to shape (32, 32).\nException happened inside Ninjax scope 'smoke_rssm/dynin0'.\n"
+      }
+    }
+  ],
+  "corrected_harness_note": "The second Dreamer harness executed successfully but recorded the parameter-state tree rather than returned outputs due to reversed Ninjax tuple assignment. The final harness fixes tuple order and checks actual outputs; this was not an upstream model defect.",
+  "remaining_work": [
+    "Locate/obtain official RAN-JEPA code, controlled downstream dataset and calibrated twin; current CETIN subset is observation-only.",
+    "Clarify the main coupled C-JEPA/W-JEPA source license; obtain complete documented training entry point, CSI data/checkpoints and compatible ROS/Gazebo/Sionna environment.",
+    "Locate official GDM/LatentWave releases or explicitly label implementations as paper-inspired reimplementations.",
+    "Resolve versioned AutoLab package assets if physical testbed integration is pursued; no experiment was submitted.",
+    "Implement separate warehouse adapters and match observations, action/controller continuation, training budgets and sealed site/seed splits before measuring external methods.",
+    "Train independent seeds and evaluate actual task outcomes, calibration, tails and end-to-end compute before making any local performance or SOTA claim."
+  ],
+  "receipt_files": [
+    {
+      "name": "autolab_lab_receipt.json",
+      "sha256": "6eb1579c441ef679f1dcc6abd9a63ac65cd904570e8460d827278310b76f54d2",
+      "bytes": 715
+    },
+    {
+      "name": "cetin_dataset_receipt.json",
+      "sha256": "c129d6707d83e9a2900cf1d34980d4d6271e98706b4c48e2f2842df5bf23e420",
+      "bytes": 8876
+    },
+    {
+      "name": "cetin_download_receipt.json",
+      "sha256": "354d0582b724b430c18ca9b7f1aba16b7dc87ff2f3b621a78e2f86c6556d3dc0",
+      "bytes": 1675
+    },
+    {
+      "name": "cetin_zenodo.json",
+      "sha256": "ab0b43f71350993730f31adb3c6582f1dee39be091306974c632723e2e183862",
+      "bytes": 6356
+    },
+    {
+      "name": "clone_receipts.json",
+      "sha256": "aa19e6f657f76b291b7bd783d37fe355bb8b3e1bf530541d4525aea574c6f3a1",
+      "bytes": 29882
+    },
+    {
+      "name": "dreamer_forward_smoke-first.json",
+      "sha256": "c72cef15d1c4adfe2386df40b07d5325dabee09990f098143e49761a5db5ab34",
+      "bytes": 2898
+    },
+    {
+      "name": "dreamer_forward_smoke-second.json",
+      "sha256": "d884631e9c4f2b3df4ff6e540d325d5d9f5128a4cec4f9312bbb0ad7b506a45b",
+      "bytes": 1717
+    },
+    {
+      "name": "dreamer_forward_smoke.json",
+      "sha256": "1be892387eb0ef08663ad5622808286e93476ac2d4f77dec46c4f84ce08a96ee",
+      "bytes": 709
+    },
+    {
+      "name": "dreamer_smoke.json",
+      "sha256": "27f727e6b8bb7f02f060656cf3e970d7b6143dd9220db23bd057213ad220879d",
+      "bytes": 173
+    },
+    {
+      "name": "dreamerv3-cpu-freeze.txt",
+      "sha256": "cb5c4dedaba77fb9bfd7842ea4921fdd1080ea73494d5b5a1a28df9874a21e20",
+      "bytes": 749
+    },
+    {
+      "name": "dreamerv3-install.log",
+      "sha256": "4de0dde0776a623d09ccfabec6da1605ed351a57c695c6e4c12bf0f6eb0e838f",
+      "bytes": 1458
+    },
+    {
+      "name": "dreamerv3-venv.log",
+      "sha256": "a703b07eaccaf240e3136325d38924f78d93bc6425d6b94a26ec6709b3f09414",
+      "bytes": 307
+    },
+    {
+      "name": "followup_access.json",
+      "sha256": "2db610b423a376505d18a317561f40a4928c39843776683079695739f0e3dc89",
+      "bytes": 1935
+    },
+    {
+      "name": "followup_access_second.json",
+      "sha256": "d0f509cd5dacd406cbf4522567d3c0c6cde36c00e66ca1e46d318c52de5df5f6",
+      "bytes": 4920
+    },
+    {
+      "name": "precise_repository_search.json",
+      "sha256": "1a996066bcc2123229f7dfdf4e9a4f55c39a51d84a6048e1087942fa5d9fefaf",
+      "bytes": 1052
+    },
+    {
+      "name": "repository_search.json",
+      "sha256": "077a0e1e102c858f1706153b2257ef59255429122808bd03be3f22052c3bb213",
+      "bytes": 1747
+    },
+    {
+      "name": "tdmpc2-install-extra.log",
+      "sha256": "1e05c8b736fb627f45b35e76e8b34c38e4ad2455dbb1dededa28a995eea40c6f",
+      "bytes": 170
+    },
+    {
+      "name": "tdmpc2-install.log",
+      "sha256": "8bc5f15a21e8f42e9ec0b2efe30f151f72e189e76f589bd344494a8c31e4a80a",
+      "bytes": 317
+    },
+    {
+      "name": "torch_smoke-first.json",
+      "sha256": "b533a32468653f950189f628bdda9ea7b5302c86b83fd8662c6c911673f1bb9e",
+      "bytes": 1992
+    },
+    {
+      "name": "torch_smoke-second.json",
+      "sha256": "29f49ab9f83fd42b5b50f6cc238c49d8cbba72ea446311d3cac815b1d037ad27",
+      "bytes": 1874
+    },
+    {
+      "name": "torch_smoke.json",
+      "sha256": "425e8bdea80f59fdd4d5ce6dfd32a1feabaf27a445646a42bd8a5a0341d17f6c",
+      "bytes": 1155
+    }
+  ],
+  "upstream_dependency_specs": [
+    {
+      "repository": "tdmpc2",
+      "file": "docker/environment.yaml",
+      "sha256": "426f01312bb9b78a5603ddeaab2a36b4db6cc89447dc440801e4e0a41ab158d8"
+    },
+    {
+      "repository": "dreamerv3",
+      "file": "requirements.txt",
+      "sha256": "7825675c0866933f2d879320d842bcd781c8b2f29bd3b5b9091329e476d32487"
+    }
+  ]
+}

@@ -1,0 +1,57 @@
+{
+  "id": "2610.29587",
+  "checked_at_unix": 1793686922.4237359,
+  "attempts": [
+    {
+      "url": "https://arxiv.org/abs/2610.29587",
+      "status": 200,
+      "bytes": 43139,
+      "sha256": "5ac3c911c9ed5baa02b6a7cf062233204aaf907db67a2b13a9df6d1e9984daa8"
+    },
+    {
+      "url": "https://arxiv.org/pdf/2610.29587",
+      "status": 200,
+      "bytes": 3327052,
+      "sha256": "ef2aba3e4d05704d2df0764d8b10ba5e781fabecb9504be8d25a776ff22fcdfa"
+    }
+  ],
+  "sections_reviewed": [
+    "Abstract",
+    "Section III-A–C (pp. 3–4): packet channel, receiver cache and resource budget",
+    "Section IV-A (pp. 4–5): synchronized receiver twin and packet choices",
+    "Section IV-F (p. 7): receiver update and complete-outage fallback"
+  ],
+  "verified_title": "Guess and Send: World-Model-Guided Semantic Packet Transmission for Robust Video Perception",
+  "authors": [
+    "Gong, Yan",
+    "Chu, Zheng",
+    "Chai, Wei Koong",
+    "Pandey, Hari Mohan",
+    "Zhang, Jiankang",
+    "Hou, Jingrui",
+    "Zhang, Miao",
+    "Li, Yuanjian",
+    "Xiao, Pei"
+  ],
+  "citation_date": "2026/10/21",
+  "metadata_url": "https://arxiv.org/abs/2610.29587",
+  "pages": 15,
+  "pdf_sha256": "ef2aba3e4d05704d2df0764d8b10ba5e781fabecb9504be8d25a776ff22fcdfa",
+  "pdf_url": "https://arxiv.org/pdf/2610.29587",
+  "matches_previous_local_pdf": false,
+  "status": "live_metadata_and_fulltext",
+  "metadata_description": "Abstract page for arXiv paper 2610.29587: Guess and Send: World-Model-Guided Semantic Packet Transmission for Robust Video Perception",
+  "method_summary": "An ACK-synchronized receiver twin tracks only delivered semantic packets. A world model compares all-refresh and prediction-only counterfactuals from the same receiver memory to prioritize packet content. QPSK and Sionna-calibrated 5G-NR LDPC curves define codeword success/erasure; complete frame outage uses a defined fallback rather than unverified residual updates.",
+  "direct_overlap": [
+    "delivery-conditioned causal belief state",
+    "same-memory packet counterfactuals",
+    "native packet success and erasures",
+    "explicit recovery under missing delivery",
+    "world-model-guided packet decisions"
+  ],
+  "evidence_and_limits": "Video perception/semantic packet transmission, not Wi-Fi roaming or deadline-hazard inference. Its fallback and delivered-state synchronization overlap directly with claims that those broad mechanisms are new.",
+  "review_scope": "targeted_primary_fulltext_sections",
+  "cutoff_date": "2026-11-03",
+  "redistributed_fulltext": false,
+  "license_status": "Not independently cleared for redistribution; PDF/text cached only in execution workspace."
+}

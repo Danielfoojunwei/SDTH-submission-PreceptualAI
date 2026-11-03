@@ -12,6 +12,8 @@
   "observation_period_seconds": 0.1,
   "intervention_hold_seconds": 1,
   "proposal_expiry_seconds": 1,
+  "canonical_proposal_expiry_seconds": 1,
+  "legacy_comparator": "Also run unmodified pending-expiry semantics as a separate numerical reference; any benefit from expiring stale commands is a classical control change, not JEPA",
   "label_horizon_seconds": 10,
   "focal_robots_per_checkpoint": 3,
   "selection": "Two lowest available observed pilot margins and one uniformly sampled other available robot; never select using future labels",
