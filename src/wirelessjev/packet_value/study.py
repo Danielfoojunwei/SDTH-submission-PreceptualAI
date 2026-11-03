@@ -59,9 +59,9 @@ def label_case(task):
     key=f'{split}-{seed}-{cost}';receipt=OUT/'labels'/(key+'.json');data=OUT/'data'/(key+'.npz')
     if receipt.exists():
         r=json.loads(receipt.read_text());assert r['source_sha256']==source_hashes() and r['data_sha256']==digest(data);return r
-    started=time.time();n=100 if split=='validation' or index%2 else 24
-    world,g,controller,kwargs=make_case(seed,n,30,cost);cps=[];p=policy_for(cost)
-    factual=simulate(world,p,checkpoint_at={500,1500},checkpoint_sink=cps.append,detailed=True,**kwargs)
+    started=time.time();n=100 if split=='validation' or (index//2)%2 else 24
+    world,g,controller,kwargs=make_case(seed,n,P['counterfactual_duration_seconds'],cost);cps=[];p=policy_for(cost)
+    factual=simulate(world,p,checkpoint_at={int(t*100) for t in P['fork_seconds']},checkpoint_sink=cps.append,detailed=True,**kwargs)
     pieces=[];records=[];rng=np.random.default_rng(seed+345000);stay_runs=0
     for cp in cps:
         obs=cp.observable();ctrl=cp.bundle['hooks'][-1]

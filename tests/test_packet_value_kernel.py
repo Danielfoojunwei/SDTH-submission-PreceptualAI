@@ -224,3 +224,17 @@ def test_actual_packet_controller_and_live_radiomap_replay_together():
         for d in summary['decisions']:d.pop('actual_head_seconds')
     assert a==b
     assert len(a['controller_frames'])==6 and a['controller_summary']['jobs_issued']>0
+
+
+def test_forced_counterfactual_uses_the_runtime_one_second_expiry():
+    torch.set_num_threads(1)
+    w=build_world(299046,duration_s=3,n_robots=6)
+    w.snr[:]=35.;w.rssi_dl[:]=-35.;w.forecast[:]=35.
+    w.snr[:8,0]=-100.  # first control delivery comes after the fork's TTL
+    p=replace(native(),gate=False,cadence_scan=True,scan_period_s=100.,roam_cost_s=.03,cadence_roam=True)
+    saved=[]
+    simulate(copy.deepcopy(w),p,external_primary=DelayedPrimary(6),checkpoint_at={25},checkpoint_sink=saved.append,
+             stop_slot=26,detailed=True)
+    cp=saved[0];current=int(cp.observable()['current'][0]);target=(current+1)%len(w.sites)
+    moved=simulate(w,p,resume=cp,force_action=(0,target),stop_slot=250,detailed=True)
+    assert moved['roams']==0

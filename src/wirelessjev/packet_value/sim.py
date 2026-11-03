@@ -550,7 +550,7 @@ def simulate(world: World, policy: Policy, *, seed: int = 0, curves: LinkCurves 
                 if outage_until[locked_robot] > k or scan_until[locked_robot] > k:
                     raise ValueError("A new handover requires an available focal radio")
                 forcing = True
-                move_primary(locked_robot, target, policy.roam_cost_s, valid_until=k0+1000)
+                move_primary(locked_robot, target, policy.roam_cost_s, valid_until=k0+100)
                 forcing = False
 
         if external_primary is not None:
