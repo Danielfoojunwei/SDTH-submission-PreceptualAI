@@ -1,6 +1,61 @@
 # WirelessJEV research handoff
 
-## Latest: completed costed RF-to-packet confirmation
+## Latest: compact JEPA training and fresh confirmation complete
+
+[SELECTED_JEPA_RESULTS.md](SELECTED_JEPA_RESULTS.md) records **12 fits across
+four families and three paired training seeds, 112 development evaluations,
+128 fresh confirmation evaluations and eight exact replays**. Each evaluation
+has 100 simulated robots. All owned training/evaluation stages are complete.
+
+The compact model preserves AP/band structure, uses genuine delivered native
+simulator observations, and predicts bounded corrections directly from a
+RadioMap anchor at each horizon. Its 13,970 inference parameters and separate
+training projection/EMA teacher are implemented and exercised. No recursively
+summed residual exists; cumulative control loss can still grow.
+
+Fresh results do not confirm superiority. At 30 ms / four-second handovers,
+context-JEPA command loss is 1.081806% / 4.789965%; RadioMap is
+1.097604% / 4.849583%; matched supervised is 1.079757% / 4.777951%;
+original frozen JEPA is 1.071562% / 4.691771%. All six statistical gates fail.
+Engineering margins pass versus RadioMap/supervised and fail versus the old
+ensemble. One actual RadioMap warm call, 284.938 ms against 120 ms, triggers
+the registered global timing veto. No run, budget or criterion was replaced.
+
+[SEMANTIC_JEPA_RESULTS.md](SEMANTIC_JEPA_RESULTS.md) retains the original
+semantic candidate's rejection on all 112 development runs: zero original
+confirmation/replays, with `2104000`–`2104007` unopened. Training source was
+published before collection in `9ff5fa5`. The separate context selection and
+230-file source/input capsule were published in `f5c69d5` before the eight
+new `2114000`–`2114007` sites. It reuses fixed weights/timing and does not
+rehabilitate the semantic rejection or select a new winner after confirmation.
+
+The post-hoc representation audit uses all 1,152 existing validation rows,
+six sites and all three context-JEPA/supervised members, without new data,
+perturbation or subsampling. All measured streams are finite/nonconstant;
+rank is not a guarantee of useful RF information or absence of every collapse.
+Both scientific source closures and earlier PR18 source/evidence remain intact.
+
+Full software validation: **895 passed, one expected warning**. The original
+pre-data suite's 838-pass receipt is retained. Final portable checks:
+
+```bash
+uv run --frozen python scripts/verify_semantic_jepa.py
+uv run --frozen python scripts/verify_selected_jepa.py
+```
+
+The original verifier optionally accepts `--verify-caches` for existing local
+NPZ files. Neither verifier simulates, trains or retimes. Derived figures and
+source/input/output receipts accompany both studies. Raw cases, all member
+outcomes, negative/null comparisons, actual timing and replay traces are kept.
+
+Draft [PR #19](https://github.com/Danielfoojunwei/SDTH-submission-PreceptualAI/pull/19)
+is stacked on #18, not merged. RadioMap remains the application default.
+Hardware timing, cross-layout transfer, calibrated risk and physical recovery
+remain unqualified. The results establish no SOTA, EMA necessity, universal
+JEPA benefit or indefinite packet-loss bound. All remaining physical/external
+publication requirements below still apply.
+
+## Previous: completed costed RF-to-packet confirmation
 
 [CONTINUAL_PACKET_RESULTS.md](CONTINUAL_PACKET_RESULTS.md) records all **32
 development + 192 confirmation evaluations and six exact replays**. Each run

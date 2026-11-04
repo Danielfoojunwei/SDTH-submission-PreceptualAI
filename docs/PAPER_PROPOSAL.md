@@ -6,6 +6,41 @@ are in `docs/WAREHOUSE_RESULTS.md`. The subsequently authorised warehouse v2
 campaign is described below; general foundation-model, custom on-air PHY,
 robotics and space extensions remain deferred.
 
+## Compact fleet JEPA: completed fixes, no confirmed objective advantage
+
+[SELECTED_JEPA_RESULTS.md](SELECTED_JEPA_RESULTS.md) completes 12 fits over
+four matched objectives and three paired training seeds, 112 development
+runs, 128 fresh confirmation runs and eight exact replays. Each evaluation
+has 100 simulated robots. The new 13,970-inference-parameter model retains
+AP/band identity, causal delivered scan context, fleet memory and route
+queries. It decodes each horizon directly from RadioMap plus a bounded
+correction, avoiding recursive residual summation. This does not bound
+cumulative missed commands or provide physical stability guarantees.
+
+The original privileged semantic-JEPA objective loses to matched controls on
+development, so its reserved confirmation sites stay unopened. A separately
+published, explicitly post-development selection chooses context JEPA before
+eight entirely new sites, with fixed weights, controls and timing. Supervised
+remains a primary reference rather than being dropped when it wins.
+
+Context JEPA's fresh command loss is 1.081806% / 4.789965% at 30 ms / four-second
+handover assumptions, versus RadioMap's 1.097604% / 4.849583%. Every registered
+statistical comparison fails, including comparisons with matched supervised
+and original JEPA, whose means are lower. Engineering margins pass against
+RadioMap/supervised and fail against the original ensemble. A measured RadioMap
+warm-time overrun also triggers the prespecified global qualification veto.
+Neither a broad JEPA win nor a cost-specific qualified benefit is established.
+
+An all-1,152-row, six-validation-site post-hoc audit finds finite, nonconstant
+context/radio/predictor features and active context teachers across all three
+paired members. This is evidence against constant representations on those
+already exposed inputs, not a causal diagnosis, useful-abstraction guarantee
+or independent service result. The common model still lacks a typed future
+MAC resource/busy-airtime forecast; its role in the observed failure has not
+been isolated. No label-free, EMA-necessity, architecture-novelty, SOTA,
+physical-car or production claim follows. The application remains RadioMap.
+All negative results and immutable source/evidence are preserved.
+
 ## Costed RF learning: no confirmed packet-service advantage
 
 [CONTINUAL_PACKET_RESULTS.md](CONTINUAL_PACKET_RESULTS.md) completes 32

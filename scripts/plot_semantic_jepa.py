@@ -227,11 +227,13 @@ def encoder_and_cost(protocol, latency, fits, plt, np):
     fig.text(.07, .925, f'Fixed validation-slice diagnostics ({", ".join(map(str, sample_counts))} rows) · descriptive three-member ranges',
              fontsize=11, color='#536C8C')
     for axis, field in ((axes[0, 0], 'std_mean'), (axes[0, 1], 'effective_rank')):
+        maximum_diagnostic = 0.
         for fi, family in enumerate(FAMILIES):
             offset = (fi - 1.5) * .035
             for section, style in (('online_radio_by_band', '-'), ('teacher_radio_by_band', '--')):
                 values = np.array([[number(fit['diagnostics'][section][str(band)][field]) for band in range(3)]
                                    for fit in fits[family]])
+                maximum_diagnostic = max(maximum_diagnostic, float(values.max()))
                 x = np.arange(3) + offset
                 axis.fill_between(x, values.min(0), values.max(0), color=COLORS[family], alpha=.07, linewidth=0)
                 axis.plot(x, values.mean(0), style, color=COLORS[family], marker='o', markersize=3,
@@ -239,7 +241,7 @@ def encoder_and_cost(protocol, latency, fits, plt, np):
         axis.set_xticks(range(3), ['2.4 GHz', '5.2 GHz', '6 GHz'])
         axis.grid(alpha=.15)
         axis.set_axisbelow(True)
-        axis.set_ylim(bottom=0)
+        axis.set_ylim(0, max(maximum_diagnostic, 1e-6) * 1.3)
     axes[0, 0].set_title('A  Within-band radio embedding variation', loc='left', weight='bold')
     axes[0, 0].set_ylabel('Mean coordinate standard deviation')
     axes[0, 1].set_title('B  Centered effective rank', loc='left', weight='bold')
