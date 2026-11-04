@@ -1,0 +1,158 @@
+{
+  "performed_by": "independent read-only agent /root/semantic_artifact_audit",
+  "completed_at_utc": "2026-11-04T06:19:18.145820+00:00",
+  "audit_passed": true,
+  "remaining_blockers": [],
+  "scientific_source_commit": "f5c69d55cf110578f7c48de96899a5879bb9f106",
+  "registered_source_files_verified_current_capsule_and_git": 230,
+  "report_sha256": "e1167765ebbe7f216c0cea640dbbe17d78e47d7c8e8a2d938c8d3679475fc39e",
+  "completion_sha256": "f0a650e87d18fa89d6d147bb2110d9cbb03d35813d59f56800129e684cc902a0",
+  "main_cases": 128,
+  "exact_replays": 8,
+  "independent_sites": 8,
+  "paired_training_seeds": [
+    0,
+    1,
+    2
+  ],
+  "new_fits": 0,
+  "original_development_selection_rederived_cases": 112,
+  "original_semantic_confirmation_cases": 0,
+  "original_2104_holdouts_preserved": true,
+  "total_generated_commands_including_replays": 16320000,
+  "actual_prediction_calls_including_replays": 8160,
+  "delivered_report_events": {
+    "main": 145953,
+    "replays": 9254
+  },
+  "independently_recomputed": {
+    "primary_bootstraps": 6,
+    "conservative_endpoint_bootstraps": 6,
+    "secondary_crossed_site_seed_intervals": 6,
+    "engineering_gates": 6,
+    "cumulative_contrasts": 24
+  },
+  "runtime_overrun_events": [
+    {
+      "case": [
+        2114005,
+        0.03,
+        "radiomap",
+        null
+      ],
+      "replay": false,
+      "decision": 10,
+      "kind": "warm",
+      "actual_prediction_seconds": 0.2849378939936287,
+      "sealed_compute_seconds": 0.12,
+      "charged_total_seconds": 0.62
+    }
+  ],
+  "global_runtime_veto_correctly_applied": true,
+  "statistical_pass_count": 0,
+  "qualified_comparisons": 0,
+  "primary_results": [
+    {
+      "handover_seconds": 0.03,
+      "reference": "radiomap",
+      "mean_difference": -0.00015798611111111135,
+      "descriptive_95_interval": [
+        -0.0004006944444444446,
+        1.9444444444444327e-05
+      ],
+      "observed_multiplicity_upper": 4.0277777777777534e-05,
+      "conservative_endpoint_upper": 4.6527777777777144e-05,
+      "statistical_pass": false,
+      "engineering_pass": true,
+      "qualified": false
+    },
+    {
+      "handover_seconds": 0.03,
+      "reference": "supervised",
+      "mean_difference": 2.048611111111088e-05,
+      "descriptive_95_interval": [
+        -3.472222222222635e-06,
+        5.972222222222186e-05
+      ],
+      "observed_multiplicity_upper": 7.361111111111067e-05,
+      "conservative_endpoint_upper": 8.506944444444382e-05,
+      "statistical_pass": false,
+      "engineering_pass": true,
+      "qualified": false
+    },
+    {
+      "handover_seconds": 0.03,
+      "reference": "frozen_fleet_jepa",
+      "mean_difference": 0.00010243055555555526,
+      "descriptive_95_interval": [
+        -6.631944444444502e-05,
+        0.00032708333333333287
+      ],
+      "observed_multiplicity_upper": 0.00037894675925925916,
+      "conservative_endpoint_upper": 0.00038345196759259197,
+      "statistical_pass": false,
+      "engineering_pass": false,
+      "qualified": false
+    },
+    {
+      "handover_seconds": 4.0,
+      "reference": "radiomap",
+      "mean_difference": -0.000596180555555556,
+      "descriptive_95_interval": [
+        -0.001551736111111113,
+        0.0004392361111111116
+      ],
+      "observed_multiplicity_upper": 0.0006833333333333327,
+      "conservative_endpoint_upper": 0.0007382118055555603,
+      "statistical_pass": false,
+      "engineering_pass": true,
+      "qualified": false
+    },
+    {
+      "handover_seconds": 4.0,
+      "reference": "supervised",
+      "mean_difference": 0.00012013888888888751,
+      "descriptive_95_interval": [
+        -4.999999999999843e-05,
+        0.0003430555555555522
+      ],
+      "observed_multiplicity_upper": 0.00039919560185184877,
+      "conservative_endpoint_upper": 0.00046886863425925584,
+      "statistical_pass": false,
+      "engineering_pass": true,
+      "qualified": false
+    },
+    {
+      "handover_seconds": 4.0,
+      "reference": "frozen_fleet_jepa",
+      "mean_difference": 0.0009819444444444424,
+      "descriptive_95_interval": [
+        -0.0020851041666666674,
+        0.003910416666666662
+      ],
+      "observed_multiplicity_upper": 0.004578590856481476,
+      "conservative_endpoint_upper": 0.004645138888888884,
+      "statistical_pass": false,
+      "engineering_pass": false,
+      "qualified": false
+    }
+  ],
+  "observed_mean_command_loss_percent": {
+    "0.03": {
+      "context_jepa": 1.0818055555555555,
+      "supervised": 1.0797569444444444,
+      "radiomap": 1.0976041666666667,
+      "frozen_fleet_jepa": 1.0715625
+    },
+    "4.0": {
+      "context_jepa": 4.789965277777777,
+      "supervised": 4.777951388888889,
+      "radiomap": 4.849583333333333,
+      "frozen_fleet_jepa": 4.691770833333334
+    }
+  },
+  "frozen_report_and_markdown_reproduced": true,
+  "scientific_worlds_model_forwards_training_or_timing_calibration_performed_by_auditor": false,
+  "audit_scope": "Source/input/archive/counter/statistical audit. Derived audit receipt only; no scientific outputs changed. Final prose/figures are reviewed separately.",
+  "interpretation": "All six statistical superiority rules fail even without the global timing veto. Engineering passes against RadioMap and supervised but fails against frozen original JEPA. Observed lower loss versus RadioMap is descriptive; no confirmed numerical, original-JEPA or matched-objective advantage. No production/hardware/SOTA/EMA-necessity claim."
+}

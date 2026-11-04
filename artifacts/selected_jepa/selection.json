@@ -1,0 +1,92 @@
+{
+  "sealed": true,
+  "selected_family": "context_jepa",
+  "selection_rule": "Among the two new JEPA families, minimize equal-cost mean command-loss ratio to RadioMap on all prior development sites and all three training members; exact rational comparison, lexicographic tie-break. No member/checkpoint/threshold retuning.",
+  "candidates": [
+    {
+      "family": "context_jepa",
+      "mean_loss_ratio_to_radiomap": 0.9711931223582642,
+      "exact_score_numerator": 302408747,
+      "exact_score_denominator": 311378592,
+      "loss_by_cost": {
+        "0.03": 0.010200694444444445,
+        "4.0": 0.04162361111111111
+      }
+    },
+    {
+      "family": "semantic_jepa",
+      "mean_loss_ratio_to_radiomap": 0.9721302420174088,
+      "exact_score_numerator": 50450091,
+      "exact_score_denominator": 51896432,
+      "loss_by_cost": {
+        "0.03": 0.010202777777777778,
+        "4.0": 0.04169722222222222
+      }
+    }
+  ],
+  "source_experiment": "semantic_jepa",
+  "source_receipt_sha256": {
+    "development.json": "0074cdd1fea2156ee0cfec407fb7b0dd346092342df755dd0fd2133e3ff857f4",
+    "training.json": "025b85789d1d2d9dc95c083290f9189e85e08f87cbbc3eda6915dd00fa0859c5",
+    "latency.json": "2a103b198cbd41add5741cc36c5b9fe176550c0e3f17a864dc462737676e13f3",
+    "protocol.json": "1f7ba4ca3db12fbc16b45fc7530bf23cb8d3a434d560aa04666473ded3d47285"
+  },
+  "source_scientific_commit": "9ff5fa56e7327bccde15a10a1a3952a82c699e02",
+  "source_training_already_complete": true,
+  "source_development_already_observed": true,
+  "source_semantic_confirmation_veto_preserved": true,
+  "new_confirmation_accessed": false,
+  "candidate_checkpoint_sha256": {
+    "artifacts/semantic_jepa/checkpoints/context_jepa-0.pt": "09e97e1e89b97d74f02ed2a909d3046eb2eb349ec659c23e12e8d5c39fad3473",
+    "artifacts/semantic_jepa/checkpoints/context_jepa-1.pt": "1534d72998fa7235233d0026256ae98188c05ad8c8b6d4b06efe88b741d83817",
+    "artifacts/semantic_jepa/checkpoints/context_jepa-2.pt": "3073e2567b047899a77a4e4e94dc8343ba458d0a9e91342a53e236de95859c33"
+  },
+  "supervised_checkpoint_sha256": {
+    "artifacts/semantic_jepa/checkpoints/supervised-0.pt": "de7d48e8a318d84cd3140ad1971e86811c4ab1b8c973747fc1f81a7276ddafa9",
+    "artifacts/semantic_jepa/checkpoints/supervised-1.pt": "cb7e21508e1c905bfdfbacc11bc56c495782ea8f3d827999bf9da0f9088662d5",
+    "artifacts/semantic_jepa/checkpoints/supervised-2.pt": "cfa30dc82a159dc60e8ed19badae561f2ff7c77828521c66a63f5575c0097036"
+  },
+  "reused_timing_profiles": {
+    "radiomap": {
+      "cold": 0.63,
+      "refit": 0.62,
+      "warm": 0.12
+    },
+    "frozen_fleet_jepa": {
+      "cold": 1.46,
+      "refit": 1.51,
+      "warm": 0.85
+    },
+    "context_jepa-s0": {
+      "cold": 1.63,
+      "refit": 0.93,
+      "warm": 0.35
+    },
+    "context_jepa-s1": {
+      "cold": 1.63,
+      "refit": 0.93,
+      "warm": 0.35
+    },
+    "context_jepa-s2": {
+      "cold": 1.63,
+      "refit": 0.93,
+      "warm": 0.35
+    },
+    "supervised-s0": {
+      "cold": 1.63,
+      "refit": 0.93,
+      "warm": 0.35
+    },
+    "supervised-s1": {
+      "cold": 1.63,
+      "refit": 0.93,
+      "warm": 0.35
+    },
+    "supervised-s2": {
+      "cold": 1.63,
+      "refit": 0.93,
+      "warm": 0.35
+    }
+  },
+  "no_new_training_or_timing_calibration": true
+}

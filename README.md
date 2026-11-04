@@ -5,6 +5,27 @@ Current experiment status and restart prerequisites are in [docs/HANDOFF.md](doc
 The restored didjital R6.1 reference and its executed software checks are
 documented in [docs/R6_COMPATIBILITY.md](docs/R6_COMPATIBILITY.md).
 
+The [compact fleet-JEPA comparison](docs/SELECTED_JEPA_RESULTS.md) completes
+**12 fits, 240 native evaluations and eight exact replays**, with 100 simulated
+robots per evaluation. The new 13,970-parameter inference model preserves AP/band
+identity, trains on genuinely delivered simulated observations, and predicts
+each horizon directly around RadioMap with a bounded correction. Predicted
+residuals are never recursively added; no cumulative missed-command bound follows.
+
+**JEPA superiority is not confirmed.** On eight fresh sites, context JEPA loses
+1.0818% / 4.7900% of commands at assumed 30 ms / four-second handovers, versus
+RadioMap's 1.0976% / 4.8496%. All six statistical comparisons fail; matched
+supervised and the original JEPA ensemble have lower means. A RadioMap timing
+overrun also triggers the registered global qualification veto. The separate
+[semantic-JEPA study](docs/SEMANTIC_JEPA_RESULTS.md) retains its development
+rejection and unused holdouts. An all-six-site validation audit finds finite,
+nonconstant representations, which does not establish useful RF abstraction
+or eliminate every form of collapse. **895 software tests pass**, with one
+expected warning; the [original](scripts/verify_semantic_jepa.py) and
+[selected](scripts/verify_selected_jepa.py) verifiers reproduce the actual
+archives. RadioMap remains the application default; no physical, production
+or SOTA qualification follows.
+
 The [costed RF-to-packet study](docs/CONTINUAL_PACKET_RESULTS.md) completes
 **224 evaluations and six exact replays**, each with 100 simulated robots.
 Neither response memory nor Bayesian updating passes its registered service
@@ -17,7 +38,7 @@ hardware or production claim. RadioMap remains the application default.
 The opt-in [SQLite execution journal](docs/DURABLE_EXECUTION.md) and
 [spawned proposal worker](docs/PROCESS_ISOLATION.md) add local obligation
 recovery and supervised process termination without changing existing services.
-The full suite passes **697 tests**, with one expected fork-misuse warning;
+That milestone’s archived suite passed **697 tests**, with one expected fork-misuse warning;
 [the final verifier](scripts/verify_continual_packet.py) reproduces the frozen
 report and checks source, archives and prior evidence.
 
