@@ -5,6 +5,28 @@ Current experiment status and restart prerequisites are in [docs/HANDOFF.md](doc
 The restored didjital R6.1 reference and its executed software checks are
 documented in [docs/R6_COMPATIBILITY.md](docs/R6_COMPATIBILITY.md).
 
+The [JEPA enabling-stack study](docs/FRESHNESS_STACK_RESULTS.md) completes
+**80 main evaluations, eight offline replays and eight fresh-cost repetitions**,
+each with 100 simulated robots. With neural weights fixed, JEPA command loss
+falls **4.7452% → 3.8100%**: **8,978 fewer misses, a 19.71% relative reduction**.
+The final package passes registered statistical and relative engineering gates.
+RadioMap improves **24.47%**, to **3.6980%** loss; final JEPA fails their
+superiority and worst-decile comparisons.
+
+The four fixed stages test FIFO, busy-server admission before inference,
+STR duplication disabled, and conditional full scans. Admission alone cuts
+JEPA held source age **18.97 → 4.34 s** and computed jobs **60 → 29**, but
+worsens loss to **4.9125%**. Descriptive subsequent stages improve delivery
+after radio-resource and sensing changes. Performed scans still cost 90 ms;
+the final stage performs about 53% fewer. JEPA maximum silence **8.35 → 8.37 s**
+passes the declared 50 ms allowance while failing zero deterioration.
+
+**1,489 software tests pass**, with one expected warning. The
+[independent verifier](scripts/verify_freshness_stack.py) reproduces the
+published 446-file source and raw evidence. RadioMap remains the application
+default. These finite simulations establish no physical, production,
+JEPA-objective or SOTA qualification.
+
 The [fixed-weight JEPA controller repair](docs/JEPAREPAIR_RESULTS.md) fixes
 forecast completion accounting, fractional handover-cost integration and
 local recovery from delivered scan evidence. At assumed **30 ms handovers**,
@@ -29,7 +51,7 @@ Its maximum silence is worse, **10.03 versus 8.34 seconds**, so the combined
 acceptance gate fails. Both repairs reduce observed loss and maximum silence
 relative to their own legacy controllers, but neither mean improvement is
 statistically confirmed. This fresh cohort does not replace the aggressive
-slow-arm rejection. **1,245 software tests pass**, with one expected warning;
+slow-arm rejection. That study’s archived suite has **1,245 passing software tests**, with one expected warning;
 the [repair](scripts/verify_jepa_repair.py) and
 [cost-aware](scripts/verify_costaware_recovery.py) verifiers check the archived
 source, actual charged computation, genuine scan evidence, replays and reports.
