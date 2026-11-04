@@ -1,6 +1,50 @@
 # WirelessJEV research handoff
 
-## Latest: fixed-weight JEPA controller repair
+## Latest: enabling-stack confirmation complete
+
+[FRESHNESS_STACK_RESULTS.md](FRESHNESS_STACK_RESULTS.md) records all
+16 development and 64 confirmation cases, eight exact offline replays and
+eight fresh measured-cost repetitions. Each uses 100 simulated robots for
+60 seconds at assumed four-second handovers. No owned scientific job remains.
+
+The preselected final package reduces JEPA misses **45,554 → 36,576**
+out of 960,000 commands (**19.7085% fewer**), with loss
+**4.745208% → 3.810000%**. RadioMap improves **47,004 → 35,501**
+(**24.4724% fewer**), or **4.896250% → 3.698021%** loss.
+Both final-versus-FIFO primary comparisons pass adjusted observed/pending
+bounds and relative engineering checks. JEPA silence **8.35 → 8.37 s**
+passes the 0.05-second allowance but fails zero deterioration.
+
+Final JEPA has 1,075 more misses than final RadioMap and fails superiority
+and worst-decile gates. Latest-only admission reduces held source age
+18.97 → 4.34 s, but worsens JEPA loss to 4.912500% and silence to 12.37 s.
+The final package was fixed before data; intermediate stages remain descriptive.
+
+Changes reject busy requests before inference, preserve sparse source clocks,
+disable simultaneous STR duplication while retaining sequential retries, and
+conditionally postpone ordinary full scans. Sustained silence bypasses that
+postponement. All accepted work and performed 90 ms scans/four-second moves
+remain paid. Neural weights are fixed; normal causal map refits continue.
+
+Scientific source **5493d425538046b79bff6c4b06202892fe35d8dc** seals
+446 files before data; metadata commit **4aee2d2** was also published first.
+Full preflight: **1,489 passed, one expected warning, 184.62 s**,
+with all 616 tracked test/source/input identities unchanged. The
+[passive verifier](../scripts/verify_freshness_stack.py) reproduces source,
+raw schedules, sensing arithmetic, bootstrap decisions and reports.
+
+Recheck without running models:
+
+    uv run --frozen python scripts/verify_freshness_stack.py
+
+Draft [PR #21](https://github.com/Danielfoojunwei/SDTH-submission-PreceptualAI/pull/21)
+is stacked on #20, not merged into main. Earlier evidence and vetoes are
+preserved; cohorts remain separate. RadioMap stays the application default.
+Source age is not measurement age, and fewer scans change learning data.
+Warm histories and finite episodes do not qualify steady-state sensing,
+arbitrary-layout transfer, physical recovery or production reliability.
+
+## Previous: fixed-weight JEPA controller repair
 
 [JEPAREPAIR_RESULTS.md](JEPAREPAIR_RESULTS.md) records 20 development cases,
 48 fast-handover confirmation cases, six exact offline recorded-schedule

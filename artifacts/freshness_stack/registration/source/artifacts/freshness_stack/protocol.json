@@ -1,0 +1,102 @@
+{
+  "schema": 1,
+  "study": "Prospective freshness, PHY resource and sensing stack for fixed JEPA",
+  "development_sites": [
+    2143000,
+    2143001
+  ],
+  "confirmation_sites": [
+    2144000,
+    2144001,
+    2144002,
+    2144003,
+    2144004,
+    2144005,
+    2144006,
+    2144007
+  ],
+  "families": [
+    "radiomap",
+    "frozen_fleet_jepa"
+  ],
+  "handover_seconds": [
+    4
+  ],
+  "variants_by_cost": {
+    "4.0": [
+      "fifo",
+      "latest",
+      "latest_single",
+      "latest_single_sense"
+    ]
+  },
+  "robots": 100,
+  "duration_seconds": 60,
+  "mission": "bulk_uploads",
+  "scan_period_seconds": 5,
+  "scan_outage_seconds": 0.09,
+  "extra_compute_seconds": 0.5,
+  "horizon_seconds": 30,
+  "new_fits": 0,
+  "bootstrap_replicates": 20000,
+  "bootstrap_seed": 2146000,
+  "primary_upper_quantile": 0.9833333333333333,
+  "primary_comparisons": "Three fixed tests: latest_single_sense minus fifo within each forecast family; final JEPA minus final RadioMap. Full three-test budget even if development stops all confirmation.",
+  "secondary_comparisons": "Within each family report fifo to latest, latest to latest_single, latest_single to latest_single_sense, using paired-site descriptive 95% intervals only. Nested interventions: no full-factorial interaction isolation, selection or promotion of intermediate variants.",
+  "worst_decile_margin": 0.0008333333333333334,
+  "silence_margin_seconds": 0.05,
+  "video_margin": 0.01,
+  "bulk_ratio": 0.99,
+  "cumulative_metrics_seconds": [
+    15,
+    30,
+    45,
+    60
+  ],
+  "development_severe_regression_absolute": 0.01,
+  "development": "No tuning/selection. Stop confirmation if either final-package minus fifo family mean loss exceeds 0.01 absolute (one percentage point), or ANY arm fails source/causal/actual-paid/consumption integrity. Intermediate losses are retained but not selected as substitute primary candidates.",
+  "execution_seed": 2145000,
+  "workers": 2,
+  "thread_limits": {
+    "OPENBLAS_NUM_THREADS": "1",
+    "OMP_NUM_THREADS": "1",
+    "MKL_NUM_THREADS": "1"
+  },
+  "execution_order": "Seeded fixed permutation within site blocks; complete each site before next; capture order before first new world.",
+  "source_scope": "Previous parent and cost-aware study results and post-hoc passive diagnoses are already observed. This new registration precedes only new 2143/2144 site evaluations. No old data, source, global timing veto or qualification claim is replaced.",
+  "model_choice": "Original fixed three-member FleetJEPA and strong RadioMap, same pretrained weights and original cold/refit/warm allowances. No new fit, distillation, member selection, timing recalibration or JEPA-objective claim.",
+  "controller": "ALL arms preserve costaware_recovery repair controller: ordinary outage utility, planned/reactive all-handover admission, current pilots, 420 primary-radio-available silent slots for emergency handover, fresh completed heard neighbor checks; all outages paid.",
+  "variants": {
+    "fifo": {
+      "queue": "fifo",
+      "duplication": true,
+      "adaptive_whole_scan": false
+    },
+    "latest": {
+      "queue": "latest",
+      "duplication": true,
+      "adaptive_whole_scan": false
+    },
+    "latest_single": {
+      "queue": "latest",
+      "duplication": false,
+      "adaptive_whole_scan": false
+    },
+    "latest_single_sense": {
+      "queue": "latest",
+      "duplication": false,
+      "adaptive_whole_scan": true
+    }
+  },
+  "queue": "At each integer-second request latest admits inference only when the preceding original paid completion is already reached. Reject busy arrivals BEFORE history snapshot/predictor call; no work cancellation discount. Preserve separate accepted job ordinal/source timestamp/storage index, all arrivals, actual completion and consumption. FIFO baseline retains every request and serialized costs.",
+  "runtime": "All accepted main/fresh jobs pay max(original sealed allowance, actual predictor time, actual history snapshot-through-validation/storage/hash issue time)+0.5s. Same serialized service assumption, no invented overlap. Profile exceedance diagnostic only because actual work paid; undercharge/early use/source/causal failure veto.",
+  "freshness": "Report both age at consumption and wall age of the last held forecast at each native second/actual scan assessment. Age derives source timestamp; all output/metric accesses exclude uncomputed sparse rows.",
+  "sensing": "Retain complete 90ms scans with actual start/capture/completion/report delivery. Suppress only an ordinary due scan when current gap<20 slots, current best available measured pilot RSSI>=-67dBm, a consumed forecast has age<=5s and age+5<=30s support, and its current-pilot-anchored best fixed-band worst0..5s RSSI>=-67dBm. Otherwise allow original scan. Threshold -67 is existing -75dBm watchdog plus existing 8dB recovery gain, fixed before data. Postponement does not create observations or rewrite captures.",
+  "sensing_reassessment": "When an ordinary due scan is suppressed retain due=True, reassess ordinary delivery-triggered starts after5s; existing >=200ms silence watchdog can initiate the full due scan immediately despite reassessment. Genuine start clears due/reassessment. Keep existing periodic phase and native90ms cost.",
+  "sensing_measurements": "Use only existing available, lagged local current-link pilots and actually consumed model forecasts. Require pilot capture association to match current AP and time since its available measurement refresh to be less than the existing100ms pilot cadence. Track actual capture/refresh/AP metadata; no extra pilot read. No hidden future/counterfactual/private labels, predicted pilot delivery or fictitious partial scans. Assessment logs retain the original consumed current-AP nine-horizon three-band values, source/ready times and pilots so the gating arithmetic can be audited without new forwards.",
+  "phy": "latest_single variants disable simultaneous STR control duplication. Existing sequential cross-link retries remain; no extra radio, bandwidth, power, MAC grant or PHY-curve change. Apply the identical policy to both model families.",
+  "replays": "First confirmation site all eight arms: eight offline exact original charged-schedule replays with fresh forward recomputation and separate new timing diagnostics; eight fresh actual-cost repetitions add no independent sites. Bind original jobs+all arrival decisions and archive hashes. Fresh changes legitimate descriptive sensitivity.",
+  "controller_compute_scope": "Forecast issue work measured; admission/scoring/scan-gating CPU not independently scheduled and common0.5s scheduling/other-work allowance remains an assumption. Startup/loading separate, no full-stack real-time proof.",
+  "conditions": "Shared procedural warehouse CAD,100robots,conditional60s warm histories,60s episodes, alternating stationary/hidden drift by site parity, assumed routes/localization/scanning/native PHY. Real model weights and native simulator, not real-car trials.",
+  "activation": "No default activation, hardware/production, SOTA, novelty, EMA-necessity, arbitrary-layout or indefinite packet-loss claim."
+}

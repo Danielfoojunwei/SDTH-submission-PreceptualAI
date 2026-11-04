@@ -6,6 +6,51 @@ are in `docs/WAREHOUSE_RESULTS.md`. The subsequently authorised warehouse v2
 campaign is described below; general foundation-model, custom on-air PHY,
 robotics and space extensions remain deferred.
 
+## Enabling JEPA: confirmed stack improvement with fixed weights
+
+[FRESHNESS_STACK_RESULTS.md](FRESHNESS_STACK_RESULTS.md) completes 16
+development and 64 confirmation cases on two/eight new procedural site seeds,
+plus eight offline replays and eight fresh-cost repetitions. Each uses 100
+simulated robots for 60 seconds at assumed four-second handovers. Both fixed
+JEPA and strong RadioMap receive the same four nested stages: FIFO,
+admission before inference, simultaneous STR duplication disabled, and
+conditional whole scans. Three primary comparisons and six descriptive
+component contrasts were published before collection.
+
+The final package reduces JEPA loss **4.745208% → 3.810000%**:
+**8,978 fewer misses per 960,000 commands (19.7085% relative)**.
+RadioMap improves **4.896250% → 3.698021% (24.4724% relative)**.
+Both within-family comparisons pass the three-test-adjusted observed and
+pending-command bounds and relative engineering margins. JEPA maximum silence
+rises 8.35 → 8.37 seconds, within the 0.05-second allowance, so zero
+deterioration fails. Final JEPA versus final RadioMap fails superiority and
+its worst-decile margin. These are stack-package gains around fixed models.
+
+The negative component result matters: latest-only admission reduces JEPA's
+held source age 18.97 → 4.34 seconds and computes 29 instead of 60 forecasts,
+while increasing loss to 4.912500% and silence to 12.37 seconds.
+Fewer callbacks and changed histories are possible mechanisms, not isolated
+causes. Subsequent descriptive stages improve delivery after disabling
+simultaneous duplication and then making full scans conditional. Effects
+depend on this order; they are not a factorial decomposition or intermediate
+candidate qualification.
+
+Performed scans retain their full 90 ms interruption; final counts fall about
+53%. Source age differs from capture age, and fewer scans alter both radio
+cost and delivered evidence. Association-matching pilot clocks, consumed
+forecast support and six native query points are explicit. No partial
+scanner or extra measurements are assumed. Neural weights remain fixed;
+ordinary causal map fitting and memory updates continue.
+
+Source commit 5493d425 seals 446 files before new data. The full pre-data
+suite passes 1,489 tests with one expected warning. Earlier source, failures
+and vetoes remain intact. Scoring/scan-gating CPU is not independently
+scheduled and the common 500 ms allowance remains assumed. Conditional warm
+histories and 60-second episodes do not establish steady-state sensing,
+physical deadlines, indefinite learning/safety or arbitrary-layout transfer.
+RadioMap remains the application default; no hardware, production, SOTA or
+JEPA-objective necessity claim follows.
+
 ## Fixed-weight JEPA: controller repair gives a conditional service gain
 
 [JEPAREPAIR_RESULTS.md](JEPAREPAIR_RESULTS.md) reports a preregistered repair
