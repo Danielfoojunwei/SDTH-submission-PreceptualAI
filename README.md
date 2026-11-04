@@ -5,6 +5,37 @@ Current experiment status and restart prerequisites are in [docs/HANDOFF.md](doc
 The restored didjital R6.1 reference and its executed software checks are
 documented in [docs/R6_COMPATIBILITY.md](docs/R6_COMPATIBILITY.md).
 
+The [fixed-weight JEPA controller repair](docs/JEPAREPAIR_RESULTS.md) fixes
+forecast completion accounting, fractional handover-cost integration and
+local recovery from delivered scan evidence. At assumed **30 ms handovers**,
+the original JEPA ensemble loses **1.03938%** of commands versus **1.07010%**
+with its legacy controller: **295 fewer misses, a 2.87% relative reduction**
+on eight fresh 100-robot sites. Both registered statistical and engineering
+gates pass for that comparison. Superiority over repaired RadioMap is still
+unconfirmed; RadioMap's own mean improvement fails its maximum-silence margin.
+The aggressive four-second arm roughly doubles development loss and is
+rejected before its slow confirmation cases. Its negative result remains
+visible. These are fixed-weight simulated controller-package results, not a
+new JEPA-objective advantage. [Runtime diagnosis](docs/JEPAREPAIR_RUNTIME_DIAGNOSIS.md)
+and [prediction-to-control diagnosis](docs/JEPAREPAIR_DIAGNOSIS_ARCHITECTURE.md)
+explain the repaired execution path and remaining representation mismatch.
+
+The separately registered [cost-aware four-second recovery study](docs/COSTAWARE_RECOVERY_RESULTS.md)
+also completes all **eight development, 32 confirmation, four offline replay
+and four fresh-cost repetition cases**. Repaired JEPA loses **5.80104%** of
+commands versus repaired RadioMap's **6.18688%**, a statistically supported
+mean difference under the three-comparison budget and pending-command bound.
+Its maximum silence is worse, **10.03 versus 8.34 seconds**, so the combined
+acceptance gate fails. Both repairs reduce observed loss and maximum silence
+relative to their own legacy controllers, but neither mean improvement is
+statistically confirmed. This fresh cohort does not replace the aggressive
+slow-arm rejection. **1,245 software tests pass**, with one expected warning;
+the [repair](scripts/verify_jepa_repair.py) and
+[cost-aware](scripts/verify_costaware_recovery.py) verifiers check the archived
+source, actual charged computation, genuine scan evidence, replays and reports.
+RadioMap remains the application default. No physical or production activation
+has occurred.
+
 The [compact fleet-JEPA comparison](docs/SELECTED_JEPA_RESULTS.md) completes
 **12 fits, 240 native evaluations and eight exact replays**, with 100 simulated
 robots per evaluation. The new 13,970-parameter inference model preserves AP/band
@@ -20,8 +51,8 @@ overrun also triggers the registered global qualification veto. The separate
 [semantic-JEPA study](docs/SEMANTIC_JEPA_RESULTS.md) retains its development
 rejection and unused holdouts. An all-six-site validation audit finds finite,
 nonconstant representations, which does not establish useful RF abstraction
-or eliminate every form of collapse. **895 software tests pass**, with one
-expected warning; the [original](scripts/verify_semantic_jepa.py) and
+or eliminate every form of collapse. That study's archived suite has **895
+passing software tests**, with one expected warning; the [original](scripts/verify_semantic_jepa.py) and
 [selected](scripts/verify_selected_jepa.py) verifiers reproduce the actual
 archives. RadioMap remains the application default; no physical, production
 or SOTA qualification follows.

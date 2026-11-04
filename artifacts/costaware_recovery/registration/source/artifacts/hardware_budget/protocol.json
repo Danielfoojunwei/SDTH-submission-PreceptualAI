@@ -1,0 +1,23 @@
+{
+  "study": "Cost-aware warehouse sensing and handover admission",
+  "design_after": "The frontier slow-hardware stress test showed 14-16% command loss; those sites are discovery only",
+  "development_sites": [310000,310001,310002,310003],
+  "test_sites": [311000,311001,311002,311003],
+  "methods": ["radiomap","previous_jepa","confirmed_hybrid","distilled"],
+  "scan_period_options": [1,5],
+  "gate_options": ["rescue","outage_budget"],
+  "robots": 100,
+  "duration_seconds": 60,
+  "handover_seconds": 4.0,
+  "scan_outage_seconds": 0.09,
+  "extra_compute_seconds": 0.5,
+  "gate_rule": "Compare 30-second expected MCS0 retry-failure area at the current AP with four seconds of certain outage plus candidate failure area after the outage; reject planned moves with nonpositive gain. Keep the existing reactive fallback.",
+  "failure_probability": "Fixed ns-3/Nakagami/blockage surrogate used by the frontier loss; not a calibrated end-to-end risk guarantee",
+  "selection": "Choose scan cadence and gate per method by lowest total development control misses, then highest bulk throughput, then stable option order",
+  "latency": "Use frozen cadence-specific measured service budgets plus 500 ms; same FIFO and scan accounting as the frontier",
+  "primary": "Selected distilled configuration versus independently selected RadioMap configuration on four new sites",
+  "secondary": "Compare each selected configuration with its one-second/rescue default on the same fresh sites",
+  "no_weight_updates": true,
+  "simulation_only": true,
+  "physical_timing_measured": false
+}

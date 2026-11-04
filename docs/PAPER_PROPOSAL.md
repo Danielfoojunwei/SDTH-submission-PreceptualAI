@@ -6,6 +6,73 @@ are in `docs/WAREHOUSE_RESULTS.md`. The subsequently authorised warehouse v2
 campaign is described below; general foundation-model, custom on-air PHY,
 robotics and space extensions remain deferred.
 
+## Fixed-weight JEPA: controller repair gives a conditional service gain
+
+[JEPAREPAIR_RESULTS.md](JEPAREPAIR_RESULTS.md) reports a preregistered repair
+of the shared controller/runtime around fixed original FleetJEPA and RadioMap.
+Forecast availability now pays actual measured issue/predictor work; planned
+admission integrates fractional handover outages, and a local watchdog uses
+only completed heard scan evidence. Every scan and handover remains costed.
+
+Twenty development cases permit only the assumed 30 ms handover setting.
+Forty-eight native confirmation cases cover eight fresh sites with 100 robots
+each. JEPA's repaired package reduces misses from 10,273 to 9,978 out of
+960,000 commands per arm (2.8716% relative). The six-test-adjusted observed
+and conservative endpoint bounds pass, as do all engineering margins.
+Repaired JEPA's 42-miss advantage over repaired RadioMap is unconfirmed.
+RadioMap's repair reduces its mean loss but increases maximum silence
+from 1.42 to 1.90 seconds, failing the registered 0.05-second allowance.
+
+The aggressive four-second repair roughly doubles development command loss;
+its three slow confirmation comparisons remain unrun after the severe-regression
+veto. The same world IDs were evaluated for fast cases, so they are not
+unopened worlds. Six exact offline replays and six separate fresh-cost
+repetitions establish their respective reproduction/sensitivity results,
+without adding independent sites or proving physical deadlines.
+
+This is evidence for a cost-specific controller package around frozen JEPA,
+not JEPA-objective necessity or superiority over the numerical comparator.
+The [validation diagnosis](JEPAREPAIR_DIAGNOSIS_ARCHITECTURE.md) also finds
+that compact JEPA's absolute RMSE improvement is much larger than its route-delta
+improvement, which is effectively tied with matched supervised. Native band/MCS
+control uses a current pilot plus forecast increments: better static calibration
+can cancel from that branch. This motivates a future matched factorized
+contrast study; it does not establish a new architecture or remedy.
+
+## Cost-aware slow recovery: better mean does not establish acceptable continuity
+
+[COSTAWARE_RECOVERY_RESULTS.md](COSTAWARE_RECOVERY_RESULTS.md) tests a separate
+rule on eight development and 32 confirmation cases with fixed original
+FleetJEPA and RadioMap, no training and eight fresh confirmation sites.
+Ordinary handover admission stays shared. Emergency handovers require 4.2 s
+of primary-radio-available control silence, poor current pilot and a recent
+genuinely heard better alternative. The controller's own four-second outage
+cannot count as subsequent failure evidence. This is a cost-derived heuristic,
+not an optimal-stopping result or new JEPA architecture.
+
+JEPA's legacy → repair mean loss is 5.855938% → 5.801042%, and RadioMap's is
+6.218125% → 6.186875%; neither passes its registered statistical comparison.
+Relative engineering checks pass for both, with observed maximum silence
+falling from 19.03 → 10.03 seconds and 23.24 → 8.34 seconds, respectively.
+Repaired JEPA versus repaired RadioMap has a statistically supported
+−0.385833-percentage-point loss difference, including the conservative
+pending-command bound under the full three-comparison budget. That contrast
+fails its silence margin: 10.03 seconds exceeds 8.34 + 0.05 seconds. No slow
+comparison passes the combined acceptance gate. Four exact offline replays
+and four fresh measured-cost repetitions supply separate reproduction and
+timing-sensitivity evidence, not more sites or physical deadline guarantees.
+
+The child cohort does not overwrite the earlier aggressive slow-cost failure
+or provide a paired estimate against it. The results support retaining both
+mean and continuity endpoints: elapsed failure is not evidence of how much
+failure remains, and waiting before an expensive break-before-make handover
+can lengthen silence. A sole radio with a four-second interruption cannot
+guarantee tighter continuous delivery through that move. Future robot safety
+claims require an explicit loss/silence budget and a usable second path or
+appropriate stop/fallback behavior where those deadlines demand it.
+The full archived pre-data software suite passes 1,245 tests with one expected
+warning; no default, hardware, production, EMA-necessity or SOTA promotion follows.
+
 ## Compact fleet JEPA: completed fixes, no confirmed objective advantage
 
 [SELECTED_JEPA_RESULTS.md](SELECTED_JEPA_RESULTS.md) completes 12 fits over
