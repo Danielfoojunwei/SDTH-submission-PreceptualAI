@@ -1,0 +1,569 @@
+{
+  "derived_only": true,
+  "fresh_live_cost_sensitivity": [
+    {
+      "case": [
+        "confirmation",
+        2124000,
+        0.03,
+        "radiomap",
+        "legacy"
+      ],
+      "changed_ready_jobs": 0,
+      "miss_difference": 0
+    },
+    {
+      "case": [
+        "confirmation",
+        2124000,
+        0.03,
+        "radiomap",
+        "exact_only"
+      ],
+      "changed_ready_jobs": 0,
+      "miss_difference": 0
+    },
+    {
+      "case": [
+        "confirmation",
+        2124000,
+        0.03,
+        "radiomap",
+        "repair"
+      ],
+      "changed_ready_jobs": 0,
+      "miss_difference": 0
+    },
+    {
+      "case": [
+        "confirmation",
+        2124000,
+        0.03,
+        "frozen_fleet_jepa",
+        "legacy"
+      ],
+      "changed_ready_jobs": 0,
+      "miss_difference": 0
+    },
+    {
+      "case": [
+        "confirmation",
+        2124000,
+        0.03,
+        "frozen_fleet_jepa",
+        "exact_only"
+      ],
+      "changed_ready_jobs": 0,
+      "miss_difference": 0
+    },
+    {
+      "case": [
+        "confirmation",
+        2124000,
+        0.03,
+        "frozen_fleet_jepa",
+        "repair"
+      ],
+      "changed_ready_jobs": 0,
+      "miss_difference": 0
+    }
+  ],
+  "inputs_sha256": {
+    "artifacts/jepa_repair/cases/confirmation-2124000-h0030-frozen_fleet_jepa-exact_only.json.gz": "b5f949abfc1d352f83faceecc631396966e09d3c693cd2299fde357cc5a14416",
+    "artifacts/jepa_repair/cases/confirmation-2124000-h0030-frozen_fleet_jepa-exact_only.receipt.json": "b41c8ca5480e7dbc0fe484240894ce91c368ecb51781721053adeedc96420cec",
+    "artifacts/jepa_repair/cases/confirmation-2124000-h0030-frozen_fleet_jepa-legacy.json.gz": "314e737452b983b0d1458e81b8d01bc04a6453134c7cfa9787c9e751e59b69ac",
+    "artifacts/jepa_repair/cases/confirmation-2124000-h0030-frozen_fleet_jepa-legacy.receipt.json": "175b74bd0a8f5b7ecbfdbdc823d2a924ab81d2d802e3b74eb62cbc902c9fa52a",
+    "artifacts/jepa_repair/cases/confirmation-2124000-h0030-frozen_fleet_jepa-repair.json.gz": "c1efcfa708844990881965d0d34c0a5bd69bb1dffa0e447126c732fb19963586",
+    "artifacts/jepa_repair/cases/confirmation-2124000-h0030-frozen_fleet_jepa-repair.receipt.json": "ffcadd380615a013deff47ed78fb2b23b99fb156ea867afed63c688a630f4d37",
+    "artifacts/jepa_repair/cases/confirmation-2124000-h0030-radiomap-exact_only.json.gz": "27a138f0202eb8e49ce59c566037a1a7d0ed57fa739f20241f2cdf208bc81ee0",
+    "artifacts/jepa_repair/cases/confirmation-2124000-h0030-radiomap-exact_only.receipt.json": "0bdbad856b6d66b4d3580fdb8e6218f3c9d208a71141eb168c08a2884b550a25",
+    "artifacts/jepa_repair/cases/confirmation-2124000-h0030-radiomap-legacy.json.gz": "db6e46e229040c8a8b2fb5c90c357dcbf0404e9023480aaaa2020d66443a651b",
+    "artifacts/jepa_repair/cases/confirmation-2124000-h0030-radiomap-legacy.receipt.json": "183838ba5ef95da13fedb21bb4772f1347cfdefe103aa208f637b627eaffb6c7",
+    "artifacts/jepa_repair/cases/confirmation-2124000-h0030-radiomap-repair.json.gz": "c0ac5ca7990d9951037fb343863c01affc701a59deffebb4105bdfca90612091",
+    "artifacts/jepa_repair/cases/confirmation-2124000-h0030-radiomap-repair.receipt.json": "7896b196d687fe864c54ccafcd2ea3e564c1aa5fbef14abaf19f2402065b53af",
+    "artifacts/jepa_repair/cases/confirmation-2124001-h0030-frozen_fleet_jepa-exact_only.json.gz": "119c60bd547bcd961f067ee79fbdf597ed8e34601e69cfeef83b390846bd0230",
+    "artifacts/jepa_repair/cases/confirmation-2124001-h0030-frozen_fleet_jepa-exact_only.receipt.json": "9bcd3946a57b0325af38342b868d37f2a96dd1ff637d7f8c463cfcf8ca07abc0",
+    "artifacts/jepa_repair/cases/confirmation-2124001-h0030-frozen_fleet_jepa-legacy.json.gz": "69c280b37a7a06785fd25cd27e0b87cee62e407013b4c7d1221211bd21860c0f",
+    "artifacts/jepa_repair/cases/confirmation-2124001-h0030-frozen_fleet_jepa-legacy.receipt.json": "1e90ae792f606efcf95388dce632cb93b668523be2cb415d1433fccf814a1130",
+    "artifacts/jepa_repair/cases/confirmation-2124001-h0030-frozen_fleet_jepa-repair.json.gz": "a36034a57241327039d60c5f4b248bd12bd51f3edb3be9025f51c9f4da7738a9",
+    "artifacts/jepa_repair/cases/confirmation-2124001-h0030-frozen_fleet_jepa-repair.receipt.json": "c36348f98c519c80ffcb0e2b339725f3978ef86582246faf301da07096bf3fbe",
+    "artifacts/jepa_repair/cases/confirmation-2124001-h0030-radiomap-exact_only.json.gz": "66960e106df7bbc2ce1e73653bb82c82e804d4b3ca912756235611330d30cac2",
+    "artifacts/jepa_repair/cases/confirmation-2124001-h0030-radiomap-exact_only.receipt.json": "a5028557a38484dc51d21dfbb80250179b9350d6b7a400f531df93d5ff0eba33",
+    "artifacts/jepa_repair/cases/confirmation-2124001-h0030-radiomap-legacy.json.gz": "1844a1111f63aa80e2127c1c41c09eebcc1246145b58251e3337d96461ad1441",
+    "artifacts/jepa_repair/cases/confirmation-2124001-h0030-radiomap-legacy.receipt.json": "6171c424164aec1f96b5df086ef0e856ace633025ef135707b672a7886225b8b",
+    "artifacts/jepa_repair/cases/confirmation-2124001-h0030-radiomap-repair.json.gz": "6eb464ca14f8fbe0cc5adf53beab4b290d54f6fff100ef4e490eab37362d3cb0",
+    "artifacts/jepa_repair/cases/confirmation-2124001-h0030-radiomap-repair.receipt.json": "9ec27eda35fa3d59196981fb45b6ac75d76e09bafa806e6cd179d72ade5bc034",
+    "artifacts/jepa_repair/cases/confirmation-2124002-h0030-frozen_fleet_jepa-exact_only.json.gz": "8ffea9045e3da19a6f1ce2a1ade2faa0641e958b21621bdacf6bf22986fc5bb1",
+    "artifacts/jepa_repair/cases/confirmation-2124002-h0030-frozen_fleet_jepa-exact_only.receipt.json": "dcb374db072bb6911d6999c63a767a5bf44e83ff62be12876d2d386bdf614457",
+    "artifacts/jepa_repair/cases/confirmation-2124002-h0030-frozen_fleet_jepa-legacy.json.gz": "1f69291ecd5969d6b8a435666aa1e139b1770f39130e7b97651d410739fd17ec",
+    "artifacts/jepa_repair/cases/confirmation-2124002-h0030-frozen_fleet_jepa-legacy.receipt.json": "61933fde75fb33e8cabc25793d40d856f01d42acdbd4bb8ed1ec9b83f9eacc5c",
+    "artifacts/jepa_repair/cases/confirmation-2124002-h0030-frozen_fleet_jepa-repair.json.gz": "ee5ce6e82443e83d7c33de9aaf2ba0a568247631402d4e690de5763ed51d963a",
+    "artifacts/jepa_repair/cases/confirmation-2124002-h0030-frozen_fleet_jepa-repair.receipt.json": "c36cddc787b7a0d38a092276423bf5f5f0ad430f51c70e49be7a4caabce6831c",
+    "artifacts/jepa_repair/cases/confirmation-2124002-h0030-radiomap-exact_only.json.gz": "5a0f45eea3684c3f8e1d831636cce81d85ac77b031b594cc0d8b22a6daf26803",
+    "artifacts/jepa_repair/cases/confirmation-2124002-h0030-radiomap-exact_only.receipt.json": "88080b04afde28117501ae15111d0229b5553de86b05cc633e4c113cb8167be5",
+    "artifacts/jepa_repair/cases/confirmation-2124002-h0030-radiomap-legacy.json.gz": "bac01583ed1c53380f593ba3adf00f154dd889b5e92995a13d1c1ccafe59bd2c",
+    "artifacts/jepa_repair/cases/confirmation-2124002-h0030-radiomap-legacy.receipt.json": "dbb9419104189a411ac456cfcd791c99d3091b2a331c438d5f19515a3735bb78",
+    "artifacts/jepa_repair/cases/confirmation-2124002-h0030-radiomap-repair.json.gz": "6e85794ef419c49d4da74b58de8dd837257a614779f88b04bda36aa37fd58bc4",
+    "artifacts/jepa_repair/cases/confirmation-2124002-h0030-radiomap-repair.receipt.json": "df1ba0fd8dd92d7cff950f21b78d425adc2ab92af9c7ea39b54ead7325d81ab4",
+    "artifacts/jepa_repair/cases/confirmation-2124003-h0030-frozen_fleet_jepa-exact_only.json.gz": "92b3d6722db848c9a5c9601e3f60d62a55abee6da5197c83d073fc0c4f77d9e0",
+    "artifacts/jepa_repair/cases/confirmation-2124003-h0030-frozen_fleet_jepa-exact_only.receipt.json": "b554d5923a112fded94c43ef96ce0d1de659cc591ee33ff87fde7bd9de7750e2",
+    "artifacts/jepa_repair/cases/confirmation-2124003-h0030-frozen_fleet_jepa-legacy.json.gz": "92fccc6c1a8ffa93a1cbd43bbb326a999f6c0af4aecdb272f9e2034707e4a4cb",
+    "artifacts/jepa_repair/cases/confirmation-2124003-h0030-frozen_fleet_jepa-legacy.receipt.json": "0efa8bb8f39868168386b6934642c8ee6ff36b534630726b57cd5781b675dd40",
+    "artifacts/jepa_repair/cases/confirmation-2124003-h0030-frozen_fleet_jepa-repair.json.gz": "c21d7410e5fa88d22b7e2d7ccd6259f98daedee37505151cdc1a457784d01daf",
+    "artifacts/jepa_repair/cases/confirmation-2124003-h0030-frozen_fleet_jepa-repair.receipt.json": "9e7236761cc6617bae0a7e644a25d40cba75c3b013135c2f53a67f627f10736f",
+    "artifacts/jepa_repair/cases/confirmation-2124003-h0030-radiomap-exact_only.json.gz": "b748cc92bd1db20543134061bf497e98672caa76298d4d4caf257d5804d90b1a",
+    "artifacts/jepa_repair/cases/confirmation-2124003-h0030-radiomap-exact_only.receipt.json": "c075b1082787eeada76c65f3229b7ef22ddd1ba41eba6b82781a81cba740da6d",
+    "artifacts/jepa_repair/cases/confirmation-2124003-h0030-radiomap-legacy.json.gz": "b602381ce77d4ae29fd870cdf2120e436a1dd9f96a8d16f18a6574e160921f5b",
+    "artifacts/jepa_repair/cases/confirmation-2124003-h0030-radiomap-legacy.receipt.json": "511ca22be28af448634c20218c1e3af027380d30b3d677cff242d1f61e1fa1ee",
+    "artifacts/jepa_repair/cases/confirmation-2124003-h0030-radiomap-repair.json.gz": "8121e4213f816a465a6a81c61f54c5a7b4b0d1110a34be99f748632e035f3010",
+    "artifacts/jepa_repair/cases/confirmation-2124003-h0030-radiomap-repair.receipt.json": "7cb8be9513113cff4e5a41b6c9635533791dc63d7a8621a16b91ee413bc09d18",
+    "artifacts/jepa_repair/cases/confirmation-2124004-h0030-frozen_fleet_jepa-exact_only.json.gz": "29ccc5401da2bb8d4e03f103751bb9857e414c22a94fe5ebb9fde6b4d08dbb6f",
+    "artifacts/jepa_repair/cases/confirmation-2124004-h0030-frozen_fleet_jepa-exact_only.receipt.json": "21793e9210a55ea247c8de4938b312605148687b117dd40b8165682e470c79f8",
+    "artifacts/jepa_repair/cases/confirmation-2124004-h0030-frozen_fleet_jepa-legacy.json.gz": "9d88ab9b7324044d92e4db2a1f5a8a955cce350fe77be5d54803d5e3928fb910",
+    "artifacts/jepa_repair/cases/confirmation-2124004-h0030-frozen_fleet_jepa-legacy.receipt.json": "6477b8fa041d511c5cd14b02ee642a9a737283009ebfcbd9e776b72c32286eb7",
+    "artifacts/jepa_repair/cases/confirmation-2124004-h0030-frozen_fleet_jepa-repair.json.gz": "426d079b39c276c24d69905855cc5707dfe962b6bc964d3b18bbcfbdf3b9335c",
+    "artifacts/jepa_repair/cases/confirmation-2124004-h0030-frozen_fleet_jepa-repair.receipt.json": "4b78319d059a07fbd2556781ec41d7e13c9e030fbc3f60c1d05db12d939bfea8",
+    "artifacts/jepa_repair/cases/confirmation-2124004-h0030-radiomap-exact_only.json.gz": "e7356533143e84622b2bac909910fc6eba193e38302fc3ff40058a87f7495521",
+    "artifacts/jepa_repair/cases/confirmation-2124004-h0030-radiomap-exact_only.receipt.json": "52c8764c05a226b78a13fa8105b05045b187e4748ee99b078eff9cfe3ef5faff",
+    "artifacts/jepa_repair/cases/confirmation-2124004-h0030-radiomap-legacy.json.gz": "34412467f5c905368845d16a17b7c6876ae6097b92ac62660e7a91ba7c84d6dd",
+    "artifacts/jepa_repair/cases/confirmation-2124004-h0030-radiomap-legacy.receipt.json": "08332e21673433c7eeca41a5999ffd3f27df3545ba0ac8c53fd0cbb0e381408f",
+    "artifacts/jepa_repair/cases/confirmation-2124004-h0030-radiomap-repair.json.gz": "eeba849ca590586fc126046236388540e21b1f87a92b9adc177a2f9a89204c72",
+    "artifacts/jepa_repair/cases/confirmation-2124004-h0030-radiomap-repair.receipt.json": "9d83268ebdc3718b86da82931bade49d48ca83bfd6961e418eab5ad66d16eb76",
+    "artifacts/jepa_repair/cases/confirmation-2124005-h0030-frozen_fleet_jepa-exact_only.json.gz": "f21236fb2de8bb459a4f7d44a883975bf5ad554357641f25461ba259544ec885",
+    "artifacts/jepa_repair/cases/confirmation-2124005-h0030-frozen_fleet_jepa-exact_only.receipt.json": "57d8f645d57b7201eadd260a521ed30e77543fa1169e038ecbc6c17c68dd1fd8",
+    "artifacts/jepa_repair/cases/confirmation-2124005-h0030-frozen_fleet_jepa-legacy.json.gz": "416592da3b32b46ed64b42c8d08ee6c7e98e4ef5dd64cfcf9adfc1a5ecc46f1e",
+    "artifacts/jepa_repair/cases/confirmation-2124005-h0030-frozen_fleet_jepa-legacy.receipt.json": "cd39413e21c3ab1786e15867a7e6717531f046032493d6b44f1e1bfaab1cc325",
+    "artifacts/jepa_repair/cases/confirmation-2124005-h0030-frozen_fleet_jepa-repair.json.gz": "69c56f031dc2661bdc844faf73486fdceb479c0dbfdcb98d90561e7d2de35abd",
+    "artifacts/jepa_repair/cases/confirmation-2124005-h0030-frozen_fleet_jepa-repair.receipt.json": "59c60b87334f3341ac8af92718d6cea9ba8912e5a248b6a7943599523cb5cb79",
+    "artifacts/jepa_repair/cases/confirmation-2124005-h0030-radiomap-exact_only.json.gz": "9a89c9d03f4f655d6646a4f5c17b2894e34a41df5ac74d85170bc9f59712002f",
+    "artifacts/jepa_repair/cases/confirmation-2124005-h0030-radiomap-exact_only.receipt.json": "7f7e6c2ac44ebf8ffe6740ed93f26b8915e463f193e304a5dfe921a6cfa16ec0",
+    "artifacts/jepa_repair/cases/confirmation-2124005-h0030-radiomap-legacy.json.gz": "a34991a750e005149d114add822771a7681087330a280671f5a76adb6163b3f6",
+    "artifacts/jepa_repair/cases/confirmation-2124005-h0030-radiomap-legacy.receipt.json": "9521ab2ef8945a68e969081fb1fc0ec375be74d7d02168c7b90b38e4f076ce64",
+    "artifacts/jepa_repair/cases/confirmation-2124005-h0030-radiomap-repair.json.gz": "7b721ec317aa39f3e6800c1954e0842e9fcd31cd03750758b016711a4b2c0488",
+    "artifacts/jepa_repair/cases/confirmation-2124005-h0030-radiomap-repair.receipt.json": "cb5ca89cdaad3c5ca69fb8d74c03c27265f612853be193b711ac08ee0b23c8b9",
+    "artifacts/jepa_repair/cases/confirmation-2124006-h0030-frozen_fleet_jepa-exact_only.json.gz": "04bf47f9cb4fb42695d142a119b52f83e891db9ff8bff4f91f535007f1eed889",
+    "artifacts/jepa_repair/cases/confirmation-2124006-h0030-frozen_fleet_jepa-exact_only.receipt.json": "3a8b270049a6eec41d1620b09dac229de5dee4b0a1f993e21f2ca794bcc0a05e",
+    "artifacts/jepa_repair/cases/confirmation-2124006-h0030-frozen_fleet_jepa-legacy.json.gz": "28f817d0dbcce622ad26b29fbda9aff1fb16222d5756141d22ff65965fc78861",
+    "artifacts/jepa_repair/cases/confirmation-2124006-h0030-frozen_fleet_jepa-legacy.receipt.json": "90bf7e907a6fbef22f73de96ca54cab08f2173aa24e8fc083bdc8c5bf642d92d",
+    "artifacts/jepa_repair/cases/confirmation-2124006-h0030-frozen_fleet_jepa-repair.json.gz": "f5e8f92126557ddf420ac3e6627544ee5a28aecd8de3965d583a0370e18ac3a8",
+    "artifacts/jepa_repair/cases/confirmation-2124006-h0030-frozen_fleet_jepa-repair.receipt.json": "cf0efff425adb7b92815d5af7bd13c504f22d559b86c63f49f4947d57f61561d",
+    "artifacts/jepa_repair/cases/confirmation-2124006-h0030-radiomap-exact_only.json.gz": "f2bf7889cfeb6cd1cd122fbbe9468dbda1d328e8b7ac840cebdd3e3ef0f0bf73",
+    "artifacts/jepa_repair/cases/confirmation-2124006-h0030-radiomap-exact_only.receipt.json": "ca79d99ae502406ce0979b55df3768d1935f86ae729ae233df64dfa29b891f7a",
+    "artifacts/jepa_repair/cases/confirmation-2124006-h0030-radiomap-legacy.json.gz": "538a5cdc6c47b234b8768c172ef873654904a96b8ae2210b7012114d540908e6",
+    "artifacts/jepa_repair/cases/confirmation-2124006-h0030-radiomap-legacy.receipt.json": "b0422793645008e9ab78f5a616a6a1021e733627809ea098ac98ba451d4d195b",
+    "artifacts/jepa_repair/cases/confirmation-2124006-h0030-radiomap-repair.json.gz": "e74edfc828fdd080bd8dea3b00d14f14a461241c6f7030b496aa788ff4fa8482",
+    "artifacts/jepa_repair/cases/confirmation-2124006-h0030-radiomap-repair.receipt.json": "1a9be84a959c37cc00935775397207e5ff485cdd7ec73ac6d84fa6f4166cb310",
+    "artifacts/jepa_repair/cases/confirmation-2124007-h0030-frozen_fleet_jepa-exact_only.json.gz": "976c3f1aa31b50aae3007e4d4a84941e755b051c2af5e0b133e62e5ca7a20537",
+    "artifacts/jepa_repair/cases/confirmation-2124007-h0030-frozen_fleet_jepa-exact_only.receipt.json": "b520b0a255d3f2369f1b81eeb96cb85acfe615b33b0e2f1e0e4783ca808b7d26",
+    "artifacts/jepa_repair/cases/confirmation-2124007-h0030-frozen_fleet_jepa-legacy.json.gz": "aaf6acfac967eac50e43d962c2464a897315ca9b9617b70904a55221140c9062",
+    "artifacts/jepa_repair/cases/confirmation-2124007-h0030-frozen_fleet_jepa-legacy.receipt.json": "0fb2d0d3a778889088b667d123dd77db9f41149a85b4786826af509cf9064230",
+    "artifacts/jepa_repair/cases/confirmation-2124007-h0030-frozen_fleet_jepa-repair.json.gz": "0d9006ed0fa7b607c1215eac5168911506e1ac1960b4b732f94f2532a3d46027",
+    "artifacts/jepa_repair/cases/confirmation-2124007-h0030-frozen_fleet_jepa-repair.receipt.json": "8b7a17ea3bc00aece10963483265531d8b281f20c38c61bb2b1ff571363dfd40",
+    "artifacts/jepa_repair/cases/confirmation-2124007-h0030-radiomap-exact_only.json.gz": "4077edfc5369aec42bfc5acee314d3fa5d89316e9b77d81634d0d3ac21a2c1f7",
+    "artifacts/jepa_repair/cases/confirmation-2124007-h0030-radiomap-exact_only.receipt.json": "42e4944cf58adde5628fcc3e4f3927727d8d2a6812a73b02c5770c6d01843a9c",
+    "artifacts/jepa_repair/cases/confirmation-2124007-h0030-radiomap-legacy.json.gz": "8c1272f02fdc8821edcd05478b32cb87e0a37cf4a1b78a753e67f6e19dc924d8",
+    "artifacts/jepa_repair/cases/confirmation-2124007-h0030-radiomap-legacy.receipt.json": "b5e3662ec1269c42fd02940c638ee044862138537427d685723c2e44459bb071",
+    "artifacts/jepa_repair/cases/confirmation-2124007-h0030-radiomap-repair.json.gz": "38ffecdbfc0c3b81013ee7aead269e102da80651c87925329f7f6c042879225c",
+    "artifacts/jepa_repair/cases/confirmation-2124007-h0030-radiomap-repair.receipt.json": "5c802af608f654e12bd1236f6e13bfa6ebf92a565c31ecf3f9607319fcd2b47b",
+    "artifacts/jepa_repair/cases/development-2123000-h0030-frozen_fleet_jepa-exact_only.json.gz": "77ed445951ce7cc73053038bfa66228cbed1c1db4daed6aa7ec91b28b878d66d",
+    "artifacts/jepa_repair/cases/development-2123000-h0030-frozen_fleet_jepa-exact_only.receipt.json": "45fc12c4c98e2f38d8d4dfb1526b4d6b56828b24ae8622ac86359c7b6b7a652b",
+    "artifacts/jepa_repair/cases/development-2123000-h0030-frozen_fleet_jepa-legacy.json.gz": "bfeab98b642aa786ebf85712c7bdf6ea793dc3d09a8ecd94681ba9a73f322384",
+    "artifacts/jepa_repair/cases/development-2123000-h0030-frozen_fleet_jepa-legacy.receipt.json": "a9255826352cc152085d28778b93af6d309d5586d215146a6cf977e10869f163",
+    "artifacts/jepa_repair/cases/development-2123000-h0030-frozen_fleet_jepa-repair.json.gz": "97f2074d671d9382f2e242dec0fdf968508a7bf52724e7acb11b7ee64e586782",
+    "artifacts/jepa_repair/cases/development-2123000-h0030-frozen_fleet_jepa-repair.receipt.json": "c859a2cae149be45bb0a566afc624844f78ceb9b13d8f5a6e117ecf4876c4f0e",
+    "artifacts/jepa_repair/cases/development-2123000-h0030-radiomap-exact_only.json.gz": "22c56a8d86a2df5e21589a62e69e44016185e0795a1d3d20bb3b523409ec3db1",
+    "artifacts/jepa_repair/cases/development-2123000-h0030-radiomap-exact_only.receipt.json": "95baea9aa17538122668caff7696ce5ef0a8c0b261f9b983fffb4edf03612e45",
+    "artifacts/jepa_repair/cases/development-2123000-h0030-radiomap-legacy.json.gz": "997412caf03efc7746e45e20dde43578fb37d6c30a8eb036c51b8a2a5b00e6f0",
+    "artifacts/jepa_repair/cases/development-2123000-h0030-radiomap-legacy.receipt.json": "1e7af777f2066aff2612ae38c994e63087bbb742e8db67bbb8614bbbda622239",
+    "artifacts/jepa_repair/cases/development-2123000-h0030-radiomap-repair.json.gz": "cacb3f14bf48ac254278ab0ac9a63ad3380f75fc67ec686fcb9da02adf5ebfa6",
+    "artifacts/jepa_repair/cases/development-2123000-h0030-radiomap-repair.receipt.json": "081ac9b49f9434d450ec8e80be2bd6d464c6a285082e5949a1956dc9ad337344",
+    "artifacts/jepa_repair/cases/development-2123000-h4000-frozen_fleet_jepa-legacy.json.gz": "c3ebf9e30a43886bce18316161c0f3064dd289752b91e6304afa06ea3034e9d8",
+    "artifacts/jepa_repair/cases/development-2123000-h4000-frozen_fleet_jepa-legacy.receipt.json": "a8182cf14ae899ad16ebb3a766f356fcf711964e099706b001b1bb8adb475d63",
+    "artifacts/jepa_repair/cases/development-2123000-h4000-frozen_fleet_jepa-repair.json.gz": "ffb8915ec1b322b8360f0328dbdf664be1edc056dcfc38deb2e0ae37901e0c0f",
+    "artifacts/jepa_repair/cases/development-2123000-h4000-frozen_fleet_jepa-repair.receipt.json": "04e1b0962827a31b1d23a2f36e36de460e47139407a11a2ba5a6604cac480796",
+    "artifacts/jepa_repair/cases/development-2123000-h4000-radiomap-legacy.json.gz": "5085db00b4e83756eb4b7736a4958345c3e9501be212a93530fdc599d20a28c3",
+    "artifacts/jepa_repair/cases/development-2123000-h4000-radiomap-legacy.receipt.json": "cbe08f2cafea80cb32bdd376bca283fda465934b40bd14296e0055c6191a0f77",
+    "artifacts/jepa_repair/cases/development-2123000-h4000-radiomap-repair.json.gz": "167ee4e608a5be9d289b6b7d1833eb92708a98df372b5d0825970b53c2be7cfe",
+    "artifacts/jepa_repair/cases/development-2123000-h4000-radiomap-repair.receipt.json": "a70a5bb360cc358c8fad96d5d15d4f849a7921074751ef5050ff248cabc73eb0",
+    "artifacts/jepa_repair/cases/development-2123001-h0030-frozen_fleet_jepa-exact_only.json.gz": "017660c4fa7d0417af303ed41fbf837051a45c9db0c83fae0505475808e6b98f",
+    "artifacts/jepa_repair/cases/development-2123001-h0030-frozen_fleet_jepa-exact_only.receipt.json": "2faa7dc0c27cd18bfb6ac4afc8caf4718ee370bdbd9decca32f01a7606a9a69f",
+    "artifacts/jepa_repair/cases/development-2123001-h0030-frozen_fleet_jepa-legacy.json.gz": "683fa541b3e8cfc1a0edd11acfcf70aa1dfcb3a82061137db374d774537850af",
+    "artifacts/jepa_repair/cases/development-2123001-h0030-frozen_fleet_jepa-legacy.receipt.json": "c48e51e6c1a875420cf4b79e9274a9d87d6eea357bc052fd9ee3e9c5d1c62fd5",
+    "artifacts/jepa_repair/cases/development-2123001-h0030-frozen_fleet_jepa-repair.json.gz": "d6ffbf3d935ebc0cb5bcb561e462cbec855591c4eec44d9c7c7ef17de66c8a89",
+    "artifacts/jepa_repair/cases/development-2123001-h0030-frozen_fleet_jepa-repair.receipt.json": "716504073fe85abd292f4964a2a44215a989431f2847a438fb27930aba949a27",
+    "artifacts/jepa_repair/cases/development-2123001-h0030-radiomap-exact_only.json.gz": "0b6fca2baef8fb0f499b531b58c07b33b979c1d21892e64fafcc5a0271428144",
+    "artifacts/jepa_repair/cases/development-2123001-h0030-radiomap-exact_only.receipt.json": "9d18cbd63166cc69788596c681e12fb0a13530cc4613e36a72d3d90fc034fab3",
+    "artifacts/jepa_repair/cases/development-2123001-h0030-radiomap-legacy.json.gz": "1ed269e254a2e47a5ac34da8dbbe2dc34fba7dacf2ca94d3de97e8ac719d6dd0",
+    "artifacts/jepa_repair/cases/development-2123001-h0030-radiomap-legacy.receipt.json": "f311ea6f6ee84f2fe3bffc01f610faa6f7a08db82831f880247efcc1169c42a3",
+    "artifacts/jepa_repair/cases/development-2123001-h0030-radiomap-repair.json.gz": "22936a5b31f7cfe9a2d59e9978c9cb1d49e20e2009adc0de43493e555e09f6b6",
+    "artifacts/jepa_repair/cases/development-2123001-h0030-radiomap-repair.receipt.json": "e7b81f43a9d94d7273e83cdd1055952479803e838ae79b5b0745104c8173ec14",
+    "artifacts/jepa_repair/cases/development-2123001-h4000-frozen_fleet_jepa-legacy.json.gz": "bf8ea761b222d4c3e52ebd0536a7eead8fc95c2445a33a227c06d1016fdd9e8b",
+    "artifacts/jepa_repair/cases/development-2123001-h4000-frozen_fleet_jepa-legacy.receipt.json": "a44d03a65b08894477e0d0266fe5c35aabeac577b14cc37f6a5b91547cc428c0",
+    "artifacts/jepa_repair/cases/development-2123001-h4000-frozen_fleet_jepa-repair.json.gz": "048a1b898d46c46eac450001c7307e8b942639b525c10969d511dde8207449d6",
+    "artifacts/jepa_repair/cases/development-2123001-h4000-frozen_fleet_jepa-repair.receipt.json": "d0ba744b00e69d7c4a11ae60981be73db0450f956d829f0a81589c76a409e050",
+    "artifacts/jepa_repair/cases/development-2123001-h4000-radiomap-legacy.json.gz": "b2becbc03513f232e08dd1a7ba06df99aae978cf0390078ff27acd6b09bffb81",
+    "artifacts/jepa_repair/cases/development-2123001-h4000-radiomap-legacy.receipt.json": "e0641633115c672e53c826e23e59fa06bd76a97380b3e0d0929f77d35479fc31",
+    "artifacts/jepa_repair/cases/development-2123001-h4000-radiomap-repair.json.gz": "118a891df870f5a4cc6ecbeb8321189ee34e162e6fe2e14b6e604f3589fcce72",
+    "artifacts/jepa_repair/cases/development-2123001-h4000-radiomap-repair.receipt.json": "43b7e23931f9b7ec5a92307d94b0ba9ec3c8b31cff585b17db70e6d8d7704d2a",
+    "artifacts/jepa_repair/completion.json": "3f751c612a61dc31493dc583b0fd1f3afb34f1dd9c3947e4ab46c90c55b0b328",
+    "artifacts/jepa_repair/development.json": "02b272fee7e9eefa1d8b2c354cf237b0ebb50fc526f7efa1744d3b72469bee54",
+    "artifacts/jepa_repair/live_replications/confirmation-2124000-h0030-frozen_fleet_jepa-exact_only.json.gz": "592446ef1e3343d63a1c6f08c73a34d8948c072a581988b84162caa2c0414d0b",
+    "artifacts/jepa_repair/live_replications/confirmation-2124000-h0030-frozen_fleet_jepa-exact_only.receipt.json": "9c3e3c53bea49fcf3f03d10cd525fc9c6ddfdfa6a206919844d9a0220d726b78",
+    "artifacts/jepa_repair/live_replications/confirmation-2124000-h0030-frozen_fleet_jepa-legacy.json.gz": "886d968b3f8a2d079b29fb923b4053f15e588c5ef10537931009185756e06260",
+    "artifacts/jepa_repair/live_replications/confirmation-2124000-h0030-frozen_fleet_jepa-legacy.receipt.json": "52d30b183d4a6d12a6e99da4509e536b5e951b055b8c152f2cc772aea8e341b5",
+    "artifacts/jepa_repair/live_replications/confirmation-2124000-h0030-frozen_fleet_jepa-repair.json.gz": "6dad3ff0bb84153b2ebe3694679f1a4ba4307874d49e3fee4a841e3ade41ad2f",
+    "artifacts/jepa_repair/live_replications/confirmation-2124000-h0030-frozen_fleet_jepa-repair.receipt.json": "d96f1aac5c68928ec70df4a70642920be56ba0fdc27bdcd0c555e6f61ee63a2b",
+    "artifacts/jepa_repair/live_replications/confirmation-2124000-h0030-radiomap-exact_only.json.gz": "eefcb3ffa2a63ae60beba223f11af0a2372d513c24ceb9fa16ecc27687101114",
+    "artifacts/jepa_repair/live_replications/confirmation-2124000-h0030-radiomap-exact_only.receipt.json": "d3321786e7109b48f353c569543dff18aeff1644fa72908a8e5a40fd97735435",
+    "artifacts/jepa_repair/live_replications/confirmation-2124000-h0030-radiomap-legacy.json.gz": "150ff617bd409b61f5a1d4e4211fa0b4436503e7744b26b9235d2bb26e2b04b7",
+    "artifacts/jepa_repair/live_replications/confirmation-2124000-h0030-radiomap-legacy.receipt.json": "780a5121275f68437bebbb4b10faf2e1f28e9adadaef5d20cbd317bcfe7a1870",
+    "artifacts/jepa_repair/live_replications/confirmation-2124000-h0030-radiomap-repair.json.gz": "1bea19289931d2c3f5df4388164b7f6c892990acf0be38ffba7ca0eed4ac2c79",
+    "artifacts/jepa_repair/live_replications/confirmation-2124000-h0030-radiomap-repair.receipt.json": "73f64b3b90c8d078b62333f647d7614aae995d53b23edf25f4a163867d8dfd9d",
+    "artifacts/jepa_repair/protocol.json": "f13002a1aeef91d4c226b24ad812217f790e82caa3ef9a03b3d442a4da298334",
+    "artifacts/jepa_repair/qualification.json": "284c07ac96f439168f15b1c3ef288093a1e77a1482c9ab3282920ff273d338ad",
+    "artifacts/jepa_repair/registration/git.json": "5034f23a0e696b324cb31a95690e0f2d708c06dcdfc38d8814a5af439872ede8",
+    "artifacts/jepa_repair/registration/source.json": "b205516fa73552f7ea5e37bd1da90c2677652de22901b1804fe862f9227c3ad8",
+    "artifacts/jepa_repair/replays/confirmation-2124000-h0030-frozen_fleet_jepa-exact_only.json.gz": "0b4bbd14bc0e9b51f650c77f7ffdaa469a8785b46d6d65b870d27912231dda2c",
+    "artifacts/jepa_repair/replays/confirmation-2124000-h0030-frozen_fleet_jepa-exact_only.receipt.json": "daf1db7b4ff9e3bae622a21a78045a44c1fd7090c4dff4db801e394b10717421",
+    "artifacts/jepa_repair/replays/confirmation-2124000-h0030-frozen_fleet_jepa-legacy.json.gz": "e0a0a571dc6944465bd9615ee813a3ca0f647bcde4bad42c7933179718716a36",
+    "artifacts/jepa_repair/replays/confirmation-2124000-h0030-frozen_fleet_jepa-legacy.receipt.json": "d26a336b46ac392104b483d9c8b9c163141067cefe6ec3d70e8468644dd5c984",
+    "artifacts/jepa_repair/replays/confirmation-2124000-h0030-frozen_fleet_jepa-repair.json.gz": "c7078c16bf4eda74d082ec8629a715e65af8e022bf8a13c3e5951c68f63f00ce",
+    "artifacts/jepa_repair/replays/confirmation-2124000-h0030-frozen_fleet_jepa-repair.receipt.json": "8de67bae84d30bce7b051f6f8c27f15959c8524cfbe7e03aaa2849f8cf227648",
+    "artifacts/jepa_repair/replays/confirmation-2124000-h0030-radiomap-exact_only.json.gz": "a228e38301838eb44acad9ab7e185ec639b77e56acba3ae6055ecebfdb7d5e96",
+    "artifacts/jepa_repair/replays/confirmation-2124000-h0030-radiomap-exact_only.receipt.json": "a9dda9418ca07d43c00b61c8fac4ac18129808f4cd05aa63f5df741470ffca4e",
+    "artifacts/jepa_repair/replays/confirmation-2124000-h0030-radiomap-legacy.json.gz": "ce253fa1fa1faf3737823df5cc4406320bf5610b7f56ddf11acd1de17f0a22c7",
+    "artifacts/jepa_repair/replays/confirmation-2124000-h0030-radiomap-legacy.receipt.json": "ad5299ea7d44f490e66b0f83ada50c04be4e424a7cae8bd5eca72dfe5c75d764",
+    "artifacts/jepa_repair/replays/confirmation-2124000-h0030-radiomap-repair.json.gz": "df5f0cdfbd0e8665f3e35df4c3f3b59d66fd3d039e2665e56f45bd493ed1148e",
+    "artifacts/jepa_repair/replays/confirmation-2124000-h0030-radiomap-repair.receipt.json": "63473d47a15fd92fa5758edac526b2203ac2805111513d7fca0f83187f9f1765",
+    "artifacts/jepa_repair/report.json": "c9c990d68e9191db827a006b750bbf6ab85bc39d59cd66c1e8f2364851626268",
+    "artifacts/semantic_jepa/latency.json": "2a103b198cbd41add5741cc36c5b9fe176550c0e3f17a864dc462737676e13f3"
+  },
+  "limits": [
+    "New prospective actual-cost contract; older overrun vetoes and results remain unchanged.",
+    "Controller-package effects do not establish a JEPA training-objective or architecture advantage.",
+    "Offline fixed-schedule replay is not proof of freshly measured deadlines.",
+    "Fresh live-cost repetitions are sensitivity observations, not extra independent sites.",
+    "Shared procedural CAD, assumed sensing/public routes and fixed weights limit transfer.",
+    "Admission/scorer CPU is not separately scheduled; no complete-stack real-time guarantee.",
+    "Empirical endpoint/tail margins and finite silence do not establish production or indefinite safety."
+  ],
+  "new_fitting_or_selection": false,
+  "no_physical_or_production_qualification": true,
+  "observed_loss_units": "percent",
+  "offline_replay_checks": [
+    {
+      "case": [
+        "confirmation",
+        2124000,
+        0.03,
+        "radiomap",
+        "legacy"
+      ],
+      "exact": true
+    },
+    {
+      "case": [
+        "confirmation",
+        2124000,
+        0.03,
+        "radiomap",
+        "exact_only"
+      ],
+      "exact": true
+    },
+    {
+      "case": [
+        "confirmation",
+        2124000,
+        0.03,
+        "radiomap",
+        "repair"
+      ],
+      "exact": true
+    },
+    {
+      "case": [
+        "confirmation",
+        2124000,
+        0.03,
+        "frozen_fleet_jepa",
+        "legacy"
+      ],
+      "exact": true
+    },
+    {
+      "case": [
+        "confirmation",
+        2124000,
+        0.03,
+        "frozen_fleet_jepa",
+        "exact_only"
+      ],
+      "exact": true
+    },
+    {
+      "case": [
+        "confirmation",
+        2124000,
+        0.03,
+        "frozen_fleet_jepa",
+        "repair"
+      ],
+      "exact": true
+    }
+  ],
+  "outputs_sha256": {
+    "artifacts/jepa_repair/figures/confirmation.pdf": "dd1b8c22dd17a6aea74268b9c7000ab0d4f26c3d13b6906c86c5d9768e193aef",
+    "artifacts/jepa_repair/figures/confirmation.png": "7d4e975edd6b9a805dd91c3f6f97b0cbf34dda9afad9018258a7f499e983a808",
+    "artifacts/jepa_repair/figures/confirmation.svg": "fd4891cc0b10eedd3d27f1939bef2d3bc502d3755e64e0df66066bfca2ba6414",
+    "artifacts/jepa_repair/figures/local-recovery-and-cost.pdf": "83a4f816ddecd80e36a8276fd4d4a33be060202be0ffcf282b4c7efefa03cc2b",
+    "artifacts/jepa_repair/figures/local-recovery-and-cost.png": "94490b6e4cd0a585caae36e540f386fc8c1417470d6800fd8ec55ee1c22d068f",
+    "artifacts/jepa_repair/figures/local-recovery-and-cost.svg": "dae87f3520a99735762b1ab58de7d776cbf8c5a329499b91ff4852f798e67557"
+  },
+  "paired_reduction_units": "avoided misses per100000 generated commands",
+  "passed_development_costs": [
+    0.03
+  ],
+  "primary_comparisons": [
+    {
+      "candidate_family": "radiomap",
+      "candidate_variant": "repair",
+      "contrast_id": "repair_minus_legacy:radiomap",
+      "descriptive_95_interval": [
+        -0.001437526041666667,
+        -0.00010520833333333389
+      ],
+      "endpoint_passes": true,
+      "endpoint_sensitivity": {
+        "descriptive_95_interval": [
+          -0.0014302083333333341,
+          -0.00010104166666666703
+        ],
+        "mean_difference": -0.0006041666666666673,
+        "multiplicity_upper": -6.666666666666691e-05,
+        "paired_site_differences": [
+          -4.99999999999997e-05,
+          -0.0005666666666666667,
+          -0.00025833333333333437,
+          -0.000491666666666668,
+          0.0,
+          -0.0033583333333333347,
+          -5.833333333333385e-05,
+          -5.000000000000143e-05
+        ],
+        "upper_quantile": 0.9916666666666667
+      },
+      "engineering_pass": false,
+      "experimental_benefit": false,
+      "handover_seconds": 0.03,
+      "mean_difference": -0.0006114583333333339,
+      "multiplicity_upper": -7.187500000000054e-05,
+      "observed_passes": true,
+      "paired_site_differences": [
+        -4.99999999999997e-05,
+        -0.0005916666666666674,
+        -0.0002666666666666668,
+        -0.000491666666666668,
+        0.0,
+        -0.003366666666666667,
+        -5.833333333333385e-05,
+        -6.6666666666668e-05
+      ],
+      "reference_family": "radiomap",
+      "reference_variant": "legacy",
+      "statistical_pass": true,
+      "statistical_superiority_claimed": null,
+      "status": "tested",
+      "upper_quantile": 0.9916666666666667
+    },
+    {
+      "candidate_family": "frozen_fleet_jepa",
+      "candidate_variant": "repair",
+      "contrast_id": "repair_minus_legacy:frozen_fleet_jepa",
+      "descriptive_95_interval": [
+        -0.0006593750000000007,
+        -2.8125000000000155e-05
+      ],
+      "endpoint_passes": true,
+      "endpoint_sensitivity": {
+        "descriptive_95_interval": [
+          -0.00065,
+          -2.2916666666666745e-05
+        ],
+        "mean_difference": -0.00029895833333333337,
+        "multiplicity_upper": -6.85763888888599e-07,
+        "paired_site_differences": [
+          0.0,
+          -0.0002249999999999995,
+          -0.0008666666666666666,
+          -0.0012916666666666667,
+          0.0,
+          -1.6666666666666566e-05,
+          1.6666666666666566e-05,
+          -8.33333333333415e-06
+        ],
+        "upper_quantile": 0.9916666666666667
+      },
+      "engineering_pass": true,
+      "experimental_benefit": true,
+      "handover_seconds": 0.03,
+      "mean_difference": -0.0003072916666666671,
+      "multiplicity_upper": -4.852430555555383e-06,
+      "observed_passes": true,
+      "paired_site_differences": [
+        0.0,
+        -0.0002500000000000002,
+        -0.0008750000000000008,
+        -0.0013000000000000008,
+        0.0,
+        -2.5000000000000716e-05,
+        1.6666666666666566e-05,
+        -2.5000000000000716e-05
+      ],
+      "reference_family": "frozen_fleet_jepa",
+      "reference_variant": "legacy",
+      "statistical_pass": true,
+      "statistical_superiority_claimed": null,
+      "status": "tested",
+      "upper_quantile": 0.9916666666666667
+    },
+    {
+      "candidate_family": "frozen_fleet_jepa",
+      "candidate_variant": "repair",
+      "contrast_id": "repaired_jepa_minus_repaired_radiomap",
+      "descriptive_95_interval": [
+        -0.00011875000000000037,
+        1.4583333333333245e-05
+      ],
+      "endpoint_passes": false,
+      "endpoint_sensitivity": {
+        "descriptive_95_interval": [
+          -0.0001114583333333332,
+          1.9791666666666655e-05
+        ],
+        "mean_difference": -3.541666666666645e-05,
+        "multiplicity_upper": 3.020833333333326e-05,
+        "paired_site_differences": [
+          0.0,
+          -8.333333333332416e-06,
+          -8.333333333333283e-05,
+          -8.333333333332416e-06,
+          0.0,
+          -0.0002666666666666668,
+          8.333333333333283e-05,
+          0.0
+        ],
+        "upper_quantile": 0.9916666666666667
+      },
+      "engineering_pass": true,
+      "experimental_benefit": false,
+      "handover_seconds": 0.03,
+      "mean_difference": -4.375000000000017e-05,
+      "multiplicity_upper": 2.499999999999985e-05,
+      "observed_passes": false,
+      "paired_site_differences": [
+        0.0,
+        -3.333333333333313e-05,
+        -9.166666666666698e-05,
+        -1.6666666666666566e-05,
+        0.0,
+        -0.00027500000000000094,
+        8.333333333333283e-05,
+        -1.6666666666666566e-05
+      ],
+      "reference_family": "radiomap",
+      "reference_variant": "repair",
+      "statistical_pass": false,
+      "statistical_superiority_claimed": null,
+      "status": "tested",
+      "upper_quantile": 0.9916666666666667
+    },
+    {
+      "candidate_family": "radiomap",
+      "candidate_variant": "repair",
+      "contrast_id": "repair_minus_legacy:radiomap",
+      "descriptive_95_interval": null,
+      "endpoint_passes": false,
+      "endpoint_sensitivity": null,
+      "engineering_pass": false,
+      "experimental_benefit": false,
+      "handover_seconds": 4.0,
+      "mean_difference": null,
+      "multiplicity_upper": null,
+      "observed_passes": false,
+      "paired_site_differences": null,
+      "reference_family": "radiomap",
+      "reference_variant": "legacy",
+      "statistical_pass": false,
+      "status": "not_run_development_veto",
+      "upper_quantile": null
+    },
+    {
+      "candidate_family": "frozen_fleet_jepa",
+      "candidate_variant": "repair",
+      "contrast_id": "repair_minus_legacy:frozen_fleet_jepa",
+      "descriptive_95_interval": null,
+      "endpoint_passes": false,
+      "endpoint_sensitivity": null,
+      "engineering_pass": false,
+      "experimental_benefit": false,
+      "handover_seconds": 4.0,
+      "mean_difference": null,
+      "multiplicity_upper": null,
+      "observed_passes": false,
+      "paired_site_differences": null,
+      "reference_family": "frozen_fleet_jepa",
+      "reference_variant": "legacy",
+      "statistical_pass": false,
+      "status": "not_run_development_veto",
+      "upper_quantile": null
+    },
+    {
+      "candidate_family": "frozen_fleet_jepa",
+      "candidate_variant": "repair",
+      "contrast_id": "repaired_jepa_minus_repaired_radiomap",
+      "descriptive_95_interval": null,
+      "endpoint_passes": false,
+      "endpoint_sensitivity": null,
+      "engineering_pass": false,
+      "experimental_benefit": false,
+      "handover_seconds": 4.0,
+      "mean_difference": null,
+      "multiplicity_upper": null,
+      "observed_passes": false,
+      "paired_site_differences": null,
+      "reference_family": "radiomap",
+      "reference_variant": "repair",
+      "statistical_pass": false,
+      "status": "not_run_development_veto",
+      "upper_quantile": null
+    }
+  ],
+  "reduction_sign": "reference minus candidate; positive favors candidate",
+  "report_sha256": "c9c990d68e9191db827a006b750bbf6ab85bc39d59cd66c1e8f2364851626268",
+  "schema": 1,
+  "scientific_execution": false,
+  "script_sha256": "b3ea0fcdd77b668765c6ba4e65db97ec6822ba6d56c61fa5c1125295867808fe",
+  "software": {
+    "matplotlib": "3.11.2",
+    "numpy": "2.5.4",
+    "python": "3.12.14"
+  },
+  "uncertainty": "20k whole-site bootstrap;95% descriptive,1-.05/6 observed AND conservative endpoint lower bounds for primary decisions",
+  "warm_request_summary": {
+    "frozen_fleet_jepa": {
+      "actual_max": 0.7599491919972934,
+      "actual_p50": 0.4027687979978509,
+      "actual_p95": 0.49426734575172304,
+      "allowance": 0.85,
+      "charged_service_max": 1.35
+    },
+    "radiomap": {
+      "actual_max": 0.14732795300369617,
+      "actual_p50": 0.061226726495078765,
+      "actual_p95": 0.0803711420034233,
+      "allowance": 0.12,
+      "charged_service_max": 0.6473279530036962
+    }
+  }
+}

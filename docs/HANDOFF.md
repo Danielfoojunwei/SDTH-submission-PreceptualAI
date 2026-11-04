@@ -1,6 +1,70 @@
 # WirelessJEV research handoff
 
-## Latest: compact JEPA training and fresh confirmation complete
+## Latest: fixed-weight JEPA controller repair
+
+[JEPAREPAIR_RESULTS.md](JEPAREPAIR_RESULTS.md) records 20 development cases,
+48 fast-handover confirmation cases, six exact offline recorded-schedule
+replays and six separate fresh measured-cost repetitions. Every main case
+contains 100 simulated robots for 60 seconds. No new model was fitted.
+
+At assumed 30 ms handovers, repaired FleetJEPA loses 1.039375% of commands
+versus 1.070104% with its legacy controller: 9,978 versus 10,273 misses,
+295 fewer (2.8716% relative). Its registered observed and conservative
+pending-command bounds and engineering checks pass. Repaired JEPA versus
+repaired RadioMap is unconfirmed. RadioMap's own repair fails the silence
+margin despite reducing average misses.
+
+The aggressive four-second repair fails development: JEPA 5.265833% →
+10.014167%, RadioMap 5.255417% → 10.760417%. Those four-second confirmation
+cases were not run; their world IDs were generated for the fast cases.
+Source commit `c8348cd` seals 386 inputs/source files before collection.
+Actual-cost accounting pays measured predictor/issue work; capacity-profile
+exceedance is diagnostic only under this new prospective contract. Earlier
+studies' timing vetoes and negative results are unchanged.
+
+## Completed: separate cost-aware four-second recovery
+
+[COSTAWARE_RECOVERY_RESULTS.md](COSTAWARE_RECOVERY_RESULTS.md) records eight
+development cases, 32 confirmation cases on eight new sites, four exact
+offline recorded-schedule replays and four separate fresh measured-cost
+repetitions. No evaluation/training job in either repair study remains running.
+Source commit `6f931a0` seals 422 source/input files before new collection,
+including the already observed parent development evidence. The new
+`2133…`/`2134…` cohorts are disjoint from the parent study; their means cannot
+be subtracted across studies as a paired repair effect.
+
+The rule preserves ordinary legacy handover admission and requires 420
+primary-radio-available silent slots before an emergency four-second handover.
+Delivery/association/handover outage resets evidence; scans pause it. Actual
+completed, heard, recent local scans are required, and every outage is paid.
+
+At confirmation, JEPA legacy → repair loss is 5.855938% → 5.801042%; RadioMap
+is 6.218125% → 6.186875%. Neither improvement is statistically confirmed.
+Maximum silence improves from 19.03 → 10.03 seconds for JEPA and
+23.24 → 8.34 for RadioMap; both pass the registered relative engineering
+checks. Repaired JEPA's lower mean than repaired RadioMap passes the
+three-test-adjusted observed and pending endpoint bounds, but its 10.03-second
+maximum silence fails against RadioMap's 8.34 seconds. No slow comparison
+passes the complete benefit gate, and no slow profile is promoted.
+
+Final software validation: **1,245 passed, one expected warning, 172.87 s**.
+This is the archived full suite run before the new data. Derived verification
+does not train, simulate or retime:
+
+```bash
+uv run --frozen python scripts/verify_jepa_repair.py
+uv run --frozen python scripts/verify_costaware_recovery.py
+```
+
+Draft [PR #20](https://github.com/Danielfoojunwei/SDTH-submission-PreceptualAI/pull/20)
+is stacked on #19, not merged into `main`. Figures, raw cases, paid completion
+ledgers, local observation metadata, bootstrap outcomes and phase logs are
+archived. The [cost-aware design](COSTAWARE_RECOVERY_DESIGN.md) explains why
+past silence plus a four-second interruption does not guarantee continuity.
+RadioMap stays the application default; physical timing, acceptable absolute
+loss/silence, arbitrary-layout transfer and production recovery remain open.
+
+## Previous: compact JEPA training and fresh confirmation complete
 
 [SELECTED_JEPA_RESULTS.md](SELECTED_JEPA_RESULTS.md) records **12 fits across
 four families and three paired training seeds, 112 development evaluations,

@@ -23,6 +23,8 @@ ROOT = Path(__file__).resolve().parents[1]
 OUT = ROOT / 'artifacts/jepa_repair'
 sys.path.insert(0, str(ROOT / 'src'))
 PR19_COMMIT = '30e4a518601d9cca3d4ab417f93a379967dc565e'
+REPAIR_COMMIT = 'c8348cdb1faaf57dd8338f6d82aca410b92f47d5'
+TEST_LOG_SHA256 = 'ebdb58d921119a6eadff946af4fd2d6d0e0e13ae41b3b2735e25b47cdbc0336d'
 OLD_COMMITS = {'semantic_jepa': '9ff5fa56e7327bccde15a10a1a3952a82c699e02',
                'selected_jepa': 'f5c69d55cf110578f7c48de96899a5879bb9f106'}
 DOCUMENTS = ('README.md', 'docs/HANDOFF.md', 'docs/PAPER_PROPOSAL.md',
@@ -76,6 +78,7 @@ def registration(c):
             require(hashlib.sha256(raw).hexdigest() == expected and (module.OUT / 'registration/source' / path).read_bytes() == raw, 'Original source/capsule/Git differs: ' + path)
         closures[name] = expected_count
     frozen = c.check_sources(); meta = read(OUT / 'registration/git.json'); commit = meta['scientific_source_commit']
+    require(commit == REPAIR_COMMIT and len(frozen['source_sha256']) == 386, 'Frozen repair source identity/count differs')
     require(frozen['new_evaluation_data_accessed'] is False and frozen['source_training_and_results_already_observed'] is True and frozen['new_fits'] == 0, 'Repair registration scope differs')
     require(re.fullmatch('[0-9a-f]{40}', commit) and meta['scientific_source_tree'] == git_tree(commit) and meta['before_new_evaluations'] is True, 'Repair pre-evaluation Git metadata differs')
     require((OUT / 'registration/source.json').read_bytes() == committed(commit, 'artifacts/jepa_repair/registration/source.json'), 'Repair registration differs from Git')
@@ -294,10 +297,12 @@ def tests_check():
     matches = re.findall(r'(?m)^([0-9]+) passed(?:, ([0-9]+) warnings?)? in ([0-9.]+)s', text)
     require(len(matches) == 1 and not re.search(r'(?m)^=+.*(?:failed|ERRORS).*?=+$', text), 'No unique successful full-test log summary')
     passed, warnings, seconds = matches[0]
+    require((int(passed), int(warnings or 0), float(seconds)) == (1111, 1, 168.58)
+            and digest(path) == TEST_LOG_SHA256, 'Registered complete preflight test log differs')
     return {'passed': int(passed), 'warnings': int(warnings or 0), 'seconds': float(seconds), 'log': str(path.relative_to(ROOT)), 'sha256': digest(path)}
 
 
-def verify(*, write_manifest=False):
+def verify(*, write_manifest=False, audit_only=False):
     require((OUT / 'report.json').is_file() and (OUT / 'report.md').is_file(), 'Complete the registered pipeline/report first')
     from wirelessjev.jepa_repair import common as c, rollout, study, report as stats
     frozen, meta, closures = registration(c); prior = preserve_prior(); p = c.protocol()
@@ -329,6 +334,36 @@ def verify(*, write_manifest=False):
     markdown = stats.markdown(expected) + ('\n## Replication scope\n\n' + f'{len(offline)} exact-schedule OFFLINE replays; {len(live)} fresh actual-cost repetitions. ' + 'The former establish only replay under recorded availability; the latter are descriptive runtime sensitivity and add no independent sites.\n')
     require((OUT / 'report.md').read_text() == markdown, 'Final Markdown differs from raw report')
     tests = tests_check(); proof = OUT / 'verification'; manifest = proof / 'manifest.json'
+    if audit_only:
+        require(not write_manifest, 'Independent audit and final manifest are separate operations')
+        proof.mkdir(exist_ok=True)
+        audit = {'schema': 1, 'verified_at_utc': datetime.now(timezone.utc).isoformat(),
+            'scientific_source_commit': meta['scientific_source_commit'], 'scientific_source_tree': meta['scientific_source_tree'],
+            'registered_source_files': len(frozen['source_sha256']), 'old_source_closures': closures,
+            'prior_manifest_source_and_evidence_preserved': prior, 'full_tests': tests,
+            'development_cases': len(dev), 'development_gate': gate,
+            'passed_development_costs': costs, 'confirmation_cases': len(main),
+            'offline_exact_replays': len(offline), 'fresh_live_replications': len(live),
+            'all_source_case_receipt_actual_paid_fifo_consumption_checks_pass': True,
+            'all_raw_local_payload_capture_age_threshold_outage_checks_pass': True,
+            'six_test_bootstrap_and_conservative_pending_endpoint_reproduced': True,
+            'completion_report_and_markdown_reproduced': True,
+            'recovery_counts': {'development': devrecovery, 'confirmation': mainrecovery,
+                                'offline_replay': offlinerecovery, 'fresh_live': liverecovery},
+            'primary': archived['primary'], 'means': archived['means'],
+            'engineering_gates': archived['engineering_gates'], 'timing': archived['timing'],
+            'offline_comparisons': completion['offline_comparisons'],
+            'fresh_live_cost_comparisons': completion['fresh_live_cost_comparisons'],
+            'all_six_experimental_benefits': archived['all_six_experimental_benefits'],
+            'production_qualified': False, 'hardware_qualified': False, 'activated': False,
+            'report_sha256': digest(OUT / 'report.json'), 'verifier_sha256': digest(Path(__file__)),
+            'no_worlds_forwards_fits_or_timing_executed': True,
+            'global_document_and_all_current_source_manifest_deferred': True}
+        (proof / 'independent-audit.json').write_text(json.dumps(audit, indent=2, allow_nan=False) + '\n')
+        print(json.dumps({key: audit[key] for key in ('registered_source_files', 'development_cases',
+            'passed_development_costs', 'confirmation_cases', 'offline_exact_replays',
+            'fresh_live_replications', 'recovery_counts', 'all_six_experimental_benefits')}, indent=2))
+        return audit
     sources = [path for folder in ('src', 'scripts', 'tests') for path in (ROOT / folder).rglob('*.py') if '__pycache__' not in path.parts] + [ROOT / 'pyproject.toml', ROOT / 'uv.lock']
     documents = [ROOT / name for name in DOCUMENTS]
     evidence = [path for path in OUT.rglob('*') if path.is_file() and path != manifest and not any(part.startswith('.') for part in path.relative_to(OUT).parts) and not path.name.endswith(('.lock', '.part'))]
@@ -351,4 +386,5 @@ def verify(*, write_manifest=False):
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--write-manifest', action='store_true', help='Write derived final metadata explicitly')
-    args = parser.parse_args(); verify(write_manifest=args.write_manifest)
+    parser.add_argument('--audit-only', action='store_true', help='Write independent raw-evidence audit; defer final global document/source manifest')
+    args = parser.parse_args(); verify(write_manifest=args.write_manifest, audit_only=args.audit_only)

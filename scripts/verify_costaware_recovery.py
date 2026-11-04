@@ -29,8 +29,9 @@ jobs_check, telemetry_check = base.jobs_check, base.telemetry_check
 local_freshness_check = base.local_freshness_check
 DOCUMENTS = ('README.md', 'docs/HANDOFF.md', 'docs/PAPER_PROPOSAL.md',
              'docs/COSTAWARE_RECOVERY_DESIGN.md', 'docs/COSTAWARE_RECOVERY_RESULTS.md')
-EXPECTED_TESTS = None
-EXPECTED_TEST_LOG_SHA256 = None
+SCIENTIFIC_SOURCE_COMMIT = '6f931a01a5bbc68ffeb128418a4762cce4198bc1'
+EXPECTED_TESTS = (1245, 1, 172.87)
+EXPECTED_TEST_LOG_SHA256 = '69205b224a1c3f7b0ce128689aa5881e5a9fabf2a849cebaaa8cc72aa73fb834'
 
 
 def registration(c):
@@ -38,6 +39,7 @@ def registration(c):
     parent_frozen, _, old_closures = base.registration(c.parent)
     require(len(parent_frozen['source_sha256']) == 386, 'Parent frozen closure differs')
     frozen = c.check_sources(); meta = read(OUT / 'registration/git.json'); commit = meta['scientific_source_commit']
+    require(commit == SCIENTIFIC_SOURCE_COMMIT and len(frozen['source_sha256']) == 422, 'Frozen child source identity/count differs')
     require(re.fullmatch('[0-9a-f]{40}', commit) and meta['scientific_source_tree'] == git_tree(commit)
             and meta['before_new_evaluations'] is True, 'Child pre-evaluation Git metadata differs')
     require(frozen['new_evaluation_data_accessed'] is False and frozen['new_fits'] == 0
@@ -118,6 +120,9 @@ def recovery_check(row, p):
         if slot in snapshots:
             require(available == snapshots[slot]['available_silence_slots'][robot]
                     and check['silence_slots'] == snapshots[slot]['current_gap'][robot], 'Watchdog counter differs from preceding snapshot boundary')
+        require(slot in action_at and action_at[slot]['primary_unavailable_until_slot'][robot] <= slot
+                and action_at[slot]['primary_site'][robot] == check['current_site'],
+                'Watchdog used an unavailable primary radio or inconsistent association')
         neighbor = check['best_other_rssi_dbm']
         trigger = available >= 420 and check['current_rssi_dbm'] < -75 and neighbor is not None and neighbor >= -90 and neighbor - check['current_rssi_dbm'] >= 8
         require(check['recovery_triggered'] is trigger and (slot, robot) not in checks, 'Cost-aware RF/evidence trigger differs')
@@ -250,6 +255,9 @@ def verify(*, write_manifest=False, audit_only=False):
         audit.update(parent_global_manifest_is_not_a_dependency=True,
             available_counter_recorded_event_and_snapshot_checks_pass=True,
             full_10ms_counter_recurrence_verified_from_archives=False,
+            timing_by_namespace={'development': gate['timing'], 'confirmation': archived['timing'],
+                'offline_replay': archived['offline_replay_summary']['timing'],
+                'fresh_live': archived['fresh_live_cost_summary']['timing']},
             counter_update_proof_scope='Frozen source and explicit software tests; sampled archives cannot reconstruct every 10ms delivery reset/scan pause.')
         (proof / 'independent-audit.json').write_text(json.dumps(audit, indent=2, allow_nan=False) + '\n')
         print(json.dumps({key: audit[key] for key in ('registered_source_files', 'development_cases',

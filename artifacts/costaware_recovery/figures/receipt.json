@@ -1,0 +1,785 @@
+{
+  "all_three_experimental_benefits": false,
+  "derived_only": true,
+  "fresh_live_cost_sensitivity": [
+    {
+      "case": [
+        "confirmation",
+        2134000,
+        4.0,
+        "radiomap",
+        "legacy"
+      ],
+      "changed_ready_jobs": 0,
+      "miss_difference": 0
+    },
+    {
+      "case": [
+        "confirmation",
+        2134000,
+        4.0,
+        "radiomap",
+        "repair"
+      ],
+      "changed_ready_jobs": 0,
+      "miss_difference": 0
+    },
+    {
+      "case": [
+        "confirmation",
+        2134000,
+        4.0,
+        "frozen_fleet_jepa",
+        "legacy"
+      ],
+      "changed_ready_jobs": 0,
+      "miss_difference": 0
+    },
+    {
+      "case": [
+        "confirmation",
+        2134000,
+        4.0,
+        "frozen_fleet_jepa",
+        "repair"
+      ],
+      "changed_ready_jobs": 0,
+      "miss_difference": 0
+    }
+  ],
+  "illustrative_actual_counter_trace": {
+    "case": [
+      "confirmation",
+      2134000,
+      4.0,
+      "frozen_fleet_jepa",
+      "repair"
+    ],
+    "emergency_events": [
+      {
+        "available_silence_slots": 421,
+        "available_silence_slots_after": 0,
+        "current_rssi_dbm": -97.47012329101562,
+        "from_site": 9,
+        "handover_threshold_slots": 420,
+        "neighbor_capture_age_slots": 96,
+        "neighbor_capture_slot": 2194,
+        "neighbor_gain_db": 49.1153564453125,
+        "neighbor_heard": true,
+        "neighbor_max_age_slots": 500,
+        "neighbor_rssi_dbm": -48.354766845703125,
+        "outage_until_slot": 2690,
+        "pending_cadence_target_after": -1,
+        "pending_cadence_target_before": -1,
+        "robot": 4,
+        "selected_band": 1,
+        "selected_band_scope": "observed neighbor RSSI, not a transmit-band command",
+        "silence_slots": 430,
+        "slot": 2290,
+        "to_site": 13
+      }
+    ],
+    "first_event": {
+      "available_silence_slots": 421,
+      "available_silence_slots_after": 0,
+      "current_rssi_dbm": -97.47012329101562,
+      "from_site": 9,
+      "handover_threshold_slots": 420,
+      "neighbor_capture_age_slots": 96,
+      "neighbor_capture_slot": 2194,
+      "neighbor_gain_db": 49.1153564453125,
+      "neighbor_heard": true,
+      "neighbor_max_age_slots": 500,
+      "neighbor_rssi_dbm": -48.354766845703125,
+      "outage_until_slot": 2690,
+      "pending_cadence_target_after": -1,
+      "pending_cadence_target_before": -1,
+      "robot": 4,
+      "selected_band": 1,
+      "selected_band_scope": "observed neighbor RSSI, not a transmit-band command",
+      "silence_slots": 430,
+      "slot": 2290,
+      "to_site": 13
+    },
+    "robot": 4,
+    "sample_scope": "actual one-second snapshots, first emergency in canonical case order; illustrative only",
+    "snapshots": [
+      {
+        "available_silence_slots": 0,
+        "raw_control_silence_slots": 0,
+        "second": 1.0
+      },
+      {
+        "available_silence_slots": 0,
+        "raw_control_silence_slots": 5,
+        "second": 2.0
+      },
+      {
+        "available_silence_slots": 0,
+        "raw_control_silence_slots": 0,
+        "second": 3.0
+      },
+      {
+        "available_silence_slots": 0,
+        "raw_control_silence_slots": 0,
+        "second": 4.0
+      },
+      {
+        "available_silence_slots": 0,
+        "raw_control_silence_slots": 0,
+        "second": 5.0
+      },
+      {
+        "available_silence_slots": 0,
+        "raw_control_silence_slots": 0,
+        "second": 6.0
+      },
+      {
+        "available_silence_slots": 0,
+        "raw_control_silence_slots": 5,
+        "second": 7.0
+      },
+      {
+        "available_silence_slots": 0,
+        "raw_control_silence_slots": 0,
+        "second": 8.0
+      },
+      {
+        "available_silence_slots": 0,
+        "raw_control_silence_slots": 0,
+        "second": 9.0
+      },
+      {
+        "available_silence_slots": 0,
+        "raw_control_silence_slots": 0,
+        "second": 10.0
+      },
+      {
+        "available_silence_slots": 0,
+        "raw_control_silence_slots": 0,
+        "second": 11.0
+      },
+      {
+        "available_silence_slots": 0,
+        "raw_control_silence_slots": 5,
+        "second": 12.0
+      },
+      {
+        "available_silence_slots": 0,
+        "raw_control_silence_slots": 0,
+        "second": 13.0
+      },
+      {
+        "available_silence_slots": 0,
+        "raw_control_silence_slots": 0,
+        "second": 14.0
+      },
+      {
+        "available_silence_slots": 0,
+        "raw_control_silence_slots": 0,
+        "second": 15.0
+      },
+      {
+        "available_silence_slots": 0,
+        "raw_control_silence_slots": 0,
+        "second": 16.0
+      },
+      {
+        "available_silence_slots": 0,
+        "raw_control_silence_slots": 5,
+        "second": 17.0
+      },
+      {
+        "available_silence_slots": 0,
+        "raw_control_silence_slots": 0,
+        "second": 18.0
+      },
+      {
+        "available_silence_slots": 40,
+        "raw_control_silence_slots": 40,
+        "second": 19.0
+      },
+      {
+        "available_silence_slots": 140,
+        "raw_control_silence_slots": 140,
+        "second": 20.0
+      },
+      {
+        "available_silence_slots": 240,
+        "raw_control_silence_slots": 240,
+        "second": 21.0
+      },
+      {
+        "available_silence_slots": 335,
+        "raw_control_silence_slots": 340,
+        "second": 22.0
+      },
+      {
+        "available_silence_slots": 0,
+        "raw_control_silence_slots": 440,
+        "second": 23.0
+      },
+      {
+        "available_silence_slots": 0,
+        "raw_control_silence_slots": 540,
+        "second": 24.0
+      },
+      {
+        "available_silence_slots": 0,
+        "raw_control_silence_slots": 640,
+        "second": 25.0
+      },
+      {
+        "available_silence_slots": 0,
+        "raw_control_silence_slots": 740,
+        "second": 26.0
+      },
+      {
+        "available_silence_slots": 0,
+        "raw_control_silence_slots": 5,
+        "second": 27.0
+      },
+      {
+        "available_silence_slots": 0,
+        "raw_control_silence_slots": 0,
+        "second": 28.0
+      },
+      {
+        "available_silence_slots": 0,
+        "raw_control_silence_slots": 0,
+        "second": 29.0
+      },
+      {
+        "available_silence_slots": 0,
+        "raw_control_silence_slots": 0,
+        "second": 30.0
+      },
+      {
+        "available_silence_slots": 0,
+        "raw_control_silence_slots": 0,
+        "second": 31.0
+      },
+      {
+        "available_silence_slots": 0,
+        "raw_control_silence_slots": 5,
+        "second": 32.0
+      },
+      {
+        "available_silence_slots": 0,
+        "raw_control_silence_slots": 0,
+        "second": 33.0
+      },
+      {
+        "available_silence_slots": 0,
+        "raw_control_silence_slots": 0,
+        "second": 34.0
+      },
+      {
+        "available_silence_slots": 0,
+        "raw_control_silence_slots": 0,
+        "second": 35.0
+      },
+      {
+        "available_silence_slots": 0,
+        "raw_control_silence_slots": 0,
+        "second": 36.0
+      },
+      {
+        "available_silence_slots": 0,
+        "raw_control_silence_slots": 5,
+        "second": 37.0
+      },
+      {
+        "available_silence_slots": 0,
+        "raw_control_silence_slots": 0,
+        "second": 38.0
+      },
+      {
+        "available_silence_slots": 0,
+        "raw_control_silence_slots": 0,
+        "second": 39.0
+      },
+      {
+        "available_silence_slots": 0,
+        "raw_control_silence_slots": 0,
+        "second": 40.0
+      },
+      {
+        "available_silence_slots": 0,
+        "raw_control_silence_slots": 0,
+        "second": 41.0
+      },
+      {
+        "available_silence_slots": 0,
+        "raw_control_silence_slots": 5,
+        "second": 42.0
+      },
+      {
+        "available_silence_slots": 0,
+        "raw_control_silence_slots": 0,
+        "second": 43.0
+      },
+      {
+        "available_silence_slots": 0,
+        "raw_control_silence_slots": 0,
+        "second": 44.0
+      },
+      {
+        "available_silence_slots": 0,
+        "raw_control_silence_slots": 0,
+        "second": 45.0
+      },
+      {
+        "available_silence_slots": 0,
+        "raw_control_silence_slots": 0,
+        "second": 46.0
+      },
+      {
+        "available_silence_slots": 0,
+        "raw_control_silence_slots": 5,
+        "second": 47.0
+      },
+      {
+        "available_silence_slots": 0,
+        "raw_control_silence_slots": 0,
+        "second": 48.0
+      },
+      {
+        "available_silence_slots": 0,
+        "raw_control_silence_slots": 0,
+        "second": 49.0
+      },
+      {
+        "available_silence_slots": 0,
+        "raw_control_silence_slots": 0,
+        "second": 50.0
+      },
+      {
+        "available_silence_slots": 0,
+        "raw_control_silence_slots": 0,
+        "second": 51.0
+      },
+      {
+        "available_silence_slots": 0,
+        "raw_control_silence_slots": 5,
+        "second": 52.0
+      },
+      {
+        "available_silence_slots": 0,
+        "raw_control_silence_slots": 0,
+        "second": 53.0
+      },
+      {
+        "available_silence_slots": 0,
+        "raw_control_silence_slots": 0,
+        "second": 54.0
+      },
+      {
+        "available_silence_slots": 0,
+        "raw_control_silence_slots": 0,
+        "second": 55.0
+      },
+      {
+        "available_silence_slots": 0,
+        "raw_control_silence_slots": 0,
+        "second": 56.0
+      },
+      {
+        "available_silence_slots": 0,
+        "raw_control_silence_slots": 5,
+        "second": 57.0
+      },
+      {
+        "available_silence_slots": 0,
+        "raw_control_silence_slots": 0,
+        "second": 58.0
+      },
+      {
+        "available_silence_slots": 0,
+        "raw_control_silence_slots": 0,
+        "second": 59.0
+      },
+      {
+        "available_silence_slots": 0,
+        "raw_control_silence_slots": 0,
+        "second": 60.0
+      }
+    ],
+    "watchdog_scans": [
+      {
+        "robot": 4,
+        "scan_complete_slot": 2204,
+        "silence_slots": 335,
+        "slot": 2194
+      }
+    ]
+  },
+  "inputs_sha256": {
+    "artifacts/costaware_recovery/cases/confirmation-2134000-h4000-frozen_fleet_jepa-legacy.json.gz": "f989e9fc51868c083d699254855ae19755ae9f381989bb3281d5436f26968d8b",
+    "artifacts/costaware_recovery/cases/confirmation-2134000-h4000-frozen_fleet_jepa-legacy.receipt.json": "d56f1f3b298e69c2af1e1b6ef82b123441c9bb8735624865bae74e97ba98522c",
+    "artifacts/costaware_recovery/cases/confirmation-2134000-h4000-frozen_fleet_jepa-repair.json.gz": "3abc9f33544f6759f1fe3521b3e6632e1f680dfd8e5729be46eca58257dcac06",
+    "artifacts/costaware_recovery/cases/confirmation-2134000-h4000-frozen_fleet_jepa-repair.receipt.json": "473c6390413e30714dc8a73bcca87485fe79a1233f4fe1e5369b4570ddf6e847",
+    "artifacts/costaware_recovery/cases/confirmation-2134000-h4000-radiomap-legacy.json.gz": "67996be9acb561dbcd22070b92715ca65aef16721daa1652b9ce6997b6471d65",
+    "artifacts/costaware_recovery/cases/confirmation-2134000-h4000-radiomap-legacy.receipt.json": "3ded9a65dd6c42a5e12a3f3e87d71272c1f8eaf5c4ee57f96f6c1b7005938838",
+    "artifacts/costaware_recovery/cases/confirmation-2134000-h4000-radiomap-repair.json.gz": "a0f27699f44b3a29f111f85422616d0bb2a3aee601032f7e8d1c7ade47821a23",
+    "artifacts/costaware_recovery/cases/confirmation-2134000-h4000-radiomap-repair.receipt.json": "4f3d523b895c3ef0a21be0fac5ffa40d9f268cba0690c7c07e2c381724c3b7e0",
+    "artifacts/costaware_recovery/cases/confirmation-2134001-h4000-frozen_fleet_jepa-legacy.json.gz": "f62bdcac65089879670e5f221313a23eeaf8dde73aa509177482af019e9fcbf9",
+    "artifacts/costaware_recovery/cases/confirmation-2134001-h4000-frozen_fleet_jepa-legacy.receipt.json": "dcb11a16d1dd99fd71f5224f7f7de825e557863c64c2bad4d8c1c4afcd25c0bb",
+    "artifacts/costaware_recovery/cases/confirmation-2134001-h4000-frozen_fleet_jepa-repair.json.gz": "36abdf7dc808921453a54a4169a1eca560afcfe46456ba554a5515a625fccb5f",
+    "artifacts/costaware_recovery/cases/confirmation-2134001-h4000-frozen_fleet_jepa-repair.receipt.json": "d90405818bef9ed5cfe99fbd7b3fd64cb107ecaf07132581e9462a1d7766b153",
+    "artifacts/costaware_recovery/cases/confirmation-2134001-h4000-radiomap-legacy.json.gz": "bbc30bb14f709c623617f694e7af3068c6f6ce3455e9b011cb7b2d91b4996c7a",
+    "artifacts/costaware_recovery/cases/confirmation-2134001-h4000-radiomap-legacy.receipt.json": "82946620f7b3fc2d2c4b01b29ae1a1ea4ec5bb026a41d60660ffd5faa6cd9ecf",
+    "artifacts/costaware_recovery/cases/confirmation-2134001-h4000-radiomap-repair.json.gz": "d0dfdc9b15bf3e1545cd88271289ec36606fb055fcb7296c896de7faf1ff5b11",
+    "artifacts/costaware_recovery/cases/confirmation-2134001-h4000-radiomap-repair.receipt.json": "515d05ce61688820e5ec6d503541ac14463c6e81fe44c04e04fc4b690ac23b66",
+    "artifacts/costaware_recovery/cases/confirmation-2134002-h4000-frozen_fleet_jepa-legacy.json.gz": "3cb1c19367b226c9b25d531868b143028554ccca5adc8e2a0c22e5e3929d676d",
+    "artifacts/costaware_recovery/cases/confirmation-2134002-h4000-frozen_fleet_jepa-legacy.receipt.json": "d2002bf0adbdbbeb68aa06afcdac75f5949ff1514f86c4e39d5d8815e963f8b0",
+    "artifacts/costaware_recovery/cases/confirmation-2134002-h4000-frozen_fleet_jepa-repair.json.gz": "6f49c1c0eda68c16270b4e8360e88e162195759f65d42271f73ab0cf801b40ab",
+    "artifacts/costaware_recovery/cases/confirmation-2134002-h4000-frozen_fleet_jepa-repair.receipt.json": "c0f6e2845d788521590c7edc38450a96e8fbd883442b0f6cdcf8aaeb3dc3bced",
+    "artifacts/costaware_recovery/cases/confirmation-2134002-h4000-radiomap-legacy.json.gz": "1533a7baa9490e784e91ebbc61b46430d4a50bf7d6adb185e981981f131d6570",
+    "artifacts/costaware_recovery/cases/confirmation-2134002-h4000-radiomap-legacy.receipt.json": "9ebb8cf12cb15a196780fadddedee72419df9fb095fefc148f5fe57bc33c9bd9",
+    "artifacts/costaware_recovery/cases/confirmation-2134002-h4000-radiomap-repair.json.gz": "058ba6e974a3f67512514a46ebd86b12acb481a71391a13d668e65ade228f1f1",
+    "artifacts/costaware_recovery/cases/confirmation-2134002-h4000-radiomap-repair.receipt.json": "5ecf973371e4a6692f53eef24a5ef1769b19092936e1f29b679636ed81cb6f7b",
+    "artifacts/costaware_recovery/cases/confirmation-2134003-h4000-frozen_fleet_jepa-legacy.json.gz": "4d94ff6d3e16f22a53d602a995aeff1bbbb2f5c8c04fd3c68f32f65941273e9c",
+    "artifacts/costaware_recovery/cases/confirmation-2134003-h4000-frozen_fleet_jepa-legacy.receipt.json": "8119cff3d05fa22eb7f1dbe6abb99e65464adf86e6a8ed096b62785c1f60de7c",
+    "artifacts/costaware_recovery/cases/confirmation-2134003-h4000-frozen_fleet_jepa-repair.json.gz": "342fba8150c551073d58460ee1edf3a0bfa6a023303e94959af4dbda5799b5e9",
+    "artifacts/costaware_recovery/cases/confirmation-2134003-h4000-frozen_fleet_jepa-repair.receipt.json": "8891fbe6ad08d02392788a85818f66d6adb3db88a913a5a97bd2c6228475d9d8",
+    "artifacts/costaware_recovery/cases/confirmation-2134003-h4000-radiomap-legacy.json.gz": "d6e301bf553328048085570abe3462e3f97911cd5d631006bbc093cccda540b7",
+    "artifacts/costaware_recovery/cases/confirmation-2134003-h4000-radiomap-legacy.receipt.json": "d3c570009d8d66aaa64c59589a458a955a31400bc2b33e1e3af87f1a1dddc8f2",
+    "artifacts/costaware_recovery/cases/confirmation-2134003-h4000-radiomap-repair.json.gz": "e2ec210a5d654bb735bbfdcb8fca26f37c6b93f99e0497ec7b724545d2f2353b",
+    "artifacts/costaware_recovery/cases/confirmation-2134003-h4000-radiomap-repair.receipt.json": "d5f5b4fb4bc0a58374af840628e3e7a442220f449f864fbb43a4e21c9315d183",
+    "artifacts/costaware_recovery/cases/confirmation-2134004-h4000-frozen_fleet_jepa-legacy.json.gz": "33bad776ad9e8e3ab823a60c37584ff085490fdec4602268ab6e168da6f2d9ff",
+    "artifacts/costaware_recovery/cases/confirmation-2134004-h4000-frozen_fleet_jepa-legacy.receipt.json": "e4632f69ac567537cea355e4fdfda57a397d7518dd288187b76f5acb012c81b6",
+    "artifacts/costaware_recovery/cases/confirmation-2134004-h4000-frozen_fleet_jepa-repair.json.gz": "a8250a9ff741617a78a599c3de3eb1c451274c30bfae1f81803105f024a9941a",
+    "artifacts/costaware_recovery/cases/confirmation-2134004-h4000-frozen_fleet_jepa-repair.receipt.json": "281a2ed0d40d149392f315826c25ad9f293237245b01f9695cb8532687f90991",
+    "artifacts/costaware_recovery/cases/confirmation-2134004-h4000-radiomap-legacy.json.gz": "564837dc41d968fca79b5d511e8f2d2f1e1601b4a1c95443bee4e8bc9687da77",
+    "artifacts/costaware_recovery/cases/confirmation-2134004-h4000-radiomap-legacy.receipt.json": "edcff780b230b5ad1d06e8fff04d3e33fcf3184d1038b0fc19ac48bddcdaf1fc",
+    "artifacts/costaware_recovery/cases/confirmation-2134004-h4000-radiomap-repair.json.gz": "2be24b492a4e040cfd2f36b46ee1e715883092629b14a35b5daede8a9ecfed13",
+    "artifacts/costaware_recovery/cases/confirmation-2134004-h4000-radiomap-repair.receipt.json": "f8f2ef23002efb203e5c93aa82efb0ede2dd6bc154f0ada834373f58cbc0939c",
+    "artifacts/costaware_recovery/cases/confirmation-2134005-h4000-frozen_fleet_jepa-legacy.json.gz": "0be42e6921f0965ac13dd2469e9c1fcaed31e5d0289de5de39c5ef5b0d2d1350",
+    "artifacts/costaware_recovery/cases/confirmation-2134005-h4000-frozen_fleet_jepa-legacy.receipt.json": "b5fbaa3f17e2ae2ee9c81ec24b01072f0d905b964d77d5af31b220168d6f3ca2",
+    "artifacts/costaware_recovery/cases/confirmation-2134005-h4000-frozen_fleet_jepa-repair.json.gz": "e5db1f80f410a3eb4fcf4a96931b4a6d4eafba8e5614c932c79e1b25ed5b1ebc",
+    "artifacts/costaware_recovery/cases/confirmation-2134005-h4000-frozen_fleet_jepa-repair.receipt.json": "5604761fceb32e283443c88d8ebfed16b1616aec6034a3e54773fe2b74d07a0d",
+    "artifacts/costaware_recovery/cases/confirmation-2134005-h4000-radiomap-legacy.json.gz": "118f17fea265f1c115f41bdcff791088f7226c7025c555bdeefec66f898ab9a2",
+    "artifacts/costaware_recovery/cases/confirmation-2134005-h4000-radiomap-legacy.receipt.json": "fd09ad564b653250d69537bcff517b38bf0e7d12c92f707f1489cbfd095334be",
+    "artifacts/costaware_recovery/cases/confirmation-2134005-h4000-radiomap-repair.json.gz": "2601aee8be0266ebb89e59595b8116828643078fecb0aaace225d847a45c3eea",
+    "artifacts/costaware_recovery/cases/confirmation-2134005-h4000-radiomap-repair.receipt.json": "104632d6d51363b4bfd5ec1611a7890a2ee900aed107e72f86ad0a8712be14db",
+    "artifacts/costaware_recovery/cases/confirmation-2134006-h4000-frozen_fleet_jepa-legacy.json.gz": "176b9999f73d6241d9f1df2a689418bc8f0f0c8b153b88967c84458c18dbaef5",
+    "artifacts/costaware_recovery/cases/confirmation-2134006-h4000-frozen_fleet_jepa-legacy.receipt.json": "cc8d8908f6bb124eb645648d297709c86929c3b9802180fab6473d87f2c6a6ab",
+    "artifacts/costaware_recovery/cases/confirmation-2134006-h4000-frozen_fleet_jepa-repair.json.gz": "85a00238b0cfc4e45454fa636cb431870d0f536797aabb644df46d494d7244cc",
+    "artifacts/costaware_recovery/cases/confirmation-2134006-h4000-frozen_fleet_jepa-repair.receipt.json": "94a83472492951b361af1d956e8cf6b6a95cc995aa0c4f8c4886e59c4333d1a6",
+    "artifacts/costaware_recovery/cases/confirmation-2134006-h4000-radiomap-legacy.json.gz": "4590a2a4fb31a0c1e6a82cdba1c9e1c65211b0c0f1a28c83a21be40da00db780",
+    "artifacts/costaware_recovery/cases/confirmation-2134006-h4000-radiomap-legacy.receipt.json": "92aee05ec2d90d53e07738d42dcffd64352d1f6a46885329c60d0591a741c39c",
+    "artifacts/costaware_recovery/cases/confirmation-2134006-h4000-radiomap-repair.json.gz": "4bbaae099c975e69603c89e2a56d384a3a5fa7863fc1ef092e276947b67c1b2a",
+    "artifacts/costaware_recovery/cases/confirmation-2134006-h4000-radiomap-repair.receipt.json": "2f130de62da89aaf2ad649c7ae4884c003ab205f51730f3ab689e81b01797daf",
+    "artifacts/costaware_recovery/cases/confirmation-2134007-h4000-frozen_fleet_jepa-legacy.json.gz": "b0e74828e297006cd605a5ab1e2bbff173a0a6740f4d09f183324a66e8b5ac97",
+    "artifacts/costaware_recovery/cases/confirmation-2134007-h4000-frozen_fleet_jepa-legacy.receipt.json": "c21b07b98d58c2530dcde68407d13fa50bd3a56a6d1759279ae845f0b3dbc647",
+    "artifacts/costaware_recovery/cases/confirmation-2134007-h4000-frozen_fleet_jepa-repair.json.gz": "4f58d67f8c166022bc9863bb222cfe0ed034845b0677eb4571c5d63bc61da350",
+    "artifacts/costaware_recovery/cases/confirmation-2134007-h4000-frozen_fleet_jepa-repair.receipt.json": "d9317fd4a97510c2902eed34d7cf838c667770f5c246e6cdbecf26eb0ba1f7d0",
+    "artifacts/costaware_recovery/cases/confirmation-2134007-h4000-radiomap-legacy.json.gz": "8ec5ad01c087698a290c932b6a6b74e6f82288a4462c108da2ab59fd990cef20",
+    "artifacts/costaware_recovery/cases/confirmation-2134007-h4000-radiomap-legacy.receipt.json": "57a12e28c107101a25994ae55df7ddb25a4442ac704bdf7fe287d03fd9079feb",
+    "artifacts/costaware_recovery/cases/confirmation-2134007-h4000-radiomap-repair.json.gz": "0e24f423977165d0e841bb360bc343a50b020bd69a853cf004825aa13c775618",
+    "artifacts/costaware_recovery/cases/confirmation-2134007-h4000-radiomap-repair.receipt.json": "173d7e95b0409a8ce19e63db9a324e00efe86119c4ac5ddaad5066b6862cc882",
+    "artifacts/costaware_recovery/cases/development-2133000-h4000-frozen_fleet_jepa-legacy.json.gz": "fcedabb5fb11df3661fadaa6e14f35b9256b943b265355e67f7a084a9afbd6e2",
+    "artifacts/costaware_recovery/cases/development-2133000-h4000-frozen_fleet_jepa-legacy.receipt.json": "7c25649a78655a937c9bc4e88eca014aa358560f39abd6cfb8bf38a63ab1cc07",
+    "artifacts/costaware_recovery/cases/development-2133000-h4000-frozen_fleet_jepa-repair.json.gz": "df55d4733c1be86d1bfe501e149d5f6e2f3f17efcc165d024430c97b5f62869f",
+    "artifacts/costaware_recovery/cases/development-2133000-h4000-frozen_fleet_jepa-repair.receipt.json": "4007c0f9d692735dc11fc9157fa7bb842312db47c7c2af23e440ff2e627fa094",
+    "artifacts/costaware_recovery/cases/development-2133000-h4000-radiomap-legacy.json.gz": "4d96ce49bf02b3101284d9255c4a327938c85f1b13dc7a655730515d12b489f7",
+    "artifacts/costaware_recovery/cases/development-2133000-h4000-radiomap-legacy.receipt.json": "1a3455111bdd4333903b946123d099240ec92c2ab7beb243cedb17825050989e",
+    "artifacts/costaware_recovery/cases/development-2133000-h4000-radiomap-repair.json.gz": "ebb8d1e10c7fcd324ff8e10ba2788862227ba1be5d66d92f57c99c0bc3a99f32",
+    "artifacts/costaware_recovery/cases/development-2133000-h4000-radiomap-repair.receipt.json": "2f2ce129ed9753663903836e0929e9e01eceb277a06ea54ab37802a7cda64387",
+    "artifacts/costaware_recovery/cases/development-2133001-h4000-frozen_fleet_jepa-legacy.json.gz": "bb2cfae488a60954cf1fddd247ce7166f1c0bef50c938696e95a477d1e54e638",
+    "artifacts/costaware_recovery/cases/development-2133001-h4000-frozen_fleet_jepa-legacy.receipt.json": "a5864ae808af65525d83642b4ffd31aceba73d399e5f7559ac4f858662b594e3",
+    "artifacts/costaware_recovery/cases/development-2133001-h4000-frozen_fleet_jepa-repair.json.gz": "8d498e301f9173e1670dc57b83709a9a17a6735108d7e65142dc97881d6ba1e9",
+    "artifacts/costaware_recovery/cases/development-2133001-h4000-frozen_fleet_jepa-repair.receipt.json": "891dce745c7b576f0cfbf9399e97ca171499ec7d15f1f09b34171266133c3a4b",
+    "artifacts/costaware_recovery/cases/development-2133001-h4000-radiomap-legacy.json.gz": "b029f6ee3c884c84b2f6c69b5a47ef400f00efcba1d8779e506c7600077fe6ed",
+    "artifacts/costaware_recovery/cases/development-2133001-h4000-radiomap-legacy.receipt.json": "383f77c348ea5898988bd923b4bd323941efdc29f283709ae24dfb213bc04d56",
+    "artifacts/costaware_recovery/cases/development-2133001-h4000-radiomap-repair.json.gz": "5aac3a74f9a7ba15c498efeeabfeb164e1bfa9f07ecfd0fcd853ff2646c59494",
+    "artifacts/costaware_recovery/cases/development-2133001-h4000-radiomap-repair.receipt.json": "2d697f8945dff68234bf6755fcb189aa586689d7bd9b4b6281ac2821c32d5e68",
+    "artifacts/costaware_recovery/completion.json": "4567245b0baf6d43976f1ede8e8bdf23156ebe023f2a73747f7e40c64e2d8b02",
+    "artifacts/costaware_recovery/development.json": "e7ca7b051c668e704b3c91dcb388d1171e20afc41334f0de6f8517add9e66406",
+    "artifacts/costaware_recovery/execution_order.json": "de6e2bb8a0dfd9d1e0b79aeb6f03316e8788204e0d67244526c40749e6fce510",
+    "artifacts/costaware_recovery/live_replications/confirmation-2134000-h4000-frozen_fleet_jepa-legacy.json.gz": "527ad96cd8ce6e80a250d6acaf935730f8531fcf365f5a9d03dfa10c3e7798fa",
+    "artifacts/costaware_recovery/live_replications/confirmation-2134000-h4000-frozen_fleet_jepa-legacy.receipt.json": "14e0109923085e5b3945d9b8c283f176dffa5e8f7c9eb3416f19afaef175b682",
+    "artifacts/costaware_recovery/live_replications/confirmation-2134000-h4000-frozen_fleet_jepa-repair.json.gz": "d630e796dc4a43f675d722934dbc1e28d59679785fa44b1387c905336189dddc",
+    "artifacts/costaware_recovery/live_replications/confirmation-2134000-h4000-frozen_fleet_jepa-repair.receipt.json": "18f0bc57513425bccbfe92bba0727f03276277a4f9c6f8e6a5bc7aa588ab25f9",
+    "artifacts/costaware_recovery/live_replications/confirmation-2134000-h4000-radiomap-legacy.json.gz": "8208d9b48ee5ba147ae96af032da695f336b396319a59e5af9fb2d90f9ccf23b",
+    "artifacts/costaware_recovery/live_replications/confirmation-2134000-h4000-radiomap-legacy.receipt.json": "385d968049bbfe56c098ebac3eaa054c8f9d250140ec77be3a1cf88806ae884f",
+    "artifacts/costaware_recovery/live_replications/confirmation-2134000-h4000-radiomap-repair.json.gz": "9f149e2383ac80ac2742abfe396566f5d3544f3187a754ef733ad5741b19aa4d",
+    "artifacts/costaware_recovery/live_replications/confirmation-2134000-h4000-radiomap-repair.receipt.json": "671fcba8bb818909468f89beabd6e9daff26cd003dac2f77a38f50346cba3a6a",
+    "artifacts/costaware_recovery/protocol.json": "101c73a7492cfa35b75e86284c69c02fe22baec8ced4382023137da9bd6c0c7a",
+    "artifacts/costaware_recovery/qualification.json": "c8ea3c249169102a372099a95b92ecb3b61ef3ebe90d58c659fcdcef838b0951",
+    "artifacts/costaware_recovery/registration/git.json": "edb28e2e57414921a89a2dd37f504d9c19ae7d833bf75f9527105d4b9a4aade4",
+    "artifacts/costaware_recovery/registration/source.json": "c39e463edc52008ee3263da774c3f5bd0f9cc6449ebd80c277e6a47a40821c85",
+    "artifacts/costaware_recovery/replays/confirmation-2134000-h4000-frozen_fleet_jepa-legacy.json.gz": "a521055babff9951dbc707f5f900552fd97c0b2d4628b2862768d8f8422fbca1",
+    "artifacts/costaware_recovery/replays/confirmation-2134000-h4000-frozen_fleet_jepa-legacy.receipt.json": "93af655049f94c86debbfb37a79feb61f97df1c129f4e28f62f7ffd596eab3e3",
+    "artifacts/costaware_recovery/replays/confirmation-2134000-h4000-frozen_fleet_jepa-repair.json.gz": "b3b3d95c710e4573d874d82b79a7b9f7c270861a0db156f57d3fee8c4f81efff",
+    "artifacts/costaware_recovery/replays/confirmation-2134000-h4000-frozen_fleet_jepa-repair.receipt.json": "91353c4183f28a9645d243ffe7500509045f2806a40b5006e7b71f60307a5dd5",
+    "artifacts/costaware_recovery/replays/confirmation-2134000-h4000-radiomap-legacy.json.gz": "b6808c96dec7c1585a83155164009dc0afa5d3ce1ab7ce0b590fe7deda3de659",
+    "artifacts/costaware_recovery/replays/confirmation-2134000-h4000-radiomap-legacy.receipt.json": "150d8f2b3455f1c65ad0d1381cd6558d061ccf631df7f46777122651648a8f4f",
+    "artifacts/costaware_recovery/replays/confirmation-2134000-h4000-radiomap-repair.json.gz": "5bc76fe1a0a837477193517b0b554f5e4791935fcf3d21f01b51e188509069c6",
+    "artifacts/costaware_recovery/replays/confirmation-2134000-h4000-radiomap-repair.receipt.json": "62792115ac759d2b12f67a76a9636e7f8ddf06c9a4dda8d977b7f85975203b29",
+    "artifacts/costaware_recovery/report.json": "e10b13d4b6f17e9f0e398f14762a22e5abacf2a5bce323ec6f1d5acb59738e16",
+    "artifacts/jepa_repair/figures/confirmation.svg": "fd4891cc0b10eedd3d27f1939bef2d3bc502d3755e64e0df66066bfca2ba6414",
+    "artifacts/jepa_repair/protocol.json": "f13002a1aeef91d4c226b24ad812217f790e82caa3ef9a03b3d442a4da298334",
+    "artifacts/jepa_repair/report.json": "c9c990d68e9191db827a006b750bbf6ab85bc39d59cd66c1e8f2364851626268",
+    "artifacts/semantic_jepa/latency.json": "2a103b198cbd41add5741cc36c5b9fe176550c0e3f17a864dc462737676e13f3"
+  },
+  "limits": [
+    "Separate slow-only recovery experiment; earlier unfiltered-recovery failures and vetoes are preserved.",
+    "Ordinary outage utility and all-handover admission remain shared; only the registered persistent-gap watchdog differs.",
+    "Recovery effects with frozen models do not establish a JEPA training-objective or architecture advantage.",
+    "Offline fixed-schedule replay is not proof of freshly measured deadlines.",
+    "Fresh live-cost repetitions are sensitivity observations, not extra independent sites.",
+    "Shared procedural CAD, assumed sensing/public routes and fixed weights limit transfer.",
+    "Admission/scorer CPU is not separately scheduled; no complete-stack real-time guarantee.",
+    "Empirical endpoint/tail margins and finite silence do not establish production or indefinite safety."
+  ],
+  "new_fitting_or_selection": false,
+  "no_physical_or_production_qualification": true,
+  "observed_loss_units": "percent",
+  "offline_replay_checks": [
+    {
+      "case": [
+        "confirmation",
+        2134000,
+        4.0,
+        "radiomap",
+        "legacy"
+      ],
+      "exact": true
+    },
+    {
+      "case": [
+        "confirmation",
+        2134000,
+        4.0,
+        "radiomap",
+        "repair"
+      ],
+      "exact": true
+    },
+    {
+      "case": [
+        "confirmation",
+        2134000,
+        4.0,
+        "frozen_fleet_jepa",
+        "legacy"
+      ],
+      "exact": true
+    },
+    {
+      "case": [
+        "confirmation",
+        2134000,
+        4.0,
+        "frozen_fleet_jepa",
+        "repair"
+      ],
+      "exact": true
+    }
+  ],
+  "outputs_sha256": {
+    "artifacts/costaware_recovery/figures/available-radio-recovery-and-cost.pdf": "e1762bda60e3c6ce6adb0efab6156fab5d91fda6a29fce71f422c975b1b725ee",
+    "artifacts/costaware_recovery/figures/available-radio-recovery-and-cost.png": "db828dacd44c6f7a94c413f34f51215c499f5cfffa1d09e811ce8731d49d0873",
+    "artifacts/costaware_recovery/figures/available-radio-recovery-and-cost.svg": "4d2adca986c32e04b4102a066d0d842aa1a331b03dc2b1fd7a13cf533f171061",
+    "artifacts/costaware_recovery/figures/confirmation.pdf": "8fbd0472bbc6e4f8460db1b5e187abee2bd15559a490894c701b286930fd7e94",
+    "artifacts/costaware_recovery/figures/confirmation.png": "7e55adcea1db50bd1ee21031bb075d481066ce07c87d0c3ad5fbb3a41cb512e8",
+    "artifacts/costaware_recovery/figures/confirmation.svg": "dbd4bce52db9a56aa7f31f73cf877791ef4261a3a1d4fb904a436d4a925dafad"
+  },
+  "paired_reduction_units": "avoided misses per100000 generated commands",
+  "passed_development_costs": [
+    4.0
+  ],
+  "primary_comparisons": [
+    {
+      "candidate_family": "radiomap",
+      "candidate_variant": "repair",
+      "contrast_id": "repair_minus_legacy:radiomap",
+      "descriptive_95_interval": [
+        -0.0014052083333333356,
+        0.00039270833333333063
+      ],
+      "endpoint_passes": false,
+      "endpoint_sensitivity": {
+        "descriptive_95_interval": [
+          -0.0013500000000000005,
+          0.0004468749999999976
+        ],
+        "mean_difference": -0.0002572916666666678,
+        "multiplicity_upper": 0.0004822916666666653,
+        "paired_site_differences": [
+          -0.0001166666666666677,
+          0.0008166666666666669,
+          8.333333333332416e-06,
+          -0.0038499999999999993,
+          0.0,
+          0.0002333333333333354,
+          3.333333333332966e-05,
+          0.00081666666666666
+        ],
+        "upper_quantile": 0.9833333333333333
+      },
+      "engineering_pass": true,
+      "experimental_benefit": false,
+      "handover_seconds": 4.0,
+      "mean_difference": -0.00031250000000000223,
+      "multiplicity_upper": 0.0004291666666666616,
+      "observed_passes": false,
+      "paired_site_differences": [
+        -0.00015833333333332977,
+        0.0007833333333333303,
+        -3.333333333332966e-05,
+        -0.0039166666666666725,
+        -2.499999999999898e-05,
+        0.00014999999999999736,
+        -4.166666666666902e-05,
+        0.0007416666666666544
+      ],
+      "reference_family": "radiomap",
+      "reference_variant": "legacy",
+      "statistical_pass": false,
+      "statistical_superiority_claimed": null,
+      "status": "tested",
+      "upper_quantile": 0.9833333333333333
+    },
+    {
+      "candidate_family": "frozen_fleet_jepa",
+      "candidate_variant": "repair",
+      "contrast_id": "repair_minus_legacy:frozen_fleet_jepa",
+      "descriptive_95_interval": [
+        -0.0013260416666666672,
+        6.458333333333142e-05
+      ],
+      "endpoint_passes": false,
+      "endpoint_sensitivity": {
+        "descriptive_95_interval": [
+          -0.0012729166666666705,
+          0.0001020833333333312
+        ],
+        "mean_difference": -0.0005020833333333342,
+        "multiplicity_upper": 0.00012812500000000063,
+        "paired_site_differences": [
+          0.0003333333333333313,
+          -0.0015583333333333352,
+          8.333333333332416e-06,
+          -0.002783333333333339,
+          1.6666666666666566e-05,
+          0.0003000000000000086,
+          4.999999999999449e-05,
+          -0.00038333333333333275
+        ],
+        "upper_quantile": 0.9833333333333333
+      },
+      "engineering_pass": true,
+      "experimental_benefit": false,
+      "handover_seconds": 4.0,
+      "mean_difference": -0.0005489583333333345,
+      "multiplicity_upper": 8.958333333333301e-05,
+      "observed_passes": false,
+      "paired_site_differences": [
+        0.0003166666666666665,
+        -0.0016083333333333297,
+        -3.33333333333366e-05,
+        -0.0028583333333333377,
+        0.0,
+        0.00022500000000000298,
+        1.666666666666483e-05,
+        -0.00045000000000000595
+      ],
+      "reference_family": "frozen_fleet_jepa",
+      "reference_variant": "legacy",
+      "statistical_pass": false,
+      "statistical_superiority_claimed": null,
+      "status": "tested",
+      "upper_quantile": 0.9833333333333333
+    },
+    {
+      "candidate_family": "frozen_fleet_jepa",
+      "candidate_variant": "repair",
+      "contrast_id": "repaired_jepa_minus_repaired_radiomap",
+      "descriptive_95_interval": [
+        -0.0064052343750000025,
+        -0.0013704947916666937
+      ],
+      "endpoint_passes": true,
+      "endpoint_sensitivity": {
+        "descriptive_95_interval": [
+          -0.006351328125000001,
+          -0.0013310677083333497
+        ],
+        "mean_difference": -0.003811458333333331,
+        "multiplicity_upper": -0.0011048263888888952,
+        "paired_site_differences": [
+          -0.004941666666666671,
+          -0.0023250000000000007,
+          -0.009675000000000003,
+          -0.0010166666666666657,
+          0.0021083333333333336,
+          -0.005533333333333321,
+          -0.0014250000000000027,
+          -0.00768333333333332
+        ],
+        "upper_quantile": 0.9833333333333333
+      },
+      "engineering_pass": false,
+      "experimental_benefit": false,
+      "handover_seconds": 4.0,
+      "mean_difference": -0.0038583333333333317,
+      "multiplicity_upper": -0.0011478125000000147,
+      "observed_passes": true,
+      "paired_site_differences": [
+        -0.004958333333333335,
+        -0.002374999999999995,
+        -0.009716666666666672,
+        -0.0010916666666666644,
+        0.002091666666666667,
+        -0.005608333333333326,
+        -0.0014583333333333323,
+        -0.007749999999999993
+      ],
+      "reference_family": "radiomap",
+      "reference_variant": "repair",
+      "statistical_pass": true,
+      "statistical_superiority_claimed": null,
+      "status": "tested",
+      "upper_quantile": 0.9833333333333333
+    }
+  ],
+  "prior_failed_parent_study": {
+    "figure": "artifacts/jepa_repair/figures/confirmation.svg",
+    "figure_sha256": "fd4891cc0b10eedd3d27f1939bef2d3bc502d3755e64e0df66066bfca2ba6414",
+    "loss_difference_pp": {
+      "frozen_fleet_jepa": 4.748333333333334,
+      "radiomap": 5.505
+    },
+    "new_sites_disjoint_from_parent": true,
+    "report_sha256": "c9c990d68e9191db827a006b750bbf6ab85bc39d59cd66c1e8f2364851626268",
+    "status": "development_severe_regression_veto"
+  },
+  "reduction_sign": "reference minus candidate; positive favors candidate",
+  "report_sha256": "e10b13d4b6f17e9f0e398f14762a22e5abacf2a5bce323ec6f1d5acb59738e16",
+  "schema": 1,
+  "scientific_execution": false,
+  "script_sha256": "b7cc851be543678e8bd2873f6b40508d8aea3270426283652f026d23badd5987",
+  "software": {
+    "matplotlib": "3.11.2",
+    "numpy": "2.5.4",
+    "python": "3.12.14"
+  },
+  "uncertainty": "20k whole-site bootstrap;95% descriptive,1-.05/3 observed AND conservative endpoint lower bounds for three primary decisions",
+  "warm_request_summary": {
+    "frozen_fleet_jepa": {
+      "actual_compute_max": 0.5671669419971295,
+      "charged_service_max": 1.35,
+      "old_warm_allowance": 0.85,
+      "requests": 912
+    },
+    "radiomap": {
+      "actual_compute_max": 0.11139391000324395,
+      "charged_service_max": 0.62,
+      "old_warm_allowance": 0.12,
+      "requests": 912
+    }
+  }
+}

@@ -1,6 +1,6 @@
 # Sustained recovery for costly handovers
 
-This separately registered experiment repairs the slow-hand-over failure found in the [local recovery study](JEPAREPAIR_DESIGN.md). The earlier aggressive package roughly doubled command loss on its two four-second development sites. Its severe-regression gate rejected that cost before confirmation; those four-second confirmation cases were not run; the same world IDs were evaluated only at the fast cost. The negative result and its source stay unchanged.
+This separately registered experiment tests a repair for the slow-handover failure found in the [local recovery study](JEPAREPAIR_DESIGN.md). The earlier aggressive package roughly doubled command loss on its two four-second development sites. Its severe-regression gate rejected that cost before confirmation; those four-second confirmation cases were not run; the same world IDs were evaluated only at the fast cost. The negative result and its source stay unchanged.
 
 ## Preserve ordinary admission; require stronger emergency evidence
 
@@ -31,3 +31,23 @@ Every fresh arm uses the same actual-cost queue and original sealed profiles. Fo
 Four explicit offline replays retain their original charged schedules while recomputing forecasts and packet outcomes. Four separate fresh measured-cost repetitions assess runtime sensitivity, adding no independent sites. Offline equality is not a freshly measured deadline guarantee.
 
 Capture masks, measured values and timestamps, payload hashes, local completions, watchdog evidence, paid outages and forecast consumption are archived for verification. The simulator still uses shared procedural CAD, conditional warm history, assumed localization/scan capabilities and fixed packet/PHY mechanisms. No physical command, default activation, production guarantee, arbitrary-warehouse transfer, EMA necessity or SOTA claim follows.
+
+## Why a cost-derived threshold is not a safety guarantee
+
+Waiting 4.2 seconds establishes past control failure. It does not establish
+that the failed link would remain unusable for another four seconds, or that
+the candidate would deliver commands after switching. Waiting and then paying
+the four-second interruption can itself create approximately 8.2 seconds of
+silence before successful delivery, with slot/packet alignment adding delay.
+Excluding the controller's own outage from its evidence prevents one feedback
+loop; it does not remove this continuity cost.
+
+The study therefore retains its separate maximum-silence check. A development
+GO means only that the fixed severe-regression/mechanical gate permits the
+confirmation experiment. It is not an improvement, tail-safety or deployment
+approval. Future recovery designs need an explicit prospective packet-loss
+and silence budget, as well as evidence that the alternative is reachable.
+With a sole control radio, a four-second break-before-make handover cannot
+guarantee a tighter uninterrupted-delivery target. Another usable link or an
+appropriate robot stop/fallback mode is a system requirement for such a target;
+changing the JEPA loss alone cannot supply it.

@@ -1,0 +1,4065 @@
+{
+  "schema": 1,
+  "verified_at_utc": "2026-11-04T17:49:41.684401+00:00",
+  "scientific_source_commit": "6f931a01a5bbc68ffeb128418a4762cce4198bc1",
+  "scientific_source_tree": "1cf4cc77c0c0e226c81e784c592fb1a9b7a9d65c",
+  "registered_source_files": 422,
+  "old_source_closures": {
+    "semantic_jepa": 80,
+    "selected_jepa": 230,
+    "jepa_repair": 386
+  },
+  "prior_manifest_source_and_evidence_preserved": {
+    "semantic_jepa": {
+      "manifest_sha256": "7cb7a2a282e14dad17e670e0231eec6f01750a9559445eef44ea42cc200c29ee",
+      "preserved_entries": {
+        "sources_sha256": 327,
+        "evidence_sha256": 398
+      }
+    },
+    "selected_jepa": {
+      "manifest_sha256": "b606d7a05bec69bb292fccdcd22ac282c9dd6095936ac08f5cf868c5b70b1afd",
+      "preserved_entries": {
+        "sources_sha256": 327,
+        "evidence_sha256": 523
+      }
+    }
+  },
+  "full_tests": {
+    "passed": 1245,
+    "warnings": 1,
+    "seconds": 172.87,
+    "log": "artifacts/costaware_recovery/logs/preflight-tests.txt",
+    "sha256": "69205b224a1c3f7b0ce128689aa5881e5a9fabf2a849cebaaa8cc72aa73fb834"
+  },
+  "development_cases": 8,
+  "development_gate": {
+    "stage": "development",
+    "case_count": 8,
+    "independent_sites": 2,
+    "passed_costs": [
+      4.0
+    ],
+    "per_cost": [
+      {
+        "handover_seconds": 4.0,
+        "status": "go",
+        "family_checks": [
+          {
+            "family": "radiomap",
+            "repair_minus_legacy": 0.0002375,
+            "exact_difference_numerator": 19,
+            "exact_difference_denominator": 80000,
+            "severe_regression": false
+          },
+          {
+            "family": "frozen_fleet_jepa",
+            "repair_minus_legacy": 0.0002625,
+            "exact_difference_numerator": 21,
+            "exact_difference_denominator": 80000,
+            "severe_regression": false
+          }
+        ],
+        "passes": true,
+        "severe_regression": false
+      }
+    ],
+    "proof": {
+      "source_and_archive_pass": true,
+      "causality_pass": true,
+      "paid_cost_and_consumption_pass": true,
+      "exact_offline_replay_pass": null,
+      "mechanical_integrity_pass": true,
+      "experimental_claim_integrity_pass": true
+    },
+    "timing": {
+      "profile_exceedance_is_diagnostic_not_a_veto": true,
+      "profile_exceeded_cases": 0,
+      "predictor_profile_exceeded_cases": 0,
+      "paid_cost_proof_failed_cases": 0,
+      "causality_failed_cases": 0,
+      "profile_exceeded_jobs": 0,
+      "jobs": 480,
+      "consumptions": 412,
+      "maximum_forecast_age_seconds": 17.979999999999997,
+      "charged_compute_seconds_total": 246.56,
+      "charged_service_seconds_total": 486.56000000000006,
+      "actual_compute_seconds_total": 126.62735015412909
+    },
+    "means": [
+      {
+        "stage": "development",
+        "handover_seconds": 4.0,
+        "family": "radiomap",
+        "controller_variant": "legacy",
+        "command_loss": 0.07808333333333334,
+        "command_loss_pending_as_misses": 0.07816666666666666,
+        "worst_decile_loss": 0.16154166666666664,
+        "worst_decile_pending_as_misses": 0.16154166666666664,
+        "video_vs_original": 0.8537047464492664,
+        "bulk_mbps": 462.77201207078554,
+        "bulk_backlog_bits": 1848797599.6274571,
+        "bulk_overflow_bits": 132881676.12541984,
+        "pending_control_packets": 10.0,
+        "global_max_silence_seconds": 4.3,
+        "profile_exceeded_cases": 0,
+        "causality_failed_cases": 0,
+        "paid_cost_proof_failed_cases": 0,
+        "independent_sites": 2,
+        "new_training_members": 0
+      },
+      {
+        "stage": "development",
+        "handover_seconds": 4.0,
+        "family": "radiomap",
+        "controller_variant": "repair",
+        "command_loss": 0.07832083333333334,
+        "command_loss_pending_as_misses": 0.07840416666666666,
+        "worst_decile_loss": 0.16445833333333332,
+        "worst_decile_pending_as_misses": 0.16445833333333332,
+        "video_vs_original": 0.8539200712214654,
+        "bulk_mbps": 462.4713403991874,
+        "bulk_backlog_bits": 1867595967.5686333,
+        "bulk_overflow_bits": 132123608.48013318,
+        "pending_control_packets": 10.0,
+        "global_max_silence_seconds": 8.3,
+        "profile_exceeded_cases": 0,
+        "causality_failed_cases": 0,
+        "paid_cost_proof_failed_cases": 0,
+        "independent_sites": 2,
+        "new_training_members": 0
+      },
+      {
+        "stage": "development",
+        "handover_seconds": 4.0,
+        "family": "frozen_fleet_jepa",
+        "controller_variant": "legacy",
+        "command_loss": 0.06975416666666667,
+        "command_loss_pending_as_misses": 0.06979583333333333,
+        "worst_decile_loss": 0.15566666666666668,
+        "worst_decile_pending_as_misses": 0.15575,
+        "video_vs_original": 0.874755028624872,
+        "bulk_mbps": 468.4993438420852,
+        "bulk_backlog_bits": 1522962822.113596,
+        "bulk_overflow_bits": 115076547.36130826,
+        "pending_control_packets": 5.0,
+        "global_max_silence_seconds": 4.3,
+        "profile_exceeded_cases": 0,
+        "causality_failed_cases": 0,
+        "paid_cost_proof_failed_cases": 0,
+        "independent_sites": 2,
+        "new_training_members": 0
+      },
+      {
+        "stage": "development",
+        "handover_seconds": 4.0,
+        "family": "frozen_fleet_jepa",
+        "controller_variant": "repair",
+        "command_loss": 0.07001666666666667,
+        "command_loss_pending_as_misses": 0.07005833333333333,
+        "worst_decile_loss": 0.15858333333333335,
+        "worst_decile_pending_as_misses": 0.15866666666666668,
+        "video_vs_original": 0.8748249450170565,
+        "bulk_mbps": 468.508374475966,
+        "bulk_backlog_bits": 1522699849.3945765,
+        "bulk_overflow_bits": 114797682.04748319,
+        "pending_control_packets": 5.0,
+        "global_max_silence_seconds": 8.3,
+        "profile_exceeded_cases": 0,
+        "causality_failed_cases": 0,
+        "paid_cost_proof_failed_cases": 0,
+        "independent_sites": 2,
+        "new_training_members": 0
+      }
+    ],
+    "every_case": [
+      {
+        "stage": "development",
+        "site": 2133000,
+        "handover_seconds": 4.0,
+        "family": "frozen_fleet_jepa",
+        "training_seed": null,
+        "control_misses": 7175,
+        "control_sent": 120000,
+        "command_loss": 0.05979166666666667,
+        "command_loss_pending_as_misses": 0.059825,
+        "pending_control_packets": 4,
+        "pending_control_right_censored": true,
+        "worst_decile_loss": 0.14341666666666666,
+        "worst_decile_pending_as_misses": 0.14341666666666666,
+        "max_silence_seconds": 4.07,
+        "p99_robot_max_silence_seconds": 4.0502,
+        "video_vs_original": 0.8747464161257866,
+        "bulk_mbps": 444.0442698690955,
+        "bulk_backlog_bits": 1293343807.8542476,
+        "bulk_overflow_bits": 2.791637962218374e-05,
+        "video_flow_error_bits": 4.38690185546875e-05,
+        "bulk_flow_error_bits": -3.814697265625e-06,
+        "cumulative": [
+          {
+            "slot_end": 100,
+            "control_misses": 23,
+            "control_sent": 2000,
+            "max_silence_seconds": 0.14
+          },
+          {
+            "slot_end": 200,
+            "control_misses": 38,
+            "control_sent": 4000,
+            "max_silence_seconds": 0.14
+          },
+          {
+            "slot_end": 300,
+            "control_misses": 214,
+            "control_sent": 6000,
+            "max_silence_seconds": 1.08
+          },
+          {
+            "slot_end": 400,
+            "control_misses": 460,
+            "control_sent": 8000,
+            "max_silence_seconds": 2.08
+          },
+          {
+            "slot_end": 500,
+            "control_misses": 741,
+            "control_sent": 10000,
+            "max_silence_seconds": 3.08
+          },
+          {
+            "slot_end": 600,
+            "control_misses": 1015,
+            "control_sent": 12000,
+            "max_silence_seconds": 4.04
+          },
+          {
+            "slot_end": 700,
+            "control_misses": 1155,
+            "control_sent": 14000,
+            "max_silence_seconds": 4.04
+          },
+          {
+            "slot_end": 800,
+            "control_misses": 1238,
+            "control_sent": 16000,
+            "max_silence_seconds": 4.04
+          },
+          {
+            "slot_end": 900,
+            "control_misses": 1301,
+            "control_sent": 18000,
+            "max_silence_seconds": 4.04
+          },
+          {
+            "slot_end": 1000,
+            "control_misses": 1365,
+            "control_sent": 20000,
+            "max_silence_seconds": 4.04
+          },
+          {
+            "slot_end": 1100,
+            "control_misses": 1458,
+            "control_sent": 22000,
+            "max_silence_seconds": 4.04
+          },
+          {
+            "slot_end": 1200,
+            "control_misses": 1562,
+            "control_sent": 24000,
+            "max_silence_seconds": 4.04
+          },
+          {
+            "slot_end": 1300,
+            "control_misses": 1685,
+            "control_sent": 26000,
+            "max_silence_seconds": 4.04
+          },
+          {
+            "slot_end": 1400,
+            "control_misses": 1825,
+            "control_sent": 28000,
+            "max_silence_seconds": 4.04
+          },
+          {
+            "slot_end": 1500,
+            "control_misses": 1930,
+            "control_sent": 30000,
+            "max_silence_seconds": 4.04
+          },
+          {
+            "slot_end": 1600,
+            "control_misses": 2020,
+            "control_sent": 32000,
+            "max_silence_seconds": 4.04
+          },
+          {
+            "slot_end": 1700,
+            "control_misses": 2095,
+            "control_sent": 34000,
+            "max_silence_seconds": 4.04
+          },
+          {
+            "slot_end": 1800,
+            "control_misses": 2173,
+            "control_sent": 36000,
+            "max_silence_seconds": 4.04
+          },
+          {
+            "slot_end": 1900,
+            "control_misses": 2257,
+            "control_sent": 38000,
+            "max_silence_seconds": 4.04
+          },
+          {
+            "slot_end": 2000,
+            "control_misses": 2356,
+            "control_sent": 40000,
+            "max_silence_seconds": 4.04
+          },
+          {
+            "slot_end": 2100,
+            "control_misses": 2454,
+            "control_sent": 42000,
+            "max_silence_seconds": 4.04
+          },
+          {
+            "slot_end": 2200,
+            "control_misses": 2549,
+            "control_sent": 44000,
+            "max_silence_seconds": 4.04
+          },
+          {
+            "slot_end": 2300,
+            "control_misses": 2646,
+            "control_sent": 46000,
+            "max_silence_seconds": 4.04
+          },
+          {
+            "slot_end": 2400,
+            "control_misses": 2739,
+            "control_sent": 48000,
+            "max_silence_seconds": 4.04
+          },
+          {
+            "slot_end": 2500,
+            "control_misses": 2824,
+            "control_sent": 50000,
+            "max_silence_seconds": 4.04
+          },
+          {
+            "slot_end": 2600,
+            "control_misses": 2944,
+            "control_sent": 52000,
+            "max_silence_seconds": 4.04
+          },
+          {
+            "slot_end": 2700,
+            "control_misses": 3072,
+            "control_sent": 54000,
+            "max_silence_seconds": 4.04
+          },
+          {
+            "slot_end": 2800,
+            "control_misses": 3206,
+            "control_sent": 56000,
+            "max_silence_seconds": 4.04
+          },
+          {
+            "slot_end": 2900,
+            "control_misses": 3326,
+            "control_sent": 58000,
+            "max_silence_seconds": 4.07
+          },
+          {
+            "slot_end": 3000,
+            "control_misses": 3418,
+            "control_sent": 60000,
+            "max_silence_seconds": 4.07
+          },
+          {
+            "slot_end": 3100,
+            "control_misses": 3516,
+            "control_sent": 62000,
+            "max_silence_seconds": 4.07
+          },
+          {
+            "slot_end": 3200,
+            "control_misses": 3635,
+            "control_sent": 64000,
+            "max_silence_seconds": 4.07
+          },
+          {
+            "slot_end": 3300,
+            "control_misses": 3799,
+            "control_sent": 66000,
+            "max_silence_seconds": 4.07
+          },
+          {
+            "slot_end": 3400,
+            "control_misses": 3972,
+            "control_sent": 68000,
+            "max_silence_seconds": 4.07
+          },
+          {
+            "slot_end": 3500,
+            "control_misses": 4128,
+            "control_sent": 70000,
+            "max_silence_seconds": 4.07
+          },
+          {
+            "slot_end": 3600,
+            "control_misses": 4274,
+            "control_sent": 72000,
+            "max_silence_seconds": 4.07
+          },
+          {
+            "slot_end": 3700,
+            "control_misses": 4409,
+            "control_sent": 74000,
+            "max_silence_seconds": 4.07
+          },
+          {
+            "slot_end": 3800,
+            "control_misses": 4556,
+            "control_sent": 76000,
+            "max_silence_seconds": 4.07
+          },
+          {
+            "slot_end": 3900,
+            "control_misses": 4727,
+            "control_sent": 78000,
+            "max_silence_seconds": 4.07
+          },
+          {
+            "slot_end": 4000,
+            "control_misses": 4871,
+            "control_sent": 80000,
+            "max_silence_seconds": 4.07
+          },
+          {
+            "slot_end": 4100,
+            "control_misses": 4990,
+            "control_sent": 82000,
+            "max_silence_seconds": 4.07
+          },
+          {
+            "slot_end": 4200,
+            "control_misses": 5079,
+            "control_sent": 84000,
+            "max_silence_seconds": 4.07
+          },
+          {
+            "slot_end": 4300,
+            "control_misses": 5154,
+            "control_sent": 86000,
+            "max_silence_seconds": 4.07
+          },
+          {
+            "slot_end": 4400,
+            "control_misses": 5247,
+            "control_sent": 88000,
+            "max_silence_seconds": 4.07
+          },
+          {
+            "slot_end": 4500,
+            "control_misses": 5359,
+            "control_sent": 90000,
+            "max_silence_seconds": 4.07
+          },
+          {
+            "slot_end": 4600,
+            "control_misses": 5477,
+            "control_sent": 92000,
+            "max_silence_seconds": 4.07
+          },
+          {
+            "slot_end": 4700,
+            "control_misses": 5598,
+            "control_sent": 94000,
+            "max_silence_seconds": 4.07
+          },
+          {
+            "slot_end": 4800,
+            "control_misses": 5738,
+            "control_sent": 96000,
+            "max_silence_seconds": 4.07
+          },
+          {
+            "slot_end": 4900,
+            "control_misses": 5896,
+            "control_sent": 98000,
+            "max_silence_seconds": 4.07
+          },
+          {
+            "slot_end": 5000,
+            "control_misses": 6097,
+            "control_sent": 100000,
+            "max_silence_seconds": 4.07
+          },
+          {
+            "slot_end": 5100,
+            "control_misses": 6300,
+            "control_sent": 102000,
+            "max_silence_seconds": 4.07
+          },
+          {
+            "slot_end": 5200,
+            "control_misses": 6444,
+            "control_sent": 104000,
+            "max_silence_seconds": 4.07
+          },
+          {
+            "slot_end": 5300,
+            "control_misses": 6569,
+            "control_sent": 106000,
+            "max_silence_seconds": 4.07
+          },
+          {
+            "slot_end": 5400,
+            "control_misses": 6665,
+            "control_sent": 108000,
+            "max_silence_seconds": 4.07
+          },
+          {
+            "slot_end": 5500,
+            "control_misses": 6754,
+            "control_sent": 110000,
+            "max_silence_seconds": 4.07
+          },
+          {
+            "slot_end": 5600,
+            "control_misses": 6838,
+            "control_sent": 112000,
+            "max_silence_seconds": 4.07
+          },
+          {
+            "slot_end": 5700,
+            "control_misses": 6923,
+            "control_sent": 114000,
+            "max_silence_seconds": 4.07
+          },
+          {
+            "slot_end": 5800,
+            "control_misses": 7008,
+            "control_sent": 116000,
+            "max_silence_seconds": 4.07
+          },
+          {
+            "slot_end": 5900,
+            "control_misses": 7089,
+            "control_sent": 118000,
+            "max_silence_seconds": 4.07
+          },
+          {
+            "slot_end": 6000,
+            "control_misses": 7175,
+            "control_sent": 120000,
+            "max_silence_seconds": 4.07
+          }
+        ],
+        "forecast_metrics": {
+          "ap_choice_regret_db": 0.0628897175192833,
+          "rmse_db": 3.233710527420044,
+          "route_delta_rmse_db": 2.1406311988830566
+        },
+        "profile_exceeded": false,
+        "controller_variant": "legacy",
+        "causality_pass": true,
+        "paid_cost_and_consumption_pass": true,
+        "accounting_mode": "actual_cost",
+        "replay": false,
+        "live_replication": false,
+        "predictor_profile_exceeded": false,
+        "timing": {
+          "forecast_jobs": 60,
+          "consumptions": 43,
+          "profile_exceeded_jobs": 0,
+          "charged_service_seconds_total": 82.93,
+          "charged_compute_seconds_total": 52.93,
+          "actual_compute_seconds_total": 26.7862622521061,
+          "maximum_forecast_age_seconds": 17.979999999999997
+        }
+      },
+      {
+        "stage": "development",
+        "site": 2133000,
+        "handover_seconds": 4.0,
+        "family": "frozen_fleet_jepa",
+        "training_seed": null,
+        "control_misses": 7175,
+        "control_sent": 120000,
+        "command_loss": 0.05979166666666667,
+        "command_loss_pending_as_misses": 0.059825,
+        "pending_control_packets": 4,
+        "pending_control_right_censored": true,
+        "worst_decile_loss": 0.14341666666666666,
+        "worst_decile_pending_as_misses": 0.14341666666666666,
+        "max_silence_seconds": 4.07,
+        "p99_robot_max_silence_seconds": 4.0502,
+        "video_vs_original": 0.8747464161257866,
+        "bulk_mbps": 444.0442698690955,
+        "bulk_backlog_bits": 1293343807.8542476,
+        "bulk_overflow_bits": 2.791637962218374e-05,
+        "video_flow_error_bits": 4.38690185546875e-05,
+        "bulk_flow_error_bits": -3.814697265625e-06,
+        "cumulative": [
+          {
+            "slot_end": 100,
+            "control_misses": 23,
+            "control_sent": 2000,
+            "max_silence_seconds": 0.14
+          },
+          {
+            "slot_end": 200,
+            "control_misses": 38,
+            "control_sent": 4000,
+            "max_silence_seconds": 0.14
+          },
+          {
+            "slot_end": 300,
+            "control_misses": 214,
+            "control_sent": 6000,
+            "max_silence_seconds": 1.08
+          },
+          {
+            "slot_end": 400,
+            "control_misses": 460,
+            "control_sent": 8000,
+            "max_silence_seconds": 2.08
+          },
+          {
+            "slot_end": 500,
+            "control_misses": 741,
+            "control_sent": 10000,
+            "max_silence_seconds": 3.08
+          },
+          {
+            "slot_end": 600,
+            "control_misses": 1015,
+            "control_sent": 12000,
+            "max_silence_seconds": 4.04
+          },
+          {
+            "slot_end": 700,
+            "control_misses": 1155,
+            "control_sent": 14000,
+            "max_silence_seconds": 4.04
+          },
+          {
+            "slot_end": 800,
+            "control_misses": 1238,
+            "control_sent": 16000,
+            "max_silence_seconds": 4.04
+          },
+          {
+            "slot_end": 900,
+            "control_misses": 1301,
+            "control_sent": 18000,
+            "max_silence_seconds": 4.04
+          },
+          {
+            "slot_end": 1000,
+            "control_misses": 1365,
+            "control_sent": 20000,
+            "max_silence_seconds": 4.04
+          },
+          {
+            "slot_end": 1100,
+            "control_misses": 1458,
+            "control_sent": 22000,
+            "max_silence_seconds": 4.04
+          },
+          {
+            "slot_end": 1200,
+            "control_misses": 1562,
+            "control_sent": 24000,
+            "max_silence_seconds": 4.04
+          },
+          {
+            "slot_end": 1300,
+            "control_misses": 1685,
+            "control_sent": 26000,
+            "max_silence_seconds": 4.04
+          },
+          {
+            "slot_end": 1400,
+            "control_misses": 1825,
+            "control_sent": 28000,
+            "max_silence_seconds": 4.04
+          },
+          {
+            "slot_end": 1500,
+            "control_misses": 1930,
+            "control_sent": 30000,
+            "max_silence_seconds": 4.04
+          },
+          {
+            "slot_end": 1600,
+            "control_misses": 2020,
+            "control_sent": 32000,
+            "max_silence_seconds": 4.04
+          },
+          {
+            "slot_end": 1700,
+            "control_misses": 2095,
+            "control_sent": 34000,
+            "max_silence_seconds": 4.04
+          },
+          {
+            "slot_end": 1800,
+            "control_misses": 2173,
+            "control_sent": 36000,
+            "max_silence_seconds": 4.04
+          },
+          {
+            "slot_end": 1900,
+            "control_misses": 2257,
+            "control_sent": 38000,
+            "max_silence_seconds": 4.04
+          },
+          {
+            "slot_end": 2000,
+            "control_misses": 2356,
+            "control_sent": 40000,
+            "max_silence_seconds": 4.04
+          },
+          {
+            "slot_end": 2100,
+            "control_misses": 2454,
+            "control_sent": 42000,
+            "max_silence_seconds": 4.04
+          },
+          {
+            "slot_end": 2200,
+            "control_misses": 2549,
+            "control_sent": 44000,
+            "max_silence_seconds": 4.04
+          },
+          {
+            "slot_end": 2300,
+            "control_misses": 2646,
+            "control_sent": 46000,
+            "max_silence_seconds": 4.04
+          },
+          {
+            "slot_end": 2400,
+            "control_misses": 2739,
+            "control_sent": 48000,
+            "max_silence_seconds": 4.04
+          },
+          {
+            "slot_end": 2500,
+            "control_misses": 2824,
+            "control_sent": 50000,
+            "max_silence_seconds": 4.04
+          },
+          {
+            "slot_end": 2600,
+            "control_misses": 2944,
+            "control_sent": 52000,
+            "max_silence_seconds": 4.04
+          },
+          {
+            "slot_end": 2700,
+            "control_misses": 3072,
+            "control_sent": 54000,
+            "max_silence_seconds": 4.04
+          },
+          {
+            "slot_end": 2800,
+            "control_misses": 3206,
+            "control_sent": 56000,
+            "max_silence_seconds": 4.04
+          },
+          {
+            "slot_end": 2900,
+            "control_misses": 3326,
+            "control_sent": 58000,
+            "max_silence_seconds": 4.07
+          },
+          {
+            "slot_end": 3000,
+            "control_misses": 3418,
+            "control_sent": 60000,
+            "max_silence_seconds": 4.07
+          },
+          {
+            "slot_end": 3100,
+            "control_misses": 3516,
+            "control_sent": 62000,
+            "max_silence_seconds": 4.07
+          },
+          {
+            "slot_end": 3200,
+            "control_misses": 3635,
+            "control_sent": 64000,
+            "max_silence_seconds": 4.07
+          },
+          {
+            "slot_end": 3300,
+            "control_misses": 3799,
+            "control_sent": 66000,
+            "max_silence_seconds": 4.07
+          },
+          {
+            "slot_end": 3400,
+            "control_misses": 3972,
+            "control_sent": 68000,
+            "max_silence_seconds": 4.07
+          },
+          {
+            "slot_end": 3500,
+            "control_misses": 4128,
+            "control_sent": 70000,
+            "max_silence_seconds": 4.07
+          },
+          {
+            "slot_end": 3600,
+            "control_misses": 4274,
+            "control_sent": 72000,
+            "max_silence_seconds": 4.07
+          },
+          {
+            "slot_end": 3700,
+            "control_misses": 4409,
+            "control_sent": 74000,
+            "max_silence_seconds": 4.07
+          },
+          {
+            "slot_end": 3800,
+            "control_misses": 4556,
+            "control_sent": 76000,
+            "max_silence_seconds": 4.07
+          },
+          {
+            "slot_end": 3900,
+            "control_misses": 4727,
+            "control_sent": 78000,
+            "max_silence_seconds": 4.07
+          },
+          {
+            "slot_end": 4000,
+            "control_misses": 4871,
+            "control_sent": 80000,
+            "max_silence_seconds": 4.07
+          },
+          {
+            "slot_end": 4100,
+            "control_misses": 4990,
+            "control_sent": 82000,
+            "max_silence_seconds": 4.07
+          },
+          {
+            "slot_end": 4200,
+            "control_misses": 5079,
+            "control_sent": 84000,
+            "max_silence_seconds": 4.07
+          },
+          {
+            "slot_end": 4300,
+            "control_misses": 5154,
+            "control_sent": 86000,
+            "max_silence_seconds": 4.07
+          },
+          {
+            "slot_end": 4400,
+            "control_misses": 5247,
+            "control_sent": 88000,
+            "max_silence_seconds": 4.07
+          },
+          {
+            "slot_end": 4500,
+            "control_misses": 5359,
+            "control_sent": 90000,
+            "max_silence_seconds": 4.07
+          },
+          {
+            "slot_end": 4600,
+            "control_misses": 5477,
+            "control_sent": 92000,
+            "max_silence_seconds": 4.07
+          },
+          {
+            "slot_end": 4700,
+            "control_misses": 5598,
+            "control_sent": 94000,
+            "max_silence_seconds": 4.07
+          },
+          {
+            "slot_end": 4800,
+            "control_misses": 5738,
+            "control_sent": 96000,
+            "max_silence_seconds": 4.07
+          },
+          {
+            "slot_end": 4900,
+            "control_misses": 5896,
+            "control_sent": 98000,
+            "max_silence_seconds": 4.07
+          },
+          {
+            "slot_end": 5000,
+            "control_misses": 6097,
+            "control_sent": 100000,
+            "max_silence_seconds": 4.07
+          },
+          {
+            "slot_end": 5100,
+            "control_misses": 6300,
+            "control_sent": 102000,
+            "max_silence_seconds": 4.07
+          },
+          {
+            "slot_end": 5200,
+            "control_misses": 6444,
+            "control_sent": 104000,
+            "max_silence_seconds": 4.07
+          },
+          {
+            "slot_end": 5300,
+            "control_misses": 6569,
+            "control_sent": 106000,
+            "max_silence_seconds": 4.07
+          },
+          {
+            "slot_end": 5400,
+            "control_misses": 6665,
+            "control_sent": 108000,
+            "max_silence_seconds": 4.07
+          },
+          {
+            "slot_end": 5500,
+            "control_misses": 6754,
+            "control_sent": 110000,
+            "max_silence_seconds": 4.07
+          },
+          {
+            "slot_end": 5600,
+            "control_misses": 6838,
+            "control_sent": 112000,
+            "max_silence_seconds": 4.07
+          },
+          {
+            "slot_end": 5700,
+            "control_misses": 6923,
+            "control_sent": 114000,
+            "max_silence_seconds": 4.07
+          },
+          {
+            "slot_end": 5800,
+            "control_misses": 7008,
+            "control_sent": 116000,
+            "max_silence_seconds": 4.07
+          },
+          {
+            "slot_end": 5900,
+            "control_misses": 7089,
+            "control_sent": 118000,
+            "max_silence_seconds": 4.07
+          },
+          {
+            "slot_end": 6000,
+            "control_misses": 7175,
+            "control_sent": 120000,
+            "max_silence_seconds": 4.07
+          }
+        ],
+        "forecast_metrics": {
+          "ap_choice_regret_db": 0.0628897175192833,
+          "rmse_db": 3.233710527420044,
+          "route_delta_rmse_db": 2.1406311988830566
+        },
+        "profile_exceeded": false,
+        "controller_variant": "repair",
+        "causality_pass": true,
+        "paid_cost_and_consumption_pass": true,
+        "accounting_mode": "actual_cost",
+        "replay": false,
+        "live_replication": false,
+        "predictor_profile_exceeded": false,
+        "timing": {
+          "forecast_jobs": 60,
+          "consumptions": 43,
+          "profile_exceeded_jobs": 0,
+          "charged_service_seconds_total": 82.93,
+          "charged_compute_seconds_total": 52.93,
+          "actual_compute_seconds_total": 24.288503504067194,
+          "maximum_forecast_age_seconds": 17.979999999999997
+        }
+      },
+      {
+        "stage": "development",
+        "site": 2133000,
+        "handover_seconds": 4.0,
+        "family": "radiomap",
+        "training_seed": null,
+        "control_misses": 8132,
+        "control_sent": 120000,
+        "command_loss": 0.06776666666666667,
+        "command_loss_pending_as_misses": 0.06786666666666667,
+        "pending_control_packets": 12,
+        "pending_control_right_censored": true,
+        "worst_decile_loss": 0.14341666666666666,
+        "worst_decile_pending_as_misses": 0.14341666666666666,
+        "max_silence_seconds": 4.12,
+        "p99_robot_max_silence_seconds": 4.060600000000001,
+        "video_vs_original": 0.8669594552795504,
+        "bulk_mbps": 450.3832557930567,
+        "bulk_backlog_bits": 913004652.4165726,
+        "bulk_overflow_bits": 3.192736767232418e-05,
+        "video_flow_error_bits": 5.817413330078125e-05,
+        "bulk_flow_error_bits": -7.62939453125e-06,
+        "cumulative": [
+          {
+            "slot_end": 100,
+            "control_misses": 23,
+            "control_sent": 2000,
+            "max_silence_seconds": 0.14
+          },
+          {
+            "slot_end": 200,
+            "control_misses": 120,
+            "control_sent": 4000,
+            "max_silence_seconds": 0.91
+          },
+          {
+            "slot_end": 300,
+            "control_misses": 250,
+            "control_sent": 6000,
+            "max_silence_seconds": 1.91
+          },
+          {
+            "slot_end": 400,
+            "control_misses": 412,
+            "control_sent": 8000,
+            "max_silence_seconds": 2.91
+          },
+          {
+            "slot_end": 500,
+            "control_misses": 582,
+            "control_sent": 10000,
+            "max_silence_seconds": 3.91
+          },
+          {
+            "slot_end": 600,
+            "control_misses": 681,
+            "control_sent": 12000,
+            "max_silence_seconds": 4.04
+          },
+          {
+            "slot_end": 700,
+            "control_misses": 749,
+            "control_sent": 14000,
+            "max_silence_seconds": 4.04
+          },
+          {
+            "slot_end": 800,
+            "control_misses": 838,
+            "control_sent": 16000,
+            "max_silence_seconds": 4.04
+          },
+          {
+            "slot_end": 900,
+            "control_misses": 983,
+            "control_sent": 18000,
+            "max_silence_seconds": 4.04
+          },
+          {
+            "slot_end": 1000,
+            "control_misses": 1149,
+            "control_sent": 20000,
+            "max_silence_seconds": 4.04
+          },
+          {
+            "slot_end": 1100,
+            "control_misses": 1347,
+            "control_sent": 22000,
+            "max_silence_seconds": 4.04
+          },
+          {
+            "slot_end": 1200,
+            "control_misses": 1525,
+            "control_sent": 24000,
+            "max_silence_seconds": 4.04
+          },
+          {
+            "slot_end": 1300,
+            "control_misses": 1684,
+            "control_sent": 26000,
+            "max_silence_seconds": 4.04
+          },
+          {
+            "slot_end": 1400,
+            "control_misses": 1823,
+            "control_sent": 28000,
+            "max_silence_seconds": 4.12
+          },
+          {
+            "slot_end": 1500,
+            "control_misses": 1919,
+            "control_sent": 30000,
+            "max_silence_seconds": 4.12
+          },
+          {
+            "slot_end": 1600,
+            "control_misses": 1985,
+            "control_sent": 32000,
+            "max_silence_seconds": 4.12
+          },
+          {
+            "slot_end": 1700,
+            "control_misses": 2014,
+            "control_sent": 34000,
+            "max_silence_seconds": 4.12
+          },
+          {
+            "slot_end": 1800,
+            "control_misses": 2045,
+            "control_sent": 36000,
+            "max_silence_seconds": 4.12
+          },
+          {
+            "slot_end": 1900,
+            "control_misses": 2122,
+            "control_sent": 38000,
+            "max_silence_seconds": 4.12
+          },
+          {
+            "slot_end": 2000,
+            "control_misses": 2226,
+            "control_sent": 40000,
+            "max_silence_seconds": 4.12
+          },
+          {
+            "slot_end": 2100,
+            "control_misses": 2325,
+            "control_sent": 42000,
+            "max_silence_seconds": 4.12
+          },
+          {
+            "slot_end": 2200,
+            "control_misses": 2477,
+            "control_sent": 44000,
+            "max_silence_seconds": 4.12
+          },
+          {
+            "slot_end": 2300,
+            "control_misses": 2619,
+            "control_sent": 46000,
+            "max_silence_seconds": 4.12
+          },
+          {
+            "slot_end": 2400,
+            "control_misses": 2755,
+            "control_sent": 48000,
+            "max_silence_seconds": 4.12
+          },
+          {
+            "slot_end": 2500,
+            "control_misses": 2920,
+            "control_sent": 50000,
+            "max_silence_seconds": 4.12
+          },
+          {
+            "slot_end": 2600,
+            "control_misses": 3031,
+            "control_sent": 52000,
+            "max_silence_seconds": 4.12
+          },
+          {
+            "slot_end": 2700,
+            "control_misses": 3160,
+            "control_sent": 54000,
+            "max_silence_seconds": 4.12
+          },
+          {
+            "slot_end": 2800,
+            "control_misses": 3315,
+            "control_sent": 56000,
+            "max_silence_seconds": 4.12
+          },
+          {
+            "slot_end": 2900,
+            "control_misses": 3465,
+            "control_sent": 58000,
+            "max_silence_seconds": 4.12
+          },
+          {
+            "slot_end": 3000,
+            "control_misses": 3621,
+            "control_sent": 60000,
+            "max_silence_seconds": 4.12
+          },
+          {
+            "slot_end": 3100,
+            "control_misses": 3741,
+            "control_sent": 62000,
+            "max_silence_seconds": 4.12
+          },
+          {
+            "slot_end": 3200,
+            "control_misses": 3834,
+            "control_sent": 64000,
+            "max_silence_seconds": 4.12
+          },
+          {
+            "slot_end": 3300,
+            "control_misses": 3946,
+            "control_sent": 66000,
+            "max_silence_seconds": 4.12
+          },
+          {
+            "slot_end": 3400,
+            "control_misses": 4079,
+            "control_sent": 68000,
+            "max_silence_seconds": 4.12
+          },
+          {
+            "slot_end": 3500,
+            "control_misses": 4214,
+            "control_sent": 70000,
+            "max_silence_seconds": 4.12
+          },
+          {
+            "slot_end": 3600,
+            "control_misses": 4343,
+            "control_sent": 72000,
+            "max_silence_seconds": 4.12
+          },
+          {
+            "slot_end": 3700,
+            "control_misses": 4478,
+            "control_sent": 74000,
+            "max_silence_seconds": 4.12
+          },
+          {
+            "slot_end": 3800,
+            "control_misses": 4624,
+            "control_sent": 76000,
+            "max_silence_seconds": 4.12
+          },
+          {
+            "slot_end": 3900,
+            "control_misses": 4791,
+            "control_sent": 78000,
+            "max_silence_seconds": 4.12
+          },
+          {
+            "slot_end": 4000,
+            "control_misses": 4977,
+            "control_sent": 80000,
+            "max_silence_seconds": 4.12
+          },
+          {
+            "slot_end": 4100,
+            "control_misses": 5197,
+            "control_sent": 82000,
+            "max_silence_seconds": 4.12
+          },
+          {
+            "slot_end": 4200,
+            "control_misses": 5459,
+            "control_sent": 84000,
+            "max_silence_seconds": 4.12
+          },
+          {
+            "slot_end": 4300,
+            "control_misses": 5708,
+            "control_sent": 86000,
+            "max_silence_seconds": 4.12
+          },
+          {
+            "slot_end": 4400,
+            "control_misses": 5929,
+            "control_sent": 88000,
+            "max_silence_seconds": 4.12
+          },
+          {
+            "slot_end": 4500,
+            "control_misses": 6115,
+            "control_sent": 90000,
+            "max_silence_seconds": 4.12
+          },
+          {
+            "slot_end": 4600,
+            "control_misses": 6226,
+            "control_sent": 92000,
+            "max_silence_seconds": 4.12
+          },
+          {
+            "slot_end": 4700,
+            "control_misses": 6332,
+            "control_sent": 94000,
+            "max_silence_seconds": 4.12
+          },
+          {
+            "slot_end": 4800,
+            "control_misses": 6455,
+            "control_sent": 96000,
+            "max_silence_seconds": 4.12
+          },
+          {
+            "slot_end": 4900,
+            "control_misses": 6563,
+            "control_sent": 98000,
+            "max_silence_seconds": 4.12
+          },
+          {
+            "slot_end": 5000,
+            "control_misses": 6708,
+            "control_sent": 100000,
+            "max_silence_seconds": 4.12
+          },
+          {
+            "slot_end": 5100,
+            "control_misses": 6870,
+            "control_sent": 102000,
+            "max_silence_seconds": 4.12
+          },
+          {
+            "slot_end": 5200,
+            "control_misses": 7017,
+            "control_sent": 104000,
+            "max_silence_seconds": 4.12
+          },
+          {
+            "slot_end": 5300,
+            "control_misses": 7184,
+            "control_sent": 106000,
+            "max_silence_seconds": 4.12
+          },
+          {
+            "slot_end": 5400,
+            "control_misses": 7343,
+            "control_sent": 108000,
+            "max_silence_seconds": 4.12
+          },
+          {
+            "slot_end": 5500,
+            "control_misses": 7475,
+            "control_sent": 110000,
+            "max_silence_seconds": 4.12
+          },
+          {
+            "slot_end": 5600,
+            "control_misses": 7554,
+            "control_sent": 112000,
+            "max_silence_seconds": 4.12
+          },
+          {
+            "slot_end": 5700,
+            "control_misses": 7630,
+            "control_sent": 114000,
+            "max_silence_seconds": 4.12
+          },
+          {
+            "slot_end": 5800,
+            "control_misses": 7760,
+            "control_sent": 116000,
+            "max_silence_seconds": 4.12
+          },
+          {
+            "slot_end": 5900,
+            "control_misses": 7926,
+            "control_sent": 118000,
+            "max_silence_seconds": 4.12
+          },
+          {
+            "slot_end": 6000,
+            "control_misses": 8132,
+            "control_sent": 120000,
+            "max_silence_seconds": 4.12
+          }
+        ],
+        "forecast_metrics": {
+          "ap_choice_regret_db": 0.0799466222524643,
+          "rmse_db": 4.633961200714111,
+          "route_delta_rmse_db": 2.41874098777771
+        },
+        "profile_exceeded": false,
+        "controller_variant": "legacy",
+        "causality_pass": true,
+        "paid_cost_and_consumption_pass": true,
+        "accounting_mode": "actual_cost",
+        "replay": false,
+        "live_replication": false,
+        "predictor_profile_exceeded": false,
+        "timing": {
+          "forecast_jobs": 60,
+          "consumptions": 60,
+          "profile_exceeded_jobs": 0,
+          "charged_service_seconds_total": 38.71,
+          "charged_compute_seconds_total": 8.709999999999999,
+          "actual_compute_seconds_total": 4.679622545969323,
+          "maximum_forecast_age_seconds": 1.13
+        }
+      },
+      {
+        "stage": "development",
+        "site": 2133000,
+        "handover_seconds": 4.0,
+        "family": "radiomap",
+        "training_seed": null,
+        "control_misses": 8132,
+        "control_sent": 120000,
+        "command_loss": 0.06776666666666667,
+        "command_loss_pending_as_misses": 0.06786666666666667,
+        "pending_control_packets": 12,
+        "pending_control_right_censored": true,
+        "worst_decile_loss": 0.14341666666666666,
+        "worst_decile_pending_as_misses": 0.14341666666666666,
+        "max_silence_seconds": 4.12,
+        "p99_robot_max_silence_seconds": 4.060600000000001,
+        "video_vs_original": 0.8669594552795504,
+        "bulk_mbps": 450.38076647942944,
+        "bulk_backlog_bits": 913154011.2342116,
+        "bulk_overflow_bits": 3.1914329156279564e-05,
+        "video_flow_error_bits": 5.817413330078125e-05,
+        "bulk_flow_error_bits": -1.1444091796875e-05,
+        "cumulative": [
+          {
+            "slot_end": 100,
+            "control_misses": 23,
+            "control_sent": 2000,
+            "max_silence_seconds": 0.14
+          },
+          {
+            "slot_end": 200,
+            "control_misses": 120,
+            "control_sent": 4000,
+            "max_silence_seconds": 0.91
+          },
+          {
+            "slot_end": 300,
+            "control_misses": 250,
+            "control_sent": 6000,
+            "max_silence_seconds": 1.91
+          },
+          {
+            "slot_end": 400,
+            "control_misses": 412,
+            "control_sent": 8000,
+            "max_silence_seconds": 2.91
+          },
+          {
+            "slot_end": 500,
+            "control_misses": 582,
+            "control_sent": 10000,
+            "max_silence_seconds": 3.91
+          },
+          {
+            "slot_end": 600,
+            "control_misses": 681,
+            "control_sent": 12000,
+            "max_silence_seconds": 4.04
+          },
+          {
+            "slot_end": 700,
+            "control_misses": 749,
+            "control_sent": 14000,
+            "max_silence_seconds": 4.04
+          },
+          {
+            "slot_end": 800,
+            "control_misses": 838,
+            "control_sent": 16000,
+            "max_silence_seconds": 4.04
+          },
+          {
+            "slot_end": 900,
+            "control_misses": 983,
+            "control_sent": 18000,
+            "max_silence_seconds": 4.04
+          },
+          {
+            "slot_end": 1000,
+            "control_misses": 1149,
+            "control_sent": 20000,
+            "max_silence_seconds": 4.04
+          },
+          {
+            "slot_end": 1100,
+            "control_misses": 1347,
+            "control_sent": 22000,
+            "max_silence_seconds": 4.04
+          },
+          {
+            "slot_end": 1200,
+            "control_misses": 1525,
+            "control_sent": 24000,
+            "max_silence_seconds": 4.04
+          },
+          {
+            "slot_end": 1300,
+            "control_misses": 1684,
+            "control_sent": 26000,
+            "max_silence_seconds": 4.04
+          },
+          {
+            "slot_end": 1400,
+            "control_misses": 1823,
+            "control_sent": 28000,
+            "max_silence_seconds": 4.12
+          },
+          {
+            "slot_end": 1500,
+            "control_misses": 1919,
+            "control_sent": 30000,
+            "max_silence_seconds": 4.12
+          },
+          {
+            "slot_end": 1600,
+            "control_misses": 1985,
+            "control_sent": 32000,
+            "max_silence_seconds": 4.12
+          },
+          {
+            "slot_end": 1700,
+            "control_misses": 2014,
+            "control_sent": 34000,
+            "max_silence_seconds": 4.12
+          },
+          {
+            "slot_end": 1800,
+            "control_misses": 2045,
+            "control_sent": 36000,
+            "max_silence_seconds": 4.12
+          },
+          {
+            "slot_end": 1900,
+            "control_misses": 2122,
+            "control_sent": 38000,
+            "max_silence_seconds": 4.12
+          },
+          {
+            "slot_end": 2000,
+            "control_misses": 2226,
+            "control_sent": 40000,
+            "max_silence_seconds": 4.12
+          },
+          {
+            "slot_end": 2100,
+            "control_misses": 2325,
+            "control_sent": 42000,
+            "max_silence_seconds": 4.12
+          },
+          {
+            "slot_end": 2200,
+            "control_misses": 2477,
+            "control_sent": 44000,
+            "max_silence_seconds": 4.12
+          },
+          {
+            "slot_end": 2300,
+            "control_misses": 2619,
+            "control_sent": 46000,
+            "max_silence_seconds": 4.12
+          },
+          {
+            "slot_end": 2400,
+            "control_misses": 2755,
+            "control_sent": 48000,
+            "max_silence_seconds": 4.12
+          },
+          {
+            "slot_end": 2500,
+            "control_misses": 2920,
+            "control_sent": 50000,
+            "max_silence_seconds": 4.12
+          },
+          {
+            "slot_end": 2600,
+            "control_misses": 3031,
+            "control_sent": 52000,
+            "max_silence_seconds": 4.12
+          },
+          {
+            "slot_end": 2700,
+            "control_misses": 3160,
+            "control_sent": 54000,
+            "max_silence_seconds": 4.12
+          },
+          {
+            "slot_end": 2800,
+            "control_misses": 3315,
+            "control_sent": 56000,
+            "max_silence_seconds": 4.12
+          },
+          {
+            "slot_end": 2900,
+            "control_misses": 3465,
+            "control_sent": 58000,
+            "max_silence_seconds": 4.12
+          },
+          {
+            "slot_end": 3000,
+            "control_misses": 3621,
+            "control_sent": 60000,
+            "max_silence_seconds": 4.12
+          },
+          {
+            "slot_end": 3100,
+            "control_misses": 3741,
+            "control_sent": 62000,
+            "max_silence_seconds": 4.12
+          },
+          {
+            "slot_end": 3200,
+            "control_misses": 3834,
+            "control_sent": 64000,
+            "max_silence_seconds": 4.12
+          },
+          {
+            "slot_end": 3300,
+            "control_misses": 3946,
+            "control_sent": 66000,
+            "max_silence_seconds": 4.12
+          },
+          {
+            "slot_end": 3400,
+            "control_misses": 4079,
+            "control_sent": 68000,
+            "max_silence_seconds": 4.12
+          },
+          {
+            "slot_end": 3500,
+            "control_misses": 4214,
+            "control_sent": 70000,
+            "max_silence_seconds": 4.12
+          },
+          {
+            "slot_end": 3600,
+            "control_misses": 4343,
+            "control_sent": 72000,
+            "max_silence_seconds": 4.12
+          },
+          {
+            "slot_end": 3700,
+            "control_misses": 4478,
+            "control_sent": 74000,
+            "max_silence_seconds": 4.12
+          },
+          {
+            "slot_end": 3800,
+            "control_misses": 4624,
+            "control_sent": 76000,
+            "max_silence_seconds": 4.12
+          },
+          {
+            "slot_end": 3900,
+            "control_misses": 4791,
+            "control_sent": 78000,
+            "max_silence_seconds": 4.12
+          },
+          {
+            "slot_end": 4000,
+            "control_misses": 4977,
+            "control_sent": 80000,
+            "max_silence_seconds": 4.12
+          },
+          {
+            "slot_end": 4100,
+            "control_misses": 5197,
+            "control_sent": 82000,
+            "max_silence_seconds": 4.12
+          },
+          {
+            "slot_end": 4200,
+            "control_misses": 5459,
+            "control_sent": 84000,
+            "max_silence_seconds": 4.12
+          },
+          {
+            "slot_end": 4300,
+            "control_misses": 5708,
+            "control_sent": 86000,
+            "max_silence_seconds": 4.12
+          },
+          {
+            "slot_end": 4400,
+            "control_misses": 5929,
+            "control_sent": 88000,
+            "max_silence_seconds": 4.12
+          },
+          {
+            "slot_end": 4500,
+            "control_misses": 6115,
+            "control_sent": 90000,
+            "max_silence_seconds": 4.12
+          },
+          {
+            "slot_end": 4600,
+            "control_misses": 6226,
+            "control_sent": 92000,
+            "max_silence_seconds": 4.12
+          },
+          {
+            "slot_end": 4700,
+            "control_misses": 6332,
+            "control_sent": 94000,
+            "max_silence_seconds": 4.12
+          },
+          {
+            "slot_end": 4800,
+            "control_misses": 6455,
+            "control_sent": 96000,
+            "max_silence_seconds": 4.12
+          },
+          {
+            "slot_end": 4900,
+            "control_misses": 6563,
+            "control_sent": 98000,
+            "max_silence_seconds": 4.12
+          },
+          {
+            "slot_end": 5000,
+            "control_misses": 6708,
+            "control_sent": 100000,
+            "max_silence_seconds": 4.12
+          },
+          {
+            "slot_end": 5100,
+            "control_misses": 6869,
+            "control_sent": 102000,
+            "max_silence_seconds": 4.12
+          },
+          {
+            "slot_end": 5200,
+            "control_misses": 7016,
+            "control_sent": 104000,
+            "max_silence_seconds": 4.12
+          },
+          {
+            "slot_end": 5300,
+            "control_misses": 7183,
+            "control_sent": 106000,
+            "max_silence_seconds": 4.12
+          },
+          {
+            "slot_end": 5400,
+            "control_misses": 7342,
+            "control_sent": 108000,
+            "max_silence_seconds": 4.12
+          },
+          {
+            "slot_end": 5500,
+            "control_misses": 7474,
+            "control_sent": 110000,
+            "max_silence_seconds": 4.12
+          },
+          {
+            "slot_end": 5600,
+            "control_misses": 7554,
+            "control_sent": 112000,
+            "max_silence_seconds": 4.12
+          },
+          {
+            "slot_end": 5700,
+            "control_misses": 7630,
+            "control_sent": 114000,
+            "max_silence_seconds": 4.12
+          },
+          {
+            "slot_end": 5800,
+            "control_misses": 7760,
+            "control_sent": 116000,
+            "max_silence_seconds": 4.12
+          },
+          {
+            "slot_end": 5900,
+            "control_misses": 7926,
+            "control_sent": 118000,
+            "max_silence_seconds": 4.12
+          },
+          {
+            "slot_end": 6000,
+            "control_misses": 8132,
+            "control_sent": 120000,
+            "max_silence_seconds": 4.12
+          }
+        ],
+        "forecast_metrics": {
+          "ap_choice_regret_db": 0.0799466222524643,
+          "rmse_db": 4.633961200714111,
+          "route_delta_rmse_db": 2.41874098777771
+        },
+        "profile_exceeded": false,
+        "controller_variant": "repair",
+        "causality_pass": true,
+        "paid_cost_and_consumption_pass": true,
+        "accounting_mode": "actual_cost",
+        "replay": false,
+        "live_replication": false,
+        "predictor_profile_exceeded": false,
+        "timing": {
+          "forecast_jobs": 60,
+          "consumptions": 60,
+          "profile_exceeded_jobs": 0,
+          "charged_service_seconds_total": 38.71,
+          "charged_compute_seconds_total": 8.709999999999999,
+          "actual_compute_seconds_total": 5.316129024984548,
+          "maximum_forecast_age_seconds": 1.13
+        }
+      },
+      {
+        "stage": "development",
+        "site": 2133001,
+        "handover_seconds": 4.0,
+        "family": "frozen_fleet_jepa",
+        "training_seed": null,
+        "control_misses": 9566,
+        "control_sent": 120000,
+        "command_loss": 0.07971666666666667,
+        "command_loss_pending_as_misses": 0.07976666666666667,
+        "pending_control_packets": 6,
+        "pending_control_right_censored": true,
+        "worst_decile_loss": 0.16791666666666666,
+        "worst_decile_pending_as_misses": 0.1680833333333333,
+        "max_silence_seconds": 4.3,
+        "p99_robot_max_silence_seconds": 4.2505,
+        "video_vs_original": 0.8747636411239574,
+        "bulk_mbps": 492.9544178150749,
+        "bulk_backlog_bits": 1752581836.372944,
+        "bulk_overflow_bits": 230153094.7225886,
+        "video_flow_error_bits": 4.7206878662109375e-05,
+        "bulk_flow_error_bits": -2.6702880859375e-05,
+        "cumulative": [
+          {
+            "slot_end": 100,
+            "control_misses": 19,
+            "control_sent": 2000,
+            "max_silence_seconds": 0.09
+          },
+          {
+            "slot_end": 200,
+            "control_misses": 37,
+            "control_sent": 4000,
+            "max_silence_seconds": 0.1
+          },
+          {
+            "slot_end": 300,
+            "control_misses": 276,
+            "control_sent": 6000,
+            "max_silence_seconds": 1.08
+          },
+          {
+            "slot_end": 400,
+            "control_misses": 568,
+            "control_sent": 8000,
+            "max_silence_seconds": 2.08
+          },
+          {
+            "slot_end": 500,
+            "control_misses": 897,
+            "control_sent": 10000,
+            "max_silence_seconds": 3.08
+          },
+          {
+            "slot_end": 600,
+            "control_misses": 1226,
+            "control_sent": 12000,
+            "max_silence_seconds": 4.04
+          },
+          {
+            "slot_end": 700,
+            "control_misses": 1352,
+            "control_sent": 14000,
+            "max_silence_seconds": 4.04
+          },
+          {
+            "slot_end": 800,
+            "control_misses": 1418,
+            "control_sent": 16000,
+            "max_silence_seconds": 4.04
+          },
+          {
+            "slot_end": 900,
+            "control_misses": 1455,
+            "control_sent": 18000,
+            "max_silence_seconds": 4.04
+          },
+          {
+            "slot_end": 1000,
+            "control_misses": 1506,
+            "control_sent": 20000,
+            "max_silence_seconds": 4.04
+          },
+          {
+            "slot_end": 1100,
+            "control_misses": 1578,
+            "control_sent": 22000,
+            "max_silence_seconds": 4.04
+          },
+          {
+            "slot_end": 1200,
+            "control_misses": 1660,
+            "control_sent": 24000,
+            "max_silence_seconds": 4.04
+          },
+          {
+            "slot_end": 1300,
+            "control_misses": 1758,
+            "control_sent": 26000,
+            "max_silence_seconds": 4.04
+          },
+          {
+            "slot_end": 1400,
+            "control_misses": 1841,
+            "control_sent": 28000,
+            "max_silence_seconds": 4.04
+          },
+          {
+            "slot_end": 1500,
+            "control_misses": 1974,
+            "control_sent": 30000,
+            "max_silence_seconds": 4.04
+          },
+          {
+            "slot_end": 1600,
+            "control_misses": 2112,
+            "control_sent": 32000,
+            "max_silence_seconds": 4.04
+          },
+          {
+            "slot_end": 1700,
+            "control_misses": 2266,
+            "control_sent": 34000,
+            "max_silence_seconds": 4.04
+          },
+          {
+            "slot_end": 1800,
+            "control_misses": 2465,
+            "control_sent": 36000,
+            "max_silence_seconds": 4.04
+          },
+          {
+            "slot_end": 1900,
+            "control_misses": 2618,
+            "control_sent": 38000,
+            "max_silence_seconds": 4.06
+          },
+          {
+            "slot_end": 2000,
+            "control_misses": 2766,
+            "control_sent": 40000,
+            "max_silence_seconds": 4.06
+          },
+          {
+            "slot_end": 2100,
+            "control_misses": 2887,
+            "control_sent": 42000,
+            "max_silence_seconds": 4.06
+          },
+          {
+            "slot_end": 2200,
+            "control_misses": 3008,
+            "control_sent": 44000,
+            "max_silence_seconds": 4.06
+          },
+          {
+            "slot_end": 2300,
+            "control_misses": 3132,
+            "control_sent": 46000,
+            "max_silence_seconds": 4.06
+          },
+          {
+            "slot_end": 2400,
+            "control_misses": 3276,
+            "control_sent": 48000,
+            "max_silence_seconds": 4.06
+          },
+          {
+            "slot_end": 2500,
+            "control_misses": 3439,
+            "control_sent": 50000,
+            "max_silence_seconds": 4.06
+          },
+          {
+            "slot_end": 2600,
+            "control_misses": 3596,
+            "control_sent": 52000,
+            "max_silence_seconds": 4.3
+          },
+          {
+            "slot_end": 2700,
+            "control_misses": 3710,
+            "control_sent": 54000,
+            "max_silence_seconds": 4.3
+          },
+          {
+            "slot_end": 2800,
+            "control_misses": 3808,
+            "control_sent": 56000,
+            "max_silence_seconds": 4.3
+          },
+          {
+            "slot_end": 2900,
+            "control_misses": 3904,
+            "control_sent": 58000,
+            "max_silence_seconds": 4.3
+          },
+          {
+            "slot_end": 3000,
+            "control_misses": 4002,
+            "control_sent": 60000,
+            "max_silence_seconds": 4.3
+          },
+          {
+            "slot_end": 3100,
+            "control_misses": 4149,
+            "control_sent": 62000,
+            "max_silence_seconds": 4.3
+          },
+          {
+            "slot_end": 3200,
+            "control_misses": 4276,
+            "control_sent": 64000,
+            "max_silence_seconds": 4.3
+          },
+          {
+            "slot_end": 3300,
+            "control_misses": 4433,
+            "control_sent": 66000,
+            "max_silence_seconds": 4.3
+          },
+          {
+            "slot_end": 3400,
+            "control_misses": 4552,
+            "control_sent": 68000,
+            "max_silence_seconds": 4.3
+          },
+          {
+            "slot_end": 3500,
+            "control_misses": 4620,
+            "control_sent": 70000,
+            "max_silence_seconds": 4.3
+          },
+          {
+            "slot_end": 3600,
+            "control_misses": 4734,
+            "control_sent": 72000,
+            "max_silence_seconds": 4.3
+          },
+          {
+            "slot_end": 3700,
+            "control_misses": 4880,
+            "control_sent": 74000,
+            "max_silence_seconds": 4.3
+          },
+          {
+            "slot_end": 3800,
+            "control_misses": 5055,
+            "control_sent": 76000,
+            "max_silence_seconds": 4.3
+          },
+          {
+            "slot_end": 3900,
+            "control_misses": 5228,
+            "control_sent": 78000,
+            "max_silence_seconds": 4.3
+          },
+          {
+            "slot_end": 4000,
+            "control_misses": 5445,
+            "control_sent": 80000,
+            "max_silence_seconds": 4.3
+          },
+          {
+            "slot_end": 4100,
+            "control_misses": 5658,
+            "control_sent": 82000,
+            "max_silence_seconds": 4.3
+          },
+          {
+            "slot_end": 4200,
+            "control_misses": 5870,
+            "control_sent": 84000,
+            "max_silence_seconds": 4.3
+          },
+          {
+            "slot_end": 4300,
+            "control_misses": 6160,
+            "control_sent": 86000,
+            "max_silence_seconds": 4.3
+          },
+          {
+            "slot_end": 4400,
+            "control_misses": 6410,
+            "control_sent": 88000,
+            "max_silence_seconds": 4.3
+          },
+          {
+            "slot_end": 4500,
+            "control_misses": 6663,
+            "control_sent": 90000,
+            "max_silence_seconds": 4.3
+          },
+          {
+            "slot_end": 4600,
+            "control_misses": 6868,
+            "control_sent": 92000,
+            "max_silence_seconds": 4.3
+          },
+          {
+            "slot_end": 4700,
+            "control_misses": 7009,
+            "control_sent": 94000,
+            "max_silence_seconds": 4.3
+          },
+          {
+            "slot_end": 4800,
+            "control_misses": 7114,
+            "control_sent": 96000,
+            "max_silence_seconds": 4.3
+          },
+          {
+            "slot_end": 4900,
+            "control_misses": 7216,
+            "control_sent": 98000,
+            "max_silence_seconds": 4.3
+          },
+          {
+            "slot_end": 5000,
+            "control_misses": 7368,
+            "control_sent": 100000,
+            "max_silence_seconds": 4.3
+          },
+          {
+            "slot_end": 5100,
+            "control_misses": 7525,
+            "control_sent": 102000,
+            "max_silence_seconds": 4.3
+          },
+          {
+            "slot_end": 5200,
+            "control_misses": 7690,
+            "control_sent": 104000,
+            "max_silence_seconds": 4.3
+          },
+          {
+            "slot_end": 5300,
+            "control_misses": 7874,
+            "control_sent": 106000,
+            "max_silence_seconds": 4.3
+          },
+          {
+            "slot_end": 5400,
+            "control_misses": 8072,
+            "control_sent": 108000,
+            "max_silence_seconds": 4.3
+          },
+          {
+            "slot_end": 5500,
+            "control_misses": 8306,
+            "control_sent": 110000,
+            "max_silence_seconds": 4.3
+          },
+          {
+            "slot_end": 5600,
+            "control_misses": 8604,
+            "control_sent": 112000,
+            "max_silence_seconds": 4.3
+          },
+          {
+            "slot_end": 5700,
+            "control_misses": 8864,
+            "control_sent": 114000,
+            "max_silence_seconds": 4.3
+          },
+          {
+            "slot_end": 5800,
+            "control_misses": 9097,
+            "control_sent": 116000,
+            "max_silence_seconds": 4.3
+          },
+          {
+            "slot_end": 5900,
+            "control_misses": 9322,
+            "control_sent": 118000,
+            "max_silence_seconds": 4.3
+          },
+          {
+            "slot_end": 6000,
+            "control_misses": 9566,
+            "control_sent": 120000,
+            "max_silence_seconds": 4.3
+          }
+        ],
+        "forecast_metrics": {
+          "ap_choice_regret_db": 0.1616000060193607,
+          "rmse_db": 5.220699026564784,
+          "route_delta_rmse_db": 3.117702533211323
+        },
+        "profile_exceeded": false,
+        "controller_variant": "legacy",
+        "causality_pass": true,
+        "paid_cost_and_consumption_pass": true,
+        "accounting_mode": "actual_cost",
+        "replay": false,
+        "live_replication": false,
+        "predictor_profile_exceeded": false,
+        "timing": {
+          "forecast_jobs": 60,
+          "consumptions": 43,
+          "profile_exceeded_jobs": 0,
+          "charged_service_seconds_total": 82.93,
+          "charged_compute_seconds_total": 52.93,
+          "actual_compute_seconds_total": 28.161103258040384,
+          "maximum_forecast_age_seconds": 17.979999999999997
+        }
+      },
+      {
+        "stage": "development",
+        "site": 2133001,
+        "handover_seconds": 4.0,
+        "family": "frozen_fleet_jepa",
+        "training_seed": null,
+        "control_misses": 9629,
+        "control_sent": 120000,
+        "command_loss": 0.08024166666666667,
+        "command_loss_pending_as_misses": 0.08029166666666666,
+        "pending_control_packets": 6,
+        "pending_control_right_censored": true,
+        "worst_decile_loss": 0.17375000000000002,
+        "worst_decile_pending_as_misses": 0.17391666666666666,
+        "max_silence_seconds": 8.3,
+        "p99_robot_max_silence_seconds": 4.29050000000002,
+        "video_vs_original": 0.8749034739083265,
+        "bulk_mbps": 492.9724790828364,
+        "bulk_backlog_bits": 1752055890.9349055,
+        "bulk_overflow_bits": 229595364.09493846,
+        "video_flow_error_bits": 4.696846008300781e-05,
+        "bulk_flow_error_bits": -2.6702880859375e-05,
+        "cumulative": [
+          {
+            "slot_end": 100,
+            "control_misses": 19,
+            "control_sent": 2000,
+            "max_silence_seconds": 0.09
+          },
+          {
+            "slot_end": 200,
+            "control_misses": 37,
+            "control_sent": 4000,
+            "max_silence_seconds": 0.1
+          },
+          {
+            "slot_end": 300,
+            "control_misses": 276,
+            "control_sent": 6000,
+            "max_silence_seconds": 1.08
+          },
+          {
+            "slot_end": 400,
+            "control_misses": 568,
+            "control_sent": 8000,
+            "max_silence_seconds": 2.08
+          },
+          {
+            "slot_end": 500,
+            "control_misses": 897,
+            "control_sent": 10000,
+            "max_silence_seconds": 3.08
+          },
+          {
+            "slot_end": 600,
+            "control_misses": 1226,
+            "control_sent": 12000,
+            "max_silence_seconds": 4.04
+          },
+          {
+            "slot_end": 700,
+            "control_misses": 1352,
+            "control_sent": 14000,
+            "max_silence_seconds": 4.04
+          },
+          {
+            "slot_end": 800,
+            "control_misses": 1418,
+            "control_sent": 16000,
+            "max_silence_seconds": 4.04
+          },
+          {
+            "slot_end": 900,
+            "control_misses": 1455,
+            "control_sent": 18000,
+            "max_silence_seconds": 4.04
+          },
+          {
+            "slot_end": 1000,
+            "control_misses": 1506,
+            "control_sent": 20000,
+            "max_silence_seconds": 4.04
+          },
+          {
+            "slot_end": 1100,
+            "control_misses": 1578,
+            "control_sent": 22000,
+            "max_silence_seconds": 4.04
+          },
+          {
+            "slot_end": 1200,
+            "control_misses": 1660,
+            "control_sent": 24000,
+            "max_silence_seconds": 4.04
+          },
+          {
+            "slot_end": 1300,
+            "control_misses": 1758,
+            "control_sent": 26000,
+            "max_silence_seconds": 4.04
+          },
+          {
+            "slot_end": 1400,
+            "control_misses": 1841,
+            "control_sent": 28000,
+            "max_silence_seconds": 4.04
+          },
+          {
+            "slot_end": 1500,
+            "control_misses": 1974,
+            "control_sent": 30000,
+            "max_silence_seconds": 4.04
+          },
+          {
+            "slot_end": 1600,
+            "control_misses": 2112,
+            "control_sent": 32000,
+            "max_silence_seconds": 4.04
+          },
+          {
+            "slot_end": 1700,
+            "control_misses": 2266,
+            "control_sent": 34000,
+            "max_silence_seconds": 4.04
+          },
+          {
+            "slot_end": 1800,
+            "control_misses": 2465,
+            "control_sent": 36000,
+            "max_silence_seconds": 4.04
+          },
+          {
+            "slot_end": 1900,
+            "control_misses": 2618,
+            "control_sent": 38000,
+            "max_silence_seconds": 4.06
+          },
+          {
+            "slot_end": 2000,
+            "control_misses": 2766,
+            "control_sent": 40000,
+            "max_silence_seconds": 4.06
+          },
+          {
+            "slot_end": 2100,
+            "control_misses": 2886,
+            "control_sent": 42000,
+            "max_silence_seconds": 4.06
+          },
+          {
+            "slot_end": 2200,
+            "control_misses": 3006,
+            "control_sent": 44000,
+            "max_silence_seconds": 4.06
+          },
+          {
+            "slot_end": 2300,
+            "control_misses": 3130,
+            "control_sent": 46000,
+            "max_silence_seconds": 4.06
+          },
+          {
+            "slot_end": 2400,
+            "control_misses": 3274,
+            "control_sent": 48000,
+            "max_silence_seconds": 4.06
+          },
+          {
+            "slot_end": 2500,
+            "control_misses": 3437,
+            "control_sent": 50000,
+            "max_silence_seconds": 4.06
+          },
+          {
+            "slot_end": 2600,
+            "control_misses": 3601,
+            "control_sent": 52000,
+            "max_silence_seconds": 4.7
+          },
+          {
+            "slot_end": 2700,
+            "control_misses": 3735,
+            "control_sent": 54000,
+            "max_silence_seconds": 5.7
+          },
+          {
+            "slot_end": 2800,
+            "control_misses": 3853,
+            "control_sent": 56000,
+            "max_silence_seconds": 6.7
+          },
+          {
+            "slot_end": 2900,
+            "control_misses": 3969,
+            "control_sent": 58000,
+            "max_silence_seconds": 7.7
+          },
+          {
+            "slot_end": 3000,
+            "control_misses": 4079,
+            "control_sent": 60000,
+            "max_silence_seconds": 8.3
+          },
+          {
+            "slot_end": 3100,
+            "control_misses": 4225,
+            "control_sent": 62000,
+            "max_silence_seconds": 8.3
+          },
+          {
+            "slot_end": 3200,
+            "control_misses": 4352,
+            "control_sent": 64000,
+            "max_silence_seconds": 8.3
+          },
+          {
+            "slot_end": 3300,
+            "control_misses": 4507,
+            "control_sent": 66000,
+            "max_silence_seconds": 8.3
+          },
+          {
+            "slot_end": 3400,
+            "control_misses": 4626,
+            "control_sent": 68000,
+            "max_silence_seconds": 8.3
+          },
+          {
+            "slot_end": 3500,
+            "control_misses": 4693,
+            "control_sent": 70000,
+            "max_silence_seconds": 8.3
+          },
+          {
+            "slot_end": 3600,
+            "control_misses": 4807,
+            "control_sent": 72000,
+            "max_silence_seconds": 8.3
+          },
+          {
+            "slot_end": 3700,
+            "control_misses": 4953,
+            "control_sent": 74000,
+            "max_silence_seconds": 8.3
+          },
+          {
+            "slot_end": 3800,
+            "control_misses": 5125,
+            "control_sent": 76000,
+            "max_silence_seconds": 8.3
+          },
+          {
+            "slot_end": 3900,
+            "control_misses": 5298,
+            "control_sent": 78000,
+            "max_silence_seconds": 8.3
+          },
+          {
+            "slot_end": 4000,
+            "control_misses": 5515,
+            "control_sent": 80000,
+            "max_silence_seconds": 8.3
+          },
+          {
+            "slot_end": 4100,
+            "control_misses": 5728,
+            "control_sent": 82000,
+            "max_silence_seconds": 8.3
+          },
+          {
+            "slot_end": 4200,
+            "control_misses": 5940,
+            "control_sent": 84000,
+            "max_silence_seconds": 8.3
+          },
+          {
+            "slot_end": 4300,
+            "control_misses": 6230,
+            "control_sent": 86000,
+            "max_silence_seconds": 8.3
+          },
+          {
+            "slot_end": 4400,
+            "control_misses": 6481,
+            "control_sent": 88000,
+            "max_silence_seconds": 8.3
+          },
+          {
+            "slot_end": 4500,
+            "control_misses": 6734,
+            "control_sent": 90000,
+            "max_silence_seconds": 8.3
+          },
+          {
+            "slot_end": 4600,
+            "control_misses": 6939,
+            "control_sent": 92000,
+            "max_silence_seconds": 8.3
+          },
+          {
+            "slot_end": 4700,
+            "control_misses": 7080,
+            "control_sent": 94000,
+            "max_silence_seconds": 8.3
+          },
+          {
+            "slot_end": 4800,
+            "control_misses": 7185,
+            "control_sent": 96000,
+            "max_silence_seconds": 8.3
+          },
+          {
+            "slot_end": 4900,
+            "control_misses": 7287,
+            "control_sent": 98000,
+            "max_silence_seconds": 8.3
+          },
+          {
+            "slot_end": 5000,
+            "control_misses": 7437,
+            "control_sent": 100000,
+            "max_silence_seconds": 8.3
+          },
+          {
+            "slot_end": 5100,
+            "control_misses": 7594,
+            "control_sent": 102000,
+            "max_silence_seconds": 8.3
+          },
+          {
+            "slot_end": 5200,
+            "control_misses": 7759,
+            "control_sent": 104000,
+            "max_silence_seconds": 8.3
+          },
+          {
+            "slot_end": 5300,
+            "control_misses": 7941,
+            "control_sent": 106000,
+            "max_silence_seconds": 8.3
+          },
+          {
+            "slot_end": 5400,
+            "control_misses": 8137,
+            "control_sent": 108000,
+            "max_silence_seconds": 8.3
+          },
+          {
+            "slot_end": 5500,
+            "control_misses": 8371,
+            "control_sent": 110000,
+            "max_silence_seconds": 8.3
+          },
+          {
+            "slot_end": 5600,
+            "control_misses": 8669,
+            "control_sent": 112000,
+            "max_silence_seconds": 8.3
+          },
+          {
+            "slot_end": 5700,
+            "control_misses": 8927,
+            "control_sent": 114000,
+            "max_silence_seconds": 8.3
+          },
+          {
+            "slot_end": 5800,
+            "control_misses": 9160,
+            "control_sent": 116000,
+            "max_silence_seconds": 8.3
+          },
+          {
+            "slot_end": 5900,
+            "control_misses": 9385,
+            "control_sent": 118000,
+            "max_silence_seconds": 8.3
+          },
+          {
+            "slot_end": 6000,
+            "control_misses": 9629,
+            "control_sent": 120000,
+            "max_silence_seconds": 8.3
+          }
+        ],
+        "forecast_metrics": {
+          "ap_choice_regret_db": 0.16134564059520526,
+          "rmse_db": 5.223555118393974,
+          "route_delta_rmse_db": 3.1172917986723205
+        },
+        "profile_exceeded": false,
+        "controller_variant": "repair",
+        "causality_pass": true,
+        "paid_cost_and_consumption_pass": true,
+        "accounting_mode": "actual_cost",
+        "replay": false,
+        "live_replication": false,
+        "predictor_profile_exceeded": false,
+        "timing": {
+          "forecast_jobs": 60,
+          "consumptions": 43,
+          "profile_exceeded_jobs": 0,
+          "charged_service_seconds_total": 82.93,
+          "charged_compute_seconds_total": 52.93,
+          "actual_compute_seconds_total": 27.983898037025938,
+          "maximum_forecast_age_seconds": 17.979999999999997
+        }
+      },
+      {
+        "stage": "development",
+        "site": 2133001,
+        "handover_seconds": 4.0,
+        "family": "radiomap",
+        "training_seed": null,
+        "control_misses": 10608,
+        "control_sent": 120000,
+        "command_loss": 0.0884,
+        "command_loss_pending_as_misses": 0.08846666666666667,
+        "pending_control_packets": 8,
+        "pending_control_right_censored": true,
+        "worst_decile_loss": 0.17966666666666664,
+        "worst_decile_pending_as_misses": 0.17966666666666664,
+        "max_silence_seconds": 4.3,
+        "p99_robot_max_silence_seconds": 4.2109000000000005,
+        "video_vs_original": 0.8404500376189823,
+        "bulk_mbps": 475.16076834851435,
+        "bulk_backlog_bits": 2784590546.8383417,
+        "bulk_overflow_bits": 265763352.25080776,
+        "video_flow_error_bits": 5.054473876953125e-05,
+        "bulk_flow_error_bits": -1.1444091796875e-05,
+        "cumulative": [
+          {
+            "slot_end": 100,
+            "control_misses": 19,
+            "control_sent": 2000,
+            "max_silence_seconds": 0.09
+          },
+          {
+            "slot_end": 200,
+            "control_misses": 140,
+            "control_sent": 4000,
+            "max_silence_seconds": 0.91
+          },
+          {
+            "slot_end": 300,
+            "control_misses": 338,
+            "control_sent": 6000,
+            "max_silence_seconds": 1.91
+          },
+          {
+            "slot_end": 400,
+            "control_misses": 593,
+            "control_sent": 8000,
+            "max_silence_seconds": 2.91
+          },
+          {
+            "slot_end": 500,
+            "control_misses": 881,
+            "control_sent": 10000,
+            "max_silence_seconds": 3.91
+          },
+          {
+            "slot_end": 600,
+            "control_misses": 1072,
+            "control_sent": 12000,
+            "max_silence_seconds": 4.04
+          },
+          {
+            "slot_end": 700,
+            "control_misses": 1189,
+            "control_sent": 14000,
+            "max_silence_seconds": 4.04
+          },
+          {
+            "slot_end": 800,
+            "control_misses": 1264,
+            "control_sent": 16000,
+            "max_silence_seconds": 4.04
+          },
+          {
+            "slot_end": 900,
+            "control_misses": 1315,
+            "control_sent": 18000,
+            "max_silence_seconds": 4.04
+          },
+          {
+            "slot_end": 1000,
+            "control_misses": 1364,
+            "control_sent": 20000,
+            "max_silence_seconds": 4.04
+          },
+          {
+            "slot_end": 1100,
+            "control_misses": 1418,
+            "control_sent": 22000,
+            "max_silence_seconds": 4.04
+          },
+          {
+            "slot_end": 1200,
+            "control_misses": 1471,
+            "control_sent": 24000,
+            "max_silence_seconds": 4.04
+          },
+          {
+            "slot_end": 1300,
+            "control_misses": 1563,
+            "control_sent": 26000,
+            "max_silence_seconds": 4.04
+          },
+          {
+            "slot_end": 1400,
+            "control_misses": 1688,
+            "control_sent": 28000,
+            "max_silence_seconds": 4.04
+          },
+          {
+            "slot_end": 1500,
+            "control_misses": 1858,
+            "control_sent": 30000,
+            "max_silence_seconds": 4.04
+          },
+          {
+            "slot_end": 1600,
+            "control_misses": 2026,
+            "control_sent": 32000,
+            "max_silence_seconds": 4.04
+          },
+          {
+            "slot_end": 1700,
+            "control_misses": 2179,
+            "control_sent": 34000,
+            "max_silence_seconds": 4.04
+          },
+          {
+            "slot_end": 1800,
+            "control_misses": 2325,
+            "control_sent": 36000,
+            "max_silence_seconds": 4.04
+          },
+          {
+            "slot_end": 1900,
+            "control_misses": 2444,
+            "control_sent": 38000,
+            "max_silence_seconds": 4.04
+          },
+          {
+            "slot_end": 2000,
+            "control_misses": 2598,
+            "control_sent": 40000,
+            "max_silence_seconds": 4.04
+          },
+          {
+            "slot_end": 2100,
+            "control_misses": 2757,
+            "control_sent": 42000,
+            "max_silence_seconds": 4.04
+          },
+          {
+            "slot_end": 2200,
+            "control_misses": 2923,
+            "control_sent": 44000,
+            "max_silence_seconds": 4.04
+          },
+          {
+            "slot_end": 2300,
+            "control_misses": 3072,
+            "control_sent": 46000,
+            "max_silence_seconds": 4.04
+          },
+          {
+            "slot_end": 2400,
+            "control_misses": 3201,
+            "control_sent": 48000,
+            "max_silence_seconds": 4.04
+          },
+          {
+            "slot_end": 2500,
+            "control_misses": 3334,
+            "control_sent": 50000,
+            "max_silence_seconds": 4.04
+          },
+          {
+            "slot_end": 2600,
+            "control_misses": 3451,
+            "control_sent": 52000,
+            "max_silence_seconds": 4.3
+          },
+          {
+            "slot_end": 2700,
+            "control_misses": 3592,
+            "control_sent": 54000,
+            "max_silence_seconds": 4.3
+          },
+          {
+            "slot_end": 2800,
+            "control_misses": 3769,
+            "control_sent": 56000,
+            "max_silence_seconds": 4.3
+          },
+          {
+            "slot_end": 2900,
+            "control_misses": 3946,
+            "control_sent": 58000,
+            "max_silence_seconds": 4.3
+          },
+          {
+            "slot_end": 3000,
+            "control_misses": 4138,
+            "control_sent": 60000,
+            "max_silence_seconds": 4.3
+          },
+          {
+            "slot_end": 3100,
+            "control_misses": 4318,
+            "control_sent": 62000,
+            "max_silence_seconds": 4.3
+          },
+          {
+            "slot_end": 3200,
+            "control_misses": 4462,
+            "control_sent": 64000,
+            "max_silence_seconds": 4.3
+          },
+          {
+            "slot_end": 3300,
+            "control_misses": 4612,
+            "control_sent": 66000,
+            "max_silence_seconds": 4.3
+          },
+          {
+            "slot_end": 3400,
+            "control_misses": 4738,
+            "control_sent": 68000,
+            "max_silence_seconds": 4.3
+          },
+          {
+            "slot_end": 3500,
+            "control_misses": 4869,
+            "control_sent": 70000,
+            "max_silence_seconds": 4.3
+          },
+          {
+            "slot_end": 3600,
+            "control_misses": 5016,
+            "control_sent": 72000,
+            "max_silence_seconds": 4.3
+          },
+          {
+            "slot_end": 3700,
+            "control_misses": 5195,
+            "control_sent": 74000,
+            "max_silence_seconds": 4.3
+          },
+          {
+            "slot_end": 3800,
+            "control_misses": 5386,
+            "control_sent": 76000,
+            "max_silence_seconds": 4.3
+          },
+          {
+            "slot_end": 3900,
+            "control_misses": 5557,
+            "control_sent": 78000,
+            "max_silence_seconds": 4.3
+          },
+          {
+            "slot_end": 4000,
+            "control_misses": 5744,
+            "control_sent": 80000,
+            "max_silence_seconds": 4.3
+          },
+          {
+            "slot_end": 4100,
+            "control_misses": 5929,
+            "control_sent": 82000,
+            "max_silence_seconds": 4.3
+          },
+          {
+            "slot_end": 4200,
+            "control_misses": 6159,
+            "control_sent": 84000,
+            "max_silence_seconds": 4.3
+          },
+          {
+            "slot_end": 4300,
+            "control_misses": 6404,
+            "control_sent": 86000,
+            "max_silence_seconds": 4.3
+          },
+          {
+            "slot_end": 4400,
+            "control_misses": 6585,
+            "control_sent": 88000,
+            "max_silence_seconds": 4.3
+          },
+          {
+            "slot_end": 4500,
+            "control_misses": 6791,
+            "control_sent": 90000,
+            "max_silence_seconds": 4.3
+          },
+          {
+            "slot_end": 4600,
+            "control_misses": 7003,
+            "control_sent": 92000,
+            "max_silence_seconds": 4.3
+          },
+          {
+            "slot_end": 4700,
+            "control_misses": 7231,
+            "control_sent": 94000,
+            "max_silence_seconds": 4.3
+          },
+          {
+            "slot_end": 4800,
+            "control_misses": 7507,
+            "control_sent": 96000,
+            "max_silence_seconds": 4.3
+          },
+          {
+            "slot_end": 4900,
+            "control_misses": 7812,
+            "control_sent": 98000,
+            "max_silence_seconds": 4.3
+          },
+          {
+            "slot_end": 5000,
+            "control_misses": 8105,
+            "control_sent": 100000,
+            "max_silence_seconds": 4.3
+          },
+          {
+            "slot_end": 5100,
+            "control_misses": 8370,
+            "control_sent": 102000,
+            "max_silence_seconds": 4.3
+          },
+          {
+            "slot_end": 5200,
+            "control_misses": 8615,
+            "control_sent": 104000,
+            "max_silence_seconds": 4.3
+          },
+          {
+            "slot_end": 5300,
+            "control_misses": 8872,
+            "control_sent": 106000,
+            "max_silence_seconds": 4.3
+          },
+          {
+            "slot_end": 5400,
+            "control_misses": 9094,
+            "control_sent": 108000,
+            "max_silence_seconds": 4.3
+          },
+          {
+            "slot_end": 5500,
+            "control_misses": 9336,
+            "control_sent": 110000,
+            "max_silence_seconds": 4.3
+          },
+          {
+            "slot_end": 5600,
+            "control_misses": 9602,
+            "control_sent": 112000,
+            "max_silence_seconds": 4.3
+          },
+          {
+            "slot_end": 5700,
+            "control_misses": 9838,
+            "control_sent": 114000,
+            "max_silence_seconds": 4.3
+          },
+          {
+            "slot_end": 5800,
+            "control_misses": 10094,
+            "control_sent": 116000,
+            "max_silence_seconds": 4.3
+          },
+          {
+            "slot_end": 5900,
+            "control_misses": 10349,
+            "control_sent": 118000,
+            "max_silence_seconds": 4.3
+          },
+          {
+            "slot_end": 6000,
+            "control_misses": 10608,
+            "control_sent": 120000,
+            "max_silence_seconds": 4.3
+          }
+        ],
+        "forecast_metrics": {
+          "ap_choice_regret_db": 0.18075464293440383,
+          "rmse_db": 6.683287789956923,
+          "route_delta_rmse_db": 3.238757889865705
+        },
+        "profile_exceeded": false,
+        "controller_variant": "legacy",
+        "causality_pass": true,
+        "paid_cost_and_consumption_pass": true,
+        "accounting_mode": "actual_cost",
+        "replay": false,
+        "live_replication": false,
+        "predictor_profile_exceeded": false,
+        "timing": {
+          "forecast_jobs": 60,
+          "consumptions": 60,
+          "profile_exceeded_jobs": 0,
+          "charged_service_seconds_total": 38.71,
+          "charged_compute_seconds_total": 8.709999999999999,
+          "actual_compute_seconds_total": 4.725866885011783,
+          "maximum_forecast_age_seconds": 1.13
+        }
+      },
+      {
+        "stage": "development",
+        "site": 2133001,
+        "handover_seconds": 4.0,
+        "family": "radiomap",
+        "training_seed": null,
+        "control_misses": 10665,
+        "control_sent": 120000,
+        "command_loss": 0.088875,
+        "command_loss_pending_as_misses": 0.08894166666666667,
+        "pending_control_packets": 8,
+        "pending_control_right_censored": true,
+        "worst_decile_loss": 0.1855,
+        "worst_decile_pending_as_misses": 0.1855,
+        "max_silence_seconds": 8.3,
+        "p99_robot_max_silence_seconds": 4.181600000000021,
+        "video_vs_original": 0.8408806871633805,
+        "bulk_mbps": 474.56191431894536,
+        "bulk_backlog_bits": 2822037923.903055,
+        "bulk_overflow_bits": 264247216.96023443,
+        "video_flow_error_bits": 4.982948303222656e-05,
+        "bulk_flow_error_bits": -1.1444091796875e-05,
+        "cumulative": [
+          {
+            "slot_end": 100,
+            "control_misses": 19,
+            "control_sent": 2000,
+            "max_silence_seconds": 0.09
+          },
+          {
+            "slot_end": 200,
+            "control_misses": 140,
+            "control_sent": 4000,
+            "max_silence_seconds": 0.91
+          },
+          {
+            "slot_end": 300,
+            "control_misses": 338,
+            "control_sent": 6000,
+            "max_silence_seconds": 1.91
+          },
+          {
+            "slot_end": 400,
+            "control_misses": 593,
+            "control_sent": 8000,
+            "max_silence_seconds": 2.91
+          },
+          {
+            "slot_end": 500,
+            "control_misses": 881,
+            "control_sent": 10000,
+            "max_silence_seconds": 3.91
+          },
+          {
+            "slot_end": 600,
+            "control_misses": 1072,
+            "control_sent": 12000,
+            "max_silence_seconds": 4.04
+          },
+          {
+            "slot_end": 700,
+            "control_misses": 1189,
+            "control_sent": 14000,
+            "max_silence_seconds": 4.04
+          },
+          {
+            "slot_end": 800,
+            "control_misses": 1264,
+            "control_sent": 16000,
+            "max_silence_seconds": 4.04
+          },
+          {
+            "slot_end": 900,
+            "control_misses": 1315,
+            "control_sent": 18000,
+            "max_silence_seconds": 4.04
+          },
+          {
+            "slot_end": 1000,
+            "control_misses": 1364,
+            "control_sent": 20000,
+            "max_silence_seconds": 4.04
+          },
+          {
+            "slot_end": 1100,
+            "control_misses": 1418,
+            "control_sent": 22000,
+            "max_silence_seconds": 4.04
+          },
+          {
+            "slot_end": 1200,
+            "control_misses": 1471,
+            "control_sent": 24000,
+            "max_silence_seconds": 4.04
+          },
+          {
+            "slot_end": 1300,
+            "control_misses": 1563,
+            "control_sent": 26000,
+            "max_silence_seconds": 4.04
+          },
+          {
+            "slot_end": 1400,
+            "control_misses": 1688,
+            "control_sent": 28000,
+            "max_silence_seconds": 4.04
+          },
+          {
+            "slot_end": 1500,
+            "control_misses": 1858,
+            "control_sent": 30000,
+            "max_silence_seconds": 4.04
+          },
+          {
+            "slot_end": 1600,
+            "control_misses": 2026,
+            "control_sent": 32000,
+            "max_silence_seconds": 4.04
+          },
+          {
+            "slot_end": 1700,
+            "control_misses": 2179,
+            "control_sent": 34000,
+            "max_silence_seconds": 4.04
+          },
+          {
+            "slot_end": 1800,
+            "control_misses": 2325,
+            "control_sent": 36000,
+            "max_silence_seconds": 4.04
+          },
+          {
+            "slot_end": 1900,
+            "control_misses": 2444,
+            "control_sent": 38000,
+            "max_silence_seconds": 4.04
+          },
+          {
+            "slot_end": 2000,
+            "control_misses": 2598,
+            "control_sent": 40000,
+            "max_silence_seconds": 4.04
+          },
+          {
+            "slot_end": 2100,
+            "control_misses": 2756,
+            "control_sent": 42000,
+            "max_silence_seconds": 4.04
+          },
+          {
+            "slot_end": 2200,
+            "control_misses": 2921,
+            "control_sent": 44000,
+            "max_silence_seconds": 4.04
+          },
+          {
+            "slot_end": 2300,
+            "control_misses": 3070,
+            "control_sent": 46000,
+            "max_silence_seconds": 4.04
+          },
+          {
+            "slot_end": 2400,
+            "control_misses": 3199,
+            "control_sent": 48000,
+            "max_silence_seconds": 4.04
+          },
+          {
+            "slot_end": 2500,
+            "control_misses": 3332,
+            "control_sent": 50000,
+            "max_silence_seconds": 4.04
+          },
+          {
+            "slot_end": 2600,
+            "control_misses": 3456,
+            "control_sent": 52000,
+            "max_silence_seconds": 4.7
+          },
+          {
+            "slot_end": 2700,
+            "control_misses": 3617,
+            "control_sent": 54000,
+            "max_silence_seconds": 5.7
+          },
+          {
+            "slot_end": 2800,
+            "control_misses": 3814,
+            "control_sent": 56000,
+            "max_silence_seconds": 6.7
+          },
+          {
+            "slot_end": 2900,
+            "control_misses": 4011,
+            "control_sent": 58000,
+            "max_silence_seconds": 7.7
+          },
+          {
+            "slot_end": 3000,
+            "control_misses": 4215,
+            "control_sent": 60000,
+            "max_silence_seconds": 8.3
+          },
+          {
+            "slot_end": 3100,
+            "control_misses": 4394,
+            "control_sent": 62000,
+            "max_silence_seconds": 8.3
+          },
+          {
+            "slot_end": 3200,
+            "control_misses": 4538,
+            "control_sent": 64000,
+            "max_silence_seconds": 8.3
+          },
+          {
+            "slot_end": 3300,
+            "control_misses": 4686,
+            "control_sent": 66000,
+            "max_silence_seconds": 8.3
+          },
+          {
+            "slot_end": 3400,
+            "control_misses": 4812,
+            "control_sent": 68000,
+            "max_silence_seconds": 8.3
+          },
+          {
+            "slot_end": 3500,
+            "control_misses": 4942,
+            "control_sent": 70000,
+            "max_silence_seconds": 8.3
+          },
+          {
+            "slot_end": 3600,
+            "control_misses": 5089,
+            "control_sent": 72000,
+            "max_silence_seconds": 8.3
+          },
+          {
+            "slot_end": 3700,
+            "control_misses": 5268,
+            "control_sent": 74000,
+            "max_silence_seconds": 8.3
+          },
+          {
+            "slot_end": 3800,
+            "control_misses": 5456,
+            "control_sent": 76000,
+            "max_silence_seconds": 8.3
+          },
+          {
+            "slot_end": 3900,
+            "control_misses": 5627,
+            "control_sent": 78000,
+            "max_silence_seconds": 8.3
+          },
+          {
+            "slot_end": 4000,
+            "control_misses": 5814,
+            "control_sent": 80000,
+            "max_silence_seconds": 8.3
+          },
+          {
+            "slot_end": 4100,
+            "control_misses": 5999,
+            "control_sent": 82000,
+            "max_silence_seconds": 8.3
+          },
+          {
+            "slot_end": 4200,
+            "control_misses": 6229,
+            "control_sent": 84000,
+            "max_silence_seconds": 8.3
+          },
+          {
+            "slot_end": 4300,
+            "control_misses": 6475,
+            "control_sent": 86000,
+            "max_silence_seconds": 8.3
+          },
+          {
+            "slot_end": 4400,
+            "control_misses": 6656,
+            "control_sent": 88000,
+            "max_silence_seconds": 8.3
+          },
+          {
+            "slot_end": 4500,
+            "control_misses": 6862,
+            "control_sent": 90000,
+            "max_silence_seconds": 8.3
+          },
+          {
+            "slot_end": 4600,
+            "control_misses": 7073,
+            "control_sent": 92000,
+            "max_silence_seconds": 8.3
+          },
+          {
+            "slot_end": 4700,
+            "control_misses": 7300,
+            "control_sent": 94000,
+            "max_silence_seconds": 8.3
+          },
+          {
+            "slot_end": 4800,
+            "control_misses": 7576,
+            "control_sent": 96000,
+            "max_silence_seconds": 8.3
+          },
+          {
+            "slot_end": 4900,
+            "control_misses": 7878,
+            "control_sent": 98000,
+            "max_silence_seconds": 8.3
+          },
+          {
+            "slot_end": 5000,
+            "control_misses": 8169,
+            "control_sent": 100000,
+            "max_silence_seconds": 8.3
+          },
+          {
+            "slot_end": 5100,
+            "control_misses": 8434,
+            "control_sent": 102000,
+            "max_silence_seconds": 8.3
+          },
+          {
+            "slot_end": 5200,
+            "control_misses": 8679,
+            "control_sent": 104000,
+            "max_silence_seconds": 8.3
+          },
+          {
+            "slot_end": 5300,
+            "control_misses": 8932,
+            "control_sent": 106000,
+            "max_silence_seconds": 8.3
+          },
+          {
+            "slot_end": 5400,
+            "control_misses": 9152,
+            "control_sent": 108000,
+            "max_silence_seconds": 8.3
+          },
+          {
+            "slot_end": 5500,
+            "control_misses": 9394,
+            "control_sent": 110000,
+            "max_silence_seconds": 8.3
+          },
+          {
+            "slot_end": 5600,
+            "control_misses": 9660,
+            "control_sent": 112000,
+            "max_silence_seconds": 8.3
+          },
+          {
+            "slot_end": 5700,
+            "control_misses": 9895,
+            "control_sent": 114000,
+            "max_silence_seconds": 8.3
+          },
+          {
+            "slot_end": 5800,
+            "control_misses": 10151,
+            "control_sent": 116000,
+            "max_silence_seconds": 8.3
+          },
+          {
+            "slot_end": 5900,
+            "control_misses": 10406,
+            "control_sent": 118000,
+            "max_silence_seconds": 8.3
+          },
+          {
+            "slot_end": 6000,
+            "control_misses": 10665,
+            "control_sent": 120000,
+            "max_silence_seconds": 8.3
+          }
+        ],
+        "forecast_metrics": {
+          "ap_choice_regret_db": 0.18075464293440383,
+          "rmse_db": 6.701222490293408,
+          "route_delta_rmse_db": 3.240453535279219
+        },
+        "profile_exceeded": false,
+        "controller_variant": "repair",
+        "causality_pass": true,
+        "paid_cost_and_consumption_pass": true,
+        "accounting_mode": "actual_cost",
+        "replay": false,
+        "live_replication": false,
+        "predictor_profile_exceeded": false,
+        "timing": {
+          "forecast_jobs": 60,
+          "consumptions": 60,
+          "profile_exceeded_jobs": 0,
+          "charged_service_seconds_total": 38.71,
+          "charged_compute_seconds_total": 8.709999999999999,
+          "actual_compute_seconds_total": 4.685964646923821,
+          "maximum_forecast_age_seconds": 1.13
+        }
+      }
+    ],
+    "model_or_controller_selection_performed": false,
+    "statistical_superiority_claimed": false,
+    "production_qualified": false,
+    "activated": false
+  },
+  "passed_development_costs": [
+    4.0
+  ],
+  "confirmation_cases": 32,
+  "offline_exact_replays": 4,
+  "fresh_live_replications": 4,
+  "all_source_case_receipt_actual_paid_fifo_consumption_checks_pass": true,
+  "all_raw_local_payload_capture_age_threshold_outage_checks_pass": true,
+  "three_test_bootstrap_and_conservative_pending_endpoint_reproduced": true,
+  "completion_report_and_markdown_reproduced": true,
+  "recovery_counts": {
+    "development": {
+      "watchdog_checks": 1318,
+      "emergency_handovers": 2,
+      "emergency_scans": 32
+    },
+    "confirmation": {
+      "watchdog_checks": 7353,
+      "emergency_handovers": 16,
+      "emergency_scans": 215
+    },
+    "offline_replay": {
+      "watchdog_checks": 257,
+      "emergency_handovers": 2,
+      "emergency_scans": 9
+    },
+    "fresh_live": {
+      "watchdog_checks": 257,
+      "emergency_handovers": 2,
+      "emergency_scans": 9
+    }
+  },
+  "primary": [
+    {
+      "candidate_family": "radiomap",
+      "candidate_variant": "repair",
+      "contrast_id": "repair_minus_legacy:radiomap",
+      "descriptive_95_interval": [
+        -0.0014052083333333356,
+        0.00039270833333333063
+      ],
+      "endpoint_passes": false,
+      "endpoint_sensitivity": {
+        "descriptive_95_interval": [
+          -0.0013500000000000005,
+          0.0004468749999999976
+        ],
+        "mean_difference": -0.0002572916666666678,
+        "multiplicity_upper": 0.0004822916666666653,
+        "paired_site_differences": [
+          -0.0001166666666666677,
+          0.0008166666666666669,
+          8.333333333332416e-06,
+          -0.0038499999999999993,
+          0.0,
+          0.0002333333333333354,
+          3.333333333332966e-05,
+          0.00081666666666666
+        ],
+        "upper_quantile": 0.9833333333333333
+      },
+      "engineering_pass": true,
+      "experimental_benefit": false,
+      "handover_seconds": 4.0,
+      "mean_difference": -0.00031250000000000223,
+      "multiplicity_upper": 0.0004291666666666616,
+      "observed_passes": false,
+      "paired_site_differences": [
+        -0.00015833333333332977,
+        0.0007833333333333303,
+        -3.333333333332966e-05,
+        -0.0039166666666666725,
+        -2.499999999999898e-05,
+        0.00014999999999999736,
+        -4.166666666666902e-05,
+        0.0007416666666666544
+      ],
+      "reference_family": "radiomap",
+      "reference_variant": "legacy",
+      "statistical_pass": false,
+      "statistical_superiority_claimed": null,
+      "status": "tested",
+      "upper_quantile": 0.9833333333333333
+    },
+    {
+      "candidate_family": "frozen_fleet_jepa",
+      "candidate_variant": "repair",
+      "contrast_id": "repair_minus_legacy:frozen_fleet_jepa",
+      "descriptive_95_interval": [
+        -0.0013260416666666672,
+        6.458333333333142e-05
+      ],
+      "endpoint_passes": false,
+      "endpoint_sensitivity": {
+        "descriptive_95_interval": [
+          -0.0012729166666666705,
+          0.0001020833333333312
+        ],
+        "mean_difference": -0.0005020833333333342,
+        "multiplicity_upper": 0.00012812500000000063,
+        "paired_site_differences": [
+          0.0003333333333333313,
+          -0.0015583333333333352,
+          8.333333333332416e-06,
+          -0.002783333333333339,
+          1.6666666666666566e-05,
+          0.0003000000000000086,
+          4.999999999999449e-05,
+          -0.00038333333333333275
+        ],
+        "upper_quantile": 0.9833333333333333
+      },
+      "engineering_pass": true,
+      "experimental_benefit": false,
+      "handover_seconds": 4.0,
+      "mean_difference": -0.0005489583333333345,
+      "multiplicity_upper": 8.958333333333301e-05,
+      "observed_passes": false,
+      "paired_site_differences": [
+        0.0003166666666666665,
+        -0.0016083333333333297,
+        -3.33333333333366e-05,
+        -0.0028583333333333377,
+        0.0,
+        0.00022500000000000298,
+        1.666666666666483e-05,
+        -0.00045000000000000595
+      ],
+      "reference_family": "frozen_fleet_jepa",
+      "reference_variant": "legacy",
+      "statistical_pass": false,
+      "statistical_superiority_claimed": null,
+      "status": "tested",
+      "upper_quantile": 0.9833333333333333
+    },
+    {
+      "candidate_family": "frozen_fleet_jepa",
+      "candidate_variant": "repair",
+      "contrast_id": "repaired_jepa_minus_repaired_radiomap",
+      "descriptive_95_interval": [
+        -0.0064052343750000025,
+        -0.0013704947916666937
+      ],
+      "endpoint_passes": true,
+      "endpoint_sensitivity": {
+        "descriptive_95_interval": [
+          -0.006351328125000001,
+          -0.0013310677083333497
+        ],
+        "mean_difference": -0.003811458333333331,
+        "multiplicity_upper": -0.0011048263888888952,
+        "paired_site_differences": [
+          -0.004941666666666671,
+          -0.0023250000000000007,
+          -0.009675000000000003,
+          -0.0010166666666666657,
+          0.0021083333333333336,
+          -0.005533333333333321,
+          -0.0014250000000000027,
+          -0.00768333333333332
+        ],
+        "upper_quantile": 0.9833333333333333
+      },
+      "engineering_pass": false,
+      "experimental_benefit": false,
+      "handover_seconds": 4.0,
+      "mean_difference": -0.0038583333333333317,
+      "multiplicity_upper": -0.0011478125000000147,
+      "observed_passes": true,
+      "paired_site_differences": [
+        -0.004958333333333335,
+        -0.002374999999999995,
+        -0.009716666666666672,
+        -0.0010916666666666644,
+        0.002091666666666667,
+        -0.005608333333333326,
+        -0.0014583333333333323,
+        -0.007749999999999993
+      ],
+      "reference_family": "radiomap",
+      "reference_variant": "repair",
+      "statistical_pass": true,
+      "statistical_superiority_claimed": null,
+      "status": "tested",
+      "upper_quantile": 0.9833333333333333
+    }
+  ],
+  "means": [
+    {
+      "bulk_backlog_bits": 2158219005.319584,
+      "bulk_mbps": 451.6685191825586,
+      "bulk_overflow_bits": 496419843.72691435,
+      "causality_failed_cases": 0,
+      "command_loss": 0.06218125000000001,
+      "command_loss_pending_as_misses": 0.0622375,
+      "controller_variant": "legacy",
+      "family": "radiomap",
+      "global_max_silence_seconds": 23.24,
+      "handover_seconds": 4.0,
+      "independent_sites": 8,
+      "new_training_members": 0,
+      "paid_cost_proof_failed_cases": 0,
+      "pending_control_packets": 6.75,
+      "profile_exceeded_cases": 0,
+      "stage": "confirmation",
+      "video_vs_original": 0.9091248107337309,
+      "worst_decile_loss": 0.16747916666666668,
+      "worst_decile_pending_as_misses": 0.16760416666666667
+    },
+    {
+      "bulk_backlog_bits": 2083810304.6812649,
+      "bulk_mbps": 453.13501678437973,
+      "bulk_overflow_bits": 482838688.2559643,
+      "causality_failed_cases": 0,
+      "command_loss": 0.06186875,
+      "command_loss_pending_as_misses": 0.061923958333333334,
+      "controller_variant": "repair",
+      "family": "radiomap",
+      "global_max_silence_seconds": 8.34,
+      "handover_seconds": 4.0,
+      "independent_sites": 8,
+      "new_training_members": 0,
+      "paid_cost_proof_failed_cases": 0,
+      "pending_control_packets": 6.625,
+      "profile_exceeded_cases": 0,
+      "stage": "confirmation",
+      "video_vs_original": 0.9090291594402246,
+      "worst_decile_loss": 0.16234375,
+      "worst_decile_pending_as_misses": 0.1624375
+    },
+    {
+      "bulk_backlog_bits": 1958464377.2136874,
+      "bulk_mbps": 456.6029849530979,
+      "bulk_overflow_bits": 400106525.6004566,
+      "causality_failed_cases": 0,
+      "command_loss": 0.058559375000000004,
+      "command_loss_pending_as_misses": 0.05860625,
+      "controller_variant": "legacy",
+      "family": "frozen_fleet_jepa",
+      "global_max_silence_seconds": 19.03,
+      "handover_seconds": 4.0,
+      "independent_sites": 8,
+      "new_training_members": 0,
+      "paid_cost_proof_failed_cases": 0,
+      "pending_control_packets": 5.625,
+      "profile_exceeded_cases": 0,
+      "stage": "confirmation",
+      "video_vs_original": 0.9036382485392201,
+      "worst_decile_loss": 0.16613541666666667,
+      "worst_decile_pending_as_misses": 0.16625
+    },
+    {
+      "bulk_backlog_bits": 1938644573.9990265,
+      "bulk_mbps": 457.1310885981192,
+      "bulk_overflow_bits": 388240110.11383396,
+      "causality_failed_cases": 0,
+      "command_loss": 0.05801041666666667,
+      "command_loss_pending_as_misses": 0.05805729166666666,
+      "controller_variant": "repair",
+      "family": "frozen_fleet_jepa",
+      "global_max_silence_seconds": 10.03,
+      "handover_seconds": 4.0,
+      "independent_sites": 8,
+      "new_training_members": 0,
+      "paid_cost_proof_failed_cases": 0,
+      "pending_control_packets": 5.625,
+      "profile_exceeded_cases": 0,
+      "stage": "confirmation",
+      "video_vs_original": 0.9069662977227833,
+      "worst_decile_loss": 0.15957291666666665,
+      "worst_decile_pending_as_misses": 0.1596875
+    }
+  ],
+  "engineering_gates": [
+    {
+      "candidate_bulk_mbps": 453.13501678437973,
+      "candidate_family": "radiomap",
+      "candidate_max_silence_seconds": 8.34,
+      "candidate_variant": "repair",
+      "candidate_video_vs_original": 0.9090291594402246,
+      "candidate_worst_decile_observed": 0.16234375,
+      "candidate_worst_decile_pending_as_misses": 0.1624375,
+      "checks": {
+        "bulk_delivery": true,
+        "maximum_silence": true,
+        "original_video": true,
+        "worst_decile": true
+      },
+      "contrast_id": "repair_minus_legacy:radiomap",
+      "handover_seconds": 4.0,
+      "passes": true,
+      "reference_bulk_mbps": 451.6685191825586,
+      "reference_family": "radiomap",
+      "reference_max_silence_seconds": 23.24,
+      "reference_variant": "legacy",
+      "reference_video_vs_original": 0.9091248107337309,
+      "reference_worst_decile_observed": 0.16747916666666668,
+      "status": "tested",
+      "zero_margin_checks": {
+        "bulk_delivery": true,
+        "maximum_silence": true,
+        "original_video": false,
+        "worst_decile": true
+      },
+      "zero_margin_passes": false
+    },
+    {
+      "candidate_bulk_mbps": 457.1310885981192,
+      "candidate_family": "frozen_fleet_jepa",
+      "candidate_max_silence_seconds": 10.03,
+      "candidate_variant": "repair",
+      "candidate_video_vs_original": 0.9069662977227833,
+      "candidate_worst_decile_observed": 0.15957291666666665,
+      "candidate_worst_decile_pending_as_misses": 0.1596875,
+      "checks": {
+        "bulk_delivery": true,
+        "maximum_silence": true,
+        "original_video": true,
+        "worst_decile": true
+      },
+      "contrast_id": "repair_minus_legacy:frozen_fleet_jepa",
+      "handover_seconds": 4.0,
+      "passes": true,
+      "reference_bulk_mbps": 456.6029849530979,
+      "reference_family": "frozen_fleet_jepa",
+      "reference_max_silence_seconds": 19.03,
+      "reference_variant": "legacy",
+      "reference_video_vs_original": 0.9036382485392201,
+      "reference_worst_decile_observed": 0.16613541666666667,
+      "status": "tested",
+      "zero_margin_checks": {
+        "bulk_delivery": true,
+        "maximum_silence": true,
+        "original_video": true,
+        "worst_decile": true
+      },
+      "zero_margin_passes": true
+    },
+    {
+      "candidate_bulk_mbps": 457.1310885981192,
+      "candidate_family": "frozen_fleet_jepa",
+      "candidate_max_silence_seconds": 10.03,
+      "candidate_variant": "repair",
+      "candidate_video_vs_original": 0.9069662977227833,
+      "candidate_worst_decile_observed": 0.15957291666666665,
+      "candidate_worst_decile_pending_as_misses": 0.1596875,
+      "checks": {
+        "bulk_delivery": true,
+        "maximum_silence": false,
+        "original_video": true,
+        "worst_decile": true
+      },
+      "contrast_id": "repaired_jepa_minus_repaired_radiomap",
+      "handover_seconds": 4.0,
+      "passes": false,
+      "reference_bulk_mbps": 453.13501678437973,
+      "reference_family": "radiomap",
+      "reference_max_silence_seconds": 8.34,
+      "reference_variant": "repair",
+      "reference_video_vs_original": 0.9090291594402246,
+      "reference_worst_decile_observed": 0.16234375,
+      "status": "tested",
+      "zero_margin_checks": {
+        "bulk_delivery": true,
+        "maximum_silence": false,
+        "original_video": false,
+        "worst_decile": true
+      },
+      "zero_margin_passes": false
+    }
+  ],
+  "timing": {
+    "actual_compute_seconds_total": 511.2600866661669,
+    "causality_failed_cases": 0,
+    "charged_compute_seconds_total": 986.24,
+    "charged_service_seconds_total": 1946.2400000000002,
+    "consumptions": 1648,
+    "jobs": 1920,
+    "maximum_forecast_age_seconds": 17.979999999999997,
+    "paid_cost_proof_failed_cases": 0,
+    "predictor_profile_exceeded_cases": 0,
+    "profile_exceedance_is_diagnostic_not_a_veto": true,
+    "profile_exceeded_cases": 0,
+    "profile_exceeded_jobs": 0
+  },
+  "offline_comparisons": [
+    {
+      "case": [
+        "confirmation",
+        2134000,
+        4.0,
+        "radiomap",
+        "repair"
+      ],
+      "exact": true,
+      "checks": {
+        "recomputed_native_fields": true,
+        "original_schedule_exact": true,
+        "actual_forecasts_match_recorded": true,
+        "forecast_consumption_exact": true,
+        "explicit_offline_metadata": true,
+        "original_archive_and_schedule_binding": true,
+        "recorded_schedule_audit": true
+      },
+      "fresh_measured_deadline_claim": false,
+      "fresh_compute_is_diagnostic_only": true,
+      "fresh_jobs_exceeding_recorded_charge": 0
+    },
+    {
+      "case": [
+        "confirmation",
+        2134000,
+        4.0,
+        "radiomap",
+        "legacy"
+      ],
+      "exact": true,
+      "checks": {
+        "recomputed_native_fields": true,
+        "original_schedule_exact": true,
+        "actual_forecasts_match_recorded": true,
+        "forecast_consumption_exact": true,
+        "explicit_offline_metadata": true,
+        "original_archive_and_schedule_binding": true,
+        "recorded_schedule_audit": true
+      },
+      "fresh_measured_deadline_claim": false,
+      "fresh_compute_is_diagnostic_only": true,
+      "fresh_jobs_exceeding_recorded_charge": 0
+    },
+    {
+      "case": [
+        "confirmation",
+        2134000,
+        4.0,
+        "frozen_fleet_jepa",
+        "repair"
+      ],
+      "exact": true,
+      "checks": {
+        "recomputed_native_fields": true,
+        "original_schedule_exact": true,
+        "actual_forecasts_match_recorded": true,
+        "forecast_consumption_exact": true,
+        "explicit_offline_metadata": true,
+        "original_archive_and_schedule_binding": true,
+        "recorded_schedule_audit": true
+      },
+      "fresh_measured_deadline_claim": false,
+      "fresh_compute_is_diagnostic_only": true,
+      "fresh_jobs_exceeding_recorded_charge": 0
+    },
+    {
+      "case": [
+        "confirmation",
+        2134000,
+        4.0,
+        "frozen_fleet_jepa",
+        "legacy"
+      ],
+      "exact": true,
+      "checks": {
+        "recomputed_native_fields": true,
+        "original_schedule_exact": true,
+        "actual_forecasts_match_recorded": true,
+        "forecast_consumption_exact": true,
+        "explicit_offline_metadata": true,
+        "original_archive_and_schedule_binding": true,
+        "recorded_schedule_audit": true
+      },
+      "fresh_measured_deadline_claim": false,
+      "fresh_compute_is_diagnostic_only": true,
+      "fresh_jobs_exceeding_recorded_charge": 0
+    }
+  ],
+  "fresh_live_cost_comparisons": [
+    {
+      "case": [
+        "confirmation",
+        2134000,
+        4.0,
+        "radiomap",
+        "repair"
+      ],
+      "control_miss_difference": 0,
+      "packet_result_exactly_matches_original": true,
+      "changed_ready_jobs": 0,
+      "changed_timing_regime_jobs": 0,
+      "changed_charged_service_jobs": 0,
+      "changed_charged_compute_jobs": 0,
+      "forecast_consumption_exact": true,
+      "paid_cost_and_consumption_pass": true,
+      "independent_sites_added": 0,
+      "bitwise_equality_required": false,
+      "sensitivity_only": true
+    },
+    {
+      "case": [
+        "confirmation",
+        2134000,
+        4.0,
+        "radiomap",
+        "legacy"
+      ],
+      "control_miss_difference": 0,
+      "packet_result_exactly_matches_original": true,
+      "changed_ready_jobs": 0,
+      "changed_timing_regime_jobs": 0,
+      "changed_charged_service_jobs": 0,
+      "changed_charged_compute_jobs": 0,
+      "forecast_consumption_exact": true,
+      "paid_cost_and_consumption_pass": true,
+      "independent_sites_added": 0,
+      "bitwise_equality_required": false,
+      "sensitivity_only": true
+    },
+    {
+      "case": [
+        "confirmation",
+        2134000,
+        4.0,
+        "frozen_fleet_jepa",
+        "repair"
+      ],
+      "control_miss_difference": 0,
+      "packet_result_exactly_matches_original": true,
+      "changed_ready_jobs": 0,
+      "changed_timing_regime_jobs": 0,
+      "changed_charged_service_jobs": 0,
+      "changed_charged_compute_jobs": 0,
+      "forecast_consumption_exact": true,
+      "paid_cost_and_consumption_pass": true,
+      "independent_sites_added": 0,
+      "bitwise_equality_required": false,
+      "sensitivity_only": true
+    },
+    {
+      "case": [
+        "confirmation",
+        2134000,
+        4.0,
+        "frozen_fleet_jepa",
+        "legacy"
+      ],
+      "control_miss_difference": 0,
+      "packet_result_exactly_matches_original": true,
+      "changed_ready_jobs": 0,
+      "changed_timing_regime_jobs": 0,
+      "changed_charged_service_jobs": 0,
+      "changed_charged_compute_jobs": 0,
+      "forecast_consumption_exact": true,
+      "paid_cost_and_consumption_pass": true,
+      "independent_sites_added": 0,
+      "bitwise_equality_required": false,
+      "sensitivity_only": true
+    }
+  ],
+  "all_three_experimental_benefits": false,
+  "production_qualified": false,
+  "hardware_qualified": false,
+  "activated": false,
+  "report_sha256": "e10b13d4b6f17e9f0e398f14762a22e5abacf2a5bce323ec6f1d5acb59738e16",
+  "verifier_sha256": "b65f6b0af521e72352668e0796806a4f1165b8bd2f3cdcd6c64ed6990de6522d",
+  "no_worlds_forwards_fits_or_timing_executed": true,
+  "global_document_and_all_current_source_manifest_deferred": true,
+  "parent_global_manifest_is_not_a_dependency": true,
+  "available_counter_recorded_event_and_snapshot_checks_pass": true,
+  "full_10ms_counter_recurrence_verified_from_archives": false,
+  "timing_by_namespace": {
+    "development": {
+      "profile_exceedance_is_diagnostic_not_a_veto": true,
+      "profile_exceeded_cases": 0,
+      "predictor_profile_exceeded_cases": 0,
+      "paid_cost_proof_failed_cases": 0,
+      "causality_failed_cases": 0,
+      "profile_exceeded_jobs": 0,
+      "jobs": 480,
+      "consumptions": 412,
+      "maximum_forecast_age_seconds": 17.979999999999997,
+      "charged_compute_seconds_total": 246.56,
+      "charged_service_seconds_total": 486.56000000000006,
+      "actual_compute_seconds_total": 126.62735015412909
+    },
+    "confirmation": {
+      "actual_compute_seconds_total": 511.2600866661669,
+      "causality_failed_cases": 0,
+      "charged_compute_seconds_total": 986.24,
+      "charged_service_seconds_total": 1946.2400000000002,
+      "consumptions": 1648,
+      "jobs": 1920,
+      "maximum_forecast_age_seconds": 17.979999999999997,
+      "paid_cost_proof_failed_cases": 0,
+      "predictor_profile_exceeded_cases": 0,
+      "profile_exceedance_is_diagnostic_not_a_veto": true,
+      "profile_exceeded_cases": 0,
+      "profile_exceeded_jobs": 0
+    },
+    "offline_replay": {
+      "actual_compute_seconds_total": 62.95570457090798,
+      "causality_failed_cases": 0,
+      "charged_compute_seconds_total": 123.28,
+      "charged_service_seconds_total": 243.28000000000003,
+      "consumptions": 206,
+      "jobs": 240,
+      "maximum_forecast_age_seconds": 17.979999999999997,
+      "paid_cost_proof_failed_cases": 0,
+      "predictor_profile_exceeded_cases": 0,
+      "profile_exceedance_is_diagnostic_not_a_veto": true,
+      "profile_exceeded_cases": 0,
+      "profile_exceeded_jobs": 0
+    },
+    "fresh_live": {
+      "actual_compute_seconds_total": 63.63583247203496,
+      "causality_failed_cases": 0,
+      "charged_compute_seconds_total": 123.28,
+      "charged_service_seconds_total": 243.28000000000003,
+      "consumptions": 206,
+      "jobs": 240,
+      "maximum_forecast_age_seconds": 17.979999999999997,
+      "paid_cost_proof_failed_cases": 0,
+      "predictor_profile_exceeded_cases": 0,
+      "profile_exceedance_is_diagnostic_not_a_veto": true,
+      "profile_exceeded_cases": 0,
+      "profile_exceeded_jobs": 0
+    }
+  },
+  "counter_update_proof_scope": "Frozen source and explicit software tests; sampled archives cannot reconstruct every 10ms delivery reset/scan pause."
+}
