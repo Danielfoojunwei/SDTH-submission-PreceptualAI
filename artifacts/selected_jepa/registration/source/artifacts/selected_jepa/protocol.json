@@ -1,0 +1,66 @@
+{
+  "study": "Independent confirmation of development-selected compact JEPA",
+  "schema": 1,
+  "candidate_family": "context_jepa",
+  "training_seeds": [
+    0,
+    1,
+    2
+  ],
+  "confirmation_sites": [
+    2114000,
+    2114001,
+    2114002,
+    2114003,
+    2114004,
+    2114005,
+    2114006,
+    2114007
+  ],
+  "handover_seconds": [
+    0.03,
+    4.0
+  ],
+  "robots": 100,
+  "duration_seconds": 60,
+  "mission": "bulk_uploads",
+  "scan_period_seconds": 5,
+  "scan_outage_seconds": 0.09,
+  "extra_compute_seconds": 0.5,
+  "primary_references": [
+    "radiomap",
+    "supervised",
+    "frozen_fleet_jepa"
+  ],
+  "bootstrap_replicates": 20000,
+  "bootstrap_seed": 2115000,
+  "primary_upper_quantile": 0.9916666666666667,
+  "worst_decile_margin": 0.0008333333333333334,
+  "silence_margin_seconds": 0.05,
+  "video_margin": 0.01,
+  "bulk_ratio": 0.99,
+  "cumulative_metrics_seconds": [
+    15,
+    30,
+    45,
+    60
+  ],
+  "source_study": "artifacts/semantic_jepa",
+  "source_data_scope": "Existing training/validation/development data and all twelve fits have already been observed. This registration precedes only the NEW confirmation. Original semantic-study rejection and its reserved holdouts remain untouched.",
+  "selection_rule": "Among the two new JEPA families, minimize equal-cost mean command-loss ratio to RadioMap on all prior development sites and all three training members; exact rational comparison, lexicographic tie-break. No member/checkpoint/threshold retuning.",
+  "conditions": "Even site stationary, odd site hidden drift; same procedural CAD, no physical warehouse claim.",
+  "comparators": "Three separately evaluated chosen JEPA members, three matched supervised members, strong RadioMap, and original frozen three-member fleet JEPA ensemble. No new fitting.",
+  "controller": "Reuse fixed shared cost-specific controls: OutageBudgetGate+reactive_rescue at0.03s, OutageUtility30+rescue at4s. Same semantics as the source study, no new tuning.",
+  "timing": "Reuse source-study sealed profiles without retiming. All new neural members share the same conservative envelope; numerical and frozen-original comparators retain their recorded profiles. Startup separate; any actual overrun vetoes success.",
+  "primary": "All six candidate/reference/cost comparisons use whole-site bootstrap after averaging paired training members, upper1-.05/6<0 under observed AND conservative endpoint counters. Report every comparison, including negative/null. No claim of winning all references unless all pass.",
+  "claim_definitions": {
+    "numerical_benefit": "Per cost, superiority plus engineering margins versus RadioMap.",
+    "original_jepa_improvement": "Per cost, superiority plus engineering margins versus original frozen JEPA; this is a package comparison with different training/data/inference, not an isolated objective effect.",
+    "objective_advantage": "Per cost, superiority plus engineering margins versus matched supervised. A win does not isolate EMA necessity from auxiliary future-target supervision.",
+    "broad_best_claim": "Requires all references at both costs; never infer from a subset."
+  },
+  "engineering": "Per reference/cost candidate worst-decile with pending misses <=refobserved+1/1200; maxsilence<=ref+.05s; originalvideo>=ref-.01; bulk>=.99ref. Report zero-margin results too. These are empirical research thresholds, not production qualification.",
+  "endpoint": "Candidate unresolved controls are misses, reference unresolved controls are successes. Preserve packet generation/queues.",
+  "replays": "First new site: RadioMap, original frozen JEPA, selected member0 and supervised member0 at each cost; eight exact result/forecast/telemetry/action replays.",
+  "activation": "Offline only, no physical commands, default swap, production/SOTA/novelty/universal claim. Matched supervised comparisons remain visible regardless outcome."
+}

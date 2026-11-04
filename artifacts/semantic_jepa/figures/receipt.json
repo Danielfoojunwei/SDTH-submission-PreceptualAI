@@ -1,0 +1,60 @@
+{
+  "new_training_or_model_evaluations": false,
+  "new_model_or_seed_selection": false,
+  "ranges_are_confidence_intervals": false,
+  "uncertainty_scope": "Descriptive min-max across all three registered independently trained members.",
+  "confirmation_costs_actually_tested": [],
+  "confirmation_status_by_cost": [
+    {
+      "engineering_pass": false,
+      "handover_seconds": 0.03,
+      "passes": false,
+      "primary_pass": false,
+      "status": "not_run_development_veto"
+    },
+    {
+      "engineering_pass": false,
+      "handover_seconds": 4.0,
+      "passes": false,
+      "primary_pass": false,
+      "status": "not_run_development_veto"
+    }
+  ],
+  "diagnostics_are_service_qualification": false,
+  "teacher_scope": "Two-coordinate privileged simulator semantics; EMA radio diagnostics are unused teachers in other families.",
+  "software": {
+    "python": "3.12.14",
+    "matplotlib": "3.11.2",
+    "numpy": "2.5.4"
+  },
+  "dpi": 180,
+  "script_sha256": "26a7ec35fc54109193b21f4ee7f28a72adfc5d7c10221ecf9af2036e4e31bb84",
+  "inputs_sha256": {
+    "artifacts/semantic_jepa/protocol.json": "1f7ba4ca3db12fbc16b45fc7530bf23cb8d3a434d560aa04666473ded3d47285",
+    "artifacts/semantic_jepa/training.json": "025b85789d1d2d9dc95c083290f9189e85e08f87cbbc3eda6915dd00fa0859c5",
+    "artifacts/semantic_jepa/development.json": "0074cdd1fea2156ee0cfec407fb7b0dd346092342df755dd0fd2133e3ff857f4",
+    "artifacts/semantic_jepa/confirmation.json": "519060c4f41fafa15de0218611dfbfa2ca0eda07305537a392ad42af4919ac29",
+    "artifacts/semantic_jepa/latency.json": "2a103b198cbd41add5741cc36c5b9fe176550c0e3f17a864dc462737676e13f3",
+    "artifacts/semantic_jepa/report.json": "eccfdef05627e282d84a7d7c15a3370e02eb863b4f94a89684a92978feaf3a72",
+    "artifacts/semantic_jepa/fits/supervised-0.json": "bef40655adf996b08cd6fab83c320be5e7432070f8bb040c0ee98bb567f9d8ff",
+    "artifacts/semantic_jepa/fits/supervised-1.json": "9199bdc1f542714aed0555c884abdeb0bd2aef5ca7cb13c8b3bd79f1db35e9c4",
+    "artifacts/semantic_jepa/fits/supervised-2.json": "fdf8a482922f3b98e682f657a8b112d9ee1274da2b60f752b9ca8fb9397fba48",
+    "artifacts/semantic_jepa/fits/context_jepa-0.json": "ec4d40c30bf228515604370ca2f2cd7e77a7738dcd723f3e063f944a601e94ea",
+    "artifacts/semantic_jepa/fits/context_jepa-1.json": "b91550ea751de165dd52aa92d82933b67cfaa9c48f1a14e0552e0fae048d7839",
+    "artifacts/semantic_jepa/fits/context_jepa-2.json": "71d5a9faab0005baed9247727d6bd9bed45682e0f97cbf4cce5c91dea696b9e7",
+    "artifacts/semantic_jepa/fits/semantic_aux-0.json": "94bfbaf567b679e3d4d55aaa5af78a49236627901f99e0d6212a274381fbede8",
+    "artifacts/semantic_jepa/fits/semantic_aux-1.json": "28e5857480c63a7ba86737316443fea763a8ef481d10ea3385bca55572bb5b16",
+    "artifacts/semantic_jepa/fits/semantic_aux-2.json": "d40a01008de5f7c47003aa65b200b8d92961796a8c217fbff57663d03c828045",
+    "artifacts/semantic_jepa/fits/semantic_jepa-0.json": "f7215e0e8b7c3bda313ddeb28ca6b480e4bc292fbe371ff88a0008b1cc2afd61",
+    "artifacts/semantic_jepa/fits/semantic_jepa-1.json": "714e2da604a173d748723824f8e5fcb6b966a57a924af51031d1355aa925f016",
+    "artifacts/semantic_jepa/fits/semantic_jepa-2.json": "cc2e956f56c09d30f7a26692e53eda7261ce414b4e83a406c95e2fcad6ab448d"
+  },
+  "outputs_sha256": {
+    "artifacts/semantic_jepa/figures/learning-and-service.svg": "2345aabbfe8b1f7be14ae8e20380a320c15fa71975d2048d895d184ece544dd4",
+    "artifacts/semantic_jepa/figures/learning-and-service.pdf": "5bdcb4478c5f9dc02eab2f0deaad9d648249f1489413890dd0adcf89ee864c20",
+    "artifacts/semantic_jepa/figures/learning-and-service.png": "307abd9e3e87564221093c69187e8d6573c47e19cb6c179b8a91dc0494374bae",
+    "artifacts/semantic_jepa/figures/representation-and-cost.svg": "0c69f3e2409a7f7e6f9904bd1594605dac1945888ff11a9332020318d2a9d1df",
+    "artifacts/semantic_jepa/figures/representation-and-cost.pdf": "5602be0ed2a273ca8ec5a0072fbe274d284a5edac2196972c0ea1dabcbf52a2e",
+    "artifacts/semantic_jepa/figures/representation-and-cost.png": "da080fa3ed98ea3a8fd0a10b83f7a8b0e58d681dcce4034348510a986364303e"
+  }
+}
