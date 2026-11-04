@@ -1,0 +1,335 @@
+{
+  "archive_cases_verified": 32,
+  "archived_groups": [
+    {
+      "cases": 8,
+      "collision_lambda": [
+        0.0
+      ],
+      "command_loss": 0.0104375,
+      "contention_cause_count_is_zero": true,
+      "control_misses": 10020,
+      "control_sent": 960000,
+      "controller_variant": "repair",
+      "exclusive_first_condition_causes": {
+        "all_paths_blocked": 142,
+        "contention": 0,
+        "no_radio_up": 9614,
+        "other": 0,
+        "weak_link": 264
+      },
+      "family": "radiomap",
+      "forecast_jobs": 480,
+      "handover_seconds": 0.03,
+      "independent_sites": [
+        2124000,
+        2124001,
+        2124002,
+        2124003,
+        2124004,
+        2124005,
+        2124006,
+        2124007
+      ],
+      "interference": [
+        false
+      ],
+      "jobs_with_no_latest_bin_heard_entries": 8,
+      "mean_dup_fraction_of_fleet_slots": 0.0027227083333333335,
+      "nominal_periodic_scan_count": 9600,
+      "nominal_scan_count_is_not_an_isolated_miss_count": true,
+      "scans_reported": 9107,
+      "scans_started": 9600,
+      "study": "jepa_repair"
+    },
+    {
+      "cases": 8,
+      "collision_lambda": [
+        0.0
+      ],
+      "command_loss": 0.01039375,
+      "contention_cause_count_is_zero": true,
+      "control_misses": 9978,
+      "control_sent": 960000,
+      "controller_variant": "repair",
+      "exclusive_first_condition_causes": {
+        "all_paths_blocked": 125,
+        "contention": 0,
+        "no_radio_up": 9601,
+        "other": 0,
+        "weak_link": 252
+      },
+      "family": "frozen_fleet_jepa",
+      "forecast_jobs": 480,
+      "handover_seconds": 0.03,
+      "independent_sites": [
+        2124000,
+        2124001,
+        2124002,
+        2124003,
+        2124004,
+        2124005,
+        2124006,
+        2124007
+      ],
+      "interference": [
+        false
+      ],
+      "jobs_with_no_latest_bin_heard_entries": 8,
+      "mean_dup_fraction_of_fleet_slots": 0.0024614583333333333,
+      "nominal_periodic_scan_count": 9600,
+      "nominal_scan_count_is_not_an_isolated_miss_count": true,
+      "scans_reported": 9107,
+      "scans_started": 9600,
+      "study": "jepa_repair"
+    },
+    {
+      "cases": 8,
+      "collision_lambda": [
+        0.0
+      ],
+      "command_loss": 0.06186875,
+      "contention_cause_count_is_zero": true,
+      "control_misses": 59394,
+      "control_sent": 960000,
+      "controller_variant": "repair",
+      "exclusive_first_condition_causes": {
+        "all_paths_blocked": 2025,
+        "contention": 0,
+        "no_radio_up": 47433,
+        "other": 0,
+        "weak_link": 9936
+      },
+      "family": "radiomap",
+      "forecast_jobs": 480,
+      "handover_seconds": 4.0,
+      "independent_sites": [
+        2134000,
+        2134001,
+        2134002,
+        2134003,
+        2134004,
+        2134005,
+        2134006,
+        2134007
+      ],
+      "interference": [
+        false
+      ],
+      "jobs_with_no_latest_bin_heard_entries": 8,
+      "mean_dup_fraction_of_fleet_slots": 0.029058749999999998,
+      "nominal_periodic_scan_count": 9600,
+      "nominal_scan_count_is_not_an_isolated_miss_count": true,
+      "scans_reported": 9093,
+      "scans_started": 9587,
+      "study": "costaware_recovery"
+    },
+    {
+      "cases": 8,
+      "collision_lambda": [
+        0.0
+      ],
+      "command_loss": 0.05801041666666667,
+      "contention_cause_count_is_zero": true,
+      "control_misses": 55690,
+      "control_sent": 960000,
+      "controller_variant": "repair",
+      "exclusive_first_condition_causes": {
+        "all_paths_blocked": 1829,
+        "contention": 0,
+        "no_radio_up": 43608,
+        "other": 0,
+        "weak_link": 10253
+      },
+      "family": "frozen_fleet_jepa",
+      "forecast_jobs": 480,
+      "handover_seconds": 4.0,
+      "independent_sites": [
+        2134000,
+        2134001,
+        2134002,
+        2134003,
+        2134004,
+        2134005,
+        2134006,
+        2134007
+      ],
+      "interference": [
+        false
+      ],
+      "jobs_with_no_latest_bin_heard_entries": 8,
+      "mean_dup_fraction_of_fleet_slots": 0.02951208333333333,
+      "nominal_periodic_scan_count": 9600,
+      "nominal_scan_count_is_not_an_isolated_miss_count": true,
+      "scans_reported": 9102,
+      "scans_started": 9596,
+      "study": "costaware_recovery"
+    }
+  ],
+  "base_commit": "1441f68089173279536afc11fc17a3926115cd5c",
+  "chosen_next_design": {
+    "benefit_not_yet_established": true,
+    "emergency_scan_after_200ms_silence": "Never suppressed by the risk gate.",
+    "fixed_forecasters": [
+      "radiomap",
+      "frozen_fleet_jepa"
+    ],
+    "handover_seconds": [
+      4.0
+    ],
+    "nested_variants": [
+      "fifo",
+      "latest",
+      "latest_single",
+      "latest_single_sense"
+    ],
+    "not_selected": "Chunked/resumable scanner behavior and extra control radios are not assumed.",
+    "risk": "Skipping observations can create overconfidence or delay discovering better APs. Fresh independent native evaluations must retain all packet, worst-decile, silence, video and bulk gates.",
+    "scan_outage_seconds": 0.09,
+    "skip_only_ordinary_due_scan_when_all": [
+      "control silence is below 200 ms",
+      "current best available observed pilot RSSI is at least -67 dBm, its captured AP matches the association, and refresh age is below the existing 100 ms cadence",
+      "consumed forecast age is at most five seconds and the next five seconds remain within its thirty-second support",
+      "one fixed band stays at or above -67 dBm across the next zero-to-five seconds, using current pilot plus age-aligned forecast increments"
+    ],
+    "suppressed_scan": "Retain due status and reassess ordinary starts after five seconds; the emergency watchdog may override that interval. Only a genuine full scan start clears due/reassessment.",
+    "unknown_or_stale_forecast": "Perform the ordinary due scan.",
+    "whole_scan_preserved": true
+  },
+  "earlier_str_ablation": {
+    "current_study_effect_not_established": true,
+    "duration_seconds": 300.0,
+    "earlier_separate_cohort": true,
+    "mean_command_loss": {
+      "native": 0.00018833333333333332,
+      "native-no_duplication": 0.0001
+    },
+    "mechanism": "The current STR surrogate subtracts 3 dB and halves each link rate; cross-link retries remain a separate mechanism.",
+    "not_paired_with_current_cohorts": true,
+    "observed_relative_reduction_without_duplication": 0.4690265486725663,
+    "scenes": [
+      500,
+      501,
+      502,
+      503,
+      504,
+      505
+    ]
+  },
+  "limits": [
+    "Cause attribution is descriptive and assigns each missed packet to its first highest-priority encountered condition.",
+    "no_radio_up combines scans and handovers; it is not isolated avoidable regret.",
+    "Nominal scan arithmetic is not a measured counterfactual benefit.",
+    "Fast and slow cohorts have different sites and cannot be subtracted as a paired cost effect.",
+    "The old STR ablation is a different study and does not establish a new-controller benefit.",
+    "Zero recorded contention does not establish that real warehouses have no contention.",
+    "No new model/objective, hardware, production, arbitrary-layout or SOTA claim follows."
+  ],
+  "new_forwards": 0,
+  "new_timing": 0,
+  "new_training": 0,
+  "new_worlds": 0,
+  "post_hoc_passive_diagnosis": true,
+  "protected_source_closures": {
+    "costaware_recovery": {
+      "current_and_capsule_bytes_verified": true,
+      "registered_source_files": 422
+    },
+    "jepa_repair": {
+      "current_and_capsule_bytes_verified": true,
+      "registered_source_files": 386
+    },
+    "selected_jepa": {
+      "current_and_capsule_bytes_verified": true,
+      "registered_source_files": 230
+    },
+    "semantic_jepa": {
+      "current_and_capsule_bytes_verified": true,
+      "registered_source_files": 80
+    }
+  },
+  "schema": 1,
+  "scientific_execution_performed": false,
+  "source_arithmetic": {
+    "conclusion": "Every uninterrupted nine-slot ordinary scan contains a complete five-slot control opportunity, unless the episode boundary truncates it; no second usable control path is assumed.",
+    "control_deadline_slots": 5,
+    "control_period_slots": 5,
+    "first_usable_slot_offset": 10,
+    "limits": [
+      "Overlapping handover outages are not additional independent misses.",
+      "Finite episode endpoints and pending commands require separate accounting.",
+      "The no_radio_up attribution combines scanning and handovers."
+    ],
+    "not_a_counterfactual_count": true,
+    "phase_arithmetic": [
+      {
+        "deadline_window_slot_offsets": [
+          1,
+          2,
+          3,
+          4,
+          5
+        ],
+        "entire_window_inside_scan_outage": true,
+        "first_next_generation_offset_slots": 1
+      },
+      {
+        "deadline_window_slot_offsets": [
+          2,
+          3,
+          4,
+          5,
+          6
+        ],
+        "entire_window_inside_scan_outage": true,
+        "first_next_generation_offset_slots": 2
+      },
+      {
+        "deadline_window_slot_offsets": [
+          3,
+          4,
+          5,
+          6,
+          7
+        ],
+        "entire_window_inside_scan_outage": true,
+        "first_next_generation_offset_slots": 3
+      },
+      {
+        "deadline_window_slot_offsets": [
+          4,
+          5,
+          6,
+          7,
+          8
+        ],
+        "entire_window_inside_scan_outage": true,
+        "first_next_generation_offset_slots": 4
+      },
+      {
+        "deadline_window_slot_offsets": [
+          5,
+          6,
+          7,
+          8,
+          9
+        ],
+        "entire_window_inside_scan_outage": true,
+        "first_next_generation_offset_slots": 5
+      }
+    ],
+    "scan_work_seconds": 0.09,
+    "slot_seconds": 0.01,
+    "unavailable_offsets_after_delivered_control": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9
+    ]
+  }
+}

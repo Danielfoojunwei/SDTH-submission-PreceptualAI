@@ -1,0 +1,22 @@
+{
+  "version": 1,
+  "training_sites": [260000,260001,260002,260003,260004,260005,260006,260007,260008,260009,260010,260011,260012,260013,260014,260015,260016,260017,260018,260019,260020,260021,260022,260023],
+  "development_sites": [261000,261001,261002,261003,261004,261005],
+  "primary_sites": [262000,262001,262002,262003,262004,262005],
+  "small_sites": [263000,263001,263002,263003,263004,263005],
+  "stress_sites": [264000,264001,264002,264003,264004,264005],
+  "yard_sites": [265000,265001,265002,265003,265004,265005],
+  "training_seeds": [0,1,2,3,4],
+  "families": ["jepa","regret","no_route","scratch"],
+  "epochs": 12,
+  "training_robots": 8,
+  "training_decisions": 32,
+  "primary_duration_s": 120,
+  "generalisation_duration_s": 60,
+  "survey_s": 60,
+  "history_scans": 6,
+  "train_missions": ["bulk_uploads","scanner_quiet"],
+  "heldout_missions": ["protect_teleop","protect_worst"],
+  "simulation_only": true,
+  "claims_may_fail": true
+}
