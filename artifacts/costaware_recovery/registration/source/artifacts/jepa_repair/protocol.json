@@ -1,0 +1,80 @@
+{
+  "schema": 1,
+  "study": "Prospective JEPA controller and completion-accounting repair",
+  "development_sites": [
+    2123000,
+    2123001
+  ],
+  "confirmation_sites": [
+    2124000,
+    2124001,
+    2124002,
+    2124003,
+    2124004,
+    2124005,
+    2124006,
+    2124007
+  ],
+  "families": [
+    "radiomap",
+    "frozen_fleet_jepa"
+  ],
+  "handover_seconds": [
+    0.03,
+    4.0
+  ],
+  "variants_by_cost": {
+    "0.03": [
+      "legacy",
+      "exact_only",
+      "repair"
+    ],
+    "4.0": [
+      "legacy",
+      "repair"
+    ]
+  },
+  "robots": 100,
+  "duration_seconds": 60,
+  "mission": "bulk_uploads",
+  "scan_period_seconds": 5,
+  "scan_outage_seconds": 0.09,
+  "extra_compute_seconds": 0.5,
+  "horizon_seconds": 30,
+  "new_fits": 0,
+  "bootstrap_replicates": 20000,
+  "bootstrap_seed": 2126000,
+  "primary_upper_quantile": 0.9916666666666667,
+  "primary_comparisons": "repair minus legacy for each family/cost (four), plus repaired frozen JEPA minus repaired RadioMap for each cost (two). Keep six-test budget if a cost is vetoed.",
+  "worst_decile_margin": 0.0008333333333333334,
+  "silence_margin_seconds": 0.05,
+  "video_margin": 0.01,
+  "bulk_ratio": 0.99,
+  "cumulative_metrics_seconds": [
+    15,
+    30,
+    45,
+    60
+  ],
+  "development_severe_regression_absolute": 0.01,
+  "development": "No tuning/selection. Per cost, stop confirmation if either family mean repair-minus-legacy loss exceeds 0.01 absolute (one percentage point), or integrity/paid-cost/consumption checks fail. Recompute from raw archives. Otherwise fixed repair proceeds.",
+  "execution_seed": 2125000,
+  "workers": 2,
+  "thread_limits": {
+    "OPENBLAS_NUM_THREADS": 1,
+    "OMP_NUM_THREADS": 1,
+    "MKL_NUM_THREADS": 1
+  },
+  "execution_order": "Fixed seeded random permutation within each site block; complete that site before next, same two workers. Archive order before first new world.",
+  "source_scope": "Previous semantic/selected results, weights, timing and diagnoses already observed. Registration precedes only NEW development/confirmation. No training. Earlier failed results and unused original reservations unchanged.",
+  "model_choice": "Original frozen three-member FleetJEPA (lowest prior fresh-test point means) and strong RadioMap fixed package comparators. No objective/architecture claim; prior compact negatives retained.",
+  "controller_legacy": "Fast coarse OutageBudgetGate, slow OutageUtility30; reactive_rescue confidence with separate handover_admission applies to planned/reactive moves.",
+  "controller_exact_only": "Fast-only secondary: exact fractional outage integral, same candidate scorer and separate all-handover admission. Not primary candidate or selection option.",
+  "controller_repair": "Exact outage admission as planned roam_gate, no extra handover_admission; unchanged native low-RSSI/8dB-gain recovery can act after planned veto. Slow utility scorer and fast native scorer retained. Whole controller package changes previous intentional all-handover admission. Robot-local 100 ms watchdog after existing200ms control-silence stop threshold uses current pilots and completed local scans, independent of forecast arrival. Existing periodic due scans may start without control delivery after silence; fast emergency moves bypass cadence waiting and clear stale pending targets. All90ms scans and configured handover outages remain paid. Central RF reports still require successful control delivery.",
+  "runtime": "ALL legacy/exact/repair main/fresh arms use SAME completion-safe queue: compute=max(reused sealed profile,predictor elapsed,measured history snapshot/forecast validation/storage/hash issue elapsed); service=compute+0.5s. Never release before actual accounted completion. Old profiles reused without retiming. Startup/loading separate.",
+  "timing_claim_contract": "NEW prospective actual-cost experiment: profile exceedance is reported capacity diagnostic because actual cost is paid. Undercharge/premature consumption/nonfinite/source/causality/offline-replay failure veto experimental benefit. Previous global-overrun veto untouched. Production/hardware qualification always false.",
+  "controller_compute_scope": "Admission/scorer CPU may be recorded but not individually scheduled; shared0.5s scheduling/other-work delay remains an assumption. Actual forecast issue measured. No full-stack real-time/hardware guarantee.",
+  "replays": "First confirmation site all tested arms: recompute forecasts/packets with ORIGINAL main charged schedule as explicit OFFLINE trace replay; exact result/forecast/telemetry/action/decision/admission equality required. Separate fresh measured-cost reruns of same cases provide runtime sensitivity, not extra independent sites, not required bitwise equal. Paid-cost/consumption safety required for every fresh run; offline replay makes no remeasured deadline claim.",
+  "conditions": "Even stationary/odd hidden drift; shared procedural CAD,60-second episodes,conditional60-second warm history,assumed scanning/localization/plans/native PHY curves.",
+  "activation": "Research only; no physical commands/promotion/default/SOTA/EMA-necessity/arbitrary-layout/indefinite guarantee."
+}

@@ -1,0 +1,76 @@
+{
+  "schema": 1,
+  "study": "Prospective cost-aware sustained-link recovery with fixed JEPA",
+  "development_sites": [
+    2133000,
+    2133001
+  ],
+  "confirmation_sites": [
+    2134000,
+    2134001,
+    2134002,
+    2134003,
+    2134004,
+    2134005,
+    2134006,
+    2134007
+  ],
+  "families": [
+    "radiomap",
+    "frozen_fleet_jepa"
+  ],
+  "handover_seconds": [
+    4.0
+  ],
+  "variants_by_cost": {
+    "4.0": [
+      "legacy",
+      "repair"
+    ]
+  },
+  "robots": 100,
+  "duration_seconds": 60,
+  "mission": "bulk_uploads",
+  "scan_period_seconds": 5,
+  "scan_outage_seconds": 0.09,
+  "extra_compute_seconds": 0.5,
+  "horizon_seconds": 30,
+  "new_fits": 0,
+  "bootstrap_replicates": 20000,
+  "bootstrap_seed": 2136000,
+  "primary_upper_quantile": 0.9833333333333333,
+  "primary_comparisons": "Three fixed comparisons: repair minus legacy for each of the two forecast families, and repaired original JEPA minus repaired RadioMap; full three-test budget even if development stops confirmation.",
+  "worst_decile_margin": 0.0008333333333333334,
+  "silence_margin_seconds": 0.05,
+  "video_margin": 0.01,
+  "bulk_ratio": 0.99,
+  "cumulative_metrics_seconds": [
+    15,
+    30,
+    45,
+    60
+  ],
+  "development_severe_regression_absolute": 0.01,
+  "development": "No tuning/selection. Per cost, stop confirmation if either family mean repair-minus-legacy loss exceeds 0.01 absolute (one percentage point), or integrity/paid-cost/consumption checks fail. Recompute from raw archives. Otherwise fixed repair proceeds.",
+  "execution_seed": 2135000,
+  "workers": 2,
+  "thread_limits": {
+    "OPENBLAS_NUM_THREADS": 1,
+    "OMP_NUM_THREADS": 1,
+    "MKL_NUM_THREADS": 1
+  },
+  "execution_order": "Fixed seeded random permutation within each site block; complete that site before next, same two workers. Archive order before first new world.",
+  "source_scope": "Previous aggressive slow-cost development results are already observed and retained. The separate fast confirmation is retained independently. This NEW registration precedes only cost-aware development/confirmation on new sites. No old reserved or vetoed site is reused, no old result or criterion changes, no fitting or retiming.",
+  "model_choice": "Original frozen three-member FleetJEPA (lowest prior fresh-test point means) and strong RadioMap fixed package comparators. No objective/architecture claim; prior compact negatives retained.",
+  "controller_legacy": "Original slow OutageUtility30 scores, reactive_rescue confidence and separate all-handover admission for ordinary planned and reactive actions, with no local watchdog.",
+  "controller_repair": "KEEP original slow ordinary planned/reactive all-handover admission, confidence, cached-neighbor behavior and scores. Add completed fresh-scan observation recovery after the existing200ms silence threshold. Permit a separate local emergency handover only after420PRIMARY-RADIO-AVAILABLE silent slots (existing20stopslots plus configured4s outage), poor current pilot and fresh heard alternative>=8dBbetter. Reset the evidence counter on delivery, association change or known primary handover unavailability; pause during scans. Our own4s outage cannot justify another handover. Pay every90ms scan and4s handover outage; no fast-path bypass of ordinary admission.",
+  "runtime": "ALL legacy/exact/repair main/fresh arms use SAME completion-safe queue: compute=max(reused sealed profile,predictor elapsed,measured history snapshot/forecast validation/storage/hash issue elapsed); service=compute+0.5s. Never release before actual accounted completion. Old profiles reused without retiming. Startup/loading separate.",
+  "timing_claim_contract": "NEW prospective actual-cost experiment: profile exceedance is reported capacity diagnostic because actual cost is paid. Undercharge/premature consumption/nonfinite/source/causality/offline-replay failure veto experimental benefit. Previous global-overrun veto untouched. Production/hardware qualification always false.",
+  "controller_compute_scope": "Admission/scorer CPU may be recorded but not individually scheduled; shared0.5s scheduling/other-work delay remains an assumption. Actual forecast issue measured. No full-stack real-time/hardware guarantee.",
+  "replays": "First new confirmation site allfourtestedarms: explicitOFFLINEoriginalcharged-traceexactreplay with fresh forward computations, plus separatefreshactual-costreplications. Originalpaid-cost provenance and offline/fresh boundary unchanged. Repetitionsaddnoindependentsites.",
+  "conditions": "Even stationary/odd hidden drift; shared procedural CAD,60-second episodes,conditional60-second warm history,assumed scanning/localization/plans/native PHY curves.",
+  "activation": "Research only; no physical commands/promotion/default/SOTA/EMA-necessity/arbitrary-layout/indefinite guarantee.",
+  "minimum_handover_silence_formula": "Available-radio control-silence slots >= SAFETY_GAP_SLOTS + ceil(policy.roam_cost_s/SLOT), i.e.420slots at4s. Reset on successful control delivery or known handover unavailability; pause during scan outage. Our own4s handover is not evidence of a failed current link.",
+  "scan_watchdog_threshold_slots": 20,
+  "design_basis": "Prior development slow JEPA mean5.265833% to10.014167%; RadioMap5.255417% to10.760417%. Removing ordinary all-handover admission reacted to short RF changes despite4s outage. Preserve that admission and require sustained control failure exceeding the outage cost before watchdog handover. Prior hypotheses and negative data remain visible; causal effectiveness requires this new comparison."
+}
