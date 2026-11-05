@@ -1,0 +1,46 @@
+{
+  "schema": 1,
+  "scientific_source_commit": "f8821588456f4ca8873211d8157987f40e6a3928",
+  "registered_source_count": 467,
+  "operational_source_commit": "cc019928864ffa8ebea686b2e02becc302e54c7d",
+  "operational_source_tree": "867d5fca4503d9c3efd8c7a3c9be0cf7dba0d5b3",
+  "wrapper_path": "scripts/run_pilot_fastloop_cached.py",
+  "wrapper_sha256": "b7f9ea6bfa460b7f28164bd4af23202eafd730322bb75c318ebe3dcc70550200",
+  "wrapper_test_source_path": "artifacts/pilot_fastloop/logs/cached-wrapper-fixture.py",
+  "wrapper_test_source_sha256": "1aabf4a8fdca1a6e25d2b01a710dcb93317d3e8a2cc91a76b43c5e0be49c09d9",
+  "wrapper_test_log_path": "artifacts/pilot_fastloop/logs/cached-wrapper-tests.txt",
+  "wrapper_test_log_sha256": "7ecfea79df9bfe7c3c0d2bca7aeca6eccee8bc9564a6164fcf8fc45bdcc59c5c",
+  "wrapper_test_receipt_path": "artifacts/pilot_fastloop/logs/cached-wrapper-preflight.json",
+  "wrapper_test_receipt_sha256": "1cf933b403737e752d3e8d0a9c3a233fbf4d8559060d0d609a2f93d3eac343eb",
+  "resume_supervisor_path": "artifacts/pilot_fastloop/logs/resume-supervisor.py",
+  "resume_supervisor_sha256": "b65e6517622f3b4e67a4764c13d04d9a0f0436e330124ec7a3b3a154064e4e3b",
+  "original_launch_sha256": "2388a3b10e1730eeda1d61e5a4085cb1fad4b8a3077a817dea4d2c29b4fb81ae",
+  "pause_sha256": "343a161a6fab72f299485431cad197b8de2cae9c63f1010c554123ba2b2ef8af",
+  "preservation_sha256": "0acec1b51853d3ffd58697d92c50de7b100b4a2d08e67880f74a82e021cf750b",
+  "module": "wirelessjev.pilot_fastloop.study",
+  "phase_order": [
+    "confirmation",
+    "report"
+  ],
+  "workers": 2,
+  "thread_limits": {
+    "OPENBLAS_NUM_THREADS": "1",
+    "OMP_NUM_THREADS": "1",
+    "MKL_NUM_THREADS": "1"
+  },
+  "source_published_before_resume": true,
+  "recorded_before_resumed_confirmation_unix": 1793843700.7973623,
+  "remote_branch": "codex/jepa-pilot-fastloop",
+  "completed_confirmation_receipts_at_resume": {},
+  "scientific_code_models_controller_criteria_or_seeds_changed": false,
+  "cache_only_verified_development": true,
+  "full_original_raw_bootstrap_once_per_phase": true,
+  "source_and_all_bound_development_bytes_checked_each_reuse": true,
+  "supplemental_tests": {
+    "passed": 50,
+    "warnings": 0,
+    "seconds": 0.52
+  },
+  "amendment_after_development": true,
+  "scope": "Semantics-preserving execution verification cache only; original scientific capsule/experiment order and actual forecast cost accounting remain unchanged."
+}

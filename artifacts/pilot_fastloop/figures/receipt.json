@@ -1,0 +1,268 @@
+{
+  "all_four_primary_supported": false,
+  "audit_flags": {
+    "exact_native_and_matched_replays_verified": true,
+    "independent_fast_local_arithmetic_verified": true,
+    "independent_four_primary_bootstrap_verified": true,
+    "independent_pilot_payload_provenance_verified": true,
+    "no_worlds_models_training_or_timing_executed": true,
+    "report_recomputed": true
+  },
+  "derived_only": true,
+  "independent_sites": 8,
+  "independent_unit": "whole site",
+  "inputs_sha256": {
+    "artifacts/pilot_fastloop/completion.json": "48a9bc1873e20133324a07643eb70072995589522880369c1ab9ac602184f063",
+    "artifacts/pilot_fastloop/development.json": "825001f69af806f4858d6fc7f717035deb538df68b0762491ffa7eefccd9e0e4",
+    "artifacts/pilot_fastloop/execution_order.json": "adddc556aa09e54af7f0f2084255e0b733b0809b5b945701b3ad4d292fb1a27f",
+    "artifacts/pilot_fastloop/protocol.json": "d5825a3ea3f439ec37190566f0dbfc254f55a5302e32e8183b9f1cb0f0be668a",
+    "artifacts/pilot_fastloop/qualification.json": "2b62064f128fc397109461382407853709eb58eef4d644a19d7eb07db2f20803",
+    "artifacts/pilot_fastloop/registration/source.json": "83de0e514d2fb2bb7876f6a25df35a680e2af683b3f20ea08f27bd0454ff47cc",
+    "artifacts/pilot_fastloop/report.json": "9d2c4a9edc175939e342c44d3a56441c96baba9521931253e2541dc296d7cbde",
+    "artifacts/pilot_fastloop/verification/raw_audit.json": "e04d92df885570c4ba34949ad68daa31dce3202cf50b6a9de4b90e18caf89533"
+  },
+  "limits": [
+    "Separate enabling-stack experiment; all earlier recovery failures, nulls and gates are preserved.",
+    "Ordinary outage utility, all-handover admission and the sustained-recovery watchdog remain shared.",
+    "The four arms form a 2x2 factorial; secondary simple effects, balanced main effects and interactions are descriptive only.",
+    "The final package is fixed; descriptive component intervals cannot select or qualify an intermediate arm.",
+    "Whole-scan suppression changes delivered information and paid sensing; equal sensing airtime is not claimed.",
+    "Skipped requests perform no forecast work; sparse source timestamps, not accepted-job ordinals, define forecast age.",
+    "Native accepted-query RF diagnostics cover different schedules; only the separate identical-reference trace supports matched RF inference.",
+    "Matched RF is fully observed, excludes horizon zero and long horizons, and has its own accuracy flag without packet engineering qualification.",
+    "The frozen JEPA and RadioMap packages use different map pipelines/priors; this does not isolate the JEPA objective or prove a map-free architecture.",
+    "Offline fixed-schedule replay is not proof of freshly measured deadlines.",
+    "Fresh live-cost repetitions are sensitivity observations, not extra independent sites.",
+    "Shared procedural CAD, assumed sensing/public routes and fixed weights limit transfer.",
+    "Admission/scorer CPU is not separately scheduled; no complete-stack real-time guarantee.",
+    "Empirical endpoint/tail margins and finite silence do not establish production or indefinite safety."
+  ],
+  "matched_forecast_advantage": true,
+  "new_fitting_or_selection": false,
+  "no_physical_or_production_qualification": true,
+  "outputs_sha256": {
+    "artifacts/pilot_fastloop/figures/pilot-fastloop-packet-factorial.pdf": "8564a2c8fa3b87e81e044859923f95e6e3e0f8bff8a83b63a4a55f5e826e2ab5",
+    "artifacts/pilot_fastloop/figures/pilot-fastloop-packet-factorial.png": "e1569fd9faa497736893389b8db56908364bbacc9a84eedd7c4c1eb6c2c408f7",
+    "artifacts/pilot_fastloop/figures/pilot-fastloop-packet-factorial.svg": "b0ab45b16cff274dc25fa2015e895ff5ac6ec20e1e6d7a66e6a1bd7b6b4d6440",
+    "artifacts/pilot_fastloop/figures/pilot-fastloop-primary-and-rf.pdf": "9662d314feee0f98e41632a627a6110b53adf7b77f1ee1b3410abe4001221516",
+    "artifacts/pilot_fastloop/figures/pilot-fastloop-primary-and-rf.png": "5010b993ebcc69d40bd3fc8bb0f0476d2f4ff982c8370b248ac547401d1b5816",
+    "artifacts/pilot_fastloop/figures/pilot-fastloop-primary-and-rf.svg": "379cc8d6359f26f7913ab41a587a1f4f660b39c6eeda513ff830d0d70edcc64f",
+    "artifacts/pilot_fastloop/figures/pilot-fastloop-resources.pdf": "1091f0e802915d243deb79892460eb2f409774f7d3664a4e33e94b8ea4cd0ba4",
+    "artifacts/pilot_fastloop/figures/pilot-fastloop-resources.png": "74ad9624176b8fafeee71a22e1199e2c4855663c4853c8f8a2e9fe372d9008c7",
+    "artifacts/pilot_fastloop/figures/pilot-fastloop-resources.svg": "110d8857b6c260b9038f52b1eb392e70b8528ae77356c42b01bbb7d304d305d5"
+  },
+  "primary_comparisons": [
+    {
+      "candidate_family": "radiomap",
+      "candidate_variant": "pilot_fast",
+      "contrast_id": "combined_minus_base:radiomap",
+      "descriptive_95_interval": [
+        -0.0001979166666666683,
+        0.0008937499999999991
+      ],
+      "endpoint_passes": false,
+      "endpoint_sensitivity": {
+        "descriptive_95_interval": [
+          -0.00016252604166666957,
+          0.0009270833333333305
+        ],
+        "mean_difference": 0.00037708333333333127,
+        "multiplicity_upper": 0.0010000130208333324,
+        "paired_site_differences": [
+          -0.0009333333333333346,
+          8.333333333332416e-06,
+          0.0008583333333333325,
+          0.0003583333333333355,
+          0.0016083333333333297,
+          6.666666666665932e-05,
+          -0.0002500000000000002,
+          0.0012999999999999956
+        ],
+        "upper_quantile": 0.9875
+      },
+      "engineering_pass": false,
+      "experimental_benefit": false,
+      "handover_seconds": 4.0,
+      "kind": "packet",
+      "mean_difference": 0.00034062499999999935,
+      "multiplicity_upper": 0.000967708333333333,
+      "observed_passes": false,
+      "paired_site_differences": [
+        -0.000941666666666667,
+        -6.666666666666626e-05,
+        0.0008416666666666676,
+        0.0003166666666666665,
+        0.0015833333333333324,
+        0.0,
+        -0.0002750000000000044,
+        0.001266666666666666
+      ],
+      "reference_family": "radiomap",
+      "reference_variant": "base",
+      "statistical_pass": false,
+      "statistical_superiority_claimed": null,
+      "status": "tested",
+      "units": "command loss fraction",
+      "upper_quantile": 0.9875
+    },
+    {
+      "candidate_family": "frozen_fleet_jepa",
+      "candidate_variant": "pilot_fast",
+      "contrast_id": "combined_minus_base:frozen_fleet_jepa",
+      "descriptive_95_interval": [
+        -0.0029520833333333313,
+        0.0009166666666666672
+      ],
+      "endpoint_passes": false,
+      "endpoint_sensitivity": {
+        "descriptive_95_interval": [
+          -0.0028999999999999968,
+          0.0009666666666666656
+        ],
+        "mean_difference": -0.0009499999999999995,
+        "multiplicity_upper": 0.0012291927083333334,
+        "paired_site_differences": [
+          -0.0018583333333333334,
+          0.0027249999999999983,
+          -0.0014916666666666654,
+          0.003124999999999996,
+          -0.002391666666666667,
+          -0.001391666666666666,
+          -9.166666666666351e-05,
+          -0.006224999999999994
+        ],
+        "upper_quantile": 0.9875
+      },
+      "engineering_pass": false,
+      "experimental_benefit": false,
+      "handover_seconds": 4.0,
+      "kind": "packet",
+      "mean_difference": -0.0009979166666666652,
+      "multiplicity_upper": 0.001170950520833341,
+      "observed_passes": false,
+      "paired_site_differences": [
+        -0.0018666666666666658,
+        0.002641666666666667,
+        -0.0015416666666666669,
+        0.003091666666666666,
+        -0.002433333333333336,
+        -0.0014666666666666578,
+        -0.0001166666666666677,
+        -0.006291666666666661
+      ],
+      "reference_family": "frozen_fleet_jepa",
+      "reference_variant": "base",
+      "statistical_pass": false,
+      "statistical_superiority_claimed": null,
+      "status": "tested",
+      "units": "command loss fraction",
+      "upper_quantile": 0.9875
+    },
+    {
+      "candidate_family": "frozen_fleet_jepa",
+      "candidate_variant": "pilot_fast",
+      "contrast_id": "combined_jepa_minus_combined_radiomap",
+      "descriptive_95_interval": [
+        -0.004229166666666666,
+        -0.00043539062500000375
+      ],
+      "endpoint_passes": true,
+      "endpoint_sensitivity": {
+        "descriptive_95_interval": [
+          -0.0041708593750000005,
+          -0.0004000000000000002
+        ],
+        "mean_difference": -0.002019791666666668,
+        "multiplicity_upper": -0.0002802083333333324,
+        "paired_site_differences": [
+          0.00011666666666666423,
+          -0.00116666666666667,
+          0.00016666666666666566,
+          -0.001883333333333334,
+          -0.0008833333333333332,
+          -0.004066666666666677,
+          2.5000000000004186e-05,
+          -0.008466666666666664
+        ],
+        "upper_quantile": 0.9875
+      },
+      "engineering_pass": true,
+      "experimental_benefit": true,
+      "handover_seconds": 4.0,
+      "kind": "packet",
+      "mean_difference": -0.0020677083333333337,
+      "multiplicity_upper": -0.00031666666666666865,
+      "observed_passes": true,
+      "paired_site_differences": [
+        0.00010833333333333181,
+        -0.0012500000000000011,
+        0.00011666666666666423,
+        -0.0019166666666666637,
+        -0.0009250000000000022,
+        -0.0041416666666666685,
+        0.0,
+        -0.00853333333333333
+      ],
+      "reference_family": "radiomap",
+      "reference_variant": "pilot_fast",
+      "statistical_pass": true,
+      "statistical_superiority_claimed": null,
+      "status": "tested",
+      "units": "command loss fraction",
+      "upper_quantile": 0.9875
+    },
+    {
+      "candidate_family": "frozen_fleet_jepa",
+      "candidate_variant": "pilot_fast",
+      "contrast_id": "matched_short_route_delta_rmse:jepa_minus_radiomap",
+      "descriptive_95_interval": [
+        -0.10829831351942812,
+        -0.0441082164299873
+      ],
+      "endpoint_passes": null,
+      "endpoint_sensitivity": null,
+      "engineering_pass": null,
+      "experimental_benefit": false,
+      "fresh_measured_deadline_claim": false,
+      "fully_observed": true,
+      "handover_seconds": 4.0,
+      "independent_sites_added": 0,
+      "kind": "matched_rf",
+      "matched_forecast_advantage": true,
+      "mean_difference": -0.07754580420331128,
+      "metric": "short_route_delta_rmse_db",
+      "multiplicity_upper": -0.03938683402500921,
+      "observed_passes": null,
+      "packet_benefit": false,
+      "paired_site_differences": [
+        -0.05863709307644882,
+        -0.0008704280011446741,
+        -0.1072177472345528,
+        -0.11847127454340534,
+        -0.015116788130009606,
+        -0.11768481091395677,
+        -0.07089947835242194,
+        -0.1314688133745503
+      ],
+      "reference_family": "radiomap",
+      "reference_variant": "pilot_fast",
+      "scope": "Offline paired forecasts on identical RadioMap pilot_fast public history/query trace; route-delta horizons 1..5s only.",
+      "statistical_pass": true,
+      "statistical_superiority_claimed": true,
+      "status": "tested",
+      "units": "dB",
+      "upper_quantile": 0.9875
+    }
+  ],
+  "report_sha256": "9d2c4a9edc175939e342c44d3a56441c96baba9521931253e2541dc296d7cbde",
+  "schema": 1,
+  "scientific_execution": false,
+  "script_sha256": "e22024c00437fa138c91fbee0d99373bfa9dc687d5e9590c7ceb0ae41837c679",
+  "secondary_components_descriptive_only": true,
+  "software": {
+    "matplotlib": "3.11.2",
+    "numpy": "2.5.4",
+    "python": "3.12.14"
+  },
+  "uncertainty": "Four-slot multiplicity; observed AND pending endpoint for packets; matched RF is fully observed."
+}

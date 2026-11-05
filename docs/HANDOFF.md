@@ -1,6 +1,104 @@
 # WirelessJEV research handoff
 
-## Latest: enabling-stack confirmation complete
+## Latest: pilot/fast-loop package and matched forecast confirmation
+
+[PILOT_FASTLOOP_RESULTS.md](PILOT_FASTLOOP_RESULTS.md) and the
+[immutable report](../artifacts/pilot_fastloop/report.json) record all **96 native
+rollouts**: 16 development, 64 confirmation, eight exact recorded-schedule
+replays and eight fresh measured-cost repetitions. Each uses 100 simulated
+robots for 60 seconds after a 60-second warm history, with assumed four-second
+handovers. The **22 matched offline forecast streams** are four development,
+16 confirmation and two exact replays; they add no independent sites or packet
+trials. Confirmation inference uses eight whole procedural sites sharing CAD.
+
+The fixed 2x2 design crosses positive pilot reporting with capture-aligned
+100 ms local forecast feedback. Command loss across all four arms is:
+
+| Forecaster | Base | Pilot | Fast | Pilot + fast |
+|---|---:|---:|---:|---:|
+| RadioMap | 4.767292% | 4.796667% | 4.771250% | 4.801354% |
+| Frozen FleetJEPA | 4.694375% | 4.591146% | 4.696667% | 4.594583% |
+
+Four fixed primary tests retain the full **0.9875 one-sided upper quantile**,
+using 20,000 paired whole-site bootstrap resamples. Their outcomes are mixed:
+
+- **Combined JEPA versus combined RadioMap passes the simulation benefit
+  gate:** 44,108 versus 46,093 misses per 960,000 commands, or **1,985 fewer**.
+  The loss difference is **−0.206771 percentage points**, with adjusted observed
+  and conservative pending-command upper bounds of −0.031667 and −0.028021
+  points. All relative worst-decile, silence, video and bulk gates pass.
+  Bulk is 462.028 versus 464.694 Mbps (−0.574%), within the 1% allowance;
+  zero deterioration still fails. Maximum silence is 8.34 versus 8.36 seconds.
+- **Combined versus base fails for both families.** RadioMap's mean difference
+  is +0.0340625 points and its worst-decile gate fails. JEPA's mean difference
+  is −0.0997917 points, but its statistical bounds, worst-decile and silence
+  gates fail; silence rises 8.24 → 8.34 seconds. The cross-model result does
+  not establish that the interventions improve either model. All 14 factorial
+  contrasts remain descriptive; no pilot-only or fast-only winner is promoted.
+- **Matched short-route-delta RF accuracy passes separately:** RadioMap
+  **2.318698 dB** versus JEPA **2.241152 dB**, with JEPA lower on all eight sites.
+  The difference is −0.077546 dB and its adjusted upper bound is −0.039387 dB.
+  This uses identical public histories/queries and source horizons 1–5 only.
+  Descriptive AP-choice regret worsens, 0.428087 → 0.477916 dB; better temporal
+  RF prediction is not a general ranking or production-control guarantee.
+
+Eight native and two matched offline replays are exact. All eight fresh
+repetitions pass actual-paid-cost checks; seven packet results are identical,
+while RadioMap base differs by two misses. Repetitions add no independent sites
+and offline replay supplies no fresh deadline claim. The report's source,
+causality, actual-paid-cost and exact-replay proofs pass. The independent
+[raw audit](../artifacts/pilot_fastloop/verification/raw_audit.json) now passes
+across **all 96 native rollouts and 22 matched streams**. The
+[passive auditor](../scripts/audit_pilot_fastloop.py) reconstructs the original
+development gate uncached and independently reconciles all four primary
+bootstraps, engineering gates and the report, including pilot provenance,
+fast-control arithmetic, consumed source/admission sequences and exact replays.
+It runs no worlds, models, training or timing measurements.
+
+The [final verifier](../scripts/verify_pilot_fastloop.py) binds scientific
+source, current documents and evidence. Its passive check command is:
+
+    uv run --frozen python scripts/verify_pilot_fastloop.py
+
+Neural weights are fixed; causal map fits and memory updates continue. Positive
+partial pilots use existing modeled observations inside the charged control
+exchange; their masks/density are outside the frozen model's training
+distribution. The hybrid and strong RadioMap use different map pipelines and
+priors: these are whole-package contrasts, not JEPA-objective necessity.
+Capture-aligned increments address a clock mismatch; they do not establish
+zero forecast error, zero accumulated loss or physical stability. Helper CPU
+and zero intra-AP band-switch cost retain their stated simulation assumptions.
+
+JEPA uses more measured forecast work in the combined arm: summed elapsed work
+averages **12.870 s/trial versus 4.577 s for RadioMap (about 2.81x)**, despite
+29 versus 57 accepted jobs. These are elapsed-time sums, not CPU utilization.
+The largest individual helper wall times across main confirmation cases are
+**7.983 s**
+(JEPA fast-only, site 2154004) and **5.579 s** for JEPA combined (site 2154002).
+Scheduling or garbage collection may contribute. Helpers are not independently
+scheduled or paid in the simulation, so a **100 ms simulated tick is not
+real-time execution proof**. No production qualification follows.
+
+Scientific source **f8821588456f4ca8873211d8157987f40e6a3928** seals **467
+source/input files**, recorded in the
+[source registration](../artifacts/pilot_fastloop/registration/source.json).
+The unchanged [core preflight](../artifacts/pilot_fastloop/logs/preflight-tests.txt)
+passed **1,861 tests, one expected warning**; **50 separate temporary fixtures** check the operational
+cache. The execution-only amendments **cc0199 / 8a01** were published after
+development and before any completed confirmation case. Only the original
+fully verified development gate is cached; every reuse checks the original
+source guard plus all bound file bytes/membership. The independent raw auditor
+uses uncached reconstruction. No criterion, model, controller or paid schedule
+was changed by that amendment.
+
+Draft [PR #22](https://github.com/Danielfoojunwei/SDTH-submission-PreceptualAI/pull/22)
+is stacked on #21, **not merged into main**. RadioMap remains the application
+default. No physical or production qualification, transfer across arbitrary
+layouts, indefinite safety, SOTA or architectural novelty is established. Earlier
+cohorts below remain separate historical evidence; their means cannot be
+subtracted from this cohort as paired effects.
+
+## Previous: enabling-stack confirmation complete
 
 [FRESHNESS_STACK_RESULTS.md](FRESHNESS_STACK_RESULTS.md) records all
 16 development and 64 confirmation cases, eight exact offline replays and

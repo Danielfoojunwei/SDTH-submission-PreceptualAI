@@ -1,0 +1,20 @@
+{
+  "scientific_source_commit": "f8821588456f4ca8873211d8157987f40e6a3928",
+  "operational_source_commit": "cc019928864ffa8ebea686b2e02becc302e54c7d",
+  "operational_resume_sha256": "10f15f62705e35c10e25c519026cc50cfa01ba30a24787e09789c8732e1c88e5",
+  "wrapper_path": "scripts/run_pilot_fastloop_cached.py",
+  "wrapper_sha256": "b7f9ea6bfa460b7f28164bd4af23202eafd730322bb75c318ebe3dcc70550200",
+  "module": "wirelessjev.pilot_fastloop.study",
+  "phase_order": [
+    "confirmation",
+    "report"
+  ],
+  "workers": 2,
+  "thread_limits": {
+    "OPENBLAS_NUM_THREADS": "1",
+    "OMP_NUM_THREADS": "1",
+    "MKL_NUM_THREADS": "1"
+  },
+  "recorded_before_first_resumed_phase_unix": 1793843728.7056549,
+  "resume_supervisor_sha256": "b65e6517622f3b4e67a4764c13d04d9a0f0436e330124ec7a3b3a154064e4e3b"
+}
