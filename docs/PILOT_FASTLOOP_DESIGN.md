@@ -92,3 +92,24 @@ Three-band pilots, public position/plans and free intra-AP band changes remain
 simulator assumptions. Local arithmetic is timed but not independently scheduled.
 This study cannot establish hardware readiness, novel architecture, universal
 advantage, lower inference cost or production safety.
+
+## Execution verification cache
+
+The 467-file scientific capsule, models, controller, protocol and tests remain
+unchanged. After development passed, repeated full development verification
+became an execution bottleneck. The original runner was paused before any
+confirmation case completed; its logs and the empty confirmation-receipt list
+are retained in `logs/operational-pause.json`.
+
+An additional, separately published runner caches that deterministic gate only
+after the original complete verification succeeds. It compares every bound
+development input and file membership before and after bootstrap. Every reuse
+still checks the original scientific sources and all bound artifact bytes;
+changes fail closed. Each caller receives an isolated copy of the gate. The
+runner records bootstrap and reuse provenance, and preserves the two-worker
+order and actual forecast-cost accounting. It changes orchestration overhead,
+not the forecasting algorithm or its claimed inference cost. Final passive
+verification recomputes the raw scientific evidence without this cache.
+
+This execution amendment was introduced after development and is recorded
+separately from the original preregistration.

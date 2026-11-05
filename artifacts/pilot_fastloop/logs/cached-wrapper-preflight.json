@@ -1,0 +1,34 @@
+{
+  "after_sha256": {
+    "fixture_source": "1aabf4a8fdca1a6e25d2b01a710dcb93317d3e8a2cc91a76b43c5e0be49c09d9",
+    "scripts/run_pilot_fastloop_cached.py": "b7f9ea6bfa460b7f28164bd4af23202eafd730322bb75c318ebe3dcc70550200"
+  },
+  "before_sha256": {
+    "fixture_source": "1aabf4a8fdca1a6e25d2b01a710dcb93317d3e8a2cc91a76b43c5e0be49c09d9",
+    "scripts/run_pilot_fastloop_cached.py": "b7f9ea6bfa460b7f28164bd4af23202eafd730322bb75c318ebe3dcc70550200"
+  },
+  "command": [
+    "uv",
+    "run",
+    "--frozen",
+    "pytest",
+    "-q",
+    "/tmp/test_pilot_cached_wrapper.py"
+  ],
+  "fixture_path": "artifacts/pilot_fastloop/logs/cached-wrapper-fixture.py",
+  "fixture_scope": "Temporary file-byte/arithmetic/fork fixtures only; no original scientific common/bootstrap or reserved data/models invoked.",
+  "fixture_sha256": "1aabf4a8fdca1a6e25d2b01a710dcb93317d3e8a2cc91a76b43c5e0be49c09d9",
+  "new_worlds_models_or_training": false,
+  "registered_scientific_source_changed": false,
+  "schema": 1,
+  "test_log_path": "artifacts/pilot_fastloop/logs/cached-wrapper-tests.txt",
+  "test_log_sha256": "7ecfea79df9bfe7c3c0d2bca7aeca6eccee8bc9564a6164fcf8fc45bdcc59c5c",
+  "tests": {
+    "passed": 50,
+    "seconds": 0.52,
+    "warnings": 0
+  },
+  "unchanged": true,
+  "wrapper_path": "scripts/run_pilot_fastloop_cached.py",
+  "wrapper_sha256": "b7f9ea6bfa460b7f28164bd4af23202eafd730322bb75c318ebe3dcc70550200"
+}
