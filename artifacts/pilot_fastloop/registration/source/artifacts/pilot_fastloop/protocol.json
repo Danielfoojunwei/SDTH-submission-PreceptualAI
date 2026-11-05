@@ -1,0 +1,103 @@
+{
+  "schema": 1,
+  "study": "Positive pilot assimilation and forecast-aware local control with fixed JEPA",
+  "development_sites": [
+    2153000,
+    2153001
+  ],
+  "confirmation_sites": [
+    2154000,
+    2154001,
+    2154002,
+    2154003,
+    2154004,
+    2154005,
+    2154006,
+    2154007
+  ],
+  "families": [
+    "radiomap",
+    "frozen_fleet_jepa"
+  ],
+  "handover_seconds": [
+    4
+  ],
+  "variants_by_cost": {
+    "4.0": [
+      "base",
+      "pilot",
+      "fast",
+      "pilot_fast"
+    ]
+  },
+  "variants": {
+    "base": {
+      "pilot_reporting": false,
+      "fast_local": false
+    },
+    "pilot": {
+      "pilot_reporting": true,
+      "fast_local": false
+    },
+    "fast": {
+      "pilot_reporting": false,
+      "fast_local": true
+    },
+    "pilot_fast": {
+      "pilot_reporting": true,
+      "fast_local": true
+    }
+  },
+  "robots": 100,
+  "duration_seconds": 60,
+  "mission": "bulk_uploads",
+  "scan_period_seconds": 5,
+  "scan_outage_seconds": 0.09,
+  "extra_compute_seconds": 0.5,
+  "horizon_seconds": 30,
+  "new_fits": 0,
+  "bootstrap_replicates": 20000,
+  "bootstrap_seed": 2156000,
+  "matched_bootstrap_seed": 2157000,
+  "primary_upper_quantile": 0.9875,
+  "primary_multiplicity_budget": 4,
+  "primary_comparisons": "Four fixed tests: combined pilot_fast minus base within each family; combined JEPA minus combined RadioMap on packet loss; matched offline JEPA minus RadioMap short-route-delta RMSE. Full four-test budget even if development stops confirmation.",
+  "matched_primary_metric": "Mean across eight sites of per-site RMSE of (forecast[h]-forecast[0])-(clean native mean-field SNR[h]-SNR[0]), using source horizons1..5 only, all60 source decisions/allrobots/APs/bands. Same public histories and public planned queries for both frozen forecaster packages. Labels follow the reference native realized trajectory. Fully observed RF endpoint has no packet pending/engineering gate; no packet/latency claim.",
+  "secondary_comparisons": "Four simple effects, two balanced main effects and one interaction per family (14 total true2x2 paired-site contrasts), all descriptive95% intervals only; no intermediate selection, primary promotion or uncorrected superiority claims. Other matched RF metrics and measured work are descriptive.",
+  "worst_decile_margin": 0.0008333333333333334,
+  "silence_margin_seconds": 0.05,
+  "video_margin": 0.01,
+  "bulk_ratio": 0.99,
+  "cumulative_metrics_seconds": [
+    15,
+    30,
+    45,
+    60
+  ],
+  "development_severe_regression_absolute": 0.01,
+  "development": "Run all16 native development and4 matched development sequences. No tuning/selection. Stop all confirmation if either pilot_fast-minus-base family mean loss exceeds0.01 absolute (one percentage point) or ANY native/matched integrity/causality/actual-paid/source/input check fails. Matched accuracy outcomes do not select a winner or tune the packet candidate.",
+  "execution_seed": 2155000,
+  "workers": 2,
+  "thread_limits": {
+    "OPENBLAS_NUM_THREADS": "1",
+    "OMP_NUM_THREADS": "1",
+    "MKL_NUM_THREADS": "1"
+  },
+  "execution_order": "Capture fixed seeded permutation within site blocks before first newWorld. Two workers; complete each site block before next. Matched groups run separately from all native measured-cost groups.",
+  "source_scope": "All preceding results and the post-hoc advantage diagnosis are already observed. This registration precedes only new2153/2154 outcomes, public-cache capture and matched forward sequences. Earlier source, outcomes, criteria and timing vetoes remain intact.",
+  "model_choice": "Original fixed three-member FleetJEPA hybrid and strong RadioMap. Neural weights unchanged; normal causal map refits/memory updates continue. The hybrid uses its original map-fitting pipeline, not the identical strong numerical prior; matched results concern whole forecaster packages, not JEPA-objective necessity, map-free inference or intrinsically lower compute.",
+  "base_stack": "ALL arms retain previous freshness_stack final: latest busy-server forecast admission, STR simultaneous duplication OFF with sequential retries, conditional full90ms scans, ordinary outage-utility/handover admission and420available-slot watchdog with paid4s moves. Same original sealed allowances and serialized0.5s extra; no queue retuning/discount.",
+  "pilot_encoding": "Positive-only pilot payload struct '<BBHHQQffB3f' is43 application bytes:version/type,robot/AP,capture/refreshslots,XYfloat32,heardmask,threefloat32RSSIs. Model history uses decoded values. Only detectable attached bands are heard; scanned=False,bound=0; all other/unheard links remain unknown, not censored.",
+  "pilot_causality": "Cache only existing available100ms pilot refresh values and public capture pose; no newtrue_snr/rssi read or receiver draw. Require currentAP/captureassociation match, capture>=associationepochstart andcapture>latestprimary-unavailable slot, refreshage<10slots/captureage<20slots. Prepare immutable scan-or-pilot payload BEFOREcontrol delivery draw, commit only on actual successful exchange; firstusabledecision=floor(deliveryslot/100)+1.",
+  "pilot_transport": "Same modeled128-byte reservation inside already charged600-byte control exchange. Legacy full scans occupy128reservedbytes (not claimed newly serialized on-air packets); otherwise pilot43<=128. At mostONEsuccessfullydeliveredpilot perrobot/delivery-second; failed exchange attempts mayretry. Record prepared/attempted/deliveredbytes separately. Fullscan wins frame andhistorybin; laterfullscan replacesENTIREpilotrow, nevermergescaptures; pilotneveroverwritesfullscan. No added control airtime discount or real-NIC capability claim.",
+  "pilot_distribution": "Positive partial heard=True/scanned=False is compatible with current frozen FleetJEPA data path but out-of-training-distribution. Not every JEPA architecture accepts this mask. Association/control-success selection bias remains; no false per-link non-detection labels.",
+  "fast_local": "At existing100ms pilot ticks and newforecast arrivals(deduplicated), re-evaluate cached LASTCONSUMEDcurrent-AP forecast at ACTUALsourceage and pilotCAPTUREage. near[h]=measuredpilot+f(now_age+h)-f(capture_age); currentMCS innovation=f(now_age)-f(capture_age), passed through native delta/0.1 consumer. Require source-supported nonnegative captureage, else myopic. argmax_band(min_future SNR) over now-relative0..5 endpoints/nativequerypoints plusinterpolationknotcorners, preservingcontinuouspiecewise-linear forecastminimum. No new model/RF calls. APscores/admission/handover/bulkdeferral remainarrival-only; existing100msMCS/bulkband/reflex retained. Log source operands/capture/current/correction and actual band choices.",
+  "fast_fallback": "Require association/capture/availability guards. Validpilot butmissing/stale(age>5s)/unsupportedforecast(age+5>30s) => declaredmyopicband andzero innovation. Invalidpilot=>hold previousband/zero innovation even afterexistingreflex. New-mode arrival assignments use SAMEguard, preventing same-slot roamoldAPalias. Record predictive/myopic/holdupdates,actualbandchanges andhelperelapsedwork.",
+  "compute_scope": "All accepted native main/fresh forecasts pay max(original sealedallowance,measuredpredictor,measuredfullissuepath)+0.5s. More pilot data/mapfitwork is actuallytimed andpaid. Profileexceedance diagnostic onlywhenfullypaid; undercharge/earlyconsumption/source/causal failure veto claims. Fasthelper arithmetic measured but not independentlyscheduled, as with baselinecontrol; commonextra remainsassumed. Intra-AP bandswitch zero-cost assumption remainsvisible; no full-stack realtime proof.",
+  "matched_reference": "Reference public trace is radioMap pilot_fast case on eachsite, fixed beforedata. Save actual final delivered history andpublic queryplans/geometry afternative rollout inPUBLICcache, cleanfuturelabels inSEPARATEcache. Bothmodels perform all60 integer-source queries onidenticalstrictlypast prefixes. Load labels onlyAFTERall model outputs/hashes. Never regenerateaWorld orchoosebesttraceafteroutcomes. Save fullmeanpredictions/hash/stdhashes/timings forpassiveaudit.",
+  "matched_counts": "Fourdevelopment sequences(2sitesx2models),sixteenconditionalconfirmation sequences(8x2),twoexactmatchedreplaysequences(firstconfirm2models). These are OFFLINEforecasting sequences oncachednative inputs, notnewpacket trials/sites or freshdeadlineclaims.",
+  "phase_order": "Developmentnative16 thenmatched4 thenseal. Confirmationnative64 thenoffline8 thenfresh-cost8 thenmatched16 thenmatchedexactreplay2 thenreport. No concurrent matched work while native timing is measured.",
+  "replays": "Firstconfirm all8nativearms exactOFFLINE originaljobs+arrivals+paid schedules withfreshforwardrecomputation, plus8separatefreshactual-cost repetitions. Matched2replays compareactualpredictionarrays/stdhashes/sourcecache againstoriginal matched streams, freshtimingsdiagnostic. No independent sites added.",
+  "conditions": "Shared procedural CAD,100simulatedrobots,60s episodes afterconditional60s warm history, alternatingstationary/drift bysiteparity,assumedGPS/plans/scanning andexistinglagged3bandpilots. No newhardware measurements. Finitewarm episodes donotprove steady-state sensing orproduction.",
+  "activation": "No defaultactivation,physical/production,arbitrary-layout,indefinitesafety,SOTA,novelty,EMA-necessity or universalJEPAadvantageclaim."
+}
