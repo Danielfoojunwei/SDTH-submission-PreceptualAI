@@ -5,7 +5,26 @@ Current experiment status and restart prerequisites are in [docs/HANDOFF.md](doc
 The restored didjital R6.1 reference and its executed software checks are
 documented in [docs/R6_COMPATIBILITY.md](docs/R6_COMPATIBILITY.md).
 
-The [JEPA enabling-stack study](docs/FRESHNESS_STACK_RESULTS.md) completes
+The [pilot/local-control study](docs/PILOT_FASTLOOP_RESULTS.md) completes
+**96 native executions and 22 matched offline forecast sequences**. On eight
+reserved 100-robot simulated sites, the preselected combined JEPA package has
+**44,108 versus 46,093 missed commands** for equally augmented RadioMap:
+**4.594583% versus 4.801354% loss**, or **4.31% fewer misses**. Registered
+observed/pending bounds and relative engineering gates pass. On identical
+forecast inputs, JEPA's 1–5 s route-change RMSE is **2.241 versus 2.319 dB**,
+**3.34% lower**, with a separate four-test-adjusted accuracy pass.
+
+**Both combined-versus-base comparisons fail qualification.** Component means
+do not establish that the pilot/fast interventions improve either model;
+JEPA's own comparison fails worst-decile and silence margins. Matched AP-ranking
+regret also worsens. JEPA uses about **2.81× more summed forecast work**, and
+local-helper wall-time outliers prevent a real-time claim. The
+[raw audit](artifacts/pilot_fastloop/verification/raw_audit.json) reproduces all
+runs, replays, metrics and gates. Neural weights stay fixed; causal map fitting
+continues. **1,861 core tests and 50 separate guard-cache fixtures pass.**
+RadioMap remains the default; hardware validation is still pending.
+
+The preceding [JEPA enabling-stack study](docs/FRESHNESS_STACK_RESULTS.md) completes
 **80 main evaluations, eight offline replays and eight fresh-cost repetitions**,
 each with 100 simulated robots. With neural weights fixed, JEPA command loss
 falls **4.7452% → 3.8100%**: **8,978 fewer misses, a 19.71% relative reduction**.
@@ -21,7 +40,7 @@ after radio-resource and sensing changes. Performed scans still cost 90 ms;
 the final stage performs about 53% fewer. JEPA maximum silence **8.35 → 8.37 s**
 passes the declared 50 ms allowance while failing zero deterioration.
 
-**1,489 software tests pass**, with one expected warning. The
+That study's preflight has **1,489 passing software tests**, with one expected warning. The
 [independent verifier](scripts/verify_freshness_stack.py) reproduces the
 published 446-file source and raw evidence. RadioMap remains the application
 default. These finite simulations establish no physical, production,
