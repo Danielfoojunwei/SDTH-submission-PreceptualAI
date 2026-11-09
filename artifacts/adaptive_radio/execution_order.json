@@ -1,0 +1,70 @@
+{
+  "fits": [
+    [
+      "joint",
+      0
+    ],
+    [
+      "joint",
+      1
+    ],
+    [
+      "joint",
+      2
+    ],
+    [
+      "regression",
+      0
+    ],
+    [
+      "regression",
+      1
+    ],
+    [
+      "regression",
+      2
+    ],
+    [
+      "rf_erased",
+      0
+    ],
+    [
+      "rf_erased",
+      1
+    ],
+    [
+      "rf_erased",
+      2
+    ],
+    [
+      "pure_geometry",
+      0
+    ],
+    [
+      "pure_geometry",
+      1
+    ],
+    [
+      "pure_geometry",
+      2
+    ]
+  ],
+  "no_automatic_followon_tuning": true,
+  "phases": [
+    "register_and_publish_source",
+    "collect_TRAIN_VAL",
+    "prepare_training",
+    "fit12",
+    "VAL_branch_selection",
+    "fit_TRAIN_classical_priors",
+    "collect_DEV",
+    "evaluate_DEV_full_sparse_stale",
+    "practical_development_gate",
+    "conditional_collect_TEST24x3",
+    "conditional_evaluate_TEST_full_sparse_stale",
+    "final_uncached_gate",
+    "passive_numerical_audit",
+    "byte_closure"
+  ],
+  "schema": 1
+}

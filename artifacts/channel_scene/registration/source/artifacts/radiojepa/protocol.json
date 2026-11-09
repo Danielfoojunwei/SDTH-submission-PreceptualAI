@@ -1,0 +1,114 @@
+{
+  "activation": {
+    "hardware_qualified": false,
+    "learned_heads_qualified": false,
+    "main_merge": false,
+    "production_qualified": false,
+    "radiomap_default": true
+  },
+  "alignment_weight": 0.1,
+  "analysis_scope": "Descriptive pilot with one constructed factory split and two whole held-out recordings; frames/tones/seeds are not24independent sites. No adjusted service superiority or global SOTA claim.",
+  "anti_collapse_scope": "Rank alone is not sufficiency. Evaluate pooledz, RFtokens andpowerbypass separately. Constantprojector protected by regularizing aligned coordinates; renderer alone is not assumed to prevent collapse.",
+  "architecture": "Shared receiver-set attention with RF-to-query association; pooled48D z + receiver tokens + separate measured power coordinate; independent projector; no EMA/future-window/map residual. Physical relative-delay basis renderer vs direct decoder.",
+  "auxiliary_fits": "Eighteen frozen linear XYprobes, two RF ridge directions and one rawRF XYridge; four fixed validationalpha choices each; not additional independent sites.",
+  "baselines": {
+    "constant": "FactoryTRAINperantenna/frequencytemplate; whole-domainglobalfrequencytemplate",
+    "probe": "Frozen z_A linear XY probe; TRAINlabels onlyfit, validationalpha, TESTlabels evaluation. Also rawvisibleRF->XYridge.",
+    "ridge_alphas": [
+      0.1,
+      1.0,
+      10.0,
+      100.0
+    ],
+    "ridge_selection": "ValidationRF MSE, train-only normalization"
+  },
+  "batch_size": 32,
+  "bins": 64,
+  "cells": [
+    "joint_none",
+    "joint_sigreg",
+    "joint_vicreg",
+    "temporal_sigreg",
+    "regression_sigreg",
+    "unstructured_sigreg"
+  ],
+  "checkpoint": "Minimum spatial validation bidirectional RF RMSE; earliest epoch ties; identical across cells/seeds. No test choice or refit after test.",
+  "eligibility": "Every selected encoder/target power bin must be measured-positive and above numeric -120dB floor; report rejected rows. Zeros are not invented negative RF measurements.",
+  "epochs": 40,
+  "heldout_recordings": [
+    "dichasus-ad00",
+    "dichasus-dc01"
+  ],
+  "ineligible_cross_array_recordings": [
+    "dichasus-0152"
+  ],
+  "interventions": [
+    "z_zero",
+    "tokens_zero",
+    "power_zero",
+    "all_zero",
+    "all_shuffle"
+  ],
+  "learning_rate": 0.0007,
+  "loss": "Common bidirectional observed log-power Huber(delta3dB); alignmentWeight.1 only JEPA cells. PriorWeight.01 average of same prior applied to backbone z and aligned projector. Matched regression removes alignment only.",
+  "measurements": [
+    "RF_RMSE",
+    "RF_MAE",
+    "worst_decile_record_RMSE",
+    "frozen_XY_probe_error",
+    "backbone_and_projector_rank",
+    "mutual_knn_alignment",
+    "latent_token_power_interventions",
+    "parameter_count",
+    "measured_offline_forward_timing"
+  ],
+  "new_fits": 18,
+  "new_neural_backbones": 18,
+  "observations": "FFTshift actual complexCSI; contiguous16-tone LINEARpower average then log10 to64 bins. Referenced-channel dB is not dBm/SNR; receiver ARRAYCENTERS are not per-element aperture geometry. Physical antennas are grouped by actual array metadata; mean LINEAR power over array members before log; query geometry is ARRAYCENTER. Endpoint is array power, not per-element complex CSI or angle recovery.",
+  "old_completed_evidence_unchanged": true,
+  "paths": 16,
+  "planner_scope": "Exact RadioMapAdapterparity+typeddepth1boundedproposals; sameindependentgate; learnedheadsunqualified; unsupportedactionsreject.",
+  "ppr_status": "ineligible_power_only_factors_not_identified; analytic prior tests only",
+  "prior_weight": 0.01,
+  "rt_track": {
+    "bands_hz": [
+      2400000000.0,
+      5200000000.0,
+      6000000000.0
+    ],
+    "development_layouts": 2,
+    "heldout_profile_in_training": false,
+    "reserved_confirmation_layouts": 24,
+    "reserved_confirmation_open": false,
+    "scope": "Actual Sionna RT solves with simulateddevice frontends; not real device readings or closed-loop packet trials.",
+    "training_layouts": 8,
+    "training_profiles": 3,
+    "validation_layouts": 2
+  },
+  "schema": 1,
+  "sigreg_slices": 64,
+  "source_publication_required_before_model_fits_and_official_RT": true,
+  "split": {
+    "common_train": 519,
+    "excluded_spatial": 178,
+    "rule": "Y60/80quantiles,.25mguard; pose only for indexing/probe, never encoder input",
+    "source_train": 561,
+    "test": 155,
+    "unused_train_without_temporal_partner": 42,
+    "validation": 130
+  },
+  "status": "pretraining protocol; no service qualification",
+  "study": "SCENE-JEPA measured simultaneous-array power pilot and physical-view infrastructure",
+  "temporal_gap_seconds": 2.0,
+  "temporal_scope": "Different-time auxiliary baseline, not asserted beyond coherence for every sample. Common measurement prediction task remains simultaneous.",
+  "training_recording": "dichasus-cf06",
+  "training_scope": "First1024 real factory records; constructed pose-blocked split, not the official DICHASUS benchmark. Same519 chronological-pair-eligible source frames for every cell; paired targets remain inside spatial TRAIN.",
+  "training_seeds": [
+    0,
+    1,
+    2
+  ],
+  "weight_decay": 0.0002,
+  "width": 48,
+  "workers": 2
+}
