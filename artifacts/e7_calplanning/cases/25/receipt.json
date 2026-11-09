@@ -1,0 +1,381 @@
+{
+  "belief_searches": 30,
+  "default_changed": false,
+  "elapsed_seconds": 256.2767090720008,
+  "fit_records": [
+    {
+      "budget": 1,
+      "elapsed_seconds": 0.4030888160050381,
+      "kind": "corrected_v2"
+    },
+    {
+      "budget": 1,
+      "elapsed_seconds": 0.46742077299859375,
+      "kind": "geometry_censored"
+    },
+    {
+      "budget": 5,
+      "elapsed_seconds": 1.3688087710179389,
+      "kind": "corrected_v2"
+    },
+    {
+      "budget": 5,
+      "elapsed_seconds": 1.2489343549823388,
+      "kind": "geometry_censored"
+    },
+    {
+      "budget": 15,
+      "elapsed_seconds": 3.857699023996247,
+      "kind": "corrected_v2"
+    },
+    {
+      "budget": 15,
+      "elapsed_seconds": 3.75239100100589,
+      "kind": "geometry_censored"
+    }
+  ],
+  "fits": 6,
+  "map_error": {
+    "1/corrected_v2": {
+      "all": 12.09426451866919,
+      "audible": 4.671072428945787,
+      "inaudible": 16.836849600403056
+    },
+    "1/geometry_censored": {
+      "all": 11.090841010754922,
+      "audible": 4.794541684741538,
+      "inaudible": 15.27342497129684
+    },
+    "15/corrected_v2": {
+      "all": 11.014665120909925,
+      "audible": 5.352328206843131,
+      "inaudible": 14.949822921708769
+    },
+    "15/geometry_censored": {
+      "all": 10.80117747038977,
+      "audible": 5.4162482443363364,
+      "inaudible": 14.59267387262257
+    },
+    "5/corrected_v2": {
+      "all": 10.804193318606055,
+      "audible": 5.279699841623669,
+      "inaudible": 14.652417510521103
+    },
+    "5/geometry_censored": {
+      "all": 10.284002770626968,
+      "audible": 5.414138383763286,
+      "inaudible": 13.78565130099019
+    }
+  },
+  "new_packet_simulations": 0,
+  "no_fresh_confirmation_claim": true,
+  "original_SERVICE_holdouts_opened": false,
+  "paired_rows": [
+    {
+      "budget": 1,
+      "candidate_minus_v2": -0.043140378167751514,
+      "candidate_signed_gap": 0.26107294729040165,
+      "corrected_v2": 3.8205238155899335,
+      "geometry_censored": 3.777383437422182,
+      "legacy": 0.5498520528709833,
+      "mission": "teleop_assist",
+      "truth_search_reference": 4.038456384712584,
+      "v2_signed_gap": 0.21793256912265013
+    },
+    {
+      "budget": 1,
+      "candidate_minus_v2": 0.08506297679896635,
+      "candidate_signed_gap": 0.20373720374886317,
+      "corrected_v2": -0.8893562950234774,
+      "geometry_censored": -0.804293318224511,
+      "legacy": -1.3807379849370658,
+      "mission": "peak_picking",
+      "truth_search_reference": -0.6005561144756478,
+      "v2_signed_gap": 0.2888001805478295
+    },
+    {
+      "budget": 1,
+      "candidate_minus_v2": 0.06959015664063073,
+      "candidate_signed_gap": 0.3653906205744333,
+      "corrected_v2": 1.9501540052489978,
+      "geometry_censored": 2.0197441618896286,
+      "legacy": 0.7621358217370654,
+      "mission": "map_rollout",
+      "truth_search_reference": 2.385134782464062,
+      "v2_signed_gap": 0.434980777215064
+    },
+    {
+      "budget": 1,
+      "candidate_minus_v2": 0.0169814837104445,
+      "candidate_signed_gap": 0.5184257169506741,
+      "corrected_v2": 3.0939218716969,
+      "geometry_censored": 3.1109033554073444,
+      "legacy": 1.6703454797516757,
+      "mission": "shift_fairness",
+      "truth_search_reference": 3.6293290723580185,
+      "v2_signed_gap": 0.5354072006611186
+    },
+    {
+      "budget": 1,
+      "candidate_minus_v2": -0.20550250241894708,
+      "candidate_signed_gap": -0.047781703475674564,
+      "corrected_v2": -0.6040217236417877,
+      "geometry_censored": -0.8095242260607348,
+      "legacy": -4.823145531032747,
+      "mission": "scanner_coexistence",
+      "truth_search_reference": -0.8573059295364094,
+      "v2_signed_gap": -0.25328420589462164
+    },
+    {
+      "budget": 5,
+      "candidate_minus_v2": -0.19519243026870026,
+      "candidate_signed_gap": 0.3728451287329153,
+      "corrected_v2": 3.8608036862483686,
+      "geometry_censored": 3.6656112559796683,
+      "legacy": 0.5498520528709833,
+      "mission": "teleop_assist",
+      "truth_search_reference": 4.038456384712584,
+      "v2_signed_gap": 0.17765269846421505
+    },
+    {
+      "budget": 5,
+      "candidate_minus_v2": -0.04062383729768293,
+      "candidate_signed_gap": 0.24065050053570125,
+      "corrected_v2": -0.8005827777136661,
+      "geometry_censored": -0.8412066150113491,
+      "legacy": -1.3807379849370658,
+      "mission": "peak_picking",
+      "truth_search_reference": -0.6005561144756478,
+      "v2_signed_gap": 0.20002666323801832
+    },
+    {
+      "budget": 5,
+      "candidate_minus_v2": 0.022117479503455773,
+      "candidate_signed_gap": 0.24462594045238273,
+      "corrected_v2": 2.1183913625082234,
+      "geometry_censored": 2.140508842011679,
+      "legacy": 0.7621358217370654,
+      "mission": "map_rollout",
+      "truth_search_reference": 2.385134782464062,
+      "v2_signed_gap": 0.2667434199558385
+    },
+    {
+      "budget": 5,
+      "candidate_minus_v2": 0.008832074369642395,
+      "candidate_signed_gap": 0.38130693320215636,
+      "corrected_v2": 3.2391900647862197,
+      "geometry_censored": 3.248022139155862,
+      "legacy": 1.6703454797516757,
+      "mission": "shift_fairness",
+      "truth_search_reference": 3.6293290723580185,
+      "v2_signed_gap": 0.39013900757179876
+    },
+    {
+      "budget": 5,
+      "candidate_minus_v2": -0.20219219771044034,
+      "candidate_signed_gap": -0.16190152741521313,
+      "corrected_v2": -0.4932122044107559,
+      "geometry_censored": -0.6954044021211963,
+      "legacy": -4.823145531032747,
+      "mission": "scanner_coexistence",
+      "truth_search_reference": -0.8573059295364094,
+      "v2_signed_gap": -0.36409372512565347
+    },
+    {
+      "budget": 15,
+      "candidate_minus_v2": 0.040758924688109044,
+      "candidate_signed_gap": 0.1301292025877423,
+      "corrected_v2": 3.8675682574367323,
+      "geometry_censored": 3.9083271821248413,
+      "legacy": 0.5498520528709833,
+      "mission": "teleop_assist",
+      "truth_search_reference": 4.038456384712584,
+      "v2_signed_gap": 0.17088812727585134
+    },
+    {
+      "budget": 15,
+      "candidate_minus_v2": 0.04177089851145466,
+      "candidate_signed_gap": 0.17916779214622913,
+      "corrected_v2": -0.8214948051333316,
+      "geometry_censored": -0.779723906621877,
+      "legacy": -1.3807379849370658,
+      "mission": "peak_picking",
+      "truth_search_reference": -0.6005561144756478,
+      "v2_signed_gap": 0.2209386906576838
+    },
+    {
+      "budget": 15,
+      "candidate_minus_v2": -0.1477209336152363,
+      "candidate_signed_gap": 0.34300752506523224,
+      "corrected_v2": 2.189848191014066,
+      "geometry_censored": 2.0421272573988296,
+      "legacy": 0.7621358217370654,
+      "mission": "map_rollout",
+      "truth_search_reference": 2.385134782464062,
+      "v2_signed_gap": 0.19528659144999594
+    },
+    {
+      "budget": 15,
+      "candidate_minus_v2": 0.12771482725412797,
+      "candidate_signed_gap": 0.2940919419416499,
+      "corrected_v2": 3.2075223031622406,
+      "geometry_censored": 3.3352371304163686,
+      "legacy": 1.6703454797516757,
+      "mission": "shift_fairness",
+      "truth_search_reference": 3.6293290723580185,
+      "v2_signed_gap": 0.42180676919577786
+    },
+    {
+      "budget": 15,
+      "candidate_minus_v2": -0.033856697435324046,
+      "candidate_signed_gap": -0.28441152147354987,
+      "corrected_v2": -0.5390377106275355,
+      "geometry_censored": -0.5728944080628595,
+      "legacy": -4.823145531032747,
+      "mission": "scanner_coexistence",
+      "truth_search_reference": -0.8573059295364094,
+      "v2_signed_gap": -0.3182682189088739
+    }
+  ],
+  "production_qualified": false,
+  "protocol_sha256": "adf503f90507043759ecf76c62fd9c720bbe9ba87a60c1ba2afbc9e2a12662da",
+  "reference_searches": 5,
+  "reference_stats": [
+    {
+      "iterations": 23,
+      "mission": "teleop_assist",
+      "plans_evaluated": 18541,
+      "search_ms": 5513.14679501229,
+      "setup_ms": 0.0012720120139420033
+    },
+    {
+      "iterations": 15,
+      "mission": "peak_picking",
+      "plans_evaluated": 12092,
+      "search_ms": 3536.9799049803987,
+      "setup_ms": 0.0011310039553791285
+    },
+    {
+      "iterations": 32,
+      "mission": "map_rollout",
+      "plans_evaluated": 25795,
+      "search_ms": 7523.7074100004975,
+      "setup_ms": 0.0015429977793246508
+    },
+    {
+      "iterations": 25,
+      "mission": "shift_fairness",
+      "plans_evaluated": 20153,
+      "search_ms": 5719.6757509955205,
+      "setup_ms": 0.0011519878171384335
+    },
+    {
+      "iterations": 28,
+      "mission": "scanner_coexistence",
+      "plans_evaluated": 22571,
+      "search_ms": 6117.022768012248,
+      "setup_ms": 0.0011720112524926662
+    }
+  ],
+  "refs": {
+    "attempt": {
+      "path": "artifacts/e7_calplanning/cases/25/attempt.json",
+      "sha256": "0eccb36ed3995e0ec08bbd26828052efc798d186938fa161f893be37f83b546b"
+    },
+    "belief_15_corrected_v2": {
+      "path": "artifacts/e7_calplanning/cases/25/belief_15_corrected_v2.npz",
+      "sha256": "707091885928def8cc75433882bb52b0e9d16c1eac18f2a7890ac86b925878f7"
+    },
+    "belief_15_geometry_censored": {
+      "path": "artifacts/e7_calplanning/cases/25/belief_15_geometry_censored.npz",
+      "sha256": "f1ff1e9460fe91643e5dc374839549a1973e58b195ebc6db9a886876be097b12"
+    },
+    "belief_1_corrected_v2": {
+      "path": "artifacts/e7_calplanning/cases/25/belief_1_corrected_v2.npz",
+      "sha256": "f9777ce7d10d76cc114d1f207c9e603bdce1cdbcaf112979440c0332e3b3ba6a"
+    },
+    "belief_1_geometry_censored": {
+      "path": "artifacts/e7_calplanning/cases/25/belief_1_geometry_censored.npz",
+      "sha256": "46a0aa7bbaaa6aa259e988d5541e4ea5ea7f19a431a18c05d24f81380c91387c"
+    },
+    "belief_5_corrected_v2": {
+      "path": "artifacts/e7_calplanning/cases/25/belief_5_corrected_v2.npz",
+      "sha256": "f658584f4e0a478f4d6f710151d164a01c748331a42bcd253768659ddb01056f"
+    },
+    "belief_5_geometry_censored": {
+      "path": "artifacts/e7_calplanning/cases/25/belief_5_geometry_censored.npz",
+      "sha256": "ccb1139f73e04e58633e3d6ac1b12af0b76120e6b6215ccebecc73cb3dded790"
+    },
+    "choice_stats": {
+      "path": "artifacts/e7_calplanning/cases/25/choice_stats.json",
+      "sha256": "c259c0791e4dcca00cf20a3f1371983245f9943267519792af41f0733afb049f"
+    },
+    "choices": {
+      "path": "artifacts/e7_calplanning/cases/25/choices.npz",
+      "sha256": "a71a66426a6c3991ed9b069c937d217357c1a02eb39c253c3284c14f23455bda"
+    },
+    "generation": {
+      "path": "artifacts/e7_calplanning/cases/25/generation.json",
+      "sha256": "deb6b47fda2a8503faed167ffbca8899c24cc95e426f5df20b744967768df524"
+    },
+    "mean_state_15_corrected_v2": {
+      "path": "artifacts/e7_calplanning/cases/25/mean_state_15_corrected_v2.npz",
+      "sha256": "21401a728030e53e8731107efa24d277d0ed3d6a221b5f85dbfed719a8eb8086"
+    },
+    "mean_state_15_geometry_censored": {
+      "path": "artifacts/e7_calplanning/cases/25/mean_state_15_geometry_censored.npz",
+      "sha256": "0d8aef605d018f0b44c244ddae0479e0743170da786a4fb51f58724b82c5760f"
+    },
+    "mean_state_1_corrected_v2": {
+      "path": "artifacts/e7_calplanning/cases/25/mean_state_1_corrected_v2.npz",
+      "sha256": "9c0b8582890666040d1b18a9cc6d2380299b841e173cec25061328986e749478"
+    },
+    "mean_state_1_geometry_censored": {
+      "path": "artifacts/e7_calplanning/cases/25/mean_state_1_geometry_censored.npz",
+      "sha256": "cf686f399db477ab6850648197e4d1774e91f976e5d7a1a4aa137357f64668aa"
+    },
+    "mean_state_5_corrected_v2": {
+      "path": "artifacts/e7_calplanning/cases/25/mean_state_5_corrected_v2.npz",
+      "sha256": "0f0d90b71593b18a5c2aebe1e2f92f20f5842a623887313eb01a48928280f1fd"
+    },
+    "mean_state_5_geometry_censored": {
+      "path": "artifacts/e7_calplanning/cases/25/mean_state_5_geometry_censored.npz",
+      "sha256": "f58da99a9bb7fd26fdbcfa3f509ee99dcfc6096dabe4b25d5e15dd3a2e062ad0"
+    },
+    "private_SCORING": {
+      "path": "artifacts/e7_calplanning/cases/25/private_SCORING.npz",
+      "sha256": "084470a852fc1e55823da8fcd780431e5a912231b1461c534108b97e9a25bcbf"
+    },
+    "public": {
+      "path": "artifacts/e7_calplanning/cases/25/public.npz",
+      "sha256": "dd9864ffb592f843ff79e2eaa048bdac46362af58f1cdad80284e056cf002d1a"
+    },
+    "shared_ORACLE": {
+      "path": "artifacts/e7_calplanning/cases/25/shared_ORACLE.npz",
+      "sha256": "c2fdf0153a17a4893d8a1f356273361050fed64af957d93397faa13af1c40a65"
+    },
+    "survey": {
+      "path": "artifacts/e7_calplanning/cases/25/survey.npz",
+      "sha256": "2a344c7f48d2f63d9fbb91aed6330ea6a80352594eaa70267b2ceb87044bafd6"
+    },
+    "survey_b1": {
+      "path": "artifacts/e7_calplanning/cases/25/survey_b1.npz",
+      "sha256": "2c702e7d479d4e211dd5ad05750797790f6a85503c18cfe3018882c1c6b7add0"
+    },
+    "survey_b15": {
+      "path": "artifacts/e7_calplanning/cases/25/survey_b15.npz",
+      "sha256": "73fd3766a51221253b7e7e5cd9ce39dc7201ce3daf4caf1fbbd9a096a0e0ac33"
+    },
+    "survey_b5": {
+      "path": "artifacts/e7_calplanning/cases/25/survey_b5.npz",
+      "sha256": "1d90afb058dfbfd1bac0f6db8dc2a885c3a5238cc8581e18a5b566be928dd4fa"
+    },
+    "truth_references": {
+      "path": "artifacts/e7_calplanning/cases/25/truth_references.npz",
+      "sha256": "cd1d937c452f8037e48afef2281ef637fcd986e57215d6cc8a6ede421f705234"
+    }
+  },
+  "scope": "ORACLE-CONDITIONED DESCRIPTIVE; previously opened environment seeds; not deployable qualification",
+  "seed": 25,
+  "source_receipt_sha256": "7559bda6e136e39bb9befb74cc68d1ca9595823f6b7376ec1b843999784d46df"
+}

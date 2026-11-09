@@ -398728,7 +398728,7 @@
     }
   },
   "research_evidence": {
-    "captured_at": "2026-11-09T17:15:23.607274+00:00",
+    "captured_at": "2026-11-09T17:41:14.010029+00:00",
     "claim_boundaries": [
       "Selected adaptive/native branch is regression; do not label its native outcomes a JEPA gain.",
       "No specialist SOTA, arbitrary-device/world/protocol generalization, 100-real-car benefit or production qualification.",
@@ -398816,6 +398816,9 @@
       "artifacts/device_transfer/protocol.json": "b5ae3739867f5a39c396999e404fc649fd8d9bcc83142b3df8acffef6b66c8c6",
       "artifacts/device_transfer/report.json": "7eb73e44a2a1eb9ff424081320d1999c3e8ce2137f182c87929aa461f398d5a4",
       "artifacts/device_transfer/verification/manifest.json": "ef30f07741a13512bad757180d3dec868a9b55f55a836799718fac6d3c9ca2d9",
+      "artifacts/e7_calplanning/protocol.json": "adf503f90507043759ecf76c62fd9c720bbe9ba87a60c1ba2afbc9e2a12662da",
+      "artifacts/e7_calplanning/report.json": "e7101c9cacdbcaa4362e9aef556320a0c433069f14d9381403e36a3f0f7a10dc",
+      "artifacts/e7_calplanning/verification/manifest.json": "b498272bb37b08c9bbe465eb0be49abf52f9923189d15b0e4f85f84d37628077",
       "artifacts/native_bridge/cases/dev-90473001-ho0.03/receipt.json": "10d01e395febd8778dbf08c5d523fcfc71cfecefec65dc91274ec73e93e87f0d",
       "artifacts/native_bridge/cases/dev-90473001-ho4/receipt.json": "8da20f0230d348c82a32fc58e7b4811d24624d96ef999f7d69ca54f002293f2e",
       "artifacts/native_bridge/cases/dev-90473002-ho0.03/receipt.json": "60912f147e459262a3dd7b326b67a94fb5bb78f4292ab941ba029cbfd47340cb",
@@ -399046,23 +399049,120 @@
       "e7_calplanning": {
         "evidence_kind": "oracle_conditioned_simulation",
         "findings": [
-          "No planning metrics are exported before the complete 525-source closure verifies.",
-          "Oracle-conditioned opened environments; nominal survey-tail fractions are not chronological minutes."
+          "15-tail: 9/15 environment harms; 38/75 mission-pair harms. All three nominal budgets remain in the metrics.",
+          "Both arms use oracle metadata and legacy starts; analytical utility is not packet-service qualification."
         ],
-        "headline": "Planning comparison pending seal",
+        "headline": "\u0394utility -0.0023 \u00b7 nominal 15-tail",
         "limits": [
           "Nominal 1/5/15 labels are nested flattened survey-tail fractions, not chronological minutes or elapsed-budget guarantees.",
           "Both arms share oracle infrastructure metadata and a truth-derived legacy starting plan.",
-          "Analytical utility only: no packet/ns-3, fresh confirmation, deployment, promotion or SOTA claim."
+          "Analytical utility only: no packet/ns-3, fresh confirmation, deployment, promotion or SOTA claim.",
+          "225 mission/budget pairs are nested within 15 environment units, not 225 independent environments."
         ],
+        "metrics": {
+          "belief_searches": 450,
+          "budget_semantics": "nominal1/5/15minute nested flattened TAIL-ROW fractions of one15minute survey, NOT chronological prefixes or elapsed-budget guarantees",
+          "environment_units": 15,
+          "map_fits": 90,
+          "paired_rows": 225,
+          "reference_searches": 75,
+          "shared_oracle_metadata": [
+            "truth-derived top8 visible action masks",
+            "contention domains, interferer graph and truth-configured adjacent-channel leakage matrix",
+            "protected-channel flags",
+            "legacy-policy starting plan; current associations"
+          ],
+          "summary": {
+            "1": {
+              "environment_harms": 7,
+              "environment_units": 15,
+              "mean_environment_utility_delta": 0.031479450951933295,
+              "mission_pair_harms": 33,
+              "mission_pairs": 75,
+              "per_environment_delta": [
+                0.01969124409849119,
+                -0.05963785835762556,
+                0.01467713464840974,
+                0.3921582597524902,
+                0.009686050681550299,
+                0.1365991563176293,
+                -0.018903144484752978,
+                0.11408850457203905,
+                -0.05811016657329497,
+                0.013579007100321654,
+                -0.015401652687331402,
+                -0.034294306949163925,
+                -0.04300540168538758,
+                0.030932491393377826,
+                -0.029867553547753545
+              ]
+            },
+            "15": {
+              "environment_harms": 9,
+              "environment_units": 15,
+              "mean_environment_utility_delta": -0.002325611953364009,
+              "mission_pair_harms": 38,
+              "mission_pairs": 75,
+              "per_environment_delta": [
+                0.026501541558921926,
+                -0.04992298567261104,
+                -0.02187038232437897,
+                -0.008402841157463996,
+                0.0008471458032411172,
+                0.19251939555548464,
+                -0.03845868300588241,
+                -0.01646951486073256,
+                -0.06610026839711866,
+                -0.014964225803327786,
+                0.005733403880626264,
+                -0.02835179146277708,
+                -0.023188328886918064,
+                0.004133914699158092,
+                0.0031094407733184117
+              ]
+            },
+            "5": {
+              "environment_harms": 7,
+              "environment_units": 15,
+              "mean_environment_utility_delta": -0.010717711944277225,
+              "mission_pair_harms": 32,
+              "mission_pairs": 75,
+              "per_environment_delta": [
+                0.06148128363904344,
+                0.13577539568279035,
+                -0.01357775181417662,
+                -0.39591712868140927,
+                8.337698895566347e-06,
+                0.05872916410130815,
+                -0.020563001517692865,
+                0.008764472231841892,
+                0.03297506700857536,
+                -0.0093753069773168,
+                -0.08141178228074507,
+                -0.00846904216885982,
+                0.04063226742216715,
+                0.035349192141533384,
+                -0.005166845650113186
+              ]
+            }
+          }
+        },
         "production_qualified": false,
-        "scope": "Previously opened environments; final analytical planning comparison pending verified closure",
+        "proof": {
+          "document_files": 0,
+          "evidence_files": 382,
+          "path": "artifacts/e7_calplanning/verification/manifest.json",
+          "sha256": "b498272bb37b08c9bbe465eb0be49abf52f9923189d15b0e4f85f84d37628077",
+          "source_files": 525,
+          "status": "repository_hashes_verified"
+        },
+        "scope": "ORACLE-CONDITIONED DESCRIPTIVE; previously opened environment seeds; not deployable qualification",
         "sota_established": false,
-        "status": "pending_seal",
+        "status": "sealed",
         "title": "E7 calibrated-map planning",
         "units": {
           "nominal_budget": "1/5/15 tail-fraction labels, not chronological minutes",
-          "utility_delta": "candidate minus corrected-v2; higher is better"
+          "utility_delta": "analytical candidate minus corrected-v2; higher is better"
         }
       },
       "geometry_ops": {
