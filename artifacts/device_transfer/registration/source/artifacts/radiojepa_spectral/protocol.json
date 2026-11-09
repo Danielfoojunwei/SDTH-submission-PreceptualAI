@@ -1,0 +1,274 @@
+{
+  "baselines": [
+    "operator_only",
+    "radiomap_operator",
+    "bayesian_operator"
+  ],
+  "bootstrap": {
+    "confidence": 0.9875,
+    "descriptive_confidence": 0.95,
+    "family_slots": 4,
+    "resampling": "paired whole geometry with replacement",
+    "samples": 20000,
+    "scope": "conditional on three trained members; training seed spread descriptive, not a posterior over retraining",
+    "seed": 21749,
+    "two_sided_quantiles": [
+      0.00625,
+      0.99375
+    ]
+  },
+  "claims": {
+    "calibrated_uncertainty": false,
+    "matched_alignment_benefit_requires_separate_matched_regression_comparison": true,
+    "original_service_confirmation": false,
+    "production_safety": false,
+    "superiority_requires_adjusted_ci_upper_below_zero": true,
+    "universal_wireless_foundation_model": false
+  },
+  "data": {
+    "bands_hz": [
+      2400000000.0,
+      5200000000.0,
+      6000000000.0
+    ],
+    "context_poses": [
+      0,
+      2,
+      4,
+      6,
+      8,
+      10
+    ],
+    "context_tokens_per_view": 24,
+    "frontend_fit": "paired TRAIN context reports only, device0 report gauge",
+    "generator": "wirelessjev.radiojepa.rt_data._trace_scene",
+    "generator_frozen_in_previous_closure": true,
+    "held_band": 2,
+    "held_band_query_poses": [
+      0,
+      2,
+      4,
+      6,
+      8,
+      10
+    ],
+    "held_device": 3,
+    "main_query_poses": [
+      1,
+      3,
+      5,
+      7,
+      9,
+      11
+    ],
+    "max_depth": 3,
+    "max_num_paths_per_src": 4096,
+    "no_solved_path_is_missing_not_weak_point_label": true,
+    "private_materials_or_true_offsets_as_model_inputs": false,
+    "samples_per_src": 32768,
+    "training_target_bands": [
+      0,
+      1
+    ],
+    "training_target_devices": [
+      0,
+      1,
+      2
+    ],
+    "training_target_directions": [
+      0,
+      1
+    ],
+    "view_a": {
+      "bands": [
+        0,
+        1
+      ],
+      "device": 0,
+      "direction": 0
+    },
+    "view_b": {
+      "bands": [
+        0,
+        1
+      ],
+      "device": 1,
+      "direction": 1
+    }
+  },
+  "development_gate": {
+    "all_predictions_finite": true,
+    "every_seed_rmse_no_worse_than_radiomap": true,
+    "mean_p95_strictly_better_than_radiomap": true,
+    "mean_rmse_strictly_better_than_radiomap": true,
+    "no_automatic_followon_tuning": true,
+    "rank_is_descriptive_only": true,
+    "zero_latent_relative_rmse_degradation_minimum": 0.01
+  },
+  "diagnostics": {
+    "direct_same_link_frequency": "sourceA5.2GHz report at same pose/AP minus learned sourceoffset +20log10(5.2/6) plus learned queryoffset; fixed material response assumption, descriptive only",
+    "embedding_rank": "centered per-scene codes, descriptive",
+    "held_device_onboarding_pairs": [
+      0,
+      1,
+      4,
+      16
+    ],
+    "held_device_onboarding_scope": "simulated relative RSSI offset/quantization inverse; sourceviewA remains knowndevice0. Not neural held-device encoder transfer, hardware AGC/CFO/RF calibration, or independently sampled support sets",
+    "onboarding_scope": "context-only support, disjoint from odd-pose queries; descriptive",
+    "onboarding_unavailable_rule": "Only this descriptive assay: insufficient genuine context pairs or no heard held-device query -> explicitly unavailable per geometry/N, retain actual available context count/heard query count/reason/denominator; no substitute RF, replacement scene/N, or invented labels. Main RF and held-band queries/gates remain mandatory.",
+    "shuffle_latent": "across-layout roll by one on sourceviewA, same query geometry, all3seeds",
+    "source_view_b": "not evaluated in this finite phase; used as paired training view only",
+    "zero_latent": "selected model all3seeds, development sourceviewA"
+  },
+  "field_tests": [
+    {
+      "candidate": "selected_joint",
+      "metric": "rmse_db",
+      "reference": "radiomap_operator",
+      "regime": "in_band",
+      "slot": 1
+    },
+    {
+      "candidate": "selected_joint",
+      "metric": "rmse_db",
+      "reference": "matched_regression",
+      "regime": "in_band",
+      "slot": 2
+    },
+    {
+      "candidate": "selected_joint",
+      "metric": "p95_abs_db",
+      "reference": "radiomap_operator",
+      "regime": "in_band",
+      "slot": 3
+    },
+    {
+      "candidate": "selected_joint",
+      "metric": "rmse_db",
+      "reference": "radiomap_operator",
+      "regime": "held_band",
+      "slot": 4
+    }
+  ],
+  "metrics": {
+    "censored": "separate interval/censor Gaussian NLL, no invented point labels",
+    "heard_rmse": "root mean squared error of quantized reported-RSSI centers, heard reports only",
+    "held_band_query_axes": {
+      "bands": [
+        2
+      ],
+      "devices": [
+        0,
+        1,
+        2
+      ],
+      "directions": [
+        0,
+        1
+      ],
+      "poses": [
+        0,
+        2,
+        4,
+        6,
+        8,
+        10
+      ],
+      "scope": "same physical context links, unseen6GHz only"
+    },
+    "main_query_axes": {
+      "bands": [
+        0,
+        1
+      ],
+      "devices": [
+        0,
+        1,
+        2
+      ],
+      "directions": [
+        0,
+        1
+      ],
+      "poses": [
+        1,
+        3,
+        5,
+        7,
+        9,
+        11
+      ]
+    },
+    "p95_absolute_error": "95th percentile absolute heard-report error within geometry, then mean across layouts",
+    "seed_aggregation": "calculate each trained member metric separately, then arithmetic mean within geometry",
+    "unit": "whole independent simulated geometry"
+  },
+  "name": "independent-spectral-scene-field-study",
+  "neural": {
+    "alignment": "direct zA/zB MSE, both branches differentiable, no projector/EMA/stopped target",
+    "batch_distinct_training_layouts": 48,
+    "context_dropout_probability": 0.15,
+    "control_cells": [
+      "matched_regression",
+      "geometry_only"
+    ],
+    "decoder": "shared latent8 -> 8 public geometry basis coefficients*10 plus bounded +/-5dB local geometry correction; no RF token/power bypass",
+    "epochs": 60,
+    "geometry_only": "RF-value-erased geometry + reported availability control: token dimensions0..3 erased; heard|censored availability mask retained. Not strictly CAD-only; no RF-value necessity claim.",
+    "gradient_balance": {
+      "reference": "RMS measurement gradient with respect to (zA,zB)",
+      "target_fraction": 0.25,
+      "weight_max": 100.0,
+      "weight_min": 0.01,
+      "weights_detached": true
+    },
+    "initial_cells": [
+      "joint_none",
+      "joint_sigreg",
+      "joint_vicreg"
+    ],
+    "inverse_initialization": "heard-only geometry8 weighted ridge: (B^T W B + .1 I)^-1 B^T W (residual/10), weights .25+1.5 sigmoid(reliability); learned set-attention correction scaled .25 (unbounded, compatible with unit-variance priors)",
+    "latent_dim": 8,
+    "learning_rate": 0.003,
+    "likelihood_std_db": 4.0,
+    "main_inference_view": "a",
+    "matched_regression": "same selected prior/model/budget, alignment=False",
+    "prediction_ensembling": false,
+    "prior": "actual vendored SIGReg or VICReg directly on each view latent across48 layouts",
+    "prior_selection": "minimum mean per-layout per-seed VALIDATION heard-query RF RMSE; canonical cell order breaks exact ties",
+    "retain_one_context_token_per_observed_band": true,
+    "seeds": [
+      0,
+      1,
+      2
+    ],
+    "target_loss": "quantization interval Gaussian likelihood and upper-censor likelihood, fixed4dB; missing unsolved readings excluded",
+    "total_fits": 15,
+    "uncertainty_calibrated": false,
+    "updates_per_epoch": 8,
+    "updates_per_fit": 480,
+    "validation_checkpoint": "minimum source-view-A mean per-layout heard-query RMSE, first epoch breaks exact tie",
+    "weight_decay": 0.0001,
+    "width": 64
+  },
+  "operator_only": "public free-space operator plus TRAIN-reported front-end calibration; no learned hidden-material correction",
+  "previous_manifest_sha256": "b9114d4cf4beb65ddd4af63c87e7e154edba5c8f1bba4a56117e1e3f369acf31",
+  "registry_sha256": "49ea5082514182906e4d32d1b561a1c4ba63a07b029c81ac7bece8cc4afb046f",
+  "scene_counts": {
+    "development": 4,
+    "field_test": 24,
+    "training": 48,
+    "validation": 8
+  },
+  "schema": 1,
+  "scope": {
+    "actual_sionna_rt": true,
+    "interference_mac_or_robot_service_test": false,
+    "isolated_static_channel_probes": true,
+    "model_activation": false,
+    "original_service_confirmation_permitted": false,
+    "production_qualification": false,
+    "real_measurements": false
+  }
+}
