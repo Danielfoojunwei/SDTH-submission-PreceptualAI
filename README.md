@@ -5,24 +5,52 @@ Current experiment status and restart prerequisites are in [docs/HANDOFF.md](doc
 The restored didjital R6.1 reference and its executed software checks are
 documented in [docs/R6_COMPATIBILITY.md](docs/R6_COMPATIBILITY.md).
 
-The current [physics-structured RadioJEPA field study](docs/spectral_scene/RESULTS.md)
-completes **15 fits and 84 actual Sionna RT scenes**, including 24 reserved
-FIELD layouts. Spatial RF RMSE is **3.622 versus 4.843 dB** for the
-RadioMap-operator control; p95 absolute error is **6.920 versus 9.500 dB**,
-and same-link 6 GHz RMSE is **3.734 versus 4.604 dB**. Those three registered
-comparisons pass their four-test-adjusted checks. Exact matched regression is
-**3.631 dB**, so **JEPA alignment adds no confirmed accuracy benefit**;
-the geometry/availability control is also close at **3.660 dB**.
+## Current system and evidence
 
-The [architecture diagrams](docs/spectral_scene/ARCHITECTURE.md) show the
-reported-device inverse, shared eight-coefficient scene state and physical
-decoder. **2,144 source-bound preflight tests and 36 operational-cache checks
-pass.** The passive raw audit reproduces 1,512 prediction records. All primary
-queries in this finite static cohort are audible; it supplies no interference,
-packet-service, calibrated-risk, real-device or SOTA qualification. RadioMap
-remains the application default, and the original 24 SERVICE specifications
-remain unopened. The [remaining-work matrix](docs/spectral_scene/REMAINING.md)
-maps the unfinished CSI, dynamics, service and transfer stages.
+[RadioJEPA supplies an experimental physical RF-field model; WirelessJEV supplies
+typed mission decisions, bounded planning and an independent gate](docs/research_status/CURRENT_SYSTEM.md).
+Public geometry, reported RSSI/censor bounds and declared receiver assumptions
+produce per-link predictions. Supported proposals retain explicit timing,
+compute and evidence limits. **RadioMap + WirelessJEV remains the application
+default.**
+
+The current [adaptive RF-condition assay](docs/research_status/ADAPTIVE_RESULTS.md)
+completes **12 fits and 174 actual Sionna RT cases**. Across 24 TEST layouts,
+validation-selected regression has sparse condition-delta RMSE **1.520106 versus
+1.654205 dB** for RadioMap (**8.1% lower**); both registered RF-dependence
+contrasts pass their adjusted intervals. Matched joint/JEPA is worse at
+**1.534382 dB**, and pooled Bayes nearly ties at **1.524141 dB**. Detector
+Brier improvement is unconfirmed. The canonical raw replays pass all 540 DEV and
+3,240 TEST records; the completed seal binds **504 source files and 11,792
+evidence files**, with a passing [independent raw replay](artifacts/adaptive_radio_review/result.json). These are static RF-state results, without packet, real-device or
+SOTA qualification.
+
+The [native 100-robot diagnostic](docs/research_status/NATIVE_RESULTS.md) completes
+18 simulations and retains its adverse fast-handover outcomes and 9.74-second
+recovery outlier. The [completed E7 calibration-to-planner diagnostic](docs/research_status/E7_CALPLANNING_RESULTS.md)
+has better map accuracy but mixed analytical utility changes:
+**+0.03148 / −0.01072 / −0.00233** across nominal 1/5/15-minute tail-row settings.
+Its 225 pairs are descriptive, oracle-conditioned results on opened environments.
+[Measured CSI](docs/research_status/CSI_RESULTS.md) also retains its negative
+model result. None of these results qualifies a fleet controller.
+
+The latest [tracked-suite proof](artifacts/research_review/release_suite.json)
+records **2,655 passing tests**, one expected fork warning and unchanged source
+hashes. It includes the R6 and exporter tests; their counts are not added again.
+The [read-only R6 bridge](docs/research_status/R6_BRIDGE.md),
+[local evidence Studio](docs/research_status/STUDIO_EXPORT.md),
+[execution ledger](docs/research_status/EXECUTION_LEDGER.md) and
+[remaining-work matrix](docs/research_status/REMAINING.md) distinguish implemented
+software, completed experiments and open qualification work. The external
+Studio/deck has not been republished, and original SERVICE layouts remain unopened.
+
+## Additional registered studies
+
+The [static physical-field study](docs/spectral_scene/RESULTS.md) completes 15
+fits and 84 Sionna scenes. Its 24-layout spatial RF RMSE is 3.622 versus
+RadioMap-operator 4.843 dB, with no confirmed matched-regression/JEPA advantage.
+Its [architecture and scope](docs/spectral_scene/ARCHITECTURE.md) and frozen
+source-bound reports remain separate from the current adaptive assay.
 
 The [pilot/local-control study](docs/PILOT_FASTLOOP_RESULTS.md) completes
 **96 native executions and 22 matched offline forecast sequences**. On eight

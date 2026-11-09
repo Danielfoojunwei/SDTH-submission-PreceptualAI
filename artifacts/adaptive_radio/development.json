@@ -1,0 +1,47 @@
+{
+  "censored_query_events": 152,
+  "checks": {
+    "actual_censored_events_present": true,
+    "all_primary_predictions_and_scores_finite": true,
+    "every_seed_delta_no_worse_than_radiomap": true,
+    "five_percent_better_than_radiomap": true,
+    "five_percent_better_than_rf_erased": true,
+    "minimum_three_usable_layouts": true,
+    "p95_within_two_percent": true,
+    "scalar_rmse_within_two_percent": true,
+    "stale_context_hurts_at_least_five_percent": true
+  },
+  "evaluation": {
+    "path": "artifacts/adaptive_radio/results/development.json",
+    "sha256": "65b776b1b6cbd17094628937233ca1fa3c3a05d2aea1eb4b9b98394ad00c8980"
+  },
+  "original_service_confirmation_permitted": false,
+  "p95_abs_db": 6.7605698267618815,
+  "p95_available_layouts": 4,
+  "production_qualified": false,
+  "protocol_sha256": "dfb6c7da4e9665081dd6660b7a1fafaa93ac83a592af90411874b5d46ee28352",
+  "radiomap_delta_rmse_db": 1.936908261982396,
+  "radiomap_p95_abs_db": 7.543515834473091,
+  "radiomap_scalar_rmse_db": 3.9024564077714534,
+  "registered_layouts": 4,
+  "registry_sha256": "b4d58de02b830e0dde3a054a949c9459d0a7d1289ece91cb25f195e9d9ef3e50",
+  "rf_erased_delta_rmse_db": 1.9001894769479268,
+  "scalar_available_layouts": 4,
+  "scalar_rmse_db": 3.4147796740868763,
+  "selected_cell": "regression",
+  "selected_delta_rmse_db": 1.6403534850243644,
+  "selected_seed_delta_rmse_db": [
+    1.6368942455774231,
+    1.6472707018270762,
+    1.636895507668594
+  ],
+  "selection": {
+    "path": "artifacts/adaptive_radio/selection.json",
+    "sha256": "7515d534fed31c33eee5ffa35622d94df089758cc507609b1d1f520f1cb4107f"
+  },
+  "source_receipt_sha256": "4bb2415118970fad4a95bbd4575d7ef799e10242faa168329d24f358ed75c3fc",
+  "stale_delta_rmse_db": 1.9237917447171633,
+  "test_permitted": true,
+  "unavailable_layouts": [],
+  "usable_layouts": 4
+}

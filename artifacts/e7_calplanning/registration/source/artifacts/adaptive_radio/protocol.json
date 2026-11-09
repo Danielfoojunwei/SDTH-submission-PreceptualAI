@@ -1,0 +1,241 @@
+{
+  "baselines": [
+    "radiomap_operator",
+    "bayesian_operator"
+  ],
+  "bootstrap": {
+    "confidence": 0.9875,
+    "family_slots": 4,
+    "resampling": "paired whole geometry, conditions nested",
+    "samples": 20000,
+    "scope": "conditional on three trained members; seed spread descriptive, not retraining posterior",
+    "seed": 21749,
+    "two_sided_quantiles": [
+      0.00625,
+      0.99375
+    ]
+  },
+  "claims": {
+    "JEPA_specific_alignment_benefit_requires_fixed_joint_vs_regression_slot3": true,
+    "RF_adaptation_requires_slots1_and2_adjusted_upper_below_zero": true,
+    "SERVICE_probe": "separate optional registered native-contract development study only; no change to original24 confirmation",
+    "detector_benefit_requires_slot4": true,
+    "production_qualified": false,
+    "universal_robot_environment_claim": false
+  },
+  "conditions_per_geometry": 3,
+  "confirmation": {
+    "below_minimum": "inconclusive, no RF superiority or alignment-benefit claims; allcohortcounts retained",
+    "fresh_test_geometries": 24,
+    "minimum_usable_delta_layouts": 12,
+    "original_service24_opened": false
+  },
+  "data": {
+    "all_three_states_same_CAD_AP_RX_known_TX_and_solver_seed": true,
+    "bands_hz": [
+      2400000000.0,
+      5200000000.0,
+      6000000000.0
+    ],
+    "censoring": "actual sensitivity/noisefloor operator applied to traced power; no-solved-path remains missing, never invented weak label",
+    "context_poses": [
+      0,
+      2,
+      4,
+      6,
+      8,
+      10
+    ],
+    "context_regimes": {
+      "full": "six planned context poses,24 tokens/view",
+      "sparse": "same two planned poses0,10 across all states,8 scheduled tokens/view"
+    },
+    "context_schedule_scope": "planned probe report availability, no network delivery/timing guarantee",
+    "frontend_calibration": "offline full TRAIN paired context reports only, same shared device0gauge calibration for both online schedules; no trueoffset/private gain used",
+    "held_band": "supplementary6GHz same even physical context links; no6GHz fitting/calibration/gate",
+    "known_tx_dbm": "per-layout fixed cycle -20,-10,0,10; same across3conditions, included in public free-space operator",
+    "private_condition": "obstacle material only: metal/wood/brick; labels/material/seed/sourceIDs never model features",
+    "query_poses": [
+      1,
+      3,
+      5,
+      7,
+      9,
+      11
+    ],
+    "sparse_context_poses": [
+      0,
+      10
+    ],
+    "splits": "whole geometry; disjoint from prior120 CADs and other splits",
+    "stale_context": "for targets condition1/2 use same-layout condition0 contexts; condition0 unchanged; current public geometry/knownTX",
+    "training_target_bands": [
+      0,
+      1
+    ],
+    "training_target_devices": [
+      0,
+      1,
+      2
+    ],
+    "view_a": {
+      "bands": [
+        0,
+        1
+      ],
+      "device": 0,
+      "direction": 0
+    },
+    "view_b": {
+      "bands": [
+        0,
+        1
+      ],
+      "device": 1,
+      "direction": 1
+    }
+  },
+  "development_gate": {
+    "actual_censored_event_count_minimum": 1,
+    "all_predictions_and_metrics_finite": true,
+    "delta_rmse_reduction_vs_radiomap_minimum": 0.05,
+    "delta_rmse_reduction_vs_rf_erased_minimum": 0.05,
+    "every_selected_seed_delta_no_worse_than_map": true,
+    "minimum_usable_layouts": 3,
+    "no_tuning_after_development": true,
+    "p95_abs_maximum_ratio_to_map": 1.02,
+    "scalar_rmse_maximum_ratio_to_map": 1.02,
+    "selected_branch": "joint/regression byVAL only beforeDEV",
+    "stale_context_delta_relative_degradation_minimum": 0.05
+  },
+  "guards": {
+    "cache_logging_frozen_before_final_audit_seal": true,
+    "every_cache_hit_checks_source_capsule_and_allgate_dependency_bytes_membership": true,
+    "final_source_bound_passing_tests_required": true,
+    "full_original_numeric_raw_gate_before_firstTEST_and_before_finalaudit": true,
+    "intrinsic_byte_checked_gate_cache_before_science": true,
+    "source_and_protocol_remote_publication_before_RT_or_fit": true
+  },
+  "metrics": {
+    "condition_pairs": [
+      [
+        0,
+        1
+      ],
+      [
+        0,
+        2
+      ]
+    ],
+    "delta_cohort": "both reports heard at identical query pose/AP/band/direction/device; both pairs need>=1common query for usable layout",
+    "delta_rmse": "pool squared prediction-minus-target differences over two pairs withinlayout, then root; never assign censored pointtargets",
+    "detector_brier": "P(heard)=GaussianCDF((mean-detection_threshold_dbm)/std), using explicit threshold target metadata for bothheard andcensored; poolallknown events across3states; missing/unresolved excluded. Detection threshold never a model input.",
+    "main_inference_view": "a",
+    "pair_detection": "report bothheard/oneheard/bothcensored/missing counts, no invented joint-event probability",
+    "primary_regime": "sparse",
+    "scalar_rmse_and_p95": "pool heard errors across three conditions withinlayout",
+    "seed_aggregation": "compute each member metric first, arithmeticmean withinlayout; predictions never ensembled",
+    "statistical_unit": "whole geometry, three RFconditions nested",
+    "unavailable": "retain every geometry/case andcounts/reason; unavailable delta ifeitherpair lacksbothheard, no scene/support substitution"
+  },
+  "name": "adaptive-within-geometry-physical-RF-condition-study",
+  "neural": {
+    "alignment": "joint uncertainty-weighted same-state viewA/viewB posterior-mean agreement; exact regression disables alignment only",
+    "alignment_gradient_balance": {
+      "covariance_weight_detached": true,
+      "max_weight": 10.0,
+      "min_weight": 0.01,
+      "reference": "measurement RMS gradient wrt posterior means",
+      "target_fraction": 0.25
+    },
+    "available_training_cases": 72,
+    "batch_distinct_geometries": 24,
+    "branch_selection": "joint versus regression only; mean of three member VAL scores, canonical joint breaks exact ties",
+    "cells": [
+      "joint",
+      "regression",
+      "rf_erased",
+      "pure_geometry"
+    ],
+    "checkpoint": "minimum sparse VAL mean usable-layout condition-deltaRMSE; first epoch breaks ties",
+    "condition_sampling": "each update independently samples one of3conditions uniformly for each of24distinct TRAINlayouts, seeded NumPy stream matched acrosscells",
+    "distinct_training_geometries": 24,
+    "epochs": 60,
+    "fits": 12,
+    "learning_rate": 0.003,
+    "marginal_latent_prior": "none; no new prior selection grid",
+    "model": "physics beta8 approximate Gaussian posterior mean/covariance, geometry/set-attention prior, bounded localgeometry correction, three censored-likelihood update iterations",
+    "optimizer": "AdamW",
+    "physical_beta_dim": 8,
+    "prediction_ensembling": false,
+    "pure_geometry": "RF/status values erased and original observed-mask replaced with planned schedule; pure public geometry/knownTX metadata",
+    "regime_schedule": "update parity alternates full/sparse: foureach per epoch",
+    "rf_erased": "erase RF amplitude/value columns0/1 only; retain heard/censored status columns2/3 and reported availability mask. Strong RF-value-erased control, not pureCAD.",
+    "seeds": [
+      0,
+      1,
+      2
+    ],
+    "training_regimes": [
+      "full",
+      "sparse"
+    ],
+    "uncertainty_scope": "approximate Gaussian static RF field forecast, not packet or production risk",
+    "updates_per_epoch": 8,
+    "updates_per_fit": 480,
+    "weight_decay": 0.0001,
+    "width": 64
+  },
+  "previous_manifest_sha256": "53f329a2ce82d6498116fa098b1231ad31c5826be4435b4610c713701bcf598c",
+  "primary_tests": [
+    {
+      "candidate": "selected",
+      "metric": "delta_rmse_db",
+      "reference": "rf_erased",
+      "regime": "sparse",
+      "slot": 1
+    },
+    {
+      "candidate": "selected",
+      "metric": "delta_rmse_db",
+      "reference": "radiomap_operator",
+      "regime": "sparse",
+      "slot": 2
+    },
+    {
+      "candidate": "joint",
+      "metric": "delta_rmse_db",
+      "reference": "regression",
+      "regime": "sparse",
+      "slot": 3
+    },
+    {
+      "candidate": "selected",
+      "metric": "detector_brier",
+      "reference": "radiomap_operator",
+      "regime": "sparse",
+      "slot": 4
+    }
+  ],
+  "registry_sha256": "b4d58de02b830e0dde3a054a949c9459d0a7d1289ece91cb25f195e9d9ef3e50",
+  "scene_counts": {
+    "development": 4,
+    "test": 24,
+    "training": 24,
+    "validation": 6
+  },
+  "schema": 1,
+  "scope": {
+    "actual_sionna_rt": true,
+    "interference_mac_or_production_test": false,
+    "original_service_confirmation_permitted": false,
+    "production_qualified": false,
+    "real_hardware_measurements": false,
+    "static_isolated_channel_probes": true
+  },
+  "supplementary": [
+    "literal_frozen_old_joint_none_3members",
+    "full_context_regime",
+    "same_link_6GHz"
+  ]
+}

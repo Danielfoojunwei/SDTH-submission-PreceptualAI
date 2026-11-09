@@ -1,0 +1,45 @@
+{
+  "baseline": {
+    "heldband_or_helddevice_used": false,
+    "methods": [
+      "radiomap_operator",
+      "bayesian_operator"
+    ],
+    "new_fits_or_forward_passes": false,
+    "passes": true,
+    "training_cases": 72,
+    "training_layouts": 24
+  },
+  "fits": {
+    "checkpoint_data_checked_without_model_constructor": true,
+    "fits": 12,
+    "independent_seeds_per_cell": 3,
+    "updates_each": 480
+  },
+  "model_constructors_fits_forwards_or_RT_solves": 0,
+  "original_service_confirmation_opened": false,
+  "passes": true,
+  "previous": {
+    "evidence": 5161,
+    "manifest_sha256": "53f329a2ce82d6498116fa098b1231ad31c5826be4435b4610c713701bcf598c",
+    "original_service_confirmation_opened": false,
+    "sources": 475
+  },
+  "production_qualified": false,
+  "public_array_audit": {
+    "development": {
+      "neural_or_RT_calls": 0,
+      "prediction_records_replayed": 540,
+      "public_input_target_and_schedule_replay": true
+    },
+    "test": {
+      "neural_or_RT_calls": 0,
+      "prediction_records_replayed": 3240,
+      "public_input_target_and_schedule_replay": true
+    }
+  },
+  "schema": 1,
+  "selected_cell": "regression",
+  "source_receipt_sha256": "4bb2415118970fad4a95bbd4575d7ef799e10242faa168329d24f358ed75c3fc",
+  "test_opened": true
+}

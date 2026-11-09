@@ -1,45 +1,58 @@
 # WirelessJEV research handoff
 
-## Current: physics-structured RadioJEPA field validation
+## Current system and execution status
 
-[RESULTS.md](spectral_scene/RESULTS.md), [ARCHITECTURE.md](spectral_scene/ARCHITECTURE.md)
-and [REMAINING.md](spectral_scene/REMAINING.md) describe the current scene-model
-slice and its boundary with WirelessJEV. All **15 registered fits** and **84
-actual Sionna RT scenes** completed. On 24 independent FIELD geometries,
-spatial RF RMSE is **3.622 versus 4.843 dB** for the RadioMap control;
-p95 absolute error is **6.920 versus 9.500 dB**; same-link 6 GHz RMSE is
-**3.734 versus 4.604 dB**. All three declared RadioMap contrasts pass.
-The exact matched-regression comparison does not confirm alignment benefit
-(3.631 dB; candidate-minus-reference adjusted interval −0.078 to +0.063 dB).
-The RF-value-erased geometry/availability control is close at 3.660 dB.
+The canonical [architecture](research_status/CURRENT_SYSTEM.md) separates the
+experimental physical RF model from WirelessJEV's typed missions, bounded
+planning, independent gate and fallback. [The execution ledger](research_status/EXECUTION_LEDGER.md)
+records completed original E runs and the genuine remaining work. Original
+E1–E5 and corrected E7 have finished; E6 remains excluded. No interrupted
+original training worker needs restarting, and original large-model results
+still represent one training chain.
 
-The 475-file scientific source was published before generation/training;
-all 15 checkpoints were published before FIELD prediction. Preflight:
-**2,144 passed**, one expected multiprocessing warning. A separately
-published, byte-checked DEV-gate reuse wrapper has **36 passing tests** and
-preserves all scientific inputs, models, endpoints and original audit code.
-Its handoff and final uncached numerical gate checks are retained in
-`artifacts/radiojepa_spectral/operations/`. The passive audit passes all
-216 DEV and 1,296 FIELD prediction records without models, fitting or tracing.
+The [adaptive RF-condition report](research_status/ADAPTIVE_RESULTS.md) is
+complete: 12 fits, 174 Sionna RT cases and 24 TEST layouts. Validation selects
+regression, whose sparse condition-delta RMSE is **1.520106 versus 1.654205 dB**
+for RadioMap, with adjusted RF-dependence contrasts supported. Matched
+joint/JEPA is worse (**1.534382 dB**); pooled Bayes nearly ties (**1.524141 dB**);
+Brier benefit is unconfirmed. Canonical raw replays pass 540 DEV and
+3,240 TEST prediction records. The completed adaptive seal binds **504 source
+and 11,792 evidence files**. The [independent raw replay](../artifacts/adaptive_radio_review/result.json)
+also passes all 174 cases, 12 checkpoints, 3,780 forecast records and four
+adjusted intervals. The local Studio export is complete and reproducible through
+its documented CLI; do not restart completed fits, retune from TEST or open original SERVICE cases.
 
-Fast byte-closure checks use:
+The exact [E7 calibrated-map-to-planner diagnostic](research_status/E7_CALPLANNING_RESULTS.md)
+now also completes all 15 opened environments, 90 fits, 525 searches and 225
+paired outcomes, with sealed closure and independent audit. Better map RMSE
+produces mixed mean utility changes: **+0.03148 / −0.01072 / −0.00233** for
+nominal 1/5/15-minute tail-row fractions, with 7/7/9 environments harmed.
+These are descriptive oracle-conditioned analytical results, not chronological
+acquisition budgets, packet service or permission to change the default.
 
-```sh
-uv run --frozen python scripts/run_spectral_scene.py verify
-uv run --frozen python scripts/run_radiojepa.py verify
-```
+The [measured CSI result](research_status/CSI_RESULTS.md) is negative. The
+[native bridge](research_status/NATIVE_RESULTS.md) retains its completed 18
+simulations, adverse fast-handover result and 9.74-second recovery outlier.
+The [2.83× geometry-operand optimization](research_status/NATIVE_PERFORMANCE.md)
+changes neither those frozen outcomes nor full-model/service qualification.
+The [next-model design](research_status/NEXT_MODEL.md) is a proposal, not an
+implemented or validated remedy.
 
-The measured-power pilot and its negative result remain intact. The deferred
-observation-frontier workspace is unlaunched. Do not mutate either registered
-scientific namespace to retune a completed study. New experiments need their
-own source/data/selection protocol and fresh qualification evidence.
+The [read-only R6 bridge](research_status/R6_BRIDGE.md) invokes actual isolated
+upstream planning code with explicit service contracts and conservative journal
+views; unqualified RF outcomes defer. The [local Studio export](research_status/STUDIO_EXPORT.md)
+is reviewable; all 11 cards, including the sealed adaptive results, are complete.
+External Studio/deck publication has not occurred. The latest [tracked-suite receipt](../artifacts/research_review/release_suite.json)
+and [log](../artifacts/research_review/release_suite.log) record **2,655 passing
+tests**, one expected fork warning, 130 tracked test files and unchanged source
+hashes. R6/exporter checks are included, not additive scientific trials.
 
-The next research priorities are RF-dependent complex-CSI representations,
-dynamic observation filtering and calibrated service heads under the same
-native planner. Static heard-RSSI gains do not qualify those stages. All main
-FIELD queries here were heard; interference/deep fades were not tested.
-RadioMap remains the application default. The original 24 SERVICE layouts
-are still reserved; no car or AP settings were changed.
+**RadioMap + WirelessJEV remains the default.** The original 24 SERVICE layouts
+remain unopened. Dynamic event-time learning, supported risk heads, reliable
+local recovery, physical-device transfer and hardware access are real
+prerequisites in [REMAINING.md](research_status/REMAINING.md). The missing
+SmartCar archive/private route is still a hardware blocker; no radio was actuated.
+All frozen sources, reports and evidence remain unchanged.
 
 ## Pilot/fast-loop service package and matched forecast confirmation
 

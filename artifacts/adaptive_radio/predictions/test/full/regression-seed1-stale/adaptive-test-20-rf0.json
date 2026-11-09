@@ -1,0 +1,105 @@
+{
+  "metadata": {
+    "assay": "full",
+    "available": true,
+    "case_id": "adaptive-test-20-rf0",
+    "case_index": 60,
+    "cell": "regression",
+    "condition": 0,
+    "context_case_id": "adaptive-test-20-rf0",
+    "dependencies": {
+      "checkpoint": {
+        "path": "artifacts/adaptive_radio/checkpoints/regression-seed1.pt",
+        "sha256": "93571a50fae9afd5c219c5d8adbef5b46387c619f4db0f5978195913a295f3d7"
+      },
+      "examples": {
+        "path": "artifacts/adaptive_radio/data/test-full-main-stale.json",
+        "sha256": "d0a48c09d2952c2e63a66a4b57c0880681499584679c161b5799bd324e796f63"
+      },
+      "fit": {
+        "path": "artifacts/adaptive_radio/fits/regression-seed1.json",
+        "sha256": "5bd94cffcb2deaf2c064a40fb92d41a5a9473a46f04b0fd273205c8dfb2d065e"
+      },
+      "frontend": {
+        "path": "artifacts/adaptive_radio/data/frontend-training.json",
+        "sha256": "e523a774c027c2422d0295f91d0754a54f4544e27379c1e68aab90a7549abd65"
+      },
+      "stage": {
+        "path": "artifacts/adaptive_radio/rt_data/test.json",
+        "sha256": "efce7e5f2712edc2a8b423ab6945b381256252625ad30cc996d08098dad8131b"
+      }
+    },
+    "eligibility": {
+      "eligible": true,
+      "reason": null
+    },
+    "example_binding": {
+      "case_id": "adaptive-test-20-rf0",
+      "censored_a": 6,
+      "condition": 0,
+      "context_case_id": "adaptive-test-20-rf0",
+      "input_RF_identity_sha256": "432c2cf4bd64a12a8d70e556679f09a0d4939eb1478bf8b6524d25d2ebb068ed",
+      "layout_id": "adaptive-test-20",
+      "model_input_sha256": {
+        "context_a": "83ef25588f1401bb2ac44dc17f694c9e96bc9eba19f8b683ef393d6c0e8adfab",
+        "context_b": "b64c951871b54392948b59a587e460b6ea779cd1aa6d94169d169bd1e63f71d7",
+        "mask_a": "5f790e547bf15cec9dd02f38fba5a735166dfa22770b0eea89733c1b61f810c0",
+        "mask_b": "5f790e547bf15cec9dd02f38fba5a735166dfa22770b0eea89733c1b61f810c0",
+        "query": "923e6af8018010dcacec5d21f9fd4fdfe3084bcbd658461870d8616c67dd2de3",
+        "query_basis": "54e8b613ef35da0d6cadcc7cf134dcae7106762e2502c3ea45184584344d7009",
+        "query_fspl_dbm": "8674902d62e848a5a2073e4d576012eb62dcbacfe35101cd4393f3145b77a50c",
+        "query_offset_db": "5e40095073f37379f86d85d710a6683bdbd49f0c010d2d875168a1e57836602e",
+        "scheduled_mask_a": "5f790e547bf15cec9dd02f38fba5a735166dfa22770b0eea89733c1b61f810c0",
+        "scheduled_mask_b": "5f790e547bf15cec9dd02f38fba5a735166dfa22770b0eea89733c1b61f810c0"
+      },
+      "network_delivery_or_real_capture_timing_claimed": false,
+      "point_a": 18,
+      "regime": "full",
+      "scheduled_attempts_a": 24,
+      "scheduled_attempts_b": 24,
+      "sensed_known_a": 24,
+      "sensed_known_b": 24,
+      "stage": "test",
+      "stale_requested": true,
+      "target_RF_identity_sha256": "3646e9a650d45d38e679303096d4874678b4adc38ed634a9c8a2ef6f4988cf97",
+      "target_sha256": {
+        "censor_upper_dbm": "484f891b138c112d4c1e799edc7ce72a65e7ca23d58f43a0138297d04a961e83",
+        "censored": "0cee4c7013481fe97a51fac1eb2175e88c21fc26187678e38accfa39e247090c",
+        "center_dbm": "23123bbf89bc93f9cc0da4a629e61fc2558308363a03863981b195fb9a2c966e",
+        "detection_threshold_dbm": "ae569203dc6f2db01ec419a19358abaefb9344e59136a361658d35a9ba791989",
+        "heard": "b0767acfa28c9111eefe04f28dd768672ad168d5e93c59f303885c44fee9b116",
+        "lower_dbm": "ab6891165bef7e8af03335d70f87ede9d5ffdfaba57adebf3b48958ba06e3d6e",
+        "upper_dbm": "1851a0799872017c4768ed9d02eeaed8e5679d9cef55b9e9ec2b2c6f6659a0f7"
+      },
+      "unknown_or_withheld_a": 0
+    },
+    "held_band": false,
+    "identity": {
+      "protocol_sha256": "dfb6c7da4e9665081dd6660b7a1fafaa93ac83a592af90411874b5d46ee28352",
+      "registry_sha256": "b4d58de02b830e0dde3a054a949c9459d0a7d1289ece91cb25f195e9d9ef3e50",
+      "source_receipt_sha256": "4bb2415118970fad4a95bbd4575d7ef799e10242faa168329d24f358ed75c3fc"
+    },
+    "layout_id": "adaptive-test-20",
+    "member": "regression-seed1-stale",
+    "packet_or_production_risk": false,
+    "predictions_ensembled": false,
+    "regime": "full",
+    "seed": 1,
+    "source_view": "a",
+    "stage": "test",
+    "stale": true
+  },
+  "metrics": {
+    "censored_count": 56,
+    "detector_brier": 0.09602584215211597,
+    "finite": true,
+    "heard_count": 88,
+    "missing_count": 0,
+    "observation_nll": 1.7252824989611506,
+    "p95_abs_db": 6.895111083984375,
+    "rmse_db": 3.1553018707890264
+  },
+  "npz_path": "artifacts/adaptive_radio/predictions/test/full/regression-seed1-stale/adaptive-test-20-rf0.npz",
+  "npz_sha256": "8b77009ed3a545ee80383dce17b1d9f8fdc470464940e58450eec35d38dabd49",
+  "schema": 1
+}

@@ -1,0 +1,143 @@
+{
+  "candidate_actual_primary_moves": [
+    {
+      "robots": [
+        7
+      ],
+      "slot": 150,
+      "targets": [
+        3
+      ]
+    }
+  ],
+  "candidate_misses": 200,
+  "candidate_robot_delivered_scan_events": [
+    {
+      "complete_slot": 45,
+      "delivery_slot": 45,
+      "first_usable_decision": 1,
+      "heard": 8,
+      "measurement_slot": 35,
+      "payload_sha256": "962082bd45844cf95ccf4b69320c1ce91782381c7f1edf9d2596b554aa06cd19",
+      "robot": 7
+    }
+  ],
+  "candidate_robot_max_silence_ms": 9740,
+  "case_id": "dev-90473001-ho0.03",
+  "checkpoint_sha256": "03e7b5514c686014cb2ac207bad5c9d46685605bf6a50e2a939bfb8738cf85f2",
+  "control_sent_each": 240,
+  "first_forecast_AP3_5GHz": {
+    "archived_base_snr_db": -23.151649475097656,
+    "base_excludes_hidden_fading_and_blockage": true,
+    "model_output_std_db": 5.844145774841309,
+    "prediction_minus_base_db": 20.946197509765625,
+    "prediction_snr_db": -2.2054519653320312
+  },
+  "first_forecast_completion_slots": {
+    "candidate": 150,
+    "radiomap": 150
+  },
+  "frozen_mechanism_references": {
+    "src/wirelessjev/gate_repair/gate.py": "reactive_rescue returns ctx.eligible.copy()",
+    "src/wirelessjev/service_world/sim.py": "move_primary queues fast roams; cadence executes only after delivered control; native primary proposal TTL100slots"
+  },
+  "input_sha256": {
+    "artifacts/native_bridge/cases/dev-90473001-ho0.03/candidate_inputs_forecasts.npz": "60478cc1f64899bcfbd90abe4589e4d7fa503cdd9ccfae9ea76f93e78bac3f99",
+    "artifacts/native_bridge/cases/dev-90473001-ho0.03/native_result.json.gz": "cf1e97e68c8f1c125b5b58df11c8f81c4bb27b8f12ef8fbc593f8ad4973ca228",
+    "artifacts/native_bridge/verification/manifest.json": "4d9f95316d9e029365ed64d4b04e43128a49239c4115ebb8a6bb49f11c12aeb9",
+    "artifacts/native_bridge/worlds/90473001/world.npz": "dbb57e598c06e4d21c1feaee921c82c6cc4ec92b36e2bc84450172fef9d43415"
+  },
+  "last_candidate_control_delivery_slot_inferred_from_terminal_gap": 225,
+  "not_established": [
+    "No numerical causal decomposition of RF transfer error versus latency or later MCS decisions.",
+    "No new timing-only, observed-target-guard, local-recovery, or other counterfactual episode was executed.",
+    "This is a selected regression member; these outcomes cannot establish JEPA alignment benefit."
+  ],
+  "radiomap_episode_max_silence_ms": 240,
+  "radiomap_misses": 3,
+  "radiomap_robot_max_silence_ms": 90,
+  "robot_zero_based": 7,
+  "scope": "descriptive reconciliation of existing sealed native outputs; no new model or counterfactual execution",
+  "selected_cell": "regression",
+  "subsequent_recovery_proposals": [
+    {
+      "completion_slot": 393,
+      "current_ap": 3,
+      "eligibility_gate": true,
+      "eligible": true,
+      "forecast_decision": 3,
+      "proposed_ap": 0
+    },
+    {
+      "completion_slot": 480,
+      "current_ap": 3,
+      "eligibility_gate": true,
+      "eligible": true,
+      "forecast_decision": 4,
+      "proposed_ap": 0
+    },
+    {
+      "completion_slot": 582,
+      "current_ap": 3,
+      "eligibility_gate": true,
+      "eligible": true,
+      "forecast_decision": 5,
+      "proposed_ap": 0
+    },
+    {
+      "completion_slot": 680,
+      "current_ap": 3,
+      "eligibility_gate": true,
+      "eligible": true,
+      "forecast_decision": 6,
+      "proposed_ap": 0
+    },
+    {
+      "completion_slot": 782,
+      "current_ap": 3,
+      "eligibility_gate": true,
+      "eligible": true,
+      "forecast_decision": 7,
+      "proposed_ap": 0
+    },
+    {
+      "completion_slot": 880,
+      "current_ap": 3,
+      "eligibility_gate": true,
+      "eligible": true,
+      "forecast_decision": 8,
+      "proposed_ap": 0
+    },
+    {
+      "completion_slot": 983,
+      "current_ap": 3,
+      "eligibility_gate": true,
+      "eligible": true,
+      "forecast_decision": 9,
+      "proposed_ap": 0
+    },
+    {
+      "completion_slot": 1080,
+      "current_ap": 3,
+      "eligibility_gate": true,
+      "eligible": true,
+      "forecast_decision": 10,
+      "proposed_ap": 0
+    },
+    {
+      "completion_slot": 1179,
+      "current_ap": 3,
+      "eligibility_gate": true,
+      "eligible": true,
+      "forecast_decision": 11,
+      "proposed_ap": 0
+    }
+  ],
+  "supported_findings": [
+    "The initiating AP4-to-AP3 move occurred at1.50s, when both arms had identical first-forecast completion times.",
+    "Warm compute overruns therefore do not explain the initiating completion-time difference; they remain a separate observed overhead.",
+    "The stored RF forecast is optimistic about AP3 relative to the archived native base field; this comparison is not the full faded/blocked on-air signal.",
+    "Recovery proposals target AP0 from3.93s but no later move executes. Native fast-handover cadence requires a successful control delivery, and no delivery follows2.25s in this trace.",
+    "The configured reactive_rescue callback is eligibility pass-through, not an independently calibrated safety veto."
+  ]
+}

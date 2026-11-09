@@ -1,0 +1,26 @@
+{
+  "command": [
+    "uv",
+    "run",
+    "--frozen",
+    "pytest",
+    "-q",
+    "tests/research_export"
+  ],
+  "exit_code": 0,
+  "log_sha256": "a3a035c0a1954d50955063c38f419bc95528dad397e611a442da2a0ee0beafea",
+  "schema": 1,
+  "scope": "New exporter software fixtures only; no scientific benchmark, model forward or simulation; separate from archived2547 and R6software77.",
+  "source_after_sha256": {
+    "scripts/export_research_studio.py": "dce0e57466f26bc3145812ca66ff830423e7c54a8a73a8446d7c9ed86f8723fc",
+    "src/wirelessjev/research_export/__init__.py": "368605c3d6d8ab1450a85b6b41b3a6f7e0e2ba54c9d627653ccb3abc6b0ad616",
+    "src/wirelessjev/research_export/bundle.py": "0135a06cfb870e5e19fa57ad886e62cdd8f0f759eae75800ed59187296639880",
+    "tests/research_export/test_research_export.py": "04f3532f006dae17867446d9ef828f5deead12afdd5094d18f896e48764e99ac"
+  },
+  "source_before_sha256": {
+    "scripts/export_research_studio.py": "dce0e57466f26bc3145812ca66ff830423e7c54a8a73a8446d7c9ed86f8723fc",
+    "src/wirelessjev/research_export/__init__.py": "368605c3d6d8ab1450a85b6b41b3a6f7e0e2ba54c9d627653ccb3abc6b0ad616",
+    "src/wirelessjev/research_export/bundle.py": "0135a06cfb870e5e19fa57ad886e62cdd8f0f759eae75800ed59187296639880",
+    "tests/research_export/test_research_export.py": "04f3532f006dae17867446d9ef828f5deead12afdd5094d18f896e48764e99ac"
+  }
+}

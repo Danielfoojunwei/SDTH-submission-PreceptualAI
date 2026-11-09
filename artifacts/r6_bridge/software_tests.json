@@ -1,0 +1,138 @@
+{
+  "actuation_performed": false,
+  "command": [
+    "uv",
+    "run",
+    "--frozen",
+    "pytest",
+    "-q",
+    "tests/r6_bridge"
+  ],
+  "duration_seconds": 1.5209092310105916,
+  "existing_journal_constructors_called": false,
+  "exit_code": 0,
+  "frozen_source_maps_after": {
+    "adaptive_radio": {
+      "passes": true,
+      "registration_sha256": "4bb2415118970fad4a95bbd4575d7ef799e10242faa168329d24f358ed75c3fc",
+      "source_files": 504
+    },
+    "channel_scene": {
+      "passes": true,
+      "registration_sha256": "61cdc59fff59380a8d9ee187166a5d32bed825bdc82d0bc6b987d7c63824694e",
+      "source_files": 491
+    },
+    "device_transfer": {
+      "passes": true,
+      "registration_sha256": "58518698b0d20556fda35a4195ecedaedf07a76d0a734804a371fa0bb4573c60",
+      "source_files": 487
+    },
+    "native_bridge": {
+      "passes": true,
+      "registration_sha256": "d5ce592358e924448b3bac8b2afdb7dc1707f7318d22fefb2d65919d0a82e7c7",
+      "source_files": 512
+    },
+    "native_bridge_ops": {
+      "passes": true,
+      "registration_sha256": "ee257a587e2f11b640c90b6d0b430cc76e86692efc5a62dced66be9949d43acd",
+      "source_files": 5
+    },
+    "radiojepa": {
+      "passes": true,
+      "registration_sha256": "d689c3611c88e25311f2d592488130655500ccb8dde1ddeb24cd1c2330a645bf",
+      "source_files": 452
+    },
+    "radiojepa_spectral": {
+      "passes": true,
+      "registration_sha256": "d6ee331a43a88d492d38181b10ce2d84c95f84a2bd61b8360f6179d43d01e4a0",
+      "source_files": 475
+    }
+  },
+  "frozen_source_maps_before": {
+    "adaptive_radio": {
+      "passes": true,
+      "registration_sha256": "4bb2415118970fad4a95bbd4575d7ef799e10242faa168329d24f358ed75c3fc",
+      "source_files": 504
+    },
+    "channel_scene": {
+      "passes": true,
+      "registration_sha256": "61cdc59fff59380a8d9ee187166a5d32bed825bdc82d0bc6b987d7c63824694e",
+      "source_files": 491
+    },
+    "device_transfer": {
+      "passes": true,
+      "registration_sha256": "58518698b0d20556fda35a4195ecedaedf07a76d0a734804a371fa0bb4573c60",
+      "source_files": 487
+    },
+    "native_bridge": {
+      "passes": true,
+      "registration_sha256": "d5ce592358e924448b3bac8b2afdb7dc1707f7318d22fefb2d65919d0a82e7c7",
+      "source_files": 512
+    },
+    "native_bridge_ops": {
+      "passes": true,
+      "registration_sha256": "ee257a587e2f11b640c90b6d0b430cc76e86692efc5a62dced66be9949d43acd",
+      "source_files": 5
+    },
+    "radiojepa": {
+      "passes": true,
+      "registration_sha256": "d689c3611c88e25311f2d592488130655500ccb8dde1ddeb24cd1c2330a645bf",
+      "source_files": 452
+    },
+    "radiojepa_spectral": {
+      "passes": true,
+      "registration_sha256": "d6ee331a43a88d492d38181b10ce2d84c95f84a2bd61b8360f6179d43d01e4a0",
+      "source_files": 475
+    }
+  },
+  "hardware_network_calls": 0,
+  "log_path": "artifacts/r6_bridge/software_tests.log",
+  "log_sha256": "1f01b3959f19563222b7b01e912447518c5a6fcfa82c5df6e429dec903546871",
+  "model_forwards": 0,
+  "new_RF_cases": 0,
+  "new_packet_simulations": 0,
+  "production_qualified": false,
+  "schema": 1,
+  "scope": "actual pinned R6 planning/journal APIs exercised only with labelled temporary software fixtures; no scientific trial",
+  "source_sha256_after": {
+    "src/wirelessjev/r6_bridge/__init__.py": "a00fb23b8e00300253446068f5b182556dc71106b2b695d4c0c04eaa75352f02",
+    "src/wirelessjev/r6_bridge/_worker.py": "42c92371e1c3be236785a96e5f6a535ee9951ec35facb2a47aa39d3a17f0feb4",
+    "src/wirelessjev/r6_bridge/contracts.py": "3c04e1c439590c523513d03752b84e5e7761e6cd8d6d180b4510e1660b087a14",
+    "src/wirelessjev/r6_bridge/journal.py": "6ebf6b2f9275085b31224497b4a81a1925073c1c1663a0d4bc906b3cea0a4faf",
+    "src/wirelessjev/r6_bridge/preview.py": "a9fe902158f66f3956015d702f99817048120746177adb7c1fec1ef9831a6776",
+    "tests/r6_bridge/test_r6_bridge_journal.py": "2e2dbb19a60497e4004503db02435741d83e5dd03a86565be8a040debbff1c48",
+    "tests/r6_bridge/test_r6_bridge_preview.py": "72c7ee87929365504c1f890f9f597f49ebceb097f443d880e6d2a528274b6ce6"
+  },
+  "source_sha256_before": {
+    "src/wirelessjev/r6_bridge/__init__.py": "a00fb23b8e00300253446068f5b182556dc71106b2b695d4c0c04eaa75352f02",
+    "src/wirelessjev/r6_bridge/_worker.py": "42c92371e1c3be236785a96e5f6a535ee9951ec35facb2a47aa39d3a17f0feb4",
+    "src/wirelessjev/r6_bridge/contracts.py": "3c04e1c439590c523513d03752b84e5e7761e6cd8d6d180b4510e1660b087a14",
+    "src/wirelessjev/r6_bridge/journal.py": "6ebf6b2f9275085b31224497b4a81a1925073c1c1663a0d4bc906b3cea0a4faf",
+    "src/wirelessjev/r6_bridge/preview.py": "a9fe902158f66f3956015d702f99817048120746177adb7c1fec1ef9831a6776",
+    "tests/r6_bridge/test_r6_bridge_journal.py": "2e2dbb19a60497e4004503db02435741d83e5dd03a86565be8a040debbff1c48",
+    "tests/r6_bridge/test_r6_bridge_preview.py": "72c7ee87929365504c1f890f9f597f49ebceb097f443d880e6d2a528274b6ce6"
+  },
+  "tests_passed": 77,
+  "thread_limits": {
+    "MKL_NUM_THREADS": "1",
+    "OMP_NUM_THREADS": "1",
+    "OPENBLAS_NUM_THREADS": "1"
+  },
+  "upstream_commit": "a458a90d34fe559addb876a2a1c69213c6ecc968",
+  "upstream_sha256_after": {
+    "preceptual_r6/preceptual/__init__.py": "e7b2b0b6f063817623fcc37f284580a77b419694646e7f22358f5ed483fedfa0",
+    "preceptual_r6/preceptual/contracts.py": "ac9111e4408960ae268a412ad3531511cb224d4ce9caeb9e9f6c78a7e2e28514",
+    "preceptual_r6/preceptual/journal.py": "0b7fb6d18e47f590d0d714c3d485e627a3b3d0824d8ed947fd4daa56bfd691be",
+    "preceptual_r6/preceptual/mission_plan.py": "d003f59c4598fe9509ca623a101a642a0ba4ccfde7c9b8da5e02c7c81953150e",
+    "preceptual_r6/preceptual/planner.py": "80d3ccf0901dad11d031975f450241889b1ec726742cfa762c06dfbf50e367a1",
+    "preceptual_r6/preceptual/reservations.py": "0596050c5dfca64ab5f0a8443a0b33af51e06f4bf691453cc58ebb595314cfff"
+  },
+  "upstream_sha256_before": {
+    "preceptual_r6/preceptual/__init__.py": "e7b2b0b6f063817623fcc37f284580a77b419694646e7f22358f5ed483fedfa0",
+    "preceptual_r6/preceptual/contracts.py": "ac9111e4408960ae268a412ad3531511cb224d4ce9caeb9e9f6c78a7e2e28514",
+    "preceptual_r6/preceptual/journal.py": "0b7fb6d18e47f590d0d714c3d485e627a3b3d0824d8ed947fd4daa56bfd691be",
+    "preceptual_r6/preceptual/mission_plan.py": "d003f59c4598fe9509ca623a101a642a0ba4ccfde7c9b8da5e02c7c81953150e",
+    "preceptual_r6/preceptual/planner.py": "80d3ccf0901dad11d031975f450241889b1ec726742cfa762c06dfbf50e367a1",
+    "preceptual_r6/preceptual/reservations.py": "0596050c5dfca64ab5f0a8443a0b33af51e06f4bf691453cc58ebb595314cfff"
+  }
+}

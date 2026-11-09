@@ -1,0 +1,28 @@
+{
+  "command": [
+    "uv",
+    "run",
+    "--frozen",
+    "pytest",
+    "-q",
+    "tests/research_export"
+  ],
+  "exit_code": 0,
+  "log_sha256": "64c5b6193505bb9c57ec66aee092bae206d5b02e559a456546311d9e60e7d43d",
+  "schema": 1,
+  "scope": "New exporter software fixtures including standard-CLI regeneration; no scientific benchmark, model forward or simulation; separate from archived2547, dated2654 suite and R6software77.",
+  "source_after_sha256": {
+    "scripts/export_research_studio.py": "dce0e57466f26bc3145812ca66ff830423e7c54a8a73a8446d7c9ed86f8723fc",
+    "src/wirelessjev/research_export/__init__.py": "368605c3d6d8ab1450a85b6b41b3a6f7e0e2ba54c9d627653ccb3abc6b0ad616",
+    "src/wirelessjev/research_export/bundle.py": "e3f348e0103e36a4f6d8d7e045d3ef9bc8662b35b95471973095406fd5e2b071",
+    "tests/research_export/test_adaptive_regeneration.py": "78bf6944a68869cc212fd9c6c07c9c81f854d13970b36504bfff83493f94a5c0",
+    "tests/research_export/test_research_export.py": "37763be5b9022cf982f89eba217dad8dc47eac7fbd6c61cc1cf61d8a112d862c"
+  },
+  "source_before_sha256": {
+    "scripts/export_research_studio.py": "dce0e57466f26bc3145812ca66ff830423e7c54a8a73a8446d7c9ed86f8723fc",
+    "src/wirelessjev/research_export/__init__.py": "368605c3d6d8ab1450a85b6b41b3a6f7e0e2ba54c9d627653ccb3abc6b0ad616",
+    "src/wirelessjev/research_export/bundle.py": "e3f348e0103e36a4f6d8d7e045d3ef9bc8662b35b95471973095406fd5e2b071",
+    "tests/research_export/test_adaptive_regeneration.py": "78bf6944a68869cc212fd9c6c07c9c81f854d13970b36504bfff83493f94a5c0",
+    "tests/research_export/test_research_export.py": "37763be5b9022cf982f89eba217dad8dc47eac7fbd6c61cc1cf61d8a112d862c"
+  }
+}

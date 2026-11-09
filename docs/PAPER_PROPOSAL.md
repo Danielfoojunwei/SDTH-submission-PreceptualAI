@@ -2,19 +2,47 @@
 
 ## Current RadioJEPA evidence boundary
 
-The [physics-structured field study](spectral_scene/RESULTS.md) completes 15
-fits and 84 actual Sionna scenes. Across 24 FIELD layouts its spatial RF RMSE
-is 3.622 versus 4.843 dB for the RadioMap-operator control, with confirmed
-adjusted spatial, p95 and same-link 6 GHz contrasts. Exact matched regression
-achieves 3.631 dB, with no confirmed JEPA-alignment benefit; the RF-value-erased
-geometry/availability control achieves 3.660 dB. A paper can motivate the
-physics-inverse shared field architecture from this evidence. It cannot claim
-JEPA-objective superiority, rich RF dependence, universal foundation-model
-transfer, inference-compute superiority or fleet service from these results.
-All primary queries are audible static simulated channels. Complex CSI,
-dynamic interference, calibrated service heads and real-device confirmation
-remain separate experiments. [Architecture](spectral_scene/ARCHITECTURE.md)
-and the [remaining-work matrix](spectral_scene/REMAINING.md) define that scope.
+The [current architecture](research_status/CURRENT_SYSTEM.md) separates a
+reported-RF physical field model from WirelessJEV's typed missions, bounded
+planner and independent gate. The [adaptive assay](research_status/ADAPTIVE_RESULTS.md)
+now supplies evidence that current RF matters: across 24 TEST layouts,
+selected regression's sparse condition-delta RMSE is **1.520106 dB**, versus
+**1.885921** for RF-value-erased input and **1.654205** for RadioMap. The two
+registered, four-test-adjusted intervals exclude zero. These are
+whole-geometry comparisons conditional on three trained members, with three
+static material conditions nested per layout.
+
+The matched joint/JEPA branch is worse at **1.534382 dB**; its difference from
+regression has adjusted interval **[+0.003849, +0.027271] dB**. Pooled Bayes
+nearly ties the primary metric at **1.524141 dB** and beats selected regression
+on descriptive held-band point RMSE. Detector Brier benefit is unconfirmed.
+The canonical raw replays pass 540 DEV and 3,240 TEST records, and the
+completed adaptive seal binds **504 source and 11,792 evidence files**. The
+[independent raw replay](../artifacts/adaptive_radio_review/result.json) also
+passes all 174 cases, 12 checkpoints, 3,780 forecast records and four intervals.
+A paper can
+claim the registered conditional RF-adaptation gain with those boundaries.
+It cannot claim JEPA-objective superiority, specialist SOTA, physical-device
+transfer, learned temporal dynamics, inference-compute superiority or fleet
+service from this assay. [REMAINING.md](research_status/REMAINING.md) lists the
+genuine prerequisites.
+
+The [static field study](spectral_scene/RESULTS.md) retains its 3.622 versus
+4.843 dB RadioMap comparison and its near-ties with matched regression and
+RF-value-erased geometry/status inputs. [Measured CSI](research_status/CSI_RESULTS.md)
+is negative. The [native bridge](research_status/NATIVE_RESULTS.md) retains
+fast-handover harm, costly forecasts and recovery lockout. The now-complete
+[E7 calibration/planning comparison](research_status/E7_CALPLANNING_RESULTS.md)
+improves map RMSE but changes mean analytical utility by
+**+0.031479 / −0.010718 / −0.002326** at nominal 1/5/15 tail-row settings, with
+7/7/9 of 15 environments harmed. Its opened, oracle-conditioned cohort is a
+descriptive diagnostic, not default promotion or fresh confirmation.
+
+The [read-only R6 bridge](research_status/R6_BRIDGE.md) and
+[local evidence Studio](research_status/STUDIO_EXPORT.md) package explicit
+contracts and evidence without granting execution authority. The current
+[2,655-test tracked-suite proof](../artifacts/research_review/release_suite.json)
+is software validation; it adds no independent RF samples or hardware evidence.
 
 The warehouse-connectivity E1–E5 and corrected E7 experiments are complete
 for one synthetic training seed. E6 is excluded. The consolidated results and completion status
