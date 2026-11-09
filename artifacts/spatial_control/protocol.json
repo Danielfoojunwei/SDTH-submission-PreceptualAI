@@ -1,0 +1,257 @@
+{
+  "analysis": {
+    "all_arm_per_episode_results": true,
+    "confirmatory_p_values": false,
+    "contrasts": [
+      [
+        "regression",
+        "radiomap"
+      ],
+      [
+        "regression_support",
+        "regression"
+      ],
+      [
+        "regression_recovery",
+        "regression"
+      ],
+      [
+        "regression_both",
+        "regression"
+      ],
+      [
+        "radiomap_recovery",
+        "radiomap"
+      ],
+      [
+        "regression_both",
+        "radiomap_recovery"
+      ]
+    ],
+    "no_post_result_architecture_threshold_or_seed_changes": true,
+    "report_mean_and_harm_counts": true,
+    "unit": "four_episode_seeds_one_warehouse_family_per_handover"
+  },
+  "arms": [
+    "radiomap",
+    "radiomap_recovery",
+    "regression",
+    "regression_support",
+    "regression_recovery",
+    "regression_both"
+  ],
+  "cases": [
+    {
+      "handover_seconds": 0.03,
+      "id": "fresh-90511001-ho0.03",
+      "order": [
+        "radiomap",
+        "radiomap_recovery",
+        "regression",
+        "regression_support",
+        "regression_recovery",
+        "regression_both"
+      ],
+      "seed": 90511001
+    },
+    {
+      "handover_seconds": 4.0,
+      "id": "fresh-90511001-ho4",
+      "order": [
+        "radiomap_recovery",
+        "regression",
+        "regression_support",
+        "regression_recovery",
+        "regression_both",
+        "radiomap"
+      ],
+      "seed": 90511001
+    },
+    {
+      "handover_seconds": 0.03,
+      "id": "fresh-90511002-ho0.03",
+      "order": [
+        "radiomap_recovery",
+        "regression",
+        "regression_support",
+        "regression_recovery",
+        "regression_both",
+        "radiomap"
+      ],
+      "seed": 90511002
+    },
+    {
+      "handover_seconds": 4.0,
+      "id": "fresh-90511002-ho4",
+      "order": [
+        "regression",
+        "regression_support",
+        "regression_recovery",
+        "regression_both",
+        "radiomap",
+        "radiomap_recovery"
+      ],
+      "seed": 90511002
+    },
+    {
+      "handover_seconds": 0.03,
+      "id": "fresh-90511003-ho0.03",
+      "order": [
+        "regression",
+        "regression_support",
+        "regression_recovery",
+        "regression_both",
+        "radiomap",
+        "radiomap_recovery"
+      ],
+      "seed": 90511003
+    },
+    {
+      "handover_seconds": 4.0,
+      "id": "fresh-90511003-ho4",
+      "order": [
+        "regression_support",
+        "regression_recovery",
+        "regression_both",
+        "radiomap",
+        "radiomap_recovery",
+        "regression"
+      ],
+      "seed": 90511003
+    },
+    {
+      "handover_seconds": 0.03,
+      "id": "fresh-90511004-ho0.03",
+      "order": [
+        "regression_support",
+        "regression_recovery",
+        "regression_both",
+        "radiomap",
+        "radiomap_recovery",
+        "regression"
+      ],
+      "seed": 90511004
+    },
+    {
+      "handover_seconds": 4.0,
+      "id": "fresh-90511004-ho4",
+      "order": [
+        "regression_recovery",
+        "regression_both",
+        "radiomap",
+        "radiomap_recovery",
+        "regression",
+        "regression_support"
+      ],
+      "seed": 90511004
+    }
+  ],
+  "central": {
+    "all_handover_costs_require_delivery": true,
+    "creation_compute_budget_seconds": 0.1,
+    "creation_delay_slots": 10,
+    "delivered_packet_created_no_earlier_than_command": true,
+    "delivery_strictly_after_creation": true,
+    "same_target_does_not_renew_pending_command": true,
+    "ttl_slots_from_creation": 100
+  },
+  "default_changed": false,
+  "disabled_parity_simulations": 2,
+  "duration_seconds": 20,
+  "forecast": {
+    "charge_actual_overrun": true,
+    "profile_seconds": {
+      "cold": 1.0,
+      "refit": 1.0,
+      "warm": 0.25
+    },
+    "shared_extra_seconds": 0.5
+  },
+  "fresh_comparisons": 48,
+  "handover_seconds": [
+    0.03,
+    4.0
+  ],
+  "hardware_actions": 0,
+  "maximum_native_simulations": 50,
+  "operator": "byte_equivalent_band_shared_native_bridge_ops.query_operands_all_learned_arms",
+  "original_SERVICE_opened": false,
+  "parity": {
+    "handover_seconds": 0.03,
+    "original_and_new_disabled": true,
+    "profile_seconds": 4.0,
+    "seed": 90511001
+  },
+  "physics": {
+    "carriers_hz": [
+      2400000000.0,
+      5200000000.0,
+      6500000000.0
+    ],
+    "collision_lambda": 0.0,
+    "interference": false,
+    "lagged_measurement_requires_historical_association_and_receiver": true,
+    "last_control_estimate_held_between_valid_pilots": true,
+    "native_fading_blockage_contention_retained": true,
+    "physical_device_calibration": false,
+    "simulation_only": true,
+    "six_point_five_is_extrapolation": true
+  },
+  "production_qualified": false,
+  "purpose": "finite_fresh_spatial_support_and_local_recovery_diagnostic",
+  "recovery": {
+    "autonomous_scans_are_paid": true,
+    "backoff_seconds": 5.0,
+    "decision_delay_slots": 1,
+    "delayed_validation_batch_budget_seconds": 0.005,
+    "dwell_seconds": 5.0,
+    "explicit_simulated_preinstalled_local_authority": true,
+    "local_compute_budget_seconds": 0.005,
+    "margin_db": 8.0,
+    "margin_requires_fresh_current_measurement": true,
+    "max_scan_age_seconds": 5.0,
+    "minimum_heard_dbm": -75.0,
+    "next_tick_waits_for_actual_overrun_completion": true,
+    "own_completed_scans_and_current_pilots_only": true,
+    "realized_observations_equal": false,
+    "scan_seconds": 0.09,
+    "shared_scan_minimum_spacing_seconds": 5.0,
+    "silence_seconds": 0.2,
+    "unknown_current_uses_target_floor_without_invented_gain": true,
+    "warm_scan_exact_times_unknown_so_not_used_as_recovery_payloads": true
+  },
+  "robots": 100,
+  "schema": 1,
+  "seeds": [
+    90511001,
+    90511002,
+    90511003,
+    90511004
+  ],
+  "support": {
+    "additional_full_delivered_history_not_encoder_context": true,
+    "kind": "AP_neighbor_heuristic_not_packet_risk",
+    "latest_own_report_per_source_band": true,
+    "local_only_undelivered_reports_excluded_from_server_guard": true,
+    "max_age_seconds": 6.0,
+    "max_distance_m": 5.0,
+    "memory_build_charged_in_forecast": true,
+    "minimum_heard_dbm": -80.0,
+    "new_censor_never_resurrects_older_heard": true,
+    "new_server_deliveries_refreshed_at_admission": true,
+    "six_point_five_GHz_qualified": false,
+    "source_bands": [
+      0,
+      1
+    ]
+  },
+  "warm_history_seconds": 60,
+  "weights": {
+    "encoder_context_selection_unchanged": true,
+    "encoder_tokens": 64,
+    "new_fits": 0,
+    "seed": 0,
+    "selected_cell": "regression",
+    "selection": "completed_adaptive_VAL_only; no_native_selection"
+  }
+}
