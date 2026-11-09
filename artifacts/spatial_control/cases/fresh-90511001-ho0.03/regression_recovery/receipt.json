@@ -1,0 +1,77 @@
+{
+  "arm": "regression_recovery",
+  "arrays": {
+    "path": "artifacts/spatial_control/cases/fresh-90511001-ho0.03/regression_recovery/predictions_history.npz",
+    "sha256": "49516786cdc17b4ea4d92b3b2c8474d0c4f6509ae14fb265610e70fc012a8ff7"
+  },
+  "attempt": {
+    "path": "artifacts/spatial_control/cases/fresh-90511001-ho0.03/regression_recovery/attempt.json",
+    "sha256": "659ce0da291996829bc2720b3233eab3c462231b20501e964a1da342946c9a1a"
+  },
+  "canonical_validation": {
+    "causal_central": true,
+    "central_commands": 33,
+    "jobs": 20,
+    "local_requests": 11,
+    "passes": true,
+    "scope": "passive identity/clock arithmetic only; no service qualification"
+  },
+  "case": {
+    "handover_seconds": 0.03,
+    "id": "fresh-90511001-ho0.03",
+    "order": [
+      "radiomap",
+      "radiomap_recovery",
+      "regression",
+      "regression_support",
+      "regression_recovery",
+      "regression_both"
+    ],
+    "seed": 90511001
+  },
+  "default_changed": false,
+  "metrics": {
+    "actual_forecast_compute_seconds": 2.19346277997829,
+    "autonomous_scans": 2,
+    "bulk_mbps": 461.56844047582626,
+    "central_busy_forecast_skips": 0,
+    "central_handovers": 31,
+    "central_planning_cpu_seconds": 0.351676290971227,
+    "central_planning_overruns": 0,
+    "control_gap_p99_ms": 956.6000000000188,
+    "control_miss": 0.01625,
+    "control_miss_worst_decile": 0.07275000000000001,
+    "control_misses": 650,
+    "control_sent": 40000,
+    "end_pending_commands": 1,
+    "forecast_jobs_consumed": 20,
+    "local_busy_tick_skips": 1,
+    "local_decision_cpu_seconds": 0.26216982802725397,
+    "local_decision_overruns": 1,
+    "local_handovers": 4,
+    "local_validation_cpu_seconds": 0.0004821950278710574,
+    "local_validation_overruns": 0,
+    "maximum_silence_ms": 4580.0,
+    "observed_plus_pending_miss_fraction": 0.016275,
+    "paid_forecast_compute_seconds": 5.75,
+    "roams": 35,
+    "safety_stop_fraction": 0.016055,
+    "scan_interruption_seconds": 35.910000000000004,
+    "scans_started": 399,
+    "support_preparation_cpu_seconds": 0,
+    "support_vetoes": 0,
+    "video_on_time": 0.9660171613652816
+  },
+  "original_SERVICE_opened": false,
+  "parity_kernel": null,
+  "production_qualified": false,
+  "protocol_sha256": "d5d8702ba46bf7cbac2a21145570ee9b97d4f309c87c9e6f54622fa89d350e54",
+  "raw": {
+    "path": "artifacts/spatial_control/cases/fresh-90511001-ho0.03/regression_recovery/raw.json.gz",
+    "sha256": "c6f8c4daeb5916bf85f5fe67e477035cdd103eff6319095f5625c70335ab7f7b"
+  },
+  "simulation_only": true,
+  "simulations": 1,
+  "source_sha256": "349b94213bae3ff7c34b73ecccbdb3e2b803e72478a17d8be4a6da612d25e2fb",
+  "world_receipt_sha256": "4ec171ad07e06d5b4343c27046321f12105effd28d747eec7fe738705868c92c"
+}
