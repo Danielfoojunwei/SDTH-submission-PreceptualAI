@@ -1,0 +1,77 @@
+{
+  "arm": "radiomap",
+  "arrays": {
+    "path": "artifacts/spatial_control/cases/fresh-90511004-ho4/radiomap/predictions_history.npz",
+    "sha256": "d08a5cd991bc63044a350df53bb57b33a7999ac7976d297c24dccfc9ea409d15"
+  },
+  "attempt": {
+    "path": "artifacts/spatial_control/cases/fresh-90511004-ho4/radiomap/attempt.json",
+    "sha256": "9d0ee42773a8b0ca1637c14eb7e7c565d27ab2c4122061a056c85d59533dece7"
+  },
+  "canonical_validation": {
+    "causal_central": true,
+    "central_commands": 2,
+    "jobs": 20,
+    "local_requests": 0,
+    "passes": true,
+    "scope": "passive identity/clock arithmetic only; no service qualification"
+  },
+  "case": {
+    "handover_seconds": 4.0,
+    "id": "fresh-90511004-ho4",
+    "order": [
+      "regression_recovery",
+      "regression_both",
+      "radiomap",
+      "radiomap_recovery",
+      "regression",
+      "regression_support"
+    ],
+    "seed": 90511004
+  },
+  "default_changed": false,
+  "metrics": {
+    "actual_forecast_compute_seconds": 1.3884071589563973,
+    "autonomous_scans": 0,
+    "bulk_mbps": 447.0725246425953,
+    "central_busy_forecast_skips": 0,
+    "central_handovers": 2,
+    "central_planning_cpu_seconds": 0.375643250066787,
+    "central_planning_overruns": 0,
+    "control_gap_p99_ms": 1129.8000000000102,
+    "control_miss": 0.016175,
+    "control_miss_worst_decile": 0.06675,
+    "control_misses": 647,
+    "control_sent": 40000,
+    "end_pending_commands": 3,
+    "forecast_jobs_consumed": 20,
+    "local_busy_tick_skips": 0,
+    "local_decision_cpu_seconds": 0,
+    "local_decision_overruns": 0,
+    "local_handovers": 0,
+    "local_validation_cpu_seconds": 0,
+    "local_validation_overruns": 0,
+    "maximum_silence_ms": 3090.0,
+    "observed_plus_pending_miss_fraction": 0.01625,
+    "paid_forecast_compute_seconds": 5.75,
+    "roams": 2,
+    "safety_stop_fraction": 0.01033,
+    "scan_interruption_seconds": 35.910000000000004,
+    "scans_started": 399,
+    "support_preparation_cpu_seconds": 0,
+    "support_vetoes": 0,
+    "video_on_time": 0.882296502699232
+  },
+  "original_SERVICE_opened": false,
+  "parity_kernel": null,
+  "production_qualified": false,
+  "protocol_sha256": "d5d8702ba46bf7cbac2a21145570ee9b97d4f309c87c9e6f54622fa89d350e54",
+  "raw": {
+    "path": "artifacts/spatial_control/cases/fresh-90511004-ho4/radiomap/raw.json.gz",
+    "sha256": "741b073c3a38fdaabdeb52155224287702dd831b6c18dfd7faf24d3d80192d28"
+  },
+  "simulation_only": true,
+  "simulations": 1,
+  "source_sha256": "349b94213bae3ff7c34b73ecccbdb3e2b803e72478a17d8be4a6da612d25e2fb",
+  "world_receipt_sha256": "67473103809182e89e5a7697cb6d2e3b9e0a780327d47df73d0405f3e3ce7184"
+}
