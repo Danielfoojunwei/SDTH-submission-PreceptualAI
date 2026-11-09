@@ -13,6 +13,7 @@ import math
 import os
 from pathlib import Path
 import re
+from statistics import fmean
 
 
 ROOT=Path(__file__).resolve().parents[3]
@@ -202,6 +203,81 @@ def native(e):
             'RadioMap remains the default; no original SERVICE confirmation, hardware or production qualification.'])
 
 
+def adaptive_summary(e,seal,report):
+    """Reconcile paired contrasts and exact non-stale members for presentation.
+
+    This averages already sealed scalar metrics. It never recomputes a model
+    output, adds a scientific case, or combines a stale control with its cell.
+    """
+    required={'selected_cell','contrasts','evaluation','registered_test_geometries'}
+    if not required<=set(report) or report['selected_cell']!='regression' or len(report['contrasts'])!=4:
+        raise ValueError('Adaptive presentation requires the complete registered report schema')
+    def contrast(candidate,reference,metric):
+        matches=[x for x in report['contrasts'] if x['candidate']==candidate and x['reference']==reference
+            and x['metric']==metric and x['regime']=='sparse']
+        if len(matches)!=1:raise ValueError('Adaptive contrast identity or membership changed')
+        return matches[0]
+    primary=contrast('selected','radiomap_operator','delta_rmse_db')
+    erased=contrast('selected','rf_erased','delta_rmse_db')
+    joint=contrast('joint','regression','delta_rmse_db')
+    brier=contrast('selected','radiomap_operator','detector_brier')
+    ref=report['evaluation'];evaluation=e.report(ref['path'],seal)
+    if e.sources[ref['path']]!=ref['sha256']:raise ValueError('Adaptive evaluation receipt hash changed')
+    members=evaluation['members']['sparse'];count=report['registered_test_geometries']
+    if count!=24:raise ValueError('Retain the24 registered adaptive TEST geometries')
+    exact_ids={};common_layouts=None
+    def layouts(member):
+        rows=member['layouts']
+        values={x['layout_id']:x['delta_rmse_db'] for x in rows if x['delta_available'] is True}
+        if (len(rows)!=count or len(values)!=count
+                or any(not math.isfinite(x) or x<0 for x in values.values())):
+            raise ValueError('Adaptive descriptive summary must retain all24 usable layout metrics')
+        return values
+    def cell_mean(cell):
+        ids=[f'{cell}-seed{seed}' for seed in (0,1,2)];exact_ids[cell]=ids;cohorts=[]
+        for seed,name in enumerate(ids):
+            member=members[name]
+            if member['cell']!=cell or type(member['seed']) is not int or member['seed']!=seed or member['stale'] is not False:
+                raise ValueError('Use exact non-stale cell/seed identities for adaptive summaries')
+            cohorts.append(layouts(member))
+        if any(set(x)!=set(cohorts[0]) for x in cohorts):raise ValueError('Adaptive seed cohorts differ')
+        return fmean(fmean(x[layout] for x in cohorts) for layout in sorted(cohorts[0])),set(cohorts[0])
+    means={}
+    for cell in ('regression','joint','rf_erased'):
+        means[cell],identities=cell_mean(cell)
+        if common_layouts is None:common_layouts=identities
+        elif common_layouts!=identities:raise ValueError('Adaptive cell layout identities differ')
+    bayes=members['bayesian_operator']
+    if bayes['cell']!='bayesian_operator' or bayes['seed'] is not None or bayes['stale'] is not False:
+        raise ValueError('Use the fixed non-stale Bayesian reference')
+    bayes_layouts=layouts(bayes)
+    if set(bayes_layouts)!=common_layouts:raise ValueError('Bayesian layout cohort differs')
+    means['bayesian_operator']=fmean(bayes_layouts.values())
+    for actual,recorded in ((means['regression'],primary['statistics']['candidate_mean']),
+            (means['regression'],erased['statistics']['candidate_mean']),
+            (means['joint'],joint['statistics']['candidate_mean']),
+            (means['regression'],joint['statistics']['reference_mean']),
+            (means['rf_erased'],erased['statistics']['reference_mean'])):
+        if not math.isclose(actual,recorded,rel_tol=1.e-12,abs_tol=1.e-12):
+            raise ValueError('Adaptive exact-member means disagree with registered contrasts')
+    reference=primary['statistics']['reference_mean'];candidate=means['regression']
+    if not math.isfinite(reference) or reference<=0:raise ValueError('Positive finite primary reference required')
+    gain=100*(reference-candidate)/reference
+    interval=brier['statistics']['adjusted_interval']
+    if len(interval)!=2 or not all(math.isfinite(x) for x in interval) or interval[0]>interval[1]:
+        raise ValueError('Finite ordered Brier contrast interval required')
+    return {'presentation_summary':{'primary_metric':'delta_rmse_db','regime':'sparse',
+        'candidate_cell':'regression','layouts':count,'candidate_delta_rmse_db':candidate,
+        'radiomap_delta_rmse_db':reference,'relative_gain_percent':gain,
+        'bayesian_delta_rmse_db':means['bayesian_operator'],'joint_delta_rmse_db':means['joint'],
+        'rf_erased_delta_rmse_db':means['rf_erased'],'brier_adjusted_interval':interval,
+        'relative_gain_formula':'100*(RadioMap deltaRMSE-regression deltaRMSE)/RadioMap deltaRMSE',
+        'evaluation_path':ref['path'],'evaluation_sha256':ref['sha256']},
+        'descriptive_sparse_delta_rmse':{'mean_db':means,'layouts':count,
+            'exact_member_ids':exact_ids,'reference_member_id':'bayesian_operator','stale_members_excluded':True,
+            'aggregation':'Seed metrics averaged within each layout, then24 whole-layout means; not prediction ensembling.'}}
+
+
 def adaptive(e):
     name='artifacts/adaptive_radio/verification/manifest.json'
     if not e.path(name).exists():
@@ -212,6 +288,7 @@ def adaptive(e):
     seal,proof=e.seal(name);r=e.report('artifacts/adaptive_radio/report.json',seal)
     # Preserve the real report schema/negative contrasts; omit repeated hash maps.
     metrics={k:v for k,v in r.items() if k not in ('source_sha256','evidence_sha256')}
+    metrics.update(adaptive_summary(e,seal,r))
     return track('Adaptive reported-RF assay','sionna_simulation','sealed',proof=proof,
         scope='Static condition changes with reported/censored inputs; not learned temporal dynamics',
         units={'rf_error':'dB','condition_delta_error':'dB; distinct from absolute RF RMSE'},metrics=metrics,
@@ -456,6 +533,15 @@ def view_fields(key,value):
             row=m['summary']['15'];headline=f"Δutility {row['mean_environment_utility_delta']:+.4f} · nominal 15-tail"
             findings=[f"15-tail: {row['environment_harms']}/15 environment harms; {row['mission_pair_harms']}/75 mission-pair harms. All three nominal budgets remain in the metrics.",
                 'Both arms use oracle metadata and legacy starts; analytical utility is not packet-service qualification.']
+    elif key=='adaptive_rf' and value['status']=='sealed':
+        row=m['presentation_summary'];gain=row['relative_gain_percent']
+        headline=f'{abs(gain):.1f}% '+('lower' if gain>=0 else 'higher')+' RF-change error'
+        interval=row['brier_adjusted_interval']
+        brier_note='Brier interval crosses zero' if interval[0]<=0<=interval[1] else 'Brier contrast remains separately reported'
+        joint_note='is worse' if row['joint_delta_rmse_db']>row['candidate_delta_rmse_db'] else 'does not establish a unique objective gain'
+        findings=[f"Regression {row['candidate_delta_rmse_db']:.3f} vs RadioMap {row['radiomap_delta_rmse_db']:.3f} dB on24 TEST layouts; Bayes {row['bayesian_delta_rmse_db']:.3f} dB nearly ties.",
+            f"Joint {row['joint_delta_rmse_db']:.3f} dB {joint_note}; {brier_note}. Native fast handover still harms4/4 cases—no JEPA/SOTA or service qualification."]
+        findings=[x.replace('on24','on 24').replace('harms4/4','harms 4/4') for x in findings]
     else:
         headline='Final sealed result pending' if value['status']=='pending_seal' else 'Sealed reported-RF assay'
         findings=value['limits'][:2]

@@ -83,8 +83,8 @@ def test_completed_adaptive_report_must_be_in_verified_seal(tmp_path):
     report=put(tmp_path,'artifacts/adaptive_radio/report.json',{'selected_cell':'regression','test_error':3.})
     put(tmp_path,'artifacts/adaptive_radio/verification/manifest.json',
         {'source_sha256':{'src/source.py':source},'evidence_sha256':{'artifacts/adaptive_radio/report.json':report}})
-    result=b.adaptive(b.Evidence(tmp_path))
-    assert result['status']=='sealed' and result['metrics']['selected_cell']=='regression'
+    with pytest.raises(ValueError,match='complete registered report schema'):
+        b.adaptive(b.Evidence(tmp_path))
 
 
 def test_whole_suite_count_comes_from_bound_log_and_keeps_scope(tmp_path):
