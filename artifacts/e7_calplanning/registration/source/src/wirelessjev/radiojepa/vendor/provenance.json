@@ -1,0 +1,48 @@
+{
+  "schema": 1,
+  "repository": "https://github.com/galilai-group/stable-pretraining",
+  "commit": "ab836bf699a2be712dfcf980a5eb70d36391e876",
+  "license": "MIT",
+  "license_sha256": "8fa02eaa4e67a5455e8ab9268b29e0c283d4b4a5ae239f88282c00392f373bfd",
+  "components": {
+    "EppsPulley": {
+      "source_path": "stable_pretraining/methods/lejepa.py",
+      "source_file_sha256": "54099fe163ae8d3d994af71192c25972f1eee16b80e32e5417f08b1817d66a86",
+      "exact_source_segment_sha256": "59044b2e47ddee7d6789f6671967c3f49b29c9985940467eaec59b8c430b7f76"
+    },
+    "SlicedEppsPulley": {
+      "source_path": "stable_pretraining/methods/lejepa.py",
+      "source_file_sha256": "54099fe163ae8d3d994af71192c25972f1eee16b80e32e5417f08b1817d66a86",
+      "exact_source_segment_sha256": "6b97a3c5baa531eb9d2064183e05c2c0f5819abcfe99d56ac3948483ffaab7ce"
+    },
+    "is_dist_avail_and_initialized": {
+      "source_path": "stable_pretraining/utils/distributed.py",
+      "source_file_sha256": "d5ddea14c9fa8a1988ca7f81e7630869244278404e85c309a6a022fb4addc00c",
+      "exact_source_segment_sha256": "19a7a050ad3efdd2cbf3f409ff0512cb2262a09149b9eca16e7184c27bcb344e"
+    },
+    "all_gather": {
+      "source_path": "stable_pretraining/utils/distributed.py",
+      "source_file_sha256": "d5ddea14c9fa8a1988ca7f81e7630869244278404e85c309a6a022fb4addc00c",
+      "exact_source_segment_sha256": "2b3a8ff565e2ac88a40ad5d17df8b0a23257554982362440065c587f16d8d71e"
+    },
+    "off_diagonal": {
+      "source_path": "stable_pretraining/losses/utils.py",
+      "source_file_sha256": "cd77675f27a26b44dcbeebb65a7aee883d1e2e008f36f3411b82c5226aadc14a",
+      "exact_source_segment_sha256": "72b8c39d040825497b5d1fe80586e9fbe490682a7b66d83fcb0d1e08d40c8fb9"
+    },
+    "VCRegLoss": {
+      "source_path": "stable_pretraining/losses/utils.py",
+      "source_file_sha256": "cd77675f27a26b44dcbeebb65a7aee883d1e2e008f36f3411b82c5226aadc14a",
+      "exact_source_segment_sha256": "f97e77d815548d2bc6791a9fdc28cf6b1b4a400e1633ec3b1aeb70356c388cff"
+    }
+  },
+  "vendored_files_sha256": {
+    "sigreg.py": "2b5c01ec8b7b1ef00764e08309b354c98b7a9de29991d9ef256626b278387524",
+    "vicreg.py": "638a8fda8031fae5fa60283bc01458f2513f53fc630574dce54ccdeae7346bf6",
+    "LICENSE": "8fa02eaa4e67a5455e8ab9268b29e0c283d4b4a5ae239f88282c00392f373bfd"
+  },
+  "changes": "Exact AST source segments; imports isolated. VCReg invalid-shape logger uses stdlib logging. No training lifecycle, optimizer or run orchestration copied.",
+  "scope": "CPU/single-process regularization; distributed training is rejected by the RadioJEPA wrapper pending separate qualification.",
+  "configured_SIGReg_num_slices": 64,
+  "upstream_default_num_slices": 1024
+}

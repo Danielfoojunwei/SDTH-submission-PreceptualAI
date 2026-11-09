@@ -1,0 +1,102 @@
+{
+  "all_harms_and_signed_gaps_retained": true,
+  "automatic_repeat_after_interrupted_attempt": false,
+  "budget_semantics": "nominal1/5/15minute nested flattened TAIL-ROW fractions of one15minute survey, NOT chronological prefixes or elapsed-budget guarantees",
+  "budgets": [
+    1,
+    5,
+    15
+  ],
+  "calibrator": "CalibratedMap(geometry=True,censored=True) from exact pinned docs/experiments/e7_calibration_study.py",
+  "default_changed": false,
+  "finite_budget": {
+    "belief_searches": 450,
+    "environment_units": 15,
+    "map_fits": 90,
+    "maximum_search_iterations": 21000,
+    "paired_rows": 225,
+    "total_searches": 525,
+    "truth_reference_searches": 75
+  },
+  "iid_mission_or_robot_significance_claim": false,
+  "map": {
+    "D": 200,
+    "kappa": 0.0,
+    "length_m": 8.0,
+    "noise_std_db": 4.0,
+    "prior_std_db": 8.0
+  },
+  "missions": [
+    "teleop_assist",
+    "peak_picking",
+    "map_rollout",
+    "shift_fairness",
+    "scanner_coexistence"
+  ],
+  "original_SERVICE_holdouts_permitted": false,
+  "packet_ns3_SLA_or_hardware_endpoint": false,
+  "planner": {
+    "handover_seconds": 4.0,
+    "max_iter": 40,
+    "multi": true,
+    "reference": "bounded truth-informed local search, not global optimum",
+    "screen_iters": 1,
+    "starts": [
+      "current",
+      "shared_truth_legacy"
+    ],
+    "utility_horizon_seconds": 30.0
+  },
+  "primary": "per-environment mean over5missions of truth utility(candidate)-truth utility(v2), separately by budget",
+  "private_scoring_only": [
+    "true current/future UL/DL",
+    "hidden walls/materials/propagation",
+    "true external noise",
+    "future forklift blockage"
+  ],
+  "production_qualified": false,
+  "public_map_inputs": [
+    "AP XY/band/TX",
+    "assumed-known AP height",
+    "nominal warehouse racks",
+    "reported RSSI/censor bounds"
+  ],
+  "robots": 100,
+  "schema": 1,
+  "scope": "ORACLE-CONDITIONED DESCRIPTIVE; previously opened environment seeds; not deployable qualification",
+  "seeds": [
+    15,
+    16,
+    17,
+    18,
+    19,
+    20,
+    21,
+    22,
+    23,
+    24,
+    25,
+    26,
+    27,
+    28,
+    29
+  ],
+  "shared_ORACLE_metadata": [
+    "truth-derived top8 visible action masks",
+    "contention domains, interferer graph and truth-configured adjacent-channel leakage matrix",
+    "protected-channel flags",
+    "legacy-policy starting plan; current associations"
+  ],
+  "snapshots_seconds": [
+    0,
+    10,
+    20
+  ],
+  "step_seconds": 5,
+  "survey_steps": 180,
+  "telemetry": "same legacy tail fractions for RSSI/censor/link-MCS-floor/busy; no record timestamps exist",
+  "variants": [
+    "corrected_v2",
+    "geometry_censored"
+  ]
+}
