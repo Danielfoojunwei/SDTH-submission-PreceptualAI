@@ -1,0 +1,54 @@
+jit_init(): could not use "/home/agent/.drjit" as the kernel cache directory, the disk cache is disabled.
+jit_init(): could not use "/home/agent/.drjit" as the kernel cache directory, the disk cache is disabled.
+jit_init(): could not use "/home/agent/.drjit" as the kernel cache directory, the disk cache is disabled.
+jit_init(): could not use "/home/agent/.drjit" as the kernel cache directory, the disk cache is disabled.
+jit_init(): could not use "/home/agent/.drjit" as the kernel cache directory, the disk cache is disabled.
+jit_init(): could not use "/home/agent/.drjit" as the kernel cache directory, the disk cache is disabled.
+jit_init(): could not use "/home/agent/.drjit" as the kernel cache directory, the disk cache is disabled.
+jit_init(): could not use "/home/agent/.drjit" as the kernel cache directory, the disk cache is disabled.
+Traceback (most recent call last):
+  File "/workspace/SDTH-submission-PreceptualAI/scripts/run_spectral_scene.py", line 29, in <module>
+    if __name__=='__main__':main()
+                            ^^^^^^
+  File "/workspace/SDTH-submission-PreceptualAI/scripts/run_spectral_scene.py", line 15, in main
+    elif args.action=='run':value=study.run(args.workers)
+                                  ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/SDTH-submission-PreceptualAI/src/wirelessjev/spectral_scene/study.py", line 575, in run
+    collect_stage('field_test',workers);evaluate_stage('field_test');write_field_results()
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/SDTH-submission-PreceptualAI/src/wirelessjev/spectral_scene/study.py", line 101, in collect_stage
+    return validate_stage(stage)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/SDTH-submission-PreceptualAI/src/wirelessjev/spectral_scene/study.py", line 77, in validate_stage
+    spec=c.field_spec(stage,i);folder=c.rt_scene_path(stage,i)
+                                      ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/SDTH-submission-PreceptualAI/src/wirelessjev/spectral_scene/common.py", line 174, in rt_scene_path
+    if stage=='field_test':authorize_stage(stage)
+                           ^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/SDTH-submission-PreceptualAI/src/wirelessjev/spectral_scene/common.py", line 295, in authorize_stage
+    gate=study.verified_development()
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/SDTH-submission-PreceptualAI/src/wirelessjev/spectral_scene/study.py", line 504, in verified_development
+    with passive_guard():verify_public_arrays('development')
+                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/SDTH-submission-PreceptualAI/src/wirelessjev/spectral_scene/verification.py", line 89, in verify_public_arrays
+    examples=study._examples(stage,regime)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/SDTH-submission-PreceptualAI/src/wirelessjev/spectral_scene/study.py", line 194, in _examples
+    scene=data.load_scene(stage,index,role=role)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/SDTH-submission-PreceptualAI/src/wirelessjev/spectral_scene/data.py", line 182, in load_scene
+    c=_common();c.check_sources();c.authorize_stage(stage)
+                                  ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/SDTH-submission-PreceptualAI/src/wirelessjev/spectral_scene/common.py", line 289, in authorize_stage
+    check_sources()
+  File "/workspace/SDTH-submission-PreceptualAI/src/wirelessjev/spectral_scene/common.py", line 240, in check_sources
+    if digest(safe_path(name,capsule))!=expected:raise RuntimeError('Spectral source capsule bytes changed')
+       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/SDTH-submission-PreceptualAI/src/wirelessjev/spectral_scene/common.py", line 33, in digest
+    with Path(path).open('rb') as stream:
+         ^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/pathlib.py", line 1013, in open
+    return io.open(self, mode, buffering, encoding, errors, newline)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+KeyboardInterrupt
