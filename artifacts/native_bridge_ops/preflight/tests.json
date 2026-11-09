@@ -1,0 +1,32 @@
+{
+  "actual_plan_arrays_opened": false,
+  "command": [
+    "uv",
+    "run",
+    "--frozen",
+    "pytest",
+    "-q",
+    "tests/native_bridge_ops"
+  ],
+  "exit_code": 0,
+  "frozen_native_manifest_sha256": "4d9f95316d9e029365ed64d4b04e43128a49239c4115ebb8a6bb49f11c12aeb9",
+  "source_sha256_after": {
+    "artifacts/native_bridge_ops/protocol.json": "f427e370021bee9a1c65d5a5ecc3c6594e2d68f75cfc1d3ac867f8a596a2cfe4",
+    "src/wirelessjev/native_bridge_ops/__init__.py": "a309d646e24515c1f2376b4f7263d135fa1107253e915a6f3344076d5f353d14",
+    "src/wirelessjev/native_bridge_ops/operators.py": "fdc3beb8773bc6c56700694344595365d9e4dbbd9ec0e0bcc09b00db0d3f30df",
+    "src/wirelessjev/native_bridge_ops/profile.py": "7612fafdec0479327b73f34b583f70253f4726adaf4b7dce5473c86c3998a419",
+    "tests/native_bridge_ops/test_native_bridge_ops.py": "1b4549ef43f08cfc4c46ae1b70109765ab79ed2b435e4976e8d50d0597e1412e"
+  },
+  "source_sha256_before": {
+    "artifacts/native_bridge_ops/protocol.json": "f427e370021bee9a1c65d5a5ecc3c6594e2d68f75cfc1d3ac867f8a596a2cfe4",
+    "src/wirelessjev/native_bridge_ops/__init__.py": "a309d646e24515c1f2376b4f7263d135fa1107253e915a6f3344076d5f353d14",
+    "src/wirelessjev/native_bridge_ops/operators.py": "fdc3beb8773bc6c56700694344595365d9e4dbbd9ec0e0bcc09b00db0d3f30df",
+    "src/wirelessjev/native_bridge_ops/profile.py": "7612fafdec0479327b73f34b583f70253f4726adaf4b7dce5473c86c3998a419",
+    "tests/native_bridge_ops/test_native_bridge_ops.py": "1b4549ef43f08cfc4c46ae1b70109765ab79ed2b435e4976e8d50d0597e1412e"
+  },
+  "test_output": {
+    "path": "artifacts/native_bridge_ops/preflight/tests.log",
+    "sha256": "ece54ea2b0dad78f2370a37294cc3f1fa67ca71f498c0be5da8c041b48f7093b"
+  },
+  "timing_calls": 0
+}

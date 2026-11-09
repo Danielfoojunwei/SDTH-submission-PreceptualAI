@@ -1,0 +1,164 @@
+{
+  "allowed_geometry_keys": [
+    "sites",
+    "tx_dl",
+    "noise_db"
+  ],
+  "clock": "time.perf_counter_ns; operands only, excluding input I/O, parity checks and registration/byte verification",
+  "forbidden": [
+    "new_world",
+    "packet_simulation",
+    "model_forward",
+    "training",
+    "RF_array_access",
+    "observation_array_access",
+    "native_runner_modification",
+    "SLA_or_service_improvement_claim"
+  ],
+  "frozen_native_manifest": {
+    "path": "artifacts/native_bridge/verification/manifest.json",
+    "sha256": "4d9f95316d9e029365ed64d4b04e43128a49239c4115ebb8a6bb49f11c12aeb9"
+  },
+  "geometry_work": {
+    "full_queries_per_call": 43200,
+    "rack_boxes": 33,
+    "reference_AABB_links_per_call": 43200,
+    "reuse_AABB_links_per_call": 14400
+  },
+  "inputs": [
+    {
+      "candidate_archive": {
+        "path": "artifacts/native_bridge/cases/dev-90473001-ho0.03/candidate_inputs_forecasts.npz",
+        "sha256": "60478cc1f64899bcfbd90abe4589e4d7fa503cdd9ccfae9ea76f93e78bac3f99"
+      },
+      "case_id": "dev-90473001-ho0.03",
+      "plan_keys": [
+        "job0_plan",
+        "job1_plan",
+        "job2_plan",
+        "job3_plan",
+        "job4_plan",
+        "job5_plan",
+        "job6_plan",
+        "job7_plan",
+        "job8_plan",
+        "job9_plan",
+        "job10_plan",
+        "job11_plan"
+      ],
+      "public_geometry_archive": {
+        "path": "artifacts/native_bridge/worlds/90473001/world.npz",
+        "sha256": "dbb57e598c06e4d21c1feaee921c82c6cc4ec92b36e2bc84450172fef9d43415"
+      }
+    },
+    {
+      "candidate_archive": {
+        "path": "artifacts/native_bridge/cases/dev-90473002-ho0.03/candidate_inputs_forecasts.npz",
+        "sha256": "edb91883ab9c557d6b891885a32468fe841b8c24a0ebd66f57998c29454f27be"
+      },
+      "case_id": "dev-90473002-ho0.03",
+      "plan_keys": [
+        "job0_plan",
+        "job1_plan",
+        "job2_plan",
+        "job3_plan",
+        "job4_plan",
+        "job5_plan",
+        "job6_plan",
+        "job7_plan",
+        "job8_plan",
+        "job9_plan",
+        "job10_plan",
+        "job11_plan"
+      ],
+      "public_geometry_archive": {
+        "path": "artifacts/native_bridge/worlds/90473002/world.npz",
+        "sha256": "ead86bfdb89cf3f41b40fa4ab26d61e8d068b64fc3dcf37862fe3be14095765c"
+      }
+    },
+    {
+      "candidate_archive": {
+        "path": "artifacts/native_bridge/cases/dev-90473003-ho0.03/candidate_inputs_forecasts.npz",
+        "sha256": "8a3b01bbd9ddefb608171b0c98a0e423a522308b5870a814786de23c7649b45f"
+      },
+      "case_id": "dev-90473003-ho0.03",
+      "plan_keys": [
+        "job0_plan",
+        "job1_plan",
+        "job2_plan",
+        "job3_plan",
+        "job4_plan",
+        "job5_plan",
+        "job6_plan",
+        "job7_plan",
+        "job8_plan",
+        "job9_plan",
+        "job10_plan",
+        "job11_plan"
+      ],
+      "public_geometry_archive": {
+        "path": "artifacts/native_bridge/worlds/90473003/world.npz",
+        "sha256": "c86ce8c9d4442313b3ba076d6b7a0790fb7ce40848824896ba0e39b371ba53ff"
+      }
+    },
+    {
+      "candidate_archive": {
+        "path": "artifacts/native_bridge/cases/dev-90473004-ho0.03/candidate_inputs_forecasts.npz",
+        "sha256": "82564981636457915b090787bf6e4eb622e81879b469eb9f75789792f9ae53ae"
+      },
+      "case_id": "dev-90473004-ho0.03",
+      "plan_keys": [
+        "job0_plan",
+        "job1_plan",
+        "job2_plan",
+        "job3_plan",
+        "job4_plan",
+        "job5_plan",
+        "job6_plan",
+        "job7_plan",
+        "job8_plan",
+        "job9_plan",
+        "job10_plan",
+        "job11_plan"
+      ],
+      "public_geometry_archive": {
+        "path": "artifacts/native_bridge/worlds/90473004/world.npz",
+        "sha256": "b02cf22b8dc85529aae9dbbd8feb2190b461818fe830955a168a9d4d75b849b1"
+      }
+    }
+  ],
+  "limitations": [
+    "One managed CPU environment and fixed existing public plans; descriptive microbenchmark only.",
+    "Operator timings exclude model rendering, context, queue, planner, controller and physical radio cost.",
+    "No native service cases rerun; previous18 simulated native outcomes remain unchanged.",
+    "Same-process warmups/repeated calls are correlated and are not independent deployment trials."
+  ],
+  "operators": [
+    "frozen_query_operands",
+    "band_reuse_query_operands"
+  ],
+  "output_shape": [
+    100,
+    9,
+    16,
+    3
+  ],
+  "pair_order": "reference then reuse when (plan ordinal + round ordinal) is even, otherwise reuse then reference",
+  "parity": "identical shape and dtype and exact tobytes() for every query,basis,fspl,offset result on warmups and after every timed pair",
+  "planned_input_shape": [
+    100,
+    9,
+    2
+  ],
+  "primary_summary": "median reference call ns / median reuse call ns over all144 timed calls per operator",
+  "protocol_id": "native-public-query-geometry-reuse-20261109-v1",
+  "schema": 1,
+  "task": "operand-only timing on existing sealed public planned positions; no learned or packet outcomes",
+  "thread_limits": {
+    "MKL_NUM_THREADS": "1",
+    "OMP_NUM_THREADS": "1",
+    "OPENBLAS_NUM_THREADS": "1"
+  },
+  "timed_paired_rounds_per_plan": 3,
+  "warmup_calls_per_operator_per_plan": 1
+}

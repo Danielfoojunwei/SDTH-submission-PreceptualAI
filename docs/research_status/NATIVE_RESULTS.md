@@ -32,6 +32,11 @@ Source was remotely published before fresh world generation. The
 and [closure](../../artifacts/native_bridge/verification/manifest.json) bind
 **512 source and 56 evidence files**. All eight receipts and compressed raw
 packet results remain in [the case directory](../../artifacts/native_bridge/cases).
+An [independent read-only audit](../../artifacts/native_bridge_review/audit.json)
+checks all nine cases' provenance, causal inputs, costs, gauge conversion,
+per-robot counters and cumulative totals. Its
+[retained script](../../artifacts/native_bridge_review/audit_native_bridge_independent.py)
+and [scope](../../artifacts/native_bridge_review/README.md) are outside the seal.
 
 ## Every episode pair
 
@@ -100,7 +105,8 @@ admission result was discarded as late in these cases.
 
 The [outlier receipt](../../artifacts/native_bridge/cases/dev-90473001-ho0.03/receipt.json)
 binds the original packet counters, execution trace, forecasts and physical
-arrays used for this read-only diagnosis.
+arrays used for this read-only
+[diagnosis](../../artifacts/native_bridge_review/outlier_diagnosis.json).
 
 In fast-handover seed 90473001, robot 7 misses **200/240 commands**, versus
 **3/240** with Map. Its own maximum gap is 9,740 versus 90 ms; the Map fleet's
@@ -146,3 +152,8 @@ frozen cases after tuning would not be independent confirmation. RadioMap
 remains the default, the original 24 SERVICE specifications remain unopened,
 and no hardware actuation, production promotion or universal-model claim
 follows from this diagnostic.
+
+A target-support/freshness guard could veto a proposal; it would not make the
+current pending central recovery executable without a delivery. Any offline
+recovery claim needs an explicit preinstalled client-local capability or a
+validated command-transport mechanism. Neither is established by this run.
