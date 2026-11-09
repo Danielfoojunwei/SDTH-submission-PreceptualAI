@@ -1,0 +1,135 @@
+{
+  "metadata": {
+    "assay": "sparse",
+    "available": true,
+    "case_id": "adaptive-development-03-rf0",
+    "case_index": 9,
+    "cell": "frozen_old",
+    "condition": 0,
+    "context_case_id": "adaptive-development-03-rf0",
+    "dependencies": {
+      "examples": {
+        "path": "artifacts/adaptive_radio/data/development-sparse-main-current.json",
+        "sha256": "0a91c844ab711f54c9ca3ea038ff4fefce15e59a10662bd41fd7d483d2d2b4e6"
+      },
+      "frontend": {
+        "path": "artifacts/adaptive_radio/data/frontend-training.json",
+        "sha256": "e523a774c027c2422d0295f91d0754a54f4544e27379c1e68aab90a7549abd65"
+      },
+      "frozen_references": {
+        "members": {
+          "0": {
+            "checkpoint": {
+              "path": "artifacts/radiojepa_spectral/checkpoints/joint_none-seed0.pt",
+              "sha256": "84a996829cd5ec50b02d4c42c62650b432e4842539f35db752f21d233d139531"
+            },
+            "fit": {
+              "path": "artifacts/radiojepa_spectral/fits/joint_none-seed0.json",
+              "sha256": "fbc20afc77af796517f6b73d63ab7522eb806ec7e9e25684067ca4d8846b5402"
+            }
+          },
+          "1": {
+            "checkpoint": {
+              "path": "artifacts/radiojepa_spectral/checkpoints/joint_none-seed1.pt",
+              "sha256": "9d9adc6819c1aeba811a067174a0df39bbc7ff2c2531158832573c2575ff96da"
+            },
+            "fit": {
+              "path": "artifacts/radiojepa_spectral/fits/joint_none-seed1.json",
+              "sha256": "6d5ce578e5fcced8d171ca133dd6dd61bd725d1f0bf6a8b8b022a9a5d9a2b103"
+            }
+          },
+          "2": {
+            "checkpoint": {
+              "path": "artifacts/radiojepa_spectral/checkpoints/joint_none-seed2.pt",
+              "sha256": "5894f5964a14beede3a31278f936ad120765010ce3403aeeb447a62700cdc44c"
+            },
+            "fit": {
+              "path": "artifacts/radiojepa_spectral/fits/joint_none-seed2.json",
+              "sha256": "9b9e63020e80de4e7cf59f1c489567d75b358996f1c4b5d9fa7243cc8769bac5"
+            }
+          }
+        },
+        "previous_manifest_sha256": "53f329a2ce82d6498116fa098b1231ad31c5826be4435b4610c713701bcf598c",
+        "retrained_or_adapted": false,
+        "spread_db": 4.0,
+        "spread_is_calibrated": false
+      },
+      "stage": {
+        "path": "artifacts/adaptive_radio/rt_data/development.json",
+        "sha256": "26d75f5ac165ca4375573c92a81c2f0309abdc46b60d8dc9bf0572e011827c8d"
+      }
+    },
+    "eligibility": {
+      "eligible": true,
+      "reason": null
+    },
+    "example_binding": {
+      "case_id": "adaptive-development-03-rf0",
+      "censored_a": 0,
+      "condition": 0,
+      "context_case_id": "adaptive-development-03-rf0",
+      "input_RF_identity_sha256": "5891443f545cb87503e1d3e10aa29370b10ea4995ab28941b156ef2441541407",
+      "layout_id": "adaptive-development-03",
+      "model_input_sha256": {
+        "context_a": "59f5af18967e5633167decab287dd938c902a27ce54ebe8b6e806f056ceb80cc",
+        "context_b": "3e841ff2ff5cc41a23d8ffe22563f950d4665d94b5a07ae65d4d8712ba581205",
+        "mask_a": "287ad2f5dd2fa997cf1f1c5a09e5cb517f0592dfcf9b043c86b31cdc5d7878a3",
+        "mask_b": "287ad2f5dd2fa997cf1f1c5a09e5cb517f0592dfcf9b043c86b31cdc5d7878a3",
+        "query": "f352081c25a21bef1231c94c4349c17a71b416f016ae67116fdecbb89e9365a6",
+        "query_basis": "fa932b8f8abf5d9b6ea957292056724c2e76f25631df8ece7ff6f1119f6f1625",
+        "query_fspl_dbm": "8b129264ce8d2ce0571f1e627372b1ab8dd546c4a8dadbacc6a993259ed76ea3",
+        "query_offset_db": "5e40095073f37379f86d85d710a6683bdbd49f0c010d2d875168a1e57836602e",
+        "scheduled_mask_a": "287ad2f5dd2fa997cf1f1c5a09e5cb517f0592dfcf9b043c86b31cdc5d7878a3",
+        "scheduled_mask_b": "287ad2f5dd2fa997cf1f1c5a09e5cb517f0592dfcf9b043c86b31cdc5d7878a3"
+      },
+      "network_delivery_or_real_capture_timing_claimed": false,
+      "point_a": 8,
+      "regime": "sparse",
+      "scheduled_attempts_a": 8,
+      "scheduled_attempts_b": 8,
+      "sensed_known_a": 8,
+      "sensed_known_b": 8,
+      "stage": "development",
+      "stale_requested": false,
+      "target_RF_identity_sha256": "194622ba2cd9ae7db6f4eeffb2da5ca2deb97e93712d422a42837ff2ee5a294e",
+      "target_sha256": {
+        "censor_upper_dbm": "2fdbdf66b0ba60e732b7175cf652b549d57bb947f4e521145a60ef49df809ae5",
+        "censored": "7e61e1df3a2be786d71f3b6264fd9277ca379f337d188ed67f58cf35b71bd7c0",
+        "center_dbm": "b16c536c85e9d4af7e9454fa20edcc5b543da7d56550efc4e27f847cab688c69",
+        "detection_threshold_dbm": "ae569203dc6f2db01ec419a19358abaefb9344e59136a361658d35a9ba791989",
+        "heard": "2d3ff6124d9103eab63ff152a962da0d46382b0e6d1edb6f13454a5b41f5aaba",
+        "lower_dbm": "a58dd3cb0ea1bda4cd4d4bd93a5225f23624b984a409cc68e67749f788279621",
+        "upper_dbm": "5154b66aae3022d1cac0c9213e78b4b1f0b6e7c2b0c723d2f069dce772672ef3"
+      },
+      "unknown_or_withheld_a": 16
+    },
+    "held_band": false,
+    "identity": {
+      "protocol_sha256": "dfb6c7da4e9665081dd6660b7a1fafaa93ac83a592af90411874b5d46ee28352",
+      "registry_sha256": "b4d58de02b830e0dde3a054a949c9459d0a7d1289ece91cb25f195e9d9ef3e50",
+      "source_receipt_sha256": "4bb2415118970fad4a95bbd4575d7ef799e10242faa168329d24f358ed75c3fc"
+    },
+    "layout_id": "adaptive-development-03",
+    "member": "frozen_old-seed2",
+    "packet_or_production_risk": false,
+    "predictions_ensembled": false,
+    "regime": "sparse",
+    "seed": 2,
+    "source_view": "a",
+    "stage": "development",
+    "stale": false
+  },
+  "metrics": {
+    "censored_count": 0,
+    "detector_brier": 5.324104577582201e-10,
+    "finite": true,
+    "heard_count": 144,
+    "missing_count": 0,
+    "observation_nll": 2.866084532634336,
+    "p95_abs_db": 7.474555969238281,
+    "rmse_db": 3.2452842666822206
+  },
+  "npz_path": "artifacts/adaptive_radio/predictions/development/sparse/frozen_old-seed2/adaptive-development-03-rf0.npz",
+  "npz_sha256": "02edaaa56c52f50e0a5ea8c95689417a16d26810cf3c7580e12d6d2d676af24f",
+  "schema": 1
+}

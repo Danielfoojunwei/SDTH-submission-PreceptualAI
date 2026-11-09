@@ -1,0 +1,262 @@
+{
+  "authorization": {
+    "authorized": true,
+    "original_service_confirmation_permitted": false,
+    "production_qualified": false,
+    "registry_sha256": "b4d58de02b830e0dde3a054a949c9459d0a7d1289ece91cb25f195e9d9ef3e50",
+    "source_receipt_sha256": "4bb2415118970fad4a95bbd4575d7ef799e10242faa168329d24f358ed75c3fc",
+    "stage": "training"
+  },
+  "bands_hz": [
+    2400000000.0,
+    5200000000.0,
+    6000000000.0
+  ],
+  "bandwidth_hz": 20000000.0,
+  "case": {
+    "case_id": "adaptive-training-18-rf0",
+    "condition": 0,
+    "hidden_material_is_model_input": false,
+    "known_tx_power_dbm": 0.0,
+    "layout_id": "adaptive-training-18",
+    "layout_index": 18,
+    "public_geometry_sha256": "66a703b1b50d9546307a6df6e25266808712c45a1f2f193c07fc5efdd104ad1b",
+    "rt_spec": {
+      "ap_positions_m": [
+        [
+          -11.58588,
+          -10.07475,
+          4.627
+        ],
+        [
+          11.26405,
+          10.3626,
+          4.567
+        ]
+      ],
+      "ceiling_m": 5.197,
+      "depth_m": 28.785000000000004,
+      "family": "rack_aisles",
+      "obstacle_height_m": 2.78,
+      "obstacle_material": "metal",
+      "rx_positions_m": [
+        [
+          -10.94222,
+          -9.786900000000003,
+          1.05
+        ],
+        [
+          0.0,
+          -9.786900000000003,
+          1.05
+        ],
+        [
+          10.94222,
+          -9.786900000000003,
+          1.05
+        ],
+        [
+          -10.94222,
+          -3.4542,
+          1.05
+        ],
+        [
+          0.0,
+          -3.4542,
+          1.05
+        ],
+        [
+          10.94222,
+          -3.4542,
+          1.05
+        ],
+        [
+          -10.94222,
+          3.4542,
+          1.05
+        ],
+        [
+          0.0,
+          3.4542,
+          1.05
+        ],
+        [
+          10.94222,
+          3.4542,
+          1.05
+        ],
+        [
+          -10.94222,
+          9.786900000000003,
+          1.05
+        ],
+        [
+          0.0,
+          9.786900000000003,
+          1.05
+        ],
+        [
+          10.94222,
+          9.786900000000003,
+          1.05
+        ]
+      ],
+      "scene_id": "adaptive-training-18-rf0",
+      "seed": 981018,
+      "width_m": 32.183
+    },
+    "stage": "training"
+  },
+  "case_id": "adaptive-training-18-rf0",
+  "condition": 0,
+  "detection_threshold_scope": "simulated reported-gauge event metadata for evaluation/targets, not a student feature",
+  "files_sha256": {
+    "public_views.npz": "53b89a5a79a76ff7d11a97fd7ff51fc8243d748f477572d3edae92d8cc8e9357",
+    "reference20/band-0-direction-0-cir.npz": "414e57d7fce7608cc6adb4cdcaec4c1b158d9bcdab94c22b1492a376c1eaa564",
+    "reference20/band-0-direction-1-cir.npz": "c8b0e742e5bb3d5d62b945f4858f7ddf8fd120884e7c0276fd91feefb359056f",
+    "reference20/band-1-direction-0-cir.npz": "b280b2ebaff66346a4daa63c8f1dad2a33c5fbd04b0fe80c0c83aafb15ec21ff",
+    "reference20/band-1-direction-1-cir.npz": "563243e45454911107a1dbc9bb32d438bd54821ded2bedfccf42a47cfe8bd52b",
+    "reference20/band-2-direction-0-cir.npz": "5a1f5b943c884b5cdb140721fb652684ee3b30cf2acb105a3779d8f687bbbcf8",
+    "reference20/band-2-direction-1-cir.npz": "afb10c24752ef9798ea9bd7fbb81bce7f9c6ef578f3ff9ef5466c2c63928346a",
+    "reference20/physical_channels.npz": "ee5322b314511a000183dbd4a4cb346c7d02f8b00f3f1acf88b296e4432c54c2",
+    "reference20/public_views.npz": "57630636df250a30dfd33d241dfee4cc751e1cc4fe98300efefaf116fb30789a",
+    "reference20/receipt.json": "2dfb53b490a9fc9a63f44829b98a462df8c0427b0e0487bb6fafebf77d311905",
+    "reference20/scene/meshes/ceiling.ply": "fb51f73ccb2aeb47b821ed1dead7b6ee83c66490f45b415ac00a96cab155aae6",
+    "reference20/scene/meshes/floor.ply": "d6127a72a764360b7674981964be2929126f48dcce2367ba30dec63b9a47aa21",
+    "reference20/scene/meshes/rack0.ply": "d85b56503c7d73d742eeb52278509fdeb7a5bdaa1418adaf12f4498b2dcd6ef9",
+    "reference20/scene/meshes/rack1.ply": "2ada86b97ab976d3510a7db9a093403a33975214e0ec1100b7f7de1964428eb2",
+    "reference20/scene/meshes/wall_back.ply": "c1dc1a4c2805ac2494f87d1679a1d756a38f3478c29548f7787b1986cd5beb20",
+    "reference20/scene/meshes/wall_front.ply": "51e4072b16c31c7de3af6195456070c55ad5a61fb6e41ea38cd9f3cdf6504566",
+    "reference20/scene/meshes/wall_left.ply": "3d545b6fb48d2d4a633e1e2711247b242f4b4049c2c08f151927d5a3c76ee0ab",
+    "reference20/scene/meshes/wall_right.ply": "a7202bd83b970ee76d9ea62e730552dfc03761d7b1f59c47abe643a43fc57811",
+    "reference20/scene/scene.xml": "7fd55ebcd28fa36f605614f0a3c4574afa8319b54b46faf37f62845ad8395840"
+  },
+  "finite_path_search_converged": false,
+  "known_tx_power_dbm": 0.0,
+  "layout_id": "adaptive-training-18",
+  "layout_index": 18,
+  "mesh_sha256": {
+    "reference20/scene/meshes/ceiling.ply": "fb51f73ccb2aeb47b821ed1dead7b6ee83c66490f45b415ac00a96cab155aae6",
+    "reference20/scene/meshes/floor.ply": "d6127a72a764360b7674981964be2929126f48dcce2367ba30dec63b9a47aa21",
+    "reference20/scene/meshes/rack0.ply": "d85b56503c7d73d742eeb52278509fdeb7a5bdaa1418adaf12f4498b2dcd6ef9",
+    "reference20/scene/meshes/rack1.ply": "2ada86b97ab976d3510a7db9a093403a33975214e0ec1100b7f7de1964428eb2",
+    "reference20/scene/meshes/wall_back.ply": "c1dc1a4c2805ac2494f87d1679a1d756a38f3478c29548f7787b1986cd5beb20",
+    "reference20/scene/meshes/wall_front.ply": "51e4072b16c31c7de3af6195456070c55ad5a61fb6e41ea38cd9f3cdf6504566",
+    "reference20/scene/meshes/wall_left.ply": "3d545b6fb48d2d4a633e1e2711247b242f4b4049c2c08f151927d5a3c76ee0ab",
+    "reference20/scene/meshes/wall_right.ply": "a7202bd83b970ee76d9ea62e730552dfc03761d7b1f59c47abe643a43fc57811"
+  },
+  "network_delivery_simulated": false,
+  "power_scaling": "linear channel gain times known transmit power",
+  "public_geometry": {
+    "ap_positions_m": [
+      [
+        -11.58588,
+        -10.07475,
+        4.627
+      ],
+      [
+        11.26405,
+        10.3626,
+        4.567
+      ]
+    ],
+    "ceiling_m": 5.197,
+    "depth_m": 28.785000000000004,
+    "family": "rack_aisles",
+    "obstacle_height_m": 2.78,
+    "rx_positions_m": [
+      [
+        -10.94222,
+        -9.786900000000003,
+        1.05
+      ],
+      [
+        0.0,
+        -9.786900000000003,
+        1.05
+      ],
+      [
+        10.94222,
+        -9.786900000000003,
+        1.05
+      ],
+      [
+        -10.94222,
+        -3.4542,
+        1.05
+      ],
+      [
+        0.0,
+        -3.4542,
+        1.05
+      ],
+      [
+        10.94222,
+        -3.4542,
+        1.05
+      ],
+      [
+        -10.94222,
+        3.4542,
+        1.05
+      ],
+      [
+        0.0,
+        3.4542,
+        1.05
+      ],
+      [
+        10.94222,
+        3.4542,
+        1.05
+      ],
+      [
+        -10.94222,
+        9.786900000000003,
+        1.05
+      ],
+      [
+        0.0,
+        9.786900000000003,
+        1.05
+      ],
+      [
+        10.94222,
+        9.786900000000003,
+        1.05
+      ]
+    ],
+    "width_m": 32.183
+  },
+  "public_geometry_sha256": "66a703b1b50d9546307a6df6e25266808712c45a1f2f193c07fc5efdd104ad1b",
+  "real_device_measurements": false,
+  "receiver_profiles": [
+    {
+      "device_id": "sim-rssi-a",
+      "held_out": false,
+      "noise_figure_db": 4.0,
+      "quantization_db": 1.0
+    },
+    {
+      "device_id": "sim-rssi-b",
+      "held_out": false,
+      "noise_figure_db": 7.0,
+      "quantization_db": 0.5
+    },
+    {
+      "device_id": "sim-rssi-c",
+      "held_out": false,
+      "noise_figure_db": 9.0,
+      "quantization_db": 1.0
+    }
+  ],
+  "reference20_receipt_sha256": "2dfb53b490a9fc9a63f44829b98a462df8c0427b0e0487bb6fafebf77d311905",
+  "registry_sha256": "b4d58de02b830e0dde3a054a949c9459d0a7d1289ece91cb25f195e9d9ef3e50",
+  "schema": 1,
+  "source_receipt_sha256": "4bb2415118970fad4a95bbd4575d7ef799e10242faa168329d24f358ed75c3fc",
+  "source_reference_tx_dbm": 20.0,
+  "stage": "training",
+  "static_counterfactual_condition": true,
+  "temporal_blockage_transition_simulated": false,
+  "unresolved_paths_are_censored": false
+}

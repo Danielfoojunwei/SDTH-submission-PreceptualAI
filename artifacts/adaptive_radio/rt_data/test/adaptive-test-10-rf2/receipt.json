@@ -1,0 +1,269 @@
+{
+  "authorization": {
+    "authorized": true,
+    "original_service_confirmation_permitted": false,
+    "production_qualified": false,
+    "registry_sha256": "b4d58de02b830e0dde3a054a949c9459d0a7d1289ece91cb25f195e9d9ef3e50",
+    "source_receipt_sha256": "4bb2415118970fad4a95bbd4575d7ef799e10242faa168329d24f358ed75c3fc",
+    "stage": "test",
+    "test_permitted": true
+  },
+  "bands_hz": [
+    2400000000.0,
+    5200000000.0,
+    6000000000.0
+  ],
+  "bandwidth_hz": 20000000.0,
+  "case": {
+    "case_id": "adaptive-test-10-rf2",
+    "condition": 2,
+    "hidden_material_is_model_input": false,
+    "known_tx_power_dbm": 0.0,
+    "layout_id": "adaptive-test-10",
+    "layout_index": 10,
+    "public_geometry_sha256": "2c1e4c4402e477ef724b2274b5074cce48c1bec9a839abddc837067824adbdc4",
+    "rt_spec": {
+      "ap_positions_m": [
+        [
+          -8.943839999999998,
+          -18.1475,
+          3.7480000000000007
+        ],
+        [
+          8.6954,
+          18.666,
+          3.6880000000000006
+        ]
+      ],
+      "ceiling_m": 4.3180000000000005,
+      "depth_m": 51.85,
+      "family": "partitioned_room",
+      "obstacle_height_m": 2.78,
+      "obstacle_material": "metal",
+      "rx_positions_m": [
+        [
+          -8.44696,
+          -17.629,
+          1.05
+        ],
+        [
+          0.0,
+          -17.629,
+          1.05
+        ],
+        [
+          8.44696,
+          -17.629,
+          1.05
+        ],
+        [
+          -8.44696,
+          -6.2219999999999995,
+          1.05
+        ],
+        [
+          0.0,
+          -6.2219999999999995,
+          1.05
+        ],
+        [
+          8.44696,
+          -6.2219999999999995,
+          1.05
+        ],
+        [
+          -8.44696,
+          6.2219999999999995,
+          1.05
+        ],
+        [
+          0.0,
+          6.2219999999999995,
+          1.05
+        ],
+        [
+          8.44696,
+          6.2219999999999995,
+          1.05
+        ],
+        [
+          -8.44696,
+          17.629,
+          1.05
+        ],
+        [
+          0.0,
+          17.629,
+          1.05
+        ],
+        [
+          8.44696,
+          17.629,
+          1.05
+        ]
+      ],
+      "scene_id": "adaptive-test-10-rf2",
+      "seed": 981310,
+      "width_m": 24.843999999999998
+    },
+    "stage": "test"
+  },
+  "case_id": "adaptive-test-10-rf2",
+  "condition": 2,
+  "detection_threshold_scope": "simulated reported-gauge event metadata for evaluation/targets, not a student feature",
+  "files_sha256": {
+    "public_views.npz": "297118122223266c5b205e92aa4497f32d6ee4f6e953d94b58123020ca1cfde8",
+    "reference20/band-0-direction-0-cir.npz": "4c056fafaf28579d309d66ee56460f82425428ad892326ab436c952a8fcc7ce2",
+    "reference20/band-0-direction-1-cir.npz": "2d41324c472e26727c0164a068c3b65b858b2dbb758e51a6c6b7cefbed41bd71",
+    "reference20/band-1-direction-0-cir.npz": "8fccb99c6daafebab110d9af3dde765f627c9e538de4bcad3736d2f27da58f6c",
+    "reference20/band-1-direction-1-cir.npz": "59f2b5b05fe184ba6ee460fff64e70f98b8d284f4ac42e0a600c737d2e10ccda",
+    "reference20/band-2-direction-0-cir.npz": "c6243355ec28f77c843d84e361fbab50f28999baf295da5d93880110fde164f6",
+    "reference20/band-2-direction-1-cir.npz": "34e5e6cabebd778cc1fab506d32da74e4b2cb5030b1ad198fa733652736147fa",
+    "reference20/physical_channels.npz": "2000342ac25ff977bab70aea3914e6560af65f517cbe5d9a1dbdb5c7ee84c6aa",
+    "reference20/public_views.npz": "ec91ef3ec9013235edbca329b297b8a6fae7cde7fee1b51fd0668e14b8b2284a",
+    "reference20/receipt.json": "49996179c2deaf4df99dcf8d6a6d4a7d0f4afc76c4577252748ab2ea802e639e",
+    "reference20/scene/meshes/ceiling.ply": "4733c1973f7a2eef33a71e2dfccd694b452b16a23a50cda7231f63758a6c61eb",
+    "reference20/scene/meshes/floor.ply": "dc5ca0a3ba5c7e360c9d74bf5c584ef074482924900b570dbfde9dc3feb0e698",
+    "reference20/scene/meshes/partition_left.ply": "7906a194f87c97eb041fc2cca9c416cac0e24579b3f9717dc57be51428dbcd52",
+    "reference20/scene/meshes/partition_right.ply": "8cb45f92976f8ee7e6163392f477ff7bea28b42f190be28aafa377a1465f5160",
+    "reference20/scene/meshes/wall_back.ply": "6dfdbb1745e0ce3b035db4481a7718f744d8a80a3b32c75c3e2d8174b6165463",
+    "reference20/scene/meshes/wall_front.ply": "df674252ee8b1bf31a4b13cd129c3ee4ba9ee4063a8b3237604943dcbc9635fa",
+    "reference20/scene/meshes/wall_left.ply": "2508b4afb9af2315dc5a617f6c246f6a2ac573ff0aa98476f64d748163ba1afe",
+    "reference20/scene/meshes/wall_right.ply": "b5c52e82770acfa3452a4b2174d8d99eb7b24296f587b2005f302f032b55a11a",
+    "reference20/scene/scene.xml": "ab50c5866094c7bb6bd986d3bbbc47a46f87f92c52ed5fa0432f661852fd6dce"
+  },
+  "finite_path_search_converged": false,
+  "known_tx_power_dbm": 0.0,
+  "layout_id": "adaptive-test-10",
+  "layout_index": 10,
+  "mesh_sha256": {
+    "reference20/scene/meshes/ceiling.ply": "4733c1973f7a2eef33a71e2dfccd694b452b16a23a50cda7231f63758a6c61eb",
+    "reference20/scene/meshes/floor.ply": "dc5ca0a3ba5c7e360c9d74bf5c584ef074482924900b570dbfde9dc3feb0e698",
+    "reference20/scene/meshes/partition_left.ply": "7906a194f87c97eb041fc2cca9c416cac0e24579b3f9717dc57be51428dbcd52",
+    "reference20/scene/meshes/partition_right.ply": "8cb45f92976f8ee7e6163392f477ff7bea28b42f190be28aafa377a1465f5160",
+    "reference20/scene/meshes/wall_back.ply": "6dfdbb1745e0ce3b035db4481a7718f744d8a80a3b32c75c3e2d8174b6165463",
+    "reference20/scene/meshes/wall_front.ply": "df674252ee8b1bf31a4b13cd129c3ee4ba9ee4063a8b3237604943dcbc9635fa",
+    "reference20/scene/meshes/wall_left.ply": "2508b4afb9af2315dc5a617f6c246f6a2ac573ff0aa98476f64d748163ba1afe",
+    "reference20/scene/meshes/wall_right.ply": "b5c52e82770acfa3452a4b2174d8d99eb7b24296f587b2005f302f032b55a11a"
+  },
+  "network_delivery_simulated": false,
+  "power_scaling": "linear channel gain times known transmit power",
+  "public_geometry": {
+    "ap_positions_m": [
+      [
+        -8.943839999999998,
+        -18.1475,
+        3.7480000000000007
+      ],
+      [
+        8.6954,
+        18.666,
+        3.6880000000000006
+      ]
+    ],
+    "ceiling_m": 4.3180000000000005,
+    "depth_m": 51.85,
+    "family": "partitioned_room",
+    "obstacle_height_m": 2.78,
+    "rx_positions_m": [
+      [
+        -8.44696,
+        -17.629,
+        1.05
+      ],
+      [
+        0.0,
+        -17.629,
+        1.05
+      ],
+      [
+        8.44696,
+        -17.629,
+        1.05
+      ],
+      [
+        -8.44696,
+        -6.2219999999999995,
+        1.05
+      ],
+      [
+        0.0,
+        -6.2219999999999995,
+        1.05
+      ],
+      [
+        8.44696,
+        -6.2219999999999995,
+        1.05
+      ],
+      [
+        -8.44696,
+        6.2219999999999995,
+        1.05
+      ],
+      [
+        0.0,
+        6.2219999999999995,
+        1.05
+      ],
+      [
+        8.44696,
+        6.2219999999999995,
+        1.05
+      ],
+      [
+        -8.44696,
+        17.629,
+        1.05
+      ],
+      [
+        0.0,
+        17.629,
+        1.05
+      ],
+      [
+        8.44696,
+        17.629,
+        1.05
+      ]
+    ],
+    "width_m": 24.843999999999998
+  },
+  "public_geometry_sha256": "2c1e4c4402e477ef724b2274b5074cce48c1bec9a839abddc837067824adbdc4",
+  "real_device_measurements": false,
+  "receiver_profiles": [
+    {
+      "device_id": "sim-rssi-a",
+      "held_out": false,
+      "noise_figure_db": 4.0,
+      "quantization_db": 1.0
+    },
+    {
+      "device_id": "sim-rssi-b",
+      "held_out": false,
+      "noise_figure_db": 7.0,
+      "quantization_db": 0.5
+    },
+    {
+      "device_id": "sim-rssi-c",
+      "held_out": false,
+      "noise_figure_db": 9.0,
+      "quantization_db": 1.0
+    },
+    {
+      "device_id": "sim-rssi-heldout-d",
+      "held_out": true,
+      "noise_figure_db": 11.0,
+      "quantization_db": 2.0
+    }
+  ],
+  "reference20_receipt_sha256": "49996179c2deaf4df99dcf8d6a6d4a7d0f4afc76c4577252748ab2ea802e639e",
+  "registry_sha256": "b4d58de02b830e0dde3a054a949c9459d0a7d1289ece91cb25f195e9d9ef3e50",
+  "schema": 1,
+  "source_receipt_sha256": "4bb2415118970fad4a95bbd4575d7ef799e10242faa168329d24f358ed75c3fc",
+  "source_reference_tx_dbm": 20.0,
+  "stage": "test",
+  "static_counterfactual_condition": true,
+  "temporal_blockage_transition_simulated": false,
+  "unresolved_paths_are_censored": false
+}

@@ -1,0 +1,262 @@
+{
+  "authorization": {
+    "authorized": true,
+    "original_service_confirmation_permitted": false,
+    "production_qualified": false,
+    "registry_sha256": "b4d58de02b830e0dde3a054a949c9459d0a7d1289ece91cb25f195e9d9ef3e50",
+    "source_receipt_sha256": "4bb2415118970fad4a95bbd4575d7ef799e10242faa168329d24f358ed75c3fc",
+    "stage": "training"
+  },
+  "bands_hz": [
+    2400000000.0,
+    5200000000.0,
+    6000000000.0
+  ],
+  "bandwidth_hz": 20000000.0,
+  "case": {
+    "case_id": "adaptive-training-07-rf1",
+    "condition": 1,
+    "hidden_material_is_model_input": false,
+    "known_tx_power_dbm": 10.0,
+    "layout_id": "adaptive-training-07",
+    "layout_index": 7,
+    "public_geometry_sha256": "e1dbeee596d5b7dc7c31ac92d583f032af46b17814d4aa350742d3217106f3f2",
+    "rt_spec": {
+      "ap_positions_m": [
+        [
+          -7.835759999999999,
+          -7.595000000000001,
+          4.317
+        ],
+        [
+          7.618099999999999,
+          7.812000000000001,
+          4.257000000000001
+        ]
+      ],
+      "ceiling_m": 4.8870000000000005,
+      "depth_m": 21.700000000000003,
+      "family": "partitioned_room",
+      "obstacle_height_m": 2.9699999999999998,
+      "obstacle_material": "brick",
+      "rx_positions_m": [
+        [
+          -7.40044,
+          -7.378000000000002,
+          1.07
+        ],
+        [
+          0.0,
+          -7.378000000000002,
+          1.07
+        ],
+        [
+          7.40044,
+          -7.378000000000002,
+          1.07
+        ],
+        [
+          -7.40044,
+          -2.604,
+          1.07
+        ],
+        [
+          0.0,
+          -2.604,
+          1.07
+        ],
+        [
+          7.40044,
+          -2.604,
+          1.07
+        ],
+        [
+          -7.40044,
+          2.604,
+          1.07
+        ],
+        [
+          0.0,
+          2.604,
+          1.07
+        ],
+        [
+          7.40044,
+          2.604,
+          1.07
+        ],
+        [
+          -7.40044,
+          7.378000000000002,
+          1.07
+        ],
+        [
+          0.0,
+          7.378000000000002,
+          1.07
+        ],
+        [
+          7.40044,
+          7.378000000000002,
+          1.07
+        ]
+      ],
+      "scene_id": "adaptive-training-07-rf1",
+      "seed": 981007,
+      "width_m": 21.766
+    },
+    "stage": "training"
+  },
+  "case_id": "adaptive-training-07-rf1",
+  "condition": 1,
+  "detection_threshold_scope": "simulated reported-gauge event metadata for evaluation/targets, not a student feature",
+  "files_sha256": {
+    "public_views.npz": "f1a5fdf5de762b2aadcdf83acebf02f7a5b3f1be907a930f91525d2ba74429dd",
+    "reference20/band-0-direction-0-cir.npz": "c7602b5f07b993a1dcbc031d5de1e0abae618233baaf1b4682f6bab6ab2331b1",
+    "reference20/band-0-direction-1-cir.npz": "b5cb320305c10dbaa261ecd90049fd737604d22e9d3ef0043b412864b830316d",
+    "reference20/band-1-direction-0-cir.npz": "153ca76ba2234691470b8f18462e1378d4666e942e70a43991844346aa9a9ebe",
+    "reference20/band-1-direction-1-cir.npz": "be2d434927605c5143adf82cab2da37c8bac7609a033e20de83d7fb135c3d203",
+    "reference20/band-2-direction-0-cir.npz": "518c09cba94be146258f72946d0f38a9884126824a7564a7be86064d6709bfbc",
+    "reference20/band-2-direction-1-cir.npz": "2f0f075dbdff2a914bb42ac501e11f4567edb0d7c00186087e47ac09ac2ea3fb",
+    "reference20/physical_channels.npz": "970062f04f324869d6947c6080fd797e44ceaacd0bd90b17d0b2a20923f9c230",
+    "reference20/public_views.npz": "a88f0e4e14c2f0655219f201402eaef1681b432cdbdb26cffbd4c45531c1bdfe",
+    "reference20/receipt.json": "b90c77ddb21fa45d68aabd506bd155145a4544042b3efa4476acd96bf84ca2f5",
+    "reference20/scene/meshes/ceiling.ply": "5c00a59c588571a237fd81bece710d52fe6f402bce7918d571d0719cca1cdab7",
+    "reference20/scene/meshes/floor.ply": "699054530d309746ddf2cb7f72280d22ca23d96ec8c35471d52e3916502052b3",
+    "reference20/scene/meshes/partition_left.ply": "3abdce9e3e97b119361f593c2530f2c34c08b77a553dcd3e7e445c298bd7e509",
+    "reference20/scene/meshes/partition_right.ply": "dd47d74cb0573eece556bafc3e942cc94124d6f32911f0ea68728f542691d698",
+    "reference20/scene/meshes/wall_back.ply": "d45e8c8c52024c3a58bee4744129316c1840f4ec55ab291f6bdbef0938a10e81",
+    "reference20/scene/meshes/wall_front.ply": "47fc5af7e5607985735d22d7361acc34a0472efa6bf2e71c95e69ce7c25eb3b6",
+    "reference20/scene/meshes/wall_left.ply": "1d8bbc268786a8a65942f8691b5ad70d2e9ef1050854afc1f3e4c0a99d15a7a8",
+    "reference20/scene/meshes/wall_right.ply": "f720ef9c03a22e9e3cca7d64815557548364132322d1addac2840ea2ba4e80be",
+    "reference20/scene/scene.xml": "f4fa0a98516c999dc01364759fc7690254458c2d88c9fe573985cee6ad24e494"
+  },
+  "finite_path_search_converged": false,
+  "known_tx_power_dbm": 10.0,
+  "layout_id": "adaptive-training-07",
+  "layout_index": 7,
+  "mesh_sha256": {
+    "reference20/scene/meshes/ceiling.ply": "5c00a59c588571a237fd81bece710d52fe6f402bce7918d571d0719cca1cdab7",
+    "reference20/scene/meshes/floor.ply": "699054530d309746ddf2cb7f72280d22ca23d96ec8c35471d52e3916502052b3",
+    "reference20/scene/meshes/partition_left.ply": "3abdce9e3e97b119361f593c2530f2c34c08b77a553dcd3e7e445c298bd7e509",
+    "reference20/scene/meshes/partition_right.ply": "dd47d74cb0573eece556bafc3e942cc94124d6f32911f0ea68728f542691d698",
+    "reference20/scene/meshes/wall_back.ply": "d45e8c8c52024c3a58bee4744129316c1840f4ec55ab291f6bdbef0938a10e81",
+    "reference20/scene/meshes/wall_front.ply": "47fc5af7e5607985735d22d7361acc34a0472efa6bf2e71c95e69ce7c25eb3b6",
+    "reference20/scene/meshes/wall_left.ply": "1d8bbc268786a8a65942f8691b5ad70d2e9ef1050854afc1f3e4c0a99d15a7a8",
+    "reference20/scene/meshes/wall_right.ply": "f720ef9c03a22e9e3cca7d64815557548364132322d1addac2840ea2ba4e80be"
+  },
+  "network_delivery_simulated": false,
+  "power_scaling": "linear channel gain times known transmit power",
+  "public_geometry": {
+    "ap_positions_m": [
+      [
+        -7.835759999999999,
+        -7.595000000000001,
+        4.317
+      ],
+      [
+        7.618099999999999,
+        7.812000000000001,
+        4.257000000000001
+      ]
+    ],
+    "ceiling_m": 4.8870000000000005,
+    "depth_m": 21.700000000000003,
+    "family": "partitioned_room",
+    "obstacle_height_m": 2.9699999999999998,
+    "rx_positions_m": [
+      [
+        -7.40044,
+        -7.378000000000002,
+        1.07
+      ],
+      [
+        0.0,
+        -7.378000000000002,
+        1.07
+      ],
+      [
+        7.40044,
+        -7.378000000000002,
+        1.07
+      ],
+      [
+        -7.40044,
+        -2.604,
+        1.07
+      ],
+      [
+        0.0,
+        -2.604,
+        1.07
+      ],
+      [
+        7.40044,
+        -2.604,
+        1.07
+      ],
+      [
+        -7.40044,
+        2.604,
+        1.07
+      ],
+      [
+        0.0,
+        2.604,
+        1.07
+      ],
+      [
+        7.40044,
+        2.604,
+        1.07
+      ],
+      [
+        -7.40044,
+        7.378000000000002,
+        1.07
+      ],
+      [
+        0.0,
+        7.378000000000002,
+        1.07
+      ],
+      [
+        7.40044,
+        7.378000000000002,
+        1.07
+      ]
+    ],
+    "width_m": 21.766
+  },
+  "public_geometry_sha256": "e1dbeee596d5b7dc7c31ac92d583f032af46b17814d4aa350742d3217106f3f2",
+  "real_device_measurements": false,
+  "receiver_profiles": [
+    {
+      "device_id": "sim-rssi-a",
+      "held_out": false,
+      "noise_figure_db": 4.0,
+      "quantization_db": 1.0
+    },
+    {
+      "device_id": "sim-rssi-b",
+      "held_out": false,
+      "noise_figure_db": 7.0,
+      "quantization_db": 0.5
+    },
+    {
+      "device_id": "sim-rssi-c",
+      "held_out": false,
+      "noise_figure_db": 9.0,
+      "quantization_db": 1.0
+    }
+  ],
+  "reference20_receipt_sha256": "b90c77ddb21fa45d68aabd506bd155145a4544042b3efa4476acd96bf84ca2f5",
+  "registry_sha256": "b4d58de02b830e0dde3a054a949c9459d0a7d1289ece91cb25f195e9d9ef3e50",
+  "schema": 1,
+  "source_receipt_sha256": "4bb2415118970fad4a95bbd4575d7ef799e10242faa168329d24f358ed75c3fc",
+  "source_reference_tx_dbm": 20.0,
+  "stage": "training",
+  "static_counterfactual_condition": true,
+  "temporal_blockage_transition_simulated": false,
+  "unresolved_paths_are_censored": false
+}

@@ -1,0 +1,5197 @@
+{
+  "batch_distinct_layouts": 24,
+  "cell": "pure_geometry",
+  "checkpoint_sha256": "c4b2e8e584f3708ebe170a0236c6f68179516e2129dfdeb4e6655e1197db84e3",
+  "completed": true,
+  "elapsed_seconds": 18.895555566996336,
+  "epochs": 60,
+  "history": [
+    {
+      "epoch": 0,
+      "updates": [
+        {
+          "alignment": -0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 3.5169715881347656,
+          "mean_predictive_std_db": 13.885425567626953,
+          "measurement_mean_gradient": 0.000907830020878464,
+          "measurement_nll": 3.5169715881347656,
+          "total_gradient_before_clip": 0.28415143489837646
+        },
+        {
+          "alignment": -0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 3.5129194259643555,
+          "mean_predictive_std_db": 13.855224609375,
+          "measurement_mean_gradient": 0.0008377783233299851,
+          "measurement_nll": 3.5129194259643555,
+          "total_gradient_before_clip": 0.27271097898483276
+        },
+        {
+          "alignment": -0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 3.535079002380371,
+          "mean_predictive_std_db": 13.82474422454834,
+          "measurement_mean_gradient": 0.0007775191334076226,
+          "measurement_nll": 3.535079002380371,
+          "total_gradient_before_clip": 0.2769831717014313
+        },
+        {
+          "alignment": -0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 3.5110890865325928,
+          "mean_predictive_std_db": 13.793903350830078,
+          "measurement_mean_gradient": 0.0008570196805521846,
+          "measurement_nll": 3.5110890865325928,
+          "total_gradient_before_clip": 0.2759304940700531
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 3.515963315963745,
+          "mean_predictive_std_db": 13.762703895568848,
+          "measurement_mean_gradient": 0.0007690643542446196,
+          "measurement_nll": 3.515963315963745,
+          "total_gradient_before_clip": 0.27892056107521057
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 3.5227842330932617,
+          "mean_predictive_std_db": 13.73112678527832,
+          "measurement_mean_gradient": 0.0007603534613735974,
+          "measurement_nll": 3.5227842330932617,
+          "total_gradient_before_clip": 0.27805373072624207
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 3.52897310256958,
+          "mean_predictive_std_db": 13.69918441772461,
+          "measurement_mean_gradient": 0.0007086761179380119,
+          "measurement_nll": 3.52897310256958,
+          "total_gradient_before_clip": 0.276871919631958
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 3.515939474105835,
+          "mean_predictive_std_db": 13.66689395904541,
+          "measurement_mean_gradient": 0.0007972092716954648,
+          "measurement_nll": 3.515939474105835,
+          "total_gradient_before_clip": 0.3456394076347351
+        }
+      ],
+      "validation_mean_layout_delta_rmse_db": 2.39637992430148
+    },
+    {
+      "epoch": 1,
+      "updates": [
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 3.5281810760498047,
+          "mean_predictive_std_db": 13.634271621704102,
+          "measurement_mean_gradient": 0.0006621393840759993,
+          "measurement_nll": 3.5281810760498047,
+          "total_gradient_before_clip": 0.28612542152404785
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 3.5292320251464844,
+          "mean_predictive_std_db": 13.601320266723633,
+          "measurement_mean_gradient": 0.0007069821585901082,
+          "measurement_nll": 3.5292320251464844,
+          "total_gradient_before_clip": 0.368488073348999
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 3.4707579612731934,
+          "mean_predictive_std_db": 13.568055152893066,
+          "measurement_mean_gradient": 0.0008021729881875217,
+          "measurement_nll": 3.4707579612731934,
+          "total_gradient_before_clip": 0.3287469744682312
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 3.493391275405884,
+          "mean_predictive_std_db": 13.534520149230957,
+          "measurement_mean_gradient": 0.0009409982594661415,
+          "measurement_nll": 3.493391275405884,
+          "total_gradient_before_clip": 0.8168966770172119
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 3.4927101135253906,
+          "mean_predictive_std_db": 13.500748634338379,
+          "measurement_mean_gradient": 0.0006060486775822937,
+          "measurement_nll": 3.4927101135253906,
+          "total_gradient_before_clip": 0.4208992123603821
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 3.472501754760742,
+          "mean_predictive_std_db": 13.466711044311523,
+          "measurement_mean_gradient": 0.0008918152307160199,
+          "measurement_nll": 3.472501754760742,
+          "total_gradient_before_clip": 1.0407034158706665
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 3.4768245220184326,
+          "mean_predictive_std_db": 13.432441711425781,
+          "measurement_mean_gradient": 0.0006485507474280894,
+          "measurement_nll": 3.4768245220184326,
+          "total_gradient_before_clip": 0.47042155265808105
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 3.4562509059906006,
+          "mean_predictive_std_db": 13.397965431213379,
+          "measurement_mean_gradient": 0.0012870103819295764,
+          "measurement_nll": 3.4562509059906006,
+          "total_gradient_before_clip": 2.4674134254455566
+        }
+      ],
+      "validation_mean_layout_delta_rmse_db": 2.39637992430148
+    },
+    {
+      "epoch": 2,
+      "updates": [
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 3.5046422481536865,
+          "mean_predictive_std_db": 13.363433837890625,
+          "measurement_mean_gradient": 0.0008994494564831257,
+          "measurement_nll": 3.5046422481536865,
+          "total_gradient_before_clip": 1.6756535768508911
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 3.464632511138916,
+          "mean_predictive_std_db": 13.328763961791992,
+          "measurement_mean_gradient": 0.001072595245204866,
+          "measurement_nll": 3.464632511138916,
+          "total_gradient_before_clip": 1.9941703081130981
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 3.432559013366699,
+          "mean_predictive_std_db": 13.294031143188477,
+          "measurement_mean_gradient": 0.0006542478804476559,
+          "measurement_nll": 3.432559013366699,
+          "total_gradient_before_clip": 0.6400723457336426
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 3.453505516052246,
+          "mean_predictive_std_db": 13.259239196777344,
+          "measurement_mean_gradient": 0.0010821342002600431,
+          "measurement_nll": 3.453505516052246,
+          "total_gradient_before_clip": 1.4744645357131958
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 3.432913303375244,
+          "mean_predictive_std_db": 13.224530220031738,
+          "measurement_mean_gradient": 0.0007156988140195608,
+          "measurement_nll": 3.432913303375244,
+          "total_gradient_before_clip": 0.96478271484375
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 3.4894628524780273,
+          "mean_predictive_std_db": 13.189873695373535,
+          "measurement_mean_gradient": 0.0008688895613886416,
+          "measurement_nll": 3.4894628524780273,
+          "total_gradient_before_clip": 0.9844815731048584
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 3.424407958984375,
+          "mean_predictive_std_db": 13.155326843261719,
+          "measurement_mean_gradient": 0.0006314432830549777,
+          "measurement_nll": 3.424407958984375,
+          "total_gradient_before_clip": 0.5587965846061707
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 3.44687819480896,
+          "mean_predictive_std_db": 13.120904922485352,
+          "measurement_mean_gradient": 0.0006031448720023036,
+          "measurement_nll": 3.44687819480896,
+          "total_gradient_before_clip": 0.5158467888832092
+        }
+      ],
+      "validation_mean_layout_delta_rmse_db": 2.39637992430148
+    },
+    {
+      "epoch": 3,
+      "updates": [
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 3.4328713417053223,
+          "mean_predictive_std_db": 13.086633682250977,
+          "measurement_mean_gradient": 0.0005338945193216205,
+          "measurement_nll": 3.4328713417053223,
+          "total_gradient_before_clip": 0.5824991464614868
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 3.4196510314941406,
+          "mean_predictive_std_db": 13.052556037902832,
+          "measurement_mean_gradient": 0.0007150202291086316,
+          "measurement_nll": 3.4196510314941406,
+          "total_gradient_before_clip": 0.3844374716281891
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 3.4663734436035156,
+          "mean_predictive_std_db": 13.018744468688965,
+          "measurement_mean_gradient": 0.0008579380228184164,
+          "measurement_nll": 3.4663734436035156,
+          "total_gradient_before_clip": 1.0914638042449951
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 3.462824583053589,
+          "mean_predictive_std_db": 12.98528003692627,
+          "measurement_mean_gradient": 0.0006924704066477716,
+          "measurement_nll": 3.462824583053589,
+          "total_gradient_before_clip": 0.4111114740371704
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 3.4773993492126465,
+          "mean_predictive_std_db": 12.952123641967773,
+          "measurement_mean_gradient": 0.0007101914961822331,
+          "measurement_nll": 3.4773993492126465,
+          "total_gradient_before_clip": 0.8030593991279602
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 3.4178738594055176,
+          "mean_predictive_std_db": 12.919270515441895,
+          "measurement_mean_gradient": 0.0009533104603178799,
+          "measurement_nll": 3.4178738594055176,
+          "total_gradient_before_clip": 1.095226764678955
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 3.410148859024048,
+          "mean_predictive_std_db": 12.886775970458984,
+          "measurement_mean_gradient": 0.0006804969743825495,
+          "measurement_nll": 3.410148859024048,
+          "total_gradient_before_clip": 0.7806787490844727
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 3.4536380767822266,
+          "mean_predictive_std_db": 12.854621887207031,
+          "measurement_mean_gradient": 0.0006413805531337857,
+          "measurement_nll": 3.4536380767822266,
+          "total_gradient_before_clip": 0.33022579550743103
+        }
+      ],
+      "validation_mean_layout_delta_rmse_db": 2.39637992430148
+    },
+    {
+      "epoch": 4,
+      "updates": [
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 3.4352307319641113,
+          "mean_predictive_std_db": 12.822850227355957,
+          "measurement_mean_gradient": 0.0007682833820581436,
+          "measurement_nll": 3.4352307319641113,
+          "total_gradient_before_clip": 0.612642228603363
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 3.397197723388672,
+          "mean_predictive_std_db": 12.791487693786621,
+          "measurement_mean_gradient": 0.0007525334367528558,
+          "measurement_nll": 3.397197723388672,
+          "total_gradient_before_clip": 0.7415489554405212
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 3.4238035678863525,
+          "mean_predictive_std_db": 12.760550498962402,
+          "measurement_mean_gradient": 0.0008524357108399272,
+          "measurement_nll": 3.4238035678863525,
+          "total_gradient_before_clip": 0.9567838311195374
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 3.423330307006836,
+          "mean_predictive_std_db": 12.730046272277832,
+          "measurement_mean_gradient": 0.0006994356517679989,
+          "measurement_nll": 3.423330307006836,
+          "total_gradient_before_clip": 0.6461566090583801
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 3.4388959407806396,
+          "mean_predictive_std_db": 12.699975967407227,
+          "measurement_mean_gradient": 0.0005092070787213743,
+          "measurement_nll": 3.4388959407806396,
+          "total_gradient_before_clip": 0.3155052065849304
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 3.430882453918457,
+          "mean_predictive_std_db": 12.67030143737793,
+          "measurement_mean_gradient": 0.0006936786230653524,
+          "measurement_nll": 3.430882453918457,
+          "total_gradient_before_clip": 0.6193242073059082
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 3.433450937271118,
+          "mean_predictive_std_db": 12.641033172607422,
+          "measurement_mean_gradient": 0.0008157248958013952,
+          "measurement_nll": 3.433450937271118,
+          "total_gradient_before_clip": 0.8765462040901184
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 3.431788444519043,
+          "mean_predictive_std_db": 12.612177848815918,
+          "measurement_mean_gradient": 0.000672013615258038,
+          "measurement_nll": 3.431788444519043,
+          "total_gradient_before_clip": 0.707220733165741
+        }
+      ],
+      "validation_mean_layout_delta_rmse_db": 2.39637992430148
+    },
+    {
+      "epoch": 5,
+      "updates": [
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 3.427687168121338,
+          "mean_predictive_std_db": 12.583720207214355,
+          "measurement_mean_gradient": 0.0007190940086729825,
+          "measurement_nll": 3.427687168121338,
+          "total_gradient_before_clip": 0.32043948769569397
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 3.4345762729644775,
+          "mean_predictive_std_db": 12.555688858032227,
+          "measurement_mean_gradient": 0.0007796618156135082,
+          "measurement_nll": 3.4345762729644775,
+          "total_gradient_before_clip": 0.7977847456932068
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 3.394749879837036,
+          "mean_predictive_std_db": 12.528079986572266,
+          "measurement_mean_gradient": 0.0006199115887284279,
+          "measurement_nll": 3.394749879837036,
+          "total_gradient_before_clip": 0.3933008909225464
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 3.3780555725097656,
+          "mean_predictive_std_db": 12.500862121582031,
+          "measurement_mean_gradient": 0.0004966266569681466,
+          "measurement_nll": 3.3780555725097656,
+          "total_gradient_before_clip": 0.3841240406036377
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 3.3771936893463135,
+          "mean_predictive_std_db": 12.473984718322754,
+          "measurement_mean_gradient": 0.000636531098280102,
+          "measurement_nll": 3.3771936893463135,
+          "total_gradient_before_clip": 0.4722929000854492
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 3.403122901916504,
+          "mean_predictive_std_db": 12.447449684143066,
+          "measurement_mean_gradient": 0.0005247010849416256,
+          "measurement_nll": 3.403122901916504,
+          "total_gradient_before_clip": 0.31938669085502625
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 3.3960933685302734,
+          "mean_predictive_std_db": 12.421239852905273,
+          "measurement_mean_gradient": 0.0005955167580395937,
+          "measurement_nll": 3.3960933685302734,
+          "total_gradient_before_clip": 0.3096441924571991
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 3.4040074348449707,
+          "mean_predictive_std_db": 12.395354270935059,
+          "measurement_mean_gradient": 0.0006728425505571067,
+          "measurement_nll": 3.4040074348449707,
+          "total_gradient_before_clip": 0.4037841260433197
+        }
+      ],
+      "validation_mean_layout_delta_rmse_db": 2.39637992430148
+    },
+    {
+      "epoch": 6,
+      "updates": [
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 3.418102264404297,
+          "mean_predictive_std_db": 12.369792938232422,
+          "measurement_mean_gradient": 0.0007001038175076246,
+          "measurement_nll": 3.418102264404297,
+          "total_gradient_before_clip": 0.5785791277885437
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 3.3698513507843018,
+          "mean_predictive_std_db": 12.344544410705566,
+          "measurement_mean_gradient": 0.000495755288284272,
+          "measurement_nll": 3.3698513507843018,
+          "total_gradient_before_clip": 0.3404536247253418
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 3.356910228729248,
+          "mean_predictive_std_db": 12.319573402404785,
+          "measurement_mean_gradient": 0.0006755552021786571,
+          "measurement_nll": 3.356910228729248,
+          "total_gradient_before_clip": 0.41478583216667175
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 3.393847942352295,
+          "mean_predictive_std_db": 12.294878005981445,
+          "measurement_mean_gradient": 0.0006469836225733161,
+          "measurement_nll": 3.393847942352295,
+          "total_gradient_before_clip": 0.3068860173225403
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 3.351797103881836,
+          "mean_predictive_std_db": 12.270435333251953,
+          "measurement_mean_gradient": 0.0006934220436960459,
+          "measurement_nll": 3.351797103881836,
+          "total_gradient_before_clip": 0.3038645088672638
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 3.4015121459960938,
+          "mean_predictive_std_db": 12.246253967285156,
+          "measurement_mean_gradient": 0.0007633636705577374,
+          "measurement_nll": 3.4015121459960938,
+          "total_gradient_before_clip": 0.46878549456596375
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 3.3603920936584473,
+          "mean_predictive_std_db": 12.222318649291992,
+          "measurement_mean_gradient": 0.0005055929650552571,
+          "measurement_nll": 3.3603920936584473,
+          "total_gradient_before_clip": 0.4031343460083008
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 3.393089771270752,
+          "mean_predictive_std_db": 12.19858455657959,
+          "measurement_mean_gradient": 0.0005822188686579466,
+          "measurement_nll": 3.393089771270752,
+          "total_gradient_before_clip": 0.31718015670776367
+        }
+      ],
+      "validation_mean_layout_delta_rmse_db": 2.39637992430148
+    },
+    {
+      "epoch": 7,
+      "updates": [
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 3.360572099685669,
+          "mean_predictive_std_db": 12.175032615661621,
+          "measurement_mean_gradient": 0.0005310751148499548,
+          "measurement_nll": 3.360572099685669,
+          "total_gradient_before_clip": 0.4158496558666229
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 3.335773229598999,
+          "mean_predictive_std_db": 12.151666641235352,
+          "measurement_mean_gradient": 0.00048794830217957497,
+          "measurement_nll": 3.335773229598999,
+          "total_gradient_before_clip": 0.3973734974861145
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 3.3613715171813965,
+          "mean_predictive_std_db": 12.128462791442871,
+          "measurement_mean_gradient": 0.0007767834467813373,
+          "measurement_nll": 3.3613715171813965,
+          "total_gradient_before_clip": 0.6415625214576721
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 3.3444461822509766,
+          "mean_predictive_std_db": 12.10545539855957,
+          "measurement_mean_gradient": 0.0007926677353680134,
+          "measurement_nll": 3.3444461822509766,
+          "total_gradient_before_clip": 0.5960638523101807
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 3.364591598510742,
+          "mean_predictive_std_db": 12.082640647888184,
+          "measurement_mean_gradient": 0.0005817451165057719,
+          "measurement_nll": 3.364591598510742,
+          "total_gradient_before_clip": 0.3207763433456421
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 3.359236240386963,
+          "mean_predictive_std_db": 12.059962272644043,
+          "measurement_mean_gradient": 0.0005703563219867647,
+          "measurement_nll": 3.359236240386963,
+          "total_gradient_before_clip": 0.6244597434997559
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 3.3415017127990723,
+          "mean_predictive_std_db": 12.037409782409668,
+          "measurement_mean_gradient": 0.0006112406845204532,
+          "measurement_nll": 3.3415017127990723,
+          "total_gradient_before_clip": 0.605254590511322
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 3.3428688049316406,
+          "mean_predictive_std_db": 12.01498031616211,
+          "measurement_mean_gradient": 0.0006275676423683763,
+          "measurement_nll": 3.3428688049316406,
+          "total_gradient_before_clip": 0.47241878509521484
+        }
+      ],
+      "validation_mean_layout_delta_rmse_db": 2.39637992430148
+    },
+    {
+      "epoch": 8,
+      "updates": [
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 3.3626716136932373,
+          "mean_predictive_std_db": 11.992692947387695,
+          "measurement_mean_gradient": 0.0007281255093403161,
+          "measurement_nll": 3.3626716136932373,
+          "total_gradient_before_clip": 0.7845066785812378
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 3.3708324432373047,
+          "mean_predictive_std_db": 11.970555305480957,
+          "measurement_mean_gradient": 0.0006587407551705837,
+          "measurement_nll": 3.3708324432373047,
+          "total_gradient_before_clip": 0.3955947160720825
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 3.367733955383301,
+          "mean_predictive_std_db": 11.948541641235352,
+          "measurement_mean_gradient": 0.0006712060421705246,
+          "measurement_nll": 3.367733955383301,
+          "total_gradient_before_clip": 0.3829282224178314
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 3.3419852256774902,
+          "mean_predictive_std_db": 11.926647186279297,
+          "measurement_mean_gradient": 0.0007398175075650215,
+          "measurement_nll": 3.3419852256774902,
+          "total_gradient_before_clip": 0.9169309735298157
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 3.3847012519836426,
+          "mean_predictive_std_db": 11.904850006103516,
+          "measurement_mean_gradient": 0.0006806976743973792,
+          "measurement_nll": 3.3847012519836426,
+          "total_gradient_before_clip": 0.3358270525932312
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 3.3470888137817383,
+          "mean_predictive_std_db": 11.883140563964844,
+          "measurement_mean_gradient": 0.0006815484957769513,
+          "measurement_nll": 3.3470888137817383,
+          "total_gradient_before_clip": 0.45961815118789673
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 3.3520398139953613,
+          "mean_predictive_std_db": 11.861540794372559,
+          "measurement_mean_gradient": 0.0006940067396499217,
+          "measurement_nll": 3.3520398139953613,
+          "total_gradient_before_clip": 0.5339430570602417
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 3.33427095413208,
+          "mean_predictive_std_db": 11.840031623840332,
+          "measurement_mean_gradient": 0.0006865041796118021,
+          "measurement_nll": 3.33427095413208,
+          "total_gradient_before_clip": 0.3283861577510834
+        }
+      ],
+      "validation_mean_layout_delta_rmse_db": 2.39637992430148
+    },
+    {
+      "epoch": 9,
+      "updates": [
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 3.3224503993988037,
+          "mean_predictive_std_db": 11.81861686706543,
+          "measurement_mean_gradient": 0.0005347100086510181,
+          "measurement_nll": 3.3224503993988037,
+          "total_gradient_before_clip": 0.4322679340839386
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 3.3410234451293945,
+          "mean_predictive_std_db": 11.797277450561523,
+          "measurement_mean_gradient": 0.000613564916420728,
+          "measurement_nll": 3.3410234451293945,
+          "total_gradient_before_clip": 0.44285711646080017
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 3.322695732116699,
+          "mean_predictive_std_db": 11.776031494140625,
+          "measurement_mean_gradient": 0.0006843435112386942,
+          "measurement_nll": 3.322695732116699,
+          "total_gradient_before_clip": 0.4956190288066864
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 3.3338208198547363,
+          "mean_predictive_std_db": 11.75486946105957,
+          "measurement_mean_gradient": 0.0007867395179346204,
+          "measurement_nll": 3.3338208198547363,
+          "total_gradient_before_clip": 0.3697107434272766
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 3.3631348609924316,
+          "mean_predictive_std_db": 11.73379898071289,
+          "measurement_mean_gradient": 0.0007944207172840834,
+          "measurement_nll": 3.3631348609924316,
+          "total_gradient_before_clip": 0.6751151084899902
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 3.3320703506469727,
+          "mean_predictive_std_db": 11.712804794311523,
+          "measurement_mean_gradient": 0.0005547813489101827,
+          "measurement_nll": 3.3320703506469727,
+          "total_gradient_before_clip": 0.38341253995895386
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 3.3618721961975098,
+          "mean_predictive_std_db": 11.691863059997559,
+          "measurement_mean_gradient": 0.0006985087529756129,
+          "measurement_nll": 3.3618721961975098,
+          "total_gradient_before_clip": 0.35432732105255127
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 3.313586473464966,
+          "mean_predictive_std_db": 11.670979499816895,
+          "measurement_mean_gradient": 0.000669240893330425,
+          "measurement_nll": 3.313586473464966,
+          "total_gradient_before_clip": 0.8335133194923401
+        }
+      ],
+      "validation_mean_layout_delta_rmse_db": 2.39637992430148
+    },
+    {
+      "epoch": 10,
+      "updates": [
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 3.3609461784362793,
+          "mean_predictive_std_db": 11.650137901306152,
+          "measurement_mean_gradient": 0.0007935722824186087,
+          "measurement_nll": 3.3609461784362793,
+          "total_gradient_before_clip": 0.6343178749084473
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 3.351001739501953,
+          "mean_predictive_std_db": 11.629375457763672,
+          "measurement_mean_gradient": 0.0006915960111655295,
+          "measurement_nll": 3.351001739501953,
+          "total_gradient_before_clip": 0.4166102707386017
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 3.3235816955566406,
+          "mean_predictive_std_db": 11.608687400817871,
+          "measurement_mean_gradient": 0.0006654774188064039,
+          "measurement_nll": 3.3235816955566406,
+          "total_gradient_before_clip": 0.6563864350318909
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 3.3060531616210938,
+          "mean_predictive_std_db": 11.588062286376953,
+          "measurement_mean_gradient": 0.0006681481609120965,
+          "measurement_nll": 3.3060531616210938,
+          "total_gradient_before_clip": 0.5764515995979309
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 3.3449268341064453,
+          "mean_predictive_std_db": 11.567490577697754,
+          "measurement_mean_gradient": 0.00073113979306072,
+          "measurement_nll": 3.3449268341064453,
+          "total_gradient_before_clip": 0.714890718460083
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 3.3053598403930664,
+          "mean_predictive_std_db": 11.546985626220703,
+          "measurement_mean_gradient": 0.000597141741309315,
+          "measurement_nll": 3.3053598403930664,
+          "total_gradient_before_clip": 0.43409043550491333
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 3.3068325519561768,
+          "mean_predictive_std_db": 11.526537895202637,
+          "measurement_mean_gradient": 0.0005646967329084873,
+          "measurement_nll": 3.3068325519561768,
+          "total_gradient_before_clip": 0.3455047011375427
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 3.2876038551330566,
+          "mean_predictive_std_db": 11.506134986877441,
+          "measurement_mean_gradient": 0.0007809701492078602,
+          "measurement_nll": 3.2876038551330566,
+          "total_gradient_before_clip": 0.776567816734314
+        }
+      ],
+      "validation_mean_layout_delta_rmse_db": 2.39637992430148
+    },
+    {
+      "epoch": 11,
+      "updates": [
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 3.3117194175720215,
+          "mean_predictive_std_db": 11.485795974731445,
+          "measurement_mean_gradient": 0.0005525238811969757,
+          "measurement_nll": 3.3117194175720215,
+          "total_gradient_before_clip": 0.4830891788005829
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 3.327371597290039,
+          "mean_predictive_std_db": 11.465511322021484,
+          "measurement_mean_gradient": 0.0009584521758370101,
+          "measurement_nll": 3.327371597290039,
+          "total_gradient_before_clip": 0.9385760426521301
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 3.3110647201538086,
+          "mean_predictive_std_db": 11.445324897766113,
+          "measurement_mean_gradient": 0.0006955966237001121,
+          "measurement_nll": 3.3110647201538086,
+          "total_gradient_before_clip": 0.4237724542617798
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 3.294339418411255,
+          "mean_predictive_std_db": 11.42519474029541,
+          "measurement_mean_gradient": 0.0008531517232768238,
+          "measurement_nll": 3.294339418411255,
+          "total_gradient_before_clip": 1.3074642419815063
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 3.318356513977051,
+          "mean_predictive_std_db": 11.405108451843262,
+          "measurement_mean_gradient": 0.0007564826519228518,
+          "measurement_nll": 3.318356513977051,
+          "total_gradient_before_clip": 0.4867857098579407
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 3.298567295074463,
+          "mean_predictive_std_db": 11.385082244873047,
+          "measurement_mean_gradient": 0.0009849442867562175,
+          "measurement_nll": 3.298567295074463,
+          "total_gradient_before_clip": 1.3019593954086304
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 3.2817513942718506,
+          "mean_predictive_std_db": 11.365141868591309,
+          "measurement_mean_gradient": 0.0006808344624005258,
+          "measurement_nll": 3.2817513942718506,
+          "total_gradient_before_clip": 0.4954003095626831
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 3.2860703468322754,
+          "mean_predictive_std_db": 11.345227241516113,
+          "measurement_mean_gradient": 0.0005895830108784139,
+          "measurement_nll": 3.2860703468322754,
+          "total_gradient_before_clip": 0.5927330851554871
+        }
+      ],
+      "validation_mean_layout_delta_rmse_db": 2.39637992430148
+    },
+    {
+      "epoch": 12,
+      "updates": [
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 3.2970237731933594,
+          "mean_predictive_std_db": 11.325360298156738,
+          "measurement_mean_gradient": 0.0005560907302424312,
+          "measurement_nll": 3.2970237731933594,
+          "total_gradient_before_clip": 0.46710214018821716
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 3.2994472980499268,
+          "mean_predictive_std_db": 11.305554389953613,
+          "measurement_mean_gradient": 0.0008098098915070295,
+          "measurement_nll": 3.2994472980499268,
+          "total_gradient_before_clip": 0.474484920501709
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 3.308605670928955,
+          "mean_predictive_std_db": 11.285834312438965,
+          "measurement_mean_gradient": 0.0008671140531077981,
+          "measurement_nll": 3.308605670928955,
+          "total_gradient_before_clip": 0.678933322429657
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 3.2760796546936035,
+          "mean_predictive_std_db": 11.266186714172363,
+          "measurement_mean_gradient": 0.0006660372018814087,
+          "measurement_nll": 3.2760796546936035,
+          "total_gradient_before_clip": 0.7214800715446472
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 3.293846607208252,
+          "mean_predictive_std_db": 11.246565818786621,
+          "measurement_mean_gradient": 0.0006620809435844421,
+          "measurement_nll": 3.293846607208252,
+          "total_gradient_before_clip": 0.6763433814048767
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 3.277834415435791,
+          "mean_predictive_std_db": 11.226971626281738,
+          "measurement_mean_gradient": 0.0007831625989638269,
+          "measurement_nll": 3.277834415435791,
+          "total_gradient_before_clip": 0.9623816609382629
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 3.2787256240844727,
+          "mean_predictive_std_db": 11.207420349121094,
+          "measurement_mean_gradient": 0.000703235506080091,
+          "measurement_nll": 3.2787256240844727,
+          "total_gradient_before_clip": 0.5222992897033691
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 3.2754077911376953,
+          "mean_predictive_std_db": 11.187907218933105,
+          "measurement_mean_gradient": 0.0009205038659274578,
+          "measurement_nll": 3.2754077911376953,
+          "total_gradient_before_clip": 1.428866982460022
+        }
+      ],
+      "validation_mean_layout_delta_rmse_db": 2.39637992430148
+    },
+    {
+      "epoch": 13,
+      "updates": [
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 3.2763659954071045,
+          "mean_predictive_std_db": 11.16844367980957,
+          "measurement_mean_gradient": 0.0007048649713397026,
+          "measurement_nll": 3.2763659954071045,
+          "total_gradient_before_clip": 0.5235830545425415
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 3.277808666229248,
+          "mean_predictive_std_db": 11.149033546447754,
+          "measurement_mean_gradient": 0.0009106837678700686,
+          "measurement_nll": 3.277808666229248,
+          "total_gradient_before_clip": 1.1852729320526123
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 3.296761989593506,
+          "mean_predictive_std_db": 11.129715919494629,
+          "measurement_mean_gradient": 0.0007214797660708427,
+          "measurement_nll": 3.296761989593506,
+          "total_gradient_before_clip": 0.7787526845932007
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 3.305375099182129,
+          "mean_predictive_std_db": 11.110448837280273,
+          "measurement_mean_gradient": 0.0008185873157344759,
+          "measurement_nll": 3.305375099182129,
+          "total_gradient_before_clip": 0.6446347236633301
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 3.310760974884033,
+          "mean_predictive_std_db": 11.091211318969727,
+          "measurement_mean_gradient": 0.000806014402769506,
+          "measurement_nll": 3.310760974884033,
+          "total_gradient_before_clip": 0.8073312640190125
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 3.3156960010528564,
+          "mean_predictive_std_db": 11.071985244750977,
+          "measurement_mean_gradient": 0.0008131713257171214,
+          "measurement_nll": 3.3156960010528564,
+          "total_gradient_before_clip": 0.4086911082267761
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 3.300656795501709,
+          "mean_predictive_std_db": 11.052776336669922,
+          "measurement_mean_gradient": 0.0009302417165599763,
+          "measurement_nll": 3.300656795501709,
+          "total_gradient_before_clip": 0.723313570022583
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 3.275331974029541,
+          "mean_predictive_std_db": 11.033601760864258,
+          "measurement_mean_gradient": 0.0007554341573268175,
+          "measurement_nll": 3.275331974029541,
+          "total_gradient_before_clip": 0.44703713059425354
+        }
+      ],
+      "validation_mean_layout_delta_rmse_db": 2.39637992430148
+    },
+    {
+      "epoch": 14,
+      "updates": [
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 3.2742934226989746,
+          "mean_predictive_std_db": 11.014459609985352,
+          "measurement_mean_gradient": 0.0008757541654631495,
+          "measurement_nll": 3.2742934226989746,
+          "total_gradient_before_clip": 0.5128080248832703
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 3.303849697113037,
+          "mean_predictive_std_db": 10.995366096496582,
+          "measurement_mean_gradient": 0.0007393021951429546,
+          "measurement_nll": 3.303849697113037,
+          "total_gradient_before_clip": 0.4380158483982086
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 3.258732557296753,
+          "mean_predictive_std_db": 10.976293563842773,
+          "measurement_mean_gradient": 0.0007488431292586029,
+          "measurement_nll": 3.258732557296753,
+          "total_gradient_before_clip": 0.8933724164962769
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 3.3074538707733154,
+          "mean_predictive_std_db": 10.957249641418457,
+          "measurement_mean_gradient": 0.0008030683384276927,
+          "measurement_nll": 3.3074538707733154,
+          "total_gradient_before_clip": 0.42037084698677063
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 3.293592929840088,
+          "mean_predictive_std_db": 10.938255310058594,
+          "measurement_mean_gradient": 0.0007558636134490371,
+          "measurement_nll": 3.293592929840088,
+          "total_gradient_before_clip": 0.5451385378837585
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 3.255885124206543,
+          "mean_predictive_std_db": 10.91929817199707,
+          "measurement_mean_gradient": 0.000618800229858607,
+          "measurement_nll": 3.255885124206543,
+          "total_gradient_before_clip": 0.3234293758869171
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 3.26840877532959,
+          "mean_predictive_std_db": 10.900372505187988,
+          "measurement_mean_gradient": 0.0006462495075538754,
+          "measurement_nll": 3.26840877532959,
+          "total_gradient_before_clip": 0.3305376470088959
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 3.248511552810669,
+          "mean_predictive_std_db": 10.881484031677246,
+          "measurement_mean_gradient": 0.0007023814832791686,
+          "measurement_nll": 3.248511552810669,
+          "total_gradient_before_clip": 0.5230391025543213
+        }
+      ],
+      "validation_mean_layout_delta_rmse_db": 2.39637992430148
+    },
+    {
+      "epoch": 15,
+      "updates": [
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 3.2472071647644043,
+          "mean_predictive_std_db": 10.862640380859375,
+          "measurement_mean_gradient": 0.0007130476296879351,
+          "measurement_nll": 3.2472071647644043,
+          "total_gradient_before_clip": 0.3616081476211548
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 3.269439697265625,
+          "mean_predictive_std_db": 10.843852043151855,
+          "measurement_mean_gradient": 0.0008673759875819087,
+          "measurement_nll": 3.269439697265625,
+          "total_gradient_before_clip": 0.6752064824104309
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 3.2656469345092773,
+          "mean_predictive_std_db": 10.825125694274902,
+          "measurement_mean_gradient": 0.0007768197683617473,
+          "measurement_nll": 3.2656469345092773,
+          "total_gradient_before_clip": 0.4333378076553345
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 3.3057126998901367,
+          "mean_predictive_std_db": 10.806461334228516,
+          "measurement_mean_gradient": 0.000738496717531234,
+          "measurement_nll": 3.3057126998901367,
+          "total_gradient_before_clip": 0.3438130021095276
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 3.2950544357299805,
+          "mean_predictive_std_db": 10.787843704223633,
+          "measurement_mean_gradient": 0.0010135832708328962,
+          "measurement_nll": 3.2950544357299805,
+          "total_gradient_before_clip": 1.3369195461273193
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 3.277362108230591,
+          "mean_predictive_std_db": 10.769257545471191,
+          "measurement_mean_gradient": 0.0005988746997900307,
+          "measurement_nll": 3.277362108230591,
+          "total_gradient_before_clip": 0.33223891258239746
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 3.2468724250793457,
+          "mean_predictive_std_db": 10.750696182250977,
+          "measurement_mean_gradient": 0.0007609372260048985,
+          "measurement_nll": 3.2468724250793457,
+          "total_gradient_before_clip": 0.47406885027885437
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 3.2444944381713867,
+          "mean_predictive_std_db": 10.732172012329102,
+          "measurement_mean_gradient": 0.0008125846507027745,
+          "measurement_nll": 3.2444944381713867,
+          "total_gradient_before_clip": 0.5620055794715881
+        }
+      ],
+      "validation_mean_layout_delta_rmse_db": 2.39637992430148
+    },
+    {
+      "epoch": 16,
+      "updates": [
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 3.2477965354919434,
+          "mean_predictive_std_db": 10.713683128356934,
+          "measurement_mean_gradient": 0.0008109425543807447,
+          "measurement_nll": 3.2477965354919434,
+          "total_gradient_before_clip": 0.7643436193466187
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 3.2421364784240723,
+          "mean_predictive_std_db": 10.695233345031738,
+          "measurement_mean_gradient": 0.0007749662036076188,
+          "measurement_nll": 3.2421364784240723,
+          "total_gradient_before_clip": 0.5803857445716858
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 3.2599992752075195,
+          "mean_predictive_std_db": 10.676813125610352,
+          "measurement_mean_gradient": 0.0008438117220066488,
+          "measurement_nll": 3.2599992752075195,
+          "total_gradient_before_clip": 0.6971502900123596
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 3.27401065826416,
+          "mean_predictive_std_db": 10.658449172973633,
+          "measurement_mean_gradient": 0.0007781660533510149,
+          "measurement_nll": 3.27401065826416,
+          "total_gradient_before_clip": 0.40131065249443054
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 3.2794129848480225,
+          "mean_predictive_std_db": 10.640141487121582,
+          "measurement_mean_gradient": 0.0009634786983951926,
+          "measurement_nll": 3.2794129848480225,
+          "total_gradient_before_clip": 0.4699557423591614
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 3.2821645736694336,
+          "mean_predictive_std_db": 10.62190055847168,
+          "measurement_mean_gradient": 0.0009017749107442796,
+          "measurement_nll": 3.2821645736694336,
+          "total_gradient_before_clip": 0.4964863657951355
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 3.227144241333008,
+          "mean_predictive_std_db": 10.603715896606445,
+          "measurement_mean_gradient": 0.0008213122491724789,
+          "measurement_nll": 3.227144241333008,
+          "total_gradient_before_clip": 0.8319647312164307
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 3.2728500366210938,
+          "mean_predictive_std_db": 10.585546493530273,
+          "measurement_mean_gradient": 0.0009168287506327033,
+          "measurement_nll": 3.2728500366210938,
+          "total_gradient_before_clip": 0.8765500783920288
+        }
+      ],
+      "validation_mean_layout_delta_rmse_db": 2.39637992430148
+    },
+    {
+      "epoch": 17,
+      "updates": [
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 3.24570894241333,
+          "mean_predictive_std_db": 10.567402839660645,
+          "measurement_mean_gradient": 0.0008668749942444265,
+          "measurement_nll": 3.24570894241333,
+          "total_gradient_before_clip": 0.679556667804718
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 3.262533187866211,
+          "mean_predictive_std_db": 10.549299240112305,
+          "measurement_mean_gradient": 0.0009055098635144532,
+          "measurement_nll": 3.262533187866211,
+          "total_gradient_before_clip": 0.42539846897125244
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 3.2588157653808594,
+          "mean_predictive_std_db": 10.53122615814209,
+          "measurement_mean_gradient": 0.0007891799323260784,
+          "measurement_nll": 3.2588157653808594,
+          "total_gradient_before_clip": 0.4850175380706787
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 3.239603042602539,
+          "mean_predictive_std_db": 10.513172149658203,
+          "measurement_mean_gradient": 0.0009334061178378761,
+          "measurement_nll": 3.239603042602539,
+          "total_gradient_before_clip": 1.106371521949768
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 3.220132350921631,
+          "mean_predictive_std_db": 10.49514389038086,
+          "measurement_mean_gradient": 0.0006489559891633689,
+          "measurement_nll": 3.220132350921631,
+          "total_gradient_before_clip": 0.3688373267650604
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 3.2615606784820557,
+          "mean_predictive_std_db": 10.477156639099121,
+          "measurement_mean_gradient": 0.0012126840883865952,
+          "measurement_nll": 3.2615606784820557,
+          "total_gradient_before_clip": 1.516779899597168
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 3.2168259620666504,
+          "mean_predictive_std_db": 10.459250450134277,
+          "measurement_mean_gradient": 0.0006180391646921635,
+          "measurement_nll": 3.2168259620666504,
+          "total_gradient_before_clip": 0.3800722360610962
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 3.2517852783203125,
+          "mean_predictive_std_db": 10.441370964050293,
+          "measurement_mean_gradient": 0.0008733352296985686,
+          "measurement_nll": 3.2517852783203125,
+          "total_gradient_before_clip": 0.44502735137939453
+        }
+      ],
+      "validation_mean_layout_delta_rmse_db": 2.39637992430148
+    },
+    {
+      "epoch": 18,
+      "updates": [
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 3.2246313095092773,
+          "mean_predictive_std_db": 10.423535346984863,
+          "measurement_mean_gradient": 0.0007142162648960948,
+          "measurement_nll": 3.2246313095092773,
+          "total_gradient_before_clip": 0.724644660949707
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 3.21578311920166,
+          "mean_predictive_std_db": 10.405736923217773,
+          "measurement_mean_gradient": 0.00059746258193627,
+          "measurement_nll": 3.21578311920166,
+          "total_gradient_before_clip": 0.5492220520973206
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 3.252485752105713,
+          "mean_predictive_std_db": 10.387956619262695,
+          "measurement_mean_gradient": 0.0009767478331923485,
+          "measurement_nll": 3.252485752105713,
+          "total_gradient_before_clip": 1.0345455408096313
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 3.2151870727539062,
+          "mean_predictive_std_db": 10.370234489440918,
+          "measurement_mean_gradient": 0.000873759388923645,
+          "measurement_nll": 3.2151870727539062,
+          "total_gradient_before_clip": 0.48009565472602844
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 3.2285594940185547,
+          "mean_predictive_std_db": 10.352563858032227,
+          "measurement_mean_gradient": 0.0008887837175279856,
+          "measurement_nll": 3.2285594940185547,
+          "total_gradient_before_clip": 0.326063334941864
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 3.2639636993408203,
+          "mean_predictive_std_db": 10.334936141967773,
+          "measurement_mean_gradient": 0.0009527091751806438,
+          "measurement_nll": 3.2639636993408203,
+          "total_gradient_before_clip": 0.3383731544017792
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 3.2132058143615723,
+          "mean_predictive_std_db": 10.317350387573242,
+          "measurement_mean_gradient": 0.0008821929804980755,
+          "measurement_nll": 3.2132058143615723,
+          "total_gradient_before_clip": 1.1821190118789673
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 3.1985981464385986,
+          "mean_predictive_std_db": 10.299790382385254,
+          "measurement_mean_gradient": 0.0008886061841621995,
+          "measurement_nll": 3.1985981464385986,
+          "total_gradient_before_clip": 0.7363162636756897
+        }
+      ],
+      "validation_mean_layout_delta_rmse_db": 2.39637992430148
+    },
+    {
+      "epoch": 19,
+      "updates": [
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 3.2031993865966797,
+          "mean_predictive_std_db": 10.282249450683594,
+          "measurement_mean_gradient": 0.0008371376898139715,
+          "measurement_nll": 3.2031993865966797,
+          "total_gradient_before_clip": 0.9733879566192627
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 3.198723316192627,
+          "mean_predictive_std_db": 10.264754295349121,
+          "measurement_mean_gradient": 0.0009342104895040393,
+          "measurement_nll": 3.198723316192627,
+          "total_gradient_before_clip": 1.1308680772781372
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 3.22574520111084,
+          "mean_predictive_std_db": 10.247310638427734,
+          "measurement_mean_gradient": 0.0010190765606239438,
+          "measurement_nll": 3.22574520111084,
+          "total_gradient_before_clip": 0.520407497882843
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 3.2117650508880615,
+          "mean_predictive_std_db": 10.229926109313965,
+          "measurement_mean_gradient": 0.0009662336087785661,
+          "measurement_nll": 3.2117650508880615,
+          "total_gradient_before_clip": 1.0457639694213867
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 3.2174973487854004,
+          "mean_predictive_std_db": 10.212583541870117,
+          "measurement_mean_gradient": 0.0008973825606517494,
+          "measurement_nll": 3.2174973487854004,
+          "total_gradient_before_clip": 0.7561739683151245
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 3.205526828765869,
+          "mean_predictive_std_db": 10.195294380187988,
+          "measurement_mean_gradient": 0.0006872281664982438,
+          "measurement_nll": 3.205526828765869,
+          "total_gradient_before_clip": 0.3054373860359192
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 3.217453956604004,
+          "mean_predictive_std_db": 10.178032875061035,
+          "measurement_mean_gradient": 0.0009559484315104783,
+          "measurement_nll": 3.217453956604004,
+          "total_gradient_before_clip": 0.9952174425125122
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 3.219127655029297,
+          "mean_predictive_std_db": 10.16082763671875,
+          "measurement_mean_gradient": 0.000839376705698669,
+          "measurement_nll": 3.219127655029297,
+          "total_gradient_before_clip": 0.6408965587615967
+        }
+      ],
+      "validation_mean_layout_delta_rmse_db": 2.39637992430148
+    },
+    {
+      "epoch": 20,
+      "updates": [
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 3.194936752319336,
+          "mean_predictive_std_db": 10.143654823303223,
+          "measurement_mean_gradient": 0.0008413264877162874,
+          "measurement_nll": 3.194936752319336,
+          "total_gradient_before_clip": 0.5394323468208313
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 3.2035930156707764,
+          "mean_predictive_std_db": 10.12649917602539,
+          "measurement_mean_gradient": 0.0009078267612494528,
+          "measurement_nll": 3.2035930156707764,
+          "total_gradient_before_clip": 0.9347029328346252
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 3.2086853981018066,
+          "mean_predictive_std_db": 10.109353065490723,
+          "measurement_mean_gradient": 0.0009286642307415605,
+          "measurement_nll": 3.2086853981018066,
+          "total_gradient_before_clip": 0.4763829708099365
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 3.225928783416748,
+          "mean_predictive_std_db": 10.092242240905762,
+          "measurement_mean_gradient": 0.0010890874546021223,
+          "measurement_nll": 3.225928783416748,
+          "total_gradient_before_clip": 1.2389435768127441
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 3.2323832511901855,
+          "mean_predictive_std_db": 10.075201034545898,
+          "measurement_mean_gradient": 0.0010339951841160655,
+          "measurement_nll": 3.2323832511901855,
+          "total_gradient_before_clip": 0.6958126425743103
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 3.205758571624756,
+          "mean_predictive_std_db": 10.058222770690918,
+          "measurement_mean_gradient": 0.0009013282251544297,
+          "measurement_nll": 3.205758571624756,
+          "total_gradient_before_clip": 0.9488077759742737
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 3.179323196411133,
+          "mean_predictive_std_db": 10.041271209716797,
+          "measurement_mean_gradient": 0.000918758159969002,
+          "measurement_nll": 3.179323196411133,
+          "total_gradient_before_clip": 0.8488444685935974
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 3.245993137359619,
+          "mean_predictive_std_db": 10.024336814880371,
+          "measurement_mean_gradient": 0.0008924805442802608,
+          "measurement_nll": 3.245993137359619,
+          "total_gradient_before_clip": 0.530678927898407
+        }
+      ],
+      "validation_mean_layout_delta_rmse_db": 2.39637992430148
+    },
+    {
+      "epoch": 21,
+      "updates": [
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 3.222139358520508,
+          "mean_predictive_std_db": 10.007433891296387,
+          "measurement_mean_gradient": 0.0008509626495651901,
+          "measurement_nll": 3.222139358520508,
+          "total_gradient_before_clip": 0.522707998752594
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 3.201157569885254,
+          "mean_predictive_std_db": 9.990551948547363,
+          "measurement_mean_gradient": 0.0007445910014212132,
+          "measurement_nll": 3.201157569885254,
+          "total_gradient_before_clip": 0.3479151129722595
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 3.1803951263427734,
+          "mean_predictive_std_db": 9.973688125610352,
+          "measurement_mean_gradient": 0.0007767940405756235,
+          "measurement_nll": 3.1803951263427734,
+          "total_gradient_before_clip": 0.3582456409931183
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 3.190756320953369,
+          "mean_predictive_std_db": 9.956859588623047,
+          "measurement_mean_gradient": 0.000798340595792979,
+          "measurement_nll": 3.190756320953369,
+          "total_gradient_before_clip": 0.32201841473579407
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 3.2251129150390625,
+          "mean_predictive_std_db": 9.940071105957031,
+          "measurement_mean_gradient": 0.0010728168999776244,
+          "measurement_nll": 3.2251129150390625,
+          "total_gradient_before_clip": 0.7695900797843933
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 3.177891731262207,
+          "mean_predictive_std_db": 9.923351287841797,
+          "measurement_mean_gradient": 0.0007568318396806717,
+          "measurement_nll": 3.177891731262207,
+          "total_gradient_before_clip": 0.6859778761863708
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 3.1761107444763184,
+          "mean_predictive_std_db": 9.906646728515625,
+          "measurement_mean_gradient": 0.0007446630042977631,
+          "measurement_nll": 3.1761107444763184,
+          "total_gradient_before_clip": 0.3733503818511963
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 3.176246166229248,
+          "mean_predictive_std_db": 9.889966011047363,
+          "measurement_mean_gradient": 0.000811628473456949,
+          "measurement_nll": 3.176246166229248,
+          "total_gradient_before_clip": 0.6206199526786804
+        }
+      ],
+      "validation_mean_layout_delta_rmse_db": 2.39637992430148
+    },
+    {
+      "epoch": 22,
+      "updates": [
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 3.2188150882720947,
+          "mean_predictive_std_db": 9.873327255249023,
+          "measurement_mean_gradient": 0.0010509015992283821,
+          "measurement_nll": 3.2188150882720947,
+          "total_gradient_before_clip": 0.5762463808059692
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 3.220332145690918,
+          "mean_predictive_std_db": 9.856766700744629,
+          "measurement_mean_gradient": 0.0010412087431177497,
+          "measurement_nll": 3.220332145690918,
+          "total_gradient_before_clip": 0.9051604866981506
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 3.172435998916626,
+          "mean_predictive_std_db": 9.840240478515625,
+          "measurement_mean_gradient": 0.0007324914331547916,
+          "measurement_nll": 3.172435998916626,
+          "total_gradient_before_clip": 0.7391130924224854
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 3.2049107551574707,
+          "mean_predictive_std_db": 9.823726654052734,
+          "measurement_mean_gradient": 0.0009477890562266111,
+          "measurement_nll": 3.2049107551574707,
+          "total_gradient_before_clip": 0.46028339862823486
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 3.1599175930023193,
+          "mean_predictive_std_db": 9.80722427368164,
+          "measurement_mean_gradient": 0.0010604746639728546,
+          "measurement_nll": 3.1599175930023193,
+          "total_gradient_before_clip": 0.8547499179840088
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 3.213019371032715,
+          "mean_predictive_std_db": 9.79074764251709,
+          "measurement_mean_gradient": 0.001058379770256579,
+          "measurement_nll": 3.213019371032715,
+          "total_gradient_before_clip": 0.9764773845672607
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 3.15805721282959,
+          "mean_predictive_std_db": 9.774317741394043,
+          "measurement_mean_gradient": 0.0008862232207320631,
+          "measurement_nll": 3.15805721282959,
+          "total_gradient_before_clip": 0.8992893695831299
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 3.2025041580200195,
+          "mean_predictive_std_db": 9.757911682128906,
+          "measurement_mean_gradient": 0.0010526439873501658,
+          "measurement_nll": 3.2025041580200195,
+          "total_gradient_before_clip": 0.6210303902626038
+        }
+      ],
+      "validation_mean_layout_delta_rmse_db": 2.39637992430148
+    },
+    {
+      "epoch": 23,
+      "updates": [
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 3.2221713066101074,
+          "mean_predictive_std_db": 9.741536140441895,
+          "measurement_mean_gradient": 0.001086088246665895,
+          "measurement_nll": 3.2221713066101074,
+          "total_gradient_before_clip": 0.658768892288208
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 3.155794620513916,
+          "mean_predictive_std_db": 9.725214958190918,
+          "measurement_mean_gradient": 0.0007152613834477961,
+          "measurement_nll": 3.155794620513916,
+          "total_gradient_before_clip": 0.3174223005771637
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 3.1559672355651855,
+          "mean_predictive_std_db": 9.708917617797852,
+          "measurement_mean_gradient": 0.0007296500261873007,
+          "measurement_nll": 3.1559672355651855,
+          "total_gradient_before_clip": 0.5287652015686035
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 3.17012095451355,
+          "mean_predictive_std_db": 9.692658424377441,
+          "measurement_mean_gradient": 0.0009807104943320155,
+          "measurement_nll": 3.17012095451355,
+          "total_gradient_before_clip": 0.465836763381958
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 3.1558241844177246,
+          "mean_predictive_std_db": 9.676451683044434,
+          "measurement_mean_gradient": 0.0007843591156415641,
+          "measurement_nll": 3.1558241844177246,
+          "total_gradient_before_clip": 0.4677117168903351
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 3.2019081115722656,
+          "mean_predictive_std_db": 9.660266876220703,
+          "measurement_mean_gradient": 0.0010559081565588713,
+          "measurement_nll": 3.2019081115722656,
+          "total_gradient_before_clip": 0.5587140917778015
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 3.179838180541992,
+          "mean_predictive_std_db": 9.644128799438477,
+          "measurement_mean_gradient": 0.0009056470007635653,
+          "measurement_nll": 3.179838180541992,
+          "total_gradient_before_clip": 0.4690856635570526
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 3.153045177459717,
+          "mean_predictive_std_db": 9.628019332885742,
+          "measurement_mean_gradient": 0.000875630066730082,
+          "measurement_nll": 3.153045177459717,
+          "total_gradient_before_clip": 0.5270242691040039
+        }
+      ],
+      "validation_mean_layout_delta_rmse_db": 2.39637992430148
+    },
+    {
+      "epoch": 24,
+      "updates": [
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 3.193072557449341,
+          "mean_predictive_std_db": 9.611947059631348,
+          "measurement_mean_gradient": 0.0011440776288509369,
+          "measurement_nll": 3.193072557449341,
+          "total_gradient_before_clip": 0.7939563989639282
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 3.158104658126831,
+          "mean_predictive_std_db": 9.595934867858887,
+          "measurement_mean_gradient": 0.0009340222459286451,
+          "measurement_nll": 3.158104658126831,
+          "total_gradient_before_clip": 0.4632396399974823
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 3.14072322845459,
+          "mean_predictive_std_db": 9.5799560546875,
+          "measurement_mean_gradient": 0.0008135900134220719,
+          "measurement_nll": 3.14072322845459,
+          "total_gradient_before_clip": 0.6384330987930298
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 3.1569480895996094,
+          "mean_predictive_std_db": 9.563990592956543,
+          "measurement_mean_gradient": 0.000787371420301497,
+          "measurement_nll": 3.1569480895996094,
+          "total_gradient_before_clip": 0.3788850009441376
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 3.1481456756591797,
+          "mean_predictive_std_db": 9.54804801940918,
+          "measurement_mean_gradient": 0.0006714757182635367,
+          "measurement_nll": 3.1481456756591797,
+          "total_gradient_before_clip": 0.5092182159423828
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 3.1429953575134277,
+          "mean_predictive_std_db": 9.53213882446289,
+          "measurement_mean_gradient": 0.0009622498182579875,
+          "measurement_nll": 3.1429953575134277,
+          "total_gradient_before_clip": 0.691270112991333
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 3.135622024536133,
+          "mean_predictive_std_db": 9.516289710998535,
+          "measurement_mean_gradient": 0.0007427775417454541,
+          "measurement_nll": 3.135622024536133,
+          "total_gradient_before_clip": 0.3223065137863159
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 3.1434500217437744,
+          "mean_predictive_std_db": 9.500481605529785,
+          "measurement_mean_gradient": 0.0009219028288498521,
+          "measurement_nll": 3.1434500217437744,
+          "total_gradient_before_clip": 0.7028090953826904
+        }
+      ],
+      "validation_mean_layout_delta_rmse_db": 2.39637992430148
+    },
+    {
+      "epoch": 25,
+      "updates": [
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 3.1217398643493652,
+          "mean_predictive_std_db": 9.484716415405273,
+          "measurement_mean_gradient": 0.0009468746138736606,
+          "measurement_nll": 3.1217398643493652,
+          "total_gradient_before_clip": 0.6602283120155334
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 3.200033664703369,
+          "mean_predictive_std_db": 9.469000816345215,
+          "measurement_mean_gradient": 0.0014584597665816545,
+          "measurement_nll": 3.200033664703369,
+          "total_gradient_before_clip": 1.429545521736145
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 3.151662826538086,
+          "mean_predictive_std_db": 9.45339584350586,
+          "measurement_mean_gradient": 0.0007751394296064973,
+          "measurement_nll": 3.151662826538086,
+          "total_gradient_before_clip": 0.3150201737880707
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 3.167412519454956,
+          "mean_predictive_std_db": 9.437813758850098,
+          "measurement_mean_gradient": 0.0011069346219301224,
+          "measurement_nll": 3.167412519454956,
+          "total_gradient_before_clip": 0.5576769113540649
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 3.154635429382324,
+          "mean_predictive_std_db": 9.422240257263184,
+          "measurement_mean_gradient": 0.0010206347797065973,
+          "measurement_nll": 3.154635429382324,
+          "total_gradient_before_clip": 0.38482198119163513
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 3.1817712783813477,
+          "mean_predictive_std_db": 9.406673431396484,
+          "measurement_mean_gradient": 0.0012068306095898151,
+          "measurement_nll": 3.1817712783813477,
+          "total_gradient_before_clip": 0.7294109463691711
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 3.1591386795043945,
+          "mean_predictive_std_db": 9.391139030456543,
+          "measurement_mean_gradient": 0.0012011536164209247,
+          "measurement_nll": 3.1591386795043945,
+          "total_gradient_before_clip": 0.3654741644859314
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 3.142548084259033,
+          "mean_predictive_std_db": 9.375628471374512,
+          "measurement_mean_gradient": 0.0010403008200228214,
+          "measurement_nll": 3.142548084259033,
+          "total_gradient_before_clip": 0.6343123912811279
+        }
+      ],
+      "validation_mean_layout_delta_rmse_db": 2.39637992430148
+    },
+    {
+      "epoch": 26,
+      "updates": [
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 3.1644325256347656,
+          "mean_predictive_std_db": 9.360129356384277,
+          "measurement_mean_gradient": 0.001215956173837185,
+          "measurement_nll": 3.1644325256347656,
+          "total_gradient_before_clip": 0.406914621591568
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 3.1374921798706055,
+          "mean_predictive_std_db": 9.344656944274902,
+          "measurement_mean_gradient": 0.0009643927332945168,
+          "measurement_nll": 3.1374921798706055,
+          "total_gradient_before_clip": 0.39184388518333435
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 3.140108108520508,
+          "mean_predictive_std_db": 9.329188346862793,
+          "measurement_mean_gradient": 0.001263163168914616,
+          "measurement_nll": 3.140108108520508,
+          "total_gradient_before_clip": 1.132977843284607
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 3.12489914894104,
+          "mean_predictive_std_db": 9.313761711120605,
+          "measurement_mean_gradient": 0.0010509461862966418,
+          "measurement_nll": 3.12489914894104,
+          "total_gradient_before_clip": 0.6183589100837708
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 3.1334455013275146,
+          "mean_predictive_std_db": 9.298358917236328,
+          "measurement_mean_gradient": 0.0010638750391080976,
+          "measurement_nll": 3.1334455013275146,
+          "total_gradient_before_clip": 0.3721524775028229
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 3.131587505340576,
+          "mean_predictive_std_db": 9.282983779907227,
+          "measurement_mean_gradient": 0.0009703837567940354,
+          "measurement_nll": 3.131587505340576,
+          "total_gradient_before_clip": 0.3699601888656616
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 3.17191743850708,
+          "mean_predictive_std_db": 9.26762580871582,
+          "measurement_mean_gradient": 0.0010037305764853954,
+          "measurement_nll": 3.17191743850708,
+          "total_gradient_before_clip": 0.6194828152656555
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 3.1476128101348877,
+          "mean_predictive_std_db": 9.252320289611816,
+          "measurement_mean_gradient": 0.0009088892838917673,
+          "measurement_nll": 3.1476128101348877,
+          "total_gradient_before_clip": 0.5575000643730164
+        }
+      ],
+      "validation_mean_layout_delta_rmse_db": 2.39637992430148
+    },
+    {
+      "epoch": 27,
+      "updates": [
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 3.170891761779785,
+          "mean_predictive_std_db": 9.237037658691406,
+          "measurement_mean_gradient": 0.001013868604786694,
+          "measurement_nll": 3.170891761779785,
+          "total_gradient_before_clip": 0.604348361492157
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 3.148874521255493,
+          "mean_predictive_std_db": 9.221795082092285,
+          "measurement_mean_gradient": 0.0011441783281043172,
+          "measurement_nll": 3.148874521255493,
+          "total_gradient_before_clip": 0.6849212050437927
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 3.1346435546875,
+          "mean_predictive_std_db": 9.206589698791504,
+          "measurement_mean_gradient": 0.0009205584647133946,
+          "measurement_nll": 3.1346435546875,
+          "total_gradient_before_clip": 0.34948769211769104
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 3.130204200744629,
+          "mean_predictive_std_db": 9.191420555114746,
+          "measurement_mean_gradient": 0.0008568657794967294,
+          "measurement_nll": 3.130204200744629,
+          "total_gradient_before_clip": 0.3843810260295868
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 3.1632699966430664,
+          "mean_predictive_std_db": 9.176283836364746,
+          "measurement_mean_gradient": 0.0011609607608988881,
+          "measurement_nll": 3.1632699966430664,
+          "total_gradient_before_clip": 0.7792319655418396
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 3.128385066986084,
+          "mean_predictive_std_db": 9.161212921142578,
+          "measurement_mean_gradient": 0.000981645192950964,
+          "measurement_nll": 3.128385066986084,
+          "total_gradient_before_clip": 0.8510916829109192
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 3.1472301483154297,
+          "mean_predictive_std_db": 9.146170616149902,
+          "measurement_mean_gradient": 0.0010012814309448004,
+          "measurement_nll": 3.1472301483154297,
+          "total_gradient_before_clip": 0.5585173964500427
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 3.102186679840088,
+          "mean_predictive_std_db": 9.131144523620605,
+          "measurement_mean_gradient": 0.0008330115815624595,
+          "measurement_nll": 3.102186679840088,
+          "total_gradient_before_clip": 0.33788540959358215
+        }
+      ],
+      "validation_mean_layout_delta_rmse_db": 2.39637992430148
+    },
+    {
+      "epoch": 28,
+      "updates": [
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 3.142235040664673,
+          "mean_predictive_std_db": 9.116141319274902,
+          "measurement_mean_gradient": 0.001278709969483316,
+          "measurement_nll": 3.142235040664673,
+          "total_gradient_before_clip": 1.135586142539978
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 3.156165838241577,
+          "mean_predictive_std_db": 9.101177215576172,
+          "measurement_mean_gradient": 0.001217822777107358,
+          "measurement_nll": 3.156165838241577,
+          "total_gradient_before_clip": 0.9586934447288513
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 3.1267480850219727,
+          "mean_predictive_std_db": 9.086268424987793,
+          "measurement_mean_gradient": 0.0012289286823943257,
+          "measurement_nll": 3.1267480850219727,
+          "total_gradient_before_clip": 1.0431766510009766
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 3.1104044914245605,
+          "mean_predictive_std_db": 9.071392059326172,
+          "measurement_mean_gradient": 0.0013665033038705587,
+          "measurement_nll": 3.1104044914245605,
+          "total_gradient_before_clip": 1.508042335510254
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 3.130521774291992,
+          "mean_predictive_std_db": 9.05654239654541,
+          "measurement_mean_gradient": 0.0010028618853539228,
+          "measurement_nll": 3.130521774291992,
+          "total_gradient_before_clip": 0.30304497480392456
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 3.0925941467285156,
+          "mean_predictive_std_db": 9.041723251342773,
+          "measurement_mean_gradient": 0.001265369588509202,
+          "measurement_nll": 3.0925941467285156,
+          "total_gradient_before_clip": 1.1193273067474365
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 3.106031894683838,
+          "mean_predictive_std_db": 9.026958465576172,
+          "measurement_mean_gradient": 0.0013614487834274769,
+          "measurement_nll": 3.106031894683838,
+          "total_gradient_before_clip": 1.3259557485580444
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 3.1021440029144287,
+          "mean_predictive_std_db": 9.01224136352539,
+          "measurement_mean_gradient": 0.0007983840769156814,
+          "measurement_nll": 3.1021440029144287,
+          "total_gradient_before_clip": 0.31547558307647705
+        }
+      ],
+      "validation_mean_layout_delta_rmse_db": 2.39637992430148
+    },
+    {
+      "epoch": 29,
+      "updates": [
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 3.115405559539795,
+          "mean_predictive_std_db": 8.997550010681152,
+          "measurement_mean_gradient": 0.0015409046318382025,
+          "measurement_nll": 3.115405559539795,
+          "total_gradient_before_clip": 1.856228232383728
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 3.1378135681152344,
+          "mean_predictive_std_db": 8.982913970947266,
+          "measurement_mean_gradient": 0.001317148795351386,
+          "measurement_nll": 3.1378135681152344,
+          "total_gradient_before_clip": 0.8898692727088928
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 3.1128687858581543,
+          "mean_predictive_std_db": 8.968328475952148,
+          "measurement_mean_gradient": 0.0013920696219429374,
+          "measurement_nll": 3.1128687858581543,
+          "total_gradient_before_clip": 1.3820255994796753
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 3.124178886413574,
+          "mean_predictive_std_db": 8.95380687713623,
+          "measurement_mean_gradient": 0.0012127511436119676,
+          "measurement_nll": 3.124178886413574,
+          "total_gradient_before_clip": 0.9157187342643738
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 3.120157241821289,
+          "mean_predictive_std_db": 8.93933391571045,
+          "measurement_mean_gradient": 0.0011149035999551415,
+          "measurement_nll": 3.120157241821289,
+          "total_gradient_before_clip": 0.30914801359176636
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 3.082226037979126,
+          "mean_predictive_std_db": 8.924888610839844,
+          "measurement_mean_gradient": 0.0011263401247560978,
+          "measurement_nll": 3.082226037979126,
+          "total_gradient_before_clip": 1.1124122142791748
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 3.1220109462738037,
+          "mean_predictive_std_db": 8.91046142578125,
+          "measurement_mean_gradient": 0.0010995606426149607,
+          "measurement_nll": 3.1220109462738037,
+          "total_gradient_before_clip": 0.45694437623023987
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 3.1292195320129395,
+          "mean_predictive_std_db": 8.896056175231934,
+          "measurement_mean_gradient": 0.0011766597162932158,
+          "measurement_nll": 3.1292195320129395,
+          "total_gradient_before_clip": 0.5496259331703186
+        }
+      ],
+      "validation_mean_layout_delta_rmse_db": 2.39637992430148
+    },
+    {
+      "epoch": 30,
+      "updates": [
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 3.0930628776550293,
+          "mean_predictive_std_db": 8.881684303283691,
+          "measurement_mean_gradient": 0.0010362622560933232,
+          "measurement_nll": 3.0930628776550293,
+          "total_gradient_before_clip": 0.44591861963272095
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 3.082657814025879,
+          "mean_predictive_std_db": 8.867355346679688,
+          "measurement_mean_gradient": 0.0010079100029543042,
+          "measurement_nll": 3.082657814025879,
+          "total_gradient_before_clip": 0.6522426009178162
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 3.0717108249664307,
+          "mean_predictive_std_db": 8.85306167602539,
+          "measurement_mean_gradient": 0.0010884942021220922,
+          "measurement_nll": 3.0717108249664307,
+          "total_gradient_before_clip": 0.823943555355072
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 3.124767303466797,
+          "mean_predictive_std_db": 8.838783264160156,
+          "measurement_mean_gradient": 0.001043973839841783,
+          "measurement_nll": 3.124767303466797,
+          "total_gradient_before_clip": 0.4706454575061798
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 3.092231035232544,
+          "mean_predictive_std_db": 8.824530601501465,
+          "measurement_mean_gradient": 0.0009144838550128043,
+          "measurement_nll": 3.092231035232544,
+          "total_gradient_before_clip": 0.32021835446357727
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 3.0900216102600098,
+          "mean_predictive_std_db": 8.810307502746582,
+          "measurement_mean_gradient": 0.0010253784712404013,
+          "measurement_nll": 3.0900216102600098,
+          "total_gradient_before_clip": 0.7689803242683411
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 3.0893936157226562,
+          "mean_predictive_std_db": 8.796120643615723,
+          "measurement_mean_gradient": 0.0010180483805015683,
+          "measurement_nll": 3.0893936157226562,
+          "total_gradient_before_clip": 0.4504822790622711
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 3.086466073989868,
+          "mean_predictive_std_db": 8.781980514526367,
+          "measurement_mean_gradient": 0.0009407756733708084,
+          "measurement_nll": 3.086466073989868,
+          "total_gradient_before_clip": 0.36036065220832825
+        }
+      ],
+      "validation_mean_layout_delta_rmse_db": 2.39637992430148
+    },
+    {
+      "epoch": 31,
+      "updates": [
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 3.098053455352783,
+          "mean_predictive_std_db": 8.767875671386719,
+          "measurement_mean_gradient": 0.001443705172277987,
+          "measurement_nll": 3.098053455352783,
+          "total_gradient_before_clip": 0.8646910786628723
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 3.072143793106079,
+          "mean_predictive_std_db": 8.753804206848145,
+          "measurement_mean_gradient": 0.0009388604667037725,
+          "measurement_nll": 3.072143793106079,
+          "total_gradient_before_clip": 0.30479782819747925
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 3.0830881595611572,
+          "mean_predictive_std_db": 8.739757537841797,
+          "measurement_mean_gradient": 0.0009460188448429108,
+          "measurement_nll": 3.0830881595611572,
+          "total_gradient_before_clip": 0.8290775418281555
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 3.0697741508483887,
+          "mean_predictive_std_db": 8.725739479064941,
+          "measurement_mean_gradient": 0.0009973823325708508,
+          "measurement_nll": 3.0697741508483887,
+          "total_gradient_before_clip": 0.47205689549446106
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 3.080242872238159,
+          "mean_predictive_std_db": 8.711753845214844,
+          "measurement_mean_gradient": 0.000970974680967629,
+          "measurement_nll": 3.080242872238159,
+          "total_gradient_before_clip": 0.38983362913131714
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 3.102949619293213,
+          "mean_predictive_std_db": 8.69780158996582,
+          "measurement_mean_gradient": 0.0012183209182694554,
+          "measurement_nll": 3.102949619293213,
+          "total_gradient_before_clip": 0.4667907655239105
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 3.0752382278442383,
+          "mean_predictive_std_db": 8.68388843536377,
+          "measurement_mean_gradient": 0.001076964777894318,
+          "measurement_nll": 3.0752382278442383,
+          "total_gradient_before_clip": 0.7589061856269836
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 3.0655155181884766,
+          "mean_predictive_std_db": 8.670014381408691,
+          "measurement_mean_gradient": 0.0010967146372422576,
+          "measurement_nll": 3.0655155181884766,
+          "total_gradient_before_clip": 0.5283303260803223
+        }
+      ],
+      "validation_mean_layout_delta_rmse_db": 2.39637992430148
+    },
+    {
+      "epoch": 32,
+      "updates": [
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 3.106292247772217,
+          "mean_predictive_std_db": 8.656182289123535,
+          "measurement_mean_gradient": 0.0014351567951962352,
+          "measurement_nll": 3.106292247772217,
+          "total_gradient_before_clip": 1.0088921785354614
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 3.097224712371826,
+          "mean_predictive_std_db": 8.642414093017578,
+          "measurement_mean_gradient": 0.0011491415789350867,
+          "measurement_nll": 3.097224712371826,
+          "total_gradient_before_clip": 0.3570829927921295
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 3.052286148071289,
+          "mean_predictive_std_db": 8.628670692443848,
+          "measurement_mean_gradient": 0.0014313333667814732,
+          "measurement_nll": 3.052286148071289,
+          "total_gradient_before_clip": 1.4572638273239136
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 3.1139793395996094,
+          "mean_predictive_std_db": 8.614951133728027,
+          "measurement_mean_gradient": 0.0009963136399164796,
+          "measurement_nll": 3.1139793395996094,
+          "total_gradient_before_clip": 0.4299795627593994
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 3.109945774078369,
+          "mean_predictive_std_db": 8.601252555847168,
+          "measurement_mean_gradient": 0.0012624713126569986,
+          "measurement_nll": 3.109945774078369,
+          "total_gradient_before_clip": 1.0264325141906738
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 3.073627233505249,
+          "mean_predictive_std_db": 8.587599754333496,
+          "measurement_mean_gradient": 0.0010575954802334309,
+          "measurement_nll": 3.073627233505249,
+          "total_gradient_before_clip": 0.3177438974380493
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 3.06268048286438,
+          "mean_predictive_std_db": 8.573976516723633,
+          "measurement_mean_gradient": 0.0009074484114535153,
+          "measurement_nll": 3.06268048286438,
+          "total_gradient_before_clip": 0.3167344331741333
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 3.07051682472229,
+          "mean_predictive_std_db": 8.560362815856934,
+          "measurement_mean_gradient": 0.0010529152350500226,
+          "measurement_nll": 3.07051682472229,
+          "total_gradient_before_clip": 0.41661933064460754
+        }
+      ],
+      "validation_mean_layout_delta_rmse_db": 2.39637992430148
+    },
+    {
+      "epoch": 33,
+      "updates": [
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 3.0829029083251953,
+          "mean_predictive_std_db": 8.546767234802246,
+          "measurement_mean_gradient": 0.0012643211521208286,
+          "measurement_nll": 3.0829029083251953,
+          "total_gradient_before_clip": 0.7297903299331665
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 3.054255485534668,
+          "mean_predictive_std_db": 8.533201217651367,
+          "measurement_mean_gradient": 0.0009499986190348864,
+          "measurement_nll": 3.054255485534668,
+          "total_gradient_before_clip": 0.36091747879981995
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 3.086369037628174,
+          "mean_predictive_std_db": 8.519659042358398,
+          "measurement_mean_gradient": 0.0011570054339244962,
+          "measurement_nll": 3.086369037628174,
+          "total_gradient_before_clip": 0.4030289649963379
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 3.0628411769866943,
+          "mean_predictive_std_db": 8.506145477294922,
+          "measurement_mean_gradient": 0.0009194669546559453,
+          "measurement_nll": 3.0628411769866943,
+          "total_gradient_before_clip": 0.313397616147995
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 3.0607686042785645,
+          "mean_predictive_std_db": 8.49267578125,
+          "measurement_mean_gradient": 0.0008764329832047224,
+          "measurement_nll": 3.0607686042785645,
+          "total_gradient_before_clip": 0.406375914812088
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 3.0487396717071533,
+          "mean_predictive_std_db": 8.479233741760254,
+          "measurement_mean_gradient": 0.0012385929003357887,
+          "measurement_nll": 3.0487396717071533,
+          "total_gradient_before_clip": 0.8091285228729248
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 3.0475234985351562,
+          "mean_predictive_std_db": 8.465848922729492,
+          "measurement_mean_gradient": 0.0012047013733536005,
+          "measurement_nll": 3.0475234985351562,
+          "total_gradient_before_clip": 1.06019127368927
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 3.090625524520874,
+          "mean_predictive_std_db": 8.452498435974121,
+          "measurement_mean_gradient": 0.0014736084267497063,
+          "measurement_nll": 3.090625524520874,
+          "total_gradient_before_clip": 0.5601714849472046
+        }
+      ],
+      "validation_mean_layout_delta_rmse_db": 2.39637992430148
+    },
+    {
+      "epoch": 34,
+      "updates": [
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 3.083632469177246,
+          "mean_predictive_std_db": 8.439201354980469,
+          "measurement_mean_gradient": 0.001251117791980505,
+          "measurement_nll": 3.083632469177246,
+          "total_gradient_before_clip": 0.6862197518348694
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 3.0449466705322266,
+          "mean_predictive_std_db": 8.42594051361084,
+          "measurement_mean_gradient": 0.000962910708039999,
+          "measurement_nll": 3.0449466705322266,
+          "total_gradient_before_clip": 0.3779488503932953
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 3.0317440032958984,
+          "mean_predictive_std_db": 8.412700653076172,
+          "measurement_mean_gradient": 0.0010155447525903583,
+          "measurement_nll": 3.0317440032958984,
+          "total_gradient_before_clip": 0.4251188039779663
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 3.0682718753814697,
+          "mean_predictive_std_db": 8.39948558807373,
+          "measurement_mean_gradient": 0.0011585484025999904,
+          "measurement_nll": 3.0682718753814697,
+          "total_gradient_before_clip": 0.334892600774765
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 3.0423429012298584,
+          "mean_predictive_std_db": 8.386307716369629,
+          "measurement_mean_gradient": 0.0010149888694286346,
+          "measurement_nll": 3.0423429012298584,
+          "total_gradient_before_clip": 0.3423452079296112
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 3.039194107055664,
+          "mean_predictive_std_db": 8.373152732849121,
+          "measurement_mean_gradient": 0.001057602814398706,
+          "measurement_nll": 3.039194107055664,
+          "total_gradient_before_clip": 0.5383325219154358
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 3.044795036315918,
+          "mean_predictive_std_db": 8.360014915466309,
+          "measurement_mean_gradient": 0.0008992617367766798,
+          "measurement_nll": 3.044795036315918,
+          "total_gradient_before_clip": 0.37876152992248535
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 3.0587081909179688,
+          "mean_predictive_std_db": 8.34689998626709,
+          "measurement_mean_gradient": 0.0011935095535591245,
+          "measurement_nll": 3.0587081909179688,
+          "total_gradient_before_clip": 0.7397176623344421
+        }
+      ],
+      "validation_mean_layout_delta_rmse_db": 2.39637992430148
+    },
+    {
+      "epoch": 35,
+      "updates": [
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 3.0414297580718994,
+          "mean_predictive_std_db": 8.333842277526855,
+          "measurement_mean_gradient": 0.001039276015944779,
+          "measurement_nll": 3.0414297580718994,
+          "total_gradient_before_clip": 0.43272697925567627
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 3.049004554748535,
+          "mean_predictive_std_db": 8.32080364227295,
+          "measurement_mean_gradient": 0.0011408037971705198,
+          "measurement_nll": 3.049004554748535,
+          "total_gradient_before_clip": 0.6615840196609497
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 3.084514617919922,
+          "mean_predictive_std_db": 8.307805061340332,
+          "measurement_mean_gradient": 0.0012464099563658237,
+          "measurement_nll": 3.084514617919922,
+          "total_gradient_before_clip": 0.5089588165283203
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 3.014190435409546,
+          "mean_predictive_std_db": 8.294861793518066,
+          "measurement_mean_gradient": 0.0010835708817467093,
+          "measurement_nll": 3.014190435409546,
+          "total_gradient_before_clip": 0.6895835399627686
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 3.0765881538391113,
+          "mean_predictive_std_db": 8.281940460205078,
+          "measurement_mean_gradient": 0.0013109794817864895,
+          "measurement_nll": 3.0765881538391113,
+          "total_gradient_before_clip": 0.6426247358322144
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 3.0151124000549316,
+          "mean_predictive_std_db": 8.269060134887695,
+          "measurement_mean_gradient": 0.0011323888320475817,
+          "measurement_nll": 3.0151124000549316,
+          "total_gradient_before_clip": 0.47516217827796936
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 3.022566080093384,
+          "mean_predictive_std_db": 8.256189346313477,
+          "measurement_mean_gradient": 0.0012320262612774968,
+          "measurement_nll": 3.022566080093384,
+          "total_gradient_before_clip": 0.691433310508728
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 3.035869598388672,
+          "mean_predictive_std_db": 8.243339538574219,
+          "measurement_mean_gradient": 0.0013177322689443827,
+          "measurement_nll": 3.035869598388672,
+          "total_gradient_before_clip": 0.3665335476398468
+        }
+      ],
+      "validation_mean_layout_delta_rmse_db": 2.39637992430148
+    },
+    {
+      "epoch": 36,
+      "updates": [
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 3.0161852836608887,
+          "mean_predictive_std_db": 8.230534553527832,
+          "measurement_mean_gradient": 0.0010791235836222768,
+          "measurement_nll": 3.0161852836608887,
+          "total_gradient_before_clip": 0.9516310691833496
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 3.003685474395752,
+          "mean_predictive_std_db": 8.217751502990723,
+          "measurement_mean_gradient": 0.0010736628901213408,
+          "measurement_nll": 3.003685474395752,
+          "total_gradient_before_clip": 0.7878380417823792
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 3.0696299076080322,
+          "mean_predictive_std_db": 8.204991340637207,
+          "measurement_mean_gradient": 0.0020429538562893867,
+          "measurement_nll": 3.0696299076080322,
+          "total_gradient_before_clip": 2.213608503341675
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 3.0240354537963867,
+          "mean_predictive_std_db": 8.192338943481445,
+          "measurement_mean_gradient": 0.001289081061258912,
+          "measurement_nll": 3.0240354537963867,
+          "total_gradient_before_clip": 0.6439452767372131
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 3.0750889778137207,
+          "mean_predictive_std_db": 8.179740905761719,
+          "measurement_mean_gradient": 0.0017378954216837883,
+          "measurement_nll": 3.0750889778137207,
+          "total_gradient_before_clip": 1.5886598825454712
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 3.0301084518432617,
+          "mean_predictive_std_db": 8.167180061340332,
+          "measurement_mean_gradient": 0.0013247599126771092,
+          "measurement_nll": 3.0301084518432617,
+          "total_gradient_before_clip": 1.2865341901779175
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 3.031442165374756,
+          "mean_predictive_std_db": 8.15464973449707,
+          "measurement_mean_gradient": 0.0012139597674831748,
+          "measurement_nll": 3.031442165374756,
+          "total_gradient_before_clip": 0.3419042229652405
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 3.028127431869507,
+          "mean_predictive_std_db": 8.142127990722656,
+          "measurement_mean_gradient": 0.0015953868860378861,
+          "measurement_nll": 3.028127431869507,
+          "total_gradient_before_clip": 1.4253880977630615
+        }
+      ],
+      "validation_mean_layout_delta_rmse_db": 2.39637992430148
+    },
+    {
+      "epoch": 37,
+      "updates": [
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 3.0654492378234863,
+          "mean_predictive_std_db": 8.12965202331543,
+          "measurement_mean_gradient": 0.0018249673303216696,
+          "measurement_nll": 3.0654492378234863,
+          "total_gradient_before_clip": 1.7652643918991089
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 3.0394177436828613,
+          "mean_predictive_std_db": 8.117236137390137,
+          "measurement_mean_gradient": 0.0015026475302875042,
+          "measurement_nll": 3.0394177436828613,
+          "total_gradient_before_clip": 0.8330023884773254
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 3.031160831451416,
+          "mean_predictive_std_db": 8.104833602905273,
+          "measurement_mean_gradient": 0.0014774117153137922,
+          "measurement_nll": 3.031160831451416,
+          "total_gradient_before_clip": 1.2457201480865479
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 3.0223517417907715,
+          "mean_predictive_std_db": 8.092450141906738,
+          "measurement_mean_gradient": 0.001217851648107171,
+          "measurement_nll": 3.0223517417907715,
+          "total_gradient_before_clip": 1.0344157218933105
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 3.0251317024230957,
+          "mean_predictive_std_db": 8.080079078674316,
+          "measurement_mean_gradient": 0.0010027356911450624,
+          "measurement_nll": 3.0251317024230957,
+          "total_gradient_before_clip": 0.30350324511528015
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 3.031947612762451,
+          "mean_predictive_std_db": 8.067710876464844,
+          "measurement_mean_gradient": 0.0015611835988238454,
+          "measurement_nll": 3.031947612762451,
+          "total_gradient_before_clip": 1.5954866409301758
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 3.052273750305176,
+          "mean_predictive_std_db": 8.055390357971191,
+          "measurement_mean_gradient": 0.0015957413706928492,
+          "measurement_nll": 3.052273750305176,
+          "total_gradient_before_clip": 1.5997960567474365
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 3.0083208084106445,
+          "mean_predictive_std_db": 8.043124198913574,
+          "measurement_mean_gradient": 0.0015210031997412443,
+          "measurement_nll": 3.0083208084106445,
+          "total_gradient_before_clip": 1.355124592781067
+        }
+      ],
+      "validation_mean_layout_delta_rmse_db": 2.39637992430148
+    },
+    {
+      "epoch": 38,
+      "updates": [
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 3.063782215118408,
+          "mean_predictive_std_db": 8.030878067016602,
+          "measurement_mean_gradient": 0.001627263380214572,
+          "measurement_nll": 3.063782215118408,
+          "total_gradient_before_clip": 1.2821863889694214
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 3.0031065940856934,
+          "mean_predictive_std_db": 8.018680572509766,
+          "measurement_mean_gradient": 0.0014116745442152023,
+          "measurement_nll": 3.0031065940856934,
+          "total_gradient_before_clip": 1.3598154783248901
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 3.032158851623535,
+          "mean_predictive_std_db": 8.006488800048828,
+          "measurement_mean_gradient": 0.001436153193935752,
+          "measurement_nll": 3.032158851623535,
+          "total_gradient_before_clip": 0.7918837070465088
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 3.0039029121398926,
+          "mean_predictive_std_db": 7.994332790374756,
+          "measurement_mean_gradient": 0.001765637774951756,
+          "measurement_nll": 3.0039029121398926,
+          "total_gradient_before_clip": 1.8673510551452637
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 3.0557546615600586,
+          "mean_predictive_std_db": 7.982219696044922,
+          "measurement_mean_gradient": 0.0016596722416579723,
+          "measurement_nll": 3.0557546615600586,
+          "total_gradient_before_clip": 1.189614176750183
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 2.9984445571899414,
+          "mean_predictive_std_db": 7.970149517059326,
+          "measurement_mean_gradient": 0.0011406035628169775,
+          "measurement_nll": 2.9984445571899414,
+          "total_gradient_before_clip": 0.7911049723625183
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 3.0344953536987305,
+          "mean_predictive_std_db": 7.958077430725098,
+          "measurement_mean_gradient": 0.0017774486914277077,
+          "measurement_nll": 3.0344953536987305,
+          "total_gradient_before_clip": 1.3164875507354736
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 3.002072334289551,
+          "mean_predictive_std_db": 7.946040630340576,
+          "measurement_mean_gradient": 0.0014580425340682268,
+          "measurement_nll": 3.002072334289551,
+          "total_gradient_before_clip": 1.1079391241073608
+        }
+      ],
+      "validation_mean_layout_delta_rmse_db": 2.39637992430148
+    },
+    {
+      "epoch": 39,
+      "updates": [
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 2.9864139556884766,
+          "mean_predictive_std_db": 7.934036731719971,
+          "measurement_mean_gradient": 0.0010685373563319445,
+          "measurement_nll": 2.9864139556884766,
+          "total_gradient_before_clip": 0.38415130972862244
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 2.986565589904785,
+          "mean_predictive_std_db": 7.922048091888428,
+          "measurement_mean_gradient": 0.001329790218733251,
+          "measurement_nll": 2.986565589904785,
+          "total_gradient_before_clip": 1.121641755104065
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 3.046609401702881,
+          "mean_predictive_std_db": 7.910094738006592,
+          "measurement_mean_gradient": 0.0018797763623297215,
+          "measurement_nll": 3.046609401702881,
+          "total_gradient_before_clip": 1.6427533626556396
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 3.0359721183776855,
+          "mean_predictive_std_db": 7.89819860458374,
+          "measurement_mean_gradient": 0.001492855022661388,
+          "measurement_nll": 3.0359721183776855,
+          "total_gradient_before_clip": 0.5885682702064514
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 3.0112740993499756,
+          "mean_predictive_std_db": 7.886343955993652,
+          "measurement_mean_gradient": 0.0020425813272595406,
+          "measurement_nll": 3.0112740993499756,
+          "total_gradient_before_clip": 2.114690065383911
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 2.9949660301208496,
+          "mean_predictive_std_db": 7.87453556060791,
+          "measurement_mean_gradient": 0.0014346310636028647,
+          "measurement_nll": 2.9949660301208496,
+          "total_gradient_before_clip": 1.0435022115707397
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 2.99381685256958,
+          "mean_predictive_std_db": 7.862746715545654,
+          "measurement_mean_gradient": 0.0010569242294877768,
+          "measurement_nll": 2.99381685256958,
+          "total_gradient_before_clip": 0.3592081665992737
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 2.9951937198638916,
+          "mean_predictive_std_db": 7.850961685180664,
+          "measurement_mean_gradient": 0.0014363545924425125,
+          "measurement_nll": 2.9951937198638916,
+          "total_gradient_before_clip": 1.2014195919036865
+        }
+      ],
+      "validation_mean_layout_delta_rmse_db": 2.39637992430148
+    },
+    {
+      "epoch": 40,
+      "updates": [
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 3.043797492980957,
+          "mean_predictive_std_db": 7.839191436767578,
+          "measurement_mean_gradient": 0.0017941766418516636,
+          "measurement_nll": 3.043797492980957,
+          "total_gradient_before_clip": 1.4948692321777344
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 3.0306763648986816,
+          "mean_predictive_std_db": 7.82746696472168,
+          "measurement_mean_gradient": 0.0015309207374230027,
+          "measurement_nll": 3.0306763648986816,
+          "total_gradient_before_clip": 0.7292243838310242
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 3.040160894393921,
+          "mean_predictive_std_db": 7.815785884857178,
+          "measurement_mean_gradient": 0.0018995405407622457,
+          "measurement_nll": 3.040160894393921,
+          "total_gradient_before_clip": 1.5193836688995361
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 3.0362818241119385,
+          "mean_predictive_std_db": 7.8041300773620605,
+          "measurement_mean_gradient": 0.0017482019029557705,
+          "measurement_nll": 3.0362818241119385,
+          "total_gradient_before_clip": 1.1622103452682495
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 3.0192601680755615,
+          "mean_predictive_std_db": 7.7925028800964355,
+          "measurement_mean_gradient": 0.0013528687413781881,
+          "measurement_nll": 3.0192601680755615,
+          "total_gradient_before_clip": 0.5748652219772339
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 3.0116662979125977,
+          "mean_predictive_std_db": 7.7808685302734375,
+          "measurement_mean_gradient": 0.001417520921677351,
+          "measurement_nll": 3.0116662979125977,
+          "total_gradient_before_clip": 0.7947585582733154
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 2.9857635498046875,
+          "mean_predictive_std_db": 7.76923942565918,
+          "measurement_mean_gradient": 0.0017115712398663163,
+          "measurement_nll": 2.9857635498046875,
+          "total_gradient_before_clip": 1.218681812286377
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 3.004258632659912,
+          "mean_predictive_std_db": 7.757645130157471,
+          "measurement_mean_gradient": 0.00153106648940593,
+          "measurement_nll": 3.004258632659912,
+          "total_gradient_before_clip": 1.1454479694366455
+        }
+      ],
+      "validation_mean_layout_delta_rmse_db": 2.39637992430148
+    },
+    {
+      "epoch": 41,
+      "updates": [
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 3.0248165130615234,
+          "mean_predictive_std_db": 7.746089458465576,
+          "measurement_mean_gradient": 0.001548512140288949,
+          "measurement_nll": 3.0248165130615234,
+          "total_gradient_before_clip": 0.4063020944595337
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 2.991947889328003,
+          "mean_predictive_std_db": 7.734561920166016,
+          "measurement_mean_gradient": 0.0016985845286399126,
+          "measurement_nll": 2.991947889328003,
+          "total_gradient_before_clip": 1.4481379985809326
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 2.9774575233459473,
+          "mean_predictive_std_db": 7.723066329956055,
+          "measurement_mean_gradient": 0.0014831929001957178,
+          "measurement_nll": 2.9774575233459473,
+          "total_gradient_before_clip": 1.2084124088287354
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 3.0082643032073975,
+          "mean_predictive_std_db": 7.711592674255371,
+          "measurement_mean_gradient": 0.001386267482303083,
+          "measurement_nll": 3.0082643032073975,
+          "total_gradient_before_clip": 0.42438557744026184
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 2.9756317138671875,
+          "mean_predictive_std_db": 7.700151443481445,
+          "measurement_mean_gradient": 0.001280301483348012,
+          "measurement_nll": 2.9756317138671875,
+          "total_gradient_before_clip": 0.6960768699645996
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 2.9773406982421875,
+          "mean_predictive_std_db": 7.6887431144714355,
+          "measurement_mean_gradient": 0.0016418438171967864,
+          "measurement_nll": 2.9773406982421875,
+          "total_gradient_before_clip": 1.058615803718567
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 2.963808536529541,
+          "mean_predictive_std_db": 7.6773762702941895,
+          "measurement_mean_gradient": 0.0011754997540265322,
+          "measurement_nll": 2.963808536529541,
+          "total_gradient_before_clip": 0.5923134088516235
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 2.9995410442352295,
+          "mean_predictive_std_db": 7.666031360626221,
+          "measurement_mean_gradient": 0.0014854447217658162,
+          "measurement_nll": 2.9995410442352295,
+          "total_gradient_before_clip": 0.6365711688995361
+        }
+      ],
+      "validation_mean_layout_delta_rmse_db": 2.39637992430148
+    },
+    {
+      "epoch": 42,
+      "updates": [
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 3.008882999420166,
+          "mean_predictive_std_db": 7.654723644256592,
+          "measurement_mean_gradient": 0.0015516788698732853,
+          "measurement_nll": 3.008882999420166,
+          "total_gradient_before_clip": 0.7424523830413818
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 2.9787869453430176,
+          "mean_predictive_std_db": 7.643445014953613,
+          "measurement_mean_gradient": 0.001589281135238707,
+          "measurement_nll": 2.9787869453430176,
+          "total_gradient_before_clip": 1.1457186937332153
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 2.9869637489318848,
+          "mean_predictive_std_db": 7.632204532623291,
+          "measurement_mean_gradient": 0.0014036293141543865,
+          "measurement_nll": 2.9869637489318848,
+          "total_gradient_before_clip": 0.27611425518989563
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 2.9613842964172363,
+          "mean_predictive_std_db": 7.620992183685303,
+          "measurement_mean_gradient": 0.001214052434079349,
+          "measurement_nll": 2.9613842964172363,
+          "total_gradient_before_clip": 0.4749303460121155
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 3.0002079010009766,
+          "mean_predictive_std_db": 7.609785079956055,
+          "measurement_mean_gradient": 0.001701241242699325,
+          "measurement_nll": 3.0002079010009766,
+          "total_gradient_before_clip": 1.23383629322052
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 2.9526116847991943,
+          "mean_predictive_std_db": 7.598605632781982,
+          "measurement_mean_gradient": 0.0011887344298884273,
+          "measurement_nll": 2.9526116847991943,
+          "total_gradient_before_clip": 0.5178312659263611
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 2.9861772060394287,
+          "mean_predictive_std_db": 7.587430477142334,
+          "measurement_mean_gradient": 0.001388705219142139,
+          "measurement_nll": 2.9861772060394287,
+          "total_gradient_before_clip": 0.28986144065856934
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 2.965085506439209,
+          "mean_predictive_std_db": 7.57627010345459,
+          "measurement_mean_gradient": 0.0011930241016671062,
+          "measurement_nll": 2.965085506439209,
+          "total_gradient_before_clip": 0.8401696681976318
+        }
+      ],
+      "validation_mean_layout_delta_rmse_db": 2.39637992430148
+    },
+    {
+      "epoch": 43,
+      "updates": [
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 2.955859661102295,
+          "mean_predictive_std_db": 7.56511926651001,
+          "measurement_mean_gradient": 0.0013800273882225156,
+          "measurement_nll": 2.955859661102295,
+          "total_gradient_before_clip": 0.9635545611381531
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 2.9655473232269287,
+          "mean_predictive_std_db": 7.553983688354492,
+          "measurement_mean_gradient": 0.0010932092554867268,
+          "measurement_nll": 2.9655473232269287,
+          "total_gradient_before_clip": 0.32536187767982483
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 2.942209482192993,
+          "mean_predictive_std_db": 7.542876720428467,
+          "measurement_mean_gradient": 0.0010678430553525686,
+          "measurement_nll": 2.942209482192993,
+          "total_gradient_before_clip": 0.6095753312110901
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 2.9688901901245117,
+          "mean_predictive_std_db": 7.531792640686035,
+          "measurement_mean_gradient": 0.0015245192917063832,
+          "measurement_nll": 2.9688901901245117,
+          "total_gradient_before_clip": 1.1212345361709595
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 2.9919850826263428,
+          "mean_predictive_std_db": 7.520750045776367,
+          "measurement_mean_gradient": 0.0017076422227546573,
+          "measurement_nll": 2.9919850826263428,
+          "total_gradient_before_clip": 0.6270617246627808
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 2.981344699859619,
+          "mean_predictive_std_db": 7.509763717651367,
+          "measurement_mean_gradient": 0.001446060836315155,
+          "measurement_nll": 2.981344699859619,
+          "total_gradient_before_clip": 0.30933019518852234
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 2.9749093055725098,
+          "mean_predictive_std_db": 7.49881649017334,
+          "measurement_mean_gradient": 0.0015213282313197851,
+          "measurement_nll": 2.9749093055725098,
+          "total_gradient_before_clip": 0.9538187384605408
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 2.9541075229644775,
+          "mean_predictive_std_db": 7.4878997802734375,
+          "measurement_mean_gradient": 0.0015608423855155706,
+          "measurement_nll": 2.9541075229644775,
+          "total_gradient_before_clip": 1.124162197113037
+        }
+      ],
+      "validation_mean_layout_delta_rmse_db": 2.39637992430148
+    },
+    {
+      "epoch": 44,
+      "updates": [
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 2.9466092586517334,
+          "mean_predictive_std_db": 7.476996421813965,
+          "measurement_mean_gradient": 0.001364245661534369,
+          "measurement_nll": 2.9466092586517334,
+          "total_gradient_before_clip": 0.3815990686416626
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 2.961909294128418,
+          "mean_predictive_std_db": 7.466109275817871,
+          "measurement_mean_gradient": 0.0013718456029891968,
+          "measurement_nll": 2.961909294128418,
+          "total_gradient_before_clip": 0.6162531971931458
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 2.9992687702178955,
+          "mean_predictive_std_db": 7.455250263214111,
+          "measurement_mean_gradient": 0.001922407653182745,
+          "measurement_nll": 2.9992687702178955,
+          "total_gradient_before_clip": 1.3172601461410522
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 2.970353603363037,
+          "mean_predictive_std_db": 7.444438457489014,
+          "measurement_mean_gradient": 0.0015000439016148448,
+          "measurement_nll": 2.970353603363037,
+          "total_gradient_before_clip": 0.5625514388084412
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 2.9519593715667725,
+          "mean_predictive_std_db": 7.433642387390137,
+          "measurement_mean_gradient": 0.001417174469679594,
+          "measurement_nll": 2.9519593715667725,
+          "total_gradient_before_clip": 0.8092084527015686
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 2.9770727157592773,
+          "mean_predictive_std_db": 7.4228644371032715,
+          "measurement_mean_gradient": 0.001294830348342657,
+          "measurement_nll": 2.9770727157592773,
+          "total_gradient_before_clip": 0.44353148341178894
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 2.953913688659668,
+          "mean_predictive_std_db": 7.412105560302734,
+          "measurement_mean_gradient": 0.0016661101253703237,
+          "measurement_nll": 2.953913688659668,
+          "total_gradient_before_clip": 0.938873291015625
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 2.934936046600342,
+          "mean_predictive_std_db": 7.401371479034424,
+          "measurement_mean_gradient": 0.0010710128117352724,
+          "measurement_nll": 2.934936046600342,
+          "total_gradient_before_clip": 0.3149545192718506
+        }
+      ],
+      "validation_mean_layout_delta_rmse_db": 2.39637992430148
+    },
+    {
+      "epoch": 45,
+      "updates": [
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 2.9715418815612793,
+          "mean_predictive_std_db": 7.390658378601074,
+          "measurement_mean_gradient": 0.0016096783801913261,
+          "measurement_nll": 2.9715418815612793,
+          "total_gradient_before_clip": 0.5439425706863403
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 2.937920570373535,
+          "mean_predictive_std_db": 7.379977226257324,
+          "measurement_mean_gradient": 0.001509348046965897,
+          "measurement_nll": 2.937920570373535,
+          "total_gradient_before_clip": 1.020177960395813
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 2.929274559020996,
+          "mean_predictive_std_db": 7.369330406188965,
+          "measurement_mean_gradient": 0.0013261128915473819,
+          "measurement_nll": 2.929274559020996,
+          "total_gradient_before_clip": 0.3320203721523285
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 2.9846549034118652,
+          "mean_predictive_std_db": 7.358709335327148,
+          "measurement_mean_gradient": 0.0018393037607893348,
+          "measurement_nll": 2.9846549034118652,
+          "total_gradient_before_clip": 0.7241015434265137
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 2.944650650024414,
+          "mean_predictive_std_db": 7.34814453125,
+          "measurement_mean_gradient": 0.0012639982160180807,
+          "measurement_nll": 2.944650650024414,
+          "total_gradient_before_clip": 0.7468827366828918
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 2.969771385192871,
+          "mean_predictive_std_db": 7.337603569030762,
+          "measurement_mean_gradient": 0.0016458221944049,
+          "measurement_nll": 2.969771385192871,
+          "total_gradient_before_clip": 0.775080680847168
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 2.976393938064575,
+          "mean_predictive_std_db": 7.327107906341553,
+          "measurement_mean_gradient": 0.0016514342278242111,
+          "measurement_nll": 2.976393938064575,
+          "total_gradient_before_clip": 0.4626713693141937
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 2.928770065307617,
+          "mean_predictive_std_db": 7.316654682159424,
+          "measurement_mean_gradient": 0.0013588548172265291,
+          "measurement_nll": 2.928770065307617,
+          "total_gradient_before_clip": 0.723054051399231
+        }
+      ],
+      "validation_mean_layout_delta_rmse_db": 2.39637992430148
+    },
+    {
+      "epoch": 46,
+      "updates": [
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 2.9315032958984375,
+          "mean_predictive_std_db": 7.306221961975098,
+          "measurement_mean_gradient": 0.0014041936956346035,
+          "measurement_nll": 2.9315032958984375,
+          "total_gradient_before_clip": 0.4729045629501343
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 2.9159724712371826,
+          "mean_predictive_std_db": 7.295805931091309,
+          "measurement_mean_gradient": 0.0010717273689806461,
+          "measurement_nll": 2.9159724712371826,
+          "total_gradient_before_clip": 0.471140593290329
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 2.964035987854004,
+          "mean_predictive_std_db": 7.285384654998779,
+          "measurement_mean_gradient": 0.001505982130765915,
+          "measurement_nll": 2.964035987854004,
+          "total_gradient_before_clip": 0.6970850825309753
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 2.9304616451263428,
+          "mean_predictive_std_db": 7.2749810218811035,
+          "measurement_mean_gradient": 0.0015961116878315806,
+          "measurement_nll": 2.9304616451263428,
+          "total_gradient_before_clip": 0.8920491933822632
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 2.9194278717041016,
+          "mean_predictive_std_db": 7.264603137969971,
+          "measurement_mean_gradient": 0.0014572584768757224,
+          "measurement_nll": 2.9194278717041016,
+          "total_gradient_before_clip": 0.3481963872909546
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 2.9676618576049805,
+          "mean_predictive_std_db": 7.254241943359375,
+          "measurement_mean_gradient": 0.001603969605639577,
+          "measurement_nll": 2.9676618576049805,
+          "total_gradient_before_clip": 0.32731112837791443
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 2.9698333740234375,
+          "mean_predictive_std_db": 7.2439117431640625,
+          "measurement_mean_gradient": 0.001760188490152359,
+          "measurement_nll": 2.9698333740234375,
+          "total_gradient_before_clip": 0.8312826752662659
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 2.9407906532287598,
+          "mean_predictive_std_db": 7.2336201667785645,
+          "measurement_mean_gradient": 0.001370675745420158,
+          "measurement_nll": 2.9407906532287598,
+          "total_gradient_before_clip": 0.5507091283798218
+        }
+      ],
+      "validation_mean_layout_delta_rmse_db": 2.39637992430148
+    },
+    {
+      "epoch": 47,
+      "updates": [
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 2.9148263931274414,
+          "mean_predictive_std_db": 7.223358154296875,
+          "measurement_mean_gradient": 0.0012744844425469637,
+          "measurement_nll": 2.9148263931274414,
+          "total_gradient_before_clip": 0.36147168278694153
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 2.9163708686828613,
+          "mean_predictive_std_db": 7.213114261627197,
+          "measurement_mean_gradient": 0.0013886290835216641,
+          "measurement_nll": 2.9163708686828613,
+          "total_gradient_before_clip": 0.8148319125175476
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 2.9275999069213867,
+          "mean_predictive_std_db": 7.202887535095215,
+          "measurement_mean_gradient": 0.0012381502892822027,
+          "measurement_nll": 2.9275999069213867,
+          "total_gradient_before_clip": 0.5279325246810913
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 2.951660633087158,
+          "mean_predictive_std_db": 7.19268798828125,
+          "measurement_mean_gradient": 0.0015413120854645967,
+          "measurement_nll": 2.951660633087158,
+          "total_gradient_before_clip": 0.3589114546775818
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 2.956249713897705,
+          "mean_predictive_std_db": 7.1825175285339355,
+          "measurement_mean_gradient": 0.0015379072865471244,
+          "measurement_nll": 2.956249713897705,
+          "total_gradient_before_clip": 0.5137912631034851
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 2.9637393951416016,
+          "mean_predictive_std_db": 7.172390460968018,
+          "measurement_mean_gradient": 0.001840498996898532,
+          "measurement_nll": 2.9637393951416016,
+          "total_gradient_before_clip": 0.8709400296211243
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 2.9249191284179688,
+          "mean_predictive_std_db": 7.1623005867004395,
+          "measurement_mean_gradient": 0.0013711516512557864,
+          "measurement_nll": 2.9249191284179688,
+          "total_gradient_before_clip": 0.3552444577217102
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 2.909616470336914,
+          "mean_predictive_std_db": 7.152243614196777,
+          "measurement_mean_gradient": 0.0014391401782631874,
+          "measurement_nll": 2.909616470336914,
+          "total_gradient_before_clip": 0.6088087558746338
+        }
+      ],
+      "validation_mean_layout_delta_rmse_db": 2.39637992430148
+    },
+    {
+      "epoch": 48,
+      "updates": [
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 2.9218320846557617,
+          "mean_predictive_std_db": 7.142215251922607,
+          "measurement_mean_gradient": 0.0015966306673362851,
+          "measurement_nll": 2.9218320846557617,
+          "total_gradient_before_clip": 0.856677234172821
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 2.9186577796936035,
+          "mean_predictive_std_db": 7.132232189178467,
+          "measurement_mean_gradient": 0.001208815723657608,
+          "measurement_nll": 2.9186577796936035,
+          "total_gradient_before_clip": 0.2640397846698761
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 2.9149699211120605,
+          "mean_predictive_std_db": 7.122257709503174,
+          "measurement_mean_gradient": 0.00110367382876575,
+          "measurement_nll": 2.9149699211120605,
+          "total_gradient_before_clip": 0.3742057681083679
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 2.908867835998535,
+          "mean_predictive_std_db": 7.112289905548096,
+          "measurement_mean_gradient": 0.0013473056023940444,
+          "measurement_nll": 2.908867835998535,
+          "total_gradient_before_clip": 0.6143093109130859
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 2.926389694213867,
+          "mean_predictive_std_db": 7.102338790893555,
+          "measurement_mean_gradient": 0.0014995341189205647,
+          "measurement_nll": 2.926389694213867,
+          "total_gradient_before_clip": 0.2821722626686096
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 2.9481797218322754,
+          "mean_predictive_std_db": 7.092426300048828,
+          "measurement_mean_gradient": 0.00161038211081177,
+          "measurement_nll": 2.9481797218322754,
+          "total_gradient_before_clip": 0.5514791011810303
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 2.9046711921691895,
+          "mean_predictive_std_db": 7.082539081573486,
+          "measurement_mean_gradient": 0.00131405598949641,
+          "measurement_nll": 2.9046711921691895,
+          "total_gradient_before_clip": 0.3912951946258545
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 2.9448599815368652,
+          "mean_predictive_std_db": 7.072672367095947,
+          "measurement_mean_gradient": 0.0017815208993852139,
+          "measurement_nll": 2.9448599815368652,
+          "total_gradient_before_clip": 0.5112826824188232
+        }
+      ],
+      "validation_mean_layout_delta_rmse_db": 2.39637992430148
+    },
+    {
+      "epoch": 49,
+      "updates": [
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 2.917778491973877,
+          "mean_predictive_std_db": 7.062841415405273,
+          "measurement_mean_gradient": 0.0013668821193277836,
+          "measurement_nll": 2.917778491973877,
+          "total_gradient_before_clip": 0.7194758653640747
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 2.908902168273926,
+          "mean_predictive_std_db": 7.053050518035889,
+          "measurement_mean_gradient": 0.0016531164292246103,
+          "measurement_nll": 2.908902168273926,
+          "total_gradient_before_clip": 0.6759032607078552
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 2.9336695671081543,
+          "mean_predictive_std_db": 7.043282985687256,
+          "measurement_mean_gradient": 0.0016194377094507217,
+          "measurement_nll": 2.9336695671081543,
+          "total_gradient_before_clip": 0.7019599676132202
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 2.9071993827819824,
+          "mean_predictive_std_db": 7.033542156219482,
+          "measurement_mean_gradient": 0.0013928415719419718,
+          "measurement_nll": 2.9071993827819824,
+          "total_gradient_before_clip": 0.6560682058334351
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 2.9171833992004395,
+          "mean_predictive_std_db": 7.023815631866455,
+          "measurement_mean_gradient": 0.001704370602965355,
+          "measurement_nll": 2.9171833992004395,
+          "total_gradient_before_clip": 0.8848280906677246
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 2.957751750946045,
+          "mean_predictive_std_db": 7.014128684997559,
+          "measurement_mean_gradient": 0.0018909176578745246,
+          "measurement_nll": 2.957751750946045,
+          "total_gradient_before_clip": 0.9345669150352478
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 2.913343906402588,
+          "mean_predictive_std_db": 7.004513740539551,
+          "measurement_mean_gradient": 0.001410631462931633,
+          "measurement_nll": 2.913343906402588,
+          "total_gradient_before_clip": 0.35574182868003845
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 2.9282314777374268,
+          "mean_predictive_std_db": 6.994928359985352,
+          "measurement_mean_gradient": 0.0018239555647596717,
+          "measurement_nll": 2.9282314777374268,
+          "total_gradient_before_clip": 0.9243166446685791
+        }
+      ],
+      "validation_mean_layout_delta_rmse_db": 2.39637992430148
+    },
+    {
+      "epoch": 50,
+      "updates": [
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 2.93245792388916,
+          "mean_predictive_std_db": 6.985367774963379,
+          "measurement_mean_gradient": 0.0015609971014782786,
+          "measurement_nll": 2.93245792388916,
+          "total_gradient_before_clip": 0.26944056153297424
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 2.9289140701293945,
+          "mean_predictive_std_db": 6.975831031799316,
+          "measurement_mean_gradient": 0.0014168753987178206,
+          "measurement_nll": 2.9289140701293945,
+          "total_gradient_before_clip": 0.3705608546733856
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 2.9319496154785156,
+          "mean_predictive_std_db": 6.966320991516113,
+          "measurement_mean_gradient": 0.0016853205161169171,
+          "measurement_nll": 2.9319496154785156,
+          "total_gradient_before_clip": 0.5357352495193481
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 2.9244327545166016,
+          "mean_predictive_std_db": 6.956831932067871,
+          "measurement_mean_gradient": 0.0016836236463859677,
+          "measurement_nll": 2.9244327545166016,
+          "total_gradient_before_clip": 0.5023443698883057
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 2.8957107067108154,
+          "mean_predictive_std_db": 6.947354316711426,
+          "measurement_mean_gradient": 0.0014788107946515083,
+          "measurement_nll": 2.8957107067108154,
+          "total_gradient_before_clip": 0.5400633215904236
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 2.9214067459106445,
+          "mean_predictive_std_db": 6.93789005279541,
+          "measurement_mean_gradient": 0.0014844604302197695,
+          "measurement_nll": 2.9214067459106445,
+          "total_gradient_before_clip": 0.31272566318511963
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 2.8862733840942383,
+          "mean_predictive_std_db": 6.928442001342773,
+          "measurement_mean_gradient": 0.0017240789020434022,
+          "measurement_nll": 2.8862733840942383,
+          "total_gradient_before_clip": 0.569435179233551
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 2.899984836578369,
+          "mean_predictive_std_db": 6.919021129608154,
+          "measurement_mean_gradient": 0.001342307892628014,
+          "measurement_nll": 2.899984836578369,
+          "total_gradient_before_clip": 0.45817914605140686
+        }
+      ],
+      "validation_mean_layout_delta_rmse_db": 2.39637992430148
+    },
+    {
+      "epoch": 51,
+      "updates": [
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 2.8976235389709473,
+          "mean_predictive_std_db": 6.909617900848389,
+          "measurement_mean_gradient": 0.0012052959064021707,
+          "measurement_nll": 2.8976235389709473,
+          "total_gradient_before_clip": 0.30637097358703613
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 2.9240050315856934,
+          "mean_predictive_std_db": 6.90022087097168,
+          "measurement_mean_gradient": 0.0016537070041522384,
+          "measurement_nll": 2.9240050315856934,
+          "total_gradient_before_clip": 0.3054771423339844
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 2.881396770477295,
+          "mean_predictive_std_db": 6.890849590301514,
+          "measurement_mean_gradient": 0.0016027485253289342,
+          "measurement_nll": 2.881396770477295,
+          "total_gradient_before_clip": 1.057914137840271
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 2.911768913269043,
+          "mean_predictive_std_db": 6.881494522094727,
+          "measurement_mean_gradient": 0.0016797377029433846,
+          "measurement_nll": 2.911768913269043,
+          "total_gradient_before_clip": 0.32430627942085266
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 2.899150848388672,
+          "mean_predictive_std_db": 6.872171878814697,
+          "measurement_mean_gradient": 0.0018762854160740972,
+          "measurement_nll": 2.899150848388672,
+          "total_gradient_before_clip": 0.9386508464813232
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 2.9079294204711914,
+          "mean_predictive_std_db": 6.862885475158691,
+          "measurement_mean_gradient": 0.0017545119626447558,
+          "measurement_nll": 2.9079294204711914,
+          "total_gradient_before_clip": 0.8356475830078125
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 2.8722054958343506,
+          "mean_predictive_std_db": 6.853641986846924,
+          "measurement_mean_gradient": 0.0012370890472084284,
+          "measurement_nll": 2.8722054958343506,
+          "total_gradient_before_clip": 0.30592620372772217
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 2.91331148147583,
+          "mean_predictive_std_db": 6.844409465789795,
+          "measurement_mean_gradient": 0.0019388643559068441,
+          "measurement_nll": 2.91331148147583,
+          "total_gradient_before_clip": 0.6010730862617493
+        }
+      ],
+      "validation_mean_layout_delta_rmse_db": 2.39637992430148
+    },
+    {
+      "epoch": 52,
+      "updates": [
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 2.8772828578948975,
+          "mean_predictive_std_db": 6.835221290588379,
+          "measurement_mean_gradient": 0.0016198224620893598,
+          "measurement_nll": 2.8772828578948975,
+          "total_gradient_before_clip": 1.3759506940841675
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 2.9082727432250977,
+          "mean_predictive_std_db": 6.826046943664551,
+          "measurement_mean_gradient": 0.0017694117268547416,
+          "measurement_nll": 2.9082727432250977,
+          "total_gradient_before_clip": 0.4973751902580261
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 2.872429609298706,
+          "mean_predictive_std_db": 6.81691837310791,
+          "measurement_mean_gradient": 0.0013172177132219076,
+          "measurement_nll": 2.872429609298706,
+          "total_gradient_before_clip": 0.39978209137916565
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 2.8862833976745605,
+          "mean_predictive_std_db": 6.807804107666016,
+          "measurement_mean_gradient": 0.0017379769124090672,
+          "measurement_nll": 2.8862833976745605,
+          "total_gradient_before_clip": 1.1769113540649414
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 2.8862509727478027,
+          "mean_predictive_std_db": 6.798720836639404,
+          "measurement_mean_gradient": 0.001383681083098054,
+          "measurement_nll": 2.8862509727478027,
+          "total_gradient_before_clip": 0.31946229934692383
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 2.9078192710876465,
+          "mean_predictive_std_db": 6.789663791656494,
+          "measurement_mean_gradient": 0.001829993212595582,
+          "measurement_nll": 2.9078192710876465,
+          "total_gradient_before_clip": 1.0201693773269653
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 2.904468536376953,
+          "mean_predictive_std_db": 6.780631065368652,
+          "measurement_mean_gradient": 0.0015182934002950788,
+          "measurement_nll": 2.904468536376953,
+          "total_gradient_before_clip": 0.2972797751426697
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 2.9181880950927734,
+          "mean_predictive_std_db": 6.771616458892822,
+          "measurement_mean_gradient": 0.0019246898591518402,
+          "measurement_nll": 2.9181880950927734,
+          "total_gradient_before_clip": 0.36551782488822937
+        }
+      ],
+      "validation_mean_layout_delta_rmse_db": 2.39637992430148
+    },
+    {
+      "epoch": 53,
+      "updates": [
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 2.894498348236084,
+          "mean_predictive_std_db": 6.762643337249756,
+          "measurement_mean_gradient": 0.0016605280106887221,
+          "measurement_nll": 2.894498348236084,
+          "total_gradient_before_clip": 0.3668839931488037
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 2.867642641067505,
+          "mean_predictive_std_db": 6.753696918487549,
+          "measurement_mean_gradient": 0.0014590949285775423,
+          "measurement_nll": 2.867642641067505,
+          "total_gradient_before_clip": 1.011242151260376
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 2.8604161739349365,
+          "mean_predictive_std_db": 6.7447590827941895,
+          "measurement_mean_gradient": 0.001493555959314108,
+          "measurement_nll": 2.8604161739349365,
+          "total_gradient_before_clip": 0.46392497420310974
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 2.8550920486450195,
+          "mean_predictive_std_db": 6.735822677612305,
+          "measurement_mean_gradient": 0.001183376763947308,
+          "measurement_nll": 2.8550920486450195,
+          "total_gradient_before_clip": 0.5751650333404541
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 2.873811721801758,
+          "mean_predictive_std_db": 6.726895332336426,
+          "measurement_mean_gradient": 0.0017322927014902234,
+          "measurement_nll": 2.873811721801758,
+          "total_gradient_before_clip": 1.3676726818084717
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 2.8847689628601074,
+          "mean_predictive_std_db": 6.718002796173096,
+          "measurement_mean_gradient": 0.0019433203851804137,
+          "measurement_nll": 2.8847689628601074,
+          "total_gradient_before_clip": 1.1957383155822754
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 2.86006498336792,
+          "mean_predictive_std_db": 6.7091522216796875,
+          "measurement_mean_gradient": 0.0019145651021972299,
+          "measurement_nll": 2.86006498336792,
+          "total_gradient_before_clip": 1.5781455039978027
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 2.873143196105957,
+          "mean_predictive_std_db": 6.700326442718506,
+          "measurement_mean_gradient": 0.0021753383334726095,
+          "measurement_nll": 2.873143196105957,
+          "total_gradient_before_clip": 1.9303094148635864
+        }
+      ],
+      "validation_mean_layout_delta_rmse_db": 2.39637992430148
+    },
+    {
+      "epoch": 54,
+      "updates": [
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 2.8589887619018555,
+          "mean_predictive_std_db": 6.691534996032715,
+          "measurement_mean_gradient": 0.0014437620993703604,
+          "measurement_nll": 2.8589887619018555,
+          "total_gradient_before_clip": 0.32303956151008606
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 2.9354448318481445,
+          "mean_predictive_std_db": 6.682765483856201,
+          "measurement_mean_gradient": 0.0030775275081396103,
+          "measurement_nll": 2.9354448318481445,
+          "total_gradient_before_clip": 2.7522995471954346
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 2.866516590118408,
+          "mean_predictive_std_db": 6.674097537994385,
+          "measurement_mean_gradient": 0.0013179590459913015,
+          "measurement_nll": 2.866516590118408,
+          "total_gradient_before_clip": 0.28818175196647644
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 2.8519365787506104,
+          "mean_predictive_std_db": 6.665436744689941,
+          "measurement_mean_gradient": 0.001773302210494876,
+          "measurement_nll": 2.8519365787506104,
+          "total_gradient_before_clip": 0.8039880394935608
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 2.8624181747436523,
+          "mean_predictive_std_db": 6.656777858734131,
+          "measurement_mean_gradient": 0.0016603742260485888,
+          "measurement_nll": 2.8624181747436523,
+          "total_gradient_before_clip": 0.7972216606140137
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 2.878042697906494,
+          "mean_predictive_std_db": 6.64813756942749,
+          "measurement_mean_gradient": 0.0014809045242145658,
+          "measurement_nll": 2.878042697906494,
+          "total_gradient_before_clip": 0.38554564118385315
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 2.867331027984619,
+          "mean_predictive_std_db": 6.639510631561279,
+          "measurement_mean_gradient": 0.0017658249707892537,
+          "measurement_nll": 2.867331027984619,
+          "total_gradient_before_clip": 0.5379745960235596
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 2.903445243835449,
+          "mean_predictive_std_db": 6.630904197692871,
+          "measurement_mean_gradient": 0.002136814408004284,
+          "measurement_nll": 2.903445243835449,
+          "total_gradient_before_clip": 1.1960526704788208
+        }
+      ],
+      "validation_mean_layout_delta_rmse_db": 2.39637992430148
+    },
+    {
+      "epoch": 55,
+      "updates": [
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 2.8354721069335938,
+          "mean_predictive_std_db": 6.622323513031006,
+          "measurement_mean_gradient": 0.0016816440038383007,
+          "measurement_nll": 2.8354721069335938,
+          "total_gradient_before_clip": 0.941631555557251
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 2.865967273712158,
+          "mean_predictive_std_db": 6.613747596740723,
+          "measurement_mean_gradient": 0.0018424703739583492,
+          "measurement_nll": 2.865967273712158,
+          "total_gradient_before_clip": 0.49558025598526
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 2.8642470836639404,
+          "mean_predictive_std_db": 6.605191707611084,
+          "measurement_mean_gradient": 0.0016506444662809372,
+          "measurement_nll": 2.8642470836639404,
+          "total_gradient_before_clip": 0.8291106224060059
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 2.866265296936035,
+          "mean_predictive_std_db": 6.596652507781982,
+          "measurement_mean_gradient": 0.0016183234984055161,
+          "measurement_nll": 2.866265296936035,
+          "total_gradient_before_clip": 0.3185814321041107
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 2.888136863708496,
+          "mean_predictive_std_db": 6.588140487670898,
+          "measurement_mean_gradient": 0.0018089966615661979,
+          "measurement_nll": 2.888136863708496,
+          "total_gradient_before_clip": 0.514362633228302
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 2.8484928607940674,
+          "mean_predictive_std_db": 6.579658031463623,
+          "measurement_mean_gradient": 0.00122584099881351,
+          "measurement_nll": 2.8484928607940674,
+          "total_gradient_before_clip": 0.3582959473133087
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 2.8627078533172607,
+          "mean_predictive_std_db": 6.571181774139404,
+          "measurement_mean_gradient": 0.0016804051119834185,
+          "measurement_nll": 2.8627078533172607,
+          "total_gradient_before_clip": 0.36078476905822754
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 2.8517251014709473,
+          "mean_predictive_std_db": 6.562734603881836,
+          "measurement_mean_gradient": 0.001718098996207118,
+          "measurement_nll": 2.8517251014709473,
+          "total_gradient_before_clip": 0.7028304934501648
+        }
+      ],
+      "validation_mean_layout_delta_rmse_db": 2.39637992430148
+    },
+    {
+      "epoch": 56,
+      "updates": [
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 2.868414878845215,
+          "mean_predictive_std_db": 6.554300785064697,
+          "measurement_mean_gradient": 0.0014939146349206567,
+          "measurement_nll": 2.868414878845215,
+          "total_gradient_before_clip": 0.3499101996421814
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 2.8455564975738525,
+          "mean_predictive_std_db": 6.545880317687988,
+          "measurement_mean_gradient": 0.001182106789201498,
+          "measurement_nll": 2.8455564975738525,
+          "total_gradient_before_clip": 0.2661522328853607
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 2.8845877647399902,
+          "mean_predictive_std_db": 6.537466526031494,
+          "measurement_mean_gradient": 0.001802997780032456,
+          "measurement_nll": 2.8845877647399902,
+          "total_gradient_before_clip": 1.0946177244186401
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 2.851137638092041,
+          "mean_predictive_std_db": 6.529082298278809,
+          "measurement_mean_gradient": 0.001741397543810308,
+          "measurement_nll": 2.851137638092041,
+          "total_gradient_before_clip": 0.4973300099372864
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 2.8919034004211426,
+          "mean_predictive_std_db": 6.52072811126709,
+          "measurement_mean_gradient": 0.0018918314017355442,
+          "measurement_nll": 2.8919034004211426,
+          "total_gradient_before_clip": 0.6567566394805908
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 2.85971736907959,
+          "mean_predictive_std_db": 6.512406349182129,
+          "measurement_mean_gradient": 0.0017366319661960006,
+          "measurement_nll": 2.85971736907959,
+          "total_gradient_before_clip": 0.49406707286834717
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 2.8568081855773926,
+          "mean_predictive_std_db": 6.504113674163818,
+          "measurement_mean_gradient": 0.0015772499609738588,
+          "measurement_nll": 2.8568081855773926,
+          "total_gradient_before_clip": 0.5070380568504333
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 2.846292734146118,
+          "mean_predictive_std_db": 6.495842933654785,
+          "measurement_mean_gradient": 0.0016999643994495273,
+          "measurement_nll": 2.846292734146118,
+          "total_gradient_before_clip": 0.30400365591049194
+        }
+      ],
+      "validation_mean_layout_delta_rmse_db": 2.39637992430148
+    },
+    {
+      "epoch": 57,
+      "updates": [
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 2.842355251312256,
+          "mean_predictive_std_db": 6.487600326538086,
+          "measurement_mean_gradient": 0.0016546649858355522,
+          "measurement_nll": 2.842355251312256,
+          "total_gradient_before_clip": 0.28093841671943665
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 2.8771743774414062,
+          "mean_predictive_std_db": 6.479385852813721,
+          "measurement_mean_gradient": 0.001970559824258089,
+          "measurement_nll": 2.8771743774414062,
+          "total_gradient_before_clip": 0.4467710256576538
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 2.876641273498535,
+          "mean_predictive_std_db": 6.471197605133057,
+          "measurement_mean_gradient": 0.002114040544256568,
+          "measurement_nll": 2.876641273498535,
+          "total_gradient_before_clip": 0.4548340141773224
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 2.8611807823181152,
+          "mean_predictive_std_db": 6.463051795959473,
+          "measurement_mean_gradient": 0.0015775004867464304,
+          "measurement_nll": 2.8611807823181152,
+          "total_gradient_before_clip": 0.31220266222953796
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 2.8879899978637695,
+          "mean_predictive_std_db": 6.454919338226318,
+          "measurement_mean_gradient": 0.001923785894177854,
+          "measurement_nll": 2.8879899978637695,
+          "total_gradient_before_clip": 0.5332915186882019
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 2.827646255493164,
+          "mean_predictive_std_db": 6.446816921234131,
+          "measurement_mean_gradient": 0.0017633084207773209,
+          "measurement_nll": 2.827646255493164,
+          "total_gradient_before_clip": 1.0586228370666504
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 2.8884048461914062,
+          "mean_predictive_std_db": 6.438720703125,
+          "measurement_mean_gradient": 0.0018250280991196632,
+          "measurement_nll": 2.8884048461914062,
+          "total_gradient_before_clip": 0.5880852937698364
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 2.8379502296447754,
+          "mean_predictive_std_db": 6.430652618408203,
+          "measurement_mean_gradient": 0.0018805146683007479,
+          "measurement_nll": 2.8379502296447754,
+          "total_gradient_before_clip": 0.7578001022338867
+        }
+      ],
+      "validation_mean_layout_delta_rmse_db": 2.39637992430148
+    },
+    {
+      "epoch": 58,
+      "updates": [
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 2.846932888031006,
+          "mean_predictive_std_db": 6.422603130340576,
+          "measurement_mean_gradient": 0.0018680058419704437,
+          "measurement_nll": 2.846932888031006,
+          "total_gradient_before_clip": 0.7287572026252747
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 2.843395709991455,
+          "mean_predictive_std_db": 6.414575576782227,
+          "measurement_mean_gradient": 0.0015773528721183538,
+          "measurement_nll": 2.843395709991455,
+          "total_gradient_before_clip": 0.3467545211315155
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 2.8250155448913574,
+          "mean_predictive_std_db": 6.406565189361572,
+          "measurement_mean_gradient": 0.0015752519248053432,
+          "measurement_nll": 2.8250155448913574,
+          "total_gradient_before_clip": 0.4304676651954651
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 2.846644163131714,
+          "mean_predictive_std_db": 6.398563861846924,
+          "measurement_mean_gradient": 0.002054167678579688,
+          "measurement_nll": 2.846644163131714,
+          "total_gradient_before_clip": 0.7609290480613708
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 2.866095781326294,
+          "mean_predictive_std_db": 6.39058780670166,
+          "measurement_mean_gradient": 0.0019136853516101837,
+          "measurement_nll": 2.866095781326294,
+          "total_gradient_before_clip": 0.6387160420417786
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 2.8445239067077637,
+          "mean_predictive_std_db": 6.382623195648193,
+          "measurement_mean_gradient": 0.001540799275971949,
+          "measurement_nll": 2.8445239067077637,
+          "total_gradient_before_clip": 0.8525054454803467
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 2.8269128799438477,
+          "mean_predictive_std_db": 6.374684810638428,
+          "measurement_mean_gradient": 0.0018148154485970736,
+          "measurement_nll": 2.8269128799438477,
+          "total_gradient_before_clip": 0.47119444608688354
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 2.8243141174316406,
+          "mean_predictive_std_db": 6.366766929626465,
+          "measurement_mean_gradient": 0.0014690052485093474,
+          "measurement_nll": 2.8243141174316406,
+          "total_gradient_before_clip": 0.32237446308135986
+        }
+      ],
+      "validation_mean_layout_delta_rmse_db": 2.39637992430148
+    },
+    {
+      "epoch": 59,
+      "updates": [
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 2.856844425201416,
+          "mean_predictive_std_db": 6.35886287689209,
+          "measurement_mean_gradient": 0.002200441202148795,
+          "measurement_nll": 2.856844425201416,
+          "total_gradient_before_clip": 0.5332849621772766
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 2.8120884895324707,
+          "mean_predictive_std_db": 6.350992202758789,
+          "measurement_mean_gradient": 0.0019186771241948009,
+          "measurement_nll": 2.8120884895324707,
+          "total_gradient_before_clip": 0.6865503787994385
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 2.85380220413208,
+          "mean_predictive_std_db": 6.343140602111816,
+          "measurement_mean_gradient": 0.0018388829194009304,
+          "measurement_nll": 2.85380220413208,
+          "total_gradient_before_clip": 0.4869563579559326
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 2.833085775375366,
+          "mean_predictive_std_db": 6.335327625274658,
+          "measurement_mean_gradient": 0.0017658432479947805,
+          "measurement_nll": 2.833085775375366,
+          "total_gradient_before_clip": 0.8389590382575989
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 2.8524556159973145,
+          "mean_predictive_std_db": 6.327542304992676,
+          "measurement_mean_gradient": 0.0018832996720448136,
+          "measurement_nll": 2.8524556159973145,
+          "total_gradient_before_clip": 0.4228852093219757
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 2.8298072814941406,
+          "mean_predictive_std_db": 6.31977653503418,
+          "measurement_mean_gradient": 0.0016283318400382996,
+          "measurement_nll": 2.8298072814941406,
+          "total_gradient_before_clip": 0.3544915020465851
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 2.8500189781188965,
+          "mean_predictive_std_db": 6.3120341300964355,
+          "measurement_mean_gradient": 0.0019435823196545243,
+          "measurement_nll": 2.8500189781188965,
+          "total_gradient_before_clip": 0.8614858388900757
+        },
+        {
+          "alignment": 0.0,
+          "alignment_mean_gradient": 0.0,
+          "alignment_weight": 0.0,
+          "loss": 2.8257534503936768,
+          "mean_predictive_std_db": 6.304306983947754,
+          "measurement_mean_gradient": 0.001827836036682129,
+          "measurement_nll": 2.8257534503936768,
+          "total_gradient_before_clip": 0.33842265605926514
+        }
+      ],
+      "validation_mean_layout_delta_rmse_db": 2.39637992430148
+    }
+  ],
+  "identity": {
+    "data_receipt_sha256": "43ab47a6e101a0ac85488694c65d1cd95f28fe5b15d7350f14c69aee66470b8f",
+    "protocol_sha256": "dfb6c7da4e9665081dd6660b7a1fafaa93ac83a592af90411874b5d46ee28352",
+    "rt_stage_receipts_sha256": {
+      "training": "c8f4d3eafb7689e8ba915ee8abb6919631156a85968aa5199e32634acbe66fc3",
+      "validation": "e8a74ff22d29b87b0ebb7aaa35f432b5da3bc85236cdbc1bb95d4ce17303225d"
+    },
+    "source_receipt_sha256": "4bb2415118970fad4a95bbd4575d7ef799e10242faa168329d24f358ed75c3fc"
+  },
+  "learned_parameters": 77523,
+  "packet_or_production_qualified": false,
+  "run_id": "pure_geometry-seed0",
+  "schema": 1,
+  "seed": 0,
+  "selected_epoch": 0,
+  "settings": {
+    "cell": "pure_geometry",
+    "em_steps": 3,
+    "width": 64
+  },
+  "training_bands": [
+    0,
+    1
+  ],
+  "uncertainty_calibrated": false,
+  "updates": 480,
+  "validation_mean_layout_delta_rmse_db": 2.39637992430148
+}

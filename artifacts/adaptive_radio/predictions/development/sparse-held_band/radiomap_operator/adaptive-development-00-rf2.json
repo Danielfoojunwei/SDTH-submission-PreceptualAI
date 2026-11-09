@@ -1,0 +1,101 @@
+{
+  "metadata": {
+    "assay": "sparse-held_band",
+    "available": true,
+    "case_id": "adaptive-development-00-rf2",
+    "case_index": 2,
+    "cell": "radiomap_operator",
+    "condition": 2,
+    "context_case_id": "adaptive-development-00-rf2",
+    "dependencies": {
+      "baseline": {
+        "path": "artifacts/adaptive_radio/baselines/prior.json",
+        "sha256": "5cbe91bfbde81ca8ddce6ec8d22beba74ec7bbe97c1f59cdf50c538129659295"
+      },
+      "examples": {
+        "path": "artifacts/adaptive_radio/data/development-sparse-heldband-current.json",
+        "sha256": "3a9930514ef7988b17edcb7b6d10ef440a845c6009e40710d64ad29135293618"
+      },
+      "frontend": {
+        "path": "artifacts/adaptive_radio/data/frontend-training.json",
+        "sha256": "e523a774c027c2422d0295f91d0754a54f4544e27379c1e68aab90a7549abd65"
+      },
+      "stage": {
+        "path": "artifacts/adaptive_radio/rt_data/development.json",
+        "sha256": "26d75f5ac165ca4375573c92a81c2f0309abdc46b60d8dc9bf0572e011827c8d"
+      }
+    },
+    "eligibility": {
+      "eligible": true,
+      "reason": null
+    },
+    "example_binding": {
+      "case_id": "adaptive-development-00-rf2",
+      "censored_a": 1,
+      "condition": 2,
+      "context_case_id": "adaptive-development-00-rf2",
+      "input_RF_identity_sha256": "d077bd29f6c44cdf5065b12dba90933c95bba2571633803094e2f2371888d1eb",
+      "layout_id": "adaptive-development-00",
+      "model_input_sha256": {
+        "context_a": "a4ccb4bba3d50ed9e548895ba8f1e059c8382b06b52a3f4019a7f08b4d717a56",
+        "context_b": "96a8ef10108770e249eecf2f65dffc1a2f424b808334941782c81c24c0fa5b71",
+        "mask_a": "287ad2f5dd2fa997cf1f1c5a09e5cb517f0592dfcf9b043c86b31cdc5d7878a3",
+        "mask_b": "287ad2f5dd2fa997cf1f1c5a09e5cb517f0592dfcf9b043c86b31cdc5d7878a3",
+        "query": "93629c20e1b006ccbc754205c9a5c580ea6e62fb93ada0b65f712d50afaec662",
+        "query_basis": "47cadf763e9c7dfc0322baf02b49c1a5e9056fadebd6081bd49bc91335ef3d76",
+        "query_fspl_dbm": "8a59783cf676eefe3526a066951a2c76d7888823397fe78414a46af851076d4e",
+        "query_offset_db": "1d10e3c015ad1baca3bdc88f8d2a4c4cce80a945ba56a5fca83345de970c188a",
+        "scheduled_mask_a": "287ad2f5dd2fa997cf1f1c5a09e5cb517f0592dfcf9b043c86b31cdc5d7878a3",
+        "scheduled_mask_b": "287ad2f5dd2fa997cf1f1c5a09e5cb517f0592dfcf9b043c86b31cdc5d7878a3"
+      },
+      "network_delivery_or_real_capture_timing_claimed": false,
+      "point_a": 7,
+      "regime": "sparse",
+      "scheduled_attempts_a": 8,
+      "scheduled_attempts_b": 8,
+      "sensed_known_a": 8,
+      "sensed_known_b": 8,
+      "stage": "development",
+      "stale_requested": false,
+      "target_RF_identity_sha256": "cd08e29a232a416421c3700848a9092733f18809a48de5c19c27c26c2fa551cd",
+      "target_sha256": {
+        "censor_upper_dbm": "cd3f78c8755c737c9601c2341a6e3d7c3976ab0573a62d8ba8885557ad12ae9d",
+        "censored": "fd0b6a351fa6d978d215c59eedcae9f0ac3f0346296bfedbd9ae4e5d9b3b1f95",
+        "center_dbm": "1fcb5b4ec66ac061d0c7b362600a913c8a0acc8426b41c89f4ad1fac09f65b17",
+        "detection_threshold_dbm": "9c6f590c7dbd95176cc92b0d9059b3c93e537e7c0e66b33a347610142ed4036c",
+        "heard": "178e6dd4754fce928da0b1853e14c13bde97e09ab0536b4acdf103243a3f851c",
+        "lower_dbm": "211634e27f89a0d7f7224aee9791f292c213f3d70b7ee6913603c12bdacc6ef1",
+        "upper_dbm": "47ac4bd273b2c7e3456033b4bc999c60fec3b4b0493ea94e75b132b148e031af"
+      },
+      "unknown_or_withheld_a": 16
+    },
+    "held_band": true,
+    "identity": {
+      "protocol_sha256": "dfb6c7da4e9665081dd6660b7a1fafaa93ac83a592af90411874b5d46ee28352",
+      "registry_sha256": "b4d58de02b830e0dde3a054a949c9459d0a7d1289ece91cb25f195e9d9ef3e50",
+      "source_receipt_sha256": "4bb2415118970fad4a95bbd4575d7ef799e10242faa168329d24f358ed75c3fc"
+    },
+    "layout_id": "adaptive-development-00",
+    "member": "radiomap_operator",
+    "packet_or_production_risk": false,
+    "predictions_ensembled": false,
+    "regime": "sparse",
+    "seed": null,
+    "source_view": "a",
+    "stage": "development",
+    "stale": false
+  },
+  "metrics": {
+    "censored_count": 42,
+    "detector_brier": 0.07418466748606763,
+    "finite": true,
+    "heard_count": 30,
+    "missing_count": 0,
+    "observation_nll": 1.3910874213114022,
+    "p95_abs_db": 7.731642640401148,
+    "rmse_db": 4.395871698410653
+  },
+  "npz_path": "artifacts/adaptive_radio/predictions/development/sparse-held_band/radiomap_operator/adaptive-development-00-rf2.npz",
+  "npz_sha256": "00d559f0ddaaf9bdcc3e48af7078c8f063912a991ac96fe3ad7f5270045225ef",
+  "schema": 1
+}
