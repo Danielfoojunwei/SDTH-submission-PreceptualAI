@@ -1,0 +1,145 @@
+{
+  "attempt": {
+    "path": "artifacts/native_bridge/cases/dev-90473001-ho0.03/attempt.json",
+    "sha256": "0df99bc517fd45a04f9397409c21dff7b7a7deaf28eef3eee74d3950565ef86d"
+  },
+  "candidate_inputs_forecasts": {
+    "path": "artifacts/native_bridge/cases/dev-90473001-ho0.03/candidate_inputs_forecasts.npz",
+    "sha256": "60478cc1f64899bcfbd90abe4589e4d7fa503cdd9ccfae9ea76f93e78bac3f99"
+  },
+  "candidate_jobs": [
+    {
+      "history_length": 60
+    },
+    {
+      "history_length": 61
+    },
+    {
+      "history_length": 62
+    },
+    {
+      "history_length": 63
+    },
+    {
+      "history_length": 64
+    },
+    {
+      "history_length": 65
+    },
+    {
+      "history_length": 66
+    },
+    {
+      "history_length": 67
+    },
+    {
+      "history_length": 68
+    },
+    {
+      "history_length": 69
+    },
+    {
+      "history_length": 70
+    },
+    {
+      "history_length": 71
+    }
+  ],
+  "case": {
+    "case_id": "dev-90473001-ho0.03",
+    "handover_seconds": 0.03,
+    "seed": 90473001
+  },
+  "geometry_carrier_scale_transfer_unqualified": true,
+  "metrics": {
+    "candidate": {
+      "actual_forecast_compute_seconds": 3.6353569210041314,
+      "airtime_domain_sum": 8.743730950877683,
+      "bulk_mbps": 610.6647800676963,
+      "control_gap_p99_ms": 899.3000000000457,
+      "control_miss": 0.022375,
+      "control_miss_worst_decile": 0.13416666666666668,
+      "control_misses": 537,
+      "control_sent": 24000,
+      "forecast_jobs": 12,
+      "forecast_jobs_consumed": 12,
+      "forecast_runtime_overruns": 11,
+      "forecast_service_seconds": 10.352371454006061,
+      "late_planner_or_admission_discards": 0,
+      "maximum_silence_ms": 9740,
+      "paid_forecast_compute_seconds": 4.352371454006061,
+      "planner_and_admission_seconds": 0.23563075507991016,
+      "roams": 32,
+      "safety_stop_fraction": 0.019158333333333333,
+      "video_on_time": 0.9789404983260976
+    },
+    "radiomap": {
+      "actual_forecast_compute_seconds": 0.9276445130526554,
+      "airtime_domain_sum": 8.129229964067905,
+      "bulk_mbps": 591.9572163822922,
+      "control_gap_p99_ms": 131.10000000000056,
+      "control_miss": 0.010666666666666666,
+      "control_miss_worst_decile": 0.017916666666666668,
+      "control_misses": 256,
+      "control_sent": 24000,
+      "forecast_jobs": 12,
+      "forecast_jobs_consumed": 12,
+      "forecast_runtime_overruns": 0,
+      "forecast_service_seconds": 9.75,
+      "late_planner_or_admission_discards": 0,
+      "maximum_silence_ms": 240,
+      "paid_forecast_compute_seconds": 3.75,
+      "planner_and_admission_seconds": 0.21171221704571508,
+      "roams": 40,
+      "safety_stop_fraction": 0.0017333333333333333,
+      "video_on_time": 0.9812119836182619
+    }
+  },
+  "native_simulations": 2,
+  "original_SERVICE_holdouts_opened": false,
+  "paired_delta_candidate_minus_Map": {
+    "actual_forecast_compute_seconds": 2.707712407951476,
+    "airtime_domain_sum": 0.6145009868097784,
+    "bulk_mbps": 18.70756368540401,
+    "control_gap_p99_ms": 768.2000000000451,
+    "control_miss": 0.011708333333333333,
+    "control_miss_worst_decile": 0.11625000000000002,
+    "control_misses": 281,
+    "control_sent": 0,
+    "forecast_jobs": 0,
+    "forecast_jobs_consumed": 0,
+    "forecast_runtime_overruns": 11,
+    "forecast_service_seconds": 0.602371454006061,
+    "late_planner_or_admission_discards": 0,
+    "maximum_silence_ms": 9500,
+    "paid_forecast_compute_seconds": 0.602371454006061,
+    "planner_and_admission_seconds": 0.02391853803419508,
+    "roams": -8,
+    "safety_stop_fraction": 0.017425,
+    "video_on_time": -0.0022714852921642548
+  },
+  "parity": false,
+  "production_qualified": false,
+  "protocol_sha256": "284bbfa4f949a8735d0719ae4938516ecc08316515161d098d5d04bdc1bc0837",
+  "raw_result": {
+    "path": "artifacts/native_bridge/cases/dev-90473001-ho0.03/native_result.json.gz",
+    "sha256": "cf1e97e68c8f1c125b5b58df11c8f81c4bb27b8f12ef8fbc593f8ad4973ca228"
+  },
+  "runtime": {
+    "CPU_model": "AMD EPYC 9V74 80-Core Processor",
+    "logical_CPUs": 5,
+    "machine": "x86_64",
+    "model_device": "cpu",
+    "numpy": "2.5.4",
+    "platform": "Linux-6.18.57-x86_64-with-glibc2.41",
+    "python": "3.12.14 (main, Aug 25 2026, 14:00:49) [Clang 22.1.3 ]",
+    "timing_is_cloud_CPU_not_SmartCar_hardware": true,
+    "torch": "2.14.1+cu130",
+    "torch_interop_threads": 5,
+    "torch_threads": 1
+  },
+  "simulation_only": true,
+  "source_receipt_sha256": "d5ce592358e924448b3bac8b2afdb7dc1707f7318d22fefb2d65919d0a82e7c7",
+  "weights_sha256": "73d8d2a81db3848aecfa0edbf3f527a4cf4d943960757d8989f3f06863a5301e",
+  "world_receipt_sha256": "cab82fad585cef40e68609a66ac61b0ec2361e83dc3566d7739575163a7fb2bc"
+}

@@ -1,0 +1,102 @@
+{
+  "cases": {
+    "dev-90473001-ho0.03": "10d01e395febd8778dbf08c5d523fcfc71cfecefec65dc91274ec73e93e87f0d",
+    "dev-90473001-ho4": "8da20f0230d348c82a32fc58e7b4811d24624d96ef999f7d69ca54f002293f2e",
+    "dev-90473002-ho0.03": "60912f147e459262a3dd7b326b67a94fb5bb78f4292ab941ba029cbfd47340cb",
+    "dev-90473002-ho4": "d8554cc9efd61d42c2c8309c0b31b3f597c14f0d715fa51b93064ce8e702785b",
+    "dev-90473003-ho0.03": "e573320bbb19d1680a5cc890819e3fea62036020403782b522a4e6f09e1ec8b6",
+    "dev-90473003-ho4": "5c3f8d1570bb6633fd8dcd335e9613a6980e5b62a802a6fd4f8892e2f3c45df3",
+    "dev-90473004-ho0.03": "c25613ce23b9a39a64ae9a6042b1f247ab26e10d548c7764e5c243b7caa86369",
+    "dev-90473004-ho4": "5b2493ab736a9ecb698f241e8681b5543b54cb4323e321201f1513ea7e3df2ae",
+    "parity-90473001-ho0.03": "72981def8ee0a87ef1a87137d712938b996175f00feceda8f635e933ed70762b"
+  },
+  "default_changed": false,
+  "native_simulations": 18,
+  "no_small_sample_SLA_or_SOTA_claim": true,
+  "original_SERVICE_holdouts_opened": false,
+  "production_qualified": false,
+  "separate_handover_results": {
+    "0.03": {
+      "control_miss_harm_count": 4,
+      "episodes": 4,
+      "max_silence_harm_count": 1,
+      "paired_mean_candidate_minus_Map": {
+        "actual_forecast_compute_seconds": 2.9963246249753865,
+        "airtime_domain_sum": 0.5472969902264846,
+        "bulk_mbps": 8.99347860546942,
+        "control_gap_p99_ms": 214.32500000001113,
+        "control_miss": 0.0030312499999999997,
+        "control_miss_worst_decile": 0.02979166666666667,
+        "control_misses": 72.75,
+        "control_sent": 0.0,
+        "forecast_jobs": 0.0,
+        "forecast_jobs_consumed": 0.0,
+        "forecast_runtime_overruns": 11.0,
+        "forecast_service_seconds": 1.0110930349837872,
+        "late_planner_or_admission_discards": 0.0,
+        "maximum_silence_ms": 2375.0,
+        "paid_forecast_compute_seconds": 1.0110930349837872,
+        "planner_and_admission_seconds": 0.01136688346741721,
+        "roams": -8.75,
+        "safety_stop_fraction": 0.00435625,
+        "video_on_time": -0.0012883817321277247
+      },
+      "seeds": [
+        90473001,
+        90473002,
+        90473003,
+        90473004
+      ],
+      "worst_decile_harm_count": 2
+    },
+    "4.0": {
+      "control_miss_harm_count": 2,
+      "episodes": 4,
+      "max_silence_harm_count": 0,
+      "paired_mean_candidate_minus_Map": {
+        "actual_forecast_compute_seconds": 2.736006750019442,
+        "airtime_domain_sum": 0.01799700653048064,
+        "bulk_mbps": 7.659818088091157,
+        "control_gap_p99_ms": -414.40000000000106,
+        "control_miss": -0.0009895833333333345,
+        "control_miss_worst_decile": -0.009999999999999998,
+        "control_misses": -23.75,
+        "control_sent": 0.0,
+        "forecast_jobs": 0.0,
+        "forecast_jobs_consumed": 0.0,
+        "forecast_runtime_overruns": 11.0,
+        "forecast_service_seconds": 0.657430635743367,
+        "late_planner_or_admission_discards": 0.0,
+        "maximum_silence_ms": -602.5,
+        "paid_forecast_compute_seconds": 0.657430635743367,
+        "planner_and_admission_seconds": -0.009970617349608801,
+        "roams": -0.5,
+        "safety_stop_fraction": -0.0009250000000000005,
+        "video_on_time": -0.00035892393093231445
+      },
+      "seeds": [
+        90473001,
+        90473002,
+        90473003,
+        90473004
+      ],
+      "worst_decile_harm_count": 2
+    }
+  },
+  "simulation_only": true,
+  "source_receipt_sha256": "d5ce592358e924448b3bac8b2afdb7dc1707f7318d22fefb2d65919d0a82e7c7",
+  "weights_sha256": "73d8d2a81db3848aecfa0edbf3f527a4cf4d943960757d8989f3f06863a5301e",
+  "wiring_proof": {
+    "checks": {
+      "Map_std_bitwise_equal": true,
+      "all_original_Map_forecasts_bitwise_equal": true,
+      "candidate_bridge_roundtrip_matches_its_actual_Map_source": true,
+      "completion_slots_equal": true,
+      "native_packet_and_service_counters_equal": true,
+      "original_Map_forecasts_count_equal": true
+    },
+    "learned_model_performance_result": false,
+    "passes": true,
+    "timing_overruns_can_invalidate_paired_wiring_equality": true
+  }
+}
