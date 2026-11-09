@@ -5,6 +5,25 @@ Current experiment status and restart prerequisites are in [docs/HANDOFF.md](doc
 The restored didjital R6.1 reference and its executed software checks are
 documented in [docs/R6_COMPATIBILITY.md](docs/R6_COMPATIBILITY.md).
 
+The current [physics-structured RadioJEPA field study](docs/spectral_scene/RESULTS.md)
+completes **15 fits and 84 actual Sionna RT scenes**, including 24 reserved
+FIELD layouts. Spatial RF RMSE is **3.622 versus 4.843 dB** for the
+RadioMap-operator control; p95 absolute error is **6.920 versus 9.500 dB**,
+and same-link 6 GHz RMSE is **3.734 versus 4.604 dB**. Those three registered
+comparisons pass their four-test-adjusted checks. Exact matched regression is
+**3.631 dB**, so **JEPA alignment adds no confirmed accuracy benefit**;
+the geometry/availability control is also close at **3.660 dB**.
+
+The [architecture diagrams](docs/spectral_scene/ARCHITECTURE.md) show the
+reported-device inverse, shared eight-coefficient scene state and physical
+decoder. **2,144 source-bound preflight tests and 36 operational-cache checks
+pass.** The passive raw audit reproduces 1,512 prediction records. All primary
+queries in this finite static cohort are audible; it supplies no interference,
+packet-service, calibrated-risk, real-device or SOTA qualification. RadioMap
+remains the application default, and the original 24 SERVICE specifications
+remain unopened. The [remaining-work matrix](docs/spectral_scene/REMAINING.md)
+maps the unfinished CSI, dynamics, service and transfer stages.
+
 The [pilot/local-control study](docs/PILOT_FASTLOOP_RESULTS.md) completes
 **96 native executions and 22 matched offline forecast sequences**. On eight
 reserved 100-robot simulated sites, the preselected combined JEPA package has

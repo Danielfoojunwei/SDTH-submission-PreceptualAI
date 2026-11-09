@@ -1,0 +1,100 @@
+{
+  "band_indices": [
+    0,
+    1,
+    2
+  ],
+  "context_feature_names": [
+    "observed_residual_over30dB",
+    "censor_residual_over30dB",
+    "heard",
+    "censored",
+    "rx_x_over_width",
+    "rx_y_over_depth",
+    "rx_z_over_height",
+    "ap_x_over_width",
+    "ap_y_over_depth",
+    "ap_z_over_height",
+    "log10_distance_over_2",
+    "log_carrier_over_2p4GHz",
+    "direction_sign",
+    "cad_box_crossings_over_8",
+    "cad_box_path_fraction",
+    "calibration_pair_count_clip16_over16",
+    "calibration_unknown",
+    "context_estimated_quantization_over4dB",
+    "receiver_noise_floor_over100dBm",
+    "known_transmit_power_over30dBm"
+  ],
+  "context_poses": [
+    0,
+    2,
+    4,
+    6,
+    8,
+    10
+  ],
+  "device_indices": [
+    0,
+    1,
+    2,
+    3
+  ],
+  "index": 15,
+  "material_seed_or_scene_id_encoded": false,
+  "physics_basis_names": [
+    "intercept",
+    "log10_distance_over2",
+    "box_crossings_over8",
+    "inside_length_over10m",
+    "log_frequency_ratio",
+    "logf_times_logdistance",
+    "logf_times_box_crossings",
+    "logf_times_inside_length"
+  ],
+  "private_physics_opened": false,
+  "query_feature_names": [
+    "rx_x_over_width",
+    "rx_y_over_depth",
+    "rx_z_over_height",
+    "ap_x_over_width",
+    "ap_y_over_depth",
+    "ap_z_over_height",
+    "log10_distance_over_2",
+    "log_carrier_over_2p4GHz",
+    "direction_sign",
+    "cad_box_crossings_over_8",
+    "cad_box_path_fraction",
+    "calibration_pair_count_clip16_over16",
+    "calibration_unknown",
+    "context_estimated_quantization_over4dB",
+    "receiver_noise_floor_over100dBm",
+    "known_transmit_power_over30dBm"
+  ],
+  "query_poses": [
+    1,
+    3,
+    5,
+    7,
+    9,
+    11
+  ],
+  "role": "field_test",
+  "scene_id": "spectral-field-15",
+  "schema": 1,
+  "source_files_sha256": {
+    "artifacts/radiojepa_spectral/rt_data/field_test.json": "d470ed488b72dbf404b5718ed4ec681ca748f859772375380fd57fdacd746858",
+    "artifacts/radiojepa_spectral/rt_data/field_test/spectral-field-15/public_views.npz": "5d5e7dae4584ff5b74b8a8b90361fef0cd05aa7166ccc70c1eb8b0eb7f4c4f8e",
+    "artifacts/radiojepa_spectral/rt_data/field_test/spectral-field-15/receipt.json": "20d9a74242f011016b35327b4e0fb353ae808c05ee96e9ea4828e8b385d58173",
+    "artifacts/radiojepa_spectral/rt_data/field_test/spectral-field-15/scene/meshes/ceiling.ply": "265ece1e3c0a60888960434c06a1b9fa6927732437549133ca7786910381e452",
+    "artifacts/radiojepa_spectral/rt_data/field_test/spectral-field-15/scene/meshes/floor.ply": "1653718a8cb39d5fa40c0378bc3786958b27f8ae4c7a3403c6b6e9f0466bb903",
+    "artifacts/radiojepa_spectral/rt_data/field_test/spectral-field-15/scene/meshes/partition_left.ply": "7b2a145e302adad5e2934fa5bd2638cc31ba79968ee3715c713ffe95e74ef34b",
+    "artifacts/radiojepa_spectral/rt_data/field_test/spectral-field-15/scene/meshes/partition_right.ply": "6704f12d0b515a8ebd255f3a83ea1633ea137e95344c108c6164ffe01a2d5825",
+    "artifacts/radiojepa_spectral/rt_data/field_test/spectral-field-15/scene/meshes/wall_back.ply": "9f1b674190c708dd8f3072fcd064a26b0da715f323295e06d7170577b9ad32b3",
+    "artifacts/radiojepa_spectral/rt_data/field_test/spectral-field-15/scene/meshes/wall_front.ply": "d988d412ca5f97ca416b64bfd6e2b0cc56cbe01a35c6c04ede531f9f9790cf54",
+    "artifacts/radiojepa_spectral/rt_data/field_test/spectral-field-15/scene/meshes/wall_left.ply": "2a631a8a9fd3a678d6a77df54df1bfd6473157201536db26cb3c22b8497c694f",
+    "artifacts/radiojepa_spectral/rt_data/field_test/spectral-field-15/scene/meshes/wall_right.ply": "185774a72694246975a99d5c03c15a72cc9cda6e1fb83f205391fac878dffaaa"
+  },
+  "source_is_simulated": true,
+  "stage": "field_test"
+}

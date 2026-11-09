@@ -1,6 +1,47 @@
 # WirelessJEV research handoff
 
-## Latest: pilot/fast-loop package and matched forecast confirmation
+## Current: physics-structured RadioJEPA field validation
+
+[RESULTS.md](spectral_scene/RESULTS.md), [ARCHITECTURE.md](spectral_scene/ARCHITECTURE.md)
+and [REMAINING.md](spectral_scene/REMAINING.md) describe the current scene-model
+slice and its boundary with WirelessJEV. All **15 registered fits** and **84
+actual Sionna RT scenes** completed. On 24 independent FIELD geometries,
+spatial RF RMSE is **3.622 versus 4.843 dB** for the RadioMap control;
+p95 absolute error is **6.920 versus 9.500 dB**; same-link 6 GHz RMSE is
+**3.734 versus 4.604 dB**. All three declared RadioMap contrasts pass.
+The exact matched-regression comparison does not confirm alignment benefit
+(3.631 dB; candidate-minus-reference adjusted interval −0.078 to +0.063 dB).
+The RF-value-erased geometry/availability control is close at 3.660 dB.
+
+The 475-file scientific source was published before generation/training;
+all 15 checkpoints were published before FIELD prediction. Preflight:
+**2,144 passed**, one expected multiprocessing warning. A separately
+published, byte-checked DEV-gate reuse wrapper has **36 passing tests** and
+preserves all scientific inputs, models, endpoints and original audit code.
+Its handoff and final uncached numerical gate checks are retained in
+`artifacts/radiojepa_spectral/operations/`. The passive audit passes all
+216 DEV and 1,296 FIELD prediction records without models, fitting or tracing.
+
+Fast byte-closure checks use:
+
+```sh
+uv run --frozen python scripts/run_spectral_scene.py verify
+uv run --frozen python scripts/run_radiojepa.py verify
+```
+
+The measured-power pilot and its negative result remain intact. The deferred
+observation-frontier workspace is unlaunched. Do not mutate either registered
+scientific namespace to retune a completed study. New experiments need their
+own source/data/selection protocol and fresh qualification evidence.
+
+The next research priorities are RF-dependent complex-CSI representations,
+dynamic observation filtering and calibrated service heads under the same
+native planner. Static heard-RSSI gains do not qualify those stages. All main
+FIELD queries here were heard; interference/deep fades were not tested.
+RadioMap remains the application default. The original 24 SERVICE layouts
+are still reserved; no car or AP settings were changed.
+
+## Pilot/fast-loop service package and matched forecast confirmation
 
 [PILOT_FASTLOOP_RESULTS.md](PILOT_FASTLOOP_RESULTS.md) and the
 [immutable report](../artifacts/pilot_fastloop/report.json) record all **96 native

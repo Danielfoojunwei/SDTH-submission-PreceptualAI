@@ -1,0 +1,596 @@
+{
+  "assumptions": "fixed material/antenna spectral response and calibrated reciprocity; quantization spread only",
+  "cohort": "genuine heard5.2GHz source AND heard6GHz query, known frontend gauge",
+  "dependencies": [
+    {
+      "path": "artifacts/radiojepa_spectral/predictions/field_test/held_band/joint_none-seed0/spectral-field-00.json",
+      "sha256": "b861f1f5dac3e52bccf8ecc4ec92a6dae4e0f454b79b6266cf3cffd931342a6f"
+    },
+    {
+      "path": "artifacts/radiojepa_spectral/predictions/field_test/held_band/joint_none-seed1/spectral-field-00.json",
+      "sha256": "b23379d155e20e9d780677162a362113da9448f56af004b10d2495da7e817f80"
+    },
+    {
+      "path": "artifacts/radiojepa_spectral/predictions/field_test/held_band/joint_none-seed2/spectral-field-00.json",
+      "sha256": "e1034a6568a185cf34b19f3c52e235d29f099af831095e147f7713e245e0fae9"
+    },
+    {
+      "path": "artifacts/radiojepa_spectral/predictions/field_test/held_band/joint_none-seed0/spectral-field-01.json",
+      "sha256": "0fbd8a4b5890c137f71c23efbc89e65132d801d8ecf57d9901042ab858f95f1e"
+    },
+    {
+      "path": "artifacts/radiojepa_spectral/predictions/field_test/held_band/joint_none-seed1/spectral-field-01.json",
+      "sha256": "4feb088c9b1d8d2bda288e0a74707274c7da1cc5325d826dbe79b8698a8799ae"
+    },
+    {
+      "path": "artifacts/radiojepa_spectral/predictions/field_test/held_band/joint_none-seed2/spectral-field-01.json",
+      "sha256": "0b1581caa28417d77f59c47609013b89843188501e267261a1bd54c278ea2ada"
+    },
+    {
+      "path": "artifacts/radiojepa_spectral/predictions/field_test/held_band/joint_none-seed0/spectral-field-02.json",
+      "sha256": "04ce4cd79f9ad90b8612cd697de6f9ec8cd004013631ba701514b6049258fa68"
+    },
+    {
+      "path": "artifacts/radiojepa_spectral/predictions/field_test/held_band/joint_none-seed1/spectral-field-02.json",
+      "sha256": "600188e64358fcd43f66e8a279f8d0e979dcc08611aec4f6f0b6f8dab1fbf180"
+    },
+    {
+      "path": "artifacts/radiojepa_spectral/predictions/field_test/held_band/joint_none-seed2/spectral-field-02.json",
+      "sha256": "e56d8e356806fb625eb7feb74c56fcee61b84c0f8cf557f1b18773258645fc94"
+    },
+    {
+      "path": "artifacts/radiojepa_spectral/predictions/field_test/held_band/joint_none-seed0/spectral-field-03.json",
+      "sha256": "72a80920903e48f83281b37d74f7fdebc7f0d57b694eb3b5889bda84065bb9fc"
+    },
+    {
+      "path": "artifacts/radiojepa_spectral/predictions/field_test/held_band/joint_none-seed1/spectral-field-03.json",
+      "sha256": "08a1d15245f726955cd8bf563785464188efdbea8680b80e2e9eee323b11fc56"
+    },
+    {
+      "path": "artifacts/radiojepa_spectral/predictions/field_test/held_band/joint_none-seed2/spectral-field-03.json",
+      "sha256": "285d1d44453b71f7581c94058799dd272be0cfb36048da25466cebef417fcde3"
+    },
+    {
+      "path": "artifacts/radiojepa_spectral/predictions/field_test/held_band/joint_none-seed0/spectral-field-04.json",
+      "sha256": "0f182dff72b9db507879a0ae516a89fc11fc7e48e48ebe00456ca3a4a2464b5d"
+    },
+    {
+      "path": "artifacts/radiojepa_spectral/predictions/field_test/held_band/joint_none-seed1/spectral-field-04.json",
+      "sha256": "3177e54525d19584757b83492fc3d6126d652aa7f76517c48113a225194eb1de"
+    },
+    {
+      "path": "artifacts/radiojepa_spectral/predictions/field_test/held_band/joint_none-seed2/spectral-field-04.json",
+      "sha256": "95e77c8182685353dfc32621d9ea1ce36e2f66416d4a75497c40b3267cb406be"
+    },
+    {
+      "path": "artifacts/radiojepa_spectral/predictions/field_test/held_band/joint_none-seed0/spectral-field-05.json",
+      "sha256": "23fe4621056b3507631572d09fd8cab825806e9112515d7f2ec3dce27913a1e9"
+    },
+    {
+      "path": "artifacts/radiojepa_spectral/predictions/field_test/held_band/joint_none-seed1/spectral-field-05.json",
+      "sha256": "f12f48f9ef1f3d31d8bc99b12ba8c9ab810bedae0955fb8536df5454dd6dd758"
+    },
+    {
+      "path": "artifacts/radiojepa_spectral/predictions/field_test/held_band/joint_none-seed2/spectral-field-05.json",
+      "sha256": "99b2ea49a89f3325e988285e49e4d44882812d911f3fd1c25062c55f1b2bfefe"
+    },
+    {
+      "path": "artifacts/radiojepa_spectral/predictions/field_test/held_band/joint_none-seed0/spectral-field-06.json",
+      "sha256": "9d34553ea4860a6995a72deaf239e61a0167ef1d94c005482d733eb6b245e07e"
+    },
+    {
+      "path": "artifacts/radiojepa_spectral/predictions/field_test/held_band/joint_none-seed1/spectral-field-06.json",
+      "sha256": "bb0445f68554a2c9f58aa405f0222f7ea431a2a16fc08382845519e4efec38f8"
+    },
+    {
+      "path": "artifacts/radiojepa_spectral/predictions/field_test/held_band/joint_none-seed2/spectral-field-06.json",
+      "sha256": "c277d8be24f28a34365f48ac6b2dd0618dbbe70c723fa6be7fe4639567090b7a"
+    },
+    {
+      "path": "artifacts/radiojepa_spectral/predictions/field_test/held_band/joint_none-seed0/spectral-field-07.json",
+      "sha256": "69ad21c137b96fd2da9becb92c36dec9247be36b44a92a11aa6054ce3c007940"
+    },
+    {
+      "path": "artifacts/radiojepa_spectral/predictions/field_test/held_band/joint_none-seed1/spectral-field-07.json",
+      "sha256": "3ebc508d060a4e6985b89ba44b2ac911b5275db6b40a97227b52d90af946f2b2"
+    },
+    {
+      "path": "artifacts/radiojepa_spectral/predictions/field_test/held_band/joint_none-seed2/spectral-field-07.json",
+      "sha256": "3e617a4a62030c6c5abc053903d58afdfd0ece67dbc1fb6de79c9c8963701ac4"
+    },
+    {
+      "path": "artifacts/radiojepa_spectral/predictions/field_test/held_band/joint_none-seed0/spectral-field-08.json",
+      "sha256": "333ae5086e1097323adb6236bcebf65a59cfff3573bba32d1712417c7f020b69"
+    },
+    {
+      "path": "artifacts/radiojepa_spectral/predictions/field_test/held_band/joint_none-seed1/spectral-field-08.json",
+      "sha256": "f0091a1195bc8df47ded4f64677a97096d248831c6533b2864396c108e0abded"
+    },
+    {
+      "path": "artifacts/radiojepa_spectral/predictions/field_test/held_band/joint_none-seed2/spectral-field-08.json",
+      "sha256": "1a21d6d1f4d96639d7e9c4a8829913797bafe66bdf0f124935e61f9719c1114f"
+    },
+    {
+      "path": "artifacts/radiojepa_spectral/predictions/field_test/held_band/joint_none-seed0/spectral-field-09.json",
+      "sha256": "e48bd9a4b5e6ef8cc249887cd6cea1857c914f5256980683f270701aed6740e8"
+    },
+    {
+      "path": "artifacts/radiojepa_spectral/predictions/field_test/held_band/joint_none-seed1/spectral-field-09.json",
+      "sha256": "af691def3fc04872b54bead48dbed734cde25b17e82e1de27e9511119a11cb3a"
+    },
+    {
+      "path": "artifacts/radiojepa_spectral/predictions/field_test/held_band/joint_none-seed2/spectral-field-09.json",
+      "sha256": "98eb3cd63614259365b1266615180d8e86fd41dfbe62ffcbc4da877bdba1011b"
+    },
+    {
+      "path": "artifacts/radiojepa_spectral/predictions/field_test/held_band/joint_none-seed0/spectral-field-10.json",
+      "sha256": "408e99031ba58a45dbf982f562754d475f21c0d9b3bcbdd4c603d71f2d986ec5"
+    },
+    {
+      "path": "artifacts/radiojepa_spectral/predictions/field_test/held_band/joint_none-seed1/spectral-field-10.json",
+      "sha256": "5f5973a5c88d7444cbc325b94cb62fb30c821a3426af0716611ca148f2b6ec85"
+    },
+    {
+      "path": "artifacts/radiojepa_spectral/predictions/field_test/held_band/joint_none-seed2/spectral-field-10.json",
+      "sha256": "0eee6e2a36ea6d6df46ccddc8fa72fb46da9787f2f470059ffb017726207dc11"
+    },
+    {
+      "path": "artifacts/radiojepa_spectral/predictions/field_test/held_band/joint_none-seed0/spectral-field-11.json",
+      "sha256": "d902ef8dde62108a5e8b0555080d12bfe61a6cd2e4decf3f6db3376d7a85e0dc"
+    },
+    {
+      "path": "artifacts/radiojepa_spectral/predictions/field_test/held_band/joint_none-seed1/spectral-field-11.json",
+      "sha256": "0dd6c66481b5bee15f72cb7352cb18ecb2d81056711da5d985210c3a13920f82"
+    },
+    {
+      "path": "artifacts/radiojepa_spectral/predictions/field_test/held_band/joint_none-seed2/spectral-field-11.json",
+      "sha256": "3dce99425f761c5dc22544c137521c3f497d9eb80a68aa2fd97970516fb01038"
+    },
+    {
+      "path": "artifacts/radiojepa_spectral/predictions/field_test/held_band/joint_none-seed0/spectral-field-12.json",
+      "sha256": "80d751deecaff1d9cfd947fb8a927bd7d67e0743eb31e8ff524137426a7ede05"
+    },
+    {
+      "path": "artifacts/radiojepa_spectral/predictions/field_test/held_band/joint_none-seed1/spectral-field-12.json",
+      "sha256": "8d8a612ca2157cea92b5dd5c33b2f43ef3cd75eaa2b50df3aecd726bc12293c9"
+    },
+    {
+      "path": "artifacts/radiojepa_spectral/predictions/field_test/held_band/joint_none-seed2/spectral-field-12.json",
+      "sha256": "0ab52038a63d6b3721d97954111a4ceca72fe6042938bdedd5f17488cbc38a19"
+    },
+    {
+      "path": "artifacts/radiojepa_spectral/predictions/field_test/held_band/joint_none-seed0/spectral-field-13.json",
+      "sha256": "df75edf671829801d82801a7cc34296f79951071e29204e54e1f34b1cfa74131"
+    },
+    {
+      "path": "artifacts/radiojepa_spectral/predictions/field_test/held_band/joint_none-seed1/spectral-field-13.json",
+      "sha256": "5dd8157ac56975eabdb23a135ca507d8e0b5fe09e65b871f5f8cb27dd7e4e443"
+    },
+    {
+      "path": "artifacts/radiojepa_spectral/predictions/field_test/held_band/joint_none-seed2/spectral-field-13.json",
+      "sha256": "c55a6c228f5a3824b209a65daec824ee79e672789774814cd9cd673f0dfde0b4"
+    },
+    {
+      "path": "artifacts/radiojepa_spectral/predictions/field_test/held_band/joint_none-seed0/spectral-field-14.json",
+      "sha256": "b62e32f2b66974931b00cb30d68cb2f28a13ac11e671611bece2e9b93ddba20f"
+    },
+    {
+      "path": "artifacts/radiojepa_spectral/predictions/field_test/held_band/joint_none-seed1/spectral-field-14.json",
+      "sha256": "b3424c5028d51f64782bbece4a647801f5c048fdbd1d493db01d9dc19bb0df1b"
+    },
+    {
+      "path": "artifacts/radiojepa_spectral/predictions/field_test/held_band/joint_none-seed2/spectral-field-14.json",
+      "sha256": "cd89053944092dcd5ae3c22a4e74a9b8bc7d223028d9c608b2b8e11ed667eba9"
+    },
+    {
+      "path": "artifacts/radiojepa_spectral/predictions/field_test/held_band/joint_none-seed0/spectral-field-15.json",
+      "sha256": "6d86a9991e2f69cee0f0dbea0f84592f14ebe940165733654d5f073cf9dd708c"
+    },
+    {
+      "path": "artifacts/radiojepa_spectral/predictions/field_test/held_band/joint_none-seed1/spectral-field-15.json",
+      "sha256": "b07df00f8e8593d6aaa23a671519e1cbf6f2b432766ba3e9db2c1243512db018"
+    },
+    {
+      "path": "artifacts/radiojepa_spectral/predictions/field_test/held_band/joint_none-seed2/spectral-field-15.json",
+      "sha256": "33f2ee0eaedb7debca11b375cf8ce6e9dded509aaa079e169e29502e2c2aed32"
+    },
+    {
+      "path": "artifacts/radiojepa_spectral/predictions/field_test/held_band/joint_none-seed0/spectral-field-16.json",
+      "sha256": "e8b28f40014440691c3b80e34cf793f28f9c3c4996f8de81586dd5e230453953"
+    },
+    {
+      "path": "artifacts/radiojepa_spectral/predictions/field_test/held_band/joint_none-seed1/spectral-field-16.json",
+      "sha256": "c7a4efe1f03aaa456ea8fff788c6149faa2dab577b410de0e782fa8cb471d53f"
+    },
+    {
+      "path": "artifacts/radiojepa_spectral/predictions/field_test/held_band/joint_none-seed2/spectral-field-16.json",
+      "sha256": "533705700635a0ffbce9b2ff20e346763ba861486863e513751d64a77176bc67"
+    },
+    {
+      "path": "artifacts/radiojepa_spectral/predictions/field_test/held_band/joint_none-seed0/spectral-field-17.json",
+      "sha256": "dd1364a3659c91619078959f907ed190f00aa17f8342eafe2ee61985f823697f"
+    },
+    {
+      "path": "artifacts/radiojepa_spectral/predictions/field_test/held_band/joint_none-seed1/spectral-field-17.json",
+      "sha256": "1f16e096daaeb69204249dee13052ecb97c3a93f33a7269f3705971fcd921680"
+    },
+    {
+      "path": "artifacts/radiojepa_spectral/predictions/field_test/held_band/joint_none-seed2/spectral-field-17.json",
+      "sha256": "01c32dfd60cb46d8587b795ea3f4213c6a5e0ac2aad73d5ebe616ac1f413f90b"
+    },
+    {
+      "path": "artifacts/radiojepa_spectral/predictions/field_test/held_band/joint_none-seed0/spectral-field-18.json",
+      "sha256": "9c5fb7772c766cbdde40a88d1a0b502ceaac01fdfde88deddc3104d6f2037e80"
+    },
+    {
+      "path": "artifacts/radiojepa_spectral/predictions/field_test/held_band/joint_none-seed1/spectral-field-18.json",
+      "sha256": "737c8da99a2c73299901c354c56d9676749cb8742f56dc8f77d571d8bb5ffc50"
+    },
+    {
+      "path": "artifacts/radiojepa_spectral/predictions/field_test/held_band/joint_none-seed2/spectral-field-18.json",
+      "sha256": "f556379d27529a348d50e6ad23444b6f454336c2680fb979b0dc435477e006a8"
+    },
+    {
+      "path": "artifacts/radiojepa_spectral/predictions/field_test/held_band/joint_none-seed0/spectral-field-19.json",
+      "sha256": "37044c6cb53d05e1804f4bee36cbb37241676b17301b4ea6efda982baf797d11"
+    },
+    {
+      "path": "artifacts/radiojepa_spectral/predictions/field_test/held_band/joint_none-seed1/spectral-field-19.json",
+      "sha256": "da0ff30385113aef062e623ef0e8d70ca06863734ad6741d9f66472ea70aa2dc"
+    },
+    {
+      "path": "artifacts/radiojepa_spectral/predictions/field_test/held_band/joint_none-seed2/spectral-field-19.json",
+      "sha256": "f47476fb278e7d97e569420aed20468791db37c14ba34e5eddd01d551074142d"
+    },
+    {
+      "path": "artifacts/radiojepa_spectral/predictions/field_test/held_band/joint_none-seed0/spectral-field-20.json",
+      "sha256": "b5222e1233c9e2ef39a1e6c7963a8e91f48d7e247d843c56669bbe6d1536b9fa"
+    },
+    {
+      "path": "artifacts/radiojepa_spectral/predictions/field_test/held_band/joint_none-seed1/spectral-field-20.json",
+      "sha256": "a113287f43ebdaa3edf4c895ce1b56f4e14112e5c8d449e221c39282fa39f008"
+    },
+    {
+      "path": "artifacts/radiojepa_spectral/predictions/field_test/held_band/joint_none-seed2/spectral-field-20.json",
+      "sha256": "f8fb7f401020c9ef65bfea452b067b8641785066340f159897a1d38cb226a884"
+    },
+    {
+      "path": "artifacts/radiojepa_spectral/predictions/field_test/held_band/joint_none-seed0/spectral-field-21.json",
+      "sha256": "4e9145b71cb123be304bdcc34d38126f7f01397f0161cef929200a95ba3a063d"
+    },
+    {
+      "path": "artifacts/radiojepa_spectral/predictions/field_test/held_band/joint_none-seed1/spectral-field-21.json",
+      "sha256": "68ef4b44bc1ac8a8c19ef6e8075c67433af76092d347ee9ca94caa31d340c346"
+    },
+    {
+      "path": "artifacts/radiojepa_spectral/predictions/field_test/held_band/joint_none-seed2/spectral-field-21.json",
+      "sha256": "5ccc373ff8eb13e86fddc6aa69a2098d6b2ee1fe604737423ccdd8cc0a3629ed"
+    },
+    {
+      "path": "artifacts/radiojepa_spectral/predictions/field_test/held_band/joint_none-seed0/spectral-field-22.json",
+      "sha256": "12571beffe798cc7e61d419ae09264dec85ed517d3212b34d1cd250ea4a4acb6"
+    },
+    {
+      "path": "artifacts/radiojepa_spectral/predictions/field_test/held_band/joint_none-seed1/spectral-field-22.json",
+      "sha256": "df3029659253a7a7eb0a1221983e82463fad4bf1dc1db3a23db50aa2b85755b7"
+    },
+    {
+      "path": "artifacts/radiojepa_spectral/predictions/field_test/held_band/joint_none-seed2/spectral-field-22.json",
+      "sha256": "d9e2a13a9be503344e6f7246fdf766e49512fe665f39ee75c7e7413c096d841c"
+    },
+    {
+      "path": "artifacts/radiojepa_spectral/predictions/field_test/held_band/joint_none-seed0/spectral-field-23.json",
+      "sha256": "4dfbf739bc1540ba9f2d59acd02540c1269a0bfe05ff8bce2cab467493b770b6"
+    },
+    {
+      "path": "artifacts/radiojepa_spectral/predictions/field_test/held_band/joint_none-seed1/spectral-field-23.json",
+      "sha256": "30b615b5ad435176883cc137ff5c175db28b0906c289b43f270fe64b62290431"
+    },
+    {
+      "path": "artifacts/radiojepa_spectral/predictions/field_test/held_band/joint_none-seed2/spectral-field-23.json",
+      "sha256": "8648874c50d1dabc9ee214a4e9439e9c748c8e42c8f9974687b5b85274f3f3f3"
+    }
+  ],
+  "identity": {
+    "protocol_sha256": "e016658c230c176daa7684815bc0efa299b0012cfbb9a428ae83405706a4adb0",
+    "registry_sha256": "49ea5082514182906e4d32d1b561a1c4ba63a07b029c81ac7bece8cc4afb046f",
+    "source_receipt_sha256": "d6ee331a43a88d492d38181b10ce2d84c95f84a2bd61b8360f6179d43d01e4a0"
+  },
+  "layouts": [
+    {
+      "all_heard_query_count": 72,
+      "direct_rmse_db": 4.6664310806318845,
+      "eligible_source_query_count": 72,
+      "matched_heard_query_count": 72,
+      "scene_id": "spectral-field-00",
+      "selected_seed_rmse_db": [
+        4.116478443145752,
+        4.082387447357178,
+        4.4898152351379395
+      ]
+    },
+    {
+      "all_heard_query_count": 72,
+      "direct_rmse_db": 4.198220039894771,
+      "eligible_source_query_count": 72,
+      "matched_heard_query_count": 72,
+      "scene_id": "spectral-field-01",
+      "selected_seed_rmse_db": [
+        2.788050889968872,
+        3.0733118057250977,
+        3.159414291381836
+      ]
+    },
+    {
+      "all_heard_query_count": 72,
+      "direct_rmse_db": 3.015341474105832,
+      "eligible_source_query_count": 72,
+      "matched_heard_query_count": 72,
+      "scene_id": "spectral-field-02",
+      "selected_seed_rmse_db": [
+        4.298038959503174,
+        4.663003444671631,
+        4.889370441436768
+      ]
+    },
+    {
+      "all_heard_query_count": 72,
+      "direct_rmse_db": 4.739326996235688,
+      "eligible_source_query_count": 72,
+      "matched_heard_query_count": 72,
+      "scene_id": "spectral-field-03",
+      "selected_seed_rmse_db": [
+        3.881232500076294,
+        3.9441938400268555,
+        4.123598575592041
+      ]
+    },
+    {
+      "all_heard_query_count": 72,
+      "direct_rmse_db": 5.4609645987306035,
+      "eligible_source_query_count": 72,
+      "matched_heard_query_count": 72,
+      "scene_id": "spectral-field-04",
+      "selected_seed_rmse_db": [
+        3.614689588546753,
+        3.936682939529419,
+        3.838526725769043
+      ]
+    },
+    {
+      "all_heard_query_count": 72,
+      "direct_rmse_db": 5.190365922419428,
+      "eligible_source_query_count": 72,
+      "matched_heard_query_count": 72,
+      "scene_id": "spectral-field-05",
+      "selected_seed_rmse_db": [
+        3.3797826766967773,
+        3.5523455142974854,
+        3.527153968811035
+      ]
+    },
+    {
+      "all_heard_query_count": 72,
+      "direct_rmse_db": 5.146442085424149,
+      "eligible_source_query_count": 72,
+      "matched_heard_query_count": 72,
+      "scene_id": "spectral-field-06",
+      "selected_seed_rmse_db": [
+        3.9297754764556885,
+        3.935793161392212,
+        4.129376411437988
+      ]
+    },
+    {
+      "all_heard_query_count": 72,
+      "direct_rmse_db": 3.5944596996860287,
+      "eligible_source_query_count": 72,
+      "matched_heard_query_count": 72,
+      "scene_id": "spectral-field-07",
+      "selected_seed_rmse_db": [
+        3.4723033905029297,
+        3.3014230728149414,
+        3.4283812046051025
+      ]
+    },
+    {
+      "all_heard_query_count": 72,
+      "direct_rmse_db": 5.093794533622572,
+      "eligible_source_query_count": 72,
+      "matched_heard_query_count": 72,
+      "scene_id": "spectral-field-08",
+      "selected_seed_rmse_db": [
+        3.364525318145752,
+        3.4389655590057373,
+        3.4081664085388184
+      ]
+    },
+    {
+      "all_heard_query_count": 72,
+      "direct_rmse_db": 2.258904910711304,
+      "eligible_source_query_count": 72,
+      "matched_heard_query_count": 72,
+      "scene_id": "spectral-field-09",
+      "selected_seed_rmse_db": [
+        1.6162108182907104,
+        1.5331077575683594,
+        1.4004664421081543
+      ]
+    },
+    {
+      "all_heard_query_count": 72,
+      "direct_rmse_db": 5.818034373949749,
+      "eligible_source_query_count": 72,
+      "matched_heard_query_count": 72,
+      "scene_id": "spectral-field-10",
+      "selected_seed_rmse_db": [
+        3.3723442554473877,
+        5.785037994384766,
+        3.798344135284424
+      ]
+    },
+    {
+      "all_heard_query_count": 72,
+      "direct_rmse_db": 1.6320798765761146,
+      "eligible_source_query_count": 72,
+      "matched_heard_query_count": 72,
+      "scene_id": "spectral-field-11",
+      "selected_seed_rmse_db": [
+        1.8970592021942139,
+        2.1164064407348633,
+        2.07192063331604
+      ]
+    },
+    {
+      "all_heard_query_count": 72,
+      "direct_rmse_db": 6.139369069107945,
+      "eligible_source_query_count": 72,
+      "matched_heard_query_count": 72,
+      "scene_id": "spectral-field-12",
+      "selected_seed_rmse_db": [
+        3.5495107173919678,
+        3.2540345191955566,
+        3.578824758529663
+      ]
+    },
+    {
+      "all_heard_query_count": 72,
+      "direct_rmse_db": 4.269522542532468,
+      "eligible_source_query_count": 72,
+      "matched_heard_query_count": 72,
+      "scene_id": "spectral-field-13",
+      "selected_seed_rmse_db": [
+        3.3143277168273926,
+        3.0480263233184814,
+        2.6680636405944824
+      ]
+    },
+    {
+      "all_heard_query_count": 72,
+      "direct_rmse_db": 4.714776647302712,
+      "eligible_source_query_count": 72,
+      "matched_heard_query_count": 72,
+      "scene_id": "spectral-field-14",
+      "selected_seed_rmse_db": [
+        4.273672103881836,
+        4.102380752563477,
+        4.23828125
+      ]
+    },
+    {
+      "all_heard_query_count": 72,
+      "direct_rmse_db": 2.3840790775453935,
+      "eligible_source_query_count": 72,
+      "matched_heard_query_count": 72,
+      "scene_id": "spectral-field-15",
+      "selected_seed_rmse_db": [
+        2.912665843963623,
+        3.0059263706207275,
+        2.954056739807129
+      ]
+    },
+    {
+      "all_heard_query_count": 72,
+      "direct_rmse_db": 2.733921512532915,
+      "eligible_source_query_count": 72,
+      "matched_heard_query_count": 72,
+      "scene_id": "spectral-field-16",
+      "selected_seed_rmse_db": [
+        2.355081558227539,
+        2.77683162689209,
+        2.8947324752807617
+      ]
+    },
+    {
+      "all_heard_query_count": 72,
+      "direct_rmse_db": 5.491452998653119,
+      "eligible_source_query_count": 72,
+      "matched_heard_query_count": 72,
+      "scene_id": "spectral-field-17",
+      "selected_seed_rmse_db": [
+        3.9062883853912354,
+        4.176052093505859,
+        3.790646553039551
+      ]
+    },
+    {
+      "all_heard_query_count": 72,
+      "direct_rmse_db": 5.0936410396862275,
+      "eligible_source_query_count": 72,
+      "matched_heard_query_count": 72,
+      "scene_id": "spectral-field-18",
+      "selected_seed_rmse_db": [
+        5.382927894592285,
+        5.60992431640625,
+        6.026566982269287
+      ]
+    },
+    {
+      "all_heard_query_count": 72,
+      "direct_rmse_db": 4.852152106685362,
+      "eligible_source_query_count": 72,
+      "matched_heard_query_count": 72,
+      "scene_id": "spectral-field-19",
+      "selected_seed_rmse_db": [
+        4.5262861251831055,
+        4.832849979400635,
+        4.698578357696533
+      ]
+    },
+    {
+      "all_heard_query_count": 72,
+      "direct_rmse_db": 5.5115339798269565,
+      "eligible_source_query_count": 72,
+      "matched_heard_query_count": 72,
+      "scene_id": "spectral-field-20",
+      "selected_seed_rmse_db": [
+        4.6748948097229,
+        4.599236965179443,
+        4.892769813537598
+      ]
+    },
+    {
+      "all_heard_query_count": 72,
+      "direct_rmse_db": 3.7296330951996786,
+      "eligible_source_query_count": 72,
+      "matched_heard_query_count": 72,
+      "scene_id": "spectral-field-21",
+      "selected_seed_rmse_db": [
+        4.353181838989258,
+        4.421257495880127,
+        4.22822904586792
+      ]
+    },
+    {
+      "all_heard_query_count": 72,
+      "direct_rmse_db": 4.246483266080999,
+      "eligible_source_query_count": 72,
+      "matched_heard_query_count": 72,
+      "scene_id": "spectral-field-22",
+      "selected_seed_rmse_db": [
+        3.620375156402588,
+        3.998505115509033,
+        3.523606061935425
+      ]
+    },
+    {
+      "all_heard_query_count": 72,
+      "direct_rmse_db": 2.610460814009767,
+      "eligible_source_query_count": 72,
+      "matched_heard_query_count": 72,
+      "scene_id": "spectral-field-23",
+      "selected_seed_rmse_db": [
+        4.249031066894531,
+        4.604280948638916,
+        4.412765026092529
+      ]
+    }
+  ],
+  "npz_path": "artifacts/radiojepa_spectral/diagnostics/field_test-same-link-frequency.npz",
+  "npz_sha256": "e08e449760855a8dee7c1e1ba8ce244159d6dd4288dab23b53eeaee8bb44af0c",
+  "primary_endpoint": false,
+  "schema": 1,
+  "selected_cell": "joint_none",
+  "stage": "field_test",
+  "uncertainty_calibrated": false
+}

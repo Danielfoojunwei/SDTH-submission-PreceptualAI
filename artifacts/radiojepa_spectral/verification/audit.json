@@ -1,0 +1,123 @@
+{
+  "baseline_audit": {
+    "admitted": {
+      "heldband_or_helddevice_used": false,
+      "methods": [
+        "radiomap_operator",
+        "bayesian_operator"
+      ],
+      "native_core": "wirelessjev.native.radiomap.RadioMap._fit_one (unchanged source)",
+      "new_fits_or_forward_passes": false,
+      "passes": true,
+      "prior_archive_sha256": "97b06b536b9f443080b2f745356261b5db551db698f3bda2b02755109e7e0dda",
+      "training_scenes": 48
+    },
+    "baseline_fit_or_prediction_calls": 0,
+    "coefficients": {
+      "path": "artifacts/radiojepa_spectral/baselines/prior.npz",
+      "sha256": "97b06b536b9f443080b2f745356261b5db551db698f3bda2b02755109e7e0dda"
+    },
+    "posterior_calibration_claim": false,
+    "receipt": {
+      "path": "artifacts/radiojepa_spectral/baselines/prior.json",
+      "sha256": "f8bdbf960eca9df1f13b015dbdb0d9400a34dbdc9dceeead8c7deb1b3071375e"
+    }
+  },
+  "claims_are_field_only_not_service_or_production": true,
+  "field_test_opened": true,
+  "fit_audit": {
+    "checkpoint_data_checked_without_model_constructor": true,
+    "epochs": 60,
+    "fits": 15,
+    "independent_seeds_per_cell": 3,
+    "receipts": {
+      "geometry_only-seed0": {
+        "path": "artifacts/radiojepa_spectral/fits/geometry_only-seed0.json",
+        "sha256": "7cbbebb4fe2800ff3d5bfcce2ab9bc36e08c64723b7da2ff7cd5051d218ba4d6"
+      },
+      "geometry_only-seed1": {
+        "path": "artifacts/radiojepa_spectral/fits/geometry_only-seed1.json",
+        "sha256": "069b167b5f5a5427813ce1608ef21ff88b8c335f6502167aa702dd289f620f65"
+      },
+      "geometry_only-seed2": {
+        "path": "artifacts/radiojepa_spectral/fits/geometry_only-seed2.json",
+        "sha256": "6c6b7b2191e3b2cfc88e81d07acd54257a036736a713b687c5464c817061e574"
+      },
+      "joint_none-seed0": {
+        "path": "artifacts/radiojepa_spectral/fits/joint_none-seed0.json",
+        "sha256": "fbc20afc77af796517f6b73d63ab7522eb806ec7e9e25684067ca4d8846b5402"
+      },
+      "joint_none-seed1": {
+        "path": "artifacts/radiojepa_spectral/fits/joint_none-seed1.json",
+        "sha256": "6d5ce578e5fcced8d171ca133dd6dd61bd725d1f0bf6a8b8b022a9a5d9a2b103"
+      },
+      "joint_none-seed2": {
+        "path": "artifacts/radiojepa_spectral/fits/joint_none-seed2.json",
+        "sha256": "9b9e63020e80de4e7cf59f1c489567d75b358996f1c4b5d9fa7243cc8769bac5"
+      },
+      "joint_sigreg-seed0": {
+        "path": "artifacts/radiojepa_spectral/fits/joint_sigreg-seed0.json",
+        "sha256": "fe1a68f35b1e5fde349c6451fef1ed854763be604f2005bb1425091c7980db5e"
+      },
+      "joint_sigreg-seed1": {
+        "path": "artifacts/radiojepa_spectral/fits/joint_sigreg-seed1.json",
+        "sha256": "24bb86b43cea4f9d699d96ba5321f3fd54032793d737a2efe846f49e9f816c35"
+      },
+      "joint_sigreg-seed2": {
+        "path": "artifacts/radiojepa_spectral/fits/joint_sigreg-seed2.json",
+        "sha256": "dd7af96de689cf819b0cd27b848d9e9601689996f2845c245423a6a5dd5a57fd"
+      },
+      "joint_vicreg-seed0": {
+        "path": "artifacts/radiojepa_spectral/fits/joint_vicreg-seed0.json",
+        "sha256": "231e45d71924e74e752691fb1a0a146e89bc08798766a7205b985af3536c632d"
+      },
+      "joint_vicreg-seed1": {
+        "path": "artifacts/radiojepa_spectral/fits/joint_vicreg-seed1.json",
+        "sha256": "e3ada09aa0bb8b51d61e9b854fcb162439cb3235d0b4e14978e1c35a503ae1f0"
+      },
+      "joint_vicreg-seed2": {
+        "path": "artifacts/radiojepa_spectral/fits/joint_vicreg-seed2.json",
+        "sha256": "468dbd00ea2bf68fa8db6037be38c747f32a04871136d23c4892f4dce06419ca"
+      },
+      "matched_regression-seed0": {
+        "path": "artifacts/radiojepa_spectral/fits/matched_regression-seed0.json",
+        "sha256": "78f041d4bb38a007d4bfa92855c2c2c293b158b4d849d751a549782fd952b395"
+      },
+      "matched_regression-seed1": {
+        "path": "artifacts/radiojepa_spectral/fits/matched_regression-seed1.json",
+        "sha256": "f88af6acf34da8c5a53946788f474adbc7a992b0c0c1978db5c5eaab50f4df28"
+      },
+      "matched_regression-seed2": {
+        "path": "artifacts/radiojepa_spectral/fits/matched_regression-seed2.json",
+        "sha256": "4f1a4a2b10d5d4525f3097243102ab2077217673f16166eee3b2c54b5c9832ba"
+      }
+    },
+    "updates_each": 480
+  },
+  "model_constructors_fits_forwards_or_rt_solves": 0,
+  "original_service_confirmation_opened": false,
+  "passes": true,
+  "previous": {
+    "evidence": 864,
+    "manifest_sha256": "b9114d4cf4beb65ddd4af63c87e7e154edba5c8f1bba4a56117e1e3f369acf31",
+    "original_service_confirmation_opened": false,
+    "sources": 452
+  },
+  "public_array_audit": {
+    "development": {
+      "descriptive_unavailable_support_replayed": true,
+      "model_forwards": 0,
+      "prediction_records_replayed": 216,
+      "public_input_target_replay": true
+    },
+    "field_test": {
+      "descriptive_unavailable_support_replayed": true,
+      "model_forwards": 0,
+      "prediction_records_replayed": 1296,
+      "public_input_target_replay": true
+    }
+  },
+  "schema": 1,
+  "selected_cell": "joint_none",
+  "source_receipt_sha256": "d6ee331a43a88d492d38181b10ce2d84c95f84a2bd61b8360f6179d43d01e4a0"
+}

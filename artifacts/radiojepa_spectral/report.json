@@ -1,0 +1,1134 @@
+{
+  "calibrated_uncertainty_claim": false,
+  "contrasts": [
+    {
+      "adjusted_confidence": 0.9875,
+      "adjusted_interval": [
+        -1.621464294080227,
+        -0.8367630445356792
+      ],
+      "bootstrap_samples": 20000,
+      "bootstrap_seed": 21749,
+      "candidate": "selected_joint",
+      "candidate_better_adjusted": true,
+      "candidate_mean": 3.621888722647409,
+      "descriptive_95_interval": [
+        -1.5393897282358358,
+        -0.9169580605333989
+      ],
+      "interval_scope": "layout resampling conditional on three trained members; not uncertainty over retraining",
+      "layouts": 24,
+      "mean_paired_difference": -1.2209623553690079,
+      "metric": "rmse_db",
+      "paired_unit": "whole independent geometry, seed metrics averaged within layout",
+      "reference": "radiomap_operator",
+      "reference_mean": 4.842851078016417,
+      "regime": "in_band",
+      "slot": 1
+    },
+    {
+      "adjusted_confidence": 0.9875,
+      "adjusted_interval": [
+        -0.07833291005677057,
+        0.06291767812618793
+      ],
+      "bootstrap_samples": 20000,
+      "bootstrap_seed": 21749,
+      "candidate": "selected_joint",
+      "candidate_better_adjusted": false,
+      "candidate_mean": 3.621888722647409,
+      "descriptive_95_interval": [
+        -0.0635734113051296,
+        0.048287183979869655
+      ],
+      "interval_scope": "layout resampling conditional on three trained members; not uncertainty over retraining",
+      "layouts": 24,
+      "mean_paired_difference": -0.008968672989831302,
+      "metric": "rmse_db",
+      "paired_unit": "whole independent geometry, seed metrics averaged within layout",
+      "reference": "matched_regression",
+      "reference_mean": 3.6308573956372405,
+      "regime": "in_band",
+      "slot": 2
+    },
+    {
+      "adjusted_confidence": 0.9875,
+      "adjusted_interval": [
+        -3.998696903737658,
+        -1.3867759890082465
+      ],
+      "bootstrap_samples": 20000,
+      "bootstrap_seed": 21749,
+      "candidate": "selected_joint",
+      "candidate_better_adjusted": true,
+      "candidate_mean": 6.919548530048794,
+      "descriptive_95_interval": [
+        -3.6688220149413895,
+        -1.6058523274500034
+      ],
+      "interval_scope": "layout resampling conditional on three trained members; not uncertainty over retraining",
+      "layouts": 24,
+      "mean_paired_difference": -2.580752707753463,
+      "metric": "p95_abs_db",
+      "paired_unit": "whole independent geometry, seed metrics averaged within layout",
+      "reference": "radiomap_operator",
+      "reference_mean": 9.500301237802256,
+      "regime": "in_band",
+      "slot": 3
+    },
+    {
+      "adjusted_confidence": 0.9875,
+      "adjusted_interval": [
+        -1.4860086861281008,
+        -0.2313563849724377
+      ],
+      "bootstrap_samples": 20000,
+      "bootstrap_seed": 21749,
+      "candidate": "selected_joint",
+      "candidate_better_adjusted": true,
+      "candidate_mean": 3.733504962782089,
+      "descriptive_95_interval": [
+        -1.36044504517781,
+        -0.38056758749598424
+      ],
+      "interval_scope": "layout resampling conditional on three trained members; not uncertainty over retraining",
+      "layouts": 24,
+      "mean_paired_difference": -0.8702933111896791,
+      "metric": "rmse_db",
+      "paired_unit": "whole independent geometry, seed metrics averaged within layout",
+      "reference": "radiomap_operator",
+      "reference_mean": 4.603798273971769,
+      "regime": "held_band",
+      "slot": 4
+    }
+  ],
+  "coverage": {
+    "held_band": [
+      {
+        "censored_count": 0,
+        "heard_count": 72,
+        "missing_count": 0,
+        "scene_id": "spectral-field-00"
+      },
+      {
+        "censored_count": 0,
+        "heard_count": 72,
+        "missing_count": 0,
+        "scene_id": "spectral-field-01"
+      },
+      {
+        "censored_count": 0,
+        "heard_count": 72,
+        "missing_count": 0,
+        "scene_id": "spectral-field-02"
+      },
+      {
+        "censored_count": 0,
+        "heard_count": 72,
+        "missing_count": 0,
+        "scene_id": "spectral-field-03"
+      },
+      {
+        "censored_count": 0,
+        "heard_count": 72,
+        "missing_count": 0,
+        "scene_id": "spectral-field-04"
+      },
+      {
+        "censored_count": 0,
+        "heard_count": 72,
+        "missing_count": 0,
+        "scene_id": "spectral-field-05"
+      },
+      {
+        "censored_count": 0,
+        "heard_count": 72,
+        "missing_count": 0,
+        "scene_id": "spectral-field-06"
+      },
+      {
+        "censored_count": 0,
+        "heard_count": 72,
+        "missing_count": 0,
+        "scene_id": "spectral-field-07"
+      },
+      {
+        "censored_count": 0,
+        "heard_count": 72,
+        "missing_count": 0,
+        "scene_id": "spectral-field-08"
+      },
+      {
+        "censored_count": 0,
+        "heard_count": 72,
+        "missing_count": 0,
+        "scene_id": "spectral-field-09"
+      },
+      {
+        "censored_count": 0,
+        "heard_count": 72,
+        "missing_count": 0,
+        "scene_id": "spectral-field-10"
+      },
+      {
+        "censored_count": 0,
+        "heard_count": 72,
+        "missing_count": 0,
+        "scene_id": "spectral-field-11"
+      },
+      {
+        "censored_count": 0,
+        "heard_count": 72,
+        "missing_count": 0,
+        "scene_id": "spectral-field-12"
+      },
+      {
+        "censored_count": 0,
+        "heard_count": 72,
+        "missing_count": 0,
+        "scene_id": "spectral-field-13"
+      },
+      {
+        "censored_count": 0,
+        "heard_count": 72,
+        "missing_count": 0,
+        "scene_id": "spectral-field-14"
+      },
+      {
+        "censored_count": 0,
+        "heard_count": 72,
+        "missing_count": 0,
+        "scene_id": "spectral-field-15"
+      },
+      {
+        "censored_count": 0,
+        "heard_count": 72,
+        "missing_count": 0,
+        "scene_id": "spectral-field-16"
+      },
+      {
+        "censored_count": 0,
+        "heard_count": 72,
+        "missing_count": 0,
+        "scene_id": "spectral-field-17"
+      },
+      {
+        "censored_count": 0,
+        "heard_count": 72,
+        "missing_count": 0,
+        "scene_id": "spectral-field-18"
+      },
+      {
+        "censored_count": 0,
+        "heard_count": 72,
+        "missing_count": 0,
+        "scene_id": "spectral-field-19"
+      },
+      {
+        "censored_count": 0,
+        "heard_count": 72,
+        "missing_count": 0,
+        "scene_id": "spectral-field-20"
+      },
+      {
+        "censored_count": 0,
+        "heard_count": 72,
+        "missing_count": 0,
+        "scene_id": "spectral-field-21"
+      },
+      {
+        "censored_count": 0,
+        "heard_count": 72,
+        "missing_count": 0,
+        "scene_id": "spectral-field-22"
+      },
+      {
+        "censored_count": 0,
+        "heard_count": 72,
+        "missing_count": 0,
+        "scene_id": "spectral-field-23"
+      }
+    ],
+    "in_band": [
+      {
+        "censored_count": 0,
+        "heard_count": 144,
+        "missing_count": 0,
+        "scene_id": "spectral-field-00"
+      },
+      {
+        "censored_count": 0,
+        "heard_count": 144,
+        "missing_count": 0,
+        "scene_id": "spectral-field-01"
+      },
+      {
+        "censored_count": 0,
+        "heard_count": 144,
+        "missing_count": 0,
+        "scene_id": "spectral-field-02"
+      },
+      {
+        "censored_count": 0,
+        "heard_count": 144,
+        "missing_count": 0,
+        "scene_id": "spectral-field-03"
+      },
+      {
+        "censored_count": 0,
+        "heard_count": 144,
+        "missing_count": 0,
+        "scene_id": "spectral-field-04"
+      },
+      {
+        "censored_count": 0,
+        "heard_count": 144,
+        "missing_count": 0,
+        "scene_id": "spectral-field-05"
+      },
+      {
+        "censored_count": 0,
+        "heard_count": 144,
+        "missing_count": 0,
+        "scene_id": "spectral-field-06"
+      },
+      {
+        "censored_count": 0,
+        "heard_count": 144,
+        "missing_count": 0,
+        "scene_id": "spectral-field-07"
+      },
+      {
+        "censored_count": 0,
+        "heard_count": 144,
+        "missing_count": 0,
+        "scene_id": "spectral-field-08"
+      },
+      {
+        "censored_count": 0,
+        "heard_count": 144,
+        "missing_count": 0,
+        "scene_id": "spectral-field-09"
+      },
+      {
+        "censored_count": 0,
+        "heard_count": 144,
+        "missing_count": 0,
+        "scene_id": "spectral-field-10"
+      },
+      {
+        "censored_count": 0,
+        "heard_count": 144,
+        "missing_count": 0,
+        "scene_id": "spectral-field-11"
+      },
+      {
+        "censored_count": 0,
+        "heard_count": 144,
+        "missing_count": 0,
+        "scene_id": "spectral-field-12"
+      },
+      {
+        "censored_count": 0,
+        "heard_count": 144,
+        "missing_count": 0,
+        "scene_id": "spectral-field-13"
+      },
+      {
+        "censored_count": 0,
+        "heard_count": 144,
+        "missing_count": 0,
+        "scene_id": "spectral-field-14"
+      },
+      {
+        "censored_count": 0,
+        "heard_count": 144,
+        "missing_count": 0,
+        "scene_id": "spectral-field-15"
+      },
+      {
+        "censored_count": 0,
+        "heard_count": 144,
+        "missing_count": 0,
+        "scene_id": "spectral-field-16"
+      },
+      {
+        "censored_count": 0,
+        "heard_count": 144,
+        "missing_count": 0,
+        "scene_id": "spectral-field-17"
+      },
+      {
+        "censored_count": 0,
+        "heard_count": 144,
+        "missing_count": 0,
+        "scene_id": "spectral-field-18"
+      },
+      {
+        "censored_count": 0,
+        "heard_count": 144,
+        "missing_count": 0,
+        "scene_id": "spectral-field-19"
+      },
+      {
+        "censored_count": 0,
+        "heard_count": 144,
+        "missing_count": 0,
+        "scene_id": "spectral-field-20"
+      },
+      {
+        "censored_count": 0,
+        "heard_count": 144,
+        "missing_count": 0,
+        "scene_id": "spectral-field-21"
+      },
+      {
+        "censored_count": 0,
+        "heard_count": 144,
+        "missing_count": 0,
+        "scene_id": "spectral-field-22"
+      },
+      {
+        "censored_count": 0,
+        "heard_count": 144,
+        "missing_count": 0,
+        "scene_id": "spectral-field-23"
+      }
+    ],
+    "onboarding_0": [
+      {
+        "censored_count": 0,
+        "heard_count": 48,
+        "missing_count": 0,
+        "scene_id": "spectral-field-00"
+      },
+      {
+        "censored_count": 0,
+        "heard_count": 48,
+        "missing_count": 0,
+        "scene_id": "spectral-field-01"
+      },
+      {
+        "censored_count": 0,
+        "heard_count": 48,
+        "missing_count": 0,
+        "scene_id": "spectral-field-02"
+      },
+      {
+        "censored_count": 0,
+        "heard_count": 48,
+        "missing_count": 0,
+        "scene_id": "spectral-field-03"
+      },
+      {
+        "censored_count": 0,
+        "heard_count": 48,
+        "missing_count": 0,
+        "scene_id": "spectral-field-04"
+      },
+      {
+        "censored_count": 0,
+        "heard_count": 48,
+        "missing_count": 0,
+        "scene_id": "spectral-field-05"
+      },
+      {
+        "censored_count": 0,
+        "heard_count": 48,
+        "missing_count": 0,
+        "scene_id": "spectral-field-06"
+      },
+      {
+        "censored_count": 0,
+        "heard_count": 48,
+        "missing_count": 0,
+        "scene_id": "spectral-field-07"
+      },
+      {
+        "censored_count": 0,
+        "heard_count": 48,
+        "missing_count": 0,
+        "scene_id": "spectral-field-08"
+      },
+      {
+        "censored_count": 0,
+        "heard_count": 48,
+        "missing_count": 0,
+        "scene_id": "spectral-field-09"
+      },
+      {
+        "censored_count": 0,
+        "heard_count": 48,
+        "missing_count": 0,
+        "scene_id": "spectral-field-10"
+      },
+      {
+        "censored_count": 0,
+        "heard_count": 48,
+        "missing_count": 0,
+        "scene_id": "spectral-field-11"
+      },
+      {
+        "censored_count": 0,
+        "heard_count": 48,
+        "missing_count": 0,
+        "scene_id": "spectral-field-12"
+      },
+      {
+        "censored_count": 0,
+        "heard_count": 48,
+        "missing_count": 0,
+        "scene_id": "spectral-field-13"
+      },
+      {
+        "censored_count": 0,
+        "heard_count": 48,
+        "missing_count": 0,
+        "scene_id": "spectral-field-14"
+      },
+      {
+        "censored_count": 0,
+        "heard_count": 48,
+        "missing_count": 0,
+        "scene_id": "spectral-field-15"
+      },
+      {
+        "censored_count": 0,
+        "heard_count": 48,
+        "missing_count": 0,
+        "scene_id": "spectral-field-16"
+      },
+      {
+        "censored_count": 0,
+        "heard_count": 48,
+        "missing_count": 0,
+        "scene_id": "spectral-field-17"
+      },
+      {
+        "censored_count": 0,
+        "heard_count": 48,
+        "missing_count": 0,
+        "scene_id": "spectral-field-18"
+      },
+      {
+        "censored_count": 0,
+        "heard_count": 48,
+        "missing_count": 0,
+        "scene_id": "spectral-field-19"
+      },
+      {
+        "censored_count": 0,
+        "heard_count": 48,
+        "missing_count": 0,
+        "scene_id": "spectral-field-20"
+      },
+      {
+        "censored_count": 0,
+        "heard_count": 48,
+        "missing_count": 0,
+        "scene_id": "spectral-field-21"
+      },
+      {
+        "censored_count": 0,
+        "heard_count": 48,
+        "missing_count": 0,
+        "scene_id": "spectral-field-22"
+      },
+      {
+        "censored_count": 0,
+        "heard_count": 48,
+        "missing_count": 0,
+        "scene_id": "spectral-field-23"
+      }
+    ],
+    "onboarding_1": [
+      {
+        "censored_count": 0,
+        "heard_count": 48,
+        "missing_count": 0,
+        "scene_id": "spectral-field-00"
+      },
+      {
+        "censored_count": 0,
+        "heard_count": 48,
+        "missing_count": 0,
+        "scene_id": "spectral-field-01"
+      },
+      {
+        "censored_count": 0,
+        "heard_count": 48,
+        "missing_count": 0,
+        "scene_id": "spectral-field-02"
+      },
+      {
+        "censored_count": 0,
+        "heard_count": 48,
+        "missing_count": 0,
+        "scene_id": "spectral-field-03"
+      },
+      {
+        "censored_count": 0,
+        "heard_count": 48,
+        "missing_count": 0,
+        "scene_id": "spectral-field-04"
+      },
+      {
+        "censored_count": 0,
+        "heard_count": 48,
+        "missing_count": 0,
+        "scene_id": "spectral-field-05"
+      },
+      {
+        "censored_count": 0,
+        "heard_count": 48,
+        "missing_count": 0,
+        "scene_id": "spectral-field-06"
+      },
+      {
+        "censored_count": 0,
+        "heard_count": 48,
+        "missing_count": 0,
+        "scene_id": "spectral-field-07"
+      },
+      {
+        "censored_count": 0,
+        "heard_count": 48,
+        "missing_count": 0,
+        "scene_id": "spectral-field-08"
+      },
+      {
+        "censored_count": 0,
+        "heard_count": 48,
+        "missing_count": 0,
+        "scene_id": "spectral-field-09"
+      },
+      {
+        "censored_count": 0,
+        "heard_count": 48,
+        "missing_count": 0,
+        "scene_id": "spectral-field-10"
+      },
+      {
+        "censored_count": 0,
+        "heard_count": 48,
+        "missing_count": 0,
+        "scene_id": "spectral-field-11"
+      },
+      {
+        "censored_count": 0,
+        "heard_count": 48,
+        "missing_count": 0,
+        "scene_id": "spectral-field-12"
+      },
+      {
+        "censored_count": 0,
+        "heard_count": 48,
+        "missing_count": 0,
+        "scene_id": "spectral-field-13"
+      },
+      {
+        "censored_count": 0,
+        "heard_count": 48,
+        "missing_count": 0,
+        "scene_id": "spectral-field-14"
+      },
+      {
+        "censored_count": 0,
+        "heard_count": 48,
+        "missing_count": 0,
+        "scene_id": "spectral-field-15"
+      },
+      {
+        "censored_count": 0,
+        "heard_count": 48,
+        "missing_count": 0,
+        "scene_id": "spectral-field-16"
+      },
+      {
+        "censored_count": 0,
+        "heard_count": 48,
+        "missing_count": 0,
+        "scene_id": "spectral-field-17"
+      },
+      {
+        "censored_count": 0,
+        "heard_count": 48,
+        "missing_count": 0,
+        "scene_id": "spectral-field-18"
+      },
+      {
+        "censored_count": 0,
+        "heard_count": 48,
+        "missing_count": 0,
+        "scene_id": "spectral-field-19"
+      },
+      {
+        "censored_count": 0,
+        "heard_count": 48,
+        "missing_count": 0,
+        "scene_id": "spectral-field-20"
+      },
+      {
+        "censored_count": 0,
+        "heard_count": 48,
+        "missing_count": 0,
+        "scene_id": "spectral-field-21"
+      },
+      {
+        "censored_count": 0,
+        "heard_count": 48,
+        "missing_count": 0,
+        "scene_id": "spectral-field-22"
+      },
+      {
+        "censored_count": 0,
+        "heard_count": 48,
+        "missing_count": 0,
+        "scene_id": "spectral-field-23"
+      }
+    ],
+    "onboarding_16": [
+      {
+        "censored_count": 0,
+        "heard_count": 48,
+        "missing_count": 0,
+        "scene_id": "spectral-field-00"
+      },
+      {
+        "censored_count": 0,
+        "heard_count": 48,
+        "missing_count": 0,
+        "scene_id": "spectral-field-01"
+      },
+      {
+        "censored_count": 0,
+        "heard_count": 48,
+        "missing_count": 0,
+        "scene_id": "spectral-field-02"
+      },
+      {
+        "censored_count": 0,
+        "heard_count": 48,
+        "missing_count": 0,
+        "scene_id": "spectral-field-03"
+      },
+      {
+        "censored_count": 0,
+        "heard_count": 48,
+        "missing_count": 0,
+        "scene_id": "spectral-field-04"
+      },
+      {
+        "censored_count": 0,
+        "heard_count": 48,
+        "missing_count": 0,
+        "scene_id": "spectral-field-05"
+      },
+      {
+        "censored_count": 0,
+        "heard_count": 48,
+        "missing_count": 0,
+        "scene_id": "spectral-field-06"
+      },
+      {
+        "censored_count": 0,
+        "heard_count": 48,
+        "missing_count": 0,
+        "scene_id": "spectral-field-07"
+      },
+      {
+        "censored_count": 0,
+        "heard_count": 48,
+        "missing_count": 0,
+        "scene_id": "spectral-field-08"
+      },
+      {
+        "censored_count": 0,
+        "heard_count": 48,
+        "missing_count": 0,
+        "scene_id": "spectral-field-09"
+      },
+      {
+        "censored_count": 0,
+        "heard_count": 48,
+        "missing_count": 0,
+        "scene_id": "spectral-field-10"
+      },
+      {
+        "censored_count": 0,
+        "heard_count": 48,
+        "missing_count": 0,
+        "scene_id": "spectral-field-11"
+      },
+      {
+        "censored_count": 0,
+        "heard_count": 48,
+        "missing_count": 0,
+        "scene_id": "spectral-field-12"
+      },
+      {
+        "censored_count": 0,
+        "heard_count": 48,
+        "missing_count": 0,
+        "scene_id": "spectral-field-13"
+      },
+      {
+        "censored_count": 0,
+        "heard_count": 48,
+        "missing_count": 0,
+        "scene_id": "spectral-field-14"
+      },
+      {
+        "censored_count": 0,
+        "heard_count": 48,
+        "missing_count": 0,
+        "scene_id": "spectral-field-15"
+      },
+      {
+        "censored_count": 0,
+        "heard_count": 48,
+        "missing_count": 0,
+        "scene_id": "spectral-field-16"
+      },
+      {
+        "censored_count": 0,
+        "heard_count": 48,
+        "missing_count": 0,
+        "scene_id": "spectral-field-17"
+      },
+      {
+        "censored_count": 0,
+        "heard_count": 48,
+        "missing_count": 0,
+        "scene_id": "spectral-field-18"
+      },
+      {
+        "censored_count": 0,
+        "heard_count": 48,
+        "missing_count": 0,
+        "scene_id": "spectral-field-19"
+      },
+      {
+        "censored_count": 0,
+        "heard_count": 48,
+        "missing_count": 0,
+        "scene_id": "spectral-field-20"
+      },
+      {
+        "censored_count": 0,
+        "heard_count": 48,
+        "missing_count": 0,
+        "scene_id": "spectral-field-21"
+      },
+      {
+        "censored_count": 0,
+        "heard_count": 48,
+        "missing_count": 0,
+        "scene_id": "spectral-field-22"
+      },
+      {
+        "censored_count": 0,
+        "heard_count": 48,
+        "missing_count": 0,
+        "scene_id": "spectral-field-23"
+      }
+    ],
+    "onboarding_4": [
+      {
+        "censored_count": 0,
+        "heard_count": 48,
+        "missing_count": 0,
+        "scene_id": "spectral-field-00"
+      },
+      {
+        "censored_count": 0,
+        "heard_count": 48,
+        "missing_count": 0,
+        "scene_id": "spectral-field-01"
+      },
+      {
+        "censored_count": 0,
+        "heard_count": 48,
+        "missing_count": 0,
+        "scene_id": "spectral-field-02"
+      },
+      {
+        "censored_count": 0,
+        "heard_count": 48,
+        "missing_count": 0,
+        "scene_id": "spectral-field-03"
+      },
+      {
+        "censored_count": 0,
+        "heard_count": 48,
+        "missing_count": 0,
+        "scene_id": "spectral-field-04"
+      },
+      {
+        "censored_count": 0,
+        "heard_count": 48,
+        "missing_count": 0,
+        "scene_id": "spectral-field-05"
+      },
+      {
+        "censored_count": 0,
+        "heard_count": 48,
+        "missing_count": 0,
+        "scene_id": "spectral-field-06"
+      },
+      {
+        "censored_count": 0,
+        "heard_count": 48,
+        "missing_count": 0,
+        "scene_id": "spectral-field-07"
+      },
+      {
+        "censored_count": 0,
+        "heard_count": 48,
+        "missing_count": 0,
+        "scene_id": "spectral-field-08"
+      },
+      {
+        "censored_count": 0,
+        "heard_count": 48,
+        "missing_count": 0,
+        "scene_id": "spectral-field-09"
+      },
+      {
+        "censored_count": 0,
+        "heard_count": 48,
+        "missing_count": 0,
+        "scene_id": "spectral-field-10"
+      },
+      {
+        "censored_count": 0,
+        "heard_count": 48,
+        "missing_count": 0,
+        "scene_id": "spectral-field-11"
+      },
+      {
+        "censored_count": 0,
+        "heard_count": 48,
+        "missing_count": 0,
+        "scene_id": "spectral-field-12"
+      },
+      {
+        "censored_count": 0,
+        "heard_count": 48,
+        "missing_count": 0,
+        "scene_id": "spectral-field-13"
+      },
+      {
+        "censored_count": 0,
+        "heard_count": 48,
+        "missing_count": 0,
+        "scene_id": "spectral-field-14"
+      },
+      {
+        "censored_count": 0,
+        "heard_count": 48,
+        "missing_count": 0,
+        "scene_id": "spectral-field-15"
+      },
+      {
+        "censored_count": 0,
+        "heard_count": 48,
+        "missing_count": 0,
+        "scene_id": "spectral-field-16"
+      },
+      {
+        "censored_count": 0,
+        "heard_count": 48,
+        "missing_count": 0,
+        "scene_id": "spectral-field-17"
+      },
+      {
+        "censored_count": 0,
+        "heard_count": 48,
+        "missing_count": 0,
+        "scene_id": "spectral-field-18"
+      },
+      {
+        "censored_count": 0,
+        "heard_count": 48,
+        "missing_count": 0,
+        "scene_id": "spectral-field-19"
+      },
+      {
+        "censored_count": 0,
+        "heard_count": 48,
+        "missing_count": 0,
+        "scene_id": "spectral-field-20"
+      },
+      {
+        "censored_count": 0,
+        "heard_count": 48,
+        "missing_count": 0,
+        "scene_id": "spectral-field-21"
+      },
+      {
+        "censored_count": 0,
+        "heard_count": 48,
+        "missing_count": 0,
+        "scene_id": "spectral-field-22"
+      },
+      {
+        "censored_count": 0,
+        "heard_count": 48,
+        "missing_count": 0,
+        "scene_id": "spectral-field-23"
+      }
+    ]
+  },
+  "embedding_diagnostics": [
+    {
+      "centered_rank": 8,
+      "centered_rank_upper_bound": 8,
+      "distinct_layouts": 24,
+      "participation_rank": 1.6857361618584377,
+      "seed": 0,
+      "singular_values": [
+        4.931557924776273,
+        2.087275105310201,
+        1.599859084848495,
+        0.7292793761192841,
+        0.48308744749777527,
+        0.4453345655085391,
+        0.2313072633819114,
+        0.08429577919846337
+      ]
+    },
+    {
+      "centered_rank": 8,
+      "centered_rank_upper_bound": 8,
+      "distinct_layouts": 24,
+      "participation_rank": 3.615477763206312,
+      "seed": 1,
+      "singular_values": [
+        5.97326973434765,
+        4.079712575751305,
+        3.1314042004622493,
+        2.844835484112523,
+        2.3931847344418995,
+        1.750838788796139,
+        0.7400676266318854,
+        0.2756563695627118
+      ]
+    },
+    {
+      "centered_rank": 8,
+      "centered_rank_upper_bound": 8,
+      "distinct_layouts": 24,
+      "participation_rank": 2.4380676721798693,
+      "seed": 2,
+      "singular_values": [
+        5.997819906155262,
+        2.7725897885230077,
+        2.5912698207805045,
+        2.219182983126371,
+        1.5784673488242857,
+        0.881082963095847,
+        0.6359601144513055,
+        0.251962189562713
+      ]
+    }
+  ],
+  "evaluation": {
+    "path": "artifacts/radiojepa_spectral/results/field_test.json",
+    "sha256": "6263f9c1cdca710a8ba6fca059309a3b7e8af74ed075b366c7e33e2687680b20"
+  },
+  "held_band_superiority": true,
+  "identity": {
+    "protocol_sha256": "e016658c230c176daa7684815bc0efa299b0012cfbb9a428ae83405706a4adb0",
+    "registry_sha256": "49ea5082514182906e4d32d1b561a1c4ba63a07b029c81ac7bece8cc4afb046f",
+    "source_receipt_sha256": "d6ee331a43a88d492d38181b10ce2d84c95f84a2bd61b8360f6179d43d01e4a0"
+  },
+  "matched_alignment_benefit_supported": false,
+  "onboarding": [
+    {
+      "available_layouts": 24,
+      "context_report_pairs": 0,
+      "query_bands": [
+        0,
+        1
+      ],
+      "query_devices": [
+        3
+      ],
+      "query_poses": "odd, disjoint from calibration support",
+      "radiomap_mean_rmse_db": 7.687261171711668,
+      "registered_layouts": 24,
+      "scope": "simulated RSSI offset/quantization inverse from genuine even-pose pairs; known-deviceA encoder unchanged, no neural fine-tuning or real AGC/CFO calibration; nested supports correlated",
+      "selected_mean_rmse_db": 7.063025323191766,
+      "unavailable_layouts": []
+    },
+    {
+      "available_layouts": 24,
+      "context_report_pairs": 1,
+      "query_bands": [
+        0,
+        1
+      ],
+      "query_devices": [
+        3
+      ],
+      "query_poses": "odd, disjoint from calibration support",
+      "radiomap_mean_rmse_db": 4.869250576053024,
+      "registered_layouts": 24,
+      "scope": "simulated RSSI offset/quantization inverse from genuine even-pose pairs; known-deviceA encoder unchanged, no neural fine-tuning or real AGC/CFO calibration; nested supports correlated",
+      "selected_mean_rmse_db": 3.6832582665809652,
+      "unavailable_layouts": []
+    },
+    {
+      "available_layouts": 24,
+      "context_report_pairs": 4,
+      "query_bands": [
+        0,
+        1
+      ],
+      "query_devices": [
+        3
+      ],
+      "query_poses": "odd, disjoint from calibration support",
+      "radiomap_mean_rmse_db": 4.899117756273456,
+      "registered_layouts": 24,
+      "scope": "simulated RSSI offset/quantization inverse from genuine even-pose pairs; known-deviceA encoder unchanged, no neural fine-tuning or real AGC/CFO calibration; nested supports correlated",
+      "selected_mean_rmse_db": 3.698516056079001,
+      "unavailable_layouts": []
+    },
+    {
+      "available_layouts": 24,
+      "context_report_pairs": 16,
+      "query_bands": [
+        0,
+        1
+      ],
+      "query_devices": [
+        3
+      ],
+      "query_poses": "odd, disjoint from calibration support",
+      "radiomap_mean_rmse_db": 4.888901777850347,
+      "registered_layouts": 24,
+      "scope": "simulated RSSI offset/quantization inverse from genuine even-pose pairs; known-deviceA encoder unchanged, no neural fine-tuning or real AGC/CFO calibration; nested supports correlated",
+      "selected_mean_rmse_db": 3.695884869783954,
+      "unavailable_layouts": []
+    }
+  ],
+  "original_service_confirmation_permitted": false,
+  "p95_superiority": true,
+  "production_qualified": false,
+  "rf_rmse_superiority": true,
+  "same_link_frequency": {
+    "path": "artifacts/radiojepa_spectral/diagnostics/field_test-same-link-frequency.json",
+    "sha256": "d9566dfb7f7147aa7d62f3a7d564426b66326425c1b10892a38c91d46a0191ac"
+  },
+  "schema": 1,
+  "seed_main_rmse_db": [
+    3.592053717193638,
+    3.675464445278364,
+    3.598148005470225
+  ],
+  "selected_cell": "joint_none",
+  "stage": "field_test",
+  "universal_foundation_model_claim": false
+}
