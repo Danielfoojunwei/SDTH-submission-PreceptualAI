@@ -9,6 +9,7 @@ from copy import deepcopy
 from datetime import datetime,timezone
 import hashlib
 import json
+import math
 import os
 from pathlib import Path
 import re
@@ -218,6 +219,39 @@ def adaptive(e):
             'RF error is not a packet/deadline/silence qualification; no default change.'])
 
 
+def e7_calplanning(e):
+    name='artifacts/e7_calplanning/verification/manifest.json'
+    common_limits=['Nominal 1/5/15 labels are nested flattened survey-tail fractions, not chronological minutes or elapsed-budget guarantees.',
+        'Both arms share oracle infrastructure metadata and a truth-derived legacy starting plan.',
+        'Analytical utility only: no packet/ns-3, fresh confirmation, deployment, promotion or SOTA claim.']
+    if not e.path(name).exists():
+        return track('E7 calibrated-map planning','oracle_conditioned_simulation','pending_seal',
+            scope='Previously opened environments; final analytical planning comparison pending verified closure',
+            units={'utility_delta':'candidate minus corrected-v2; higher is better',
+                'nominal_budget':'1/5/15 tail-fraction labels, not chronological minutes'},limits=common_limits)
+    seal,proof=e.seal(name)
+    if proof['source_files']!=525:raise ValueError('Complete 525-source E7 planning seal required')
+    r=e.report('artifacts/e7_calplanning/report.json',seal)
+    p=e.load('artifacts/e7_calplanning/protocol.json')
+    if (r['scope']!=seal['scope'] or r['production_qualified'] is not False
+            or r['default_changed'] is not False or r['original_SERVICE_holdouts_opened'] is not False
+            or r['environment_units']!=15 or r['paired_rows']!=225 or set(r['summary'])!={'1','5','15'}):
+        raise ValueError('E7 planning scope or paired-unit counts changed')
+    for value in r['summary'].values():
+        if (value['environment_units']!=15 or value['mission_pairs']!=75
+                or not math.isfinite(value['mean_environment_utility_delta'])
+                or not 0<=value['environment_harms']<=15 or not 0<=value['mission_pair_harms']<=75
+                or len(value['per_environment_delta'])!=15):
+            raise ValueError('Retain every environment and mission harm in E7 planning summary')
+    return track('E7 calibrated-map planning','oracle_conditioned_simulation','sealed',proof=proof,
+        scope=r['scope'],units={'utility_delta':'analytical candidate minus corrected-v2; higher is better',
+            'nominal_budget':'1/5/15 tail-fraction labels, not chronological minutes'},
+        metrics={'summary':r['summary'],'environment_units':r['environment_units'],'paired_rows':r['paired_rows'],
+            'map_fits':r['map_fits'],'belief_searches':r['belief_searches'],'reference_searches':r['reference_searches'],
+            'budget_semantics':p['budget_semantics'],'shared_oracle_metadata':p['shared_ORACLE_metadata']},
+        limits=common_limits+['225 mission/budget pairs are nested within 15 environment units, not 225 independent environments.'])
+
+
 def operator_profile(e):
     prefix='artifacts/native_bridge_ops/'
     source=e.load(prefix+'registration/source.json')
@@ -398,7 +432,7 @@ def view_fields(key,value):
         findings=['Fast handover harms 4/4 cases; the candidate is selected regression, not a JEPA gain.',
             f"Slow mean {100*slow['radiomap']['control_miss_fraction']:.3f} → {100*slow['candidate']['control_miss_fraction']:.3f}%, but 2/4 cases harmed; worst gap 9.74 s."]
     elif key=='geometry_ops':
-        headline=f"{m['ratio_of_median_call_times']:.3f}× operand calls"
+        headline=f"{m['ratio_of_median_call_times']:.3f}× faster operand construction"
         findings=[f"{m['reference_median_ms']:.1f} → {m['reuse_median_ms']:.1f} ms with exact operand bytes.",
             'Operator-only CPU profile; no measured full-model or service speedup.']
     elif key=='native_context':
@@ -413,6 +447,15 @@ def view_fields(key,value):
         headline=f"{m['tests_passed']} software checks · read-only"
         findings=['Actual pinned mission preview and journal snapshot reader; no actuation.',
             'RF outcomes still DEFER; keep this test scope separate from archived 2547.']
+    elif key=='e7_calplanning':
+        if value['status']=='pending_seal':
+            headline='Planning comparison pending seal'
+            findings=['No planning metrics are exported before the complete 525-source closure verifies.',
+                'Oracle-conditioned opened environments; nominal survey-tail fractions are not chronological minutes.']
+        else:
+            row=m['summary']['15'];headline=f"Δutility {row['mean_environment_utility_delta']:+.4f} · nominal 15-tail"
+            findings=[f"15-tail: {row['environment_harms']}/15 environment harms; {row['mission_pair_harms']}/75 mission-pair harms. All three nominal budgets remain in the metrics.",
+                'Both arms use oracle metadata and legacy starts; analytical utility is not packet-service qualification.']
     else:
         headline='Final sealed result pending' if value['status']=='pending_seal' else 'Sealed reported-RF assay'
         findings=value['limits'][:2]
@@ -426,6 +469,7 @@ def build_bundle(root=ROOT,*,cache_root=None,captured_at=None):
     tracks={'measured_power':measured_power(e),'spectral_field':spectral(e),
         'phone_transfer':phones(e),'complex_csi':csi(e),'adaptive_rf':adaptive(e),
         'native_bridge':native(e),'geometry_ops':operator_profile(e),'native_context':context(e),'vision_features':vision(e)}
+    tracks['e7_calplanning']=e7_calplanning(e)
     r6=r6_software(e)
     if r6 is not None:tracks['r6_software']=r6
     for key,value in tracks.items():view_fields(key,value)

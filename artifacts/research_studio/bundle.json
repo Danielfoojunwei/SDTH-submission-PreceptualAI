@@ -398728,7 +398728,7 @@
     }
   },
   "research_evidence": {
-    "captured_at": "2026-11-09T17:02:52.960141+00:00",
+    "captured_at": "2026-11-09T17:15:23.607274+00:00",
     "claim_boundaries": [
       "Selected adaptive/native branch is regression; do not label its native outcomes a JEPA gain.",
       "No specialist SOTA, arbitrary-device/world/protocol generalization, 100-real-car benefit or production qualification.",
@@ -398784,13 +398784,13 @@
       },
       "exporter_tests": {
         "included_in_archived_2547": false,
-        "passed": 10,
+        "passed": 14,
         "proof": {
-          "log_sha256": "1253f6ca793d46eb9c48b6f1606064815d0bb62be75a701be4c49494044e47ce",
+          "log_sha256": "a3a035c0a1954d50955063c38f419bc95528dad397e611a442da2a0ee0beafea",
           "path": "artifacts/research_studio/exporter_tests.json",
-          "sha256": "dfdaffdb1efe9c4d8015e69b93eb9e13c5131238a0a862fc5f1d1fbd489e6936"
+          "sha256": "83e5bff68e8a3c8b196cbe963333478225144c8268c80e3011e6e99ebe61bbc9"
         },
-        "seconds": 0.03,
+        "seconds": 0.12,
         "status": "separate_source_bound_pass"
       },
       "whole_suite": {
@@ -398854,8 +398854,8 @@
       "artifacts/radiojev_cloud/provenance.json": "0635ea232160c810b24e15b293209412c0641b95cde8f9d844f91493e8c1048b",
       "artifacts/research_review/whole_suite.json": "b9ecf410dab2d665a5ba9ce1586c7f17f089e1c0994adf0b588fcfbac3e6b7d9",
       "artifacts/research_review/whole_suite.log": "a21dbf7ecf571d4f6fd07f323abc3fc9495cb8c6e5c5a560802dee9782e921a3",
-      "artifacts/research_studio/exporter_tests.json": "dfdaffdb1efe9c4d8015e69b93eb9e13c5131238a0a862fc5f1d1fbd489e6936",
-      "artifacts/research_studio/exporter_tests.log": "1253f6ca793d46eb9c48b6f1606064815d0bb62be75a701be4c49494044e47ce",
+      "artifacts/research_studio/exporter_tests.json": "83e5bff68e8a3c8b196cbe963333478225144c8268c80e3011e6e99ebe61bbc9",
+      "artifacts/research_studio/exporter_tests.log": "a3a035c0a1954d50955063c38f419bc95528dad397e611a442da2a0ee0beafea",
       "scripts/export_research_studio.py": "dce0e57466f26bc3145812ca66ff830423e7c54a8a73a8446d7c9ed86f8723fc",
       "src/wirelessjev/r6_bridge/__init__.py": "a00fb23b8e00300253446068f5b182556dc71106b2b695d4c0c04eaa75352f02",
       "src/wirelessjev/r6_bridge/_worker.py": "42c92371e1c3be236785a96e5f6a535ee9951ec35facb2a47aa39d3a17f0feb4",
@@ -398863,14 +398863,14 @@
       "src/wirelessjev/r6_bridge/journal.py": "6ebf6b2f9275085b31224497b4a81a1925073c1c1663a0d4bc906b3cea0a4faf",
       "src/wirelessjev/r6_bridge/preview.py": "a9fe902158f66f3956015d702f99817048120746177adb7c1fec1ef9831a6776",
       "src/wirelessjev/research_export/__init__.py": "368605c3d6d8ab1450a85b6b41b3a6f7e0e2ba54c9d627653ccb3abc6b0ad616",
-      "src/wirelessjev/research_export/bundle.py": "1ea0bce13d33344828165628105f12b4e62c6060b22d5cf51e2838b0949cc671",
+      "src/wirelessjev/research_export/bundle.py": "0135a06cfb870e5e19fa57ad886e62cdd8f0f759eae75800ed59187296639880",
       "src/wirelessjev/sensing_design/__init__.py": "45f73894afcb213c0339407ed8573443994e2b378e8015cb07a368a5bbed65b0",
       "src/wirelessjev/sensing_design/operators.py": "10c7eb1d63da5b67d74857b3c6072b02f4ff947d5e0562b8ed9dd019da620300",
       "src/wirelessjev/sensing_design/pilots.py": "da416a6edb2e432f1ee11202a91050b265c991de056a46d1b06fda76e0c1c07d",
       "studio/data/bundle.json": "26ab93df5c3c78b7f0220dcd3819062accd306f644e8f8f0b2716d4fe933e485",
       "tests/r6_bridge/test_r6_bridge_journal.py": "2e2dbb19a60497e4004503db02435741d83e5dd03a86565be8a040debbff1c48",
       "tests/r6_bridge/test_r6_bridge_preview.py": "72c7ee87929365504c1f890f9f597f49ebceb097f443d880e6d2a528274b6ce6",
-      "tests/research_export/test_research_export.py": "51e25d54e70cfb566e5991398b7f225bd4b04f47f24144cc7cc36289a41a17bf",
+      "tests/research_export/test_research_export.py": "04f3532f006dae17867446d9ef828f5deead12afdd5094d18f896e48764e99ac",
       "tests/test_sensing_design_operators.py": "3312a98324c0af93199fb870c13df4d995fef4ca1fd1779ea89745479cd717c6"
     },
     "tracks": {
@@ -399043,13 +399043,35 @@
           "packet_nmse": "dimensionless error energy / target channel energy; lower is better"
         }
       },
+      "e7_calplanning": {
+        "evidence_kind": "oracle_conditioned_simulation",
+        "findings": [
+          "No planning metrics are exported before the complete 525-source closure verifies.",
+          "Oracle-conditioned opened environments; nominal survey-tail fractions are not chronological minutes."
+        ],
+        "headline": "Planning comparison pending seal",
+        "limits": [
+          "Nominal 1/5/15 labels are nested flattened survey-tail fractions, not chronological minutes or elapsed-budget guarantees.",
+          "Both arms share oracle infrastructure metadata and a truth-derived legacy starting plan.",
+          "Analytical utility only: no packet/ns-3, fresh confirmation, deployment, promotion or SOTA claim."
+        ],
+        "production_qualified": false,
+        "scope": "Previously opened environments; final analytical planning comparison pending verified closure",
+        "sota_established": false,
+        "status": "pending_seal",
+        "title": "E7 calibrated-map planning",
+        "units": {
+          "nominal_budget": "1/5/15 tail-fraction labels, not chronological minutes",
+          "utility_delta": "candidate minus corrected-v2; higher is better"
+        }
+      },
       "geometry_ops": {
         "evidence_kind": "software_microbenchmark",
         "findings": [
           "278.0 \u2192 98.2 ms with exact operand bytes.",
           "Operator-only CPU profile; no measured full-model or service speedup."
         ],
-        "headline": "2.831\u00d7 operand calls",
+        "headline": "2.831\u00d7 faster operand construction",
         "limits": [
           "One managed CPU environment and fixed existing public plans; descriptive microbenchmark only.",
           "Operator timings exclude model rendering, context, queue, planner, controller and physical radio cost.",

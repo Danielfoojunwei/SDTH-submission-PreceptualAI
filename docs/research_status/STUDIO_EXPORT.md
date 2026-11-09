@@ -22,6 +22,14 @@ CSI/native cards expose their poor outcomes directly. The current native candida
 is regression, not proof of a JEPA-objective gain. The 2.831× measurement is
 operand-call performance only.
 
+The eleventh card covers E7 calibrated-map planning. It remains pending without
+metrics until the complete 525-source seal and evidence bytes verify. Its
+eventual utility deltas preserve all 1/5/15 budget rows and environment/mission
+harms. Those labels are nested survey-tail fractions, not chronological
+minutes. Both arms share oracle infrastructure/legacy-start information; this
+is analytical utility on previously opened environments, not packet/ns-3,
+fresh confirmation, deployment or default promotion.
+
 Completed scientific tracks require their reports to appear in the sealed
 evidence map. The exporter checks all source/evidence/document hashes in those
 seals. Complex-CSI export additionally requires every external prediction shard
@@ -38,7 +46,7 @@ receipt or partially written TEST report does not activate the result card.
 
 The archived **2,547 passed tests** are parsed from the hash-bound original
 whole-suite log and retain their original tracked-source scope. They exclude
-this new exporter. A separate source-bound receipt records **ten exporter
+this new exporter. A separate source-bound receipt records **fourteen exporter
 tests** and identical before/after hashes for its four source/test/script
 files. Do not add these overlapping software checks to scientific sample or
 training-run counts. The R6 card's 77 software checks also retain their own
