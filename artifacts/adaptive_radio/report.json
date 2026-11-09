@@ -1,0 +1,149 @@
+{
+  "RF_adaptation_supported": true,
+  "contrasts": [
+    {
+      "candidate": "selected",
+      "candidate_cell": "regression",
+      "metric": "delta_rmse_db",
+      "reference": "rf_erased",
+      "regime": "sparse",
+      "slot": 1,
+      "statistics": {
+        "adjusted_confidence": 0.9875,
+        "adjusted_interval": [
+          -0.6913357967677609,
+          -0.12913051550548824
+        ],
+        "better_adjusted": true,
+        "bootstrap_samples": 20000,
+        "bootstrap_seed": 21749,
+        "candidate_mean": 1.5201062596955108,
+        "descriptive_95_interval": [
+          -0.6123800524697752,
+          -0.1692022619759717
+        ],
+        "layouts": 24,
+        "mean_paired_difference": -0.36581507716393596,
+        "reference_mean": 1.8859213368594474,
+        "scope": "conditional on three trained members; seed spread descriptive",
+        "unit": "whole geometry, three RF conditions nested"
+      },
+      "supported": true,
+      "unavailable_layout_ids": [],
+      "usable_geometry_count": 24
+    },
+    {
+      "candidate": "selected",
+      "candidate_cell": "regression",
+      "metric": "delta_rmse_db",
+      "reference": "radiomap_operator",
+      "regime": "sparse",
+      "slot": 2,
+      "statistics": {
+        "adjusted_confidence": 0.9875,
+        "adjusted_interval": [
+          -0.2259479699170843,
+          -0.06005744717384847
+        ],
+        "better_adjusted": true,
+        "bootstrap_samples": 20000,
+        "bootstrap_seed": 21749,
+        "candidate_mean": 1.5201062596955108,
+        "descriptive_95_interval": [
+          -0.20506313885767652,
+          -0.07329781352263302
+        ],
+        "layouts": 24,
+        "mean_paired_difference": -0.1340987945298537,
+        "reference_mean": 1.6542050542253648,
+        "scope": "conditional on three trained members; seed spread descriptive",
+        "unit": "whole geometry, three RF conditions nested"
+      },
+      "supported": true,
+      "unavailable_layout_ids": [],
+      "usable_geometry_count": 24
+    },
+    {
+      "candidate": "joint",
+      "candidate_cell": "joint",
+      "metric": "delta_rmse_db",
+      "reference": "regression",
+      "regime": "sparse",
+      "slot": 3,
+      "statistics": {
+        "adjusted_confidence": 0.9875,
+        "adjusted_interval": [
+          0.003848890507048896,
+          0.027270729355581
+        ],
+        "better_adjusted": false,
+        "bootstrap_samples": 20000,
+        "bootstrap_seed": 21749,
+        "candidate_mean": 1.5343815483435315,
+        "descriptive_95_interval": [
+          0.005587003111245818,
+          0.024271452779746586
+        ],
+        "layouts": 24,
+        "mean_paired_difference": 0.014275288648020232,
+        "reference_mean": 1.5201062596955108,
+        "scope": "conditional on three trained members; seed spread descriptive",
+        "unit": "whole geometry, three RF conditions nested"
+      },
+      "supported": false,
+      "unavailable_layout_ids": [],
+      "usable_geometry_count": 24
+    },
+    {
+      "candidate": "selected",
+      "candidate_cell": "regression",
+      "metric": "detector_brier",
+      "reference": "radiomap_operator",
+      "regime": "sparse",
+      "slot": 4,
+      "statistics": {
+        "adjusted_confidence": 0.9875,
+        "adjusted_interval": [
+          -0.006489700028124599,
+          0.001943053792679938
+        ],
+        "better_adjusted": false,
+        "bootstrap_samples": 20000,
+        "bootstrap_seed": 21749,
+        "candidate_mean": 0.03322046987834348,
+        "descriptive_95_interval": [
+          -0.005462657137394669,
+          0.0012293935469903027
+        ],
+        "layouts": 24,
+        "mean_paired_difference": -0.0019411113778094891,
+        "reference_mean": 0.035161581256152964,
+        "scope": "conditional on three trained members; seed spread descriptive",
+        "unit": "whole geometry, three RF conditions nested"
+      },
+      "supported": false,
+      "unavailable_layout_ids": [],
+      "usable_geometry_count": 24
+    }
+  ],
+  "detector_brier_benefit_supported": false,
+  "evaluation": {
+    "path": "artifacts/adaptive_radio/results/test.json",
+    "sha256": "80c1bbe739717fff4ddc3fa0017dd23737bcb9174b10cc33edf910bdd932f101"
+  },
+  "identity": {
+    "protocol_sha256": "dfb6c7da4e9665081dd6660b7a1fafaa93ac83a592af90411874b5d46ee28352",
+    "registry_sha256": "b4d58de02b830e0dde3a054a949c9459d0a7d1289ece91cb25f195e9d9ef3e50",
+    "source_receipt_sha256": "4bb2415118970fad4a95bbd4575d7ef799e10242faa168329d24f358ed75c3fc"
+  },
+  "matched_alignment_benefit_supported": false,
+  "minimum_12_cohort_sufficient": true,
+  "original_service_confirmation_permitted": false,
+  "packet_probability_or_universal_robot_environment_claim": false,
+  "production_qualified": false,
+  "registered_test_geometries": 24,
+  "schema": 1,
+  "selected_cell": "regression",
+  "status": "complete",
+  "usable_delta_geometries": 24
+}
