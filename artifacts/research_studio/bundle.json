@@ -398728,7 +398728,7 @@
     }
   },
   "research_evidence": {
-    "captured_at": "2026-11-09T17:41:14.010029+00:00",
+    "captured_at": "2026-11-09T18:07:46.001129+00:00",
     "claim_boundaries": [
       "Selected adaptive/native branch is regression; do not label its native outcomes a JEPA gain.",
       "No specialist SOTA, arbitrary-device/world/protocol generalization, 100-real-car benefit or production qualification.",
@@ -398784,13 +398784,13 @@
       },
       "exporter_tests": {
         "included_in_archived_2547": false,
-        "passed": 14,
+        "passed": 15,
         "proof": {
-          "log_sha256": "a3a035c0a1954d50955063c38f419bc95528dad397e611a442da2a0ee0beafea",
+          "log_sha256": "64c5b6193505bb9c57ec66aee092bae206d5b02e559a456546311d9e60e7d43d",
           "path": "artifacts/research_studio/exporter_tests.json",
-          "sha256": "83e5bff68e8a3c8b196cbe963333478225144c8268c80e3011e6e99ebe61bbc9"
+          "sha256": "6035548ba9fab4fd46e9f740905f1e17a0655eef4b2b10754914b5b6b7c40374"
         },
-        "seconds": 0.12,
+        "seconds": 0.11,
         "status": "separate_source_bound_pass"
       },
       "whole_suite": {
@@ -398811,6 +398811,9 @@
       }
     },
     "source_sha256": {
+      "artifacts/adaptive_radio/report.json": "f0752d13e6bd5386a7360bd9fe5a11cd8c539796a2a0ea140762ca51b0668695",
+      "artifacts/adaptive_radio/results/test.json": "80c1bbe739717fff4ddc3fa0017dd23737bcb9174b10cc33edf910bdd932f101",
+      "artifacts/adaptive_radio/verification/manifest.json": "912f543b363972b56c54c8210cb44ae79a80fa9220d2950cd5f0fc3a89a0fe2c",
       "artifacts/channel_scene/report.json": "477d61813fc2cbff1ad153a6d59bfa6f24f1cdb1b45553a09ff08eb95df7a321",
       "artifacts/channel_scene/verification/manifest.json": "7e8dfad6e26d0f62630faf6bacf0a30ce108f5363ac420cb8d2edb08ead6270e",
       "artifacts/device_transfer/protocol.json": "b5ae3739867f5a39c396999e404fc649fd8d9bcc83142b3df8acffef6b66c8c6",
@@ -398857,8 +398860,8 @@
       "artifacts/radiojev_cloud/provenance.json": "0635ea232160c810b24e15b293209412c0641b95cde8f9d844f91493e8c1048b",
       "artifacts/research_review/whole_suite.json": "b9ecf410dab2d665a5ba9ce1586c7f17f089e1c0994adf0b588fcfbac3e6b7d9",
       "artifacts/research_review/whole_suite.log": "a21dbf7ecf571d4f6fd07f323abc3fc9495cb8c6e5c5a560802dee9782e921a3",
-      "artifacts/research_studio/exporter_tests.json": "83e5bff68e8a3c8b196cbe963333478225144c8268c80e3011e6e99ebe61bbc9",
-      "artifacts/research_studio/exporter_tests.log": "a3a035c0a1954d50955063c38f419bc95528dad397e611a442da2a0ee0beafea",
+      "artifacts/research_studio/exporter_tests.json": "6035548ba9fab4fd46e9f740905f1e17a0655eef4b2b10754914b5b6b7c40374",
+      "artifacts/research_studio/exporter_tests.log": "64c5b6193505bb9c57ec66aee092bae206d5b02e559a456546311d9e60e7d43d",
       "scripts/export_research_studio.py": "dce0e57466f26bc3145812ca66ff830423e7c54a8a73a8446d7c9ed86f8723fc",
       "src/wirelessjev/r6_bridge/__init__.py": "a00fb23b8e00300253446068f5b182556dc71106b2b695d4c0c04eaa75352f02",
       "src/wirelessjev/r6_bridge/_worker.py": "42c92371e1c3be236785a96e5f6a535ee9951ec35facb2a47aa39d3a17f0feb4",
@@ -398866,34 +398869,241 @@
       "src/wirelessjev/r6_bridge/journal.py": "6ebf6b2f9275085b31224497b4a81a1925073c1c1663a0d4bc906b3cea0a4faf",
       "src/wirelessjev/r6_bridge/preview.py": "a9fe902158f66f3956015d702f99817048120746177adb7c1fec1ef9831a6776",
       "src/wirelessjev/research_export/__init__.py": "368605c3d6d8ab1450a85b6b41b3a6f7e0e2ba54c9d627653ccb3abc6b0ad616",
-      "src/wirelessjev/research_export/bundle.py": "0135a06cfb870e5e19fa57ad886e62cdd8f0f759eae75800ed59187296639880",
+      "src/wirelessjev/research_export/bundle.py": "e3f348e0103e36a4f6d8d7e045d3ef9bc8662b35b95471973095406fd5e2b071",
       "src/wirelessjev/sensing_design/__init__.py": "45f73894afcb213c0339407ed8573443994e2b378e8015cb07a368a5bbed65b0",
       "src/wirelessjev/sensing_design/operators.py": "10c7eb1d63da5b67d74857b3c6072b02f4ff947d5e0562b8ed9dd019da620300",
       "src/wirelessjev/sensing_design/pilots.py": "da416a6edb2e432f1ee11202a91050b265c991de056a46d1b06fda76e0c1c07d",
       "studio/data/bundle.json": "26ab93df5c3c78b7f0220dcd3819062accd306f644e8f8f0b2716d4fe933e485",
       "tests/r6_bridge/test_r6_bridge_journal.py": "2e2dbb19a60497e4004503db02435741d83e5dd03a86565be8a040debbff1c48",
       "tests/r6_bridge/test_r6_bridge_preview.py": "72c7ee87929365504c1f890f9f597f49ebceb097f443d880e6d2a528274b6ce6",
-      "tests/research_export/test_research_export.py": "04f3532f006dae17867446d9ef828f5deead12afdd5094d18f896e48764e99ac",
+      "tests/research_export/test_adaptive_regeneration.py": "78bf6944a68869cc212fd9c6c07c9c81f854d13970b36504bfff83493f94a5c0",
+      "tests/research_export/test_research_export.py": "37763be5b9022cf982f89eba217dad8dc47eac7fbd6c61cc1cf61d8a112d862c",
       "tests/test_sensing_design_operators.py": "3312a98324c0af93199fb870c13df4d995fef4ca1fd1779ea89745479cd717c6"
     },
     "tracks": {
       "adaptive_rf": {
         "evidence_kind": "sionna_simulation",
         "findings": [
-          "DEV permission and completed fits do not constitute sealed TEST evidence.",
-          "Original SERVICE confirmation remains separate."
+          "Regression 1.520 vs RadioMap 1.654 dB on 24 TEST layouts; Bayes 1.524 dB nearly ties.",
+          "Joint 1.534 dB is worse; Brier interval crosses zero. Native fast handover still harms 4/4 cases\u2014no JEPA/SOTA or service qualification."
         ],
-        "headline": "Final sealed result pending",
+        "headline": "8.1% lower RF-change error",
         "limits": [
-          "DEV permission and completed fits do not constitute sealed TEST evidence.",
-          "Original SERVICE confirmation remains separate."
+          "Preserve VAL-selected regression and every negative matched-objective contrast.",
+          "RF error is not a packet/deadline/silence qualification; no default change."
         ],
+        "metrics": {
+          "RF_adaptation_supported": true,
+          "contrasts": [
+            {
+              "candidate": "selected",
+              "candidate_cell": "regression",
+              "metric": "delta_rmse_db",
+              "reference": "rf_erased",
+              "regime": "sparse",
+              "slot": 1,
+              "statistics": {
+                "adjusted_confidence": 0.9875,
+                "adjusted_interval": [
+                  -0.6913357967677609,
+                  -0.12913051550548824
+                ],
+                "better_adjusted": true,
+                "bootstrap_samples": 20000,
+                "bootstrap_seed": 21749,
+                "candidate_mean": 1.5201062596955108,
+                "descriptive_95_interval": [
+                  -0.6123800524697752,
+                  -0.1692022619759717
+                ],
+                "layouts": 24,
+                "mean_paired_difference": -0.36581507716393596,
+                "reference_mean": 1.8859213368594474,
+                "scope": "conditional on three trained members; seed spread descriptive",
+                "unit": "whole geometry, three RF conditions nested"
+              },
+              "supported": true,
+              "unavailable_layout_ids": [],
+              "usable_geometry_count": 24
+            },
+            {
+              "candidate": "selected",
+              "candidate_cell": "regression",
+              "metric": "delta_rmse_db",
+              "reference": "radiomap_operator",
+              "regime": "sparse",
+              "slot": 2,
+              "statistics": {
+                "adjusted_confidence": 0.9875,
+                "adjusted_interval": [
+                  -0.2259479699170843,
+                  -0.06005744717384847
+                ],
+                "better_adjusted": true,
+                "bootstrap_samples": 20000,
+                "bootstrap_seed": 21749,
+                "candidate_mean": 1.5201062596955108,
+                "descriptive_95_interval": [
+                  -0.20506313885767652,
+                  -0.07329781352263302
+                ],
+                "layouts": 24,
+                "mean_paired_difference": -0.1340987945298537,
+                "reference_mean": 1.6542050542253648,
+                "scope": "conditional on three trained members; seed spread descriptive",
+                "unit": "whole geometry, three RF conditions nested"
+              },
+              "supported": true,
+              "unavailable_layout_ids": [],
+              "usable_geometry_count": 24
+            },
+            {
+              "candidate": "joint",
+              "candidate_cell": "joint",
+              "metric": "delta_rmse_db",
+              "reference": "regression",
+              "regime": "sparse",
+              "slot": 3,
+              "statistics": {
+                "adjusted_confidence": 0.9875,
+                "adjusted_interval": [
+                  0.003848890507048896,
+                  0.027270729355581
+                ],
+                "better_adjusted": false,
+                "bootstrap_samples": 20000,
+                "bootstrap_seed": 21749,
+                "candidate_mean": 1.5343815483435315,
+                "descriptive_95_interval": [
+                  0.005587003111245818,
+                  0.024271452779746586
+                ],
+                "layouts": 24,
+                "mean_paired_difference": 0.014275288648020232,
+                "reference_mean": 1.5201062596955108,
+                "scope": "conditional on three trained members; seed spread descriptive",
+                "unit": "whole geometry, three RF conditions nested"
+              },
+              "supported": false,
+              "unavailable_layout_ids": [],
+              "usable_geometry_count": 24
+            },
+            {
+              "candidate": "selected",
+              "candidate_cell": "regression",
+              "metric": "detector_brier",
+              "reference": "radiomap_operator",
+              "regime": "sparse",
+              "slot": 4,
+              "statistics": {
+                "adjusted_confidence": 0.9875,
+                "adjusted_interval": [
+                  -0.006489700028124599,
+                  0.001943053792679938
+                ],
+                "better_adjusted": false,
+                "bootstrap_samples": 20000,
+                "bootstrap_seed": 21749,
+                "candidate_mean": 0.03322046987834348,
+                "descriptive_95_interval": [
+                  -0.005462657137394669,
+                  0.0012293935469903027
+                ],
+                "layouts": 24,
+                "mean_paired_difference": -0.0019411113778094891,
+                "reference_mean": 0.035161581256152964,
+                "scope": "conditional on three trained members; seed spread descriptive",
+                "unit": "whole geometry, three RF conditions nested"
+              },
+              "supported": false,
+              "unavailable_layout_ids": [],
+              "usable_geometry_count": 24
+            }
+          ],
+          "descriptive_sparse_delta_rmse": {
+            "aggregation": "Seed metrics averaged within each layout, then24 whole-layout means; not prediction ensembling.",
+            "exact_member_ids": {
+              "joint": [
+                "joint-seed0",
+                "joint-seed1",
+                "joint-seed2"
+              ],
+              "regression": [
+                "regression-seed0",
+                "regression-seed1",
+                "regression-seed2"
+              ],
+              "rf_erased": [
+                "rf_erased-seed0",
+                "rf_erased-seed1",
+                "rf_erased-seed2"
+              ]
+            },
+            "layouts": 24,
+            "mean_db": {
+              "bayesian_operator": 1.5241405116762783,
+              "joint": 1.5343815483435315,
+              "regression": 1.5201062596955113,
+              "rf_erased": 1.885921336859447
+            },
+            "reference_member_id": "bayesian_operator",
+            "stale_members_excluded": true
+          },
+          "detector_brier_benefit_supported": false,
+          "evaluation": {
+            "path": "artifacts/adaptive_radio/results/test.json",
+            "sha256": "80c1bbe739717fff4ddc3fa0017dd23737bcb9174b10cc33edf910bdd932f101"
+          },
+          "identity": {
+            "protocol_sha256": "dfb6c7da4e9665081dd6660b7a1fafaa93ac83a592af90411874b5d46ee28352",
+            "registry_sha256": "b4d58de02b830e0dde3a054a949c9459d0a7d1289ece91cb25f195e9d9ef3e50",
+            "source_receipt_sha256": "4bb2415118970fad4a95bbd4575d7ef799e10242faa168329d24f358ed75c3fc"
+          },
+          "matched_alignment_benefit_supported": false,
+          "minimum_12_cohort_sufficient": true,
+          "original_service_confirmation_permitted": false,
+          "packet_probability_or_universal_robot_environment_claim": false,
+          "presentation_summary": {
+            "bayesian_delta_rmse_db": 1.5241405116762783,
+            "brier_adjusted_interval": [
+              -0.006489700028124599,
+              0.001943053792679938
+            ],
+            "candidate_cell": "regression",
+            "candidate_delta_rmse_db": 1.5201062596955113,
+            "evaluation_path": "artifacts/adaptive_radio/results/test.json",
+            "evaluation_sha256": "80c1bbe739717fff4ddc3fa0017dd23737bcb9174b10cc33edf910bdd932f101",
+            "joint_delta_rmse_db": 1.5343815483435315,
+            "layouts": 24,
+            "primary_metric": "delta_rmse_db",
+            "radiomap_delta_rmse_db": 1.6542050542253648,
+            "regime": "sparse",
+            "relative_gain_formula": "100*(RadioMap deltaRMSE-regression deltaRMSE)/RadioMap deltaRMSE",
+            "relative_gain_percent": 8.106540007680584,
+            "rf_erased_delta_rmse_db": 1.885921336859447
+          },
+          "production_qualified": false,
+          "registered_test_geometries": 24,
+          "schema": 1,
+          "selected_cell": "regression",
+          "status": "complete",
+          "usable_delta_geometries": 24
+        },
         "production_qualified": false,
-        "scope": "Source-published fixed assay; no final TEST metric is exported until closure exists",
+        "proof": {
+          "document_files": 0,
+          "evidence_files": 11792,
+          "path": "artifacts/adaptive_radio/verification/manifest.json",
+          "sha256": "912f543b363972b56c54c8210cb44ae79a80fa9220d2950cd5f0fc3a89a0fe2c",
+          "source_files": 504,
+          "status": "repository_hashes_verified"
+        },
+        "scope": "Static condition changes with reported/censored inputs; not learned temporal dynamics",
         "sota_established": false,
-        "status": "pending_seal",
+        "status": "sealed",
         "title": "Adaptive reported-RF assay",
         "units": {
+          "condition_delta_error": "dB; distinct from absolute RF RMSE",
           "rf_error": "dB"
         }
       },

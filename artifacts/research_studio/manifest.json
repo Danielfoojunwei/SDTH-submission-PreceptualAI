@@ -2,8 +2,9 @@
   "exporter_source_sha256": {
     "scripts/export_research_studio.py": "dce0e57466f26bc3145812ca66ff830423e7c54a8a73a8446d7c9ed86f8723fc",
     "src/wirelessjev/research_export/__init__.py": "368605c3d6d8ab1450a85b6b41b3a6f7e0e2ba54c9d627653ccb3abc6b0ad616",
-    "src/wirelessjev/research_export/bundle.py": "0135a06cfb870e5e19fa57ad886e62cdd8f0f759eae75800ed59187296639880",
-    "tests/research_export/test_research_export.py": "04f3532f006dae17867446d9ef828f5deead12afdd5094d18f896e48764e99ac"
+    "src/wirelessjev/research_export/bundle.py": "e3f348e0103e36a4f6d8d7e045d3ef9bc8662b35b95471973095406fd5e2b071",
+    "tests/research_export/test_adaptive_regeneration.py": "78bf6944a68869cc212fd9c6c07c9c81f854d13970b36504bfff83493f94a5c0",
+    "tests/research_export/test_research_export.py": "37763be5b9022cf982f89eba217dad8dc47eac7fbd6c61cc1cf61d8a112d862c"
   },
   "external_sha256": {
     "deliverables/cache_manifest.json": "6cfec77b5a6837f6c8216d24e19f6225046b6a18b3481c8023ff18f0385c8498",
@@ -67,6 +68,9 @@
     "predictions/dichasus-dc01/regression_89_b.npz": "d9ce57416f0b4fde38bb0f59947d727854bce431aa86c64c33abfb32d5fb64e1"
   },
   "input_sha256": {
+    "artifacts/adaptive_radio/report.json": "f0752d13e6bd5386a7360bd9fe5a11cd8c539796a2a0ea140762ca51b0668695",
+    "artifacts/adaptive_radio/results/test.json": "80c1bbe739717fff4ddc3fa0017dd23737bcb9174b10cc33edf910bdd932f101",
+    "artifacts/adaptive_radio/verification/manifest.json": "912f543b363972b56c54c8210cb44ae79a80fa9220d2950cd5f0fc3a89a0fe2c",
     "artifacts/channel_scene/report.json": "477d61813fc2cbff1ad153a6d59bfa6f24f1cdb1b45553a09ff08eb95df7a321",
     "artifacts/channel_scene/verification/manifest.json": "7e8dfad6e26d0f62630faf6bacf0a30ce108f5363ac420cb8d2edb08ead6270e",
     "artifacts/device_transfer/protocol.json": "b5ae3739867f5a39c396999e404fc649fd8d9bcc83142b3df8acffef6b66c8c6",
@@ -113,8 +117,8 @@
     "artifacts/radiojev_cloud/provenance.json": "0635ea232160c810b24e15b293209412c0641b95cde8f9d844f91493e8c1048b",
     "artifacts/research_review/whole_suite.json": "b9ecf410dab2d665a5ba9ce1586c7f17f089e1c0994adf0b588fcfbac3e6b7d9",
     "artifacts/research_review/whole_suite.log": "a21dbf7ecf571d4f6fd07f323abc3fc9495cb8c6e5c5a560802dee9782e921a3",
-    "artifacts/research_studio/exporter_tests.json": "83e5bff68e8a3c8b196cbe963333478225144c8268c80e3011e6e99ebe61bbc9",
-    "artifacts/research_studio/exporter_tests.log": "a3a035c0a1954d50955063c38f419bc95528dad397e611a442da2a0ee0beafea",
+    "artifacts/research_studio/exporter_tests.json": "6035548ba9fab4fd46e9f740905f1e17a0655eef4b2b10754914b5b6b7c40374",
+    "artifacts/research_studio/exporter_tests.log": "64c5b6193505bb9c57ec66aee092bae206d5b02e559a456546311d9e60e7d43d",
     "scripts/export_research_studio.py": "dce0e57466f26bc3145812ca66ff830423e7c54a8a73a8446d7c9ed86f8723fc",
     "src/wirelessjev/r6_bridge/__init__.py": "a00fb23b8e00300253446068f5b182556dc71106b2b695d4c0c04eaa75352f02",
     "src/wirelessjev/r6_bridge/_worker.py": "42c92371e1c3be236785a96e5f6a535ee9951ec35facb2a47aa39d3a17f0feb4",
@@ -122,19 +126,20 @@
     "src/wirelessjev/r6_bridge/journal.py": "6ebf6b2f9275085b31224497b4a81a1925073c1c1663a0d4bc906b3cea0a4faf",
     "src/wirelessjev/r6_bridge/preview.py": "a9fe902158f66f3956015d702f99817048120746177adb7c1fec1ef9831a6776",
     "src/wirelessjev/research_export/__init__.py": "368605c3d6d8ab1450a85b6b41b3a6f7e0e2ba54c9d627653ccb3abc6b0ad616",
-    "src/wirelessjev/research_export/bundle.py": "0135a06cfb870e5e19fa57ad886e62cdd8f0f759eae75800ed59187296639880",
+    "src/wirelessjev/research_export/bundle.py": "e3f348e0103e36a4f6d8d7e045d3ef9bc8662b35b95471973095406fd5e2b071",
     "src/wirelessjev/sensing_design/__init__.py": "45f73894afcb213c0339407ed8573443994e2b378e8015cb07a368a5bbed65b0",
     "src/wirelessjev/sensing_design/operators.py": "10c7eb1d63da5b67d74857b3c6072b02f4ff947d5e0562b8ed9dd019da620300",
     "src/wirelessjev/sensing_design/pilots.py": "da416a6edb2e432f1ee11202a91050b265c991de056a46d1b06fda76e0c1c07d",
     "studio/data/bundle.json": "26ab93df5c3c78b7f0220dcd3819062accd306f644e8f8f0b2716d4fe933e485",
     "tests/r6_bridge/test_r6_bridge_journal.py": "2e2dbb19a60497e4004503db02435741d83e5dd03a86565be8a040debbff1c48",
     "tests/r6_bridge/test_r6_bridge_preview.py": "72c7ee87929365504c1f890f9f597f49ebceb097f443d880e6d2a528274b6ce6",
-    "tests/research_export/test_research_export.py": "04f3532f006dae17867446d9ef828f5deead12afdd5094d18f896e48764e99ac",
+    "tests/research_export/test_adaptive_regeneration.py": "78bf6944a68869cc212fd9c6c07c9c81f854d13970b36504bfff83493f94a5c0",
+    "tests/research_export/test_research_export.py": "37763be5b9022cf982f89eba217dad8dc47eac7fbd6c61cc1cf61d8a112d862c",
     "tests/test_sensing_design_operators.py": "3312a98324c0af93199fb870c13df4d995fef4ca1fd1779ea89745479cd717c6"
   },
   "outputs_sha256": {
-    "bundle.json": "585befd154feaae9e45e0961ec2393d3d00d3b9202907c7869c4319f8b613058",
-    "index.html": "6e0dc8e963eeb30fd051db685b7b2f27cd43c11e2bf8cc36edb6a23d49c25aa2"
+    "bundle.json": "76be4ea01937cc67bde1c84e73e4735f8f1faca92f0b7255ac9c7da361f07cea",
+    "index.html": "224ca0203a76cbf3de484ecebe200bb2e832c894fa69d653ceb1ce33ec62b783"
   },
   "remote_publication_performed": false,
   "schema": 1,
@@ -144,5 +149,5 @@
     "simulations": 0
   },
   "verified_external_cache_files": 59,
-  "verified_repository_files": 7590
+  "verified_repository_files": 19379
 }

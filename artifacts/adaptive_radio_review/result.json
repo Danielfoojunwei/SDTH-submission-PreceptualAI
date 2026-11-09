@@ -1,0 +1,288 @@
+{
+  "RF_adaptation_supported": true,
+  "RT_model_forward_fit_or_evaluation_run": false,
+  "campaign_files_preserved": 11797,
+  "campaign_membership_and_bytes_preserved": true,
+  "contrasts": [
+    {
+      "candidate": "regression",
+      "metric": "delta_rmse_db",
+      "reference": "rf_erased",
+      "slot": 1,
+      "statistics": {
+        "adjusted_confidence": 0.9875,
+        "adjusted_interval": [
+          -0.6913357967677609,
+          -0.12913051550548824
+        ],
+        "better_adjusted": true,
+        "bootstrap_samples": 20000,
+        "bootstrap_seed": 21749,
+        "candidate_mean": 1.5201062596955108,
+        "descriptive_95_interval": [
+          -0.6123800524697752,
+          -0.1692022619759717
+        ],
+        "layouts": 24,
+        "mean_paired_difference": -0.36581507716393596,
+        "reference_mean": 1.8859213368594474,
+        "scope": "conditional on three trained members; seed spread descriptive",
+        "unit": "whole geometry, three RF conditions nested"
+      },
+      "supported": true
+    },
+    {
+      "candidate": "regression",
+      "metric": "delta_rmse_db",
+      "reference": "radiomap_operator",
+      "slot": 2,
+      "statistics": {
+        "adjusted_confidence": 0.9875,
+        "adjusted_interval": [
+          -0.2259479699170843,
+          -0.06005744717384847
+        ],
+        "better_adjusted": true,
+        "bootstrap_samples": 20000,
+        "bootstrap_seed": 21749,
+        "candidate_mean": 1.5201062596955108,
+        "descriptive_95_interval": [
+          -0.20506313885767652,
+          -0.07329781352263302
+        ],
+        "layouts": 24,
+        "mean_paired_difference": -0.1340987945298537,
+        "reference_mean": 1.6542050542253648,
+        "scope": "conditional on three trained members; seed spread descriptive",
+        "unit": "whole geometry, three RF conditions nested"
+      },
+      "supported": true
+    },
+    {
+      "candidate": "joint",
+      "metric": "delta_rmse_db",
+      "reference": "regression",
+      "slot": 3,
+      "statistics": {
+        "adjusted_confidence": 0.9875,
+        "adjusted_interval": [
+          0.003848890507048896,
+          0.027270729355581
+        ],
+        "better_adjusted": false,
+        "bootstrap_samples": 20000,
+        "bootstrap_seed": 21749,
+        "candidate_mean": 1.5343815483435315,
+        "descriptive_95_interval": [
+          0.005587003111245818,
+          0.024271452779746586
+        ],
+        "layouts": 24,
+        "mean_paired_difference": 0.014275288648020232,
+        "reference_mean": 1.5201062596955108,
+        "scope": "conditional on three trained members; seed spread descriptive",
+        "unit": "whole geometry, three RF conditions nested"
+      },
+      "supported": false
+    },
+    {
+      "candidate": "regression",
+      "metric": "detector_brier",
+      "reference": "radiomap_operator",
+      "slot": 4,
+      "statistics": {
+        "adjusted_confidence": 0.9875,
+        "adjusted_interval": [
+          -0.006489700028124599,
+          0.001943053792679938
+        ],
+        "better_adjusted": false,
+        "bootstrap_samples": 20000,
+        "bootstrap_seed": 21749,
+        "candidate_mean": 0.03322046987834348,
+        "descriptive_95_interval": [
+          -0.005462657137394669,
+          0.0012293935469903027
+        ],
+        "layouts": 24,
+        "mean_paired_difference": -0.0019411113778094891,
+        "reference_mean": 0.035161581256152964,
+        "scope": "conditional on three trained members; seed spread descriptive",
+        "unit": "whole geometry, three RF conditions nested"
+      },
+      "supported": false
+    }
+  ],
+  "detector_brier_benefit_supported": false,
+  "development_gate": {
+    "censored_query_events": 152,
+    "checks": {
+      "actual_censored_events_present": true,
+      "all_primary_predictions_and_scores_finite": true,
+      "every_seed_delta_no_worse_than_radiomap": true,
+      "five_percent_better_than_radiomap": true,
+      "five_percent_better_than_rf_erased": true,
+      "minimum_three_usable_layouts": true,
+      "p95_within_two_percent": true,
+      "scalar_rmse_within_two_percent": true,
+      "stale_context_hurts_at_least_five_percent": true
+    },
+    "p95_abs_db": 6.7605698267618815,
+    "p95_available_layouts": 4,
+    "radiomap_delta_rmse_db": 1.936908261982396,
+    "radiomap_p95_abs_db": 7.543515834473091,
+    "radiomap_scalar_rmse_db": 3.9024564077714534,
+    "rf_erased_delta_rmse_db": 1.9001894769479268,
+    "scalar_available_layouts": 4,
+    "scalar_rmse_db": 3.4147796740868763,
+    "selected_delta_rmse_db": 1.6403534850243644,
+    "selected_seed_delta_rmse_db": [
+      1.6368942455774231,
+      1.6472707018270762,
+      1.636895507668594
+    ],
+    "stale_delta_rmse_db": 1.9237917447171633,
+    "test_permitted": true,
+    "usable_layouts": 4
+  },
+  "fits": {
+    "joint-seed0": {
+      "selected_epoch": 27,
+      "updates": 480,
+      "validation_delta_rmse_db": 1.9715106592521348
+    },
+    "joint-seed1": {
+      "selected_epoch": 51,
+      "updates": 480,
+      "validation_delta_rmse_db": 1.9737948813808377
+    },
+    "joint-seed2": {
+      "selected_epoch": 29,
+      "updates": 480,
+      "validation_delta_rmse_db": 1.9710174372229565
+    },
+    "pure_geometry-seed0": {
+      "selected_epoch": 0,
+      "updates": 480,
+      "validation_delta_rmse_db": 2.39637992430148
+    },
+    "pure_geometry-seed1": {
+      "selected_epoch": 0,
+      "updates": 480,
+      "validation_delta_rmse_db": 2.39637992430148
+    },
+    "pure_geometry-seed2": {
+      "selected_epoch": 0,
+      "updates": 480,
+      "validation_delta_rmse_db": 2.39637992430148
+    },
+    "regression-seed0": {
+      "selected_epoch": 53,
+      "updates": 480,
+      "validation_delta_rmse_db": 1.9640330787922042
+    },
+    "regression-seed1": {
+      "selected_epoch": 51,
+      "updates": 480,
+      "validation_delta_rmse_db": 1.9663705605340465
+    },
+    "regression-seed2": {
+      "selected_epoch": 51,
+      "updates": 480,
+      "validation_delta_rmse_db": 1.9647000835975579
+    },
+    "rf_erased-seed0": {
+      "selected_epoch": 0,
+      "updates": 480,
+      "validation_delta_rmse_db": 2.39637992430148
+    },
+    "rf_erased-seed1": {
+      "selected_epoch": 0,
+      "updates": 480,
+      "validation_delta_rmse_db": 2.39637992430148
+    },
+    "rf_erased-seed2": {
+      "selected_epoch": 0,
+      "updates": 480,
+      "validation_delta_rmse_db": 2.39637992430148
+    }
+  },
+  "frontend": {
+    "TRAIN_only_coobserved_pairs_verified": 6096,
+    "absolute_offset_identified": false,
+    "estimated_offsets_db": {
+      "0": 0.0,
+      "1": -3.0,
+      "2": 4.0
+    }
+  },
+  "independent_passive_replay": true,
+  "limits": [
+    "Static isolated simulated channels; no packet/MAC/hardware qualification.",
+    "Receiver reports are deterministic quantization/sensitivity transforms; no random measurement noise is added.",
+    "Finite RT path search is not a convergence proof; unresolved paths are unknown and excluded.",
+    "Condition-delta point error is conditional on both-heard reports, with explicit censored/missing coverage.",
+    "Geometry bootstrap describes this finite prespecified simulation benchmark; it does not certify arbitrary deployments.",
+    "Checkpoint VAL scores are replayed from archived history, not rerun model inference.",
+    "Bootstrap conditions on three trained members; geometry is the independent unit."
+  ],
+  "matched_alignment_benefit_supported": false,
+  "original_service_confirmation_permitted": false,
+  "prior_sealed_evidence_verified": 5161,
+  "production_qualified": false,
+  "publication": {
+    "branch": "codex/adaptive-radio-service-transfer",
+    "commit": "9bd34ab688d8b74dc2e05df8a6c55fed87257f20",
+    "remote": "origin",
+    "remote_observed_commit": "9bd34ab688d8b74dc2e05df8a6c55fed87257f20",
+    "schema": 1,
+    "source_receipt_sha256": "4bb2415118970fad4a95bbd4575d7ef799e10242faa168329d24f358ed75c3fc"
+  },
+  "raw_stages": {
+    "development": {
+      "cases": 12,
+      "censored": 853,
+      "heard": 6059,
+      "layouts": 4,
+      "material_counterfactuals_verified": true,
+      "missing": 0,
+      "same_CAD_mesh_TX_solver_seed_verified": true
+    },
+    "test": {
+      "cases": 72,
+      "censored": 5867,
+      "heard": 35605,
+      "layouts": 24,
+      "material_counterfactuals_verified": true,
+      "missing": 0,
+      "same_CAD_mesh_TX_solver_seed_verified": true
+    },
+    "training": {
+      "cases": 72,
+      "censored": 3655,
+      "heard": 27449,
+      "layouts": 24,
+      "material_counterfactuals_verified": true,
+      "missing": 0,
+      "same_CAD_mesh_TX_solver_seed_verified": true
+    },
+    "validation": {
+      "cases": 18,
+      "censored": 937,
+      "heard": 6839,
+      "layouts": 6,
+      "material_counterfactuals_verified": true,
+      "missing": 0,
+      "same_CAD_mesh_TX_solver_seed_verified": true
+    }
+  },
+  "report_sha256": "f0752d13e6bd5386a7360bd9fe5a11cd8c539796a2a0ea140762ca51b0668695",
+  "research_implementation_imported": false,
+  "review_script_sha256": "5e3c96f05e35f7a39739c915f809d72d257f3e63ece6322f4b90dd2a46e73cc3",
+  "schema": 1,
+  "selected_cell": "regression",
+  "source_files_verified": 504,
+  "source_receipt_sha256": "4bb2415118970fad4a95bbd4575d7ef799e10242faa168329d24f358ed75c3fc",
+  "status": "pass",
+  "test_opened": true
+}
