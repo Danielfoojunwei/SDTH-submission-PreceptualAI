@@ -10,6 +10,24 @@ E1–E5 and corrected E7 have finished; E6 remains excluded. No interrupted
 original training worker needs restarting, and original large-model results
 still represent one training chain.
 
+The new [causal spatial-control study](research_status/SPATIAL_CONTROL.md) is
+complete: **48 fresh simulations plus two exact disabled-parity runs**,
+543 frozen source files and 224 evidence files. The independent passive audit
+passes all raw observations, costs, clocks and reductions. At 30 ms handovers,
+support + client-local recovery reduces fixed-regression mean command loss
+**1.635625% → 1.079375%**, but RadioMap remains lower at **1.044375%** in every
+episode pair. Mean episode maximum silence is **5.8175 → 0.355 s**, with largest
+episode gap **16.11 → 0.61 s**. At four-second handovers recovery harms all four
+episodes for both forecasters. All outcomes and costs are retained; no model,
+threshold or controller was selected from them. No worker needs restarting.
+
+The new implementation preserves measured/arrival clocks and newer own censor
+reports, requires actual subsequent central command delivery for both handover
+costs, and grants local recovery separate simulated preinstalled authority.
+Scans, interrupts, computation and rejected late work are charged. This is a
+20-second/four-episode simulation diagnostic using unchanged regression weights,
+not a JEPA-objective result, qualified packet-risk head or physical trial.
+
 The [adaptive RF-condition report](research_status/ADAPTIVE_RESULTS.md) is
 complete: 12 fits, 174 Sionna RT cases and 24 TEST layouts. Validation selects
 regression, whose sparse condition-delta RMSE is **1.520106 versus 1.654205 dB**
@@ -35,17 +53,20 @@ The [measured CSI result](research_status/CSI_RESULTS.md) is negative. The
 simulations, adverse fast-handover result and 9.74-second recovery outlier.
 The [2.83× geometry-operand optimization](research_status/NATIVE_PERFORMANCE.md)
 changes neither those frozen outcomes nor full-model/service qualification.
-The [next-model design](research_status/NEXT_MODEL.md) is a proposal, not an
-implemented or validated remedy.
+The hierarchical belief, learned dynamics and service-head portions of the
+[next-model design](research_status/NEXT_MODEL.md) remain proposed. Its
+spatial-memory/admission/recovery slice now has the completed implementation
+and mixed diagnostic above.
 
 The [read-only R6 bridge](research_status/R6_BRIDGE.md) invokes actual isolated
 upstream planning code with explicit service contracts and conservative journal
 views; unqualified RF outcomes defer. The [local Studio export](research_status/STUDIO_EXPORT.md)
 is reviewable; all 11 cards, including the sealed adaptive results, are complete.
-External Studio/deck publication has not occurred. The latest [tracked-suite receipt](../artifacts/research_review/release_suite.json)
-and [log](../artifacts/research_review/release_suite.log) record **2,655 passing
-tests**, one expected fork warning, 130 tracked test files and unchanged source
-hashes. R6/exporter checks are included, not additive scientific trials.
+External Studio/deck publication has not occurred. The latest [tracked-suite receipt](../artifacts/spatial_control_review/final_software_suite.json)
+and [log](../artifacts/spatial_control_review/final_software_suite.log) record **2,978 passing
+tests**, one expected fork warning, 138 test modules and unchanged hashes for
+436 source/config/test files. Older suite proofs are preserved. R6, exporter
+and spatial checks are included, not additive scientific trials.
 
 **RadioMap + WirelessJEV remains the default.** The original 24 SERVICE layouts
 remain unopened. Dynamic event-time learning, supported risk heads, reliable

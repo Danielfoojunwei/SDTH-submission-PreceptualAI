@@ -2,6 +2,23 @@
 
 ## Current RadioJEPA evidence boundary
 
+The [causal warehouse-control diagnostic](research_status/SPATIAL_CONTROL.md)
+adds 48 fresh 100-robot/20-second simulations and two exact wiring-parity runs
+under a new published execution contract. It separates spatial report support
+from preinstalled client-local recovery and requires central commands to be
+carried by a later-created, actually delivered packet. Observation and compute
+clocks, scan/handshake interruption proxies and end-pending packets are explicit.
+
+At 30 ms handovers, support + recovery reduces the fixed regression model's
+mean misses **1.635625% → 1.079375%**, while RadioMap remains better at
+**1.044375%** in all four pairs. Mean episode maximum silence falls
+**5.8175 → 0.355 s**. At four-second handovers, the recovery intervention harms
+every episode for both forecasters. Support and executable recovery repair
+important failure modes without establishing a RadioMap victory, JEPA-objective
+benefit, learned dynamics or production eligibility. Different command semantics
+mean these results do not isolate a single change against the older native run.
+All 543 source / 224 evidence files and the independent raw reductions pass.
+
 The [current architecture](research_status/CURRENT_SYSTEM.md) separates a
 reported-RF physical field model from WirelessJEV's typed missions, bounded
 planner and independent gate. The [adaptive assay](research_status/ADAPTIVE_RESULTS.md)
@@ -41,7 +58,7 @@ descriptive diagnostic, not default promotion or fresh confirmation.
 The [read-only R6 bridge](research_status/R6_BRIDGE.md) and
 [local evidence Studio](research_status/STUDIO_EXPORT.md) package explicit
 contracts and evidence without granting execution authority. The current
-[2,655-test tracked-suite proof](../artifacts/research_review/release_suite.json)
+[2,978-test tracked-suite proof](../artifacts/spatial_control_review/final_software_suite.json)
 is software validation; it adds no independent RF samples or hardware evidence.
 
 The warehouse-connectivity E1–E5 and corrected E7 experiments are complete

@@ -1,9 +1,17 @@
-# Proposed next model: spatial support, hierarchical belief and executable recovery
+# Next model: built support and recovery, proposed hierarchical belief
 
-This is a **design proposal**, not a new implementation or experiment. The
-[current system](CURRENT_SYSTEM.md) tracks implemented behavior separately.
-No new fit, model forward, packet case or hardware action accompanies this
-document, and the running adaptive TEST/audit remains unchanged.
+The [spatial-control stack](SPATIAL_CONTROL.md) now implements causal report
+memory, latest-own source-band support, causal central command execution and
+separately preinstalled paid own-client recovery. It reuses the fixed regression
+checkpoint and unchanged 64-token encoder. Its [registered 48-fresh + two-parity
+diagnostic](../spatial_control/PLAN.md) is complete, with canonical seal and
+independent passive review passed. [All handover-specific contrasts and harms](EXECUTION_LEDGER.md#spatial-control-contrasts)
+remain visible. This is an enabling-stack/controller result with fixed neural weights; RadioMap still performs its ordinary numerical history fits.
+
+**Learned AP/region hierarchy, query-aware encoder retrieval, temporal belief
+transitions and protocol-supervised service heads remain proposals.** The
+built observation index and controller do not constitute those models. The
+[current system](CURRENT_SYSTEM.md) and architecture page separate these levels.
 
 ## Evidence that determines the design
 
@@ -14,45 +22,56 @@ document, and the running adaptive TEST/audit remains unchanged.
 | All history-dependent mean changes pass through eight global coefficients; the query-local correction is fixed after training. | Compare a hierarchical per-AP/region memory with the global state. The trace does **not** prove eight dimensions insufficient, diagnose collapse or establish that hierarchy will repair the outage. |
 | Robot 7 moved onto AP3 and later recovery remained pending without successful delivery. The model also transfers from two-AP RT rooms to a 16-AP warehouse without native risk calibration. [Results](NATIVE_RESULTS.md). | Separate support/calibration admission from command execution. An independent veto does not supply an offline recovery mechanism. |
 | Sharing band-independent geometry produced exact operand bytes and a **2.831× median operand-call speedup**. [Profile](NATIVE_PERFORMANCE.md). | Reuse this separate optimization where applicable and charge remaining work. It is not a full-model or service speedup and was not substituted into the frozen native run. |
+| The sealed adaptive assay selects regression; joint agreement is worse, and pooled Bayes nearly ties its primary metric. E7 calibration improves map RMSE with mixed planning utility. [Adaptive](ADAPTIVE_RESULTS.md), [E7](E7_CALPLANNING_RESULTS.md). | Preserve strong numerical and exact matched-supervision controls. Better field error or a larger latent cannot be assumed to improve service or establish a JEPA benefit. |
 
 Decision 1 contained robot 7's newer target bound, delivered at 0.45 s and
 0.617 m from its query, but did not select it. That forecast completed at
-2.30 s, after the initiating 1.50 s move. A proposed memory must preserve
-both facts; it cannot retroactively insert this report into decision 0.
+2.30 s, after the initiating 1.50 s move. The built memory/refresh path preserves
+measurement, arrival and admission clocks; it cannot retroactively insert a
+report into an earlier forecast. These historical diagnostics remain unchanged.
 
-## Proposed integration
+## Built boundary and proposed integration
 
 ```mermaid
 flowchart LR
-    REPORT[Delivered reports with measurement,<br/>arrival, position and gauge metadata] --> MEMORY[Causal spatial report memory]
-    CAD[Public CAD and planned positions] --> OPS[Shared geometry operands<br/>and carrier-specific physics]
-    MEMORY --> RETRIEVE[Query-specific support retrieval<br/>coverage, age, heard and censored evidence]
-    OPS --> RETRIEVE
-    RETRIEVE --> BELIEF[Hierarchical belief<br/>shared prior + AP and regional state]
-    PROTOCOL[Past ACK, retries, queues,<br/>deadlines and actual action events] --> BELIEF
-    BELIEF --> HEADS[RF forecast and separately supervised<br/>service heads with scoped uncertainty]
-    OPS --> HEADS
-    HEADS --> PLANNER[Bounded typed planner]
-    MISSION[Validated mission cost] --> PLANNER
-    PLANNER --> GATE[Independent support and risk gate<br/>RadioMap fallback]
-    GATE --> COMMAND[Central command transport<br/>execution requires actual delivery]
+    REPORT[Delivered reports with measurement,<br/>arrival, position and gauge metadata] --> MEMORY[BUILT: causal spatial report memory]
+    REPORT --> SELECT[BUILT: unchanged 64-token selector]
+    CAD[Public CAD and planned positions] --> OPS[BUILT: shared geometry operands]
+    SELECT --> GLOBAL[BUILT: frozen global field posterior]
+    OPS --> GLOBAL
+    GLOBAL --> PLANNER[BUILT: typed bounded planner]
+    MEMORY --> SUPPORT[BUILT: optional latest-own support<br/>queued server-delivery refresh]
+    PLANNER -->|support enabled| SUPPORT
+    PLANNER -->|support disabled| COMMAND
+    SUPPORT --> COMMAND[BUILT: paid central commands<br/>creation, delivery and expiry]
     COMMAND --> RADIO[Radio actions and packet process]
-    LOCAL[Own pilots and completed local scans] --> RECOVERY[Preinstalled client-local recovery<br/>separate authority and capability contract]
+    LOCAL[Own valid pilots and paid completed scans] --> RECOVERY[BUILT: preinstalled own-client recovery]
     RECOVERY --> RADIO
-    RADIO --> PROTOCOL
     RADIO --> REPORT
+    MEMORY -. proposed encoder retrieval .-> BELIEF[PROPOSED: AP and region hierarchy<br/>observation-driven temporal belief]
+    PROTOCOL[Past ACK, retries, queues,<br/>deadlines and actual action events] -. labeled training .-> HEADS[PROPOSED: calibrated service heads]
+    BELIEF -.-> HEADS
+    OPS -.-> BELIEF
+    HEADS -. future qualified outcomes .-> PLANNER
+    classDef proposed fill:#fff3cd,stroke:#9a6700,stroke-dasharray:5 5
+    class BELIEF,HEADS proposed
 ```
 
-The diagram proposes wiring; existing physics operators and typed interfaces
-can be reused. It does not imply that these new memory, hierarchy, service
-heads or recovery components have been built or validated together. Mission
-text remains outside the RF encoder.
+Solid paths describe built software; dashed paths describe future model work.
+The current support memory adds admission information without changing encoder
+context. Its 2.4/5.2 GHz support rule does not calibrate a 6.5 GHz forecast or
+packet-risk head. Mission text remains outside the RF encoder. The completed
+controller diagnostic has mixed, handover-dependent outcomes.
 
-**Memory before a larger latent.** Preserve receiver/AP/band association,
-measurement time, arrival time, position uncertainty, frontend gauge and
-actual report semantics. At issue time retrieve only already available rows,
-balancing nearby coverage with age and obstruction geometry. Retain useful
-own-link evidence without privileging a stale reading over fresher support.
+**Memory before a larger latent.** The built index preserves receiver/AP/band
+association, measurement/arrival intervals, position uncertainty, gauge and
+report semantics. Admission refresh joins only payload-matched server
+deliveries; a completed undelivered local scan is not server knowledge. Its
+guard selects the newest own source-band report before spatial filtering,
+so a newer negative/distant report cannot resurrect an older nearby positive.
+Unknown measurement age cannot pass freshness. Query-aware retrieval into
+the encoder, obstruction-aware ranking and learned hierarchical state remain
+separate changes requiring matched tests.
 Heard values, quantization intervals, upper censor bounds and missing scans
 remain distinct. An unheard AP crowded out of a scan is not a measured
 −90 dBm point. Output a support footprint and missingness/age summary with
@@ -97,15 +116,28 @@ sites; correlated packets are not independent calibration units. RF-model
 spread is not command-risk calibration, and a static condition-change assay
 does not validate temporal transitions or stable long rollouts.
 
-**Admission and recovery are different systems.** An external support/risk
-guard may reject unsupported or optimistic moves and retain RadioMap as
-fallback. It cannot deliver a central recovery command across a failed link.
-Central actions must follow a ledger proving delivery after command creation.
-A separately preinstalled client-local recovery would see only its own
-available pilots, completed scan cache and permitted local state during an
-outage. Its actions, interruption costs and authority require explicit
-capabilities and tests. Neither path may receive free server information or
-instantaneous execution, and no reachable safe link is guaranteed.
+**Admission and recovery are different systems.** The built support guard
+uses additional delivered history and payload-matched admission refresh. Its
+latest-own source-band rule is an engineering support test; packet-risk heads
+remain unavailable. The built central path pays 100 ms creation, one-second
+expiry and actual later transport, without refreshing same-target lifetimes.
+The separately preinstalled own-client controller uses only its completed paid
+scans/current valid pilots during an outage. It pays scan/interruption costs,
+a 10 ms decision floor, a five-millisecond whole-fleet tick budget and a
+separate five-millisecond delayed-validation budget. Neither path receives
+free server information or instantaneous execution, and no reachable safe link
+is guaranteed. Local simulator authority is not authenticated hardware authority.
+
+At 0.03 s, support and both reduce regression's mean miss fraction from
+1.635625% to 1.107500% and 1.079375%; support harms one of four episodes on
+misses, while both harms none versus regression. The combined package still
+loses to RadioMap + recovery (1.044375%) in all four episodes. At 4 s,
+support alone changes regression from 1.362500% to 1.346875% without miss/gap
+harm, while local recovery and both worsen all four episodes on misses and
+maximum gaps. RadioMap recovery also harms all four slow episodes. Mean
+slow loss ties between both packages while three episodes have more misses
+for regression + both. These outcomes motivate new cost/support hypotheses;
+they do not authorize retuning the completed cases or explain every cause.
 
 ## Ablations needed before choosing the architecture
 
@@ -115,7 +147,7 @@ instantaneous execution, and no reachable safe link is guaranteed.
 | Hierarchical versus global belief | Same retrieval and observations; matched supervised architecture/parameter and compute controls, plus strong per-AP numerical references. |
 | Combined retrieval and hierarchy | Cross both factors; retain amplitude-erased, stale-context and exact consistency-on/off controls. Do not call a retrieval gain a latent-capacity or JEPA gain. |
 | Operand construction and rendering | Use the byte-preserving operator for comparable neural arms; preserve Map's efficient reference path. Measure complete cold/warm inference, memory, invalidation and queue age, rather than extrapolating the 2.831× operand ratio. |
-| Admission and client-local recovery | Separate registered controller experiments with fixed forecasts where appropriate. Equal sensing/command/compute costs, actual central delivery versus declared local capability, and raw action/packet evidence are required. |
+| Further controller or recovery policy changes | The fixed support/recovery comparison is already complete; retain every gain and harm. New thresholds, cost-aware decisions or risk models require a separate protocol and fresh cases, with central transport distinguished from preinstalled own-client authority. Shared sensing budgets do not force identical realized observations. |
 
 Use a strong full-history RadioMap and an explicitly matched-context numerical
 control to distinguish representation from information-budget effects. First
@@ -125,6 +157,7 @@ Report mean and worst-decile misses, maximum gaps, per-device support,
 calibration failures, rates and total paid latency; keep handover mechanisms
 separate. Fresh splits/cases and a published finite protocol are prerequisites.
 
-These are proposed follow-ups to completed diagnostics. They establish no
-JEPA superiority, SOTA, novelty, production eligibility or hardware benefit.
+Hierarchy, encoder retrieval and service-head work remain proposed follow-ups.
+The completed support/recovery experiment establishes no JEPA-objective gain,
+SOTA, novelty, production eligibility or hardware benefit.
 The original SERVICE holdouts remain closed, and no actuation is authorized.

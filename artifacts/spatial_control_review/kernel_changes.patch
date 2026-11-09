@@ -1,0 +1,458 @@
+--- sealed service_world/sim.py
++++ new spatial_control/kernel.py
+@@ -1,4 +1,4 @@
+-# Service-world research kernel; packet-value and native predecessors stay sealed.
++# Spatial-control research derivative; all predecessor scientific kernels stay sealed.
+ # Versioned research kernel derived from native.sim; default equivalence is tested.
+ """Cross-layer slot simulator (10 ms) with legacy, 802.11r, default multi-link
+ and the native WirelessJEV + RadioMap stack.
+@@ -22,6 +22,7 @@
+ import math
+ import copy
+ import hashlib
++import time
+ 
+ import numpy as np
+ 
+@@ -288,7 +289,8 @@
+              checkpoint_at=None, checkpoint_sink=None, resume=None, stop_slot=None,
+              force_action=None, observation_hook=None, actual_action_hook=None,
+              external_primary=None, detailed=False, focal_hold_slots=None,
+-             observation_period_slots=None, native_proposal_ttl_slots=None) -> dict:
++             observation_period_slots=None, native_proposal_ttl_slots=None,
++             spatial_runtime=None, causal_central=False) -> dict:
+     """Execute native packets, optionally branching one bounded intervention.
+ 
+     ``focal_hold_slots=100`` suppresses further primary moves for one second
+@@ -307,7 +309,40 @@
+     one-second lifetime, including the internal canonical planner. An explicit
+     earlier proposal deadline still applies. ``None`` preserves predecessor
+     behavior. This command-freshness baseline is not an architectural novelty.
++
++    ``causal_central=True`` changes only the registered single-radio native
++    profile: central handover proposals pay a 100ms creation allowance, require
++    a subsequently created and delivered control packet, and expire after 1s.
++    ``spatial_runtime`` can separately request preinstalled own-client actions
++    after a measured <=5ms tick and a 10ms minimum decision delay. Interruption
++    begins after the execution slot; both local and central handovers pay the
++    full ceiling-rounded policy duration. Background/autonomous scans share a
++    >=5s start cadence and 90ms radio outage. All new ledgers live exclusively
++    in ``spatial_execution``; both flags off retain predecessor behavior.
+     """
++    if type(causal_central) is not bool:
++        raise ValueError('Causal central dispatch must be an explicit boolean')
++    spatial_enabled = causal_central or spatial_runtime is not None
++    if spatial_enabled:
++        if (policy.kind != 'native' or policy.dual_radio or not policy.cadence_scan
++                or not policy.cadence_roam or not policy.planned_roam or policy.online_map
++                or policy.power_control or interference
++                or resume is not None or force_action is not None or checkpoint_at is not None
++                or external_primary is not None or stop_slot is not None or focal_hold_slots is not None):
++            raise ValueError('Spatial mode supports only complete native single-radio causal episodes')
++        if scan_observer is None or not callable(getattr(scan_observer, 'complete', None)):
++            raise TypeError('Spatial mode requires actual timestamped scan telemetry')
++        if (scan_duration_s is None or not math.isclose(scan_duration_s, .09, rel_tol=0, abs_tol=1e-12)
++                or policy.scan_period_s < 5 or not math.isfinite(policy.scan_period_s)
++                or isinstance(policy.roam_cost_s, (bool, np.bool_))
++                or policy.roam_cost_s <= 0 or not math.isfinite(policy.roam_cost_s)):
++            raise ValueError('Spatial mode requires paid 90ms scans, >=5s cadence and positive finite handovers')
++        if spatial_runtime is not None:
++            for name in ('supports_client_local_actions', 'supports_autonomous_scans'):
++                if type(getattr(spatial_runtime, name, None)) is not bool:
++                    raise TypeError('Local runtime must declare explicit ' + name)
++            if any(not callable(getattr(spatial_runtime, name, None)) for name in ('tick', 'executed', 'validate')):
++                raise TypeError('Local runtime requires tick, evidence validation and actual-execution callbacks')
+     if resume is not None:
+         if world.seed != resume.config['scene'] or world.n != resume.config['robots']:
+             raise ValueError("Checkpoint scene or fleet differs")
+@@ -469,6 +504,59 @@
+     native_delta = np.zeros((n, 3))  # reactive control until the first forecast is ready
+     pending_roam = np.full(n, -1)          # cadence_roam: target waiting for a quiet moment
+     pending_roam_expiry = np.full(n, n_slots+1, dtype=int)
++    # New state exists only in the opt-in derivative. It is not forkable and
++    # never changes predecessor outputs/RNG when both extension flags are off.
++    spatial_log = {'central_events': [], 'central_decisions': [], 'local_decisions': [],
++                   'local_events': [], 'scan_events': [], 'dispatch_events': [],
++                   'local_compute_events': [], 'local_validation_batches': [], 'central_compute_events': []}
++    central_pending = {}
++    central_staged = []
++    central_counter = 0
++    central_cpu_available_slot = 0
++    local_pending = []
++    local_seen = set()
++    local_cpu_available_slot = 0
++    last_delivery_slot = np.full(n, -1, dtype=np.int64)
++    receiver_site_history = np.full((n_slots, n), -1, dtype=np.int64) if spatial_enabled else None
++    receiver_up_history = np.zeros((n_slots, n), dtype=bool) if spatial_enabled else None
++    last_scan_started = np.full(n, -500, dtype=np.int64)
++    if spatial_enabled:
++        warm_scanned = np.asarray(scan_observer.history.scanned[:60])
++        if warm_scanned.shape != (60, n) or warm_scanned.dtype != np.bool_:
++            raise ValueError('Spatial scan budget needs the actual sixty-bin warm scan mask')
++        for i in range(n):
++            indices = np.flatnonzero(warm_scanned[:, i])
++            if len(indices):
++                # Warm bins provide intervals, not exact physical start clocks.
++                # Use the upper endpoint conservatively for the scan budget.
++                last_scan_started[i] = (int(indices[-1]) - 59) * 100
++        spatial_log['initial_scan_start_upper_slot'] = last_scan_started.tolist()
++
++    def cancel_central(i, reason):
++        old = central_pending.pop(int(i), None)
++        if old is not None:
++            spatial_log['central_events'].append({'event': 'cancelled', 'slot': int(k),
++                'reason': reason, **old})
++        pending_roam[i] = -1
++        pending_roam_expiry[i] = n_slots+1
++
++    def reject_local(action_id, reason, robot=None):
++        event = {'event': 'rejected', 'slot': int(k), 'action_id': action_id, 'reason': reason}
++        if robot is not None: event['robot'] = int(robot)
++        spatial_log['local_events'].append(event)
++        callback = getattr(spatial_runtime, 'rejected', None)
++        if callable(callback): callback(action_id, reason, int(k))
++
++    def request_id(value):
++        if not isinstance(value, str) or not value or len(value) > 160:
++            raise ValueError('Local action identity must be a nonempty bounded string')
++        return value
++
++    def robot_index(value):
++        if isinstance(value, (bool, np.bool_)) or not isinstance(value, (int, np.integer)) or not 0 <= value < n:
++            raise ValueError('Local request robot is outside the actual fleet')
++        return int(value)
++
+     locked_robot = None if force_action is None else int(force_action[0])
+     if locked_robot is not None and not 0 <= locked_robot < n:
+         raise ValueError("Invalid focal robot")
+@@ -479,9 +567,12 @@
+         nonlocal swaps
+         if locked_robot == i and not forcing:
+             return
+-        if policy.kind == "native" and native_proposal_ttl_slots is not None:
++        if policy.kind == "native" and native_proposal_ttl_slots is not None and not causal_central:
+             ttl_expiry = k + native_proposal_ttl_slots
+             valid_until = ttl_expiry if valid_until is None else min(ttl_expiry, int(valid_until))
++        if causal_central:
++            central_staged.append((int(i), int(target), float(cost_s), None if valid_until is None else int(valid_until)))
++            return
+         dual = bool(dual_mask[i])
+         if policy.cadence_roam and cost_s < CONTROL_PERIOD * SLOT and not (dual and site2[i] == target):
+             pending_roam[i] = target       # executed right after the next control delivery
+@@ -555,7 +646,16 @@
+         if locked_robot is not None and k >= locked_until:
+             locked_robot = None
+         slot_missed = np.zeros(n, dtype=bool)
++        if spatial_enabled:
++            receiver_site_history[k] = site
++            receiver_up_history[k] = (outage_until <= k) & (scan_until <= k)
+         if resume is None or k != k0:
++            if causal_central:
++                for i, command in list(central_pending.items()):
++                    if k >= command['expires_slot']:
++                        cancel_central(i, 'expired')
++                    elif int(site[i]) != command['current']:
++                        cancel_central(i, 'current_snapshot_mismatch')
+             expired = (pending_roam >= 0) & (pending_roam_expiry <= k)
+             pending_roam[expired] = -1
+             pending_roam_expiry[expired] = n_slots+1
+@@ -597,19 +697,88 @@
+             if k % BLOCK_SLOTS == 0:
+                 observed = true_snr(max(0, k - BLOCK_SLOTS), site)
+                 receiver_available = (outage_until <= k) & (scan_until <= k)
+-                visible_pilot = np.where(receiver_available[:, None], observed, visible_pilot)
+-                pilot_sample_slot = np.where(receiver_available, max(0, k-BLOCK_SLOTS), pilot_sample_slot)
+-                pilot_site = np.where(receiver_available, site, pilot_site)
++                pilot_receiver_available = receiver_available
++                if spatial_enabled:
++                    captured = max(0, k-BLOCK_SLOTS)
++                    pilot_receiver_available = (receiver_available & receiver_up_history[captured]
++                        & (receiver_site_history[captured] == site))
++                visible_pilot = np.where(pilot_receiver_available[:, None], observed, visible_pilot)
++                pilot_sample_slot = np.where(pilot_receiver_available, max(0, k-BLOCK_SLOTS), pilot_sample_slot)
++                pilot_site = np.where(pilot_receiver_available, site, pilot_site)
+                 if scan_observer is None and observation_period_slots == 100:
+                     meas = observed
+                 else:
+-                    available = (outage_until <= k) & (scan_until <= k)
++                    available = (pilot_receiver_available if spatial_enabled else
++                                 (outage_until <= k) & (scan_until <= k))
+                     meas = np.where(available[:, None], observed, meas)
+                 for b in range(3):
+                     band = BANDS[b]
+                     m = meas[:, b] - (3.0 if policy.kind != "legacy" else 0.0) * (second_link >= 0)
+                     mcs[b] = _mcs_for(curves, band, m - 2.0)          # Minstrel-like backoff
+ 
++        if spatial_runtime is not None and k % BLOCK_SLOTS == 0 and k >= local_cpu_available_slot:
++            tick_started = time.perf_counter()
++            requests = spatial_runtime.tick(slot=int(k), current=site.copy(),
++                positions=world.pos[min(k//slots_per_pos, len(world.pos)-1)].copy(),
++                radio_available=((outage_until <= k) & (scan_until <= k)).copy(),
++                pilot_snr=visible_pilot.copy(), pilot_slot=pilot_sample_slot.copy(),
++                pilot_site=pilot_site.copy(), last_delivery_slot=last_delivery_slot.copy(), sensor=scan_observer)
++            tick_elapsed = time.perf_counter() - tick_started
++            if (not isinstance(requests, dict) or set(requests) - {'moves', 'scan_robots', 'scan_action_ids'}
++                    or not isinstance(requests.get('moves', []), (list, tuple))
++                    or not isinstance(requests.get('scan_robots', []), (list, tuple))
++                    or not isinstance(requests.get('scan_action_ids', {}), dict)):
++                raise ValueError('Local runtime must return typed bounded move/scan requests')
++            parsed = []
++            for row in requests.get('moves', []):
++                if not isinstance(row, (tuple, list)) or len(row) != 3:
++                    raise ValueError('Local moves require robot, target and unique action identity')
++                i, target, action_id = robot_index(row[0]), row[1], request_id(row[2])
++                if isinstance(target, (bool, np.bool_)) or not isinstance(target, (int, np.integer)) or not 0 <= target < s:
++                    raise ValueError('Local target AP is outside the actual public AP set')
++                if not spatial_runtime.supports_client_local_actions:
++                    raise ValueError('Local moves require declared preinstalled client authority')
++                parsed.append({'kind': 'move', 'robot': i, 'target': int(target), 'action_id': action_id})
++            scan_ids = requests.get('scan_action_ids', {})
++            for value in requests.get('scan_robots', []):
++                i = robot_index(value)
++                action_id = request_id(scan_ids.get(i, scan_ids.get(str(i))))
++                if not spatial_runtime.supports_autonomous_scans:
++                    raise ValueError('Autonomous scans require an explicit local capability')
++                parsed.append({'kind': 'scan', 'robot': i, 'action_id': action_id})
++            if len(parsed) > n or len({r['robot'] for r in parsed}) != len(parsed):
++                raise ValueError('At most one bounded local action per robot and tick is allowed')
++            if len({r['action_id'] for r in parsed}) != len(parsed):
++                raise ValueError('Local action identities must be unique across the fleet')
++            local_cpu_available_slot = max(k+1, k+int(math.ceil(tick_elapsed/SLOT-1e-12)))
++            observations = []
++            for request in parsed:
++                i = request['robot']
++                observations.append({'robot': i, 'current': int(site[i]),
++                    'radio_available': bool(outage_until[i] <= k and scan_until[i] <= k),
++                    'pilot_snr': visible_pilot[i].tolist(), 'pilot_slot': int(pilot_sample_slot[i]),
++                    'pilot_site': int(pilot_site[i]), 'last_delivery_slot': int(last_delivery_slot[i])})
++            tick_record = {'slot': int(k), 'elapsed_seconds': float(tick_elapsed),
++                           'budget_seconds': .005, 'ready_slot': int(local_cpu_available_slot),
++                           'overrun': bool(tick_elapsed > .005), 'requests': copy.deepcopy(parsed),
++                           'own_observations': observations}
++
++            spatial_log['local_decisions'].append(tick_record)
++            for request in parsed:
++                action_id = request['action_id']
++                if action_id in local_seen:
++                    reject_local(action_id, 'duplicate_action_identity', request['robot'])
++                elif tick_elapsed > .005:
++                    local_seen.add(action_id)
++                    reject_local(action_id, 'local_compute_budget', request['robot'])
++                else:
++                    local_seen.add(action_id)
++                    local_pending.append({**request, 'request_slot': int(k), 'ready_slot': int(k+1),
++                                          'current': int(site[request['robot']])})
++                    spatial_log['local_events'].append({'event': 'queued', 'slot': int(k), **local_pending[-1]})
++        elif spatial_runtime is not None and k % BLOCK_SLOTS == 0:
++            spatial_log['local_compute_events'].append({'event': 'tick_skipped', 'slot': int(k),
++                'reason': 'previous_local_compute_unfinished', 'ready_slot': int(local_cpu_available_slot)})
+         if resume is None or k != k0:
+             arrived = None if forecast_queue is None else forecast_queue.take(k)
+         sample_observation = k % observation_period_slots == 0
+@@ -727,7 +896,15 @@
+                 ctrl_link = np.zeros(n, dtype=int)
+ 
+         do_native = (k % slots_per_dec == 0) if forecast_queue is None else arrived is not None
++        if policy.kind == "native" and do_native and causal_central and k < central_cpu_available_slot:
++            spatial_log['central_compute_events'].append({'event': 'forecast_discarded_while_busy',
++                'slot': int(k), 'forecast_decision': int(arrived if forecast_queue is not None else min(k//slots_per_dec, world.forecast.shape[0]-1)),
++                'ready_slot': int(central_cpu_available_slot)})
++            do_native = False
+         if policy.kind == "native" and do_native:
++            central_started = time.perf_counter() if causal_central else None
++            central_before = (ctrl_link.copy(), second_link.copy(), bulk_cap.copy(), native_delta.copy()) if causal_central else None
++            central_staged = []
+             d = min(k // slots_per_dec, world.forecast.shape[0] - 1) if forecast_queue is None else arrived
+             fc = world.forecast[d]                                 # (N,H,S,3)
+             sigma_now = world.sigma_belief[d]
+@@ -853,6 +1030,37 @@
+             fc_now = fc[:, 0][ar, site]                            # (N,3)
+             fc_next = fc[:, 1][ar, site]
+             native_delta = (fc_next - fc_now)                      # dB per second along route
++            if causal_central:
++                central_elapsed = time.perf_counter() - central_started
++                central_cpu_available_slot = k+max(10,int(math.ceil(central_elapsed/SLOT-1e-12)))
++                if central_elapsed > .1:
++                    ctrl_link, second_link, bulk_cap, native_delta = central_before
++                spatial_log['central_decisions'].append({'slot': int(k), 'forecast_decision': int(d),
++                    'elapsed_seconds': float(central_elapsed), 'budget_seconds': .1,
++                    'overrun': bool(central_elapsed > .1), 'proposals': len(central_staged),
++                    'created_slot': int(k+10), 'compute_ready_slot': int(central_cpu_available_slot)})
++                for i, target, cost_s, valid_until in central_staged:
++                    if central_elapsed > .1:
++                        spatial_log['dispatch_events'].append({'event': 'discarded', 'slot': int(k),
++                            'robot': i, 'current': int(site[i]), 'target': target, 'reason': 'central_compute_budget'})
++                        continue
++                    previous = central_pending.get(i)
++                    if previous is not None and previous['current'] == int(site[i]) and previous['target'] == target:
++                        spatial_log['dispatch_events'].append({'event': 'not_renewed', 'slot': int(k),
++                            'robot': i, 'command_id': previous['command_id'], 'expires_slot': previous['expires_slot']})
++                        continue
++                    if previous is not None: cancel_central(i, 'replaced_by_new_target')
++                    central_counter += 1
++                    created = int(k+10)
++                    expires = created+100
++                    if valid_until is not None: expires = min(expires, valid_until)
++                    command = {'command_id': f'central-{central_counter}', 'robot': i,
++                        'current': int(site[i]), 'target': target, 'proposed_slot': int(k),
++                        'created_slot': created, 'expires_slot': expires,
++                        'interruption_slots': int(math.ceil(cost_s/SLOT-1e-12))}
++                    central_pending[i] = command
++                    pending_roam[i], pending_roam_expiry[i] = target, expires
++                    spatial_log['central_events'].append({'event': 'queued', 'slot': int(k), **command})
+ 
+         if policy.kind == "native" and k % BLOCK_SLOTS == 0:
+             # Route-as-pilot: lagged measurement + route-predicted change.
+@@ -1003,6 +1211,9 @@
+         scale_c = np.minimum(1.0, world.avail / np.maximum(air_ctrl, 1e-12))
+         grant_c = np.ones(n) if policy.sched_control else scale_c[doms[ar, ctrl_link]]
+         delivered = pend & (rng.random(n) < ok * grant_c)
++        if spatial_enabled:
++            delivered_packet_created_slot = np.where(delivered, k-ctrl_age, -1).astype(np.int64)
++            last_delivery_slot[delivered] = k
+         if scan_observer is not None:
+             scan_observer.deliver(k, delivered)
+         # Forensics: what this waiting packet is up against right now.
+@@ -1038,22 +1249,117 @@
+         stopped_slots += resumed.sum() * int(RESTART_S / SLOT)
+         stop_events += int(resumed.sum())
+         prev_gap = gap_cur.copy()
++        local_scan_requests = {}
++        if spatial_enabled:
++            ready_requests = [request for request in local_pending if request['ready_slot'] <= k]
++            local_pending = [request for request in local_pending if request['ready_slot'] > k]
++            valid_requests = []
++            validation_rows = []
++            validation_total = 0.
++            validation_overrun = False
++            for request in ready_requests:
++                i, action_id = request['robot'], request['action_id']
++                if site[i] != request['current']:
++                    reject_local(action_id, 'current_snapshot_mismatch', i); continue
++                if outage_until[i] > k or scan_until[i] > k:
++                    reject_local(action_id, 'receiver_unavailable', i); continue
++                if last_delivery_slot[i] >= request['request_slot']:
++                    reject_local(action_id, 'silence_resolved_after_request', i); continue
++                if k < local_cpu_available_slot:
++                    reject_local(action_id, 'local_compute_unfinished', i); continue
++                if request['kind'] == 'scan' and k-last_scan_started[i] < 500:
++                    reject_local(action_id, 'shared_scan_budget', i); continue
++                validation_started = time.perf_counter()
++                valid = spatial_runtime.validate(i, request.get('target'), int(k), action_id) is True
++                validation_elapsed = time.perf_counter()-validation_started
++                validation_total += validation_elapsed
++                validation_rows.append({'robot': i, 'action_id': action_id,
++                    'elapsed_seconds': float(validation_elapsed), 'evidence_valid': valid})
++                if validation_elapsed > .005 or validation_total > .005:
++                    validation_overrun = True
++                    # No physical action from this batch has yet taken effect.
++                    break
++                if valid:
++                    valid_requests.append(request)
++                else:
++                    reject_local(action_id, 'local_evidence_no_longer_valid', i)
++            if validation_rows:
++                local_cpu_available_slot = max(local_cpu_available_slot, k+max(1,int(math.ceil(validation_total/SLOT-1e-12))))
++                spatial_log['local_validation_batches'].append({'slot': int(k),
++                    'elapsed_seconds': float(validation_total), 'budget_seconds': .005,
++                    'overrun': validation_overrun, 'ready_slot': int(local_cpu_available_slot),
++                    'checks': validation_rows})
++            if validation_overrun:
++                already_rejected = {event['action_id'] for event in spatial_log['local_events']
++                    if event['event']=='rejected' and event['slot']==k}
++                for request in ready_requests:
++                    if request['action_id'] not in already_rejected:
++                        reject_local(request['action_id'], 'local_validation_compute_budget', request['robot'])
++                valid_requests = []
++            for request in valid_requests:
++                i, action_id = request['robot'], request['action_id']
++                if request['kind'] == 'scan':
++                    local_scan_requests[i] = action_id
++                    continue
++                old = int(site[i])
++                cancel_central(i, 'local_recovery')
++                site[i] = request['target']
++                interruption = int(math.ceil(policy.roam_cost_s/SLOT-1e-12))
++                outage_until[i] = k+1+interruption
++                roams[i] += 1
++                roam_log.append(k)
++                spatial_log['local_events'].append({'event': 'executed', 'slot': int(k),
++                    **request, 'from_site': old, 'outage_until_slot': int(outage_until[i]),
++                    'interruption_slots': interruption, 'last_delivery_slot': int(last_delivery_slot[i])})
++                if actual_action_hook is not None:
++                    actual_action_hook(k, np.array([i]), np.array([int(site[i])]))
++                spatial_runtime.executed(i, int(site[i]), int(k), action_id)
+         if policy.cadence_scan:
+             go_scan = delivered & due
++            if spatial_enabled:
++                go_scan &= ((outage_until <= k) & (scan_until <= k) & (k-last_scan_started >= 500))
++                for i in local_scan_requests: go_scan[i] = True
+             scan_until = np.where(go_scan, k + 1 + int(round((SCAN_S if scan_duration_s is None else scan_duration_s) / SLOT)), scan_until)
+             if scan_observer is not None and go_scan.any():
+                 ids = np.flatnonzero(go_scan)
+                 kp = min(k // slots_per_pos, len(world.pos)-1)
+                 scan_observer.scan(k, ids, world.pos[kp, ids], rssi_dl(k)[ids], scan_until[ids])
++                if spatial_enabled:
++                    for i in ids:
++                        i = int(i)
++                        last_scan_started[i] = k
++                        action_id = local_scan_requests.get(i)
++                        spatial_log['scan_events'].append({'event': 'started', 'slot': int(k),
++                            'measurement_slot': int(k), 'interruption_start_slot': int(k+1),
++                            'complete_slot': int(scan_until[i]), 'robot': i, 'action_id': action_id,
++                            'reason': 'autonomous_recovery' if action_id is not None else 'background_after_delivery',
++                            'interruption_slots': int(round(scan_duration_s/SLOT)),
++                            'last_delivery_slot': int(last_delivery_slot[i]),
++                            'positions_xy': world.pos[kp, i].tolist()})
++                        callback = getattr(spatial_runtime, 'scan_started', None)
++                        if callable(callback): callback(i, int(k), int(scan_until[i]), action_id=action_id)
+             due &= ~go_scan
+         if policy.cadence_roam:
+             fire = delivered & (pending_roam >= 0) & (outage_until <= k) & (k < pending_roam_expiry)
++            if causal_central:
++                for i in np.flatnonzero(fire):
++                    command = central_pending.get(int(i))
++                    fire[i] = bool(command is not None and k > command['created_slot']
++                        and delivered_packet_created_slot[i] >= command['created_slot']
++                        and site[i] == command['current'] and scan_until[i] <= k)
+             for i in np.nonzero(fire)[0]:
+                 site[i] = pending_roam[i]
+-                outage_until[i] = k + 1 + int(round(policy.roam_cost_s / SLOT))
++                outage_until[i] = k + 1 + (central_pending[int(i)]['interruption_slots'] if causal_central
++                                           else int(round(policy.roam_cost_s / SLOT)))
+                 roams[i] += 1
+                 pending_roam[i] = -1
+                 pending_roam_expiry[i] = n_slots+1
++                if causal_central:
++                    command = central_pending.pop(int(i))
++                    spatial_log['central_events'].append({'event': 'executed', 'slot': int(k), **command,
++                        'packet_created_slot': int(delivered_packet_created_slot[i]),
++                        'delivery_slot': int(k), 'execution_slot': int(k),
++                        'outage_until_slot': int(outage_until[i])})
+                 if actual_action_hook is not None:
+                     actual_action_hook(k, np.array([i]), np.array([int(site[i])]))
+                 if external_primary is not None and actual_action_hook != external_primary.executed:
+@@ -1155,6 +1461,23 @@
+                 observation_period_slots=observation_period_slots,
+                 focal_hold_slots=focal_hold_slots,
+                 native_proposal_ttl_slots=native_proposal_ttl_slots)
++    if spatial_enabled:
++        for request in local_pending:
++            spatial_log['local_events'].append({'event': 'right_censored', 'slot': int(final_slot), **request})
++        for command in central_pending.values():
++            spatial_log['central_events'].append({'event': 'right_censored', 'slot': int(final_slot), **command})
++        spatial_log.update(causal_central=causal_central,
++            local_recovery_enabled=spatial_runtime is not None,
++            local_decision_budget_seconds=.005, local_decision_floor_slots=1,
++            central_decision_budget_seconds=.1, central_creation_delay_slots=10,
++            central_ttl_slots=100, scan_minimum_spacing_slots=500,
++            local_completion_events=copy.deepcopy(getattr(scan_observer, 'local_completion_events', [])),
++            local_completed_payloads=copy.deepcopy(getattr(scan_observer, 'local_completed_payloads', [])),
++            final_last_delivery_slot=last_delivery_slot.tolist(),
++            pending_packet_age_end=ctrl_age.astype(int).tolist(),
++            pending_control_packets=int((ctrl_age >= 0).sum()),
++            final_current=site.astype(int).tolist())
++        result['spatial_execution'] = spatial_log
+     return result
+ 
+ 

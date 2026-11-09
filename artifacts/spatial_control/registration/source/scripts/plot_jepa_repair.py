@@ -1,0 +1,580 @@
+"""Render completed repair evidence from passive archives only.
+
+No scientific package, model, simulator, dataset builder or training runner is
+imported. Missing/changed evidence fails closed. Figures are derived artifacts.
+"""
+from __future__ import annotations
+import argparse
+from bisect import bisect_right
+from fractions import Fraction
+import gzip
+import hashlib
+import json
+import math
+from numbers import Real
+from pathlib import Path
+import platform
+
+ROOT = Path(__file__).resolve().parents[1]
+FAMILIES = ('radiomap', 'frozen_fleet_jepa')
+LABELS = {'radiomap': 'RadioMap', 'frozen_fleet_jepa': 'Frozen JEPA ensemble'}
+VARS = {'legacy': 'Legacy', 'exact_only': 'Exact integral only', 'repair': 'Complete repair'}
+COLORS = {'legacy': '#8495A5', 'exact_only': '#B3843B', 'repair': '#007E83'}
+INK, BLUE, TEAL, ORANGE, RED, PALE = '#203343', '#3278A5', '#007E83', '#BB862F', '#BC4C5E', '#F8FBFD'
+REPLAY_FIELDS = ('result', 'forecast_mean_sha256', 'forecast_std_sha256', 'telemetry',
+                 'decision_trace', 'admission_trace', 'local_scan_observability', 'action_trace_sha256')
+SCHEDULE_FIELDS = ('decision', 'kind', 'history_cutoff_exclusive', 'ready_slot',
+    'actual_prediction_seconds', 'actual_issue_seconds', 'actual_compute_seconds',
+    'profile_seconds', 'charged_compute_seconds', 'charged_seconds', 'shared_extra_seconds')
+
+
+def digest(path):
+    h = hashlib.sha256()
+    with Path(path).open('rb') as stream:
+        for block in iter(lambda: stream.read(1 << 20), b''): h.update(block)
+    return h.hexdigest()
+
+
+def value_digest(value):
+    return hashlib.sha256(json.dumps(value, sort_keys=True, separators=(',', ':'), allow_nan=False).encode()).hexdigest()
+
+
+def read(path):
+    return json.loads(Path(path).read_text())
+
+
+def require(value, message):
+    if not value: raise ValueError(message)
+
+
+def relative(path):
+    try: return str(Path(path).resolve().relative_to(ROOT))
+    except ValueError: return str(Path(path).resolve())
+
+
+def finite(value):
+    require(not isinstance(value, bool) and isinstance(value, Real) and math.isfinite(value), 'Expected a finite measured number')
+    return float(value)
+
+
+def close(a, b):
+    return math.isclose(finite(a), finite(b), rel_tol=1e-11, abs_tol=1e-12)
+
+
+def variants(cost):
+    return ('legacy', 'exact_only', 'repair') if cost == .03 else ('legacy', 'repair')
+
+
+def keys(p, stage, costs):
+    return [(stage, site, float(cost), family, variant) for site in p[stage + '_sites']
+            for cost in costs for family in FAMILIES for variant in variants(cost)]
+
+
+def case_name(key):
+    stage, site, cost, family, variant = key
+    return f'{stage}-{site}-h{round(cost * 1000):04d}-{family}-{variant}'
+
+
+def audit_jobs(row, p, profile):
+    """Check actual paid completion and every expected consumption event."""
+    jobs = row['jobs']; require(len(jobs) == p['duration_seconds'], 'Incomplete request ledger')
+    previous = 0.; ready = []
+    for index, job in enumerate(jobs):
+        require(job['decision'] == index and job['history_cutoff_exclusive'] == 60 + index,
+                'Forecast consumes a noncausal prefix')
+        actual = max(finite(job['actual_prediction_seconds']), finite(job['actual_issue_seconds']))
+        compute = max(profile[job['kind']], actual)
+        require(actual >= 0 and close(job['actual_compute_seconds'], actual)
+                and close(job['charged_compute_seconds'], compute)
+                and close(job['charged_seconds'], compute + p['extra_compute_seconds'])
+                and job['runtime_overrun'] is (actual > profile[job['kind']]),
+                'Actual forecast work was not paid or capacity flag changed')
+        previous = max(float(index), previous) + job['charged_seconds']
+        require(job['ready_slot'] == math.ceil(previous * 100 - 1e-10), 'Actual-cost FIFO differs')
+        ready.append(job['ready_slot'])
+    expected, last = [], -1
+    for slot in range(p['duration_seconds'] * 100):
+        index = bisect_right(ready, slot) - 1
+        if index > last:
+            expected.append({'slot': slot, 'forecast_decision': index, 'ready_slot': ready[index],
+                             'age_seconds': slot / 100 - index})
+            last = index
+    require(row['forecast_consumption'] == expected, 'Consumed forecast precedes completion or is omitted')
+    require(row['runtime_overrun'] is any(job['runtime_overrun'] for job in jobs)
+            and row['paid_cost_and_consumption_pass'] is True, 'Paid/capacity summary changed')
+
+
+def packet_metrics(row, p):
+    detail, flow = row['result']['packet_detail'], row['result']['packet_accounting']
+    sent, misses, gap = detail['sent'], detail['misses'], detail['max_gap']
+    pending = [int(age >= 0) for age in detail['pending_control_packet_age_slots']]
+    require(len(sent) == len(misses) == len(gap) == len(pending) == p['robots']
+            and all(type(x) is int and x == 20 * p['duration_seconds'] for x in sent)
+            and all(type(x) is int and 0 <= x <= sent[i] for i, x in enumerate(misses)),
+            'Native per-robot command counters differ')
+    total_sent, total_miss = sum(sent), sum(misses)
+    require(row['result']['control_sent'] == total_sent and row['result']['control_misses'] == total_miss,
+            'Native global counters differ from robot counters')
+    decile = max(1, p['robots'] // 10)
+    rates = [m / s for m, s in zip(misses, sent)]
+    worst = sum(sorted(rates)[-decile:]) / decile
+    pending_worst = sum(sorted((m + q) / s for m, q, s in zip(misses, pending, sent))[-decile:]) / decile
+    return {'control_sent': total_sent, 'control_misses': total_miss,
+        'command_loss': total_miss / total_sent,
+        'command_loss_pending_as_misses': (total_miss + sum(pending)) / total_sent,
+        'worst_decile_loss': worst, 'worst_decile_pending_as_misses': pending_worst,
+        'max_silence_seconds': max(gap) / 100,
+        'video_vs_original': flow['video_delivered_bits'] / max(flow['video_requested_bits'], 1e-9),
+        'bulk_mbps': flow['bulk_delivered_bits'] / p['duration_seconds'] / 1e6,
+        'roams': row['result']['roams']}
+
+
+def load_inputs(folder):
+    required = ('protocol.json', 'registration/source.json', 'registration/git.json',
+                'development.json', 'qualification.json', 'completion.json', 'report.json')
+    paths = [folder / name for name in required]
+    require(all(path.is_file() for path in paths), 'Finish the registered pipeline before rendering')
+    p, reg, meta, dev, qualification, completion, report = [read(path) for path in paths]
+    costs = qualification['passed_costs']
+    require(tuple(p['families']) == FAMILIES and p['handover_seconds'] == [.03, 4.]
+            and len(p['confirmation_sites']) == 8 and len(p['development_sites']) == 2
+            and len(set(p['confirmation_sites'] + p['development_sites'])) == 10
+            and set(costs) <= {.03, 4.} and len(costs) == len(set(costs)), 'Protocol/site/cost identity changed')
+    require(report['source_sha256'] == completion['source_sha256'] == reg['source_sha256']
+            and report['completion_sha256'] == digest(folder / 'completion.json')
+            and report['development_sha256'] == qualification['development_sha256'] == digest(folder / 'development.json')
+            and completion['qualification_sha256'] == report['qualification_sha256'] == digest(folder / 'qualification.json')
+            and report['passed_development_costs'] == completion['passed_costs'] == costs
+            and dev['gate']['passed_costs'] == costs and completion['completed'] is True,
+            'Final source/permission/report/completion identities differ')
+    require(report['primary_multiplicity_budget'] == 6 and len(report['primary']) == 6
+            and close(report['primary_upper_quantile'], 1 - .05 / 6)
+            and report['production_qualified'] is False and report['hardware_qualified'] is False
+            and report['ema_necessity_claimed'] is False and report['activated'] is False,
+            'Final claim scope changed')
+    for name, expected in reg['source_sha256'].items():
+        require(digest(ROOT / name) == expected
+                and digest(folder / 'registration/source' / name) == expected, 'Frozen source/capsule/input changed: ' + name)
+    latency_path = ROOT / 'artifacts/semantic_jepa/latency.json'; latency = read(latency_path)
+    paths.append(latency_path)
+    profiles = latency['profiles']
+    main_keys = keys(p, 'development', p['handover_seconds']) + keys(p, 'confirmation', costs)
+    repeats = [key for key in keys(p, 'confirmation', costs) if key[1] == p['confirmation_sites'][0]]
+    row_data, main_fingerprints, offline_checks, fresh = {}, {}, [], []
+    metrics = {(r['stage'], r['site'], r['handover_seconds'], r['family'], r['controller_variant']): r
+               for r in report['every_case']}
+    require(set(metrics) == set(keys(p, 'confirmation', costs)), 'Final metric matrix incomplete')
+    for subfolder, expected, replay, live in [('cases', main_keys, False, False),
+            ('replays', repeats, True, False), ('live_replications', repeats, False, True)]:
+        directory = folder / subfolder
+        actual = {path.name for path in directory.iterdir() if path.is_file()
+                  and not path.name.startswith('.') and not path.name.endswith(('.lock', '.part'))} if directory.exists() else set()
+        require(actual == {case_name(k) + suffix for k in expected for suffix in ('.json.gz', '.receipt.json')},
+                'Unregistered/incomplete archive matrix: ' + subfolder)
+        for key in expected:
+            path = directory / (case_name(key) + '.json.gz'); receipt_path = path.with_name(case_name(key) + '.receipt.json')
+            receipt = read(receipt_path); row = json.loads(gzip.decompress(path.read_bytes()))
+            mode = 'recorded_schedule_offline' if replay else 'actual_cost'
+            require(receipt['archive_sha256'] == digest(path) and receipt['result_sha256'] == value_digest(row['result'])
+                    and receipt['case'] == row['case'] == list(key) and row['completed'] is True
+                    and row['replay'] is replay and row['live_replication'] is live
+                    and receipt['replay'] is replay and receipt['live_replication'] is live
+                    and row['accounting_mode'] == receipt['accounting_mode'] == mode
+                    and row['stage'] == key[0] and row['site'] == key[1] and row['handover_seconds'] == key[2]
+                    and row['family'] == key[3] and row['controller_variant'] == key[4]
+                    and row['training_seed'] is None and row['simulation_only'] is True
+                    and row['production_qualified'] is False and row['hardware_qualified'] is False
+                    and row['checkpoint_sha256'] == reg['checkpoint_sha256']
+                    and row['source_sha256'] == reg['source_sha256']
+                    and row['registration_sha256'] == digest(folder / 'registration/source.json')
+                    and row['protocol_sha256'] == digest(folder / 'protocol.json')
+                    and row['latency_sha256'] == digest(latency_path), 'Raw archive identity changed: ' + path.name)
+            profile = profiles[key[3]]
+            if not replay: audit_jobs(row, p, profile)
+            require(row['causality_pass'] is True and all(
+                e['measurement_slot'] < e['complete_slot'] <= e['delivery_slot']
+                and e['first_usable_decision'] == e['delivery_slot'] // 100 + 1 for e in row['telemetry']['events']),
+                'Delivered telemetry is noncausal')
+            fingerprint = {field: value_digest(row[field]) for field in REPLAY_FIELDS}
+            if not replay and not live:
+                main_fingerprints[key] = {'fields': fingerprint, 'jobs': row['jobs'],
+                    'consumption': row['forecast_consumption'], 'archive_sha': digest(path)}
+                values = packet_metrics(row, p)
+                if key[0] == 'confirmation':
+                    require(all(close(metrics[key][field], value) for field, value in values.items() if field != 'roams'),
+                            'Report differs from native counters')
+                execution = row['result']['repair_execution']
+                require(execution['emergency_recovery_enabled'] is (key[4] == 'repair'), 'Recovery flag differs from registered variant')
+                for event in execution['emergency_handovers']:
+                    require(event['silence_slots'] >= 20 and event['current_rssi_dbm'] < -75
+                        and event['neighbor_gain_db'] >= 8 and event['neighbor_rssi_dbm'] >= -90
+                        and close(event['neighbor_gain_db'], event['neighbor_rssi_dbm'] - event['current_rssi_dbm'])
+                        and event['neighbor_heard'] is True
+                        and 0 <= event['neighbor_capture_age_slots'] <= event['neighbor_max_age_slots']
+                        and event['neighbor_capture_age_slots'] == event['slot'] - event['neighbor_capture_slot']
+                        and event['outage_until_slot'] - event['slot'] == round(key[2] * 100)
+                        and event['pending_cadence_target_after'] == -1, 'A logged recovery violates its observed trigger or outage')
+                row_data[key] = {**values, 'jobs': [{name: job[name] for name in
+                    ('kind', 'actual_compute_seconds', 'charged_compute_seconds', 'charged_seconds', 'profile_seconds', 'runtime_overrun')}
+                    for job in row['jobs']], 'startup_seconds': row['predictor_startup_seconds'],
+                    'forecast_age_max': max((e['age_seconds'] for e in row['forecast_consumption']), default=None),
+                    'emergency_handovers': len(execution['emergency_handovers']),
+                    'emergency_scans': len(execution['emergency_scans']),
+                    'watchdog_checks': len(execution['watchdog_checks']),
+                    'scans_started': row['telemetry']['scans_started']}
+            elif replay:
+                original = main_fingerprints[key]
+                schedule = all(all(a.get(field) == b.get(field) for field in SCHEDULE_FIELDS)
+                               for a, b in zip(row['jobs'], original['jobs'], strict=True))
+                exact = (fingerprint == original['fields'] and schedule
+                    and row['forecast_consumption'] == original['consumption']
+                    and row['source_main_archive_sha256'] == original['archive_sha']
+                    and row['recorded_schedule_sha256'] == value_digest(original['jobs'])
+                    and all(j['matches_recorded_forecast'] is True and j['offline_recorded_schedule'] is True
+                            and j['completion_uses_actual_elapsed'] is False for j in row['jobs']))
+                offline_checks.append({'case': list(key), 'exact': exact})
+            else:
+                require(row['source_main_archive_sha256'] == main_fingerprints[key]['archive_sha'],
+                        'Fresh replication changed its main-case binding')
+                original = row_data[key]; now = packet_metrics(row, p)
+                fresh.append({'case': list(key), 'miss_difference': now['control_misses'] - original['control_misses'],
+                    'changed_ready_jobs': sum(a['ready_slot'] != b['ready_slot'] for a, b in
+                                              zip(main_fingerprints[key]['jobs'], row['jobs'], strict=True))})
+            paths.extend((path, receipt_path))
+    expected_costs = []
+    for cost in p['handover_seconds']:
+        severe = False
+        for family in FAMILIES:
+            rates = {}
+            for variant in ('legacy', 'repair'):
+                part = [row_data['development', site, cost, family, variant] for site in p['development_sites']]
+                rates[variant] = Fraction(sum(r['control_misses'] for r in part), sum(r['control_sent'] for r in part))
+            severe |= rates['repair'] - rates['legacy'] > Fraction(str(p['development_severe_regression_absolute']))
+        require(next(r['severe_regression'] for r in dev['gate']['per_cost'] if r['handover_seconds'] == cost) is bool(severe),
+                'Development regression status differs from exact native counters')
+        if not severe: expected_costs.append(cost)
+    require(costs == expected_costs, 'Confirmation subset differs from mechanically valid development veto')
+    require(completion['case_count'] == report['case_count'] == len(keys(p, 'confirmation', costs))
+            and completion['offline_replay_count'] == completion['fresh_live_replication_count'] == len(repeats)
+            and completion['all_offline_exact'] is all(r['exact'] for r in offline_checks)
+            and {tuple(r['case']): r['exact'] for r in completion['offline_comparisons']} ==
+                {tuple(r['case']): r['exact'] for r in offline_checks}, 'Completion/replay claims differ from raw archives')
+    require(completion['all_fresh_paid_cost_checks_pass'] is True
+            and report['proof']['source_and_archive_pass'] is True
+            and report['proof']['mechanical_integrity_pass'] is True
+            and report['proof']['paid_cost_and_consumption_pass'] is True
+            and report['proof']['causality_pass'] is True
+            and report['proof']['exact_offline_replay_pass'] is all(r['exact'] for r in offline_checks)
+            and report['proof']['experimental_claim_integrity_pass'] is all(r['exact'] for r in offline_checks),
+            'Report proof differs from actual namespaces')
+    return p, report, profiles, row_data, paths, offline_checks, fresh
+
+
+def validate_statistics(np, p, report, data):
+    """Derive all plotted means/contrasts from native whole-site counters."""
+    sites = p['confirmation_sites']; rng = np.random.default_rng(p['bootstrap_seed'])
+    indices = rng.integers(0, len(sites), size=(p['bootstrap_replicates'], len(sites)))
+    values = lambda cost, arm, field: np.asarray([data['confirmation', site, cost, *arm][field] for site in sites])
+    for row in report['means']:
+        arm = row['family'], row['controller_variant']; cost = row['handover_seconds']
+        require(close(row['command_loss'], values(cost, arm, 'command_loss').mean()), 'Plotted mean differs')
+    expected = {(float(cost), label) for cost in p['handover_seconds'] for label in
+                ('repair_minus_legacy:radiomap', 'repair_minus_legacy:frozen_fleet_jepa', 'repaired_jepa_minus_repaired_radiomap')}
+    require({(r['handover_seconds'], r['contrast_id']) for r in report['primary']} == expected,
+            'A registered contrast is missing or substituted')
+    for row in report['primary']:
+        label = row['contrast_id']
+        if label.startswith('repair_minus_legacy:'):
+            family = label.split(':', 1)[1]
+            require((row['candidate_family'], row['candidate_variant'], row['reference_family'], row['reference_variant'])
+                    == (family, 'repair', family, 'legacy'), 'Repair contrast changed arms')
+        else:
+            require((row['candidate_family'], row['candidate_variant'], row['reference_family'], row['reference_variant'])
+                    == ('frozen_fleet_jepa', 'repair', 'radiomap', 'repair'), 'Model contrast changed arms')
+        require((row['status'] == 'tested') is (row['handover_seconds'] in report['passed_development_costs']),
+                'Tested versus development-vetoed cost differs')
+        if row['status'] != 'tested':
+            require(row['mean_difference'] is None and row['experimental_benefit'] is False,
+                    'Unrun contrast is represented as an outcome'); continue
+        cost = row['handover_seconds']; candidate = row['candidate_family'], row['candidate_variant']
+        reference = row['reference_family'], row['reference_variant']
+        difference = values(cost, candidate, 'command_loss') - values(cost, reference, 'command_loss')
+        endpoint = values(cost, candidate, 'command_loss_pending_as_misses') - values(cost, reference, 'command_loss')
+        draws, pending_draws = difference[indices].mean(1), endpoint[indices].mean(1)
+        interval = np.quantile(draws, [.025, .975]); upper = np.quantile(draws, p['primary_upper_quantile'])
+        endpoint_upper = np.quantile(pending_draws, p['primary_upper_quantile'])
+        require(close(row['mean_difference'], difference.mean()) and all(close(a, b) for a, b in zip(row['paired_site_differences'], difference))
+            and all(close(a, b) for a, b in zip(row['descriptive_95_interval'], interval))
+            and close(row['multiplicity_upper'], upper)
+            and close(row['endpoint_sensitivity']['multiplicity_upper'], endpoint_upper)
+            and row['statistical_pass'] is bool(upper < 0 and endpoint_upper < 0), 'Primary bootstrap differs from paired native counters')
+        engineering = next(g for g in report['engineering_gates'] if g['contrast_id'] == row['contrast_id'] and g['handover_seconds'] == cost)
+        candidate_worst = values(cost, candidate, 'worst_decile_pending_as_misses').mean()
+        reference_worst = values(cost, reference, 'worst_decile_loss').mean()
+        checks = {'worst_decile': candidate_worst <= reference_worst + p['worst_decile_margin'],
+            'maximum_silence': values(cost, candidate, 'max_silence_seconds').max() <= values(cost, reference, 'max_silence_seconds').max() + p['silence_margin_seconds'],
+            'original_video': values(cost, candidate, 'video_vs_original').mean() >= values(cost, reference, 'video_vs_original').mean() - p['video_margin'],
+            'bulk_delivery': values(cost, candidate, 'bulk_mbps').mean() >= p['bulk_ratio'] * values(cost, reference, 'bulk_mbps').mean()}
+        require(engineering['checks'] == checks and row['engineering_pass'] is bool(all(checks.values()))
+            and row['experimental_benefit'] is bool(row['statistical_pass'] and row['engineering_pass']
+                  and report['proof']['experimental_claim_integrity_pass']), 'Engineering/benefit flag differs')
+
+
+def style(plt):
+    plt.rcParams.update({'font.family': 'DejaVu Sans', 'font.size': 9.5, 'text.color': INK,
+        'axes.labelcolor': INK, 'xtick.color': INK, 'ytick.color': INK,
+        'axes.spines.top': False, 'axes.spines.right': False, 'axes.edgecolor': '#C4D2DD',
+        'axes.titleweight': 'bold', 'axes.titlecolor': INK, 'axes.facecolor': 'white',
+        'figure.facecolor': PALE, 'savefig.facecolor': PALE, 'svg.fonttype': 'none'})
+
+
+def tidy(ax):
+    ax.grid(axis='x', color='#DCE5EB', alpha=.7, linewidth=.7); ax.set_axisbelow(True)
+    ax.spines['left'].set_color('#D3DFE7'); ax.tick_params(length=3)
+
+
+def primary_label(row):
+    if row['contrast_id'] == 'repaired_jepa_minus_repaired_radiomap': return 'Repaired JEPA vs repaired Map'
+    return 'Repair benefit: ' + ('JEPA' if row['candidate_family'] == 'frozen_fleet_jepa' else 'RadioMap')
+
+
+def status_panel(ax, records):
+    ax.axis('off'); ax.set_xlim(0, 3.3); ax.set_ylim(-.5, 3.2)
+    for index, title in enumerate(('Statistics', 'Engineering', 'Benefit')):
+        ax.text(index + .42, 2.95, title, ha='center', fontsize=9, fontweight='bold')
+    for index, row in enumerate(records):
+        for column, field in enumerate(('statistical_pass', 'engineering_pass', 'experimental_benefit')):
+            unrun = row['status'] != 'tested'; passed = row[field] is True
+            label, color, face = ('UNRUN', '#6F7F8B', '#EDF1F4') if unrun else (
+                ('PASS', TEAL, '#E3F2ED') if passed else ('FAIL', RED, '#F9EDEF'))
+            ax.text(column + .42, 2.45 - index * .95, label, ha='center', va='center',
+                    fontsize=10, fontweight='bold', color=color,
+                    bbox={'boxstyle': 'round,pad=.22', 'facecolor': face, 'edgecolor': 'none'})
+
+
+def development_veto_note(p, report, cost):
+    gate = next(r for r in report['development_gate']['per_cost'] if r['handover_seconds'] == cost)
+    rates = {r['family']: r['repair_minus_legacy'] * 100 for r in gate['family_checks']}
+    reason = 'SEVERE-REGRESSION VETO' if gate['severe_regression'] else 'MECHANICAL VETO'
+    return (reason + '\nTwo development sites; repair − legacy loss\n'
+            + f"RadioMap {rates['radiomap']:+.3f} pp · JEPA {rates['frozen_fleet_jepa']:+.3f} pp\n"
+            + f"Registered stop threshold: +{p['development_severe_regression_absolute'] * 100:.3f} pp\n"
+            + f'{cost:g} s confirmation cases were not run.')
+
+
+def evidence_figure(plt, np, p, report, data):
+    from matplotlib.lines import Line2D
+    fig = plt.figure(figsize=(17.4, 11.2))
+    gs = fig.add_gridspec(2, 3, width_ratios=[1.10, 1.52, .88], left=.12, right=.98,
+                        top=.84, bottom=.19, hspace=.58, wspace=.55)
+    fig.suptitle('Fixed-weight JEPA: prospective controller and recovery repair', x=.055, y=.976,
+                 ha='left', fontsize=19, fontweight='bold')
+    fig.text(.055, .935, f"100 simulated robots × 60 s · {report['independent_sites']} tested confirmation sites · {report['case_count']} factual runs · no new fitting",
+             fontsize=11.5)
+    fig.text(.055, .895, 'Legacy and repaired controllers pay the same actual-cost forecast rule. Every registered comparison remains visible.', fontsize=10.5, color='#516574')
+    for row_index, cost in enumerate(p['handover_seconds']):
+        records = [r for r in report['primary'] if r['handover_seconds'] == cost]
+        tested = cost in report['passed_development_costs']
+        ax = fig.add_subplot(gs[row_index, 0])
+        ax.set_title(f"{'A' if row_index == 0 else 'D'}  Observed command loss\n{cost:g} s handover assumption", loc='left', pad=12)
+        if tested:
+            arm_list = [(family, var) for family in FAMILIES for var in variants(cost)]
+            y = np.arange(len(arm_list))
+            for index, arm in enumerate(arm_list):
+                values = np.array([data['confirmation', site, cost, *arm]['command_loss'] * 100 for site in p['confirmation_sites']])
+                color = COLORS[arm[1]]
+                ax.scatter(values, index + np.linspace(-.065, .065, len(values)), s=20, alpha=.37, color=color, edgecolors='none')
+                ax.scatter(values.mean(), index, s=55, marker='D', color=color, edgecolors=PALE, linewidths=.6, zorder=4)
+                ax.annotate(f'{values.mean():.4f}%', (values.mean(), index), xytext=(0, 8), textcoords='offset points', ha='center', color=color, fontsize=8)
+            ax.set_yticks(y, [('Map' if f == 'radiomap' else 'JEPA') + ' · ' + VARS[v] for f, v in arm_list], fontsize=8.4)
+            ax.set_ylim(len(y) - .65, -.65); ax.set_xlabel('Commands missing deadline (%)'); tidy(ax)
+        else:
+            ax.set_title(f"{'A' if row_index == 0 else 'D'}  Development veto\n{cost:g} s handover assumption", loc='left', pad=12)
+            ax.axis('off'); ax.text(.5, .5, development_veto_note(p, report, cost),
+                                     transform=ax.transAxes, ha='center', va='center', color='#657684', fontsize=9.8, linespacing=1.9)
+        ax = fig.add_subplot(gs[row_index, 1])
+        ax.set_title(f"{'B' if row_index == 0 else 'E'}  Paired service reduction\nPositive favors the named candidate", loc='left', pad=12)
+        ax.axvline(0, color=INK, linestyle='--', linewidth=1.)
+        if tested:
+            for index, row in enumerate(records):
+                difference = -np.asarray(row['paired_site_differences']) * 1e5
+                low, high = (-np.asarray(row['descriptive_95_interval']) * 1e5)[::-1]
+                color = TEAL if row['candidate_family'] == 'frozen_fleet_jepa' else BLUE
+                ax.scatter(difference, index + np.linspace(-.055, .055, len(difference)), s=20, color='#AAB9C2', alpha=.65, zorder=2)
+                ax.plot([low, high], [index, index], color=color, linewidth=3, solid_capstyle='round')
+                ax.scatter(-row['mean_difference'] * 1e5, index, marker='D', s=45, color=INK, zorder=4)
+                ax.scatter(-row['multiplicity_upper'] * 1e5, index - .11, marker='^', s=48, color=ORANGE, zorder=4)
+                ax.scatter(-row['endpoint_sensitivity']['multiplicity_upper'] * 1e5, index + .11, marker='v', s=48, color=RED, zorder=4)
+            ax.set_yticks(range(3), [primary_label(r) for r in records], fontsize=8.5)
+            ax.set_ylim(2.6, -.6); tidy(ax)
+        else:
+            for line in list(ax.lines): line.remove()
+            ax.set_yticks(range(3), [primary_label(r) for r in records], fontsize=8.5); ax.set_ylim(2.6, -.6)
+            ax.set_xticks([]); ax.spines['left'].set_visible(False); ax.spines['bottom'].set_visible(False)
+            ax.set_title(f"{'B' if row_index == 0 else 'E'}  No confirmation estimates\nSix-comparison budget retained", loc='left', pad=12)
+            ax.text(.5, .5, f'No held-out effect estimates\n{cost:g} s confirmation cases were not run.', transform=ax.transAxes, ha='center', color='#657684', linespacing=1.7)
+        ax.set_xlabel('Avoided misses per 100,000 generated commands\n(reference − candidate)' if tested else 'All three slow-cost primary contrasts remain untested')
+        ax = fig.add_subplot(gs[row_index, 2]); status_panel(ax, records)
+        ax.set_title(f"{'C' if row_index == 0 else 'F'}  Registered gates", loc='left', pad=12)
+    handles = [Line2D([], [], color='#AAB9C2', marker='o', linestyle='', label='Paired whole-site observations'),
+               Line2D([], [], color=INK, marker='D', linestyle='', label='Mean reduction'),
+               Line2D([], [], color=TEAL, linewidth=3, label='Descriptive 95% site-bootstrap interval'),
+               Line2D([], [], color=ORANGE, marker='^', linestyle='', label='Multiplicity-adjusted lower bound'),
+               Line2D([], [], color=RED, marker='v', linestyle='', label='Conservative endpoint lower bound')]
+    fig.legend(handles=handles, loc='lower left', bbox_to_anchor=(.055, .116), frameon=False, ncol=3, fontsize=8.5)
+    proof = report['proof']
+    fig.text(.055, .09, 'All six one-sided comparisons retain the 1 − 0.05/6 bound; both reduction lower bounds must exceed zero. '
+             'Intervals use 20,000 whole-site bootstrap draws, conditional on fixed weights.\n'
+             'Pending commands are misses for the candidate and successes for the reference. Engineering tests cover worst-decile loss, silence, original video and bulk.\n'
+             f"Source/causal/paid completion/offline replay integrity: {proof['experimental_claim_integrity_pass']}. "
+             'Profile exceedances are paid capacity diagnostics under this NEW contract; older study vetoes remain unchanged.\n'
+             'Fast exact-integral-only arms are secondary ablations. Whole controller-package effects do not establish JEPA-objective necessity, hardware safety or SOTA.',
+             fontsize=8.1, color='#516574', linespacing=1.6, va='top')
+    return fig
+
+
+def architecture(ax):
+    from matplotlib.patches import FancyBboxPatch, FancyArrowPatch
+    ax.axis('off'); ax.set_xlim(0, 1); ax.set_ylim(0, 1)
+    boxes = [(.01, .71, .22, .22, 'Delivered reports\npublic route + geometry', '#E9F0F4'),
+             (.30, .71, .26, .22, 'Fixed RadioMap / JEPA\nactual-cost FIFO forecast', '#E3E9F4'),
+             (.64, .71, .30, .22, 'Exact planned admission\nshared native radio control', '#DCEFEA'),
+             (.01, .18, .23, .25, 'Current-link pilots\ncompleted heard scans\ncapture age ≤ 5 s', '#E9F0F4'),
+             (.32, .18, .25, .25, 'Robot-local watchdog\n200 ms silence threshold\nindependent of forecast', '#E0F1EB'),
+             (.66, .18, .28, .25, 'Paid local scan / handover\nclear stale cadence target\nkeep central delivery rule', '#F7ECD9')]
+    for x, y, w, h, text, color in boxes:
+        ax.add_patch(FancyBboxPatch((x, y), w, h, boxstyle='round,pad=.012', facecolor=color, edgecolor='#AAC0CD', linewidth=.8))
+        ax.text(x+w/2, y+h/2, text, ha='center', va='center', fontsize=8.3, linespacing=1.5)
+    for start, end in [((.24,.82),(.285,.82)),((.575,.82),(.625,.82)),((.25,.30),(.305,.30)),
+                       ((.585,.30),(.645,.30)),((.81,.445),(.81,.685))]:
+        ax.add_patch(FancyArrowPatch(start, end, arrowstyle='-|>', mutation_scale=11, linewidth=1.3, color='#587684'))
+    ax.text(.47, .535, 'Local scans become usable after completion.\nCentral reports still require successful control delivery.',
+            ha='center', va='center', fontsize=8.2, color='#516574', linespacing=1.5)
+
+
+def operations_figure(plt, np, p, report, profiles, data, offline, fresh):
+    fig = plt.figure(figsize=(17.4, 11.1))
+    gs = fig.add_gridspec(2, 3, left=.075, right=.98, top=.84, bottom=.17, wspace=.50, hspace=.64,
+                         height_ratios=[1.15, 1.])
+    fig.suptitle('Local recovery, measured completion and the cost of acting', x=.055, y=.976,
+                 ha='left', fontsize=19, fontweight='bold')
+    fig.text(.055, .934, 'A causal control-path schematic beside measured confirmation traces; no new model fitting or physical-car qualification.', fontsize=11)
+    vetoes = [cost for cost in p['handover_seconds'] if cost not in report['passed_development_costs']]
+    if vetoes:
+        gate = next(r for r in report['development_gate']['per_cost'] if r['handover_seconds'] == vetoes[0])
+        text = '; '.join(('Map' if r['family'] == 'radiomap' else 'JEPA') + f" {100*r['repair_minus_legacy']:+.3f} pp" for r in gate['family_checks'])
+        fig.text(.055,.891,f"{vetoes[0]:g} s development stopped: {text}. Its confirmation cases were not run.",fontsize=10,color=RED)
+    ax = fig.add_subplot(gs[0, :2]); architecture(ax)
+    ax.set_title('A  Local recovery does not wait for cloud delivery', loc='left', pad=10)
+    ax = fig.add_subplot(gs[0, 2])
+    ax.set_title('B  Warm forecast work and service charge', loc='left', pad=10)
+    confirmed = {k: v for k, v in data.items() if k[0] == 'confirmation'}
+    warm_stats = {}
+    for i, family in enumerate(FAMILIES):
+        jobs = [j for k, row in confirmed.items() if k[3] == family for j in row['jobs'] if j['kind'] == 'warm']
+        if jobs:
+            actual = np.array([j['actual_compute_seconds'] for j in jobs])
+            charged = np.array([j['charged_seconds'] for j in jobs])
+            warm_stats[family] = {'actual_p50': float(np.median(actual)), 'actual_p95': float(np.quantile(actual,.95)),
+                'actual_max': float(actual.max()), 'charged_service_max': float(charged.max()), 'allowance': profiles[family]['warm']}
+            ax.barh(i-.16, actual.max(), height=.23, color=ORANGE)
+            ax.barh(i+.16, charged.max(), height=.23, color=TEAL)
+            ax.scatter(profiles[family]['warm'], i, marker='|', s=150, linewidths=2, color=INK, zorder=5)
+    ax.set_yticks(range(2), ['RadioMap', 'JEPA ensemble']); ax.invert_yaxis()
+    ax.set_xlabel('Seconds per warm forecast request'); tidy(ax)
+    if not confirmed: ax.text(.5,.5,'No confirmation timing',transform=ax.transAxes,ha='center',color='#657684')
+    from matplotlib.lines import Line2D
+    ax.legend(handles=[Line2D([],[],color=ORANGE,linewidth=5,label='Measured compute maximum'),
+               Line2D([],[],color=TEAL,linewidth=5,label='Charged service maximum (+0.5 s)'),
+               Line2D([],[],color=INK,marker='|',linestyle='',markersize=10,label='Reused warm allowance')],
+               loc='upper left',bbox_to_anchor=(-.02,-.25),frameon=False,fontsize=7.4)
+    ax = fig.add_subplot(gs[1, 0]); ax.axis('off')
+    ax.set_title('C  Actual watchdog recovery and sensing', loc='left', pad=10)
+    groups = [(cost, family) for cost in p['handover_seconds'] for family in FAMILIES]
+    cells = []
+    for cost, family in groups:
+        main = [v for k,v in confirmed.items() if k[2:5] == (cost, family, 'repair')]
+        old = [v for k,v in confirmed.items() if k[2:5] == (cost, family, 'legacy')]
+        label = ('Map' if family == 'radiomap' else 'JEPA') + f' · {cost:g} s'
+        if main:
+            cells.append([label, f"{np.mean([v['emergency_handovers'] for v in main]):.1f}",
+                f"{np.mean([v['emergency_scans'] for v in main]):.1f}",
+                f"{np.mean([v['roams'] for v in old]):.1f} → {np.mean([v['roams'] for v in main]):.1f}"])
+        else: cells.append([label,'unrun','unrun','unrun'])
+    table = ax.table(cellText=cells, colLabels=['Family / cost', 'Watchdog\nmoves', 'Due scans\nwhile silent', 'All moves\nlegacy → repair'],
+                     cellLoc='center', loc='upper center', colWidths=[.28,.18,.18,.36])
+    table.auto_set_font_size(False); table.set_fontsize(8); table.scale(1,2.)
+    for (r,col),cell in table.get_celld().items():
+        cell.set_edgecolor('#E0E8EE'); cell.set_facecolor('#E9F0F4' if r==0 else 'white')
+    ax.text(0,.13,'Counts are means per 100-robot, 60 s trial.\nOnly already-due scans can bypass delivery waiting;\n90 ms scan outages and full handovers are paid.',
+            transform=ax.transAxes, fontsize=8.1, color='#516574', va='top',linespacing=1.6)
+    ax = fig.add_subplot(gs[1, 1]); ax.set_title('D  Longest observed control silence',loc='left',pad=10)
+    for i,(cost,family) in enumerate(groups):
+        for offset,variant in [(-.16,'legacy'),(.16,'repair')]:
+            values = [v['max_silence_seconds'] for k,v in confirmed.items() if k[2:5] == (cost,family,variant)]
+            if values:
+                ax.barh(i+offset,max(values),height=.24,color=COLORS[variant])
+                ax.scatter(values,[i+offset]*len(values),s=12,color=INK,alpha=.35,zorder=3)
+    ax.set_yticks(range(4), [('Map' if f=='radiomap' else 'JEPA')+f' · {c:g}s'+(' (unrun)' if c not in report['passed_development_costs'] else '') for c,f in groups],fontsize=8.5)
+    ax.invert_yaxis(); ax.set_xlabel('Seconds; bars = eight-site maximum'); tidy(ax)
+    if not confirmed: ax.text(.5,.5,'No confirmation silence measurements',transform=ax.transAxes,ha='center',fontsize=9,color='#657684')
+    ax.legend(handles=[Line2D([],[],color=COLORS[v],linewidth=5,label=VARS[v]) for v in ('legacy','repair')],
+              loc='upper left',bbox_to_anchor=(0,-.23),ncol=2,frameon=False,fontsize=8)
+    ax = fig.add_subplot(gs[1, 2]); ax.axis('off'); ax.set_title('E  Paid-cost and replication evidence',loc='left',pad=10)
+    total_checks = sum(v['watchdog_checks'] for v in confirmed.values())
+    max_age = max((v['forecast_age_max'] for v in confirmed.values() if v['forecast_age_max'] is not None),default=None)
+    lines = (["CONFIRMATION NOT RUN"] if not confirmed else []) + [f"Factual confirmation runs: {len(confirmed)}", f"Actual forecast jobs: {report['timing']['jobs']:,}",
+        f"Paid-completion failures: {report['timing']['paid_cost_proof_failed_cases']}",
+        f"Profile-exceeded cases: {report['timing']['profile_exceeded_cases']} (diagnostic)",
+        f"Logged local watchdog checks: {total_checks:,}",
+        'Largest consumed forecast age: ' + ('unrun' if max_age is None else f'{max_age:.2f} s'),
+        f"Exact offline trace replays: {sum(r['exact'] for r in offline)} / {len(offline)}",
+        f"Fresh live-cost repetitions: {len(fresh)} (no extra sites)",
+        f"Fresh repeats with changed availability: {sum(r['changed_ready_jobs'] > 0 for r in fresh)}",
+        'Fresh maximum absolute miss change: ' + (str(max(abs(r['miss_difference']) for r in fresh)) if fresh else 'unrun')]
+    ax.text(0,.98,'\n'.join(lines),transform=ax.transAxes,va='top',fontsize=9,linespacing=1.85)
+    fig.text(.055,.10,'Timing uses actual history-to-forecast issue work; startup/loading is separate. The shared 500 ms scheduling/other-work delay remains an assumption. '
+        'Admission/scoring CPU is not separately scheduled.\n'
+        'Offline replays use original paid schedules and prove deterministic trace replay, not freshly measured deadlines. Fresh repetitions measure timing sensitivity without extra independent sites.\n'
+        'Native control consumes current pilots and completed, heard, capture-age-limited local scans. Model, sensing and handover effects form a controller package. '
+        'Shared procedural CAD, conditional 60 s warm history and finite trials do not establish hardware safety or indefinite reliability.',
+        fontsize=8.1,color='#516574',linespacing=1.6,va='top')
+    return fig, warm_stats
+
+
+def main():
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument('--folder',type=Path,default=ROOT/'artifacts/jepa_repair')
+    parser.add_argument('--output',type=Path,help='Default: FOLDER/figures')
+    args = parser.parse_args()
+    p, report, profiles, data, inputs, offline, fresh = load_inputs(args.folder)
+    import matplotlib
+    matplotlib.use('Agg')
+    import matplotlib.pyplot as plt
+    import numpy as np
+    style(plt); validate_statistics(np,p,report,data)
+    second,warm = operations_figure(plt,np,p,report,profiles,data,offline,fresh)
+    figures=[('confirmation',evidence_figure(plt,np,p,report,data)),('local-recovery-and-cost',second)]
+    output=args.output or args.folder/'figures';output.mkdir(parents=True,exist_ok=True)
+    outputs=[]
+    for name,fig in figures:
+        for extension in ('svg','pdf','png'):
+            path=output/f'{name}.{extension}'
+            fig.savefig(path,dpi=190,metadata={'Creator':'plot_jepa_repair.py'});outputs.append(path)
+        plt.close(fig)
+    receipt={'schema':1,'derived_only':True,'scientific_execution':False,'new_fitting_or_selection':False,
+        'script_sha256':digest(Path(__file__)),'report_sha256':digest(args.folder/'report.json'),
+        'inputs_sha256':{relative(path):digest(path) for path in sorted(set(inputs))},
+        'outputs_sha256':{relative(path):digest(path) for path in outputs},
+        'software':{'python':platform.python_version(),'numpy':np.__version__,'matplotlib':matplotlib.__version__},
+        'observed_loss_units':'percent','paired_reduction_units':'avoided misses per100000 generated commands',
+        'reduction_sign':'reference minus candidate; positive favors candidate',
+        'uncertainty':'20k whole-site bootstrap;95% descriptive,1-.05/6 observed AND conservative endpoint lower bounds for primary decisions',
+        'primary_comparisons':report['primary'],'passed_development_costs':report['passed_development_costs'],
+        'offline_replay_checks':offline,'fresh_live_cost_sensitivity':fresh,'warm_request_summary':warm,
+        'no_physical_or_production_qualification':True,'limits':report['limits']}
+    (output/'receipt.json').write_text(json.dumps(receipt,indent=2,sort_keys=True,allow_nan=False)+'\n')
+    print(json.dumps({'figures':[relative(path) for path in outputs],'receipt':relative(output/'receipt.json'),'scientific_execution':False}))
+
+
+if __name__=='__main__': main()
