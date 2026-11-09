@@ -1,0 +1,2269 @@
+{
+  "SLA_claim": false,
+  "environment": {
+    "cgroup_cpu_max": "400000 100000",
+    "cpu_count": 5,
+    "numpy": "2.5.4",
+    "platform": "Linux-6.18.57-x86_64-with-glibc2.41",
+    "python": "3.12.14",
+    "thread_limits": {
+      "MKL_NUM_THREADS": "1",
+      "OMP_NUM_THREADS": "1",
+      "OPENBLAS_NUM_THREADS": "1"
+    }
+  },
+  "exact_operand_byte_parity_every_plan_and_timed_pair": true,
+  "fits": 0,
+  "frozen_native_manifest_sha256_after": "4d9f95316d9e029365ed64d4b04e43128a49239c4115ebb8a6bb49f11c12aeb9",
+  "frozen_native_manifest_sha256_before": "4d9f95316d9e029365ed64d4b04e43128a49239c4115ebb8a6bb49f11c12aeb9",
+  "geometry_work": {
+    "full_queries_per_call": 43200,
+    "rack_boxes": 33,
+    "reference_AABB_links_per_call": 43200,
+    "reuse_AABB_links_per_call": 14400
+  },
+  "limitations": [
+    "One managed CPU environment and fixed existing public plans; descriptive microbenchmark only.",
+    "Operator timings exclude model rendering, context, queue, planner, controller and physical radio cost.",
+    "No native service cases rerun; previous18 simulated native outcomes remain unchanged.",
+    "Same-process warmups/repeated calls are correlated and are not independent deployment trials."
+  ],
+  "model_forwards": 0,
+  "native_runner_changed": false,
+  "new_native_cases": 0,
+  "new_worlds": 0,
+  "passes": true,
+  "protocol_sha256": "f427e370021bee9a1c65d5a5ecc3c6594e2d68f75cfc1d3ac867f8a596a2cfe4",
+  "public_inputs": [
+    {
+      "case_id": "dev-90473001-ho0.03",
+      "noise_sha256": "c98b5b4883060ef2590a0b8e00555555bba33ef619b1596f9c15650b45d7c2b8",
+      "plan_key": "job0_plan",
+      "plan_sha256": "1f8baf33ded2cc0ac0ea54f12906076c4145f0b6666aa586453311ed39a05532",
+      "plan_shape": [
+        100,
+        9,
+        2
+      ],
+      "sites_sha256": "98170d3d89632ace5a23ad418221ceb6de3f2133b81e6aa316664df4174e93cc",
+      "tx_sha256": "27ade7c9afe15caf33380518671d884a5b8c005b49a66c002f85b3f1bf49caf9"
+    },
+    {
+      "case_id": "dev-90473001-ho0.03",
+      "noise_sha256": "c98b5b4883060ef2590a0b8e00555555bba33ef619b1596f9c15650b45d7c2b8",
+      "plan_key": "job1_plan",
+      "plan_sha256": "fa117030c4ec7186e9723e10bba59efb1e780808854c4fb4ef16e3abaecb025c",
+      "plan_shape": [
+        100,
+        9,
+        2
+      ],
+      "sites_sha256": "98170d3d89632ace5a23ad418221ceb6de3f2133b81e6aa316664df4174e93cc",
+      "tx_sha256": "27ade7c9afe15caf33380518671d884a5b8c005b49a66c002f85b3f1bf49caf9"
+    },
+    {
+      "case_id": "dev-90473001-ho0.03",
+      "noise_sha256": "c98b5b4883060ef2590a0b8e00555555bba33ef619b1596f9c15650b45d7c2b8",
+      "plan_key": "job2_plan",
+      "plan_sha256": "3a304def9bb33cbd7b1879c779cfc69066731faeaa5e6982018a5aa405d85776",
+      "plan_shape": [
+        100,
+        9,
+        2
+      ],
+      "sites_sha256": "98170d3d89632ace5a23ad418221ceb6de3f2133b81e6aa316664df4174e93cc",
+      "tx_sha256": "27ade7c9afe15caf33380518671d884a5b8c005b49a66c002f85b3f1bf49caf9"
+    },
+    {
+      "case_id": "dev-90473001-ho0.03",
+      "noise_sha256": "c98b5b4883060ef2590a0b8e00555555bba33ef619b1596f9c15650b45d7c2b8",
+      "plan_key": "job3_plan",
+      "plan_sha256": "6efa51713be8bc35ff1069c55da3997ba7c4a22061c3c2e4bcde3321d73e9f44",
+      "plan_shape": [
+        100,
+        9,
+        2
+      ],
+      "sites_sha256": "98170d3d89632ace5a23ad418221ceb6de3f2133b81e6aa316664df4174e93cc",
+      "tx_sha256": "27ade7c9afe15caf33380518671d884a5b8c005b49a66c002f85b3f1bf49caf9"
+    },
+    {
+      "case_id": "dev-90473001-ho0.03",
+      "noise_sha256": "c98b5b4883060ef2590a0b8e00555555bba33ef619b1596f9c15650b45d7c2b8",
+      "plan_key": "job4_plan",
+      "plan_sha256": "c042e82341b602572caac3705e2eb534c5e21c2508abe564bdacbaa500fa3294",
+      "plan_shape": [
+        100,
+        9,
+        2
+      ],
+      "sites_sha256": "98170d3d89632ace5a23ad418221ceb6de3f2133b81e6aa316664df4174e93cc",
+      "tx_sha256": "27ade7c9afe15caf33380518671d884a5b8c005b49a66c002f85b3f1bf49caf9"
+    },
+    {
+      "case_id": "dev-90473001-ho0.03",
+      "noise_sha256": "c98b5b4883060ef2590a0b8e00555555bba33ef619b1596f9c15650b45d7c2b8",
+      "plan_key": "job5_plan",
+      "plan_sha256": "83ce91b25fb98a8ced388ef7ec98a52384e860667dbf4913f73aa40ac1b58393",
+      "plan_shape": [
+        100,
+        9,
+        2
+      ],
+      "sites_sha256": "98170d3d89632ace5a23ad418221ceb6de3f2133b81e6aa316664df4174e93cc",
+      "tx_sha256": "27ade7c9afe15caf33380518671d884a5b8c005b49a66c002f85b3f1bf49caf9"
+    },
+    {
+      "case_id": "dev-90473001-ho0.03",
+      "noise_sha256": "c98b5b4883060ef2590a0b8e00555555bba33ef619b1596f9c15650b45d7c2b8",
+      "plan_key": "job6_plan",
+      "plan_sha256": "c376cb50934ef65c710bfc7712cce25473b2386495e162cc091a7d0956025c65",
+      "plan_shape": [
+        100,
+        9,
+        2
+      ],
+      "sites_sha256": "98170d3d89632ace5a23ad418221ceb6de3f2133b81e6aa316664df4174e93cc",
+      "tx_sha256": "27ade7c9afe15caf33380518671d884a5b8c005b49a66c002f85b3f1bf49caf9"
+    },
+    {
+      "case_id": "dev-90473001-ho0.03",
+      "noise_sha256": "c98b5b4883060ef2590a0b8e00555555bba33ef619b1596f9c15650b45d7c2b8",
+      "plan_key": "job7_plan",
+      "plan_sha256": "ced55ef81e7062589a34c57b8274aad579ee9892279f51e42ea02fcc11572927",
+      "plan_shape": [
+        100,
+        9,
+        2
+      ],
+      "sites_sha256": "98170d3d89632ace5a23ad418221ceb6de3f2133b81e6aa316664df4174e93cc",
+      "tx_sha256": "27ade7c9afe15caf33380518671d884a5b8c005b49a66c002f85b3f1bf49caf9"
+    },
+    {
+      "case_id": "dev-90473001-ho0.03",
+      "noise_sha256": "c98b5b4883060ef2590a0b8e00555555bba33ef619b1596f9c15650b45d7c2b8",
+      "plan_key": "job8_plan",
+      "plan_sha256": "438e56fa3ae40651d422127eba291e8035f9d0bf9c2b9e71c7a339200ee219a7",
+      "plan_shape": [
+        100,
+        9,
+        2
+      ],
+      "sites_sha256": "98170d3d89632ace5a23ad418221ceb6de3f2133b81e6aa316664df4174e93cc",
+      "tx_sha256": "27ade7c9afe15caf33380518671d884a5b8c005b49a66c002f85b3f1bf49caf9"
+    },
+    {
+      "case_id": "dev-90473001-ho0.03",
+      "noise_sha256": "c98b5b4883060ef2590a0b8e00555555bba33ef619b1596f9c15650b45d7c2b8",
+      "plan_key": "job9_plan",
+      "plan_sha256": "ff077fefe430511bcd33c1ee39ceb3b6bc223bb999669bbed0b6e0d1566b9663",
+      "plan_shape": [
+        100,
+        9,
+        2
+      ],
+      "sites_sha256": "98170d3d89632ace5a23ad418221ceb6de3f2133b81e6aa316664df4174e93cc",
+      "tx_sha256": "27ade7c9afe15caf33380518671d884a5b8c005b49a66c002f85b3f1bf49caf9"
+    },
+    {
+      "case_id": "dev-90473001-ho0.03",
+      "noise_sha256": "c98b5b4883060ef2590a0b8e00555555bba33ef619b1596f9c15650b45d7c2b8",
+      "plan_key": "job10_plan",
+      "plan_sha256": "58402bf8729369498d9beff710ea9ef5395dd8840198e4f501826d43294b6a8e",
+      "plan_shape": [
+        100,
+        9,
+        2
+      ],
+      "sites_sha256": "98170d3d89632ace5a23ad418221ceb6de3f2133b81e6aa316664df4174e93cc",
+      "tx_sha256": "27ade7c9afe15caf33380518671d884a5b8c005b49a66c002f85b3f1bf49caf9"
+    },
+    {
+      "case_id": "dev-90473001-ho0.03",
+      "noise_sha256": "c98b5b4883060ef2590a0b8e00555555bba33ef619b1596f9c15650b45d7c2b8",
+      "plan_key": "job11_plan",
+      "plan_sha256": "3901821cf2467ef838e17bbd6d84c13ff7996ee76de79e59583b05fc384d9a1a",
+      "plan_shape": [
+        100,
+        9,
+        2
+      ],
+      "sites_sha256": "98170d3d89632ace5a23ad418221ceb6de3f2133b81e6aa316664df4174e93cc",
+      "tx_sha256": "27ade7c9afe15caf33380518671d884a5b8c005b49a66c002f85b3f1bf49caf9"
+    },
+    {
+      "case_id": "dev-90473002-ho0.03",
+      "noise_sha256": "c98b5b4883060ef2590a0b8e00555555bba33ef619b1596f9c15650b45d7c2b8",
+      "plan_key": "job0_plan",
+      "plan_sha256": "65fcf7db5e81ee7dc032ecfc5d2fee8e507ac30e9cfc1c75178abcc056b7edb7",
+      "plan_shape": [
+        100,
+        9,
+        2
+      ],
+      "sites_sha256": "98170d3d89632ace5a23ad418221ceb6de3f2133b81e6aa316664df4174e93cc",
+      "tx_sha256": "27ade7c9afe15caf33380518671d884a5b8c005b49a66c002f85b3f1bf49caf9"
+    },
+    {
+      "case_id": "dev-90473002-ho0.03",
+      "noise_sha256": "c98b5b4883060ef2590a0b8e00555555bba33ef619b1596f9c15650b45d7c2b8",
+      "plan_key": "job1_plan",
+      "plan_sha256": "0cc50fd1890ee77eb7cf78319e8a069cab4ee4affa8d950c04088ae4e621a1d2",
+      "plan_shape": [
+        100,
+        9,
+        2
+      ],
+      "sites_sha256": "98170d3d89632ace5a23ad418221ceb6de3f2133b81e6aa316664df4174e93cc",
+      "tx_sha256": "27ade7c9afe15caf33380518671d884a5b8c005b49a66c002f85b3f1bf49caf9"
+    },
+    {
+      "case_id": "dev-90473002-ho0.03",
+      "noise_sha256": "c98b5b4883060ef2590a0b8e00555555bba33ef619b1596f9c15650b45d7c2b8",
+      "plan_key": "job2_plan",
+      "plan_sha256": "7e195aa5c79ead22b6d8976c77e5c70a0c895fcea145a5e375796e88b99cd101",
+      "plan_shape": [
+        100,
+        9,
+        2
+      ],
+      "sites_sha256": "98170d3d89632ace5a23ad418221ceb6de3f2133b81e6aa316664df4174e93cc",
+      "tx_sha256": "27ade7c9afe15caf33380518671d884a5b8c005b49a66c002f85b3f1bf49caf9"
+    },
+    {
+      "case_id": "dev-90473002-ho0.03",
+      "noise_sha256": "c98b5b4883060ef2590a0b8e00555555bba33ef619b1596f9c15650b45d7c2b8",
+      "plan_key": "job3_plan",
+      "plan_sha256": "a260e394aa83ce3388b6531ec1c7157370f230c9356cb4dcc7b496023e70a2d3",
+      "plan_shape": [
+        100,
+        9,
+        2
+      ],
+      "sites_sha256": "98170d3d89632ace5a23ad418221ceb6de3f2133b81e6aa316664df4174e93cc",
+      "tx_sha256": "27ade7c9afe15caf33380518671d884a5b8c005b49a66c002f85b3f1bf49caf9"
+    },
+    {
+      "case_id": "dev-90473002-ho0.03",
+      "noise_sha256": "c98b5b4883060ef2590a0b8e00555555bba33ef619b1596f9c15650b45d7c2b8",
+      "plan_key": "job4_plan",
+      "plan_sha256": "f0e23438d8281d5e33a297e1e07631f9bc94dd633ffe4f2fd5f2d81430ca0ccd",
+      "plan_shape": [
+        100,
+        9,
+        2
+      ],
+      "sites_sha256": "98170d3d89632ace5a23ad418221ceb6de3f2133b81e6aa316664df4174e93cc",
+      "tx_sha256": "27ade7c9afe15caf33380518671d884a5b8c005b49a66c002f85b3f1bf49caf9"
+    },
+    {
+      "case_id": "dev-90473002-ho0.03",
+      "noise_sha256": "c98b5b4883060ef2590a0b8e00555555bba33ef619b1596f9c15650b45d7c2b8",
+      "plan_key": "job5_plan",
+      "plan_sha256": "ea3affca26c1caac7dd159df8a0c0c7a8abf86fd422c7b5155645cdfae06bab7",
+      "plan_shape": [
+        100,
+        9,
+        2
+      ],
+      "sites_sha256": "98170d3d89632ace5a23ad418221ceb6de3f2133b81e6aa316664df4174e93cc",
+      "tx_sha256": "27ade7c9afe15caf33380518671d884a5b8c005b49a66c002f85b3f1bf49caf9"
+    },
+    {
+      "case_id": "dev-90473002-ho0.03",
+      "noise_sha256": "c98b5b4883060ef2590a0b8e00555555bba33ef619b1596f9c15650b45d7c2b8",
+      "plan_key": "job6_plan",
+      "plan_sha256": "fd115d1458bffb1b465f9effafd709aa08d12b3599c45f21b3382502356a622e",
+      "plan_shape": [
+        100,
+        9,
+        2
+      ],
+      "sites_sha256": "98170d3d89632ace5a23ad418221ceb6de3f2133b81e6aa316664df4174e93cc",
+      "tx_sha256": "27ade7c9afe15caf33380518671d884a5b8c005b49a66c002f85b3f1bf49caf9"
+    },
+    {
+      "case_id": "dev-90473002-ho0.03",
+      "noise_sha256": "c98b5b4883060ef2590a0b8e00555555bba33ef619b1596f9c15650b45d7c2b8",
+      "plan_key": "job7_plan",
+      "plan_sha256": "70e29408bf2716497c9cb9649bbdf93f69318aeed79722ac2853fbc4a840b8b8",
+      "plan_shape": [
+        100,
+        9,
+        2
+      ],
+      "sites_sha256": "98170d3d89632ace5a23ad418221ceb6de3f2133b81e6aa316664df4174e93cc",
+      "tx_sha256": "27ade7c9afe15caf33380518671d884a5b8c005b49a66c002f85b3f1bf49caf9"
+    },
+    {
+      "case_id": "dev-90473002-ho0.03",
+      "noise_sha256": "c98b5b4883060ef2590a0b8e00555555bba33ef619b1596f9c15650b45d7c2b8",
+      "plan_key": "job8_plan",
+      "plan_sha256": "ca5f4f351e58934f92b63a62d13041e8ddcf34621c04c4986075f3bd2a15bd1a",
+      "plan_shape": [
+        100,
+        9,
+        2
+      ],
+      "sites_sha256": "98170d3d89632ace5a23ad418221ceb6de3f2133b81e6aa316664df4174e93cc",
+      "tx_sha256": "27ade7c9afe15caf33380518671d884a5b8c005b49a66c002f85b3f1bf49caf9"
+    },
+    {
+      "case_id": "dev-90473002-ho0.03",
+      "noise_sha256": "c98b5b4883060ef2590a0b8e00555555bba33ef619b1596f9c15650b45d7c2b8",
+      "plan_key": "job9_plan",
+      "plan_sha256": "304821942642331ee9d9750f5155511bf8126a1a45fda3c86ec2250ad158d172",
+      "plan_shape": [
+        100,
+        9,
+        2
+      ],
+      "sites_sha256": "98170d3d89632ace5a23ad418221ceb6de3f2133b81e6aa316664df4174e93cc",
+      "tx_sha256": "27ade7c9afe15caf33380518671d884a5b8c005b49a66c002f85b3f1bf49caf9"
+    },
+    {
+      "case_id": "dev-90473002-ho0.03",
+      "noise_sha256": "c98b5b4883060ef2590a0b8e00555555bba33ef619b1596f9c15650b45d7c2b8",
+      "plan_key": "job10_plan",
+      "plan_sha256": "760440d451ada6c1f2d3055ea4cc1268032fefc4c6cb226f53363814f19c78ab",
+      "plan_shape": [
+        100,
+        9,
+        2
+      ],
+      "sites_sha256": "98170d3d89632ace5a23ad418221ceb6de3f2133b81e6aa316664df4174e93cc",
+      "tx_sha256": "27ade7c9afe15caf33380518671d884a5b8c005b49a66c002f85b3f1bf49caf9"
+    },
+    {
+      "case_id": "dev-90473002-ho0.03",
+      "noise_sha256": "c98b5b4883060ef2590a0b8e00555555bba33ef619b1596f9c15650b45d7c2b8",
+      "plan_key": "job11_plan",
+      "plan_sha256": "e99b03ce2e759d778acf59e4c88ccf26d14896d267b5af9a84d72d3a04327f3e",
+      "plan_shape": [
+        100,
+        9,
+        2
+      ],
+      "sites_sha256": "98170d3d89632ace5a23ad418221ceb6de3f2133b81e6aa316664df4174e93cc",
+      "tx_sha256": "27ade7c9afe15caf33380518671d884a5b8c005b49a66c002f85b3f1bf49caf9"
+    },
+    {
+      "case_id": "dev-90473003-ho0.03",
+      "noise_sha256": "c98b5b4883060ef2590a0b8e00555555bba33ef619b1596f9c15650b45d7c2b8",
+      "plan_key": "job0_plan",
+      "plan_sha256": "7a8546fd8ac050177794583f7c3268a0b250bfeb80630d18bdde971a77b5e582",
+      "plan_shape": [
+        100,
+        9,
+        2
+      ],
+      "sites_sha256": "98170d3d89632ace5a23ad418221ceb6de3f2133b81e6aa316664df4174e93cc",
+      "tx_sha256": "27ade7c9afe15caf33380518671d884a5b8c005b49a66c002f85b3f1bf49caf9"
+    },
+    {
+      "case_id": "dev-90473003-ho0.03",
+      "noise_sha256": "c98b5b4883060ef2590a0b8e00555555bba33ef619b1596f9c15650b45d7c2b8",
+      "plan_key": "job1_plan",
+      "plan_sha256": "9335772b8534ba70b2125a363b79b8dc8b01840c0561ae05f62f293d389e2086",
+      "plan_shape": [
+        100,
+        9,
+        2
+      ],
+      "sites_sha256": "98170d3d89632ace5a23ad418221ceb6de3f2133b81e6aa316664df4174e93cc",
+      "tx_sha256": "27ade7c9afe15caf33380518671d884a5b8c005b49a66c002f85b3f1bf49caf9"
+    },
+    {
+      "case_id": "dev-90473003-ho0.03",
+      "noise_sha256": "c98b5b4883060ef2590a0b8e00555555bba33ef619b1596f9c15650b45d7c2b8",
+      "plan_key": "job2_plan",
+      "plan_sha256": "acc8489739663d6c2bbe35fc500dd78c0741c9e95e39d8bb7fb4f7c5c7ebb2bf",
+      "plan_shape": [
+        100,
+        9,
+        2
+      ],
+      "sites_sha256": "98170d3d89632ace5a23ad418221ceb6de3f2133b81e6aa316664df4174e93cc",
+      "tx_sha256": "27ade7c9afe15caf33380518671d884a5b8c005b49a66c002f85b3f1bf49caf9"
+    },
+    {
+      "case_id": "dev-90473003-ho0.03",
+      "noise_sha256": "c98b5b4883060ef2590a0b8e00555555bba33ef619b1596f9c15650b45d7c2b8",
+      "plan_key": "job3_plan",
+      "plan_sha256": "07dcd8efc1ab9200eea2cc31bc26bb4de8da83a0d8ead168950e7ea5c9ccedf2",
+      "plan_shape": [
+        100,
+        9,
+        2
+      ],
+      "sites_sha256": "98170d3d89632ace5a23ad418221ceb6de3f2133b81e6aa316664df4174e93cc",
+      "tx_sha256": "27ade7c9afe15caf33380518671d884a5b8c005b49a66c002f85b3f1bf49caf9"
+    },
+    {
+      "case_id": "dev-90473003-ho0.03",
+      "noise_sha256": "c98b5b4883060ef2590a0b8e00555555bba33ef619b1596f9c15650b45d7c2b8",
+      "plan_key": "job4_plan",
+      "plan_sha256": "6856e06b15adea834dc8b26cd6a84014c1749f3ec41861e642354d198280f8af",
+      "plan_shape": [
+        100,
+        9,
+        2
+      ],
+      "sites_sha256": "98170d3d89632ace5a23ad418221ceb6de3f2133b81e6aa316664df4174e93cc",
+      "tx_sha256": "27ade7c9afe15caf33380518671d884a5b8c005b49a66c002f85b3f1bf49caf9"
+    },
+    {
+      "case_id": "dev-90473003-ho0.03",
+      "noise_sha256": "c98b5b4883060ef2590a0b8e00555555bba33ef619b1596f9c15650b45d7c2b8",
+      "plan_key": "job5_plan",
+      "plan_sha256": "48a03a3d09f41dc311c231b66860a059d5c9c188709fb7eed2fc4282700cd655",
+      "plan_shape": [
+        100,
+        9,
+        2
+      ],
+      "sites_sha256": "98170d3d89632ace5a23ad418221ceb6de3f2133b81e6aa316664df4174e93cc",
+      "tx_sha256": "27ade7c9afe15caf33380518671d884a5b8c005b49a66c002f85b3f1bf49caf9"
+    },
+    {
+      "case_id": "dev-90473003-ho0.03",
+      "noise_sha256": "c98b5b4883060ef2590a0b8e00555555bba33ef619b1596f9c15650b45d7c2b8",
+      "plan_key": "job6_plan",
+      "plan_sha256": "e84eded7335e5affba22320605cc543fef3d22320e87ffea90930c8c50d555bb",
+      "plan_shape": [
+        100,
+        9,
+        2
+      ],
+      "sites_sha256": "98170d3d89632ace5a23ad418221ceb6de3f2133b81e6aa316664df4174e93cc",
+      "tx_sha256": "27ade7c9afe15caf33380518671d884a5b8c005b49a66c002f85b3f1bf49caf9"
+    },
+    {
+      "case_id": "dev-90473003-ho0.03",
+      "noise_sha256": "c98b5b4883060ef2590a0b8e00555555bba33ef619b1596f9c15650b45d7c2b8",
+      "plan_key": "job7_plan",
+      "plan_sha256": "0bbe95ddec4749c4601866b787a4d4531d77d4dbaa4ac626a5a4801e2192abf0",
+      "plan_shape": [
+        100,
+        9,
+        2
+      ],
+      "sites_sha256": "98170d3d89632ace5a23ad418221ceb6de3f2133b81e6aa316664df4174e93cc",
+      "tx_sha256": "27ade7c9afe15caf33380518671d884a5b8c005b49a66c002f85b3f1bf49caf9"
+    },
+    {
+      "case_id": "dev-90473003-ho0.03",
+      "noise_sha256": "c98b5b4883060ef2590a0b8e00555555bba33ef619b1596f9c15650b45d7c2b8",
+      "plan_key": "job8_plan",
+      "plan_sha256": "68f96582e7538e935dbfdce824ed805c115c7222342c0d7911b5fab01f8970fa",
+      "plan_shape": [
+        100,
+        9,
+        2
+      ],
+      "sites_sha256": "98170d3d89632ace5a23ad418221ceb6de3f2133b81e6aa316664df4174e93cc",
+      "tx_sha256": "27ade7c9afe15caf33380518671d884a5b8c005b49a66c002f85b3f1bf49caf9"
+    },
+    {
+      "case_id": "dev-90473003-ho0.03",
+      "noise_sha256": "c98b5b4883060ef2590a0b8e00555555bba33ef619b1596f9c15650b45d7c2b8",
+      "plan_key": "job9_plan",
+      "plan_sha256": "72455d8aec588f9adb51a00bf44aa848600923d0514a4962beb8fc1d769d2adf",
+      "plan_shape": [
+        100,
+        9,
+        2
+      ],
+      "sites_sha256": "98170d3d89632ace5a23ad418221ceb6de3f2133b81e6aa316664df4174e93cc",
+      "tx_sha256": "27ade7c9afe15caf33380518671d884a5b8c005b49a66c002f85b3f1bf49caf9"
+    },
+    {
+      "case_id": "dev-90473003-ho0.03",
+      "noise_sha256": "c98b5b4883060ef2590a0b8e00555555bba33ef619b1596f9c15650b45d7c2b8",
+      "plan_key": "job10_plan",
+      "plan_sha256": "35516161e745378425f4b96b06b129c73d306b87525d2badeadbe3938367c13b",
+      "plan_shape": [
+        100,
+        9,
+        2
+      ],
+      "sites_sha256": "98170d3d89632ace5a23ad418221ceb6de3f2133b81e6aa316664df4174e93cc",
+      "tx_sha256": "27ade7c9afe15caf33380518671d884a5b8c005b49a66c002f85b3f1bf49caf9"
+    },
+    {
+      "case_id": "dev-90473003-ho0.03",
+      "noise_sha256": "c98b5b4883060ef2590a0b8e00555555bba33ef619b1596f9c15650b45d7c2b8",
+      "plan_key": "job11_plan",
+      "plan_sha256": "3979b10bd1c91278e0df83da283da62d528989b575f2c77e30fdcdccbd8bea20",
+      "plan_shape": [
+        100,
+        9,
+        2
+      ],
+      "sites_sha256": "98170d3d89632ace5a23ad418221ceb6de3f2133b81e6aa316664df4174e93cc",
+      "tx_sha256": "27ade7c9afe15caf33380518671d884a5b8c005b49a66c002f85b3f1bf49caf9"
+    },
+    {
+      "case_id": "dev-90473004-ho0.03",
+      "noise_sha256": "c98b5b4883060ef2590a0b8e00555555bba33ef619b1596f9c15650b45d7c2b8",
+      "plan_key": "job0_plan",
+      "plan_sha256": "bc35543eddf0ab59eb407e84d0fe1f35494a535793f472df078ebba39f3f14a8",
+      "plan_shape": [
+        100,
+        9,
+        2
+      ],
+      "sites_sha256": "98170d3d89632ace5a23ad418221ceb6de3f2133b81e6aa316664df4174e93cc",
+      "tx_sha256": "27ade7c9afe15caf33380518671d884a5b8c005b49a66c002f85b3f1bf49caf9"
+    },
+    {
+      "case_id": "dev-90473004-ho0.03",
+      "noise_sha256": "c98b5b4883060ef2590a0b8e00555555bba33ef619b1596f9c15650b45d7c2b8",
+      "plan_key": "job1_plan",
+      "plan_sha256": "c02b6e0cc6c96867435e4c677b029a2d822dee302b15d79c12764fcfb42088a2",
+      "plan_shape": [
+        100,
+        9,
+        2
+      ],
+      "sites_sha256": "98170d3d89632ace5a23ad418221ceb6de3f2133b81e6aa316664df4174e93cc",
+      "tx_sha256": "27ade7c9afe15caf33380518671d884a5b8c005b49a66c002f85b3f1bf49caf9"
+    },
+    {
+      "case_id": "dev-90473004-ho0.03",
+      "noise_sha256": "c98b5b4883060ef2590a0b8e00555555bba33ef619b1596f9c15650b45d7c2b8",
+      "plan_key": "job2_plan",
+      "plan_sha256": "98d22a1d3571ee073330bc88cccdea826db9ff640c398d0cbc315e828000e998",
+      "plan_shape": [
+        100,
+        9,
+        2
+      ],
+      "sites_sha256": "98170d3d89632ace5a23ad418221ceb6de3f2133b81e6aa316664df4174e93cc",
+      "tx_sha256": "27ade7c9afe15caf33380518671d884a5b8c005b49a66c002f85b3f1bf49caf9"
+    },
+    {
+      "case_id": "dev-90473004-ho0.03",
+      "noise_sha256": "c98b5b4883060ef2590a0b8e00555555bba33ef619b1596f9c15650b45d7c2b8",
+      "plan_key": "job3_plan",
+      "plan_sha256": "881bee427d9ddac666f7a67eebd5d2311d3a1fa008f2a89ea42f66471d7c8622",
+      "plan_shape": [
+        100,
+        9,
+        2
+      ],
+      "sites_sha256": "98170d3d89632ace5a23ad418221ceb6de3f2133b81e6aa316664df4174e93cc",
+      "tx_sha256": "27ade7c9afe15caf33380518671d884a5b8c005b49a66c002f85b3f1bf49caf9"
+    },
+    {
+      "case_id": "dev-90473004-ho0.03",
+      "noise_sha256": "c98b5b4883060ef2590a0b8e00555555bba33ef619b1596f9c15650b45d7c2b8",
+      "plan_key": "job4_plan",
+      "plan_sha256": "8371ca48d93864f9d435fc4ab3b10aac7d66ae549404e7450d9843879e109c7a",
+      "plan_shape": [
+        100,
+        9,
+        2
+      ],
+      "sites_sha256": "98170d3d89632ace5a23ad418221ceb6de3f2133b81e6aa316664df4174e93cc",
+      "tx_sha256": "27ade7c9afe15caf33380518671d884a5b8c005b49a66c002f85b3f1bf49caf9"
+    },
+    {
+      "case_id": "dev-90473004-ho0.03",
+      "noise_sha256": "c98b5b4883060ef2590a0b8e00555555bba33ef619b1596f9c15650b45d7c2b8",
+      "plan_key": "job5_plan",
+      "plan_sha256": "38a38acfab1c7d1590766d708e872186e6d76670d63e115b37247c500c5c55b3",
+      "plan_shape": [
+        100,
+        9,
+        2
+      ],
+      "sites_sha256": "98170d3d89632ace5a23ad418221ceb6de3f2133b81e6aa316664df4174e93cc",
+      "tx_sha256": "27ade7c9afe15caf33380518671d884a5b8c005b49a66c002f85b3f1bf49caf9"
+    },
+    {
+      "case_id": "dev-90473004-ho0.03",
+      "noise_sha256": "c98b5b4883060ef2590a0b8e00555555bba33ef619b1596f9c15650b45d7c2b8",
+      "plan_key": "job6_plan",
+      "plan_sha256": "409f460cffadca7816d05c0a2b63cb71d22fe42e0217442bc66eecba37d1b716",
+      "plan_shape": [
+        100,
+        9,
+        2
+      ],
+      "sites_sha256": "98170d3d89632ace5a23ad418221ceb6de3f2133b81e6aa316664df4174e93cc",
+      "tx_sha256": "27ade7c9afe15caf33380518671d884a5b8c005b49a66c002f85b3f1bf49caf9"
+    },
+    {
+      "case_id": "dev-90473004-ho0.03",
+      "noise_sha256": "c98b5b4883060ef2590a0b8e00555555bba33ef619b1596f9c15650b45d7c2b8",
+      "plan_key": "job7_plan",
+      "plan_sha256": "9d395fae6d5559c321c2999efbc65bc1dad8107350157a4020da2c17bb135cda",
+      "plan_shape": [
+        100,
+        9,
+        2
+      ],
+      "sites_sha256": "98170d3d89632ace5a23ad418221ceb6de3f2133b81e6aa316664df4174e93cc",
+      "tx_sha256": "27ade7c9afe15caf33380518671d884a5b8c005b49a66c002f85b3f1bf49caf9"
+    },
+    {
+      "case_id": "dev-90473004-ho0.03",
+      "noise_sha256": "c98b5b4883060ef2590a0b8e00555555bba33ef619b1596f9c15650b45d7c2b8",
+      "plan_key": "job8_plan",
+      "plan_sha256": "f021fb756afc6bad9873466ad2bf86ff3f8e6c708e6d5a2e5fcdfbb684c0137b",
+      "plan_shape": [
+        100,
+        9,
+        2
+      ],
+      "sites_sha256": "98170d3d89632ace5a23ad418221ceb6de3f2133b81e6aa316664df4174e93cc",
+      "tx_sha256": "27ade7c9afe15caf33380518671d884a5b8c005b49a66c002f85b3f1bf49caf9"
+    },
+    {
+      "case_id": "dev-90473004-ho0.03",
+      "noise_sha256": "c98b5b4883060ef2590a0b8e00555555bba33ef619b1596f9c15650b45d7c2b8",
+      "plan_key": "job9_plan",
+      "plan_sha256": "d905167ab290e06fb3285a9dd438f4396ad6777ef378008fa635cf2ffaf4b4e9",
+      "plan_shape": [
+        100,
+        9,
+        2
+      ],
+      "sites_sha256": "98170d3d89632ace5a23ad418221ceb6de3f2133b81e6aa316664df4174e93cc",
+      "tx_sha256": "27ade7c9afe15caf33380518671d884a5b8c005b49a66c002f85b3f1bf49caf9"
+    },
+    {
+      "case_id": "dev-90473004-ho0.03",
+      "noise_sha256": "c98b5b4883060ef2590a0b8e00555555bba33ef619b1596f9c15650b45d7c2b8",
+      "plan_key": "job10_plan",
+      "plan_sha256": "0b8dde41843e0ed7b5608013c6e7a0fe9253b225610c98a6bc7318cc8dc253e6",
+      "plan_shape": [
+        100,
+        9,
+        2
+      ],
+      "sites_sha256": "98170d3d89632ace5a23ad418221ceb6de3f2133b81e6aa316664df4174e93cc",
+      "tx_sha256": "27ade7c9afe15caf33380518671d884a5b8c005b49a66c002f85b3f1bf49caf9"
+    },
+    {
+      "case_id": "dev-90473004-ho0.03",
+      "noise_sha256": "c98b5b4883060ef2590a0b8e00555555bba33ef619b1596f9c15650b45d7c2b8",
+      "plan_key": "job11_plan",
+      "plan_sha256": "b1eb5e31532ba9fb12f9cf6bf924e9a7d901eb135fd8d03693984548875a7eb6",
+      "plan_shape": [
+        100,
+        9,
+        2
+      ],
+      "sites_sha256": "98170d3d89632ace5a23ad418221ceb6de3f2133b81e6aa316664df4174e93cc",
+      "tx_sha256": "27ade7c9afe15caf33380518671d884a5b8c005b49a66c002f85b3f1bf49caf9"
+    }
+  ],
+  "publication_sha256": "9aad9826df4678993fd65c6141ffea8a4731c2a660e13dc7ef9d5d4a03f7d96c",
+  "schema": 1,
+  "service_improvement_claim": false,
+  "source_receipt_sha256": "ee257a587e2f11b640c90b6d0b430cc76e86692efc5a62dced66be9949d43acd",
+  "summary": {
+    "median_paired_speedup": 2.823619491060742,
+    "ratio_of_median_call_times": 2.8310525458732156,
+    "reference_median_ms": 277.992402,
+    "reference_min_max_ms": [
+      245.18343,
+      337.102949
+    ],
+    "reuse_median_ms": 98.19401,
+    "reuse_min_max_ms": [
+      86.174768,
+      130.874602
+    ],
+    "timed_calls_per_operator": 144,
+    "warmup_calls_per_operator": 48
+  },
+  "timed_pairs": [
+    {
+      "call_order": [
+        "reference",
+        "reuse"
+      ],
+      "case_id": "dev-90473001-ho0.03",
+      "plan_key": "job0_plan",
+      "reference_ns": 262613965,
+      "reuse_ns": 98181982,
+      "round": 0
+    },
+    {
+      "call_order": [
+        "reuse",
+        "reference"
+      ],
+      "case_id": "dev-90473001-ho0.03",
+      "plan_key": "job0_plan",
+      "reference_ns": 293418371,
+      "reuse_ns": 99679142,
+      "round": 1
+    },
+    {
+      "call_order": [
+        "reference",
+        "reuse"
+      ],
+      "case_id": "dev-90473001-ho0.03",
+      "plan_key": "job0_plan",
+      "reference_ns": 291935091,
+      "reuse_ns": 114488713,
+      "round": 2
+    },
+    {
+      "call_order": [
+        "reuse",
+        "reference"
+      ],
+      "case_id": "dev-90473001-ho0.03",
+      "plan_key": "job1_plan",
+      "reference_ns": 271452490,
+      "reuse_ns": 92892833,
+      "round": 0
+    },
+    {
+      "call_order": [
+        "reference",
+        "reuse"
+      ],
+      "case_id": "dev-90473001-ho0.03",
+      "plan_key": "job1_plan",
+      "reference_ns": 261268985,
+      "reuse_ns": 99693173,
+      "round": 1
+    },
+    {
+      "call_order": [
+        "reuse",
+        "reference"
+      ],
+      "case_id": "dev-90473001-ho0.03",
+      "plan_key": "job1_plan",
+      "reference_ns": 292857501,
+      "reuse_ns": 93941714,
+      "round": 2
+    },
+    {
+      "call_order": [
+        "reference",
+        "reuse"
+      ],
+      "case_id": "dev-90473001-ho0.03",
+      "plan_key": "job2_plan",
+      "reference_ns": 260713898,
+      "reuse_ns": 91060000,
+      "round": 0
+    },
+    {
+      "call_order": [
+        "reuse",
+        "reference"
+      ],
+      "case_id": "dev-90473001-ho0.03",
+      "plan_key": "job2_plan",
+      "reference_ns": 292338041,
+      "reuse_ns": 93894284,
+      "round": 1
+    },
+    {
+      "call_order": [
+        "reference",
+        "reuse"
+      ],
+      "case_id": "dev-90473001-ho0.03",
+      "plan_key": "job2_plan",
+      "reference_ns": 312400774,
+      "reuse_ns": 91684063,
+      "round": 2
+    },
+    {
+      "call_order": [
+        "reuse",
+        "reference"
+      ],
+      "case_id": "dev-90473001-ho0.03",
+      "plan_key": "job3_plan",
+      "reference_ns": 289379775,
+      "reuse_ns": 102770089,
+      "round": 0
+    },
+    {
+      "call_order": [
+        "reference",
+        "reuse"
+      ],
+      "case_id": "dev-90473001-ho0.03",
+      "plan_key": "job3_plan",
+      "reference_ns": 251161992,
+      "reuse_ns": 86270651,
+      "round": 1
+    },
+    {
+      "call_order": [
+        "reuse",
+        "reference"
+      ],
+      "case_id": "dev-90473001-ho0.03",
+      "plan_key": "job3_plan",
+      "reference_ns": 249587151,
+      "reuse_ns": 87460931,
+      "round": 2
+    },
+    {
+      "call_order": [
+        "reference",
+        "reuse"
+      ],
+      "case_id": "dev-90473001-ho0.03",
+      "plan_key": "job4_plan",
+      "reference_ns": 250575054,
+      "reuse_ns": 88272496,
+      "round": 0
+    },
+    {
+      "call_order": [
+        "reuse",
+        "reference"
+      ],
+      "case_id": "dev-90473001-ho0.03",
+      "plan_key": "job4_plan",
+      "reference_ns": 337102949,
+      "reuse_ns": 90175093,
+      "round": 1
+    },
+    {
+      "call_order": [
+        "reference",
+        "reuse"
+      ],
+      "case_id": "dev-90473001-ho0.03",
+      "plan_key": "job4_plan",
+      "reference_ns": 253593376,
+      "reuse_ns": 88022519,
+      "round": 2
+    },
+    {
+      "call_order": [
+        "reuse",
+        "reference"
+      ],
+      "case_id": "dev-90473001-ho0.03",
+      "plan_key": "job5_plan",
+      "reference_ns": 288048802,
+      "reuse_ns": 108812912,
+      "round": 0
+    },
+    {
+      "call_order": [
+        "reference",
+        "reuse"
+      ],
+      "case_id": "dev-90473001-ho0.03",
+      "plan_key": "job5_plan",
+      "reference_ns": 273034770,
+      "reuse_ns": 92944939,
+      "round": 1
+    },
+    {
+      "call_order": [
+        "reuse",
+        "reference"
+      ],
+      "case_id": "dev-90473001-ho0.03",
+      "plan_key": "job5_plan",
+      "reference_ns": 297086242,
+      "reuse_ns": 97532693,
+      "round": 2
+    },
+    {
+      "call_order": [
+        "reference",
+        "reuse"
+      ],
+      "case_id": "dev-90473001-ho0.03",
+      "plan_key": "job6_plan",
+      "reference_ns": 271961474,
+      "reuse_ns": 104275789,
+      "round": 0
+    },
+    {
+      "call_order": [
+        "reuse",
+        "reference"
+      ],
+      "case_id": "dev-90473001-ho0.03",
+      "plan_key": "job6_plan",
+      "reference_ns": 300424983,
+      "reuse_ns": 97566844,
+      "round": 1
+    },
+    {
+      "call_order": [
+        "reference",
+        "reuse"
+      ],
+      "case_id": "dev-90473001-ho0.03",
+      "plan_key": "job6_plan",
+      "reference_ns": 275800801,
+      "reuse_ns": 86847854,
+      "round": 2
+    },
+    {
+      "call_order": [
+        "reuse",
+        "reference"
+      ],
+      "case_id": "dev-90473001-ho0.03",
+      "plan_key": "job7_plan",
+      "reference_ns": 277904651,
+      "reuse_ns": 86989900,
+      "round": 0
+    },
+    {
+      "call_order": [
+        "reference",
+        "reuse"
+      ],
+      "case_id": "dev-90473001-ho0.03",
+      "plan_key": "job7_plan",
+      "reference_ns": 289573841,
+      "reuse_ns": 102493628,
+      "round": 1
+    },
+    {
+      "call_order": [
+        "reuse",
+        "reference"
+      ],
+      "case_id": "dev-90473001-ho0.03",
+      "plan_key": "job7_plan",
+      "reference_ns": 269769742,
+      "reuse_ns": 95550037,
+      "round": 2
+    },
+    {
+      "call_order": [
+        "reference",
+        "reuse"
+      ],
+      "case_id": "dev-90473001-ho0.03",
+      "plan_key": "job8_plan",
+      "reference_ns": 263407014,
+      "reuse_ns": 99547021,
+      "round": 0
+    },
+    {
+      "call_order": [
+        "reuse",
+        "reference"
+      ],
+      "case_id": "dev-90473001-ho0.03",
+      "plan_key": "job8_plan",
+      "reference_ns": 297047355,
+      "reuse_ns": 97989256,
+      "round": 1
+    },
+    {
+      "call_order": [
+        "reference",
+        "reuse"
+      ],
+      "case_id": "dev-90473001-ho0.03",
+      "plan_key": "job8_plan",
+      "reference_ns": 274366580,
+      "reuse_ns": 91954806,
+      "round": 2
+    },
+    {
+      "call_order": [
+        "reuse",
+        "reference"
+      ],
+      "case_id": "dev-90473001-ho0.03",
+      "plan_key": "job9_plan",
+      "reference_ns": 276570043,
+      "reuse_ns": 99508280,
+      "round": 0
+    },
+    {
+      "call_order": [
+        "reference",
+        "reuse"
+      ],
+      "case_id": "dev-90473001-ho0.03",
+      "plan_key": "job9_plan",
+      "reference_ns": 300411796,
+      "reuse_ns": 98890368,
+      "round": 1
+    },
+    {
+      "call_order": [
+        "reuse",
+        "reference"
+      ],
+      "case_id": "dev-90473001-ho0.03",
+      "plan_key": "job9_plan",
+      "reference_ns": 260517795,
+      "reuse_ns": 115918949,
+      "round": 2
+    },
+    {
+      "call_order": [
+        "reference",
+        "reuse"
+      ],
+      "case_id": "dev-90473001-ho0.03",
+      "plan_key": "job10_plan",
+      "reference_ns": 301037215,
+      "reuse_ns": 118256075,
+      "round": 0
+    },
+    {
+      "call_order": [
+        "reuse",
+        "reference"
+      ],
+      "case_id": "dev-90473001-ho0.03",
+      "plan_key": "job10_plan",
+      "reference_ns": 284272345,
+      "reuse_ns": 103646162,
+      "round": 1
+    },
+    {
+      "call_order": [
+        "reference",
+        "reuse"
+      ],
+      "case_id": "dev-90473001-ho0.03",
+      "plan_key": "job10_plan",
+      "reference_ns": 320199055,
+      "reuse_ns": 117248155,
+      "round": 2
+    },
+    {
+      "call_order": [
+        "reuse",
+        "reference"
+      ],
+      "case_id": "dev-90473001-ho0.03",
+      "plan_key": "job11_plan",
+      "reference_ns": 322307573,
+      "reuse_ns": 115186508,
+      "round": 0
+    },
+    {
+      "call_order": [
+        "reference",
+        "reuse"
+      ],
+      "case_id": "dev-90473001-ho0.03",
+      "plan_key": "job11_plan",
+      "reference_ns": 270504147,
+      "reuse_ns": 89357203,
+      "round": 1
+    },
+    {
+      "call_order": [
+        "reuse",
+        "reference"
+      ],
+      "case_id": "dev-90473001-ho0.03",
+      "plan_key": "job11_plan",
+      "reference_ns": 264207486,
+      "reuse_ns": 91192109,
+      "round": 2
+    },
+    {
+      "call_order": [
+        "reference",
+        "reuse"
+      ],
+      "case_id": "dev-90473002-ho0.03",
+      "plan_key": "job0_plan",
+      "reference_ns": 301341898,
+      "reuse_ns": 93399906,
+      "round": 0
+    },
+    {
+      "call_order": [
+        "reuse",
+        "reference"
+      ],
+      "case_id": "dev-90473002-ho0.03",
+      "plan_key": "job0_plan",
+      "reference_ns": 308776639,
+      "reuse_ns": 101080180,
+      "round": 1
+    },
+    {
+      "call_order": [
+        "reference",
+        "reuse"
+      ],
+      "case_id": "dev-90473002-ho0.03",
+      "plan_key": "job0_plan",
+      "reference_ns": 298768278,
+      "reuse_ns": 92397018,
+      "round": 2
+    },
+    {
+      "call_order": [
+        "reuse",
+        "reference"
+      ],
+      "case_id": "dev-90473002-ho0.03",
+      "plan_key": "job1_plan",
+      "reference_ns": 266448783,
+      "reuse_ns": 104786430,
+      "round": 0
+    },
+    {
+      "call_order": [
+        "reference",
+        "reuse"
+      ],
+      "case_id": "dev-90473002-ho0.03",
+      "plan_key": "job1_plan",
+      "reference_ns": 298941768,
+      "reuse_ns": 100891001,
+      "round": 1
+    },
+    {
+      "call_order": [
+        "reuse",
+        "reference"
+      ],
+      "case_id": "dev-90473002-ho0.03",
+      "plan_key": "job1_plan",
+      "reference_ns": 307460682,
+      "reuse_ns": 105995576,
+      "round": 2
+    },
+    {
+      "call_order": [
+        "reference",
+        "reuse"
+      ],
+      "case_id": "dev-90473002-ho0.03",
+      "plan_key": "job2_plan",
+      "reference_ns": 251464988,
+      "reuse_ns": 102870986,
+      "round": 0
+    },
+    {
+      "call_order": [
+        "reuse",
+        "reference"
+      ],
+      "case_id": "dev-90473002-ho0.03",
+      "plan_key": "job2_plan",
+      "reference_ns": 278282593,
+      "reuse_ns": 111961914,
+      "round": 1
+    },
+    {
+      "call_order": [
+        "reference",
+        "reuse"
+      ],
+      "case_id": "dev-90473002-ho0.03",
+      "plan_key": "job2_plan",
+      "reference_ns": 313175814,
+      "reuse_ns": 130874602,
+      "round": 2
+    },
+    {
+      "call_order": [
+        "reuse",
+        "reference"
+      ],
+      "case_id": "dev-90473002-ho0.03",
+      "plan_key": "job3_plan",
+      "reference_ns": 294980189,
+      "reuse_ns": 114178708,
+      "round": 0
+    },
+    {
+      "call_order": [
+        "reference",
+        "reuse"
+      ],
+      "case_id": "dev-90473002-ho0.03",
+      "plan_key": "job3_plan",
+      "reference_ns": 287377481,
+      "reuse_ns": 128415958,
+      "round": 1
+    },
+    {
+      "call_order": [
+        "reuse",
+        "reference"
+      ],
+      "case_id": "dev-90473002-ho0.03",
+      "plan_key": "job3_plan",
+      "reference_ns": 318922566,
+      "reuse_ns": 120156663,
+      "round": 2
+    },
+    {
+      "call_order": [
+        "reference",
+        "reuse"
+      ],
+      "case_id": "dev-90473002-ho0.03",
+      "plan_key": "job4_plan",
+      "reference_ns": 300046727,
+      "reuse_ns": 93943549,
+      "round": 0
+    },
+    {
+      "call_order": [
+        "reuse",
+        "reference"
+      ],
+      "case_id": "dev-90473002-ho0.03",
+      "plan_key": "job4_plan",
+      "reference_ns": 301609188,
+      "reuse_ns": 113918880,
+      "round": 1
+    },
+    {
+      "call_order": [
+        "reference",
+        "reuse"
+      ],
+      "case_id": "dev-90473002-ho0.03",
+      "plan_key": "job4_plan",
+      "reference_ns": 293256373,
+      "reuse_ns": 113823681,
+      "round": 2
+    },
+    {
+      "call_order": [
+        "reuse",
+        "reference"
+      ],
+      "case_id": "dev-90473002-ho0.03",
+      "plan_key": "job5_plan",
+      "reference_ns": 274058307,
+      "reuse_ns": 101417494,
+      "round": 0
+    },
+    {
+      "call_order": [
+        "reference",
+        "reuse"
+      ],
+      "case_id": "dev-90473002-ho0.03",
+      "plan_key": "job5_plan",
+      "reference_ns": 285373554,
+      "reuse_ns": 101547362,
+      "round": 1
+    },
+    {
+      "call_order": [
+        "reuse",
+        "reference"
+      ],
+      "case_id": "dev-90473002-ho0.03",
+      "plan_key": "job5_plan",
+      "reference_ns": 297376774,
+      "reuse_ns": 97933274,
+      "round": 2
+    },
+    {
+      "call_order": [
+        "reference",
+        "reuse"
+      ],
+      "case_id": "dev-90473002-ho0.03",
+      "plan_key": "job6_plan",
+      "reference_ns": 318260023,
+      "reuse_ns": 111831916,
+      "round": 0
+    },
+    {
+      "call_order": [
+        "reuse",
+        "reference"
+      ],
+      "case_id": "dev-90473002-ho0.03",
+      "plan_key": "job6_plan",
+      "reference_ns": 318201431,
+      "reuse_ns": 101956233,
+      "round": 1
+    },
+    {
+      "call_order": [
+        "reference",
+        "reuse"
+      ],
+      "case_id": "dev-90473002-ho0.03",
+      "plan_key": "job6_plan",
+      "reference_ns": 277595719,
+      "reuse_ns": 114301647,
+      "round": 2
+    },
+    {
+      "call_order": [
+        "reuse",
+        "reference"
+      ],
+      "case_id": "dev-90473002-ho0.03",
+      "plan_key": "job7_plan",
+      "reference_ns": 269036190,
+      "reuse_ns": 97725025,
+      "round": 0
+    },
+    {
+      "call_order": [
+        "reference",
+        "reuse"
+      ],
+      "case_id": "dev-90473002-ho0.03",
+      "plan_key": "job7_plan",
+      "reference_ns": 290137766,
+      "reuse_ns": 114668235,
+      "round": 1
+    },
+    {
+      "call_order": [
+        "reuse",
+        "reference"
+      ],
+      "case_id": "dev-90473002-ho0.03",
+      "plan_key": "job7_plan",
+      "reference_ns": 298094606,
+      "reuse_ns": 105705897,
+      "round": 2
+    },
+    {
+      "call_order": [
+        "reference",
+        "reuse"
+      ],
+      "case_id": "dev-90473002-ho0.03",
+      "plan_key": "job8_plan",
+      "reference_ns": 275250600,
+      "reuse_ns": 114499803,
+      "round": 0
+    },
+    {
+      "call_order": [
+        "reuse",
+        "reference"
+      ],
+      "case_id": "dev-90473002-ho0.03",
+      "plan_key": "job8_plan",
+      "reference_ns": 290062999,
+      "reuse_ns": 116535933,
+      "round": 1
+    },
+    {
+      "call_order": [
+        "reference",
+        "reuse"
+      ],
+      "case_id": "dev-90473002-ho0.03",
+      "plan_key": "job8_plan",
+      "reference_ns": 297161425,
+      "reuse_ns": 103475732,
+      "round": 2
+    },
+    {
+      "call_order": [
+        "reuse",
+        "reference"
+      ],
+      "case_id": "dev-90473002-ho0.03",
+      "plan_key": "job9_plan",
+      "reference_ns": 314260464,
+      "reuse_ns": 115545837,
+      "round": 0
+    },
+    {
+      "call_order": [
+        "reference",
+        "reuse"
+      ],
+      "case_id": "dev-90473002-ho0.03",
+      "plan_key": "job9_plan",
+      "reference_ns": 303476577,
+      "reuse_ns": 88039156,
+      "round": 1
+    },
+    {
+      "call_order": [
+        "reuse",
+        "reference"
+      ],
+      "case_id": "dev-90473002-ho0.03",
+      "plan_key": "job9_plan",
+      "reference_ns": 245565523,
+      "reuse_ns": 87160061,
+      "round": 2
+    },
+    {
+      "call_order": [
+        "reference",
+        "reuse"
+      ],
+      "case_id": "dev-90473002-ho0.03",
+      "plan_key": "job10_plan",
+      "reference_ns": 288301700,
+      "reuse_ns": 94590514,
+      "round": 0
+    },
+    {
+      "call_order": [
+        "reuse",
+        "reference"
+      ],
+      "case_id": "dev-90473002-ho0.03",
+      "plan_key": "job10_plan",
+      "reference_ns": 291457123,
+      "reuse_ns": 106781369,
+      "round": 1
+    },
+    {
+      "call_order": [
+        "reference",
+        "reuse"
+      ],
+      "case_id": "dev-90473002-ho0.03",
+      "plan_key": "job10_plan",
+      "reference_ns": 268442699,
+      "reuse_ns": 98206038,
+      "round": 2
+    },
+    {
+      "call_order": [
+        "reuse",
+        "reference"
+      ],
+      "case_id": "dev-90473002-ho0.03",
+      "plan_key": "job11_plan",
+      "reference_ns": 261921538,
+      "reuse_ns": 96934666,
+      "round": 0
+    },
+    {
+      "call_order": [
+        "reference",
+        "reuse"
+      ],
+      "case_id": "dev-90473002-ho0.03",
+      "plan_key": "job11_plan",
+      "reference_ns": 251553249,
+      "reuse_ns": 87354178,
+      "round": 1
+    },
+    {
+      "call_order": [
+        "reuse",
+        "reference"
+      ],
+      "case_id": "dev-90473002-ho0.03",
+      "plan_key": "job11_plan",
+      "reference_ns": 311496027,
+      "reuse_ns": 99282294,
+      "round": 2
+    },
+    {
+      "call_order": [
+        "reference",
+        "reuse"
+      ],
+      "case_id": "dev-90473003-ho0.03",
+      "plan_key": "job0_plan",
+      "reference_ns": 261561371,
+      "reuse_ns": 93696908,
+      "round": 0
+    },
+    {
+      "call_order": [
+        "reuse",
+        "reference"
+      ],
+      "case_id": "dev-90473003-ho0.03",
+      "plan_key": "job0_plan",
+      "reference_ns": 268137018,
+      "reuse_ns": 99727039,
+      "round": 1
+    },
+    {
+      "call_order": [
+        "reference",
+        "reuse"
+      ],
+      "case_id": "dev-90473003-ho0.03",
+      "plan_key": "job0_plan",
+      "reference_ns": 260708760,
+      "reuse_ns": 101727566,
+      "round": 2
+    },
+    {
+      "call_order": [
+        "reuse",
+        "reference"
+      ],
+      "case_id": "dev-90473003-ho0.03",
+      "plan_key": "job1_plan",
+      "reference_ns": 255269798,
+      "reuse_ns": 93729299,
+      "round": 0
+    },
+    {
+      "call_order": [
+        "reference",
+        "reuse"
+      ],
+      "case_id": "dev-90473003-ho0.03",
+      "plan_key": "job1_plan",
+      "reference_ns": 245183430,
+      "reuse_ns": 86824273,
+      "round": 1
+    },
+    {
+      "call_order": [
+        "reuse",
+        "reference"
+      ],
+      "case_id": "dev-90473003-ho0.03",
+      "plan_key": "job1_plan",
+      "reference_ns": 254001538,
+      "reuse_ns": 87008387,
+      "round": 2
+    },
+    {
+      "call_order": [
+        "reference",
+        "reuse"
+      ],
+      "case_id": "dev-90473003-ho0.03",
+      "plan_key": "job2_plan",
+      "reference_ns": 248744606,
+      "reuse_ns": 110444228,
+      "round": 0
+    },
+    {
+      "call_order": [
+        "reuse",
+        "reference"
+      ],
+      "case_id": "dev-90473003-ho0.03",
+      "plan_key": "job2_plan",
+      "reference_ns": 281475199,
+      "reuse_ns": 109712403,
+      "round": 1
+    },
+    {
+      "call_order": [
+        "reference",
+        "reuse"
+      ],
+      "case_id": "dev-90473003-ho0.03",
+      "plan_key": "job2_plan",
+      "reference_ns": 274549114,
+      "reuse_ns": 93452408,
+      "round": 2
+    },
+    {
+      "call_order": [
+        "reuse",
+        "reference"
+      ],
+      "case_id": "dev-90473003-ho0.03",
+      "plan_key": "job3_plan",
+      "reference_ns": 283662498,
+      "reuse_ns": 92416775,
+      "round": 0
+    },
+    {
+      "call_order": [
+        "reference",
+        "reuse"
+      ],
+      "case_id": "dev-90473003-ho0.03",
+      "plan_key": "job3_plan",
+      "reference_ns": 254216147,
+      "reuse_ns": 90143689,
+      "round": 1
+    },
+    {
+      "call_order": [
+        "reuse",
+        "reference"
+      ],
+      "case_id": "dev-90473003-ho0.03",
+      "plan_key": "job3_plan",
+      "reference_ns": 283458311,
+      "reuse_ns": 90638660,
+      "round": 2
+    },
+    {
+      "call_order": [
+        "reference",
+        "reuse"
+      ],
+      "case_id": "dev-90473003-ho0.03",
+      "plan_key": "job4_plan",
+      "reference_ns": 274323848,
+      "reuse_ns": 109153947,
+      "round": 0
+    },
+    {
+      "call_order": [
+        "reuse",
+        "reference"
+      ],
+      "case_id": "dev-90473003-ho0.03",
+      "plan_key": "job4_plan",
+      "reference_ns": 292424490,
+      "reuse_ns": 98850019,
+      "round": 1
+    },
+    {
+      "call_order": [
+        "reference",
+        "reuse"
+      ],
+      "case_id": "dev-90473003-ho0.03",
+      "plan_key": "job4_plan",
+      "reference_ns": 263564483,
+      "reuse_ns": 92259072,
+      "round": 2
+    },
+    {
+      "call_order": [
+        "reuse",
+        "reference"
+      ],
+      "case_id": "dev-90473003-ho0.03",
+      "plan_key": "job5_plan",
+      "reference_ns": 301832199,
+      "reuse_ns": 112812866,
+      "round": 0
+    },
+    {
+      "call_order": [
+        "reference",
+        "reuse"
+      ],
+      "case_id": "dev-90473003-ho0.03",
+      "plan_key": "job5_plan",
+      "reference_ns": 262431911,
+      "reuse_ns": 99361713,
+      "round": 1
+    },
+    {
+      "call_order": [
+        "reuse",
+        "reference"
+      ],
+      "case_id": "dev-90473003-ho0.03",
+      "plan_key": "job5_plan",
+      "reference_ns": 322149660,
+      "reuse_ns": 108513940,
+      "round": 2
+    },
+    {
+      "call_order": [
+        "reference",
+        "reuse"
+      ],
+      "case_id": "dev-90473003-ho0.03",
+      "plan_key": "job6_plan",
+      "reference_ns": 314681827,
+      "reuse_ns": 90209608,
+      "round": 0
+    },
+    {
+      "call_order": [
+        "reuse",
+        "reference"
+      ],
+      "case_id": "dev-90473003-ho0.03",
+      "plan_key": "job6_plan",
+      "reference_ns": 284878475,
+      "reuse_ns": 114506332,
+      "round": 1
+    },
+    {
+      "call_order": [
+        "reference",
+        "reuse"
+      ],
+      "case_id": "dev-90473003-ho0.03",
+      "plan_key": "job6_plan",
+      "reference_ns": 261608791,
+      "reuse_ns": 92127696,
+      "round": 2
+    },
+    {
+      "call_order": [
+        "reuse",
+        "reference"
+      ],
+      "case_id": "dev-90473003-ho0.03",
+      "plan_key": "job7_plan",
+      "reference_ns": 283217453,
+      "reuse_ns": 114631534,
+      "round": 0
+    },
+    {
+      "call_order": [
+        "reference",
+        "reuse"
+      ],
+      "case_id": "dev-90473003-ho0.03",
+      "plan_key": "job7_plan",
+      "reference_ns": 260762295,
+      "reuse_ns": 97548670,
+      "round": 1
+    },
+    {
+      "call_order": [
+        "reuse",
+        "reference"
+      ],
+      "case_id": "dev-90473003-ho0.03",
+      "plan_key": "job7_plan",
+      "reference_ns": 293219013,
+      "reuse_ns": 102186766,
+      "round": 2
+    },
+    {
+      "call_order": [
+        "reference",
+        "reuse"
+      ],
+      "case_id": "dev-90473003-ho0.03",
+      "plan_key": "job8_plan",
+      "reference_ns": 301234103,
+      "reuse_ns": 110235706,
+      "round": 0
+    },
+    {
+      "call_order": [
+        "reuse",
+        "reference"
+      ],
+      "case_id": "dev-90473003-ho0.03",
+      "plan_key": "job8_plan",
+      "reference_ns": 251880821,
+      "reuse_ns": 95112161,
+      "round": 1
+    },
+    {
+      "call_order": [
+        "reference",
+        "reuse"
+      ],
+      "case_id": "dev-90473003-ho0.03",
+      "plan_key": "job8_plan",
+      "reference_ns": 298845454,
+      "reuse_ns": 100937965,
+      "round": 2
+    },
+    {
+      "call_order": [
+        "reuse",
+        "reference"
+      ],
+      "case_id": "dev-90473003-ho0.03",
+      "plan_key": "job9_plan",
+      "reference_ns": 260110769,
+      "reuse_ns": 101836001,
+      "round": 0
+    },
+    {
+      "call_order": [
+        "reference",
+        "reuse"
+      ],
+      "case_id": "dev-90473003-ho0.03",
+      "plan_key": "job9_plan",
+      "reference_ns": 274928794,
+      "reuse_ns": 95047895,
+      "round": 1
+    },
+    {
+      "call_order": [
+        "reuse",
+        "reference"
+      ],
+      "case_id": "dev-90473003-ho0.03",
+      "plan_key": "job9_plan",
+      "reference_ns": 287141207,
+      "reuse_ns": 94459077,
+      "round": 2
+    },
+    {
+      "call_order": [
+        "reference",
+        "reuse"
+      ],
+      "case_id": "dev-90473003-ho0.03",
+      "plan_key": "job10_plan",
+      "reference_ns": 294493957,
+      "reuse_ns": 119119596,
+      "round": 0
+    },
+    {
+      "call_order": [
+        "reuse",
+        "reference"
+      ],
+      "case_id": "dev-90473003-ho0.03",
+      "plan_key": "job10_plan",
+      "reference_ns": 261785760,
+      "reuse_ns": 104245613,
+      "round": 1
+    },
+    {
+      "call_order": [
+        "reference",
+        "reuse"
+      ],
+      "case_id": "dev-90473003-ho0.03",
+      "plan_key": "job10_plan",
+      "reference_ns": 276084895,
+      "reuse_ns": 102139673,
+      "round": 2
+    },
+    {
+      "call_order": [
+        "reuse",
+        "reference"
+      ],
+      "case_id": "dev-90473003-ho0.03",
+      "plan_key": "job11_plan",
+      "reference_ns": 267519260,
+      "reuse_ns": 95452799,
+      "round": 0
+    },
+    {
+      "call_order": [
+        "reference",
+        "reuse"
+      ],
+      "case_id": "dev-90473003-ho0.03",
+      "plan_key": "job11_plan",
+      "reference_ns": 276266777,
+      "reuse_ns": 103754954,
+      "round": 1
+    },
+    {
+      "call_order": [
+        "reuse",
+        "reference"
+      ],
+      "case_id": "dev-90473003-ho0.03",
+      "plan_key": "job11_plan",
+      "reference_ns": 263031204,
+      "reuse_ns": 94699896,
+      "round": 2
+    },
+    {
+      "call_order": [
+        "reference",
+        "reuse"
+      ],
+      "case_id": "dev-90473004-ho0.03",
+      "plan_key": "job0_plan",
+      "reference_ns": 259899553,
+      "reuse_ns": 94641569,
+      "round": 0
+    },
+    {
+      "call_order": [
+        "reuse",
+        "reference"
+      ],
+      "case_id": "dev-90473004-ho0.03",
+      "plan_key": "job0_plan",
+      "reference_ns": 293384970,
+      "reuse_ns": 92318780,
+      "round": 1
+    },
+    {
+      "call_order": [
+        "reference",
+        "reuse"
+      ],
+      "case_id": "dev-90473004-ho0.03",
+      "plan_key": "job0_plan",
+      "reference_ns": 268358554,
+      "reuse_ns": 91853856,
+      "round": 2
+    },
+    {
+      "call_order": [
+        "reuse",
+        "reference"
+      ],
+      "case_id": "dev-90473004-ho0.03",
+      "plan_key": "job1_plan",
+      "reference_ns": 267113154,
+      "reuse_ns": 90155491,
+      "round": 0
+    },
+    {
+      "call_order": [
+        "reference",
+        "reuse"
+      ],
+      "case_id": "dev-90473004-ho0.03",
+      "plan_key": "job1_plan",
+      "reference_ns": 284756336,
+      "reuse_ns": 104338918,
+      "round": 1
+    },
+    {
+      "call_order": [
+        "reuse",
+        "reference"
+      ],
+      "case_id": "dev-90473004-ho0.03",
+      "plan_key": "job1_plan",
+      "reference_ns": 284143006,
+      "reuse_ns": 99262337,
+      "round": 2
+    },
+    {
+      "call_order": [
+        "reference",
+        "reuse"
+      ],
+      "case_id": "dev-90473004-ho0.03",
+      "plan_key": "job2_plan",
+      "reference_ns": 247302397,
+      "reuse_ns": 89063924,
+      "round": 0
+    },
+    {
+      "call_order": [
+        "reuse",
+        "reference"
+      ],
+      "case_id": "dev-90473004-ho0.03",
+      "plan_key": "job2_plan",
+      "reference_ns": 260620354,
+      "reuse_ns": 90862619,
+      "round": 1
+    },
+    {
+      "call_order": [
+        "reference",
+        "reuse"
+      ],
+      "case_id": "dev-90473004-ho0.03",
+      "plan_key": "job2_plan",
+      "reference_ns": 260869510,
+      "reuse_ns": 96069210,
+      "round": 2
+    },
+    {
+      "call_order": [
+        "reuse",
+        "reference"
+      ],
+      "case_id": "dev-90473004-ho0.03",
+      "plan_key": "job3_plan",
+      "reference_ns": 268819211,
+      "reuse_ns": 98906457,
+      "round": 0
+    },
+    {
+      "call_order": [
+        "reference",
+        "reuse"
+      ],
+      "case_id": "dev-90473004-ho0.03",
+      "plan_key": "job3_plan",
+      "reference_ns": 272396439,
+      "reuse_ns": 100278636,
+      "round": 1
+    },
+    {
+      "call_order": [
+        "reuse",
+        "reference"
+      ],
+      "case_id": "dev-90473004-ho0.03",
+      "plan_key": "job3_plan",
+      "reference_ns": 289365729,
+      "reuse_ns": 105185374,
+      "round": 2
+    },
+    {
+      "call_order": [
+        "reference",
+        "reuse"
+      ],
+      "case_id": "dev-90473004-ho0.03",
+      "plan_key": "job4_plan",
+      "reference_ns": 277795416,
+      "reuse_ns": 92745999,
+      "round": 0
+    },
+    {
+      "call_order": [
+        "reuse",
+        "reference"
+      ],
+      "case_id": "dev-90473004-ho0.03",
+      "plan_key": "job4_plan",
+      "reference_ns": 278080153,
+      "reuse_ns": 100903680,
+      "round": 1
+    },
+    {
+      "call_order": [
+        "reference",
+        "reuse"
+      ],
+      "case_id": "dev-90473004-ho0.03",
+      "plan_key": "job4_plan",
+      "reference_ns": 250243996,
+      "reuse_ns": 86475688,
+      "round": 2
+    },
+    {
+      "call_order": [
+        "reuse",
+        "reference"
+      ],
+      "case_id": "dev-90473004-ho0.03",
+      "plan_key": "job5_plan",
+      "reference_ns": 277314687,
+      "reuse_ns": 110102848,
+      "round": 0
+    },
+    {
+      "call_order": [
+        "reference",
+        "reuse"
+      ],
+      "case_id": "dev-90473004-ho0.03",
+      "plan_key": "job5_plan",
+      "reference_ns": 286566368,
+      "reuse_ns": 88175732,
+      "round": 1
+    },
+    {
+      "call_order": [
+        "reuse",
+        "reference"
+      ],
+      "case_id": "dev-90473004-ho0.03",
+      "plan_key": "job5_plan",
+      "reference_ns": 297763120,
+      "reuse_ns": 102812229,
+      "round": 2
+    },
+    {
+      "call_order": [
+        "reference",
+        "reuse"
+      ],
+      "case_id": "dev-90473004-ho0.03",
+      "plan_key": "job6_plan",
+      "reference_ns": 283707802,
+      "reuse_ns": 88425606,
+      "round": 0
+    },
+    {
+      "call_order": [
+        "reuse",
+        "reference"
+      ],
+      "case_id": "dev-90473004-ho0.03",
+      "plan_key": "job6_plan",
+      "reference_ns": 278124869,
+      "reuse_ns": 91978922,
+      "round": 1
+    },
+    {
+      "call_order": [
+        "reference",
+        "reuse"
+      ],
+      "case_id": "dev-90473004-ho0.03",
+      "plan_key": "job6_plan",
+      "reference_ns": 247387002,
+      "reuse_ns": 86174768,
+      "round": 2
+    },
+    {
+      "call_order": [
+        "reuse",
+        "reference"
+      ],
+      "case_id": "dev-90473004-ho0.03",
+      "plan_key": "job7_plan",
+      "reference_ns": 272502848,
+      "reuse_ns": 91624171,
+      "round": 0
+    },
+    {
+      "call_order": [
+        "reference",
+        "reuse"
+      ],
+      "case_id": "dev-90473004-ho0.03",
+      "plan_key": "job7_plan",
+      "reference_ns": 272309238,
+      "reuse_ns": 111840136,
+      "round": 1
+    },
+    {
+      "call_order": [
+        "reuse",
+        "reference"
+      ],
+      "case_id": "dev-90473004-ho0.03",
+      "plan_key": "job7_plan",
+      "reference_ns": 275718664,
+      "reuse_ns": 87330717,
+      "round": 2
+    },
+    {
+      "call_order": [
+        "reference",
+        "reuse"
+      ],
+      "case_id": "dev-90473004-ho0.03",
+      "plan_key": "job8_plan",
+      "reference_ns": 260043068,
+      "reuse_ns": 89977531,
+      "round": 0
+    },
+    {
+      "call_order": [
+        "reuse",
+        "reference"
+      ],
+      "case_id": "dev-90473004-ho0.03",
+      "plan_key": "job8_plan",
+      "reference_ns": 272092926,
+      "reuse_ns": 88800749,
+      "round": 1
+    },
+    {
+      "call_order": [
+        "reference",
+        "reuse"
+      ],
+      "case_id": "dev-90473004-ho0.03",
+      "plan_key": "job8_plan",
+      "reference_ns": 284356804,
+      "reuse_ns": 98294599,
+      "round": 2
+    },
+    {
+      "call_order": [
+        "reuse",
+        "reference"
+      ],
+      "case_id": "dev-90473004-ho0.03",
+      "plan_key": "job9_plan",
+      "reference_ns": 257453218,
+      "reuse_ns": 91723856,
+      "round": 0
+    },
+    {
+      "call_order": [
+        "reference",
+        "reuse"
+      ],
+      "case_id": "dev-90473004-ho0.03",
+      "plan_key": "job9_plan",
+      "reference_ns": 252202706,
+      "reuse_ns": 91923407,
+      "round": 1
+    },
+    {
+      "call_order": [
+        "reuse",
+        "reference"
+      ],
+      "case_id": "dev-90473004-ho0.03",
+      "plan_key": "job9_plan",
+      "reference_ns": 281064392,
+      "reuse_ns": 101199824,
+      "round": 2
+    },
+    {
+      "call_order": [
+        "reference",
+        "reuse"
+      ],
+      "case_id": "dev-90473004-ho0.03",
+      "plan_key": "job10_plan",
+      "reference_ns": 268808525,
+      "reuse_ns": 92510347,
+      "round": 0
+    },
+    {
+      "call_order": [
+        "reuse",
+        "reference"
+      ],
+      "case_id": "dev-90473004-ho0.03",
+      "plan_key": "job10_plan",
+      "reference_ns": 290880491,
+      "reuse_ns": 94986596,
+      "round": 1
+    },
+    {
+      "call_order": [
+        "reference",
+        "reuse"
+      ],
+      "case_id": "dev-90473004-ho0.03",
+      "plan_key": "job10_plan",
+      "reference_ns": 291087345,
+      "reuse_ns": 107006856,
+      "round": 2
+    },
+    {
+      "call_order": [
+        "reuse",
+        "reference"
+      ],
+      "case_id": "dev-90473004-ho0.03",
+      "plan_key": "job11_plan",
+      "reference_ns": 302583323,
+      "reuse_ns": 95734724,
+      "round": 0
+    },
+    {
+      "call_order": [
+        "reference",
+        "reuse"
+      ],
+      "case_id": "dev-90473004-ho0.03",
+      "plan_key": "job11_plan",
+      "reference_ns": 288971633,
+      "reuse_ns": 92436577,
+      "round": 1
+    },
+    {
+      "call_order": [
+        "reuse",
+        "reference"
+      ],
+      "case_id": "dev-90473004-ho0.03",
+      "plan_key": "job11_plan",
+      "reference_ns": 256263978,
+      "reuse_ns": 90395012,
+      "round": 2
+    }
+  ]
+}

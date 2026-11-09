@@ -1,0 +1,48 @@
+{
+  "co_running_cpu_context": "Root reports comprehensive tracked tests (one CPU) and adaptive prediction were running concurrently. This was not an isolated CPU experiment.",
+  "extra_operator_calls": 0,
+  "extra_timing_calls": 0,
+  "first_method_counts": {
+    "reference": 72,
+    "reuse": 72
+  },
+  "frozen_native_manifest_sha256_after": "4d9f95316d9e029365ed64d4b04e43128a49239c4115ebb8a6bb49f11c12aeb9",
+  "frozen_native_manifest_sha256_before": "4d9f95316d9e029365ed64d4b04e43128a49239c4115ebb8a6bb49f11c12aeb9",
+  "model_forwards": 0,
+  "new_packet_simulations": 0,
+  "new_worlds": 0,
+  "passes": true,
+  "preserved_native_evidence": 56,
+  "preserved_native_sources": 512,
+  "public_input_hashes_independently_reconstructed": 48,
+  "qualification": "Descriptive operand-call microbenchmark including allocation and physical-feature math; no full-model, service-latency or SLA claim.",
+  "registered_new_source_files": 5,
+  "report_sha256_after": "38c2751d1125be80a8937d40d288fdacf93de4afad0fcdfa4fd8ab7ba4580503",
+  "report_sha256_before": "38c2751d1125be80a8937d40d288fdacf93de4afad0fcdfa4fd8ab7ba4580503",
+  "review_script_sha256": "5d512c36374282324a991ea2fd45f6de653767166c7396d94e12f843e2e1d3da",
+  "schema": 1,
+  "source_publication": {
+    "branch": "codex/adaptive-radio-service-transfer",
+    "commit": "0bc5b4360d8c8023af6891b53374b4a576f26077",
+    "remote": "origin",
+    "remote_observed_commit": "0bc5b4360d8c8023af6891b53374b4a576f26077",
+    "source_receipt_sha256": "ee257a587e2f11b640c90b6d0b430cc76e86692efc5a62dced66be9949d43acd"
+  },
+  "summary": {
+    "median_paired_speedup": 2.823619491060742,
+    "ratio_of_median_call_times": 2.8310525458732156,
+    "reference_median_ms": 277.992402,
+    "reference_min_max_ms": [
+      245.18343,
+      337.102949
+    ],
+    "reuse_median_ms": 98.19401,
+    "reuse_min_max_ms": [
+      86.174768,
+      130.874602
+    ],
+    "timed_calls_per_operator": 144,
+    "warmup_calls_per_operator": 48
+  },
+  "timed_pairs_independently_checked": 144
+}

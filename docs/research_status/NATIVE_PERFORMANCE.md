@@ -20,7 +20,7 @@ The profile uses existing public planned positions for seeds 90473001–90473004
 
 Each operator receives one untimed warmup per plan and three timed calls per plan. Pair order alternates deterministically; all three numerical thread limits are fixed at one. `perf_counter_ns` measures operand construction only. Input loading, provenance checking and byte-parity checks are outside the timing interval. Complete operand byte parity is required for each plan and every timed pair. The primary runtime ratio divides the median reference call time by the median optimized call time across the fixed 144 calls per operator. Repeated same-process timings are descriptive and correlated.
 
-At initial source registration, **no actual-plan profiling or timing has run**. Execute only after publication:
+At initial source registration, no actual-plan profiling or timing had run. Source commit `0bc5b4360d8c8023af6891b53374b4a576f26077` was then pushed and observed before the registered profile executed. The run command is:
 
 ```bash
 PYTHONPATH=src OPENBLAS_NUM_THREADS=1 OMP_NUM_THREADS=1 MKL_NUM_THREADS=1 \
@@ -30,3 +30,22 @@ PYTHONPATH=src OPENBLAS_NUM_THREADS=1 OMP_NUM_THREADS=1 MKL_NUM_THREADS=1 \
 The profiler refuses an existing attempt rather than silently repeating measurements. It checks preserved native bytes before and after and writes to the separate `artifacts/native_bridge_ops` namespace. Its report must remain explicit that no model forward, fit, new world or packet simulation took place.
 
 Any measured speedup applies only to operand construction in the recorded CPU environment. Context processing, learned rendering, queuing, planning, native packet behavior and physical hardware latency are outside this profile. Improving those outcomes requires a separate authorized and registered evaluation; the old native evidence remains unchanged.
+
+## Actual registered results
+
+The finite profile completed successfully on all **48 saved public plans**, with **144 timed calls and 48 untimed warmups per operator**. Every warmup pair and timed pair returned identical operand shape, dtype and bytes. The geometric AABB work fell from 43,200 to 14,400 links per call; the number of output queries remained 43,200.
+
+| Operand call | Median time | Observed minimum–maximum |
+|---|---:|---:|
+| Frozen reference | 277.992 ms | 245.183–337.103 ms |
+| Geometry shared across bands | **98.194 ms** | 86.175–130.875 ms |
+
+The registered primary ratio of median call times is **2.831×**, corresponding to 64.7% less median operand-call time. The median of the individual paired ratios is 2.824×. Reference-first and reuse-first order each occurred 72 times. These are correlated same-process measurements, not independent deployment trials or confidence intervals.
+
+The environment used Python 3.12.14, NumPy 2.5.4 and a Linux CPU quota of four cores. OpenBLAS, OpenMP and MKL thread limits were each one. Comprehensive repository tests and adaptive prediction work were running concurrently on the managed CPU; the benchmark was not isolated. Its timers include ordinary call allocation and physical-feature arithmetic, so the result is an operand-call microbenchmark, not a pure intersection-kernel result.
+
+Evidence: [registered report](../../artifacts/native_bridge_ops/report.json), [source publication receipt](../../artifacts/native_bridge_ops/registration/git.json), [independent review](../../artifacts/native_bridge_ops_review/review.json) and [review script](../../artifacts/native_bridge_ops_review/script.py). The report SHA256 is `38c2751d1125be80a8937d40d288fdacf93de4afad0fcdfa4fd8ab7ba4580503`.
+
+The independent review checks all 48 public input hashes, all 144 unique timing pairs, balanced call order, exact summary arithmetic, source publication and the preserved 512-source/56-evidence native byte closure. It makes **zero extra operator calls, zero timing calls, zero model forwards and zero packet simulations**. The native evidence manifest remains SHA256 `4d9f95316d9e029365ed64d4b04e43128a49239c4115ebb8a6bb49f11c12aeb9`; all 18 previously completed native simulated outcomes are unchanged.
+
+The optimized operator is available separately. It has not been substituted into the frozen native runner, and no full-model latency, deadline, controller or service improvement is claimed.
