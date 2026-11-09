@@ -107,6 +107,12 @@ fatal to closure/replay, never silently skipped. Follow the relocation steps
 in [the experiment README](../channel_scene/README.md); actual raw acquisition
 files are additionally required for full pilot/checkpoint replay.
 
+The valid transport capsule is currently local. Uploading a GitHub release
+asset failed authentication; the empty draft was removed. No GitHub download
+URL is claimed. Durable remote publication remains to be completed with an
+upload credential that the release-asset host accepts, or by exporting the
+local capsule directly.
+
 The source datasets are CC BY 4.0. The derived predictions are adaptations.
 Credit Florian Euchner and Marc Gauger for
 [cf0x](https://doi.org/10.18419/darus-2854); Florian Euchner, Phillip Stephan,
