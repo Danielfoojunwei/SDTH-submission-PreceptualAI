@@ -14,6 +14,21 @@ produce per-link predictions. Supported proposals retain explicit timing,
 compute and evidence limits. **RadioMap + WirelessJEV remains the application
 default.**
 
+The [causal warehouse-control study](docs/research_status/SPATIAL_CONTROL.md)
+completes **48 fresh 100-robot simulations plus two exact parity runs**. It adds
+spatial report memory, a latest-own support guard, delivered central-command
+execution and separately preinstalled client-local recovery with paid scans.
+With 30 ms handovers, support + recovery reduces the fixed regression model's
+mean command loss from **1.635625% to 1.079375%** (34.0% fewer), while RadioMap
+remains better at **1.044375%** in all four episode pairs. Mean episode maximum
+silence falls from **5.8175 to 0.355 seconds**. At four-second switching cost,
+recovery harms **all four episodes** for both forecasters. The 543-source /
+224-evidence closure and [independent passive audit](artifacts/spatial_control_review/result.json)
+pass. These gains repair control-stack behavior; they do not establish a JEPA
+objective advantage, learned dynamics or production qualification.
+The [local result explorer](artifacts/spatial_control_review/index.html) shows
+all six arms, both handover costs, paired harms and the two control paths.
+
 The current [adaptive RF-condition assay](docs/research_status/ADAPTIVE_RESULTS.md)
 completes **12 fits and 174 actual Sionna RT cases**. Across 24 TEST layouts,
 validation-selected regression has sparse condition-delta RMSE **1.520106 versus
@@ -34,9 +49,11 @@ Its 225 pairs are descriptive, oracle-conditioned results on opened environments
 [Measured CSI](docs/research_status/CSI_RESULTS.md) also retains its negative
 model result. None of these results qualifies a fleet controller.
 
-The latest [tracked-suite proof](artifacts/research_review/release_suite.json)
-records **2,655 passing tests**, one expected fork warning and unchanged source
-hashes. It includes the R6 and exporter tests; their counts are not added again.
+The latest [tracked-suite proof](artifacts/spatial_control_review/final_software_suite.json)
+records **2,978 passing tests**, 138 test modules, one expected fork warning
+and unchanged hashes for 436 source/config/test files. The earlier
+[2,655-test snapshot](artifacts/research_review/release_suite.json) is preserved;
+overlapping R6, exporter and spatial preflight counts are not added again.
 The [read-only R6 bridge](docs/research_status/R6_BRIDGE.md),
 [local evidence Studio](docs/research_status/STUDIO_EXPORT.md),
 [execution ledger](docs/research_status/EXECUTION_LEDGER.md) and
