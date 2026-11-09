@@ -1,0 +1,116 @@
+{
+  "assumptions": "fixed material/antenna spectral response and calibrated reciprocity; quantization spread only",
+  "cohort": "genuine heard5.2GHz source AND heard6GHz query, known frontend gauge",
+  "dependencies": [
+    {
+      "path": "artifacts/radiojepa_spectral/predictions/development/held_band/joint_none-seed0/spectral-development-00.json",
+      "sha256": "a20e78d3af68b67097abe087e00a8dcb4945ce32e9066e6f1c316cb55f02107a"
+    },
+    {
+      "path": "artifacts/radiojepa_spectral/predictions/development/held_band/joint_none-seed1/spectral-development-00.json",
+      "sha256": "e0df911e34b14337138f3ba55647959e698f65f2d1521cd4f48fb25f1c35d83e"
+    },
+    {
+      "path": "artifacts/radiojepa_spectral/predictions/development/held_band/joint_none-seed2/spectral-development-00.json",
+      "sha256": "9f449cd4620181793bb47d01f2ee08eefcff3a106aa29494bdb03c2adfec7cd2"
+    },
+    {
+      "path": "artifacts/radiojepa_spectral/predictions/development/held_band/joint_none-seed0/spectral-development-01.json",
+      "sha256": "12b2438569b890578358001feb227d371e31f367888fa71d50d91112863e6eb6"
+    },
+    {
+      "path": "artifacts/radiojepa_spectral/predictions/development/held_band/joint_none-seed1/spectral-development-01.json",
+      "sha256": "36bfb9bccc5bae5b570604fe5ac3b1ab5db3d37ae70712161c655ebb01794b5b"
+    },
+    {
+      "path": "artifacts/radiojepa_spectral/predictions/development/held_band/joint_none-seed2/spectral-development-01.json",
+      "sha256": "1199a04d80d32fb3ab7475d959bee11c1b9243e5a413abdffaaad1fec0abc81d"
+    },
+    {
+      "path": "artifacts/radiojepa_spectral/predictions/development/held_band/joint_none-seed0/spectral-development-02.json",
+      "sha256": "ccf707dcaf9dd2350e3dc8d5a156f9542b233fdc851c677fa5f3cc1785563681"
+    },
+    {
+      "path": "artifacts/radiojepa_spectral/predictions/development/held_band/joint_none-seed1/spectral-development-02.json",
+      "sha256": "3c753117269eadc5f01ceefb9332c9a9251a0cbe3d587bc64f244dc56c1e7494"
+    },
+    {
+      "path": "artifacts/radiojepa_spectral/predictions/development/held_band/joint_none-seed2/spectral-development-02.json",
+      "sha256": "fab1b0822fb4728d070eb0c3aee634db0eb321a5620603d176a465d5bdfa3bed"
+    },
+    {
+      "path": "artifacts/radiojepa_spectral/predictions/development/held_band/joint_none-seed0/spectral-development-03.json",
+      "sha256": "b54bed3106c2adcc94a7f958e5b4f57b3d5fc2189b4df53a0008157ed6301aa3"
+    },
+    {
+      "path": "artifacts/radiojepa_spectral/predictions/development/held_band/joint_none-seed1/spectral-development-03.json",
+      "sha256": "42c2c98396ae66d48b448aa5fb1704c4c0375a6d00a7d95dcb537c70a6980f69"
+    },
+    {
+      "path": "artifacts/radiojepa_spectral/predictions/development/held_band/joint_none-seed2/spectral-development-03.json",
+      "sha256": "d979d9940e7922998ad7157855de4aa2ddadc5a1bcb3017da9c8d7eac1773995"
+    }
+  ],
+  "identity": {
+    "protocol_sha256": "e016658c230c176daa7684815bc0efa299b0012cfbb9a428ae83405706a4adb0",
+    "registry_sha256": "49ea5082514182906e4d32d1b561a1c4ba63a07b029c81ac7bece8cc4afb046f",
+    "source_receipt_sha256": "d6ee331a43a88d492d38181b10ce2d84c95f84a2bd61b8360f6179d43d01e4a0"
+  },
+  "layouts": [
+    {
+      "all_heard_query_count": 72,
+      "direct_rmse_db": 2.9327272967275753,
+      "eligible_source_query_count": 72,
+      "matched_heard_query_count": 72,
+      "scene_id": "spectral-development-00",
+      "selected_seed_rmse_db": [
+        3.0522825717926025,
+        3.123084783554077,
+        3.056539535522461
+      ]
+    },
+    {
+      "all_heard_query_count": 72,
+      "direct_rmse_db": 4.2737358747093355,
+      "eligible_source_query_count": 72,
+      "matched_heard_query_count": 72,
+      "scene_id": "spectral-development-01",
+      "selected_seed_rmse_db": [
+        2.665757179260254,
+        2.766010284423828,
+        2.82140851020813
+      ]
+    },
+    {
+      "all_heard_query_count": 72,
+      "direct_rmse_db": 5.116020005724579,
+      "eligible_source_query_count": 72,
+      "matched_heard_query_count": 72,
+      "scene_id": "spectral-development-02",
+      "selected_seed_rmse_db": [
+        5.44008731842041,
+        4.94539213180542,
+        5.132321357727051
+      ]
+    },
+    {
+      "all_heard_query_count": 72,
+      "direct_rmse_db": 4.902806371166393,
+      "eligible_source_query_count": 72,
+      "matched_heard_query_count": 72,
+      "scene_id": "spectral-development-03",
+      "selected_seed_rmse_db": [
+        3.0669138431549072,
+        3.0830230712890625,
+        2.8621177673339844
+      ]
+    }
+  ],
+  "npz_path": "artifacts/radiojepa_spectral/diagnostics/development-same-link-frequency.npz",
+  "npz_sha256": "0c263de551db4c6cd6d7725dae7af322981361665ddbe6609a157c78365d78ea",
+  "primary_endpoint": false,
+  "schema": 1,
+  "selected_cell": "joint_none",
+  "stage": "development",
+  "uncertainty_calibrated": false
+}

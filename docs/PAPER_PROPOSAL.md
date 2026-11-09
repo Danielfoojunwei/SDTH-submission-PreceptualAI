@@ -1,12 +1,28 @@
 # Paper proposal
 
+## Current RadioJEPA evidence boundary
+
+The [physics-structured field study](spectral_scene/RESULTS.md) completes 15
+fits and 84 actual Sionna scenes. Across 24 FIELD layouts its spatial RF RMSE
+is 3.622 versus 4.843 dB for the RadioMap-operator control, with confirmed
+adjusted spatial, p95 and same-link 6 GHz contrasts. Exact matched regression
+achieves 3.631 dB, with no confirmed JEPA-alignment benefit; the RF-value-erased
+geometry/availability control achieves 3.660 dB. A paper can motivate the
+physics-inverse shared field architecture from this evidence. It cannot claim
+JEPA-objective superiority, rich RF dependence, universal foundation-model
+transfer, inference-compute superiority or fleet service from these results.
+All primary queries are audible static simulated channels. Complex CSI,
+dynamic interference, calibrated service heads and real-device confirmation
+remain separate experiments. [Architecture](spectral_scene/ARCHITECTURE.md)
+and the [remaining-work matrix](spectral_scene/REMAINING.md) define that scope.
+
 The warehouse-connectivity E1–E5 and corrected E7 experiments are complete
 for one synthetic training seed. E6 is excluded. The consolidated results and completion status
 are in `docs/WAREHOUSE_RESULTS.md`. The subsequently authorised warehouse v2
 campaign is described below; general foundation-model, custom on-air PHY,
 robotics and space extensions remain deferred.
 
-## Current result: a conditional JEPA package advantage, with failed intervention claims
+## Fixed-weight service package: conditional advantage and failed intervention claims
 
 [PILOT_FASTLOOP_RESULTS.md](PILOT_FASTLOOP_RESULTS.md) and the
 [registered report](../artifacts/pilot_fastloop/report.json) support two specific

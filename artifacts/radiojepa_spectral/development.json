@@ -1,0 +1,309 @@
+{
+  "checks": {
+    "all_predictions_finite": true,
+    "every_seed_rmse_no_worse": true,
+    "mean_p95_better": true,
+    "mean_rf_rmse_better": true,
+    "zero_latent_hurts_at_least_one_percent": true
+  },
+  "coverage": {
+    "held_band": [
+      {
+        "censored_count": 0,
+        "heard_count": 72,
+        "missing_count": 0,
+        "scene_id": "spectral-development-00"
+      },
+      {
+        "censored_count": 0,
+        "heard_count": 72,
+        "missing_count": 0,
+        "scene_id": "spectral-development-01"
+      },
+      {
+        "censored_count": 0,
+        "heard_count": 72,
+        "missing_count": 0,
+        "scene_id": "spectral-development-02"
+      },
+      {
+        "censored_count": 0,
+        "heard_count": 72,
+        "missing_count": 0,
+        "scene_id": "spectral-development-03"
+      }
+    ],
+    "in_band": [
+      {
+        "censored_count": 0,
+        "heard_count": 144,
+        "missing_count": 0,
+        "scene_id": "spectral-development-00"
+      },
+      {
+        "censored_count": 0,
+        "heard_count": 144,
+        "missing_count": 0,
+        "scene_id": "spectral-development-01"
+      },
+      {
+        "censored_count": 0,
+        "heard_count": 144,
+        "missing_count": 0,
+        "scene_id": "spectral-development-02"
+      },
+      {
+        "censored_count": 0,
+        "heard_count": 144,
+        "missing_count": 0,
+        "scene_id": "spectral-development-03"
+      }
+    ],
+    "onboarding_0": [
+      {
+        "censored_count": 0,
+        "heard_count": 48,
+        "missing_count": 0,
+        "scene_id": "spectral-development-00"
+      },
+      {
+        "censored_count": 0,
+        "heard_count": 48,
+        "missing_count": 0,
+        "scene_id": "spectral-development-01"
+      },
+      {
+        "censored_count": 0,
+        "heard_count": 48,
+        "missing_count": 0,
+        "scene_id": "spectral-development-02"
+      },
+      {
+        "censored_count": 0,
+        "heard_count": 48,
+        "missing_count": 0,
+        "scene_id": "spectral-development-03"
+      }
+    ],
+    "onboarding_1": [
+      {
+        "censored_count": 0,
+        "heard_count": 48,
+        "missing_count": 0,
+        "scene_id": "spectral-development-00"
+      },
+      {
+        "censored_count": 0,
+        "heard_count": 48,
+        "missing_count": 0,
+        "scene_id": "spectral-development-01"
+      },
+      {
+        "censored_count": 0,
+        "heard_count": 48,
+        "missing_count": 0,
+        "scene_id": "spectral-development-02"
+      },
+      {
+        "censored_count": 0,
+        "heard_count": 48,
+        "missing_count": 0,
+        "scene_id": "spectral-development-03"
+      }
+    ],
+    "onboarding_16": [
+      {
+        "censored_count": 0,
+        "heard_count": 48,
+        "missing_count": 0,
+        "scene_id": "spectral-development-00"
+      },
+      {
+        "censored_count": 0,
+        "heard_count": 48,
+        "missing_count": 0,
+        "scene_id": "spectral-development-01"
+      },
+      {
+        "censored_count": 0,
+        "heard_count": 48,
+        "missing_count": 0,
+        "scene_id": "spectral-development-02"
+      },
+      {
+        "censored_count": 0,
+        "heard_count": 48,
+        "missing_count": 0,
+        "scene_id": "spectral-development-03"
+      }
+    ],
+    "onboarding_4": [
+      {
+        "censored_count": 0,
+        "heard_count": 48,
+        "missing_count": 0,
+        "scene_id": "spectral-development-00"
+      },
+      {
+        "censored_count": 0,
+        "heard_count": 48,
+        "missing_count": 0,
+        "scene_id": "spectral-development-01"
+      },
+      {
+        "censored_count": 0,
+        "heard_count": 48,
+        "missing_count": 0,
+        "scene_id": "spectral-development-02"
+      },
+      {
+        "censored_count": 0,
+        "heard_count": 48,
+        "missing_count": 0,
+        "scene_id": "spectral-development-03"
+      }
+    ]
+  },
+  "embedding_diagnostics": [
+    {
+      "centered_rank": 3,
+      "centered_rank_upper_bound": 3,
+      "distinct_layouts": 4,
+      "participation_rank": 1.2952807360340448,
+      "seed": 0,
+      "singular_values": [
+        1.7678457304806416,
+        0.6136159883823188,
+        0.28640123938626294,
+        1.2505452955280075e-16
+      ]
+    },
+    {
+      "centered_rank": 3,
+      "centered_rank_upper_bound": 3,
+      "distinct_layouts": 4,
+      "participation_rank": 2.1039503905823596,
+      "seed": 1,
+      "singular_values": [
+        2.4450143117533885,
+        1.9024816141449081,
+        0.7571032569796262,
+        9.012878598826987e-17
+      ]
+    },
+    {
+      "centered_rank": 3,
+      "centered_rank_upper_bound": 3,
+      "distinct_layouts": 4,
+      "participation_rank": 2.115502700156157,
+      "seed": 2,
+      "singular_values": [
+        1.9284106660831786,
+        1.68247410727467,
+        0.5084226322068292,
+        2.0497113664086968e-16
+      ]
+    }
+  ],
+  "evaluation": {
+    "path": "artifacts/radiojepa_spectral/results/development.json",
+    "sha256": "91a3eea7961723032c7c3feea830ee0ba146149477117908de4a3f9aba88abb3"
+  },
+  "field_test_permitted": true,
+  "onboarding": [
+    {
+      "available_layouts": 4,
+      "context_report_pairs": 0,
+      "query_bands": [
+        0,
+        1
+      ],
+      "query_devices": [
+        3
+      ],
+      "query_poses": "odd, disjoint from calibration support",
+      "radiomap_mean_rmse_db": 7.818818618496857,
+      "registered_layouts": 4,
+      "scope": "simulated RSSI offset/quantization inverse from genuine even-pose pairs; known-deviceA encoder unchanged, no neural fine-tuning or real AGC/CFO calibration; nested supports correlated",
+      "selected_mean_rmse_db": 7.10960328992273,
+      "unavailable_layouts": []
+    },
+    {
+      "available_layouts": 4,
+      "context_report_pairs": 1,
+      "query_bands": [
+        0,
+        1
+      ],
+      "query_devices": [
+        3
+      ],
+      "query_poses": "odd, disjoint from calibration support",
+      "radiomap_mean_rmse_db": 5.123480133702261,
+      "registered_layouts": 4,
+      "scope": "simulated RSSI offset/quantization inverse from genuine even-pose pairs; known-deviceA encoder unchanged, no neural fine-tuning or real AGC/CFO calibration; nested supports correlated",
+      "selected_mean_rmse_db": 3.685356055626921,
+      "unavailable_layouts": []
+    },
+    {
+      "available_layouts": 4,
+      "context_report_pairs": 4,
+      "query_bands": [
+        0,
+        1
+      ],
+      "query_devices": [
+        3
+      ],
+      "query_poses": "odd, disjoint from calibration support",
+      "radiomap_mean_rmse_db": 5.217617042133542,
+      "registered_layouts": 4,
+      "scope": "simulated RSSI offset/quantization inverse from genuine even-pose pairs; known-deviceA encoder unchanged, no neural fine-tuning or real AGC/CFO calibration; nested supports correlated",
+      "selected_mean_rmse_db": 3.721599394626437,
+      "unavailable_layouts": []
+    },
+    {
+      "available_layouts": 4,
+      "context_report_pairs": 16,
+      "query_bands": [
+        0,
+        1
+      ],
+      "query_devices": [
+        3
+      ],
+      "query_poses": "odd, disjoint from calibration support",
+      "radiomap_mean_rmse_db": 5.149738173112785,
+      "registered_layouts": 4,
+      "scope": "simulated RSSI offset/quantization inverse from genuine even-pose pairs; known-deviceA encoder unchanged, no neural fine-tuning or real AGC/CFO calibration; nested supports correlated",
+      "selected_mean_rmse_db": 3.679026763883665,
+      "unavailable_layouts": []
+    }
+  ],
+  "original_service_confirmation_permitted": false,
+  "production_qualified": false,
+  "protocol_sha256": "e016658c230c176daa7684815bc0efa299b0012cfbb9a428ae83405706a4adb0",
+  "radiomap_mean_p95_abs_db": 10.12943763714776,
+  "radiomap_mean_rmse_db": 5.136291244148355,
+  "rank_is_descriptive_not_gate": true,
+  "registry_sha256": "49ea5082514182906e4d32d1b561a1c4ba63a07b029c81ac7bece8cc4afb046f",
+  "same_link_frequency": {
+    "path": "artifacts/radiojepa_spectral/diagnostics/development-same-link-frequency.json",
+    "sha256": "b02d3526a15a4faecd626fa64cc56e3148ad96240dc7c3a888ce2f411a62b343"
+  },
+  "selected_cell": "joint_none",
+  "selected_mean_p95_abs_db": 6.6340409437815335,
+  "selected_mean_rmse_db": 3.5848371492144073,
+  "selected_seed_mean_rmse_db": [
+    3.6136319276974485,
+    3.598825759790464,
+    3.542053760155308
+  ],
+  "selection": {
+    "path": "artifacts/radiojepa_spectral/selection.json",
+    "sha256": "db20014ce045f4790c9eaed91742475f737e33bc69b4af9caa324ce278e57b37"
+  },
+  "shuffle_latent_mean_rmse_db": 3.593412007989446,
+  "source_receipt_sha256": "d6ee331a43a88d492d38181b10ce2d84c95f84a2bd61b8360f6179d43d01e4a0",
+  "zero_latent_relative_rmse_degradation": 0.6908295232219277
+}
