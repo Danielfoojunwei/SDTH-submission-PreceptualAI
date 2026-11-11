@@ -1,0 +1,132 @@
+{
+  "attempt": {
+    "path": "artifacts/hierarchical_radio/predictions/test-sparse-held6GHz/attempts/hierarchical-test-00-state1.json",
+    "sha256": "80d99c11706c6b4544db209dbb144f555b69ece842224df4a2c12b3af01dcc73"
+  },
+  "case_id": "hierarchical-test-00-state1",
+  "elapsed_seconds": [
+    0.015106541977729648,
+    0.016945411975029856,
+    0.01267546700546518,
+    0.009180557972285897,
+    0.009314636001363397,
+    0.009243832028005272,
+    0.030553166987374425,
+    0.0052945599891245365
+  ],
+  "example_group": {
+    "path": "artifacts/hierarchical_radio/data/groups/test-sparse-held6GHz.json",
+    "sha256": "369425bfc45e236670f7c760a8c0dbacc836fd207a50675cbf61b1e7afa81c26"
+  },
+  "example_index": 1,
+  "group": "test-sparse-held6GHz",
+  "layout_id": "hierarchical-test-00",
+  "methods": [
+    "hier_reg-seed0",
+    "hier_reg-seed1",
+    "hier_reg-seed2",
+    "global_reg-seed0",
+    "global_reg-seed1",
+    "global_reg-seed2",
+    "radiomap_operator",
+    "hierarchy_fixed"
+  ],
+  "metrics": [
+    {
+      "censored": 48,
+      "composite_interval_nll": 1.2672789958651964,
+      "heard": 48,
+      "heard_interval_95_coverage": 0.9791666666666666,
+      "mae_db": 2.1331419500080058,
+      "mean_std_db": 3.597034143111254,
+      "p95_abs_error_db": 4.812012229463653,
+      "rmse_db": 2.6313103315965303,
+      "unknown": 0
+    },
+    {
+      "censored": 48,
+      "composite_interval_nll": 1.2687737544803739,
+      "heard": 48,
+      "heard_interval_95_coverage": 0.9791666666666666,
+      "mae_db": 2.14111011319469,
+      "mean_std_db": 3.593456783522124,
+      "p95_abs_error_db": 4.188447762728348,
+      "rmse_db": 2.603024400849906,
+      "unknown": 0
+    },
+    {
+      "censored": 48,
+      "composite_interval_nll": 1.277074071654315,
+      "heard": 48,
+      "heard_interval_95_coverage": 0.9791666666666666,
+      "mae_db": 2.1692081006881665,
+      "mean_std_db": 3.5636402636616733,
+      "p95_abs_error_db": 4.407820361751207,
+      "rmse_db": 2.6599360801511542,
+      "unknown": 0
+    },
+    {
+      "censored": 48,
+      "composite_interval_nll": 1.2520911070555647,
+      "heard": 48,
+      "heard_interval_95_coverage": 1.0,
+      "mae_db": 2.1898777086808097,
+      "mean_std_db": 3.1617584017005105,
+      "p95_abs_error_db": 4.733214328399524,
+      "rmse_db": 2.6190179716155746,
+      "unknown": 0
+    },
+    {
+      "censored": 48,
+      "composite_interval_nll": 1.2458763918709608,
+      "heard": 48,
+      "heard_interval_95_coverage": 1.0,
+      "mae_db": 2.161772836389991,
+      "mean_std_db": 3.1604329512640046,
+      "p95_abs_error_db": 4.375291396120389,
+      "rmse_db": 2.5619083695686213,
+      "unknown": 0
+    },
+    {
+      "censored": 48,
+      "composite_interval_nll": 1.2583222679768393,
+      "heard": 48,
+      "heard_interval_95_coverage": 1.0,
+      "mae_db": 2.2136408807695447,
+      "mean_std_db": 3.1461317067539567,
+      "p95_abs_error_db": 4.72473936161121,
+      "rmse_db": 2.6505224283531326,
+      "unknown": 0
+    },
+    {
+      "censored": 48,
+      "composite_interval_nll": 1.2706287605411484,
+      "heard": 48,
+      "heard_interval_95_coverage": 1.0,
+      "mae_db": 2.1758881257723353,
+      "mean_std_db": 3.959203298978197,
+      "p95_abs_error_db": 4.690472895890596,
+      "rmse_db": 2.596920328473358,
+      "unknown": 0
+    },
+    {
+      "censored": 48,
+      "composite_interval_nll": 1.233119846441009,
+      "heard": 48,
+      "heard_interval_95_coverage": 1.0,
+      "mae_db": 1.9508873992447473,
+      "mean_std_db": 3.412828846803412,
+      "p95_abs_error_db": 4.727806609339184,
+      "rmse_db": 2.405970676162009,
+      "unknown": 0
+    }
+  ],
+  "predictions": {
+    "path": "artifacts/hierarchical_radio/predictions/test-sparse-held6GHz/hierarchical-test-00-state1.npz",
+    "sha256": "9e15ad6294e13cbdb83c86bfcd5b80efc7f5738f7defc684e62d1b6cfcd92ae5"
+  },
+  "selection_sha256": "d362c9566b793bfb721edd2f909ef0e1cb7deb150033460849dcf80c1ff8f338",
+  "source_receipt_sha256": "79af65db3d863ae1aca437ed50ac04463c50691e9d6034926062f3b373696799",
+  "stage": "test",
+  "state": 1
+}
