@@ -2,6 +2,28 @@
 
 ## Current RadioJEPA evidence boundary
 
+The [shared/AP-local model experiment](hierarchical_radio/RESULTS.md) completes
+186 actual ray-traced cases, 15 fits and 34 native simulations with a passing
+567-source/4,900-evidence seal and independent replay. It **does not support
+hierarchy superiority**: selected sparse RSSI RMSE is 3.088402 dB, versus
+2.995352 for the matched global model and 2.951064 for the numerical map;
+both adjusted intervals support higher error. Matched predictive agreement
+reduces error by 0.034739 dB, with adjusted interval
+[−0.052060, −0.020327], and RF amplitudes clearly matter. This modest objective
+result is conditional on this architecture, three trained members and static
+material fields; it is not classic EMA-JEPA, a RadioMap victory or SOTA proof.
+
+The separate 100-robot transfer has hierarchy misses of
+1.278125% / 2.778125% for 0.03/4 s handovers, versus full-history RadioMap
+1.165% / 2.3725%. Same-budget numerical-map means are 1.600% / 2.8175%, with
+mixed paired harms at four seconds. These are four short paired procedural
+episodes per cost, using fixed seed-zero weights, shared support rules for
+the three budget-matched methods and potentially divergent closed-loop reports.
+They do not isolate a JEPA service effect or qualify hardware. The
+[architecture](hierarchical_radio/ARCHITECTURE.md) and
+[source-backed interpretation](hierarchical_radio/INTERPRETATION.md) make the
+inferred-state, optimization, observability and temporal boundaries explicit.
+
 The [causal warehouse-control diagnostic](research_status/SPATIAL_CONTROL.md)
 adds 48 fresh 100-robot/20-second simulations and two exact wiring-parity runs
 under a new published execution contract. It separates spatial report support
@@ -58,7 +80,7 @@ descriptive diagnostic, not default promotion or fresh confirmation.
 The [read-only R6 bridge](research_status/R6_BRIDGE.md) and
 [local evidence Studio](research_status/STUDIO_EXPORT.md) package explicit
 contracts and evidence without granting execution authority. The current
-[2,978-test tracked-suite proof](../artifacts/spatial_control_review/final_software_suite.json)
+[3,416-test tracked-suite proof](../artifacts/hierarchical_radio_review/software_suite_importlib.json)
 is software validation; it adds no independent RF samples or hardware evidence.
 
 The warehouse-connectivity E1–E5 and corrected E7 experiments are complete
@@ -399,7 +421,10 @@ evidence satisfy the documented qualification contract.
 
 `VISUAL_RADIO_STATUS.md` describes the frozen-model collapse audit, six new
 preregistered projection fits, real pretrained DINOv3 frontend, receiver-centric
-RF factors and a proposal-only hierarchy. The old action latents are
+RF factors and a then-proposed hierarchy. The separate static shared/AP-local
+hierarchy is now implemented and evaluated in [the completed RF study](hierarchical_radio/RESULTS.md),
+with primary losses retained; this does not complete the visual/event-time
+proposal. The old action latents are
 concentrated, but remain varying and action-sensitive. A separate auxiliary
 projection substantially improves normalized future matching while retaining
 teacher variance/rank; two of three seeds worsen service prediction. Better

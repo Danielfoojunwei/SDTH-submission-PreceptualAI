@@ -1,11 +1,21 @@
 # Scope and remaining validation
 
 The shared/AP-local field model and its finite experiment are implemented and
-registered. [PLAN.md](PLAN.md) defines the execution and acceptance rules;
-[ARCHITECTURE.md](ARCHITECTURE.md) describes the actual model. Implementation
-and passing software tests do not establish an experimental gain. Scientific
-completion requires all registered cases, fits, raw reductions, evidence seal
-and independent review; results must retain every null and harm.
+registered. All 186 RT cases, 15 neural fits and 34 warehouse simulations have
+completed. The canonical seal binds 567 source and 4,900 evidence files, and
+the [first independent actual-data audit](../../artifacts/hierarchical_radio_review/independent.json)
+passes without scientific reruns or changed evidence.
+[PLAN.md](PLAN.md) defines the acceptance rules;
+[ARCHITECTURE.md](ARCHITECTURE.md) describes the actual model, and
+[RESULTS.md](RESULTS.md) retains its primary harms and limited gains. Software
+success and completed execution do not establish an experimental improvement.
+
+The selected hierarchy has higher primary RF error than the global control
+and numerical map, and higher native mean command misses than global-24 and
+full-history RadioMap. Joint agreement has a small matched RF benefit, and
+the hierarchy improves native mean misses over the matched numerical map;
+these do not overturn the main negative comparisons. The retained 8.89 s
+simulated gap also prevents a dependable-connectivity claim for 100 cars.
 
 The model supplies a conditional **spatial RSSI field**. It combines a shared
 physical state with AP-local spatial state, using shared learned feature
@@ -14,6 +24,14 @@ it has no EMA teacher. A supported gain over a global model would establish a
 benefit for this representation under the registered conditions. A joint-cell
 gain would need its own matched contrast. Neither follows from the model name,
 latent size or an aggregate win over a numerical map.
+Predictions are never reinserted as observations, removing one source of
+self-reinforcing belief error. That design choice alone does not bound field
+error, trajectory error or long-horizon control losses.
+The [interpretation](INTERPRETATION.md) also identifies a testable limitation:
+the current local prior has a positive coefficient-variance floor and fixed
+active Fourier features, so it cannot recover the exact global-eight submodel
+by zeroing the local channel. A nested zero/off or shrinkage control belongs
+in a new protocol. The source constraint does not prove why this batch lost.
 
 | Built scope | Validation still required beyond this batch |
 | --- | --- |

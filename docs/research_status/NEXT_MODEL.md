@@ -1,6 +1,21 @@
-# Next model: built support and recovery, proposed hierarchical belief
+# Next model: tested spatial belief, open event-time dynamics
 
-The [spatial-control stack](SPATIAL_CONTROL.md) now implements causal report
+The [shared/AP-local spatial model](../hierarchical_radio/RESULTS.md) and
+bounded 192-report route-coverage selector are now built and evaluated: 186
+actual RT cases, 15 fits and 34 native simulations, with canonical seal and
+independent replay passed. The selected hierarchy loses its primary field
+comparisons and has higher mean native misses than full-history RadioMap.
+The matched agreement gain is modest; no new model is promoted. The current
+[architecture](CURRENT_SYSTEM.md) describes the implemented system.
+
+The [interpretation](../hierarchical_radio/INTERPRETATION.md) identifies a
+testable limitation: the fixed Fourier channel and positive local prior floor
+cannot recover an exact global-only submodel. It does not prove that this
+caused the losses. All fits selected the budget's last checkpoint, which
+does not establish convergence. Any successor must choose budget and
+shrinkage on TRAIN/VAL and confirm on fresh cases.
+
+The separate fixed-weight [spatial-control stack](SPATIAL_CONTROL.md) implements causal report
 memory, latest-own source-band support, causal central command execution and
 separately preinstalled paid own-client recovery. It reuses the fixed regression
 checkpoint and unchanged 64-token encoder. Its [registered 48-fresh + two-parity
@@ -8,9 +23,9 @@ diagnostic](../spatial_control/PLAN.md) is complete, with canonical seal and
 independent passive review passed. [All handover-specific contrasts and harms](EXECUTION_LEDGER.md#spatial-control-contrasts)
 remain visible. This is an enabling-stack/controller result with fixed neural weights; RadioMap still performs its ordinary numerical history fits.
 
-**Learned AP/region hierarchy, query-aware encoder retrieval, temporal belief
-transitions and protocol-supervised service heads remain proposals.** The
-built observation index and controller do not constitute those models. The
+**Learned query-specific retrieval, event-time transitions and qualified
+protocol-supervised service heads remain research targets.** Static AP-local
+conditioning is now implemented; it does not constitute those models. The
 [current system](CURRENT_SYSTEM.md) and architecture page separate these levels.
 
 ## Evidence that determines the design
@@ -19,7 +34,7 @@ built observation index and controller do not constitute those models. The
 |---|---|
 | The CSI views each observe 16 of 64 Fourier rows; their union leaves the odd targets ambiguous. [Analysis](CSI_INTERPRETATION.md). | Certify target observability and disclose the prior before changing model capacity. More consistency loss cannot create missing measurements. |
 | At native decision 0, 16 AP3/5.2 GHz reports lay within 5 m of robot 7, but none entered its context. The two retained reports were 54.81/74.26 m away. [Passive review](NATIVE_CONTEXT.md). | Retrieve for the query's spatial support, age and actual link, rather than only allocating two newest rows per AP/band. Distance alone is insufficient: the nearest report was 45 s old. |
-| All history-dependent mean changes pass through eight global coefficients; the query-local correction is fixed after training. | Compare a hierarchical per-AP/region memory with the global state. The trace does **not** prove eight dimensions insufficient, diagnose collapse or establish that hierarchy will repair the outage. |
+| The motivating fixed baseline adapted through eight global coefficients; the new shared/AP-local comparison is complete and negative on its primary endpoint. | More inferred state is not sufficient. Preserve the strong small-global and numerical controls; test genuine shrinkage and data/budget adequacy without diagnosing collapse from error alone. |
 | Robot 7 moved onto AP3 and later recovery remained pending without successful delivery. The model also transfers from two-AP RT rooms to a 16-AP warehouse without native risk calibration. [Results](NATIVE_RESULTS.md). | Separate support/calibration admission from command execution. An independent veto does not supply an offline recovery mechanism. |
 | Sharing band-independent geometry produced exact operand bytes and a **2.831× median operand-call speedup**. [Profile](NATIVE_PERFORMANCE.md). | Reuse this separate optimization where applicable and charge remaining work. It is not a full-model or service speedup and was not substituted into the frozen native run. |
 | The sealed adaptive assay selects regression; joint agreement is worse, and pooled Bayes nearly ties its primary metric. E7 calibration improves map RMSE with mixed planning utility. [Adaptive](ADAPTIVE_RESULTS.md), [E7](E7_CALPLANNING_RESULTS.md). | Preserve strong numerical and exact matched-supervision controls. Better field error or a larger latent cannot be assumed to improve service or establish a JEPA benefit. |
@@ -35,9 +50,9 @@ report into an earlier forecast. These historical diagnostics remain unchanged.
 ```mermaid
 flowchart LR
     REPORT[Delivered reports with measurement,<br/>arrival, position and gauge metadata] --> MEMORY[BUILT: causal spatial report memory]
-    REPORT --> SELECT[BUILT: unchanged 64-token selector]
+    REPORT --> SELECT[BUILT: bounded 192-report route-coverage selector]
     CAD[Public CAD and planned positions] --> OPS[BUILT: shared geometry operands]
-    SELECT --> GLOBAL[BUILT: frozen global field posterior]
+    SELECT --> GLOBAL[BUILT: trained shared/AP-local or global posterior]
     OPS --> GLOBAL
     GLOBAL --> PLANNER[BUILT: typed bounded planner]
     MEMORY --> SUPPORT[BUILT: optional latest-own support<br/>queued server-delivery refresh]
@@ -45,10 +60,10 @@ flowchart LR
     PLANNER -->|support disabled| COMMAND
     SUPPORT --> COMMAND[BUILT: paid central commands<br/>creation, delivery and expiry]
     COMMAND --> RADIO[Radio actions and packet process]
-    LOCAL[Own valid pilots and paid completed scans] --> RECOVERY[BUILT: preinstalled own-client recovery]
-    RECOVERY --> RADIO
+    LOCAL[Own valid pilots and paid completed scans] -. OFF in hierarchy study .-> RECOVERY[BUILT: preinstalled own-client recovery]
+    RECOVERY -. optional, unqualified .-> RADIO
     RADIO --> REPORT
-    MEMORY -. proposed encoder retrieval .-> BELIEF[PROPOSED: AP and region hierarchy<br/>observation-driven temporal belief]
+    MEMORY -. future learned retrieval .-> BELIEF[PROPOSED: observation-driven<br/>event-time belief transitions]
     PROTOCOL[Past ACK, retries, queues,<br/>deadlines and actual action events] -. labeled training .-> HEADS[PROPOSED: calibrated service heads]
     BELIEF -.-> HEADS
     OPS -.-> BELIEF
@@ -58,8 +73,8 @@ flowchart LR
 ```
 
 Solid paths describe built software; dashed paths describe future model work.
-The current support memory adds admission information without changing encoder
-context. Its 2.4/5.2 GHz support rule does not calibrate a 6.5 GHz forecast or
+The bounded route selector now conditions the spatial model; latest-own support
+adds separate admission evidence. Its 2.4/5.2 GHz rule does not calibrate a 6.5 GHz forecast or
 packet-risk head. Mission text remains outside the RF encoder. The completed
 controller diagnostic has mixed, handover-dependent outcomes.
 
@@ -70,14 +85,14 @@ deliveries; a completed undelivered local scan is not server knowledge. Its
 guard selects the newest own source-band report before spatial filtering,
 so a newer negative/distant report cannot resurrect an older nearby positive.
 Unknown measurement age cannot pass freshness. Query-aware retrieval into
-the encoder, obstruction-aware ranking and learned hierarchical state remain
-separate changes requiring matched tests.
+the encoder on a per-query basis, obstruction-aware ranking and learned
+event-time updates remain separate changes requiring matched tests.
 Heard values, quantization intervals, upper censor bounds and missing scans
 remain distinct. An unheard AP crowded out of a scan is not a measured
 −90 dBm point. Output a support footprint and missingness/age summary with
 each forecast; proximity does not itself qualify that forecast.
 
-**Hierarchy as a testable hypothesis.** Retain a shared geometry/frequency
+**A successor to the tested hierarchy.** Retain a shared geometry/frequency
 prior, then condition AP-specific and spatial-region state on permitted RF.
 Use shared functions across APs rather than a learned identity table that
 cannot accommodate a new AP. A query would combine shared physics with its
@@ -157,7 +172,8 @@ Report mean and worst-decile misses, maximum gaps, per-device support,
 calibration failures, rates and total paid latency; keep handover mechanisms
 separate. Fresh splits/cases and a published finite protocol are prerequisites.
 
-Hierarchy, encoder retrieval and service-head work remain proposed follow-ups.
-The completed support/recovery experiment establishes no JEPA-objective gain,
-SOTA, novelty, production eligibility or hardware benefit.
+Static hierarchy has been tested, with its losses retained. Learned retrieval,
+event-time transitions and qualified service heads remain follow-ups. The
+small matched predictive-agreement RF gain does not establish a RadioMap
+replacement, classic JEPA, SOTA, novelty, production eligibility or hardware benefit.
 The original SERVICE holdouts remain closed, and no actuation is authorized.
