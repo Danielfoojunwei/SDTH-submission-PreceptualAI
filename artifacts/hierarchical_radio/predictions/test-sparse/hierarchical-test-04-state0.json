@@ -1,0 +1,249 @@
+{
+  "attempt": {
+    "path": "artifacts/hierarchical_radio/predictions/test-sparse/attempts/hierarchical-test-04-state0.json",
+    "sha256": "716f164ad4d3eab9531539b36bff9e0f1fb9d1e44b0276e13cfaa8eb5085d90a"
+  },
+  "case_id": "hierarchical-test-04-state0",
+  "elapsed_seconds": [
+    0.013015755044762045,
+    0.012300491041969508,
+    0.011816493992228061,
+    0.012537706992588937,
+    0.01226769300410524,
+    0.01205179700627923,
+    0.00933861400699243,
+    0.009599404991604388,
+    0.00924427097197622,
+    0.009719636000227183,
+    0.00966326001798734,
+    0.009065002028364688,
+    0.012547341990284622,
+    0.011953469016589224,
+    0.011740149988327175,
+    0.028713807987514883,
+    0.0053116760100238025
+  ],
+  "example_group": {
+    "path": "artifacts/hierarchical_radio/data/groups/test-sparse.json",
+    "sha256": "abdb0d226244c9f1bcf8a2ad555a9fdb27b3e07813e80aca07a68f021fc64b7f"
+  },
+  "example_index": 12,
+  "group": "test-sparse",
+  "layout_id": "hierarchical-test-04",
+  "methods": [
+    "hier_reg-seed0",
+    "hier_reg-seed1",
+    "hier_reg-seed2",
+    "hier_joint-seed0",
+    "hier_joint-seed1",
+    "hier_joint-seed2",
+    "global_reg-seed0",
+    "global_reg-seed1",
+    "global_reg-seed2",
+    "global8_reg-seed0",
+    "global8_reg-seed1",
+    "global8_reg-seed2",
+    "hier_erased-seed0",
+    "hier_erased-seed1",
+    "hier_erased-seed2",
+    "radiomap_operator",
+    "hierarchy_fixed"
+  ],
+  "metrics": [
+    {
+      "censored": 94,
+      "composite_interval_nll": 1.5156436892893115,
+      "heard": 96,
+      "heard_interval_95_coverage": 0.8541666666666666,
+      "mae_db": 3.2621018934421038,
+      "mean_std_db": 3.5149526245274436,
+      "p95_abs_error_db": 7.968457157359804,
+      "rmse_db": 4.016216640382678,
+      "unknown": 2
+    },
+    {
+      "censored": 94,
+      "composite_interval_nll": 1.5166818092234795,
+      "heard": 96,
+      "heard_interval_95_coverage": 0.8541666666666666,
+      "mae_db": 3.2410977690843,
+      "mean_std_db": 3.5099139673587967,
+      "p95_abs_error_db": 7.930202119484697,
+      "rmse_db": 4.016165907619421,
+      "unknown": 2
+    },
+    {
+      "censored": 94,
+      "composite_interval_nll": 1.5183989433369602,
+      "heard": 96,
+      "heard_interval_95_coverage": 0.8541666666666666,
+      "mae_db": 3.263572191980096,
+      "mean_std_db": 3.4934426623760437,
+      "p95_abs_error_db": 7.993156747119841,
+      "rmse_db": 4.010529530921191,
+      "unknown": 2
+    },
+    {
+      "censored": 94,
+      "composite_interval_nll": 1.5036470055963707,
+      "heard": 96,
+      "heard_interval_95_coverage": 0.8541666666666666,
+      "mae_db": 3.2045613020232753,
+      "mean_std_db": 3.4746467786233914,
+      "p95_abs_error_db": 7.713128532322457,
+      "rmse_db": 3.9406428070023893,
+      "unknown": 2
+    },
+    {
+      "censored": 94,
+      "composite_interval_nll": 1.5038814601379666,
+      "heard": 96,
+      "heard_interval_95_coverage": 0.875,
+      "mae_db": 3.1910167123511743,
+      "mean_std_db": 3.470557813760768,
+      "p95_abs_error_db": 7.833952392766445,
+      "rmse_db": 3.939974937354686,
+      "unknown": 2
+    },
+    {
+      "censored": 94,
+      "composite_interval_nll": 1.5140657311936707,
+      "heard": 96,
+      "heard_interval_95_coverage": 0.8541666666666666,
+      "mae_db": 3.236737523810311,
+      "mean_std_db": 3.4617245687494296,
+      "p95_abs_error_db": 7.788235409837469,
+      "rmse_db": 3.96997811797743,
+      "unknown": 2
+    },
+    {
+      "censored": 94,
+      "composite_interval_nll": 1.4345447320642046,
+      "heard": 96,
+      "heard_interval_95_coverage": 0.9166666666666666,
+      "mae_db": 2.8526466527242356,
+      "mean_std_db": 3.118108850301109,
+      "p95_abs_error_db": 6.217127684423691,
+      "rmse_db": 3.4693936288760203,
+      "unknown": 2
+    },
+    {
+      "censored": 94,
+      "composite_interval_nll": 1.4427848833018808,
+      "heard": 96,
+      "heard_interval_95_coverage": 0.9166666666666666,
+      "mae_db": 2.8821686703574376,
+      "mean_std_db": 3.10406382496168,
+      "p95_abs_error_db": 6.385775712427879,
+      "rmse_db": 3.5193323458398225,
+      "unknown": 2
+    },
+    {
+      "censored": 94,
+      "composite_interval_nll": 1.440236755899509,
+      "heard": 96,
+      "heard_interval_95_coverage": 0.8958333333333334,
+      "mae_db": 2.856380870652437,
+      "mean_std_db": 3.1091334163193913,
+      "p95_abs_error_db": 6.397736804921365,
+      "rmse_db": 3.51125247804899,
+      "unknown": 2
+    },
+    {
+      "censored": 94,
+      "composite_interval_nll": 1.434535434654123,
+      "heard": 96,
+      "heard_interval_95_coverage": 0.8854166666666666,
+      "mae_db": 2.7199242780758066,
+      "mean_std_db": 2.8397913103166754,
+      "p95_abs_error_db": 6.535223715752634,
+      "rmse_db": 3.3741302447807597,
+      "unknown": 2
+    },
+    {
+      "censored": 94,
+      "composite_interval_nll": 1.4359291760050257,
+      "heard": 96,
+      "heard_interval_95_coverage": 0.8854166666666666,
+      "mae_db": 2.719527046288409,
+      "mean_std_db": 2.8226118215214746,
+      "p95_abs_error_db": 6.537964177831034,
+      "rmse_db": 3.371881155802569,
+      "unknown": 2
+    },
+    {
+      "censored": 94,
+      "composite_interval_nll": 1.434642333443727,
+      "heard": 96,
+      "heard_interval_95_coverage": 0.8854166666666666,
+      "mae_db": 2.720444969280443,
+      "mean_std_db": 2.8323007403528897,
+      "p95_abs_error_db": 6.497586752448781,
+      "rmse_db": 3.3716216181755785,
+      "unknown": 2
+    },
+    {
+      "censored": 94,
+      "composite_interval_nll": 1.5426144173025722,
+      "heard": 96,
+      "heard_interval_95_coverage": 1.0,
+      "mae_db": 3.4688919106415548,
+      "mean_std_db": 6.1205878048856235,
+      "p95_abs_error_db": 8.631002997873807,
+      "rmse_db": 4.414389676822771,
+      "unknown": 2
+    },
+    {
+      "censored": 94,
+      "composite_interval_nll": 1.5437807987984917,
+      "heard": 96,
+      "heard_interval_95_coverage": 1.0,
+      "mae_db": 3.4241829039601903,
+      "mean_std_db": 6.044978716836108,
+      "p95_abs_error_db": 8.91412166070031,
+      "rmse_db": 4.296540322282721,
+      "unknown": 2
+    },
+    {
+      "censored": 94,
+      "composite_interval_nll": 1.5563527155579242,
+      "heard": 96,
+      "heard_interval_95_coverage": 1.0,
+      "mae_db": 3.6027181207148864,
+      "mean_std_db": 5.985233080592493,
+      "p95_abs_error_db": 9.592248178340288,
+      "rmse_db": 4.581788041948881,
+      "unknown": 2
+    },
+    {
+      "censored": 94,
+      "composite_interval_nll": 1.480498061222299,
+      "heard": 96,
+      "heard_interval_95_coverage": 0.875,
+      "mae_db": 2.8554663837896457,
+      "mean_std_db": 3.262783471042058,
+      "p95_abs_error_db": 7.862402194161586,
+      "rmse_db": 3.652728384067893,
+      "unknown": 2
+    },
+    {
+      "censored": 94,
+      "composite_interval_nll": 1.452078780071859,
+      "heard": 96,
+      "heard_interval_95_coverage": 0.8958333333333334,
+      "mae_db": 2.8950333427827046,
+      "mean_std_db": 3.2641862033587903,
+      "p95_abs_error_db": 7.388532291388344,
+      "rmse_db": 3.6095467890946704,
+      "unknown": 2
+    }
+  ],
+  "predictions": {
+    "path": "artifacts/hierarchical_radio/predictions/test-sparse/hierarchical-test-04-state0.npz",
+    "sha256": "2818f636ffda76933b56e9d798b94c386a7ae6a5c4ea337d9aa68889207a492f"
+  },
+  "selection_sha256": "d362c9566b793bfb721edd2f909ef0e1cb7deb150033460849dcf80c1ff8f338",
+  "source_receipt_sha256": "79af65db3d863ae1aca437ed50ac04463c50691e9d6034926062f3b373696799",
+  "stage": "test",
+  "state": 0
+}

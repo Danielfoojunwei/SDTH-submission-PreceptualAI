@@ -10,6 +10,21 @@ E1–E5 and corrected E7 have finished; E6 remains excluded. No interrupted
 original training worker needs restarting, and original large-model results
 still represent one training chain.
 
+The [shared/AP-local RF study](hierarchical_radio/RESULTS.md) is complete:
+**186 actual RT cases, 15 neural fits, 60 raw validation prediction archives and
+34 native simulations**. All fits commit 480 updates; no training or simulator
+job from this batch remains unfinished. The canonical **567-source /
+4,900-evidence** seal and first independent audit pass. The selected hierarchy
+loses the primary sparse RSSI comparisons: **3.088402 dB**, versus global-24
+**2.995352** and numerical map **2.951064**. Joint agreement improves its matched
+regression hierarchy by 0.034739 dB, without beating those references. Native
+hierarchy mean misses are **1.278125% / 2.778125%** at 0.03/4 s handovers,
+versus full-history Map **1.165% / 2.3725%**; all paired harms and the 8.89 s
+outlier remain. The [3D viewer](../artifacts/hierarchical_radio_review/viewer/index.html)
+and [interpretation](hierarchical_radio/INTERPRETATION.md) distinguish observations
+from hypotheses. Do not restart completed fits, retune these TEST cases, or
+open original SERVICE layouts to rescue the result.
+
 The new [causal spatial-control study](research_status/SPATIAL_CONTROL.md) is
 complete: **48 fresh simulations plus two exact disabled-parity runs**,
 543 frozen source files and 224 evidence files. The independent passive audit
@@ -53,19 +68,20 @@ The [measured CSI result](research_status/CSI_RESULTS.md) is negative. The
 simulations, adverse fast-handover result and 9.74-second recovery outlier.
 The [2.83× geometry-operand optimization](research_status/NATIVE_PERFORMANCE.md)
 changes neither those frozen outcomes nor full-model/service qualification.
-The hierarchical belief, learned dynamics and service-head portions of the
-[next-model design](research_status/NEXT_MODEL.md) remain proposed. Its
-spatial-memory/admission/recovery slice now has the completed implementation
-and mixed diagnostic above.
+The static shared/AP-local spatial posterior and bounded 192-report route-coverage
+selector are now built and evaluated. Learned event-time dynamics, learned
+query-specific retrieval and calibrated service heads in the
+[next-model design](research_status/NEXT_MODEL.md) remain research work. The
+additional inferred state did not improve the registered field endpoint.
 
 The [read-only R6 bridge](research_status/R6_BRIDGE.md) invokes actual isolated
 upstream planning code with explicit service contracts and conservative journal
 views; unqualified RF outcomes defer. The [local Studio export](research_status/STUDIO_EXPORT.md)
 is reviewable; all 11 cards, including the sealed adaptive results, are complete.
-External Studio/deck publication has not occurred. The latest [tracked-suite receipt](../artifacts/spatial_control_review/final_software_suite.json)
-and [log](../artifacts/spatial_control_review/final_software_suite.log) record **2,978 passing
-tests**, one expected fork warning, 138 test modules and unchanged hashes for
-436 source/config/test files. Older suite proofs are preserved. R6, exporter
+External Studio/deck publication has not occurred. The latest [tracked-suite receipt](../artifacts/hierarchical_radio_review/software_suite_importlib.json)
+and [log](../artifacts/hierarchical_radio_review/software_suite_importlib.log) record **3,416 passing
+tests**, one expected fork warning, 149 test modules and unchanged hashes for
+564 source/config/test files. Older suite proofs are preserved. R6, exporter
 and spatial checks are included, not additive scientific trials.
 
 **RadioMap + WirelessJEV remains the default.** The original 24 SERVICE layouts

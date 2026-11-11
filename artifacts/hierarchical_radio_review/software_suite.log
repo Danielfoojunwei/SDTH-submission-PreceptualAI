@@ -1,0 +1,29 @@
+
+==================================== ERRORS ====================================
+____________ ERROR collecting tests/hierarchical_radio/test_data.py ____________
+import file mismatch:
+imported module 'test_data' has this __file__ attribute:
+  /workspace/SDTH-submission-PreceptualAI/tests/e7_calplanning/test_data.py
+which is not the same as the test file we want to collect:
+  /workspace/SDTH-submission-PreceptualAI/tests/hierarchical_radio/test_data.py
+HINT: remove __pycache__ / .pyc files and/or use a unique basename for your test file modules
+_____________ ERROR collecting tests/spatial_control/test_study.py _____________
+import file mismatch:
+imported module 'test_study' has this __file__ attribute:
+  /workspace/SDTH-submission-PreceptualAI/tests/hierarchical_radio/test_study.py
+which is not the same as the test file we want to collect:
+  /workspace/SDTH-submission-PreceptualAI/tests/spatial_control/test_study.py
+HINT: remove __pycache__ / .pyc files and/or use a unique basename for your test file modules
+____________________ ERROR collecting tests/test_native.py _____________________
+import file mismatch:
+imported module 'test_native' has this __file__ attribute:
+  /workspace/SDTH-submission-PreceptualAI/tests/hierarchical_radio/test_native.py
+which is not the same as the test file we want to collect:
+  /workspace/SDTH-submission-PreceptualAI/tests/test_native.py
+HINT: remove __pycache__ / .pyc files and/or use a unique basename for your test file modules
+=========================== short test summary info ============================
+ERROR tests/hierarchical_radio/test_data.py
+ERROR tests/spatial_control/test_study.py
+ERROR tests/test_native.py
+!!!!!!!!!!!!!!!!!!! Interrupted: 3 errors during collection !!!!!!!!!!!!!!!!!!!!
+3 errors in 3.72s

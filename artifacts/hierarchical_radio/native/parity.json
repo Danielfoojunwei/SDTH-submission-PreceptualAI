@@ -1,0 +1,23 @@
+{
+  "both_causal_central": true,
+  "checks": {
+    "forecast_snr_exact": true,
+    "forecast_std_exact": true,
+    "native_outcomes_exact": true,
+    "packet_counters_exact": true,
+    "ready_slots_exact": true
+  },
+  "passes": true,
+  "profile_seconds": 4.0,
+  "receipts": [
+    {
+      "path": "artifacts/hierarchical_radio/native/cases/wiring-parity/full_radiomap/receipt.json",
+      "sha256": "e7c3d22aa4f114c3019ffafe235c9bd563f08573300823e38283f3df0a958ac1"
+    },
+    {
+      "path": "artifacts/hierarchical_radio/native/cases/wiring-parity/radiomap_roundtrip/receipt.json",
+      "sha256": "a1060dbcd75202d321a4a46a14fe30e0da1f2949f627d55be267b218b1351ab7"
+    }
+  ],
+  "scientific_gain_claimed": false
+}

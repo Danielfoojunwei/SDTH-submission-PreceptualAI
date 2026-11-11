@@ -1,0 +1,145 @@
+{
+  "arrays": {
+    "path": "artifacts/hierarchical_radio/native/cases/fresh-90512004-ho4/matched_radiomap/predictions_history.npz",
+    "sha256": "bf33c14170289f3713731d473e06187983f2843c1352322f550abdc9d61c8a24"
+  },
+  "attempt": {
+    "path": "artifacts/hierarchical_radio/native/cases/fresh-90512004-ho4/matched_radiomap/attempt.json",
+    "sha256": "55af6a83864d9825cd89094b5a7966e285d355456134dcc988c08ebafc700975"
+  },
+  "binding": {
+    "field_report": {
+      "path": "artifacts/hierarchical_radio/field_report.json",
+      "sha256": "e38fcbe7409769d99ec0330bb92d145d1730363a2b2eb7d481603654bb87177c"
+    },
+    "protocol_sha256": "e6602295a3d8c348d1d14e6558fce04072417a68377d131d582ddc17ca63effe",
+    "selected_hierarchy": "hier_reg",
+    "selection": {
+      "path": "artifacts/hierarchical_radio/selection.json",
+      "sha256": "d362c9566b793bfb721edd2f909ef0e1cb7deb150033460849dcf80c1ff8f338"
+    },
+    "source_receipt_sha256": "79af65db3d863ae1aca437ed50ac04463c50691e9d6034926062f3b373696799",
+    "weights": {
+      "global_reg": {
+        "path": "artifacts/hierarchical_radio/checkpoints/global_reg-seed0.pt",
+        "sha256": "0d7a8e22a280b68f5d1c2d7e992c3a1fb20ae3fe5c59017f9e1370a4ef983815"
+      },
+      "hierarchy": {
+        "path": "artifacts/hierarchical_radio/checkpoints/hier_reg-seed0.pt",
+        "sha256": "19bbf19f56a41f1457483095a416e2d4074bd203cf39e689bd6e4c8438c3365c"
+      },
+      "matched_radiomap": {
+        "path": "artifacts/hierarchical_radio/numerical/radiomap-20m.npz",
+        "sha256": "1bdfa9a558a8a78238b737c35c2bfa58d143a5b9b10fd7b2df3398d27e1183a6"
+      }
+    }
+  },
+  "canonical_validation": {
+    "causal_central": true,
+    "central_commands": 3,
+    "jobs": 20,
+    "passes": true,
+    "scope": "passive identity, counter, cost and clock arithmetic; no service qualification"
+  },
+  "case": {
+    "handover_seconds": 4.0,
+    "id": "fresh-90512004-ho4",
+    "order": [
+      "full_radiomap",
+      "matched_radiomap",
+      "hierarchy",
+      "global_reg"
+    ],
+    "seed": 90512004
+  },
+  "default_changed": false,
+  "identity": {
+    "binding": {
+      "field_report": {
+        "path": "artifacts/hierarchical_radio/field_report.json",
+        "sha256": "e38fcbe7409769d99ec0330bb92d145d1730363a2b2eb7d481603654bb87177c"
+      },
+      "protocol_sha256": "e6602295a3d8c348d1d14e6558fce04072417a68377d131d582ddc17ca63effe",
+      "selected_hierarchy": "hier_reg",
+      "selection": {
+        "path": "artifacts/hierarchical_radio/selection.json",
+        "sha256": "d362c9566b793bfb721edd2f909ef0e1cb7deb150033460849dcf80c1ff8f338"
+      },
+      "source_receipt_sha256": "79af65db3d863ae1aca437ed50ac04463c50691e9d6034926062f3b373696799",
+      "weights": {
+        "global_reg": {
+          "path": "artifacts/hierarchical_radio/checkpoints/global_reg-seed0.pt",
+          "sha256": "0d7a8e22a280b68f5d1c2d7e992c3a1fb20ae3fe5c59017f9e1370a4ef983815"
+        },
+        "hierarchy": {
+          "path": "artifacts/hierarchical_radio/checkpoints/hier_reg-seed0.pt",
+          "sha256": "19bbf19f56a41f1457483095a416e2d4074bd203cf39e689bd6e4c8438c3365c"
+        },
+        "matched_radiomap": {
+          "path": "artifacts/hierarchical_radio/numerical/radiomap-20m.npz",
+          "sha256": "1bdfa9a558a8a78238b737c35c2bfa58d143a5b9b10fd7b2df3398d27e1183a6"
+        }
+      }
+    },
+    "case": {
+      "handover_seconds": 4.0,
+      "id": "fresh-90512004-ho4",
+      "order": [
+        "full_radiomap",
+        "matched_radiomap",
+        "hierarchy",
+        "global_reg"
+      ],
+      "seed": 90512004
+    },
+    "method": "matched_radiomap",
+    "parity": false,
+    "world_receipt": {
+      "path": "artifacts/hierarchical_radio/native/worlds/90512004/receipt.json",
+      "sha256": "133fa039712bc46fd7ce4011407ade726f8d9b14105d524c51081ad90fdaf272"
+    }
+  },
+  "method": "matched_radiomap",
+  "metrics": {
+    "actual_forecast_compute_seconds": 9.557213165157009,
+    "bulk_mbps": 478.15346044772275,
+    "central_busy_forecast_skips": 0,
+    "central_handovers": 3,
+    "central_planning_cpu_seconds": 0.7015806929557584,
+    "central_planning_overruns": 0,
+    "control_gap_p99_ms": 1772.5000000000114,
+    "control_miss": 0.016125,
+    "control_miss_worst_decile": 0.07150000000000001,
+    "control_misses": 645,
+    "control_sent": 40000,
+    "end_pending_commands": 4,
+    "forecast_jobs_consumed": 19,
+    "maximum_silence_ms": 4000.0,
+    "observed_plus_pending_miss_fraction": 0.016225,
+    "paid_forecast_compute_seconds": 10.09024615213275,
+    "roams": 3,
+    "safety_stop_fraction": 0.01233,
+    "scan_interruption_seconds": 36.0,
+    "scans_started": 400,
+    "support_preparation_cpu_seconds": 0.8392497680033557,
+    "support_vetoes": 0,
+    "video_on_time": 0.9898381164089772
+  },
+  "original_SERVICE_opened": false,
+  "parity": false,
+  "production_qualified": false,
+  "raw": {
+    "path": "artifacts/hierarchical_radio/native/cases/fresh-90512004-ho4/matched_radiomap/raw.json.gz",
+    "sha256": "11a096b716443771938f628920fbc50f85b34a61aaffaf8cd1107224dec63bd4"
+  },
+  "simulation_only": true,
+  "simulations": 1,
+  "started": {
+    "path": "artifacts/hierarchical_radio/native/cases/fresh-90512004-ho4/matched_radiomap/started.json",
+    "sha256": "5c576fb388d2fe5c737fcf7470960c32e3362ae01336388ccbed6abb60c9adb9"
+  },
+  "world_receipt": {
+    "path": "artifacts/hierarchical_radio/native/worlds/90512004/receipt.json",
+    "sha256": "133fa039712bc46fd7ce4011407ade726f8d9b14105d524c51081ad90fdaf272"
+  }
+}

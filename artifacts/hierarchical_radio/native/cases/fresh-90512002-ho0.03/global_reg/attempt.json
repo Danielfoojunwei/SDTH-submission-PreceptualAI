@@ -1,0 +1,49 @@
+{
+  "created_unix_ns": 1794410977033966403,
+  "identity": {
+    "binding": {
+      "field_report": {
+        "path": "artifacts/hierarchical_radio/field_report.json",
+        "sha256": "e38fcbe7409769d99ec0330bb92d145d1730363a2b2eb7d481603654bb87177c"
+      },
+      "protocol_sha256": "e6602295a3d8c348d1d14e6558fce04072417a68377d131d582ddc17ca63effe",
+      "selected_hierarchy": "hier_reg",
+      "selection": {
+        "path": "artifacts/hierarchical_radio/selection.json",
+        "sha256": "d362c9566b793bfb721edd2f909ef0e1cb7deb150033460849dcf80c1ff8f338"
+      },
+      "source_receipt_sha256": "79af65db3d863ae1aca437ed50ac04463c50691e9d6034926062f3b373696799",
+      "weights": {
+        "global_reg": {
+          "path": "artifacts/hierarchical_radio/checkpoints/global_reg-seed0.pt",
+          "sha256": "0d7a8e22a280b68f5d1c2d7e992c3a1fb20ae3fe5c59017f9e1370a4ef983815"
+        },
+        "hierarchy": {
+          "path": "artifacts/hierarchical_radio/checkpoints/hier_reg-seed0.pt",
+          "sha256": "19bbf19f56a41f1457483095a416e2d4074bd203cf39e689bd6e4c8438c3365c"
+        },
+        "matched_radiomap": {
+          "path": "artifacts/hierarchical_radio/numerical/radiomap-20m.npz",
+          "sha256": "1bdfa9a558a8a78238b737c35c2bfa58d143a5b9b10fd7b2df3398d27e1183a6"
+        }
+      }
+    },
+    "case": {
+      "handover_seconds": 0.03,
+      "id": "fresh-90512002-ho0.03",
+      "order": [
+        "matched_radiomap",
+        "hierarchy",
+        "global_reg",
+        "full_radiomap"
+      ],
+      "seed": 90512002
+    },
+    "method": "global_reg",
+    "parity": false,
+    "world_receipt": {
+      "path": "artifacts/hierarchical_radio/native/worlds/90512002/receipt.json",
+      "sha256": "08ba6fa2e78c4e2aa905da27885d4f00ef0fa530394c9f9bfde6811a185ac565"
+    }
+  }
+}
