@@ -14,6 +14,12 @@ produce per-link predictions. Supported proposals retain explicit timing,
 compute and evidence limits. **RadioMap + WirelessJEV remains the application
 default.**
 
+For a real car, use the [portable SmartCar deployment workflow](docs/SMARTCAR_DEPLOYMENT.md).
+It separates a stdlib Pi collector from desktop numerical mapping, pinned
+RadioJEPA shadow inference and a separately confirmed, journaled switch.
+It requires actual position-tagged scans and verified management access;
+no physical-car or SOTA qualification is claimed.
+
 The [zero-capable spatial-residual study](docs/nested_radio/RESULTS.md) completes
 **15 fits, 28,800 committed updates and 84 fresh Sionna RT cases**. On 24 TEST
 layouts, validation-selected nested joint has sparse heard-RSSI RMSE

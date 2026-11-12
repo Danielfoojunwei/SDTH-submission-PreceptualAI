@@ -1,5 +1,13 @@
 # One-car real test: read-only status, then one supervised BSSID switch
 
+**For new deployments, follow [SMARTCAR_DEPLOYMENT.md](SMARTCAR_DEPLOYMENT.md).**
+That workflow adds position-tagged mapping and a new journaled control boundary.
+The older diagnostic below is retained for reference. Its transport can
+misclassify partial writes or omit an UNKNOWN receipt after Ctrl-C; its timing
+can select a reply before a later handover outage. Use the new single-request
+switch path and status-only reconciliation, and do not use the older timing
+summary as validated outage evidence. Active scans also consume client airtime.
+
 **Goal:** prove WirelessJEV's execution path on the one existing Raspbot, with the same hardware and on-car software as SmartCar.zip, before any autonomous control.
 - **Pass:** status reads are correct and repeatable, and exactly one operator-confirmed BSSID switch is applied and verified (or cleanly reported as not applied), with the management link never touched.
 - **Fail:** anything else, logged as-is.
