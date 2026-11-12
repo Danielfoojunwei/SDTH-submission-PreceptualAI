@@ -25,6 +25,16 @@ the cloud CPU, with no real-car or RF-accuracy improvement claim.
 It requires actual position-tagged scans and verified management access;
 no physical-car or SOTA qualification is claimed.
 
+The [registered measured Wi-Fi transfer assay](docs/MEASURED_RADIO_RESULTS.md)
+does **not** support a neural advantage: at 16 surveyed locations per
+scenario/phone, frozen RadioJEPA has **5.203916 versus 3.752246 dB RMSE** for
+the VAL-selected numerical map. The paired gap is **+1.451670 dB**;
+both location and spatial-block intervals favor numerical mapping. Its
+nominal 95% working band contains only about 69% of targets under the declared
+weighting. Two independent audits verify the raw summaries and result replay.
+This is partial-input transfer on observed successful 5180 MHz links; RadioMap
+remains the default and neural confidence is not qualified for control.
+
 The [zero-capable spatial-residual study](docs/nested_radio/RESULTS.md) completes
 **15 fits, 28,800 committed updates and 84 fresh Sionna RT cases**. On 24 TEST
 layouts, validation-selected nested joint has sparse heard-RSSI RMSE
@@ -85,9 +95,10 @@ Its 225 pairs are descriptive, oracle-conditioned results on opened environments
 [Measured CSI](docs/research_status/CSI_RESULTS.md) also retains its negative
 model result. None of these results qualifies a fleet controller.
 
-The latest [tracked-suite proof](artifacts/smartcar_numpy_review/software_suite.json)
-records **4,138 passing tests**, 165 test modules, one expected fork warning
-and unchanged hashes for 606 source/config/test files. The preceding
+The latest [tracked-suite proof](artifacts/measured_radio_review/software_suite_counterfix.json)
+records **4,320 passing tests**, 170 test modules, one expected fork warning
+and unchanged hashes for 619 source/config/test files. The
+[4,138-test portable snapshot](artifacts/smartcar_numpy_review/software_suite.json),
 [3,633-test RF snapshot](artifacts/nested_radio_review/software_suite_importlib.json) and the earlier
 [2,978-test snapshot](artifacts/spatial_control_review/final_software_suite.json) and
 [2,655-test snapshot](artifacts/research_review/release_suite.json) are preserved;

@@ -10,6 +10,21 @@ E1–E5 and corrected E7 have finished; E6 remains excluded. No interrupted
 original training worker needs restarting, and original large-model results
 still represent one training chain.
 
+The [measured Wi-Fi transfer assay](MEASURED_RADIO_RESULTS.md) is now complete:
+frozen RadioJEPA has **5.203916 versus 3.752246 dB RMSE** for the VAL-selected
+numerical map at 16 support locations, a **+1.451670 dB** gap. Both paired
+location and 5 m-block intervals favor numerical mapping. Working ±1.96std
+containment is only about 69%, so no calibrated confidence or control claim is
+supported. All 4,255 source summaries/33,901 selected reports and the retained prediction arrays,
+selections and score/cohort reductions have independent passing audits. The initial
+counter-contract preparation failure and separately published repair are
+preserved. No measured fit is running, no neural weights/defaults changed,
+and real SmartCar/hardware/SOTA qualification is still open. The current
+[tracked suite](../artifacts/measured_radio_review/software_suite_counterfix.json)
+passes **4,320 tests** across 170 modules, with 619 unchanged source/config/test
+hashes. This is an observed-link partial-input assay; future tuned models need
+reserved campaigns.
+
 The current [Torch-free SmartCar package](../artifacts/smartcar_numpy/README.md)
 adds NumPy/SciPy inference for the three exact released checkpoints. The
 [118,688-byte ZIP](../artifacts/smartcar_numpy/smartcar-wirelessJEV.zip) runs both
@@ -18,14 +33,14 @@ It preserves the same measurement, admission and separately confirmed control
 boundaries. Same-weight CPU-only software timing shows 1.92–3.98× faster
 conditioning/rendering and 4.30–4.65× lower peak process RSS; worker-entry timing
 excludes interpreter startup. These are synthetic software workloads, not
-physical-car performance or a new RF accuracy improvement. The latest
+physical-car performance or a new RF accuracy improvement. The PR29 portable
 [suite](../artifacts/smartcar_numpy_review/software_suite.json) passes **4,138
 tests** across 165 modules and 606 unchanged source/config/test files. The
 [portable proof](../artifacts/smartcar_numpy_review/portable_verification.json)
 runs all three models in an actual Torch-absent environment. Current setup is
 in [SMARTCAR_NUMPY_DEPLOYMENT.md](SMARTCAR_NUMPY_DEPLOYMENT.md); the preceding
 Torch package and its receipts below remain preserved. Hardware validation
-and matched external measured-RSSI/SOTA claims remain unfinished.
+and broader matched specialist comparisons/SOTA claims remain unfinished.
 
 The portable [SmartCar deployment workflow](SMARTCAR_DEPLOYMENT.md) now has a
 [downloadable ZIP](../artifacts/smartcar_deployment/smartcar-wirelessJEV.zip):
