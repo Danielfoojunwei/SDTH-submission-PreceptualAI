@@ -351,6 +351,9 @@ def main(argv=None):
                       "survey": str(args.survey), "pose": row["pose"],
                       "active_scan_cost_incurred": True, "pc_round_trip_s": (received-started)/1e9}
         elif args.command == "switch":
+            if not sys.stdin.isatty():
+                print("Switch requires an interactive terminal and typed operator confirmation.", file=sys.stderr)
+                return 2
             from .control import supervised_switch
             profile = _profile(args.wifi_json, args.ssid)
             result = supervised_switch(_transport(args), Journal(args.journal),

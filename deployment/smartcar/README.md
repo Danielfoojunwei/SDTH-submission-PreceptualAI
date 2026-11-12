@@ -127,7 +127,7 @@ position, and the map must be freshly refitted; otherwise it defers or has no
 eligible predictions. The deployable proposal is a bounded same-SSID
 RSSI rule, not the research mission-language/MPC controller, and returns no
 invented success probability. The map must bind the exact current normalized
-survey; a switch requires both its mean-minus-SD score and the latest actual
+survey; a switch proposal requires both its mean-minus-SD score and the latest actual
 same-SSID RSSI to improve by at least 6 dB, otherwise disagreement defers.
 For an optional comparison using the actual
 bundled checkpoints:

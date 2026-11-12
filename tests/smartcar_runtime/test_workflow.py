@@ -1,10 +1,11 @@
 """Numerical software fixtures exercise proposal boundaries; no car evidence."""
 import copy
+import io
 import time
 
 from wirelessjev.smartcar_runtime.contracts import site_sha256
 from wirelessjev.smartcar_runtime.field import fit_map
-from wirelessjev.smartcar_runtime.workflow import propose
+from wirelessjev.smartcar_runtime.workflow import main, propose
 
 
 def fixture():
@@ -70,3 +71,11 @@ def test_map_cannot_override_contradictory_current_observation():
         row["aps"][1]["signal_dbm"] = -65.
     result = propose(site, records, fit_map(site, records), [4, 2, 0.3], switch_margin_db=6.)
     assert result["decision"] != "PROPOSE_SWITCH"
+
+
+def test_switch_cli_rejects_piped_confirmation_before_credentials_or_network(monkeypatch, capsys):
+    monkeypatch.setattr("sys.stdin", io.StringIO("02:00:00:00:00:02\n"))
+    code = main(["switch", "--host", "not-a-real-host", "--known-hosts", "missing-hosts",
+                 "--wifi-json", "missing-private-credentials", "--ssid", "unit-only",
+                 "--bssid", "02:00:00:00:00:02", "--journal", "must-not-be-created.jsonl"])
+    assert code == 2 and "interactive terminal" in capsys.readouterr().err
