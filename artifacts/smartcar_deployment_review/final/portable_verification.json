@@ -1,0 +1,43 @@
+{
+  "SOTA_or_hardware_qualification": false,
+  "SSH_requests": 0,
+  "actual_minimal_CLI_commands_passed": [
+    "validate-site",
+    "fit-map",
+    "predict",
+    "propose"
+  ],
+  "all_shipped_input_hashes_unchanged": true,
+  "archive_bytes": 95786,
+  "archive_sha256": "436bb7de7676a18ce1a60821aa3e4c1129d37facf557205f5a6dab6333c3f8f3",
+  "bundle_members": 28,
+  "clean_map_environment": {
+    "Sionna_HF_Transformers_present": false,
+    "input_origin": "synthetic_API_fixture_not_hardware_evidence",
+    "numpy": "2.5.4",
+    "scipy": "1.18.1",
+    "torch_present": false
+  },
+  "hardware_scan_or_actuation": 0,
+  "integrity": {
+    "files_checked": 27,
+    "hardware_validation": false,
+    "integrity_is_not_external_attestation": true,
+    "passes": true,
+    "source_commit": "64ccc219c676b7efdaadab95a726d4114fbcc820"
+  },
+  "local_doctor_machine": "cloud_executor_not_SmartCar",
+  "local_missing_radio_guard_passed": true,
+  "passes": true,
+  "real_car_measurements": 0,
+  "released_shadow_members_executed": [
+    "nested_joint-seed0",
+    "nested_joint-seed1",
+    "nested_joint-seed2"
+  ],
+  "research_training_dependencies_blocked_during_shadow": true,
+  "schema": 1,
+  "test_data_origin": "synthetic_API_fixtures_only",
+  "training_or_RT": 0,
+  "verifier_sha256": "376dbf63ebf3438c177b5c2fa3c68d06f94fc63111e9fa47b9677041370f8703"
+}
