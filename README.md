@@ -80,9 +80,10 @@ Its 225 pairs are descriptive, oracle-conditioned results on opened environments
 [Measured CSI](docs/research_status/CSI_RESULTS.md) also retains its negative
 model result. None of these results qualifies a fleet controller.
 
-The latest [tracked-suite proof](artifacts/nested_radio_review/software_suite_importlib.json)
-records **3,633 passing tests**, 153 test modules, one expected fork warning
-and unchanged hashes for 575 source/config/test files. The earlier
+The latest [tracked-suite proof](artifacts/smartcar_deployment_review/final/software_suite.json)
+records **3,903 passing tests**, 160 test modules, one expected fork warning
+and unchanged hashes for 591 source/config/test files. The preceding
+[3,633-test RF snapshot](artifacts/nested_radio_review/software_suite_importlib.json) and the earlier
 [2,978-test snapshot](artifacts/spatial_control_review/final_software_suite.json) and
 [2,655-test snapshot](artifacts/research_review/release_suite.json) are preserved;
 overlapping R6, exporter and spatial preflight counts are not added again.

@@ -10,6 +10,23 @@ E1–E5 and corrected E7 have finished; E6 remains excluded. No interrupted
 original training worker needs restarting, and original large-model results
 still represent one training chain.
 
+The portable [SmartCar deployment workflow](SMARTCAR_DEPLOYMENT.md) now has a
+[downloadable ZIP](../artifacts/smartcar_deployment/smartcar-wirelessJEV.zip):
+stdlib-only Pi collection, minimal desktop numerical mapping, three exact
+released RadioJEPA checkpoints in shadow, typed non-actuating proposals and a
+new one-request supervised switch with durable intent/UNKNOWN handling. The
+[portable check](../artifacts/smartcar_deployment_review/final/portable_verification.json)
+passes in a clean NumPy/SciPy-only map environment and runs all three neural
+members without training/RT/Hugging Face dependencies. These checks use clearly
+identified software fixtures, with **zero car captures or actuation**.
+The latest [suite](../artifacts/smartcar_deployment_review/final/software_suite.json)
+passes **3,903 tests**, 160 modules and 591 unchanged source/config/test files.
+The new portable numerical map is heard-only ordinary kriging/RBF with an FSPL
+reference; it is a separate implementation from the frozen research controls.
+Physical route/access, scan permissions, genuine position-tagged measurements,
+supervised switch/return and held-out real-site evaluation remain required.
+No model is promoted and no physical/SOTA claim follows from packaging.
+
 The [zero-capable residual RF study](nested_radio/RESULTS.md) is complete:
 **15 fits × 1,920 updates = 28,800 committed updates**, 60 raw validation
 archives with epoch weights, 84 fresh RT cases and 5,928 field records. The
