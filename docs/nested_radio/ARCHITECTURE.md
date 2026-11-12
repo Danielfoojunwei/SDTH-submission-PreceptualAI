@@ -4,6 +4,8 @@ The model combines eight shared propagation coefficients with sixteen spatial
 coefficients per AP. Sixteen learned feature scales let the local channel
 switch fully off. The same scales act on observation and query designs, so
 conditioning, predicted means and covariance describe one coherent field.
+The gate vector is learned per trained member and fixed during inference; it
+is shared across APs and queries, not a context-dependent AP admission veto.
 The [registered plan](PLAN.md) tests this representation and a larger training
 budget without assuming that either improves prediction.
 
@@ -49,7 +51,7 @@ reference gauge; it does not identify an arbitrary radio's absolute bias.
 For a fixed set of remaining weights, setting every local scale to zero
 recovers global-eight means, marginal deviations and coefficient-field
 covariance up to floating-point roundoff. Setting every scale to one recovers
-the legacy hierarchical forward calculation. Zero design does not require a
+the ungated hierarchical forward calculation. Zero design does not require a
 singular coefficient prior. Predictions are never inserted as measurements.
 
 This is a function-class inclusion property. It does not guarantee that a
@@ -90,7 +92,7 @@ scales remain trainable. No gate is identified as a material or scatterer.
 Joint cells use a fixed 0.1 variance-normalized agreement term at supported
 common query probes. Both means receive gradients; the variance normalizer is
 detached. There is no EMA teacher or classic-JEPA equivalence claim. The
-nested-versus-legacy comparison changes gate initialization, gate learning and
+gated-versus-unit-scale hierarchy comparison changes gate initialization, gate learning and
 regularization together; it tests that package rather than one isolated cause.
 
 Nested cells allocate 1,562 trainable parameters; controls allocate 1,546.
@@ -130,7 +132,7 @@ flowchart TB
 The [selection and evaluation implementation](../../src/wirelessjev/nested_radio/study.py)
 chooses among global-eight regression, global-eight joint, nested regression
 and nested joint using the mean of all three selected member scores, with that
-order breaking exact ties. Legacy hierarchy remains a control. The numerical
+order breaking exact ties. The unit-scale hierarchy remains a control. The numerical
 reference is the validation-best of RadioMap-operator scales 5/10/20 m and the
 fixed-feature hierarchy, not a reference selected from TEST. All four are
 retained without refitting their priors. If the selected cell is global-eight

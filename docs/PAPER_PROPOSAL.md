@@ -2,27 +2,44 @@
 
 ## Current RadioJEPA evidence boundary
 
-The [shared/AP-local model experiment](hierarchical_radio/RESULTS.md) completes
-186 actual ray-traced cases, 15 fits and 34 native simulations with a passing
-567-source/4,900-evidence seal and independent replay. It **does not support
-hierarchy superiority**: selected sparse RSSI RMSE is 3.088402 dB, versus
-2.995352 for the matched global model and 2.951064 for the numerical map;
-both adjusted intervals support higher error. Matched predictive agreement
-reduces error by 0.034739 dB, with adjusted interval
-[−0.052060, −0.020327], and RF amplitudes clearly matter. This modest objective
-result is conditional on this architecture, three trained members and static
-material fields; it is not classic EMA-JEPA, a RadioMap victory or SOTA proof.
+The [zero-capable spatial-residual experiment](nested_radio/RESULTS.md) supports
+a bounded RF prediction claim. Fifteen fits commit 28,800 updates; 84 fresh
+Sionna RT cases provide 24 main TEST and four AP-transfer geometries, each with
+three static material conditions. TRAIN/VAL alone selects nested joint and the
+fixed-hierarchy numerical comparator. Sparse heard-RSSI RMSE is **2.637330 versus
+2.710522 dB** (2.70% lower), with paired difference **−0.073192 dB** and central
+98.75% interval **[−0.126150, −0.023013]**, adjusted for four registered contrasts.
+Intervals resample whole geometries, conditional on the three trained members;
+they do not cover arbitrary retraining uncertainty.
 
-The separate 100-robot transfer has hierarchy misses of
-1.278125% / 2.778125% for 0.03/4 s handovers, versus full-history RadioMap
-1.165% / 2.3725%. Same-budget numerical-map means are 1.600% / 2.8175%, with
-mixed paired harms at four seconds. These are four short paired procedural
-episodes per cost, using fixed seed-zero weights, shared support rules for
-the three budget-matched methods and potentially divergent closed-loop reports.
-They do not isolate a JEPA service effect or qualify hardware. The
-[architecture](hierarchical_radio/ARCHITECTURE.md) and
-[source-backed interpretation](hierarchical_radio/INTERPRETATION.md) make the
-inferred-state, optimization, observability and temporal boundaries explicit.
+All four primary intervals favor the candidate: the selected model also beats
+shared global-eight by **0.014339 dB**; nested regression beats ungated hierarchy
+regression by **0.188225 dB**. Matched joint-view agreement improves nested
+regression by only **0.002226 dB**, interval **[−0.004345, −0.000883]**. This tiny
+increment does not establish useful packet, compute or production gains.
+Material-change RMSE essentially ties and slightly favors the numerical control.
+All eight learned-local feature gates are exactly zero in all six nested
+members. The gain is compatible with shared physical prediction plus sparse
+fixed-Fourier residuals; it is not evidence of rich learned local abstraction.
+The coefficient-prior penalty depends on basis scale, and the reason the learned
+features were pruned has not been isolated.
+
+The [architecture](nested_radio/ARCHITECTURE.md),
+[5,928-record independent replay](../artifacts/nested_radio_review/independent.json)
+and [interactive viewer](../artifacts/nested_radio_review/viewer/index.html)
+bind the 578-source/2,770-evidence closure. These are static point-field
+predictions under specified observation assumptions, without new packet runs,
+trained temporal dynamics, physical transfer or matched SOTA benchmarking.
+Joint agreement is a supervised two-view predictive objective, without a
+classic EMA-JEPA target encoder. **RadioMap + WirelessJEV remains the default.**
+
+The earlier [shared/AP-local experiment](hierarchical_radio/RESULTS.md) retains
+its 186 actual RT cases, 15 fits, 34 native simulations and negative primary
+field outcomes (3.088402 versus global-24 2.995352 and numerical-map 2.951064 dB).
+Its selected hierarchy has mean command misses **1.278125% / 2.778125%** at
+0.03/4 s handovers, versus full-history Map **1.165% / 2.3725%**. The new study
+changes model, budget, selection rule and fresh cohort; it supplies no paired
+before/after percentage or replacement service result.
 
 The [causal warehouse-control diagnostic](research_status/SPATIAL_CONTROL.md)
 adds 48 fresh 100-robot/20-second simulations and two exact wiring-parity runs
@@ -80,7 +97,7 @@ descriptive diagnostic, not default promotion or fresh confirmation.
 The [read-only R6 bridge](research_status/R6_BRIDGE.md) and
 [local evidence Studio](research_status/STUDIO_EXPORT.md) package explicit
 contracts and evidence without granting execution authority. The current
-[3,416-test tracked-suite proof](../artifacts/hierarchical_radio_review/software_suite_importlib.json)
+[3,633-test tracked-suite proof](../artifacts/nested_radio_review/software_suite_importlib.json)
 is software validation; it adds no independent RF samples or hardware evidence.
 
 The warehouse-connectivity E1–E5 and corrected E7 experiments are complete
@@ -423,8 +440,9 @@ evidence satisfy the documented qualification contract.
 preregistered projection fits, real pretrained DINOv3 frontend, receiver-centric
 RF factors and a then-proposed hierarchy. The separate static shared/AP-local
 hierarchy is now implemented and evaluated in [the completed RF study](hierarchical_radio/RESULTS.md),
-with primary losses retained; this does not complete the visual/event-time
-proposal. The old action latents are
+with primary losses retained. The [zero-capable residual follow-up](nested_radio/RESULTS.md)
+improves fresh static RF error, while pruning its learned local channels. Neither
+completes the visual/event-time proposal. The old action latents are
 concentrated, but remain varying and action-sensitive. A separate auxiliary
 projection substantially improves normalized future matching while retaining
 teacher variance/rank; two of three seeds worsen service prediction. Better
