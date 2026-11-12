@@ -1,0 +1,170 @@
+{
+  "default_changed": false,
+  "evaluation": {
+    "VAL_representation_diagnostics": [
+      "fixed Fourier8 vs ungated learned8 vs gated local16 feature variation/effective rank",
+      "40/80/120/160 learning curves and gate values; not a collapse/convergence certificate"
+    ],
+    "bootstrap_samples": 20000,
+    "bootstrap_seed": 21771,
+    "central_interval_percent": 98.75,
+    "conditional_on_three_trained_members": true,
+    "contrasts": [
+      [
+        "selected",
+        "best_numerical"
+      ],
+      [
+        "selected",
+        "global8_reg"
+      ],
+      [
+        "nested_reg",
+        "hier_reg"
+      ],
+      [
+        "nested_joint",
+        "nested_reg"
+      ]
+    ],
+    "layouts": 24,
+    "member_metrics_then_states_within_layout": true,
+    "primary": "sparse heard reported RSSI RMSE",
+    "primary_model_selection_never_TEST": true,
+    "secondary": [
+      "full context",
+      "localized material deltas",
+      "held6GHz",
+      "8AP fixed total reports",
+      "stale state0 context",
+      "heard coverage and p95"
+    ],
+    "selected_can_equal_global8_reg_then_exact_null_not_gain": true,
+    "technical_gate": "all15complete fits and finite complete raw VAL archives; no efficacy screen"
+  },
+  "model": {
+    "AP_local_dimensions": 16,
+    "EMA_teacher": false,
+    "cells": [
+      "global8_reg",
+      "global8_joint",
+      "hier_reg",
+      "nested_reg",
+      "nested_joint"
+    ],
+    "effective_prior_mean_SD_RMS_diagnostics": true,
+    "gate_alone_not_identified_or_functional_shrinkage_certificate": true,
+    "gate_initial": 0.1,
+    "gate_penalty": ".01*mean(alpha*sqrt(local_mean^2+local_SD^2)/.5) on nested cells only",
+    "gate_zero_can_be_absorbing_under_gradient_optimization": true,
+    "generalization_noninferiority_guaranteed": false,
+    "global_dimensions": 8,
+    "inference_steps": 3,
+    "joint_alignment_weight": 0.1,
+    "joint_same_two_view_target_likelihood": true,
+    "local_prior_SD_floor_unchanged": true,
+    "nested_gate": "16 shared per-feature finite parameters in0..1; forward requires bounds; projected after every update",
+    "one_gate_exact_legacy_hierarchy": true,
+    "posterior": "frozen observed interval Newton/Laplace with block Schur solves",
+    "predictions_never_become_measurements": true,
+    "width": 32,
+    "zero_gate_exact_global8_function_class": true
+  },
+  "native_simulations": 0,
+  "numerical": {
+    "all_four_controls_retained": true,
+    "best_numerical_can_be_fixed_hierarchy": true,
+    "prior_fit_runs": 0,
+    "reused_TRAIN_fit_priors": [
+      "radiomap-5m",
+      "radiomap-10m",
+      "radiomap-20m",
+      "hierarchy-fixed"
+    ],
+    "selection": "first minimum equal-layout/state sparse VAL heard-RSSI RMSE, same as neural"
+  },
+  "original_SERVICE_opened": false,
+  "production_qualified": false,
+  "purpose": "zero_capable_AP_residual_and_fixed_larger_budget_prospective_RF_test",
+  "real_hardware_actions": 0,
+  "reused_data": {
+    "TRAIN_layouts": 24,
+    "VAL_layouts": 6,
+    "only_parent_TRAIN_VAL_and_TRAIN_calibration_for_fitting": true,
+    "parent": "hierarchical_radio",
+    "prior_TEST_not_confirmation": true,
+    "states_per_layout": 3
+  },
+  "rt": {
+    "RX_poses": 48,
+    "backend": "llvm_ad_mono_polarized",
+    "context_query_checkerboard": true,
+    "disjoint_from_prior_public_geometries": 240,
+    "drjit_threads": 4,
+    "fresh_cases": 84,
+    "full_tokens": 192,
+    "held_carrier_hz": 6000000000.0,
+    "main_APs": 4,
+    "max_depth": 3,
+    "max_paths_per_source": 4096,
+    "new_layouts": {
+      "ap_transfer": 4,
+      "test": 24
+    },
+    "ranked_unheard_upper_bound": "kth selected quantization upper edge when full; detector floor otherwise",
+    "receiver_noise_sigma_db": 0.75,
+    "same_static_CAD_TX_and_solver_noise_streams_within_states": true,
+    "samples_per_source": 32768,
+    "source_carriers_hz": [
+      2400000000.0,
+      5200000000.0
+    ],
+    "sparse_tokens": 96,
+    "states_per_layout": 3,
+    "top_k": 2,
+    "transfer_APs": 8,
+    "unresolved_paths_remain_unknown": true
+  },
+  "schema": 1,
+  "scope": "static RF only; any packet, temporal or physical qualification needs a separate protocol",
+  "training": {
+    "NLL_secondary_not_selection": true,
+    "all_candidate_weights_and_raw_VAL_predictions_archived": true,
+    "alternating_full_sparse": true,
+    "batch_distinct_layouts": 4,
+    "cell_selection": "first minimum mean of all three member VAL heard RMSEs; ties in eligible-cell order",
+    "checkpoints": [
+      40,
+      80,
+      120,
+      160
+    ],
+    "committed_updates_per_fit": 1920,
+    "deterministic_torch": true,
+    "eligible_cells": [
+      "global8_reg",
+      "global8_joint",
+      "nested_reg",
+      "nested_joint"
+    ],
+    "epochs": 160,
+    "fits": 15,
+    "gradient_clip": 5.0,
+    "learning_rate": 0.003,
+    "max_spawn_workers": 3,
+    "nonfinite_retry": false,
+    "one_random_state_per_layout": true,
+    "optimizer": "AdamW",
+    "resume": "same optimizer/RNG trajectory from last atomic committed step; no replacement trials",
+    "seeds": [
+      0,
+      1,
+      2
+    ],
+    "selection": "first minimum equal-layout/state sparse VAL A heard-RSSI RMSE",
+    "threads_per_worker": 1,
+    "total_committed_updates": 28800,
+    "updates_per_epoch": 12,
+    "weight_decay": 0.0001
+  }
+}

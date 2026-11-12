@@ -10,20 +10,32 @@ E1–E5 and corrected E7 have finished; E6 remains excluded. No interrupted
 original training worker needs restarting, and original large-model results
 still represent one training chain.
 
-The [shared/AP-local RF study](hierarchical_radio/RESULTS.md) is complete:
-**186 actual RT cases, 15 neural fits, 60 raw validation prediction archives and
-34 native simulations**. All fits commit 480 updates; no training or simulator
-job from this batch remains unfinished. The canonical **567-source /
-4,900-evidence** seal and first independent audit pass. The selected hierarchy
-loses the primary sparse RSSI comparisons: **3.088402 dB**, versus global-24
-**2.995352** and numerical map **2.951064**. Joint agreement improves its matched
-regression hierarchy by 0.034739 dB, without beating those references. Native
-hierarchy mean misses are **1.278125% / 2.778125%** at 0.03/4 s handovers,
-versus full-history Map **1.165% / 2.3725%**; all paired harms and the 8.89 s
-outlier remain. The [3D viewer](../artifacts/hierarchical_radio_review/viewer/index.html)
-and [interpretation](hierarchical_radio/INTERPRETATION.md) distinguish observations
-from hypotheses. Do not restart completed fits, retune these TEST cases, or
-open original SERVICE layouts to rescue the result.
+The [zero-capable residual RF study](nested_radio/RESULTS.md) is complete:
+**15 fits × 1,920 updates = 28,800 committed updates**, 60 raw validation
+archives with epoch weights, 84 fresh RT cases and 5,928 field records. The
+90 permitted TRAIN/VAL cases are reused unchanged; the 28 fresh TEST/AP-transfer
+geometries are disjoint from the 240 previously registered geometries. No worker
+from this batch needs restarting. The **578-source / 2,770-evidence** seal and
+[first independent replay](../artifacts/nested_radio_review/independent.json) pass.
+
+Validation selects nested joint and the fixed-hierarchy numerical comparator.
+Sparse heard-RSSI RMSE is **2.637330 versus 2.710522 dB** (2.70% lower), with
+all four registered, four-family-adjusted contrasts supported. The shrinkage
+package gains **0.188225 dB** against matched ungated hierarchy regression;
+the joint objective adds only **0.002226 dB**. All eight learned-local feature
+gates are exactly zero in all six selected nested members. The surviving
+residual uses fixed Fourier features; these results do not establish rich
+learned local geometry. Material-delta accuracy essentially ties and slightly
+favors the numerical control. See the [architecture](nested_radio/ARCHITECTURE.md),
+[3D viewer](../artifacts/nested_radio_review/viewer/index.html) and
+[remaining validation](nested_radio/REMAINING.md). Do not retune from this TEST.
+
+The earlier [shared/AP-local study](hierarchical_radio/RESULTS.md) retains all
+186 RT cases, 15 fits and 34 native simulations. Its selected hierarchy loses
+its field comparison and has higher mean misses than full-history Map at both
+handover costs. No new nested-model packet or native run was registered or
+performed; the new RF gain cannot replace those negative service outcomes.
+Original SERVICE layouts remain closed.
 
 The new [causal spatial-control study](research_status/SPATIAL_CONTROL.md) is
 complete: **48 fresh simulations plus two exact disabled-parity runs**,
@@ -72,16 +84,17 @@ The static shared/AP-local spatial posterior and bounded 192-report route-covera
 selector are now built and evaluated. Learned event-time dynamics, learned
 query-specific retrieval and calibrated service heads in the
 [next-model design](research_status/NEXT_MODEL.md) remain research work. The
-additional inferred state did not improve the registered field endpoint.
+new shrinkage package improves its fresh RF endpoint; its learned-local block
+is inactive, and no new packet benefit has been measured.
 
 The [read-only R6 bridge](research_status/R6_BRIDGE.md) invokes actual isolated
 upstream planning code with explicit service contracts and conservative journal
 views; unqualified RF outcomes defer. The [local Studio export](research_status/STUDIO_EXPORT.md)
 is reviewable; all 11 cards, including the sealed adaptive results, are complete.
-External Studio/deck publication has not occurred. The latest [tracked-suite receipt](../artifacts/hierarchical_radio_review/software_suite_importlib.json)
-and [log](../artifacts/hierarchical_radio_review/software_suite_importlib.log) record **3,416 passing
-tests**, one expected fork warning, 149 test modules and unchanged hashes for
-564 source/config/test files. Older suite proofs are preserved. R6, exporter
+External Studio/deck publication has not occurred. The latest [tracked-suite receipt](../artifacts/nested_radio_review/software_suite_importlib.json)
+and [log](../artifacts/nested_radio_review/software_suite_importlib.log) record **3,633 passing
+tests**, one expected fork warning, 153 test modules and unchanged hashes for
+575 source/config/test files. Older suite proofs are preserved. R6, exporter
 and spatial checks are included, not additive scientific trials.
 
 **RadioMap + WirelessJEV remains the default.** The original 24 SERVICE layouts

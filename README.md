@@ -14,21 +14,30 @@ produce per-link predictions. Supported proposals retain explicit timing,
 compute and evidence limits. **RadioMap + WirelessJEV remains the application
 default.**
 
-The [shared/AP-local model study](docs/hierarchical_radio/RESULTS.md) completes
-**186 actual Sionna RT cases, 15 neural fits and 34 warehouse simulations**.
-The selected hierarchy has sparse RSSI error **3.088 versus 2.951 dB** for the
-numerical map; both primary superiority comparisons fail in the direction of
-higher error. Joint-view agreement improves its matched hierarchy by **0.035 dB**,
-but does not establish a RadioMap replacement. In the 100-robot diagnostic,
-hierarchy mean command loss is **1.278125% / 2.778125%** at 0.03/4 s handovers,
-versus full-history RadioMap **1.165% / 2.3725%**. It improves over the
-same-budget numerical map's mean, with mixed paired outcomes at four seconds.
-The **567-source / 4,900-evidence** seal and first
-[independent replay](artifacts/hierarchical_radio_review/independent.json) pass.
-The [interactive 3D result viewer](artifacts/hierarchical_radio_review/viewer/index.html)
-shows every TEST layout and warehouse episode. These are static RF and separate
-simulated-service results; learned dynamics, physical transfer and production
-qualification remain open.
+The [zero-capable spatial-residual study](docs/nested_radio/RESULTS.md) completes
+**15 fits, 28,800 committed updates and 84 fresh Sionna RT cases**. On 24 TEST
+layouts, validation-selected nested joint has sparse heard-RSSI RMSE
+**2.637330 versus 2.710522 dB** for the strongest validation-selected numerical
+control (fixed hierarchy): **2.70% lower**. All four registered comparisons have
+negative family-adjusted intervals. Shrinkage improves matched hierarchy
+regression by **0.188225 dB**; joint-view agreement adds only **0.002226 dB**.
+These are static RF predictions, with no new warehouse packet runs.
+
+The selected models prune **all eight learned local feature channels**; the
+retained residual uses fixed Fourier features around shared physics. These
+results support the tested shrinkage package, without establishing rich learned
+local representations or practical service value from the tiny joint gain.
+Material-change error essentially ties and slightly favors the numerical
+control. The **578-source / 2,770-evidence** seal and
+[first independent replay](artifacts/nested_radio_review/independent.json) pass.
+The [interactive 3D viewer](artifacts/nested_radio_review/viewer/index.html)
+shows every TEST layout, comparison, training checkpoint and effective gate.
+
+The separate [shared/AP-local warehouse study](docs/hierarchical_radio/RESULTS.md)
+retains all 186 RT cases, 15 earlier fits, 34 simulations and its negative field
+and full-history-map comparisons. Its fixed weights differ from the new RF
+model. The new field gain does not reverse those service results or qualify
+physical-device transfer. Learned dynamics and production validation remain open.
 
 The [causal warehouse-control study](docs/research_status/SPATIAL_CONTROL.md)
 completes **48 fresh 100-robot simulations plus two exact parity runs**. It adds
@@ -65,9 +74,9 @@ Its 225 pairs are descriptive, oracle-conditioned results on opened environments
 [Measured CSI](docs/research_status/CSI_RESULTS.md) also retains its negative
 model result. None of these results qualifies a fleet controller.
 
-The latest [tracked-suite proof](artifacts/hierarchical_radio_review/software_suite_importlib.json)
-records **3,416 passing tests**, 149 test modules, one expected fork warning
-and unchanged hashes for 564 source/config/test files. The earlier
+The latest [tracked-suite proof](artifacts/nested_radio_review/software_suite_importlib.json)
+records **3,633 passing tests**, 153 test modules, one expected fork warning
+and unchanged hashes for 575 source/config/test files. The earlier
 [2,978-test snapshot](artifacts/spatial_control_review/final_software_suite.json) and
 [2,655-test snapshot](artifacts/research_review/release_suite.json) are preserved;
 overlapping R6, exporter and spatial preflight counts are not added again.

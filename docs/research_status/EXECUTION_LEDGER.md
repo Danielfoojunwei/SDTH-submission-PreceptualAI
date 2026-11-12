@@ -1,10 +1,12 @@
 # Execution ledger
 
-Experiment snapshot: **11 November 2026, UTC**. The current [architecture](CURRENT_SYSTEM.md), [shared/AP-local results](../hierarchical_radio/RESULTS.md), [adaptive results](ADAPTIVE_RESULTS.md), [local Studio](STUDIO_EXPORT.md), [read-only R6 bridge](R6_BRIDGE.md), [mixed E7 planning diagnostic](E7_CALPLANNING_RESULTS.md) and [spatial support/recovery stack](SPATIAL_CONTROL.md) reconcile implemented work with retained evidence. The shared/AP-local batch completes 186 RT cases, 15 fits and 34 native runs, with a passing 567-source/4,900-evidence seal and first independent replay. The selected hierarchy loses its primary field comparisons and has higher mean native misses than full-history Map at both handover costs. All earlier frozen studies remain unchanged. This ledger starts no training or scientific case. A completed experiment can have a negative result; it does not follow that every E helps 100 real SmartCars. **RadioMap + WirelessJEV remains the default.**
+Experiment snapshot: **12 November 2026, UTC**. The current [architecture](CURRENT_SYSTEM.md), [nested-RF results](../nested_radio/RESULTS.md), [shared/AP-local results](../hierarchical_radio/RESULTS.md), [adaptive results](ADAPTIVE_RESULTS.md), [local Studio](STUDIO_EXPORT.md), [read-only R6 bridge](R6_BRIDGE.md), [mixed E7 planning diagnostic](E7_CALPLANNING_RESULTS.md) and [spatial support/recovery stack](SPATIAL_CONTROL.md) reconcile implemented work with retained evidence. The completed nested-RF phase has 15 fits, 28,800 committed updates, 84 fresh actual RT cases, 90 reused TRAIN/VAL cases and 5,928 prediction records. Its validation-selected model improves all four registered primary comparisons on 24 fresh TEST geometries, with a passing 578-source/2,770-evidence seal and independent passive replay. This is a bounded static-RF result: learned local features switch off in all six nested members, the incremental agreement gain is tiny, and no new native simulation or hardware action ran. The earlier hierarchy's negative field/native results and all frozen studies remain unchanged. This ledger starts no training or scientific case. Neither a field win nor test success proves that every E helps 100 real SmartCars. **RadioMap + WirelessJEV remains the default.**
 
 ## Verified software and source record
 
-The latest [software receipt](../../artifacts/hierarchical_radio_review/software_suite_importlib.json) and [log](../../artifacts/hierarchical_radio_review/software_suite_importlib.log) record **3,416 passed tests**, 149 test modules and identical before/after hashes for 564 source/config/test files. Pytest used isolated import mode to avoid duplicate test-module basenames; the earlier collection failure is retained separately. The [2,978-test proof](../../artifacts/spatial_control_review/final_software_suite.json) remains unchanged. Overlapping suite totals are not added to scientific sample counts.
+The latest [software receipt](../../artifacts/nested_radio_review/software_suite_importlib.json) and [log](../../artifacts/nested_radio_review/software_suite_importlib.log) record **3,633 passed tests**, 153 test modules and identical before/after hashes for 575 source/config/test files. All ten canonical study closures pass; the nested [evidence seal](../../artifacts/nested_radio/verification/manifest.json) adds the completed phase while its [source receipt](../../artifacts/nested_radio/registration/source.json) retains the nine prior closure identities. Software checks and passive replays add no fit, forward, RT case or native simulation.
+
+The preceding hierarchy [software receipt](../../artifacts/hierarchical_radio_review/software_suite_importlib.json) and [log](../../artifacts/hierarchical_radio_review/software_suite_importlib.log) retain **3,416 passed tests**, 149 test modules and identical before/after hashes for 564 source/config/test files. Pytest used isolated import mode to avoid duplicate test-module basenames; the earlier collection failure is retained separately. The [2,978-test proof](../../artifacts/spatial_control_review/final_software_suite.json) remains unchanged. Overlapping suite totals are not added to scientific sample counts.
 
 The preceding [release-suite receipt](../../artifacts/research_review/release_suite.json) and [log](../../artifacts/research_review/release_suite.log) retain **2,655 passed tests**, one expected multiprocessing/fork warning, 130 tracked modules and 421 unchanged source/config/test files. Its 244.34-second pytest and 246.88-second subprocess timings remain historical software evidence.
 
@@ -19,6 +21,19 @@ bind `8fe31db9974df2e65a016af6b2e16cdb27c3cab2` before collection or fitting.
 contains its completed experiment, [first independent replay](../../artifacts/hierarchical_radio_review/independent.json)
 and [3D viewer](../../artifacts/hierarchical_radio_review/viewer/index.html).
 No original large-model seed replication or hardware execution follows from it.
+
+The nested [578-file source receipt](../../artifacts/nested_radio/registration/source.json),
+SHA-256 `a9a1fa1670ab5c6801cb828d1e059d1ff25e09b15720252e8a73174bfadbd06b`,
+and [publication proof](../../artifacts/nested_radio/registration/git.json) bind
+`328c9d1292c216eb973862988f5656b10651bcc6` before its fits, fresh RT or predictions.
+[PR #27](https://github.com/Danielfoojunwei/SDTH-submission-PreceptualAI/pull/27)
+contains the finite [registered plan](../nested_radio/PLAN.md), completed
+[report](../../artifacts/nested_radio/report.json),
+[independent replay](../../artifacts/nested_radio_review/independent.json) and
+[3D viewer](../../artifacts/nested_radio_review/viewer/index.html). The replay
+rejoins all 5,928 prediction records without constructing a model or running a
+scientific case. The separate [browser review](../../artifacts/nested_radio_review/viewer/browser_review.json)
+checks 576 geometry/state/AP/carrier choices against 217 unchanged input hashes.
 
 ## Original E experiments: no stopped worker remains
 
@@ -51,6 +66,7 @@ The old “E3 evaluating, E4/E5 queued, frozen E1 lost” text is obsolete. No o
 
 | Track | Status at this snapshot | Evidence and limitation |
 |---|---|---|
+| **Zero-capable nested RF field** | All **15 fits × 1,920 updates**, **84 fresh actual RT cases**, **90 reused TRAIN/VAL cases**, **60 VAL checkpoint archives** and **5,928 prediction records** complete. The 578-source/2,770-evidence seal and independent passive replay pass. | [Results](../nested_radio/RESULTS.md), [architecture](../nested_radio/ARCHITECTURE.md), [report](../../artifacts/nested_radio/report.json). VAL selects `nested_joint`: sparse heard-RSSI RMSE **2.637330 dB**, versus validation-selected fixed-feature hierarchy **2.710522** and global-eight regression **2.651669**. All four adjusted primary intervals favor their candidates. All eight learned-local gates are exactly zero in all six nested members: retained shared physics and shrunken fixed Fourier features define the selected fitted function, not a rich learned RF representation. Agreement contributes only **0.002226 dB**; material-delta error essentially ties the numerical reference with a slight numerical advantage. **Zero new native simulations or hardware actions**, no service qualification or default promotion. |
 | **Shared/AP-local physical field** | All **15 fits, 186 RT cases, 60 raw VAL archives, 4,416 forecast records and 34 native runs** complete. The 567-source/4,900-evidence seal and first independent replay pass. | [Results](../hierarchical_radio/RESULTS.md), [interpretation](../hierarchical_radio/INTERPRETATION.md). Selected hierarchy sparse RMSE 3.088402 dB exceeds global-24 2.995352 and numerical Map 2.951064; matched agreement improves by 0.034739 dB. Native hierarchy misses 1.278125%/2.778125% exceed full-history Map 1.165%/2.3725% at 0.03/4 s. Static conditioning, a larger inferred state and a modest agreement gain establish no temporal, physical-fleet or SOTA qualification. |
 | **Adaptive reported-RF assay** | All **12 fits**, **174 RT cases**, TEST predictions/scoring, canonical raw replays and 504-source/11,792-evidence closure complete. VAL selects **regression**. Sparse condition-delta RMSE is 1.520106 versus RadioMap 1.654205 and RF-erased 1.885921 dB; the two adjusted RF-adaptation contrasts pass on 24 geometries. Independent raw replay also passes. | [Results](ADAPTIVE_RESULTS.md), [report](../../artifacts/adaptive_radio/report.json), [canonical audit](../../artifacts/adaptive_radio/verification/audit.json). Joint alignment is worse; pooled Bayes nearly ties; Brier benefit is unconfirmed. Static material states, known TRAIN-calibrated frontends and correlated direction/device reports do not establish dynamics, real transfer, packet reliability or SERVICE permission. |
 | **Measured CSI** | Six fits, three numerical references, three recordings × 18 model/view outputs, independent scoring and sealed closure complete. | [Results](CSI_RESULTS.md), [interpretation](CSI_INTERPRETATION.md), [independent review](../../artifacts/channel_scene_review/review.json). Negative model result; exact pilot aliasing limits identifiability. No learned temporal dynamics or scatterer identification. |
@@ -59,6 +75,34 @@ The old “E3 evaluating, E4/E5 queued, frozen E1 lost” text is obsolete. No o
 | **Spatial support and client-local recovery** | Built causal report memory/source-band guard with queued server-delivery refresh, causal central handovers and separately preinstalled paid own-client recovery. All **48 fresh + two parity simulations**, 543-source/224-evidence seal and independent passive review complete. No new neural training or encoder-context change; ordinary numerical RadioMap history fitting continues. | [Architecture/results](SPATIAL_CONTROL.md), [all contrasts below](#spatial-control-contrasts). Support helps regression means at both handover costs; fast combined regression still loses to Map + recovery in all four episodes. Four-second recovery harms all four episodes. Fixed weights and extra admission history prevent JEPA-objective attribution. |
 | **Geometry operator optimization** | Registered 48-public-plan profile and independent audit complete; exact operand bytes preserved. | [NATIVE_PERFORMANCE.md](NATIVE_PERFORMANCE.md): median 278→98 ms, **2.83× operand-call speedup** under shared CPU load. Frozen runner and all 18 native outcomes unchanged; no full-model, queue, service or SLA speedup measured. |
 | **Sensing-design mathematics** | Target-nullspace and explicitly prior-conditioned operator tools implemented/tested. | [SENSING_DESIGN.md](SENSING_DESIGN.md). Mathematical observability/information tools, not an executed on-air acquisition policy or a calibrated fleet endpoint gain. |
+
+## Nested-RF primary contrasts
+
+Differences below are candidate minus reference in dB; negative favors the
+candidate. All three member metrics and static states are averaged within each
+of 24 fresh TEST geometries. The four-family adjusted central 98.75% intervals
+use 20,000 paired whole-geometry bootstrap draws and remain conditional on the
+three trained members. Both model and numerical-reference selection use VAL
+heard-RSSI RMSE; the numerical choice is among all four frozen TRAIN-fit priors.
+
+| Registered comparison | Mean RMSE difference, dB | Central 98.75% interval, dB |
+|---|---:|---:|
+| Selected nested joint − best numerical | -0.073192 | [-0.126150, -0.023013] |
+| Selected nested joint − global-eight regression | -0.014339 | [-0.023057, -0.005348] |
+| Nested regression − ungated hierarchy | -0.188225 | [-0.233787, -0.147843] |
+| Nested joint − nested regression | -0.002226 | [-0.004345, -0.000883] |
+
+The gate package changes initialization, feature scaling and effective-prior RMS
+regularization together; this comparison does not isolate one cause. Its exact
+global-only submodel is a same-remaining-weight function property, not a promise
+of noninferiority to an independently trained baseline. The observed learned-local
+shutdown is neither evidence of a rich learned representation nor whole-model
+collapse: shared physical structure and fixed Fourier variation remain. Secondary
+material-delta RMSE is **0.906549 dB** for the selected model and **0.906270 dB**
+for the selected numerical reference. This near tie, the tiny agreement increment,
+limited procedural geometry families and absence of packet/hardware evidence
+bound the conclusion; specialist SOTA, learned temporal dynamics and 100-car
+service benefit are unestablished. Original SERVICE cases remain closed.
 
 ## Spatial-control contrasts
 
@@ -95,9 +139,10 @@ The [canonical seal](../../artifacts/spatial_control/verification/manifest.json)
 | Exact E7 calibration promotion | **The matched diagnostic is complete with mixed results**, not an unfinished job to rerun until successful. [All 225 pairs](../../artifacts/e7_calplanning_review/paired_rows.csv) remain. Deployment/default promotion still lacks supported planning benefit, observation-only qualification and service evidence; later different-feature studies do not remove these limits. |
 | didjital R6.1 integration | **Restoration and a minimal read-only software bridge are complete.** The original [qualification](../R6_COMPATIBILITY.md) covers commit `a458a90…`, 3+67+117 checks and synthetic demos. The new [R6 bridge](R6_BRIDGE.md) passes [77 source-bound checks](../../artifacts/r6_bridge/software_tests.json): actual isolated `plan_missions` parity, explicit units/service forecasts/owner registry, unqualified RF→DEFER and conservative offline journal views preserving UNKNOWN. Live journal migration, authenticated ownership/clock mapping, transition/reconciliation authority and physical integration remain unfinished; no backend is activated. Keep the two `wirelessjev` packages isolated. The private SmartCar source is still unavailable. |
 | Current adaptive assay finalization | **Registered run and canonical closure complete.** Independent raw replay also passes; sealed Studio export is complete. No fit, TEST prediction or canonical replay remains queued; do not launch replacement seeds, retune on TEST or consume original SERVICE cases. |
+| Nested-RF finalization and learned-local interpretation | **Finite phase, canonical closure, independent replay and local viewer complete.** No fit, fresh RT, TEST forecast or checkpoint score remains queued. Its static primary RF improvements do not complete learned temporal dynamics, native packet transfer or physical trials. All learned-local gates are zero in all six nested members; retain that diagnostic and the tiny agreement increment when defining any new representation experiment. A separately registered campaign is required before new fitting or held-out evaluation; no default is promoted. |
 | Dynamic world model, calibrated service heads and wider controls | **Research/implementation backlog under the current plan**, detailed in [REMAINING.md](REMAINING.md): learned event-time/AP-region belief, query-aware encoder retrieval, action-supported packet/retry/deadline heads, calibrated tails and supported joint actions. Causal spatial memory, source-band support and own-client recovery software are already built and evaluated; their mixed results do not establish reliable service or learned dynamics. A new finite protocol must precede each additional experiment. |
 | SmartCar archive, access and physical trials | **Hardware/access blocked.** The requested `SmartCar.zip` and deployed scripts are unavailable in the accessible cloud inputs; no pinned car identity/configuration or usable private-network route is supplied. The [one-car procedure](../ONE_CAR_TEST.md) defines the required access and supervision steps. Actual source audit, read-only capability/status, supervised switch/back, stage traces, scan cost, factory-password change and one-/small-/100-car qualification remain physical work. No credentials or endpoint are guessed and no radio was actuated. |
-| Studio and presentation publication | **Local current-evidence export is built and browser-checked.** All 11 cards include the sealed adaptive results, measured CSI/phone, native/R6 and completed mixed E7 result while preserving the legacy bundle. The [standalone Studio and provenance](STUDIO_EXPORT.md) regenerate through the documented CLI; external Claude Studio/deck republication remains unfinished. Local rebuilding is not external publication. |
+| Studio and presentation publication | **Local exports are built and browser-checked.** The existing 11-card [Studio export](STUDIO_EXPORT.md) includes adaptive results, measured CSI/phone, native/R6 and the mixed E7 result while preserving its legacy bundle. A separate [nested-RF viewer](../../artifacts/nested_radio_review/viewer/index.html) now presents all nine controls, four primary contrasts and actual public CAD; its 3D panels are explicitly selected-seed-zero descriptive views. Incorporating the new phase into the broader Studio/deck and external Claude republication remain unfinished. Local rebuilding is not external publication. |
 | Protocol-agnostic/space/extra PHY extensions | **Excluded or deferred**, not hidden completion requirements. [PROTOCOL_BOUNDARY.md](../PROTOCOL_BOUNDARY.md) remains Wi-Fi-specific: no validated 5G/LTE/Bluetooth/satellite adapter. E6 stays excluded; universal robots/environments, satellite collision avoidance and custom on-air waveforms are not completed by this warehouse campaign. |
 | Old delivered-observation campaign | **Superseded/unlaunched, not an active training queue.** Untracked `observation_frontier` code/protocol drafts are preserved and excluded from the tracked-suite proof. The newer archived RadioJEPA user plan governs current work; do not silently start that older campaign alongside it. |
 
