@@ -1,0 +1,53 @@
+{
+  "SOTA_or_hardware_claim": false,
+  "cases_APs": [
+    1,
+    4,
+    16
+  ],
+  "data_origin": "same synthetic software inputs, no RF measurements",
+  "implementation_sha256": {
+    "artifacts/smartcar_numpy/models/manifest.json": "862ae446ee44f5b73c66ab92a72a2f0d12298abf009f784c2b24bf6c403be045",
+    "artifacts/smartcar_numpy/models/nested_joint-seed0.npz": "76094add20d506f28bbc76ea47aa7736ae6de8363a86ee1d4a19baf99cb5bdf3",
+    "artifacts/smartcar_numpy/models/nested_joint-seed1.npz": "a06a042c4fbb9d589db0d3ddd39bd9512c4e1979c4b96c303e4d135272b133eb",
+    "artifacts/smartcar_numpy/models/nested_joint-seed2.npz": "35331ae0bbee224cb225b34f6946791b91d9cab0c608a28a530249e8256734e0",
+    "src/wirelessjev/hierarchical_radio/model.py": "aff8c1f204ec2125c3ce1d700e909b6a1ba5d76e912ee75363a160cf9126fd69",
+    "src/wirelessjev/nested_radio/model.py": "8748ad8ba68062e04ae37e592c33a5b65f26f4ca0b9f843b98c6b855ac60a9e5",
+    "src/wirelessjev/radiojepa/likelihoods.py": "75cb82c119072dd07b43e1b69faf7fb75d53a82623a8da144731ea275799ec74",
+    "src/wirelessjev/smartcar_numpy/__init__.py": "016302a3efe0e55d0315561e4f447b7aea33daec7dbc71d78e8b96d522d7f64f",
+    "src/wirelessjev/smartcar_numpy/export.py": "31cd0f38d850de8cfd323ab6b7344565979be6775e8da192a147ce9c635031ea",
+    "src/wirelessjev/smartcar_numpy/geometry.py": "6d961f6175c94d5c4edb034e6b5326b4b044998ea6ae25ab7caa15fdf973bfa6",
+    "src/wirelessjev/smartcar_numpy/likelihoods.py": "3d76bf590122bfc2b995ead9d270c59a02e8b1cd8a2026b45283046e84c21606",
+    "src/wirelessjev/smartcar_numpy/model.py": "a948a5bfc6d64a1073d0de5eb4564e8b8494adf069dea6055fc201d4090a2289",
+    "src/wirelessjev/smartcar_numpy/runtime.py": "14befb20192303f86dd873749b54e299019374672647ee86a9b8b2e46b0ca068",
+    "src/wirelessjev/smartcar_numpy/workflow.py": "c8acdde59f6786899ffa7da7df2e781b638ee4dbe26ea05163ffd0cdf5c9d762",
+    "src/wirelessjev/smartcar_runtime/contracts.py": "a5528020e356e9eb32f5e576ea262d1383a62a9bd3df15555cf2f5a30c133018",
+    "src/wirelessjev/smartcar_runtime/field.py": "d65ebcd65a4a034e16ea904ac0251903564bb1d2cde9eedabb318298911d61ac",
+    "src/wirelessjev/smartcar_runtime/workflow.py": "526c1f93e23d54c19694ca0baea1c6f9f9bc810a5ffb649d32c3cf855d4c8fac",
+    "src/wirelessjev/spectral_scene/operators.py": "6e7125559c3c0db8fa4a2541e41920e65f0e770ff9e7ba099c35b376e829a9a8"
+  },
+  "members": [
+    0,
+    1,
+    2
+  ],
+  "order": "fixed alternating, identical to original protocol",
+  "parity_atol": 0.0001,
+  "parity_rtol": 1e-06,
+  "repetitions": 25,
+  "required_versions": {
+    "numpy": "2.5.4",
+    "scipy": "1.18.1",
+    "torch": "2.14.1+cpu"
+  },
+  "runner_source_sha256": "952ecab8903d1028482506d37a6802c2f48e6bbb47a258234b8451b829d44261",
+  "schema": 1,
+  "startup_metric": "worker entry to first result, excludes interpreter and top-level stdlib imports",
+  "stop_rule": "all18 once; retainall results/errors; do not tune",
+  "task": "Same frozen worker and all fixed cases, now matching CPU-only Torch build",
+  "threads_each": 1,
+  "warmups": 5,
+  "worker_processes": 18,
+  "worker_source_commit": "c741d66553b504297959263e92eba7e8c1a6bc30",
+  "worker_source_sha256": "e61778a8df035ce5d87a44da52b359673e5b67194636b23e43a805f057dbb4dc"
+}

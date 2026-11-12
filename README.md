@@ -14,9 +14,14 @@ produce per-link predictions. Supported proposals retain explicit timing,
 compute and evidence limits. **RadioMap + WirelessJEV remains the application
 default.**
 
-For a real car, use the [portable SmartCar deployment workflow](docs/SMARTCAR_DEPLOYMENT.md).
+For a real car, use the [portable SmartCar deployment workflow](docs/SMARTCAR_NUMPY_DEPLOYMENT.md).
 It separates a stdlib Pi collector from desktop numerical mapping, pinned
 RadioJEPA shadow inference and a separately confirmed, journaled switch.
+The [Torch-free package](artifacts/smartcar_numpy/README.md) runs all three
+released models with NumPy/SciPy; the registered CPU-only comparison measures
+1.92–3.98× faster conditioning/rendering and 4.30–4.65× lower peak process RSS,
+while preserving their predictions. These are fixed software workloads on
+the cloud CPU, with no real-car or RF-accuracy improvement claim.
 It requires actual position-tagged scans and verified management access;
 no physical-car or SOTA qualification is claimed.
 
@@ -80,9 +85,9 @@ Its 225 pairs are descriptive, oracle-conditioned results on opened environments
 [Measured CSI](docs/research_status/CSI_RESULTS.md) also retains its negative
 model result. None of these results qualifies a fleet controller.
 
-The latest [tracked-suite proof](artifacts/smartcar_deployment_review/final/software_suite.json)
-records **3,903 passing tests**, 160 test modules, one expected fork warning
-and unchanged hashes for 591 source/config/test files. The preceding
+The latest [tracked-suite proof](artifacts/smartcar_numpy_review/software_suite.json)
+records **4,138 passing tests**, 165 test modules, one expected fork warning
+and unchanged hashes for 606 source/config/test files. The preceding
 [3,633-test RF snapshot](artifacts/nested_radio_review/software_suite_importlib.json) and the earlier
 [2,978-test snapshot](artifacts/spatial_control_review/final_software_suite.json) and
 [2,655-test snapshot](artifacts/research_review/release_suite.json) are preserved;
