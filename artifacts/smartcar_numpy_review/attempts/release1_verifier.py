@@ -1,0 +1,122 @@
+"""Passive release checks for the final portable software package, not hardware."""
+from datetime import datetime, timezone
+import hashlib
+import json
+from pathlib import Path
+import re
+import runpy
+import subprocess
+import zipfile
+
+ROOT = Path(__file__).resolve().parents[2]
+REVIEW = Path(__file__).resolve().parent
+
+
+def sha(data):
+    return hashlib.sha256(data).hexdigest()
+
+
+def read(path):
+    return json.loads(Path(path).read_bytes())
+
+
+def verify():
+    suite = read(REVIEW/"software_suite.json")
+    assert suite["exit_code"] == 0 and suite["passed"] == 4138 and suite["source_unchanged"]
+    assert len(suite["test_modules"]) == 165 and len(suite["source_sha256_after"]) == 606
+    assert suite["source_sha256_before"] == suite["source_sha256_after"]
+    for name, expected in suite["source_sha256_after"].items():
+        assert sha((ROOT/name).read_bytes()) == expected, name
+    assert sha((ROOT/suite["log_path"]).read_bytes()) == suite["log_sha256"]
+    assert sha((REVIEW/"software_suite_runner.py").read_bytes()) == suite["runner_sha256"]
+    archive = ROOT/"artifacts/smartcar_numpy/smartcar-wirelessJEV.zip"
+    receipt = read(archive.with_suffix(".receipt.json"))
+    portable = read(REVIEW/"portable_verification.json")
+    assert portable["passes"] and portable["hardware_scan_or_actuation"] == portable["SSH_requests"] == 0
+    assert portable["real_car_measurements"] == 0 and portable["SOTA_or_hardware_qualification"] is False
+    assert portable["archive_sha256"] == receipt["archive_sha256"] == sha(archive.read_bytes())
+    assert portable["archive_bytes"] == receipt["archive_bytes"] == archive.stat().st_size
+    assert portable["research_training_dependencies_blocked_during_shadow"]
+    assert len(portable["released_shadow_members_executed"]) == 3
+    assert sha((REVIEW/"verify_portable_release.py").read_bytes()) == portable["verifier_sha256"]
+    components = runpy.run_path(str(ROOT/"scripts/build_smartcar_numpy_bundle.py"))["COMPONENTS"]
+    source_paths = {"src/"+name: "src/"+name for name in components}
+    for name in ("README.md", "PI/wj_car_agent.py", "PC/run.py", "verify_bundle.py"):
+        source_paths[name] = ("deployment/smartcar_numpy/"+name if (ROOT/"deployment/smartcar_numpy"/name).is_file() else "deployment/smartcar/"+name)
+    source_paths["docs/SMARTCAR_NUMPY_DEPLOYMENT.md"] = "docs/SMARTCAR_NUMPY_DEPLOYMENT.md"
+    with zipfile.ZipFile(archive) as zipped:
+        names = zipped.namelist()
+        assert len(names) == len(set(names)) == 35
+        prefix = "smartcar-wirelessJEV/"
+        manifest = json.loads(zipped.read(prefix+"MANIFEST.json"))
+        assert set(names) == {prefix+name for name in manifest["files_sha256"]} | {prefix+"MANIFEST.json"}
+        assert manifest["source_commit"] == receipt["source_commit"]
+        for name, expected in manifest["files_sha256"].items():
+            assert sha(zipped.read(prefix+name)) == expected, name
+        for name, path in source_paths.items():
+            committed = subprocess.check_output(["git", "show", manifest["source_commit"]+":"+path], cwd=ROOT)
+            assert committed == zipped.read(prefix+name) == (ROOT/path).read_bytes(), name
+        models = json.loads(zipped.read(prefix+"models/manifest.json"))
+        assert models["experimental_shadow_only"] and not models["hardware_transfer_qualified"]
+        for member in models["members"]:
+            expected = member["sha256"]
+            assert sha(zipped.read(prefix+"models/"+member["path"])) == expected
+            assert sha((ROOT/"artifacts/smartcar_numpy/models"/member["path"]).read_bytes()) == expected
+            from wirelessjev.smartcar_numpy.export import load_export
+            load_export(ROOT/"artifacts/smartcar_numpy/models"/member["path"], expected, member["source_checkpoint_sha256"])
+            assert sha((ROOT/"artifacts/nested_radio/checkpoints"/(member["name"]+".pt")).read_bytes()) == member["source_checkpoint_sha256"]
+    for report_name, protocol_name in (("benchmark.json", "protocol.json"), ("benchmark_cpu_only.json", "cpu_only_protocol.json")):
+        report = read(REVIEW/report_name)
+        protocol_path = ROOT/"artifacts/smartcar_numpy"/protocol_name
+        assert report["passes"] and report["protocol_sha256"] == sha(protocol_path.read_bytes())
+        assert len(report["rows"]) == 18
+        pairs = {(r["APs"], r["seed"], r["backend"]): r for r in report["rows"]}
+        assert len(pairs) == 18
+        for aps in (1, 4, 16):
+            for seed in (0, 1, 2):
+                a, b = pairs[aps, seed, "numpy"], pairs[aps, seed, "torch"]
+                assert a["torch_imported"] is False and b["torch_imported"] is True
+                for row in (a, b):
+                    assert len(row["conditioning_and_render_seconds"]) == 25
+                    assert all(x > 0 for x in row["conditioning_and_render_seconds"])
+                for key in ("mean", "std"):
+                    assert len(a[key]) == len(b[key]) == 192
+                    assert all(abs(x-y) <= 1.e-4+1.e-6*abs(y) for x,y in zip(a[key],b[key]))
+    prior = read(REVIEW/"prior_closure_verification.json")
+    assert prior["passes"] and prior["scientific_closures"] == 10
+    assert prior["unique_named_repository_files"] == 27295 and prior["scientific_calls"] == 0
+    for name, expected in prior["manifest_sha256"].items():
+        assert sha((ROOT/name).read_bytes()) == expected, name
+    docs = ("README.md", "docs/HANDOFF.md", "docs/ONE_CAR_TEST.md", "docs/SMARTCAR_NUMPY_DEPLOYMENT.md",
+            "deployment/smartcar_numpy/README.md", "artifacts/smartcar_numpy/README.md",
+            "artifacts/smartcar_numpy_review/README.md")
+    document_hashes, links = {}, 0
+    for name in docs:
+        path = ROOT/name
+        document_hashes[name] = sha(path.read_bytes())
+        for target in re.findall(r"(?<!!)\[[^\]]+\]\(([^)\n]+)\)", path.read_text()):
+            if re.match(r"^[A-Za-z][A-Za-z0-9+.-]*:", target) or target.startswith("#"):
+                continue
+            resolved = (path.parent/target.split("#", 1)[0]).resolve()
+            assert resolved.is_relative_to(ROOT) and resolved.exists(), (name, target)
+            links += 1
+    return {"schema": 1, "passes": True, "checked_at_utc": datetime.now(timezone.utc).isoformat(),
+        "verifier_sha256": sha(Path(__file__).read_bytes()), "archive_sha256": portable["archive_sha256"],
+        "archive_bytes": archive.stat().st_size, "bundle_members": 35,
+        "bundle_source_commit": manifest["source_commit"], "committed_source_members_checked": len(source_paths),
+        "tracked_suite_passed": suite["passed"], "source_files_checked": 606, "test_modules": 165,
+        "software_suite_sha256": sha((REVIEW/"software_suite.json").read_bytes()),
+        "portable_proof_sha256": sha((REVIEW/"portable_verification.json").read_bytes()),
+        "prior_closures_preserved": 10, "documents_sha256": document_hashes,
+        "local_links_checked": links, "real_car_validation": False, "SOTA_established": False,
+        "new_registered_scientific_experiments": 0, "hardware_actions": 0,
+        "benchmark_report_sha256": {name: sha((REVIEW/name).read_bytes()) for name in ("benchmark.json", "benchmark_cpu_only.json")},
+        "deferred_observation_frontier_excluded": True}
+
+
+if __name__ == "__main__":
+    value = verify()
+    with (REVIEW/"release_verification.json").open("x") as stream:
+        json.dump(value, stream, indent=2, sort_keys=True)
+        stream.write("\n")
+    print(json.dumps({key: value[key] for key in ("passes", "archive_sha256", "tracked_suite_passed", "local_links_checked")}))

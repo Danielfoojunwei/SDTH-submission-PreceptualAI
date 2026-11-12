@@ -10,6 +10,23 @@ E1–E5 and corrected E7 have finished; E6 remains excluded. No interrupted
 original training worker needs restarting, and original large-model results
 still represent one training chain.
 
+The current [Torch-free SmartCar package](../artifacts/smartcar_numpy/README.md)
+adds NumPy/SciPy inference for the three exact released checkpoints. The
+[118,688-byte ZIP](../artifacts/smartcar_numpy/smartcar-wirelessJEV.zip) runs both
+mapping and explicit neural shadow without Torch, HF or Sionna at runtime.
+It preserves the same measurement, admission and separately confirmed control
+boundaries. Same-weight CPU-only software timing shows 1.92–3.98× faster
+conditioning/rendering and 4.30–4.65× lower peak process RSS; worker-entry timing
+excludes interpreter startup. These are synthetic software workloads, not
+physical-car performance or a new RF accuracy improvement. The latest
+[suite](../artifacts/smartcar_numpy_review/software_suite.json) passes **4,138
+tests** across 165 modules and 606 unchanged source/config/test files. The
+[portable proof](../artifacts/smartcar_numpy_review/portable_verification.json)
+runs all three models in an actual Torch-absent environment. Current setup is
+in [SMARTCAR_NUMPY_DEPLOYMENT.md](SMARTCAR_NUMPY_DEPLOYMENT.md); the preceding
+Torch package and its receipts below remain preserved. Hardware validation
+and matched external measured-RSSI/SOTA claims remain unfinished.
+
 The portable [SmartCar deployment workflow](SMARTCAR_DEPLOYMENT.md) now has a
 [downloadable ZIP](../artifacts/smartcar_deployment/smartcar-wirelessJEV.zip):
 stdlib-only Pi collection, minimal desktop numerical mapping, three exact
