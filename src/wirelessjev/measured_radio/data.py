@@ -250,6 +250,7 @@ def prepare_dataset(archive_path, protocol):
         'source_files', 'source_rows', 'failed_status_rows', 'zero_success_rows',
         'successful_rows', 'invalid_rssi_rows', 'sentinel_rssi_rows', 'frequency_unknown_rows',
         'frequency_zero_rows', 'frequency_missing_rows', 'frequency_other_rows',
+        'counter_inconsistent_rows', 'eligible_counter_inconsistent_rows',
         'eligible_rows', 'eligible_files', 'eligible_groups', 'selected_rows', 'summary_records')}
     groups = {}
     with zipfile.ZipFile(path) as archive:
@@ -285,8 +286,12 @@ def prepare_dataset(archive_path, protocol):
                     continue  # Provider failure rows legitimately omit trailing fields.
                 attempted = _integer(row.get('Attempted Measurements'), 'attempted measurements')
                 successful = _integer(row.get('Successful Measurements'), 'successful measurements')
-                if successful > attempted:
-                    raise ValueError('Successful measurement count exceeds attempts')
+                # Android/provider counters need not satisfy a subset relation.
+                # Preserve them verbatim; positive reported success is the
+                # registered eligibility criterion, not an inferred count of
+                # independent packets. Audit the inconsistency explicitly.
+                counter_inconsistent = successful > attempted
+                audit['counter_inconsistent_rows'] += counter_inconsistent
                 if successful == 0:
                     audit['zero_success_rows'] += 1
                     continue
@@ -301,6 +306,7 @@ def prepare_dataset(archive_path, protocol):
                     continue
                 if frequency != '5180':
                     continue
+                audit['eligible_counter_inconsistent_rows'] += counter_inconsistent
                 start = _integer(row.get('Request Start Unix Timestamp'), 'request start clock')
                 end = _integer(row.get('Request Completed Unix Timestamp'), 'completion clock')
                 if not 946684800000 <= start <= end <= 4102444800000:
@@ -318,16 +324,20 @@ def prepare_dataset(archive_path, protocol):
                     'request_start_unix_ms': start, 'completion_unix_ms': end,
                     'capture_boot_ms': boot, 'android_version': android,
                     'attempted_measurements': attempted, 'successful_measurements': successful,
+                    'counter_inconsistent': counter_inconsistent,
                 }
                 key = member, ap_id
                 if key not in groups:
                     groups[key] = {'member_info': member_info, 'ap_id': ap_id,
                                    'source_member_sha256': member_sha256,
                                    'selected': [], 'eligible_source_row_numbers': [],
+                                   'counter_inconsistent_source_row_numbers': [],
                                    'android_versions': set()}
                 group = groups[key]
                 group['android_versions'].add(android)
                 group['eligible_source_row_numbers'].append(reader.line_num)
+                if counter_inconsistent:
+                    group['counter_inconsistent_source_row_numbers'].append(reader.line_num)
                 group['selected'].append(selected_row)
                 group['selected'].sort(key=lambda r: r['record_id'])
                 del group['selected'][8:]
@@ -354,6 +364,7 @@ def prepare_dataset(archive_path, protocol):
                 'selected_count': len(selected),
                 'eligible_count': len(group['eligible_source_row_numbers']),
                 'eligible_source_row_numbers': group['eligible_source_row_numbers'],
+                'counter_inconsistent_source_row_numbers': group['counter_inconsistent_source_row_numbers'],
                 'is_raw_measurement': False,
                 'summary_kind': 'arithmetic_mean_reported_rssi_dbm',
             }

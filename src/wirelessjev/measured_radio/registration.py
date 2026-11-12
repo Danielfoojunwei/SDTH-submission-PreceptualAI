@@ -27,6 +27,9 @@ def register():
         source_files += sorted((c.ROOT/directory).glob('*.py'))
     source_files += sorted((c.ROOT/'artifacts/smartcar_numpy/models').glob('*.npz'))
     source_files += [c.ROOT/'artifacts/smartcar_numpy/models/manifest.json']
+    for name in ('protocol.json', 'registration/source.json', 'registration/git.json', 'failure.json'):
+        source_files += [c.ROOT/'artifacts/measured_radio'/name]
+    source_files += [c.ROOT/'artifacts/measured_radio_review/execution.log']
     files = {str(p.relative_to(c.ROOT)): c.digest(p) for p in sorted(set(source_files))}
     receipt = {'schema': 1, 'base_commit': subprocess.check_output(['git', 'rev-parse', 'HEAD'],
         cwd=c.ROOT, text=True).strip(), 'files_sha256': files,
@@ -42,6 +45,15 @@ def register():
     shutil.copyfile(c.SOURCE_METADATA, c.OUT/'registration/zenodo-20051265.json')
     protocol = {
         'schema': 1, 'namespace': c.NAMESPACE, 'registered_at_utc': datetime.now(timezone.utc).isoformat(),
+        'execution_revision': 2,
+        'preparation_contract_amendment': {
+            'aborted_source_commit': 'daf2c34ab8d27d2fe666e7d7b250a907a810b3f4',
+            'original_protocol_sha256': 'f091406f65dc64f2022d172e4c43cd8fa9a971a0bf9753acda7f743c46e03538',
+            'failure_receipt_sha256': 'ebbceb8ce9b6fb8a53c9c8dbf6af93a71c90fbd1c85a19caf39c97f79ee3fdf6',
+            'repair': 'Do not assume successful<=attempted; preserve raw counters and report inconsistent pairs. Registered positive-success eligibility is unchanged.',
+            'preparation_audit': 'Eight status0 pairs have successful>attempted, all attempted0; five known5180 S24U/Android15 and three unknown-frequency POCO/Android11',
+            'prior_persisted_summaries_fits_predictions': 0,
+            'split_namespace_support_models_grid_selection_metric_unchanged': True},
         'source_receipt_sha256': c.digest(c.OUT/'registration/source.json'),
         'catalogue_sha256': c.digest(c.OUT/'registration/catalogue.json'),
         'source': {'doi': '10.5281/zenodo.20051265', 'version': 'v1', 'license': 'CC-BY-4.0',
@@ -102,6 +114,7 @@ def register():
             'No SmartCar, service, mobility-control, packet-risk, protocol-generalization or SOTA qualification'],
         'immutable_outcome_policy': 'Retain every registered arm/result, including negative transfer; do not tune after TEST; append separately registered future studies',
     }
+    protocol['expected_audit'].update(counter_inconsistent_rows=8, eligible_counter_inconsistent_rows=5)
     c.write(c.OUT/'protocol.json', protocol)
     return {'protocol_sha256': c.digest(c.OUT/'protocol.json'), 'source_files': len(files),
             'official_measured_summaries_fits_predictions': 0}

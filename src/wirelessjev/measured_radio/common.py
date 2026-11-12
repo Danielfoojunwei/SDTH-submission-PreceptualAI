@@ -6,7 +6,7 @@ import json
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[3]
-OUT = ROOT / 'artifacts/measured_radio'
+OUT = ROOT / 'artifacts/measured_radio_counterfix'
 SOURCE = Path('/workspace/upstream/scene-radio/rssi/downloads/20051265-UVIndoorLoc-RTT&RSSI.zip')
 SOURCE_METADATA = Path('/workspace/upstream/scene-radio/rssi/zenodo-20051265.json')
 SOURCE_SHA256 = '0ff469b8bd9d58a7d37c77423fc40450916bf26bbe208010bfc2bdf075ccf9f5'

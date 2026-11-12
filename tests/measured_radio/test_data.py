@@ -261,7 +261,6 @@ def test_one_summary_cannot_mix_android_calibration_groups(tmp_path):
 
 
 @pytest.mark.parametrize('updates,match', [
-    ({'Successful Measurements': '9'}, 'exceeds'),
     ({'Successful Measurements': '-1'}, 'Out-of-domain'),
     ({'Status': 'not-a-status'}, 'Noninteger'),
     ({'Request Start Unix Timestamp': '1770729860'}, 'clocks'),
@@ -275,6 +274,20 @@ def test_relevant_corruption_fails_closed(tmp_path, updates, match):
     path, protocol = make_archive(tmp_path, raw={MEMBER: [measured_row(**updates)]})
     with pytest.raises(ValueError, match=match):
         d.prepare_dataset(path, protocol)
+
+
+@pytest.mark.parametrize('attempted,successful', [(0, 1), (0, 7), (8, 9)])
+def test_reported_counters_preserved_without_assuming_subset_relation(tmp_path, attempted, successful):
+    path, protocol = make_archive(tmp_path, raw={MEMBER: [measured_row(**{
+        'Attempted Measurements': str(attempted), 'Successful Measurements': str(successful)})]})
+    result = d.prepare_dataset(path, protocol)
+    assert result['audit']['counter_inconsistent_rows'] == 1
+    assert result['audit']['eligible_counter_inconsistent_rows'] == 1
+    record = result['records'][0]
+    assert record['counter_inconsistent_source_row_numbers'] == [2]
+    selected = record['selected_source_rows'][0]
+    assert (selected['attempted_measurements'], selected['successful_measurements']) == (attempted, successful)
+    assert selected['counter_inconsistent'] is True
 
 
 @pytest.mark.parametrize('field,value', [

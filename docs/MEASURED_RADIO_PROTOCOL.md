@@ -34,6 +34,17 @@ eligibility checks require 758,456 eligible reports, 4,255 file/AP summaries
 and 33,901 selected reports. These are pre-execution audit counts; actual
 preparation must match them or stop.
 
+The first published reader stopped during preparation because it additionally
+assumed successful counts could not exceed attempted counts. Eight source
+rows report positive successes and zero attempts; five otherwise satisfy
+eligibility. No summary was saved and no measured-data fit/prediction ran.
+The original protocol/source/failure are preserved under `artifacts/measured_radio`.
+The separately published counter-contract repair uses
+`artifacts/measured_radio_counterfix`, preserves the raw counters and flags
+these rows rather than inferring that they are invalid RSSIs. The registered
+positive-success eligibility, split namespace, support, models, grid and metric
+are unchanged. These counters are not interpreted as independent packet counts.
+
 ## Support, splits and unknown references
 
 Provider TEST locations remain TEST. A metadata-only SHA256 rule takes 29 of
@@ -126,7 +137,7 @@ PYTHONPATH=src uv run --frozen python scripts/run_measured_radio.py verify
 
 The source archive/metadata paths are pinned in `measured_radio/common.py`.
 Raw source data remain outside the repository; derived evidence goes under
-`artifacts/measured_radio`. Existing study seals, weights, deployment ZIP and
+`artifacts/measured_radio_counterfix`. Existing study seals, weights, deployment ZIP and
 unrelated deferred work stay unchanged. An independent audit must replay the
 raw results before the outcome is promoted into documentation.
 
