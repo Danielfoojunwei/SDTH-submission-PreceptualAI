@@ -1,0 +1,86 @@
+{
+  "attempt": {
+    "path": "artifacts/nested_radio/numerical/attempts/radiomap-5m.json",
+    "sha256": "e27cb58abeaf04d01c672dd72f526f5ed0efea518fbf158baaf576689b480d3c"
+  },
+  "name": "radiomap-5m",
+  "new_prior_fit": false,
+  "parent_predictions": {
+    "path": "artifacts/hierarchical_radio/numerical/radiomap-5m-validation.npz",
+    "sha256": "52bfe35fdcb40d8cf61e031a8505745d6c348f813c7e83597463db66ab4cd55d"
+  },
+  "prepared_sha256": "5026f21b97eea6662b602325b56f3a7ec922907e8b1cad5a25ec7a32a23a6598",
+  "prior": {
+    "path": "artifacts/hierarchical_radio/numerical/radiomap-5m.npz",
+    "sha256": "347d800ce0f2bb26d195fe3d0d687d3f5926fa5e6e8dd2b283c970a49158dace"
+  },
+  "source_receipt_sha256": "a9a1fa1670ab5c6801cb828d1e059d1ff25e09b15720252e8a73174bfadbd06b",
+  "validation_nll": 1.3340224598142465,
+  "validation_per_layout": [
+    {
+      "conditions": [
+        0,
+        1,
+        2
+      ],
+      "layout_id": "hierarchical-validation-00",
+      "nll": 1.3271427835393175,
+      "rmse_db": 2.940640372884596
+    },
+    {
+      "conditions": [
+        0,
+        1,
+        2
+      ],
+      "layout_id": "hierarchical-validation-01",
+      "nll": 1.3100775233614579,
+      "rmse_db": 2.7002015487802944
+    },
+    {
+      "conditions": [
+        0,
+        1,
+        2
+      ],
+      "layout_id": "hierarchical-validation-02",
+      "nll": 1.331166393287743,
+      "rmse_db": 2.4268711539817747
+    },
+    {
+      "conditions": [
+        0,
+        1,
+        2
+      ],
+      "layout_id": "hierarchical-validation-03",
+      "nll": 1.3641794076892253,
+      "rmse_db": 3.1611502499556416
+    },
+    {
+      "conditions": [
+        0,
+        1,
+        2
+      ],
+      "layout_id": "hierarchical-validation-04",
+      "nll": 1.4003229313829093,
+      "rmse_db": 3.3890942547057765
+    },
+    {
+      "conditions": [
+        0,
+        1,
+        2
+      ],
+      "layout_id": "hierarchical-validation-05",
+      "nll": 1.2712457196248255,
+      "rmse_db": 2.338362947974119
+    }
+  ],
+  "validation_predictions": {
+    "path": "artifacts/nested_radio/numerical/radiomap-5m-validation.npz",
+    "sha256": "52bfe35fdcb40d8cf61e031a8505745d6c348f813c7e83597463db66ab4cd55d"
+  },
+  "validation_rmse": 2.826053421380367
+}

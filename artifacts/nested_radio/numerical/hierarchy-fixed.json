@@ -1,0 +1,83 @@
+{
+  "attempt": {
+    "path": "artifacts/nested_radio/numerical/attempts/hierarchy-fixed.json",
+    "sha256": "0f6e988a50f0c33a1e95bbc139a8494045e1dc5d20ac96baccb5c66b305f330b"
+  },
+  "name": "hierarchy-fixed",
+  "new_prior_fit": false,
+  "parent_predictions": null,
+  "prepared_sha256": "5026f21b97eea6662b602325b56f3a7ec922907e8b1cad5a25ec7a32a23a6598",
+  "prior": {
+    "path": "artifacts/hierarchical_radio/numerical/hierarchy-fixed.npz",
+    "sha256": "d30cdeabda72451889e23d04426ff19c392e35622b267aa2b07a6d0f26bb4bd5"
+  },
+  "source_receipt_sha256": "a9a1fa1670ab5c6801cb828d1e059d1ff25e09b15720252e8a73174bfadbd06b",
+  "validation_nll": 1.3058552039252536,
+  "validation_per_layout": [
+    {
+      "conditions": [
+        0,
+        1,
+        2
+      ],
+      "layout_id": "hierarchical-validation-00",
+      "nll": 1.3203084908496792,
+      "rmse_db": 3.0167850578294555
+    },
+    {
+      "conditions": [
+        0,
+        1,
+        2
+      ],
+      "layout_id": "hierarchical-validation-01",
+      "nll": 1.2759124833002307,
+      "rmse_db": 2.580231115074495
+    },
+    {
+      "conditions": [
+        0,
+        1,
+        2
+      ],
+      "layout_id": "hierarchical-validation-02",
+      "nll": 1.280612269440878,
+      "rmse_db": 2.2896596548950505
+    },
+    {
+      "conditions": [
+        0,
+        1,
+        2
+      ],
+      "layout_id": "hierarchical-validation-03",
+      "nll": 1.3225512803525865,
+      "rmse_db": 2.9978401978971423
+    },
+    {
+      "conditions": [
+        0,
+        1,
+        2
+      ],
+      "layout_id": "hierarchical-validation-04",
+      "nll": 1.396001983744526,
+      "rmse_db": 3.24562164910088
+    },
+    {
+      "conditions": [
+        0,
+        1,
+        2
+      ],
+      "layout_id": "hierarchical-validation-05",
+      "nll": 1.2397447158636214,
+      "rmse_db": 2.358259731349234
+    }
+  ],
+  "validation_predictions": {
+    "path": "artifacts/nested_radio/numerical/hierarchy-fixed-validation.npz",
+    "sha256": "a6e8a02730b0024cf7b5abe576fd45061e2c11b3b902b655ca5508257b0a92c9"
+  },
+  "validation_rmse": 2.7480662343577094
+}

@@ -1,0 +1,31 @@
+{
+  "candidates": [
+    {
+      "path": "artifacts/nested_radio/numerical/radiomap-5m.json",
+      "sha256": "c1191a989359329111e6aa8bf211001362fb7f5a87e93588776e42fc3d900232"
+    },
+    {
+      "path": "artifacts/nested_radio/numerical/radiomap-10m.json",
+      "sha256": "f86049ec486d62545f0ea0b0567b85d3940597a511290de1da89ce2f31836fbc"
+    },
+    {
+      "path": "artifacts/nested_radio/numerical/radiomap-20m.json",
+      "sha256": "cadf7206bc9922ef76060084d28615c94407a307a87c07c76fc0892f4063a371"
+    },
+    {
+      "path": "artifacts/nested_radio/numerical/hierarchy-fixed.json",
+      "sha256": "783562fd9951f2c5eb0d80318c9afed35085bcdabab7bc0cc202e730b39d1c7c"
+    }
+  ],
+  "prepared_sha256": "5026f21b97eea6662b602325b56f3a7ec922907e8b1cad5a25ec7a32a23a6598",
+  "rule": "first minimum equal-layout sparse VAL heard RMSE; all four TRAIN-fit priors retained",
+  "schema": 1,
+  "scores": {
+    "hierarchy-fixed": 2.7480662343577094,
+    "radiomap-10m": 2.8286237478541625,
+    "radiomap-20m": 2.7948630654376547,
+    "radiomap-5m": 2.826053421380367
+  },
+  "selected_name": "hierarchy-fixed",
+  "source_receipt_sha256": "a9a1fa1670ab5c6801cb828d1e059d1ff25e09b15720252e8a73174bfadbd06b"
+}

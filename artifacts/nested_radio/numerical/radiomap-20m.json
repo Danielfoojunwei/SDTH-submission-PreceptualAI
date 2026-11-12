@@ -1,0 +1,86 @@
+{
+  "attempt": {
+    "path": "artifacts/nested_radio/numerical/attempts/radiomap-20m.json",
+    "sha256": "a1968831679793ab9cb96da32cd98007a7933e81f1c36c8683a0d5a09c4fced9"
+  },
+  "name": "radiomap-20m",
+  "new_prior_fit": false,
+  "parent_predictions": {
+    "path": "artifacts/hierarchical_radio/numerical/radiomap-20m-validation.npz",
+    "sha256": "b9417c6d4133ec79477bc59f9d4c11a8958fd4bbcdb67d387c9349073d483de0"
+  },
+  "prepared_sha256": "5026f21b97eea6662b602325b56f3a7ec922907e8b1cad5a25ec7a32a23a6598",
+  "prior": {
+    "path": "artifacts/hierarchical_radio/numerical/radiomap-20m.npz",
+    "sha256": "1bdfa9a558a8a78238b737c35c2bfa58d143a5b9b10fd7b2df3398d27e1183a6"
+  },
+  "source_receipt_sha256": "a9a1fa1670ab5c6801cb828d1e059d1ff25e09b15720252e8a73174bfadbd06b",
+  "validation_nll": 1.3129119228712522,
+  "validation_per_layout": [
+    {
+      "conditions": [
+        0,
+        1,
+        2
+      ],
+      "layout_id": "hierarchical-validation-00",
+      "nll": 1.3249340799097842,
+      "rmse_db": 3.0452360399223957
+    },
+    {
+      "conditions": [
+        0,
+        1,
+        2
+      ],
+      "layout_id": "hierarchical-validation-01",
+      "nll": 1.2699575691408367,
+      "rmse_db": 2.536359934033166
+    },
+    {
+      "conditions": [
+        0,
+        1,
+        2
+      ],
+      "layout_id": "hierarchical-validation-02",
+      "nll": 1.2976315197730155,
+      "rmse_db": 2.35646798236884
+    },
+    {
+      "conditions": [
+        0,
+        1,
+        2
+      ],
+      "layout_id": "hierarchical-validation-03",
+      "nll": 1.3331179244044282,
+      "rmse_db": 3.014096000798044
+    },
+    {
+      "conditions": [
+        0,
+        1,
+        2
+      ],
+      "layout_id": "hierarchical-validation-04",
+      "nll": 1.3935263935067088,
+      "rmse_db": 3.2678364637615402
+    },
+    {
+      "conditions": [
+        0,
+        1,
+        2
+      ],
+      "layout_id": "hierarchical-validation-05",
+      "nll": 1.2583040504927394,
+      "rmse_db": 2.549181971741944
+    }
+  ],
+  "validation_predictions": {
+    "path": "artifacts/nested_radio/numerical/radiomap-20m-validation.npz",
+    "sha256": "b9417c6d4133ec79477bc59f9d4c11a8958fd4bbcdb67d387c9349073d483de0"
+  },
+  "validation_rmse": 2.7948630654376547
+}
