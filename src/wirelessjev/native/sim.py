@@ -95,11 +95,18 @@ class Policy:
     cadence_scan: bool = False    # background scans start right after a control delivery
     # Headroom ladder (docs/JEPA_HEADROOM.md): information no real controller has.
     oracle: int = 0               # 2: current blockage per robot-AP path; 3: + fading and blockage 1 s ahead
+    oracle_urgent: bool = False   # ladder v2: oracle roams fire at once instead of waiting for a delivery
     # Fleet-only capabilities (docs/DIRECTIONS_123.md).
     safe_plan_s: float = 0.0      # robot carries this many seconds of trajectory (0 = stop after 200 ms silence)
     link_aware_speed: bool = False  # halve speed where the link is predicted weak: the plan lasts twice as long
     relay: bool = False           # a nearby robot forwards control when own paths fail
     ble: bool = False             # control also goes over Bluetooth LE to a gateway at an AP site
+    # Live blockage detector (docs/BLOCKAGE_DETECTOR.md): a sudden drop on every band of the
+    # serving AP at once is a blocked path, not fading. Uses only the robot's own lagged readings.
+    block_detect: bool = False
+    block_drop_db: float = 10.0   # drop below the robot's own recent level that counts as blocked
+    block_confirm: int = 2        # consecutive 100 ms readings needed (one alone is usually a fade)
+    block_hold_s: float = 2.0     # how long a flagged robot-AP path is avoided
 
 
 SCAN_S = 0.03
@@ -292,6 +299,14 @@ def simulate(world: World, policy: Policy, *, seed: int = 0, curves: LinkCurves 
     slow = np.zeros(n, dtype=bool)
     slow_slots = plan_stopped = 0
     relay_used = ble_used = 0
+    avoid_until = np.zeros((n, s), dtype=int)
+    det_base, det_site = np.zeros(n), np.full(n, -1)
+    det_base2, det_site2 = np.zeros(n), np.full(n, -1)
+    det_run, det_run2 = np.zeros(n, dtype=int), np.zeros(n, dtype=int)
+    avoid_len = np.zeros((n, s), dtype=int)
+    fc_level = np.zeros((n, s))
+    detections = 0
+    fc_mean_sites = np.zeros((n, s))
     aux = np.random.default_rng(4242 + world.seed)        # relay and BLE fading, same for every policy
     rr_fade = np.zeros((n, n), dtype=np.float32)
     rr_snr = None
@@ -314,10 +329,12 @@ def simulate(world: World, policy: Policy, *, seed: int = 0, curves: LinkCurves 
 
     pending_roam = np.full(n, -1)          # cadence_roam: target waiting for a quiet moment
 
-    def move_primary(i, target, cost_s):
+    def move_primary(i, target, cost_s, urgent=False):
+        # urgent: the serving path is believed dead, so waiting for the next delivery would wait forever.
         nonlocal swaps
         dual = bool(dual_mask[i])
-        if policy.cadence_roam and cost_s < CONTROL_PERIOD * SLOT and not (dual and site2[i] == target):
+        if (policy.cadence_roam and not urgent and cost_s < CONTROL_PERIOD * SLOT
+                and not (dual and site2[i] == target)):
             pending_roam[i] = target       # executed right after the next control delivery
             return
         if dual and site2[i] == target:
@@ -445,6 +462,8 @@ def simulate(world: World, policy: Policy, *, seed: int = 0, curves: LinkCurves 
                 score = (fc.max(axis=3) * w[None, :, None]).sum(1) / w.sum()   # (N,S)
                 load = np.bincount(site, minlength=s).astype(float)
                 score = score - policy.load_penalty * load[None, :]
+                if policy.block_detect:
+                    score = score - BLOCKAGE_DB * (avoid_until > k)
                 best = np.argmax(score, axis=1)
                 gain = score[ar, best] - score[ar, site]
                 go = (gain >= policy.roam_gain_db) & (best != site) & (outage_until <= k)
@@ -520,6 +539,8 @@ def simulate(world: World, policy: Policy, *, seed: int = 0, curves: LinkCurves 
                 # Second radio: best-scoring *other* site (an independent path
                 # for blockage), moved only when it is not carrying the robot.
                 sc2 = (fc[:, :6].max(axis=3)).mean(1)              # (N,S)
+                if policy.block_detect:
+                    sc2 = sc2 - BLOCKAGE_DB * (avoid_until > k)
                 sc2[ar, site] = -np.inf
                 cand = np.argmax(sc2, axis=1)
                 move2 = (site2 < 0) | ((cand != site2) & (sc2[ar, cand] - sc2[ar, np.maximum(site2, 0)] >= 5.0))
@@ -528,6 +549,8 @@ def simulate(world: World, policy: Policy, *, seed: int = 0, curves: LinkCurves 
                     site2[i] = cand[i]
                     outage2_until[i] = k + int(round(policy.roam_cost_s / SLOT))
             fc_now = fc[:, 0][ar, site]                            # (N,3)
+            fc_mean_sites = fc[:, :3].max(axis=3).mean(1)          # (N,S) next 2 s, for the detector's fallback choice
+            fc_level = fc[:, 0].mean(axis=2)                       # (N,S) expected level across bands, from the map
             fc_next = fc[:, 1][ar, site]
             native_delta = (fc_next - fc_now)                      # dB per second along route
 
@@ -566,6 +589,46 @@ def simulate(world: World, policy: Policy, *, seed: int = 0, curves: LinkCurves 
                 ctrl_link = np.where(margin_now[ar, ctrl_link] < 3.0,
                                      np.argmax(margin_now, axis=1), ctrl_link)
 
+        if policy.kind == "native" and policy.block_detect and k % BLOCK_SLOTS == 0 and k > 0:
+            # Level of the serving AP across its bands, from the robot's own lagged measurement.
+            level = meas.mean(axis=1)
+            fresh = det_site != site                              # just moved: start a new baseline
+            # After a move the baseline is what the map expects there, not the first reading:
+            # arriving at a still-blocked AP must look like a drop.
+            det_base = np.where(fresh, np.maximum(fc_level[ar, site], level), det_base)
+            det_site = site.copy()
+            low = det_base - level > policy.block_drop_db
+            det_run = np.where(low, det_run + 1, 0)
+            hit = det_run >= policy.block_confirm
+            det_base = np.where(low, det_base, 0.8 * det_base + 0.2 * level)
+            det_run = np.where(hit, 0, det_run)
+            detections += int(hit.sum())
+            base_hold = int(policy.block_hold_s / SLOT)
+            hold = k + base_hold
+            for i in np.nonzero(hit & (outage_until <= k))[0]:
+                # Flagged again soon after coming back: the blockage is long, so stay away longer.
+                again = k - avoid_until[i, site[i]] < 2 * base_hold
+                avoid_len[i, site[i]] = min(2 * avoid_len[i, site[i]], 8 * base_hold) if again else base_hold
+                avoid_until[i, site[i]] = k + avoid_len[i, site[i]]
+                alt = fc_mean_sites[i] - BLOCKAGE_DB * (avoid_until[i] > k)
+                move_primary(i, int(np.argmax(alt)), policy.roam_cost_s, urgent=True)
+            if dual:
+                level2 = (true_snr(max(0, k - BLOCK_SLOTS), np.maximum(site2, 0)) + r2_off).mean(axis=1)
+                fresh2 = det_site2 != site2
+                det_base2 = np.where(fresh2, np.maximum(fc_level[ar, np.maximum(site2, 0)], level2), det_base2)
+                det_site2 = site2.copy()
+                low2 = (det_base2 - level2 > policy.block_drop_db) & (site2 >= 0)
+                det_run2 = np.where(low2, det_run2 + 1, 0)
+                hit2 = det_run2 >= policy.block_confirm
+                det_base2 = np.where(low2, det_base2, 0.8 * det_base2 + 0.2 * level2)
+                det_run2 = np.where(hit2, 0, det_run2)
+                for i in np.nonzero(hit2 & (outage2_until <= k))[0]:
+                    avoid_until[i, site2[i]] = hold
+                    alt = fc_mean_sites[i] - BLOCKAGE_DB * (avoid_until[i] > k)
+                    alt[site[i]] = -np.inf
+                    site2[i] = int(np.argmax(alt))
+                    outage2_until[i] = k + int(round(policy.roam_cost_s / SLOT))
+
         if policy.kind == "native" and policy.oracle >= 2 and k % BLOCK_SLOTS == 0:
             kb0 = k // BLOCK_SLOTS
             look = range(kb0, min(kb0 + (10 if policy.oracle >= 3 else 1), fade_db.shape[0]))
@@ -579,7 +642,7 @@ def simulate(world: World, policy: Policy, *, seed: int = 0, curves: LinkCurves 
             best = np.argmax(score, axis=1)
             want = (score[ar, best] - score[ar, site] >= 5.0) & (best != site) & (outage_until <= k)
             for i in np.nonzero(want)[0]:
-                move_primary(i, best[i], policy.roam_cost_s)
+                move_primary(i, best[i], policy.roam_cost_s, urgent=policy.oracle_urgent)
             if dual:
                 sc2 = score.copy()
                 sc2[ar, site] = -np.inf
@@ -855,7 +918,7 @@ def simulate(world: World, policy: Policy, *, seed: int = 0, curves: LinkCurves 
         "plan_stop_fraction": float(plan_stopped / (n_slots * n)),
         "slow_fraction": float(slow_slots / (n_slots * n)),
         "task_throughput": float(1 - plan_stopped / (n_slots * n) - 0.5 * slow_slots / (n_slots * n)),
-        "relay_rescues": relay_used, "ble_rescues": ble_used,
+        "relay_rescues": relay_used, "ble_rescues": ble_used, "blockage_detections": detections,
         "per_robot_control_miss": (ctrl_miss_r / np.maximum(ctrl_total_r, 1)).round(6).tolist(),
         "per_robot_video_on_time": (video_ok_r / np.maximum(video_gen_r, 1e-9)).round(6).tolist(),
         "focus_control_miss": float(ctrl_miss_r[focus].sum() / max(ctrl_total_r[focus].sum(), 1)) if focus.any() else None,

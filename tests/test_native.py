@@ -110,3 +110,30 @@ def test_fleet_capabilities_only_help_and_default_is_unchanged(world):
     for extra in (dict(relay=True), dict(ble=True), dict(oracle=3)):
         r = simulate(world, replace(nat, **extra), collision_lambda=0.01, interference=True)
         assert 0 <= r["control_miss"] <= 1 and r["task_throughput"] <= 1
+
+
+def test_blockage_detector_is_off_by_default_and_counts_detections(world):
+    pol = {p.name: p for p in policies()}
+    nat = replace(pol["native"], gate=True, cadence_roam=True)
+    base = simulate(world, nat, collision_lambda=0.01, interference=True)
+    off = simulate(world, replace(nat, block_detect=False, oracle_urgent=False), collision_lambda=0.01, interference=True)
+    assert base["control_misses"] == off["control_misses"] and base["blockage_detections"] == 0
+    on = simulate(world, replace(nat, block_detect=True), collision_lambda=0.01, interference=True)
+    assert on["blockage_detections"] >= 0 and 0 <= on["control_miss"] <= 1
+    # A threshold no drop can reach must leave the run untouched.
+    never = simulate(world, replace(nat, block_detect=True, block_drop_db=500.0), collision_lambda=0.01, interference=True)
+    assert never["blockage_detections"] == 0 and never["control_misses"] == base["control_misses"]
+    two = simulate(world, replace(nat, block_detect=True, dual_radio=True, radio2="shared"),
+                   collision_lambda=0.01, interference=True)
+    assert 0 <= two["control_miss"] <= 1
+
+
+def test_detector_evaluation_uses_pooled_counts():
+    from wirelessjev.native.run_fleet import DETECT_SCENES, detect_arms, detect_eval
+    miss = {"nr_30ms": 50, "single": 300, "single+detect": 150, "single+oracle": 100, "shared": 4, "shared+detect": 4}
+    rows = [{"scene": s, "arm": a, "condition": c, "control_misses": miss[a], "control_sent": 1_000_000,
+             "control_miss": miss[a] / 1e6} for s in DETECT_SCENES for a in detect_arms() for c in ("main", "stress")]
+    e = detect_eval(rows)
+    assert e["B1"]["pass"] and e["B2"]["pass"] and e["B4"]["pass"] and not e["B5"]["pass"]
+    assert abs(e["B1"]["pooled_reduction"] - 0.5) < 1e-9 and abs(e["B3"]["share_of_oracle_headroom"] - 0.75) < 1e-9
+
