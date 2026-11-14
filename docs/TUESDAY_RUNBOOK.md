@@ -27,6 +27,7 @@ Fill one row per BSSID and copy it into `site.json` (Codex's format: `python PC/
 - **Channels:** fixed and non-overlapping. Example for 5 GHz: 36, 52, 100.
 - **Network:** the same subnet and one DHCP server, so the IP survives a roam.
 - **Placement:** so two APs are usable along most of the route.
+- **Car credentials:** add the test SSID to your local `~/WiFi.json` (kept out of the repo); the first `switch --bssid any` joins the car to it.
 
 | AP | BSSID | Band / channel | x, y, z (m) | Tx power (dBm) |
 |---|---|---|---|---|
