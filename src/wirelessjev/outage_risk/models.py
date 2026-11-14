@@ -1,4 +1,4 @@
-"""Baselines and scoring for blockage detection. NumPy only."""
+"""Baselines and scoring for blockage detection. NumPy, with one small torch model."""
 from __future__ import annotations
 
 import numpy as np
@@ -30,6 +30,39 @@ class Logistic:
     def predict(self, x: np.ndarray) -> np.ndarray:
         z = np.column_stack([(x - self.mu) / self.sd, np.ones(len(x))])
         return 1 / (1 + np.exp(-np.clip(z @ self.w, -30, 30)))
+
+
+class SmallNet:
+    """Two hidden layers on the same windowed features: the matched supervised
+    model any self-supervised (JEPA) detector has to beat."""
+
+    def __init__(self, hidden: int = 32, epochs: int = 12, seed: int = 0, lr: float = 2e-3):
+        self.hidden, self.epochs, self.seed, self.lr = hidden, epochs, seed, lr
+
+    def fit(self, x: np.ndarray, y: np.ndarray) -> "SmallNet":
+        import torch
+        torch.manual_seed(self.seed)
+        self.mu, self.sd = x.mean(0), x.std(0) + 1e-6
+        xt = torch.tensor((x - self.mu) / self.sd, dtype=torch.float32)
+        yt = torch.tensor(y, dtype=torch.float32)
+        self.net = torch.nn.Sequential(torch.nn.Linear(x.shape[1], self.hidden), torch.nn.ReLU(),
+                                       torch.nn.Linear(self.hidden, self.hidden), torch.nn.ReLU(),
+                                       torch.nn.Linear(self.hidden, 1))
+        opt = torch.optim.Adam(self.net.parameters(), lr=self.lr, weight_decay=1e-4)
+        gen = torch.Generator().manual_seed(self.seed)
+        for _ in range(self.epochs):
+            for idx in torch.randperm(len(xt), generator=gen).split(512):
+                opt.zero_grad()
+                loss = torch.nn.functional.binary_cross_entropy_with_logits(self.net(xt[idx]).squeeze(1), yt[idx])
+                loss.backward()
+                opt.step()
+        return self
+
+    def predict(self, x: np.ndarray) -> np.ndarray:
+        import torch
+        with torch.no_grad():
+            z = self.net(torch.tensor((x - self.mu) / self.sd, dtype=torch.float32)).squeeze(1)
+            return torch.sigmoid(z).numpy().astype(float)
 
 
 def auc(p: np.ndarray, y: np.ndarray) -> float:

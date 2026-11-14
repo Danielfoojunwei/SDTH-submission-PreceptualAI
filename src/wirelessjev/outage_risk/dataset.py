@@ -40,13 +40,23 @@ def _baselines(level: np.ndarray, site: np.ndarray, drop_db: float):
 
 
 def rule_state(tr: dict, drop_db: float = RULE_DROP_DB, confirm: int = RULE_CONFIRM) -> np.ndarray:
-    """The hand-written rule as a per-tick yes/no: the band-average level has
-    been more than `drop_db` below the running level for `confirm` ticks."""
-    low = _baselines(tr["level"], tr["site"], drop_db).mean(axis=2) > drop_db
-    run = np.zeros(low.shape, dtype=int)
-    for t in range(1, len(low)):
-        run[t] = np.where(low[t], run[t - 1] + 1, 0)
-    return run >= confirm
+    """The simulator's hand-written rule (docs/BLOCKAGE_DETECTOR.md, version 3)
+    as a per-tick yes/no. The band-average level has been more than `drop_db`
+    below a running level for `confirm` ticks. After a move the running level
+    starts at the higher of the first reading and what the map expects there,
+    and it is not updated while the reading is low."""
+    level, expected, site = tr["level"].mean(axis=2), tr["expected"].mean(axis=2), tr["site"]
+    out = np.zeros(level.shape, dtype=bool)
+    base = np.maximum(expected[0], level[0])
+    run = np.zeros(level.shape[1], dtype=int)
+    for t in range(1, len(level)):
+        moved = site[t] != site[t - 1]
+        base = np.where(moved, np.maximum(expected[t], level[t]), base)
+        low = base - level[t] > drop_db
+        run = np.where(low, run + 1, 0)
+        out[t] = run >= confirm
+        base = np.where(low, base, 0.8 * base + 0.2 * level[t])
+    return out
 
 
 def tick_features(tr: dict) -> np.ndarray:

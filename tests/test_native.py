@@ -166,3 +166,27 @@ def test_telemetry_export_changes_nothing_and_feeds_the_detector_dataset(world):
     assert op["false_alarm_rate"] <= 0.011 and 0 < op["caught"] <= 1
     assert yes_no(np.array([True, False, True]), np.array([True, True, False]))["caught"] == 0.5
 
+
+def test_small_net_is_repeatable_and_rule_state_fires_on_a_sustained_drop():
+    from wirelessjev.outage_risk import dataset as ds
+    from wirelessjev.outage_risk.models import SmallNet, auc
+    rng = np.random.default_rng(0)
+    x = rng.normal(size=(3000, 4))
+    y = (x[:, 0] > 0.5) & (x[:, 1] > 0.5)                    # an AND: not linearly separable
+    a, b = SmallNet(seed=0, epochs=30).fit(x, y).predict(x), SmallNet(seed=0, epochs=30).fit(x, y).predict(x)
+    assert np.allclose(a, b) and auc(a, y) > 0.9
+    # One robot: steady at 30 dB, a one-reading dip (fade), then a 15 dB drop held for 6 readings.
+    lvl = np.full((30, 1, 3), 30.0)
+    lvl[8] -= 15.0
+    lvl[15:21] -= 15.0
+    tr = {"level": lvl, "expected": np.full((30, 1, 3), 30.0), "site": np.zeros((30, 1), dtype=int)}
+    fired = ds.rule_state(tr)[:, 0]
+    assert not fired[:16].any() and fired[16:21].all() and not fired[21:].any()
+    # Arriving at an AP that is already blocked: the map's expectation is the baseline.
+    lvl2 = np.full((12, 1, 3), 30.0)
+    lvl2[5:] = 14.0
+    site2 = np.zeros((12, 1), dtype=int)
+    site2[5:] = 1
+    tr2 = {"level": lvl2, "expected": np.full((12, 1, 3), 29.0), "site": site2}
+    assert ds.rule_state(tr2)[6:, 0].all()
+
