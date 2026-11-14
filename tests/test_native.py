@@ -137,3 +137,32 @@ def test_detector_evaluation_uses_pooled_counts():
     assert e["B1"]["pass"] and e["B2"]["pass"] and e["B4"]["pass"] and not e["B5"]["pass"]
     assert abs(e["B1"]["pooled_reduction"] - 0.5) < 1e-9 and abs(e["B3"]["share_of_oracle_headroom"] - 0.75) < 1e-9
 
+
+def test_telemetry_export_changes_nothing_and_feeds_the_detector_dataset(world):
+    from wirelessjev.outage_risk import dataset as ds
+    from wirelessjev.outage_risk.models import Logistic, at_false_alarm_rate, auc, brier, yes_no
+    pol = {p.name: p for p in policies()}
+    nat = replace(pol["native"], gate=True, cadence_roam=True)
+    base = simulate(world, nat, collision_lambda=0.01, interference=True)
+    tel = []
+    again = simulate(world, nat, collision_lambda=0.01, interference=True, telemetry=tel)
+    assert again["control_misses"] == base["control_misses"] and again["roams"] == base["roams"]
+    tr = ds.collect(world, nat, collision_lambda=0.01, interference=True)
+    t_n = len(tr["slot"])
+    assert t_n == len(tel) and tr["level"].shape == (t_n, world.n, 3) and tr["blocked"].shape == (t_n, world.n, 3)
+    x, y, rule = ds.examples(tr)
+    rows = (t_n - ds.WINDOW + 1) * world.n
+    assert x.shape == (rows, ds.WINDOW * ds.PER_TICK) and y.shape == (rows, 3) and rule.shape == (rows,)
+    assert np.isfinite(x).all() and rule.dtype == bool
+    # Scoring helpers on a case with a known answer.
+    rng = np.random.default_rng(0)
+    xs = rng.normal(size=(4000, 3))
+    ys = (xs[:, 0] + 0.3 * rng.normal(size=4000) > 1.0)
+    m = Logistic().fit(xs, ys)
+    p = m.predict(xs)
+    assert auc(p, ys) > 0.95 and brier(p, ys) < brier(np.full(4000, ys.mean()), ys)
+    assert auc(np.array([0.1, 0.9, 0.5, 0.5]), np.array([0, 1, 0, 1])) == 0.875
+    op = at_false_alarm_rate(p, ys, 0.01)
+    assert op["false_alarm_rate"] <= 0.011 and 0 < op["caught"] <= 1
+    assert yes_no(np.array([True, False, True]), np.array([True, True, False]))["caught"] == 0.5
+

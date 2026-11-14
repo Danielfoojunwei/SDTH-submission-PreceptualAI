@@ -35,6 +35,7 @@ FRAME_OVERHEAD_S = 100e-6
 ATTEMPTS_PER_SLOT = 3
 BLOCK_SLOTS = 10             # fading block 100 ms
 BLOCKAGE_DB = 15.0
+TELEMETRY_AHEAD_BLOCKS = (0, 5, 10)   # truth exported for now, +0.5 s and +1 s
 BLOCKAGE_RATE_PER_MIN = 1.5  # per robot, spread over its sites
 BLOCKAGE_MEAN_S = 2.0
 FADE_M = 2
@@ -208,7 +209,7 @@ def hidden_draws(world: World, n_slots: int, blockage_rate: float = BLOCKAGE_RAT
 def simulate(world: World, policy: Policy, *, seed: int = 0, curves: LinkCurves | None = None,
              duration_s: float | None = None, blockage_rate: float = BLOCKAGE_RATE_PER_MIN,
              collision_lambda: float = 0.0, interference: bool = False,
-             roam_gate=None, decision_trace=None) -> dict:
+             roam_gate=None, decision_trace=None, telemetry: list | None = None) -> dict:
     if policy.kind == "nr":
         return simulate_nr(world, policy, seed=seed, curves=curves, duration_s=duration_s,
                            blockage_rate=blockage_rate)
@@ -307,6 +308,7 @@ def simulate(world: World, policy: Policy, *, seed: int = 0, curves: LinkCurves 
     fc_level = np.zeros((n, s))
     detections = 0
     fc_mean_sites = np.zeros((n, s))
+    fc_bands = None
     aux = np.random.default_rng(4242 + world.seed)        # relay and BLE fading, same for every policy
     rr_fade = np.zeros((n, n), dtype=np.float32)
     rr_snr = None
@@ -551,6 +553,7 @@ def simulate(world: World, policy: Policy, *, seed: int = 0, curves: LinkCurves 
             fc_now = fc[:, 0][ar, site]                            # (N,3)
             fc_mean_sites = fc[:, :3].max(axis=3).mean(1)          # (N,S) next 2 s, for the detector's fallback choice
             fc_level = fc[:, 0].mean(axis=2)                       # (N,S) expected level across bands, from the map
+            fc_bands = fc[:, 0]                                    # (N,S,3)
             fc_next = fc[:, 1][ar, site]
             native_delta = (fc_next - fc_now)                      # dB per second along route
 
@@ -588,6 +591,17 @@ def simulate(world: World, policy: Policy, *, seed: int = 0, curves: LinkCurves 
                 margin_now = est - np.array([th99[b][0] for b in BANDS])[None, :] - occ_pen[site]
                 ctrl_link = np.where(margin_now[ar, ctrl_link] < 3.0,
                                      np.argmax(margin_now, axis=1), ctrl_link)
+
+        if telemetry is not None and fc_bands is not None and k % BLOCK_SLOTS == 0 and k > 0:
+            # What a robot can see each 100 ms (its own lagged reading, the map's expectation, its
+            # delivery counters) next to the hidden truth: is the serving path blocked now, and
+            # will it be if the robot stays. For training and scoring detectors; never read back.
+            kb_t = k // BLOCK_SLOTS
+            ahead = [min(kb_t + h, blocked.shape[0] - 1) for h in TELEMETRY_AHEAD_BLOCKS]
+            telemetry.append({"slot": k, "site": site.copy(), "level": meas.astype(np.float32),
+                              "expected": fc_bands[ar, site].astype(np.float32), "roaming": outage_until > k,
+                              "missed": ctrl_miss_r.copy(), "sent": ctrl_total_r.copy(),
+                              "blocked": np.stack([blocked[a][ar, site] for a in ahead], axis=1)})
 
         if policy.kind == "native" and policy.block_detect and k % BLOCK_SLOTS == 0 and k > 0:
             # Level of the serving AP across its bands, from the robot's own lagged measurement.
