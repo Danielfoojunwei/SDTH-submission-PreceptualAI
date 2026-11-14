@@ -180,3 +180,27 @@ def test_outage_analysis_from_ping_gaps():
     assert Y[np.isclose(times, 9.5), 2][0] and not Y[np.isclose(times, 9.5), 0][0]   # 1 s warning, not 0.1 s
     b = analyse.persistence_brier(X, Y, Y.mean(0))
     assert b["0.1"]["brier_persistence"] <= b["0.1"]["brier_base_rate"]
+
+
+def test_blockage_rule_replay_scores_against_real_outages():
+    from wirelessjev.hil import analyse
+    lap = make_lap("a", 6.0)
+    assert analyse.detector_replay(lap) == []                # a smooth drive never fires the rule
+    # A blocker at t = 10 s: 18 dB down for 2 s, and replies stop 0.5 s after it starts.
+    for s in lap["samples"]:
+        if 10.0 <= s["t_car"] - T0 < 12.0:
+            s["signal_dbm"] -= 18.0
+    lap["pings"] = [{"t_car": T0 + 0.05 * i, "rtt_ms": 3.0} for i in range(600) if not 210 <= i < 240]
+    fired = analyse.detector_replay(lap)
+    assert len(fired) >= 1 and 10.4 < fired[0] - T0 < 10.6   # second low reading at 0.5 s samples
+    s = analyse.detector_score(lap)
+    assert s["outages"] == 1 and s["caught"] == 1 and s["false_alarms"] == 0
+    assert s["median_lead_s"] is not None and -0.1 < s["median_lead_s"] < 0.1
+    # The same dip with no outage behind it is a false alarm.
+    lap["pings"] = [{"t_car": T0 + 0.05 * i, "rtt_ms": 3.0} for i in range(600)]
+    s = analyse.detector_score(lap)
+    assert s["outages"] == 0 and s["caught"] == 0 and s["false_alarms"] == s["fired"] >= 1
+    # A single low reading is not enough.
+    lap2 = make_lap("b", 6.0)
+    lap2["samples"][20]["signal_dbm"] -= 30.0
+    assert analyse.detector_replay(lap2) == []

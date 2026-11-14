@@ -9,9 +9,10 @@ Branch `wirelessjev/real-site-fleet`, built on `codex/measured-radio-nuisance`.
   - `onecar lap`: driving telemetry (10 Hz link state, 20 Hz gateway ping, scan cache, waypoint marks).
   - `hil.ghosts`: nine ghost robots as real traffic load.
   - `hil.trace_twin`: recorded laps replayed as a fleet in the unchanged simulator.
-  - `hil.analyse`: outages, plan-length stops, the outage-prediction baseline.
+  - `hil.analyse`: outages, plan-length stops, a replay of the blockage rule against real outages, the outage-prediction baseline.
 - **Cross-AP campaign finished** ([CROSS_AP.md](CROSS_AP.md)): the same-card and onboard second paths beat the 5G and Wi-Fi 8 models in realistic and heavy-load conditions (X1–X3, X6 pass); stress is still lost (X4, X5 fail).
 - **Headroom ladder** ([JEPA_HEADROOM.md](JEPA_HEADROOM.md)): a perfect static map is worth 9% on a single radio; knowing which path is blocked now is worth a further 63%. The learned-model target is therefore a live blockage/outage detector, not signal prediction.
+- **Live blockage detector** ([BLOCKAGE_DETECTOR.md](BLOCKAGE_DETECTOR.md)): a hand-written rule on the robot's own readings (a drop on every band of the serving AP at once). Development scenes: one-radio misses 617 → 200 and 242 → 192 per million. Pre-registered test B1–B5 on fresh scenes 560–565; results are appended there when the run finishes. It is the baseline any learned outage model must beat.
 - **Fleet-only capabilities** ([DIRECTIONS_123.md](DIRECTIONS_123.md)): safe plan, robot relay, Bluetooth control path. Pre-registered; results are appended there when the run finishes.
 - **Why the JEPA models have not overtaken RadioMap:** the diagnosis and plan are in the ladder document and in the approved plan summarised in this section's commits.
 - **Not done:** Codex's full test suite has not been rerun on this branch; nothing has run on the real car.

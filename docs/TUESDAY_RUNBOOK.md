@@ -109,7 +109,7 @@ uv run python -m wirelessjev.onecar lap --known-hosts $KH --name block1 --second
 ```bash
 uv run python -m wirelessjev.hil.analyse artifacts/onecar/*-lap-*.jsonl
 ```
-Every lap should show samples, pings and at least two marks.
+Every lap should show samples, pings and at least two marks. The report's `blockage_rule_replay` section shows how many real outages the simulator's blockage rule would have caught, and its false alarms (see [BLOCKAGE_DETECTOR.md](BLOCKAGE_DETECTOR.md)). Block 6 is what tests it, so try to keep block 6.
 ```bash
 uv run python -m wirelessjev.hil.trace_twin artifacts/onecar/*-lap-r*.jsonl --site site.json --waypoints waypoints.json
 ```

@@ -1,5 +1,6 @@
-"""Offline analysis of recorded laps: outages, the safe-plan question, and the
-labels and baseline for short-horizon outage prediction.
+"""Offline analysis of recorded laps: outages, the safe-plan question, a replay
+of the simulator's blockage rule against real outages, and the labels and
+baseline for short-horizon outage prediction.
 
     python -m wirelessjev.hil.analyse artifacts/onecar/*-lap-*.jsonl
 
@@ -18,6 +19,8 @@ from .telemetry import load_lap
 
 PLAN_LENGTHS_S = (0.2, 0.5, 1.0, 2.0)
 HORIZONS_S = (0.1, 0.5, 1.0)
+# Same rule and settings as the simulator's detector (docs/BLOCKAGE_DETECTOR.md).
+DROP_DB, CONFIRM, EARLY_S = 10.0, 2, 1.0
 
 
 def ping_gaps(lap: dict) -> np.ndarray:
@@ -73,6 +76,57 @@ def outage_dataset(lap: dict, gap_s: float = 0.2):
     return np.array(rows, dtype=float).reshape(-1, 4), np.array(labels, dtype=bool).reshape(-1, len(HORIZONS_S))
 
 
+def detector_replay(lap: dict, drop_db: float = DROP_DB, confirm: int = CONFIRM) -> list[float]:
+    """Times at which the simulator's blockage rule would have fired on this lap.
+
+    The rule: the signal is more than `drop_db` below a running baseline of the
+    car's own readings for `confirm` consecutive samples. One car reports only
+    the link it is using, so this is the single-link form of the rule; the
+    "every band at once" check needs a multi-link client. The baseline restarts
+    when the car changes AP and is not updated while the signal is low."""
+    out, base, bssid, run = [], None, None, 0
+    for s in lap["samples"]:
+        sig = s.get("signal_dbm")
+        if sig is None or not s.get("connected"):
+            continue
+        if base is None or s.get("bssid") != bssid:
+            base, bssid, run = sig, s.get("bssid"), 0
+            continue
+        if base - sig > drop_db:
+            run += 1
+            if run >= confirm:
+                out.append(s["t_car"])
+                run = 0
+        else:
+            run = 0
+            base = 0.8 * base + 0.2 * sig
+    return out
+
+
+def detector_score(lap: dict, gap_s: float = 0.2, **rule) -> dict:
+    """Score the replayed rule against real outages (ping reply gaps > gap_s).
+
+    An outage counts as caught if the rule fired from `EARLY_S` before its
+    start until its end. `lead_s` is positive when the rule fired before the
+    last reply that preceded the outage. Any other firing is a false alarm."""
+    fired = np.array(detector_replay(lap, **rule), dtype=float)
+    gaps = ping_gaps(lap)
+    long = gaps[gaps[:, 1] > gap_s] if len(gaps) else np.zeros((0, 2))
+    used = np.zeros(len(fired), dtype=bool)
+    leads = []
+    for start, dur in long:
+        hit = (fired >= start - EARLY_S) & (fired <= start + dur)
+        used |= hit
+        if hit.any():
+            leads.append(float(start - fired[hit].min()))
+    t = [s["t_car"] for s in lap["samples"]]
+    minutes = (max(t) - min(t)) / 60.0 if len(t) > 1 else 0.0
+    return {"fired": int(len(fired)), "outages": int(len(long)), "caught": len(leads),
+            "median_lead_s": round(float(np.median(leads)), 3) if leads else None,
+            "false_alarms": int((~used).sum()),
+            "false_alarms_per_min": round(float((~used).sum() / minutes), 3) if minutes > 0 else None}
+
+
 def persistence_brier(features: np.ndarray, labels: np.ndarray, base_rate: np.ndarray) -> dict:
     """Baseline any learned outage model must beat: "in an outage now means an
     outage next", otherwise the base rate. Lower Brier is better."""
@@ -92,6 +146,12 @@ def main(argv=None) -> int:
     args = ap.parse_args(argv)
     laps = [load_lap(p) for p in args.laps]
     report = {"laps": [lap_summary(lap, args.gap) for lap in laps]}
+    scores = [detector_score(lap, args.gap) for lap in laps if lap["pings"]]
+    if scores:
+        tot = {k: sum(s[k] for s in scores) for k in ("fired", "outages", "caught", "false_alarms")}
+        report["blockage_rule_replay"] = {"rule": {"drop_db": DROP_DB, "confirm": CONFIRM, "early_window_s": EARLY_S},
+                                          "form": "single link (one car reports only the link in use)",
+                                          "total": tot, "per_lap": scores}
     data = [outage_dataset(lap, args.gap) for lap in laps if lap["pings"]]
     if data:
         X = np.concatenate([d[0] for d in data])
