@@ -92,3 +92,21 @@ def test_studio_native_section_reads_campaigns():
     from wirelessjev.studio_data import _native_stack
     n = _native_stack()
     assert n is None or all("arms" in v for k, v in n.items() if k != "phy")
+
+
+def test_fleet_capabilities_only_help_and_default_is_unchanged(world):
+    pol = {p.name: p for p in policies()}
+    nat = replace(pol["native"], gate=False)
+    base = simulate(world, nat, collision_lambda=0.01, interference=True)
+    again = simulate(world, replace(nat, safe_plan_s=0.0, relay=False, ble=False, oracle=0),
+                     collision_lambda=0.01, interference=True)
+    assert base["control_misses"] == again["control_misses"]
+    assert set(base["stop_fraction_at_s"]) == {"0.2", "1.0", "2.0"}
+    s = base["stop_fraction_at_s"]
+    assert s["0.2"] >= s["1.0"] >= s["2.0"] >= 0
+    plan = simulate(world, replace(nat, safe_plan_s=2.0), collision_lambda=0.01, interference=True)
+    assert plan["control_misses"] == base["control_misses"]          # the plan changes stops, not packets
+    assert plan["plan_stop_fraction"] <= base["plan_stop_fraction"]
+    for extra in (dict(relay=True), dict(ble=True), dict(oracle=3)):
+        r = simulate(world, replace(nat, **extra), collision_lambda=0.01, interference=True)
+        assert 0 <= r["control_miss"] <= 1 and r["task_throughput"] <= 1
