@@ -163,3 +163,20 @@ def test_lap_command_records_and_redacts(tmp_path, monkeypatch):
     assert kinds.count("ping") == 1 and [e["label"] for e in events if e["event"] == "mark"] == ["A", "B"]
     assert all("wlan0" not in c for c in Link.client.commands)
     assert tel.load_lap(log)["meta"]["gateway"] == "10.0.0.1"
+
+
+def test_outage_analysis_from_ping_gaps():
+    from wirelessjev.hil import analyse
+    lap = make_lap("a", 6.0)
+    t = [T0 + 0.05 * i for i in range(600) if not 200 <= i < 230]      # one 1.5 s outage at t = 10 s
+    lap["pings"] = [{"t_car": x, "rtt_ms": 3.0} for x in t]
+    s = analyse.lap_summary(lap)
+    assert s["outages"] == 1 and 1.4 < s["longest_gap_s"] < 1.6
+    assert s["stops_if_plan_s"] == {"0.2": 1, "0.5": 1, "1.0": 1, "2.0": 0}
+    X, Y = analyse.outage_dataset(lap)
+    assert X.shape == (60, 4) and Y.shape == (60, 3)
+    times = np.array([e["t_car"] for e in lap["samples"]]) - T0
+    assert Y[(times >= 10.0) & (times < 11.4), 0].all() and not Y[times < 9.0].any()
+    assert Y[np.isclose(times, 9.5), 2][0] and not Y[np.isclose(times, 9.5), 0][0]   # 1 s warning, not 0.1 s
+    b = analyse.persistence_brier(X, Y, Y.mean(0))
+    assert b["0.1"]["brier_persistence"] <= b["0.1"]["brier_base_rate"]

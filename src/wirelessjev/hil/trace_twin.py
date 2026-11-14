@@ -159,3 +159,39 @@ def build_trace_world(laps: list[dict], site: dict, waypoints: dict, *, duration
     return World(seed, n, sites, to_snr(rssi).astype(np.float32), rssi, to_snr(fc).astype(np.float32),
                  domain, np.ones(len(ids)), video, bulk, float(steps * POS_DT), float("nan"), False,
                  sig, noise, {"source": "trace", "laps": n}, channel, None, plan, pos, tx)
+
+
+def main(argv=None) -> int:
+    """Run the standard policies on a fleet built from recorded laps."""
+    import argparse
+    from dataclasses import replace
+    import json
+
+    from ..native.sim import policies, simulate
+    from ..smartcar_runtime.contracts import validate_site
+    from .telemetry import load_lap
+
+    ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
+    ap.add_argument("laps", nargs="+", help="lap logs; each becomes one virtual robot")
+    ap.add_argument("--site", required=True, help="site.json (same file as the deployment bundle)")
+    ap.add_argument("--waypoints", required=True, help='JSON object: {"A": [x, y], ...} in site metres')
+    ap.add_argument("--collisions", type=float, default=0.01)
+    args = ap.parse_args(argv)
+    site = validate_site(json.load(open(args.site)))
+    world = build_trace_world([load_lap(p) for p in args.laps], site, json.load(open(args.waypoints)))
+    pol = {p.name: p for p in policies()}
+    vert = replace(pol["native"], gate=True, cadence_roam=True)
+    arms = {"wifi7_fixed_rule": pol["mlo_split"], "single_radio": vert,
+            "second_path_same_card": replace(vert, dual_radio=True, radio2="shared")}
+    out = {"robots": world.n, "evidence": "1 real car, laps replayed as a fleet; interference, fading "
+           "between samples and blockage are simulated", "duration_s": world.duration_s, "arms": {}}
+    for name, p in arms.items():
+        r = simulate(world, replace(p, name=name), collision_lambda=args.collisions, interference=True)
+        out["arms"][name] = {k: r[k] for k in ("control_miss", "control_misses", "control_sent", "availability_1s",
+                                               "safety_stop_fraction", "control_gap_p99_ms", "roams", "miss_causes")}
+    print(json.dumps(out, indent=1, default=float))
+    return 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())
