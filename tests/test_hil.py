@@ -210,3 +210,100 @@ def test_blockage_rule_replay_scores_against_real_outages():
     lap2 = make_lap("b", 6.0)
     lap2["samples"][20]["signal_dbm"] -= 30.0
     assert analyse.detector_replay(lap2) == []
+
+
+def _fake_car(stream, pings, stream_err=""):
+    """A car that prints `stream` for the telemetry loop and `pings` for the gateway ping."""
+    from wirelessjev import handover as ho
+
+    class Chan:
+        def __init__(self, text, err=""):
+            self.data, self.err, self.sent, self.err_sent = text.encode(), err.encode(), False, False
+        def recv_ready(self): return not self.sent
+        def recv(self, n):
+            self.sent = True
+            return self.data
+        def recv_stderr_ready(self): return bool(self.err) and not self.err_sent
+        def recv_stderr(self, n):
+            self.err_sent = True
+            return self.err
+        def exit_status_ready(self): return True
+        def close(self): pass
+
+    class Out:
+        def __init__(self, text="", err=""):
+            self.channel, self.text = Chan(text, err), text
+        def read(self): return self.text.encode()
+        def close(self): pass
+
+    class Client:
+        def __init__(self): self.commands = []
+        def exec_command(self, cmd, timeout=None):
+            self.commands.append(cmd)
+            R = ho.HANDOVER_READONLY
+            table = {R["wlan1_addr"]: "3: wlan1    inet 10.0.0.23/24 brd 10.0.0.255\n",
+                     R["wlan1_route"]: "default via 10.0.0.1 proto dhcp\n", R["car_clock"]: f"{T0:.6f}\n"}
+            if cmd in table:
+                return Out(), Out(table[cmd]), Out()
+            if cmd.startswith("sudo -n ping"):
+                return Out(), Out(pings), Out()
+            return Out(), Out(stream, stream_err), Out()
+        def close(self): pass
+
+    class Link:
+        def __init__(self): self.client = Client()
+        def close(self): pass
+
+    return Link()
+
+
+def test_site_check_passes_on_expected_output_and_keeps_the_raw_stream(tmp_path, monkeypatch, capsys):
+    import argparse
+    import wirelessjev.onecar as onecar
+    monkeypatch.setattr(onecar, "LOG_DIR", tmp_path)
+    pings = "".join(f"[{T0 + 0.05 * i:.6f}] 64 bytes from 10.0.0.1: icmp_seq={i} ttl=64 time=2.5 ms\n" for i in range(200))
+    link = _fake_car(stream_text(seconds=10, period=0.1), pings)
+    assert onecar.cmd_check(argparse.Namespace(seconds=10), link=link) == 0
+    out = capsys.readouterr().out
+    assert "FAIL" not in out.split("{")[0] and json.loads(out.strip().splitlines()[-1])["check"] == "PASS"
+    assert link.client.commands[-2] == tel.stream_command(0.1, 30, 10) or tel.stream_command(0.1, 30, 10) in link.client.commands
+    log = next(tmp_path.glob("*-lap-check.jsonl"))
+    raws = tel.raw_paths(log)
+    assert raws["stream"].read_text().count("@T ") == 100 and raws["ping"].read_text().count("bytes from") == 200
+    for f in tmp_path.iterdir():
+        assert "password" not in f.read_text().lower() and "psk" not in f.read_text().lower()
+    assert all("192.168.1.11" not in c for c in link.client.commands)
+    # Parsing the raw files again gives the same lap.
+    before = tel.load_lap(log)
+    counts = tel.reparse_lap(log)
+    after = tel.load_lap(log)
+    assert counts == {"sample": 100, "scan": len(before["scans"]), "ping": 200}
+    assert [s["signal_dbm"] for s in after["samples"]] == [s["signal_dbm"] for s in before["samples"]]
+    assert after["meta"]["gateway"] == "10.0.0.1" and log.with_name(log.name + ".orig").exists()
+
+
+def test_site_check_fails_clearly_and_a_parser_fix_recovers_the_lap(tmp_path, monkeypatch, capsys):
+    import argparse
+    import wirelessjev.onecar as onecar
+    monkeypatch.setattr(onecar, "LOG_DIR", tmp_path)
+    # A car whose `iw` prints the signal differently, with no scan rights and no ping replies.
+    odd = stream_text(seconds=10, period=0.1).replace("signal: ", "rssi = ")
+    odd = "\n".join(line for line in odd.split("\n") if not line.startswith(("BSS ", "\tlast seen", "\tSSID: fleet\n")))
+    link = _fake_car(odd, "", stream_err="sudo: a password is required\n")
+    assert onecar.cmd_check(argparse.Namespace(seconds=10), link=link) == 1
+    out = capsys.readouterr().out
+    verdict = json.loads(out.strip().splitlines()[-1])
+    assert verdict["check"] == "FAIL" and "field signal_dbm" in verdict["failed"] and "gateway pings" in verdict["failed"]
+    assert "sudo: a password is required" in out and "field bssid" not in verdict["failed"]
+    log = next(tmp_path.glob("*-lap-check.jsonl"))
+    assert all(s["signal_dbm"] is None for s in tel.load_lap(log)["samples"])
+    # Fix the parser for this car's format, then rebuild the lap from the raw output: nothing was lost.
+    monkeypatch.setitem(tel._NUM, "signal_dbm", r"rssi =\s+(-?\d+)")
+    assert tel.reparse_lap(log)["sample"] == 100
+    fixed = tel.load_lap(log)
+    assert all(s["signal_dbm"] is not None for s in fixed["samples"])
+    rows = {r["item"]: r["status"] for r in tel.check_lap(fixed, 10, 0.1)}
+    assert rows["field signal_dbm"] == "PASS" and rows["wlan1 default route"] == "PASS"
+    with pytest.raises(FileNotFoundError):
+        tel.reparse_lap(tmp_path / "missing-lap-x.jsonl")
+

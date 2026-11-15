@@ -390,22 +390,25 @@ def cmd_roam(args, link=None, ask=input) -> int:
         link.close()
 
 
-def cmd_lap(args, link=None, marks=None) -> int:
-    """Read-only driving telemetry for one lap (see wirelessjev.hil.telemetry)."""
+def _record_lap(args, link, marks):
+    """Record one lap; returns (path, counts). The car's unparsed output is kept next to the log."""
     from .hil import telemetry as tel
-    if not re.fullmatch(r"[A-Za-z0-9_-]{1,32}", args.name):
-        print("lap name must be 1-32 letters, digits, _ or -", file=sys.stderr)
-        return 1
     LOG_DIR.mkdir(parents=True, exist_ok=True)
     path = LOG_DIR / f"{time.strftime('%Y%m%d-%H%M%S')}-lap-{args.name}.jsonl"
+    raws = tel.raw_paths(path)
     link = link or _link(args)
     try:
         raw = {k: ho.run_handover_readonly(link, k) for k in ("wlan1_addr", "wlan1_route")}
         summary = ho.summarise_handover(raw)
         offset = ho.clock_offset(link)
-        with path.open("a", encoding="utf-8") as stream:
+        with path.open("a", encoding="utf-8") as stream, raws["stream"].open("a", encoding="utf-8") as rs, \
+                raws["ping"].open("a", encoding="utf-8") as rp:
             def write(ev):
                 stream.write(redact(ev) + "\n")
+
+            def keep(channel, text):
+                (rp if channel.startswith("ping") else rs).write(text)
+
             write({"event": "lap_start", "name": args.name, "t_mac": time.time(),
                    "car_minus_mac_s": round(offset, 4), "gateway": summary["gateway"],
                    "period_s": args.period, "seconds": args.seconds, "note": args.note})
@@ -413,12 +416,45 @@ def cmd_lap(args, link=None, marks=None) -> int:
                   "Type a waypoint label and press Enter as the car passes each marker.")
             counts = tel.record_lap(link, write, gateway=summary["gateway"], seconds=args.seconds,
                                     period=args.period, scan_every=args.scan_every,
-                                    marks=marks if marks is not None else sys.stdin)
+                                    marks=marks if marks is not None else sys.stdin, raw=keep)
             write({"event": "lap_end", "t_mac": time.time(), **counts})
     finally:
         link.close()
+    return path, counts
+
+
+def cmd_lap(args, link=None, marks=None) -> int:
+    """Read-only driving telemetry for one lap (see wirelessjev.hil.telemetry)."""
+    if not re.fullmatch(r"[A-Za-z0-9_-]{1,32}", args.name):
+        print("lap name must be 1-32 letters, digits, _ or -", file=sys.stderr)
+        return 1
+    path, counts = _record_lap(args, link, marks)
     print(json.dumps({"lap": args.name, "log": str(path), **counts}))
     return 0 if counts["sample"] > 0 else 1
+
+
+def cmd_check(args, link=None) -> int:
+    """First thing on site (read-only): a short lap from the real car, then a
+    pass/fail list of everything the day's analysis needs from it."""
+    from .hil import telemetry as tel
+    lap_args = argparse.Namespace(**{**vars(args), "name": "check", "period": 0.1, "scan_every": 30, "note": "format check"})
+    path, counts = _record_lap(lap_args, link, iter(()))
+    rows = tel.check_lap(tel.load_lap(path), args.seconds, 0.1)
+    for r in rows:
+        print(f"{r['status']:4s}  {r['item']:28s} {r['seen']}" + (f"\n      -> {r['fix']}" if r["fix"] else ""))
+    fails = [r["item"] for r in rows if r["status"] == "FAIL"]
+    raws = tel.raw_paths(path)
+    print(json.dumps({"check": "FAIL" if fails else "PASS", "failed": fails, "log": str(path),
+                      "raw_stream": str(raws["stream"]), "raw_ping": str(raws["ping"])}))
+    return 1 if fails else 0
+
+
+def cmd_reparse(args) -> int:
+    """Offline: rebuild laps from their kept raw output after a parser fix."""
+    from .hil import telemetry as tel
+    for lap in args.laps:
+        print(json.dumps({"lap": str(lap), **tel.reparse_lap(lap)}))
+    return 0
 
 
 def cmd_capabilities(args, link=None) -> int:
@@ -481,6 +517,11 @@ def build_parser() -> argparse.ArgumentParser:
     p.add_argument("--bssid", required=True)
     p.add_argument("--verify-reads", type=int, default=5)
     p.add_argument("--window", type=int, default=10)
+    p = sub.add_parser("check", help="first thing on site: short read-only lap, then pass/fail per item")
+    p.add_argument("--known-hosts", required=True)
+    p.add_argument("--seconds", type=int, default=10)
+    p = sub.add_parser("reparse", help="offline: rebuild laps from their raw output after a parser fix")
+    p.add_argument("laps", nargs="+")
     p = sub.add_parser("lap")
     p.add_argument("--known-hosts", required=True)
     p.add_argument("--name", required=True)
@@ -499,7 +540,7 @@ def main(argv=None) -> int:
     return {"preflight": cmd_preflight, "status": cmd_status, "scan": cmd_scan,
             "propose": cmd_propose, "switch": cmd_switch,
             "capabilities": cmd_capabilities, "handover-probe": cmd_handover_probe,
-            "roam": cmd_roam, "lap": cmd_lap}[args.cmd](args)
+            "roam": cmd_roam, "lap": cmd_lap, "check": cmd_check, "reparse": cmd_reparse}[args.cmd](args)
 
 
 if __name__ == "__main__":

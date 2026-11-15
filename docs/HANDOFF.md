@@ -6,6 +6,7 @@ Branch `wirelessjev/real-site-fleet`, built on `codex/measured-radio-nuisance`.
 
 - **Site visit, Tuesday 17 Nov 2026:** one SmartCar, operator-supplied APs, one day. Runbook: [TUESDAY_RUNBOOK.md](TUESDAY_RUNBOOK.md). Analysis fixed in advance: [REAL_SITE_PROTOCOL.md](REAL_SITE_PROTOCOL.md).
 - **Dry run, 15 Nov:** the whole runbook now runs end to end against a fake car (`tests/test_runbook_dry_run.py`). It found seven problems, all fixed; two would have corrupted Tuesday's measurements (handover outage mis-measured; blockage-rule alarms over-counted). `~/smartcar_known_hosts` and `~/WiFi.json` must exist on the laptop before the first command works. Not verifiable without the car: real `iw`/`ping` output formats, `sudo -n` rights, whether `wlan1` has a default route, the real sample rate.
+- **Car not reachable before Tuesday.** The first on-site step is now `onecar check` (runbook block 1b): a 10-second read-only lap and a pass/fail line per thing the analysis needs. Every lap keeps the car's raw output (`*.stream.raw`, `*.ping.raw`), and `onecar reparse` rebuilds laps after a parser fix, so a format mismatch loses no data.
 - **New on-site tools** (`src/wirelessjev/hil/`, tested on fixtures only, never on the car):
   - `onecar lap`: driving telemetry (10 Hz link state, 20 Hz gateway ping, scan cache, waypoint marks).
   - `hil.ghosts`: nine ghost robots as real traffic load.

@@ -4,6 +4,18 @@ Everything below runs from the laptop over the car's management hotspot.
 Nothing drives the car and nothing changes the radio without your typed
 confirmation. The learned radio model runs in shadow only.
 
+## Plan for the day
+The car cannot be reached before Tuesday, so the first job on site is to find out whether its real output matches what the tools expect. That is block 1b. Do not skip it: it takes ten minutes and protects every lap after it.
+
+| When | Block | What |
+|---|---|---|
+| First 45 min | Setup | Place APs, fill the AP sheet, tape and measure waypoints |
+| Next 30 min | 1, 1b | Preflight, probes, join the test network, **format check** |
+| Morning | 2, 3 | Survey laps; handover timing |
+| Midday | 4 | Ten route laps for the 10-robot replay |
+| Afternoon | 6, 5 | Blockage trials; laps under ghost load |
+| Last 20 min | 7 | Check the data before leaving |
+
 ## Safety rules (unchanged)
 - Client radio `wlan1` only. Never `wlan0` or 192.168.1.11's hotspot.
 - Pinned host key; SSH password typed at the prompt or in `WJ_SSH_PASSWORD`, never stored.
@@ -72,6 +84,30 @@ uv run python -m wirelessjev.onecar handover-probe --known-hosts $KH
 - `bluetooth_le`.
 - `aps_advertising_fast_transition`.
 
+### Block 1b. Format check (read-only, 10 minutes)
+The car's client radio must be on the test network first. If it is not, run the first command of block 3 to join it, then come back.
+```bash
+uv run python -m wirelessjev.onecar check --known-hosts $KH
+```
+It records a 10-second lap and prints one line per thing the day's analysis needs, each `PASS`, `WARN` or `FAIL`, with what to do.
+
+| If this fails | It means | Do this |
+|---|---|---|
+| `wlan1 default route` | The car has no gateway on the test network | Check the DHCP server on the APs; without it there is no outage data |
+| `associated on wlan1` | The car is not on the test network | Do the first join (block 3), then rerun the check |
+| `link samples` (none) | The telemetry loop printed nothing usable | Read the `.stream.raw` file it names; stop and fix before recording laps |
+| `field bssid` or `field signal_dbm` | The car's `iw` prints a different format | **Keep going.** Every lap keeps the car's raw output, so it can be parsed again later |
+| `scan snapshots` | No rights for the scan dump, or a different format | Keep going; note it. The 10-robot replay will have fewer APs per robot |
+| `gateway pings` | No rights for ping, a different format, or no route | Outage and handover timing depend on this. Read `car error output` and the `.ping.raw` file |
+| `car error output` | The car printed an error | Read it: it usually names the cause (for example a sudo password prompt) |
+
+`WARN` lines do not block the day. A sample rate below 10 per second is expected.
+
+**Nothing is lost if a format is wrong.** Each lap writes `*.stream.raw` and `*.ping.raw` next to its log. After a parser is fixed, rebuild the laps:
+```bash
+uv run python -m wirelessjev.onecar reparse artifacts/onecar/*-lap-*.jsonl
+```
+
 ### Block 2. Survey laps (read-only; 3 or more)
 Start the lap, then drive. Type the waypoint letter and Enter as the car passes each marker. Upper or lower case both work; a letter that is not in `waypoints.json` is ignored. Each lap needs at least two marks to get positions.
 ```bash
@@ -127,7 +163,7 @@ uv run python -m wirelessjev.hil.trace_twin artifacts/onecar/*-lap-r*.jsonl --si
 This already gives a first 10-robot result on the measured signals. With ten 180 s laps it takes about a minute.
 
 ## If time runs short
-Keep, in this order: blocks 1, 2, 3, 4. Drop block 6 first, then block 5.
+Never skip block 1b. Keep, in this order: blocks 1, 1b, 2, 3, 4, 6. Drop block 5 first. Block 6 (blockage trials) moved up on 15 Nov: simulation showed the blockage rule helps or hurts depending on how long real blockages last, and only block 6 measures that.
 
 ## Not built for Tuesday
 A Bluetooth heartbeat test and a laptop-as-relay test (directions 2 and 3) are simulated only. They need the Bluetooth probe result and a second device before they can be tried on site.

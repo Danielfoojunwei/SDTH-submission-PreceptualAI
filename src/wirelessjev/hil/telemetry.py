@@ -135,8 +135,13 @@ def parse_ping_lines(text: str) -> list[dict]:
 
 
 def record_lap(link, write, *, gateway: str | None, seconds: int, period: float = 0.1,
-               scan_every: int = 30, marks=None, clock=time.time, sleep=time.sleep) -> dict:
+               scan_every: int = 30, marks=None, clock=time.time, sleep=time.sleep, raw=None) -> dict:
     """Stream telemetry for `seconds`; `write(event_dict)` persists each event.
+
+    `raw(channel, text)`, if given, receives everything the car printed
+    ("stream", "ping", "stream_err", "ping_err") before parsing. Keeping it
+    means a lap is never lost to a parser that does not match the car's real
+    output: it can be parsed again later (`reparse_lap`).
 
     `marks` is an iterator of waypoint labels typed by the operator (blocking,
     read on a helper thread); each is stamped with the Mac clock. Returns
@@ -168,19 +173,39 @@ def record_lap(link, write, *, gateway: str | None, seconds: int, period: float 
 
     parser, ping_buf = StreamParser(), ""
     end = clock() + seconds + 3
+    errors = {"stream_err": "", "ping_err": ""}
+
+    def drain_errors(chan, key):
+        # Error text (for example "sudo: a password is required") comes on a separate stream.
+        ready = getattr(chan, "recv_stderr_ready", None)
+        if ready is None or not ready():
+            return
+        text = chan.recv_stderr(65536).decode("utf-8", errors="replace")
+        errors[key] = (errors[key] + text)[-2000:]
+        if raw is not None:
+            raw(key, text)
     try:
         while clock() < end:
             idle = True
             if channel.recv_ready():
                 idle = False
-                for ev in parser.feed(channel.recv(65536).decode("utf-8", errors="replace")):
+                text = channel.recv(65536).decode("utf-8", errors="replace")
+                if raw is not None:
+                    raw("stream", text)
+                for ev in parser.feed(text):
                     emit(ev)
+            drain_errors(channel, "stream_err")
             if pchan is not None and pchan.recv_ready():
                 idle = False
-                ping_buf += pchan.recv(65536).decode("utf-8", errors="replace")
+                text = pchan.recv(65536).decode("utf-8", errors="replace")
+                if raw is not None:
+                    raw("ping", text)
+                ping_buf += text
                 *done, ping_buf = ping_buf.split("\n")
                 for ev in parse_ping_lines("\n".join(done) + "\n"):
                     emit(ev)
+            if pchan is not None:
+                drain_errors(pchan, "ping_err")
             if idle:
                 if channel.exit_status_ready() and not channel.recv_ready():
                     break
@@ -192,7 +217,79 @@ def record_lap(link, write, *, gateway: str | None, seconds: int, period: float 
         channel.close()
         if pchan is not None:
             pchan.close()
+    counts.update({k: v.strip() for k, v in errors.items() if v.strip()})
     return counts
+
+
+def raw_paths(lap_path):
+    """Where a lap's unparsed car output is kept, next to its .jsonl."""
+    from pathlib import Path
+    lap_path = Path(lap_path)
+    return {k: lap_path.with_name(lap_path.stem + f".{k}.raw") for k in ("stream", "ping")}
+
+
+def reparse_lap(lap_path) -> dict:
+    """Rebuild a lap's samples, scans and pings from its raw files with the
+    current parsers, keeping its start, marks and end. The original .jsonl is
+    kept as .jsonl.orig. Use after fixing a parser that did not match the car."""
+    from pathlib import Path
+    lap_path = Path(lap_path)
+    raws = raw_paths(lap_path)
+    if not raws["stream"].exists():
+        raise FileNotFoundError(f"no raw stream kept for {lap_path.name}")
+    old = [json.loads(line) for line in lap_path.read_text(encoding="utf-8").splitlines() if line.strip()]
+    keep = [e for e in old if e.get("event") in ("lap_start", "mark")]
+    end = [e for e in old if e.get("event") == "lap_end"]
+    parser = StreamParser()
+    events = parser.feed(raws["stream"].read_text(encoding="utf-8", errors="replace")) + parser.close()
+    if raws["ping"].exists():
+        events += parse_ping_lines(raws["ping"].read_text(encoding="utf-8", errors="replace"))
+    counts = {k: sum(e["event"] == k for e in events) for k in ("sample", "scan", "ping")}
+    backup = lap_path.with_name(lap_path.name + ".orig")
+    if not backup.exists():
+        backup.write_text(lap_path.read_text(encoding="utf-8"), encoding="utf-8")
+    out = keep[:1] + events + keep[1:] + [{**(end[0] if end else {"event": "lap_end"}), **counts, "reparsed": True}]
+    lap_path.write_text("".join(json.dumps(e) + "\n" for e in out), encoding="utf-8")
+    return counts
+
+
+def check_lap(lap: dict, seconds: float, period: float) -> list[dict]:
+    """Does a short lap from the real car contain what the analysis needs?
+    One row per item: status PASS / WARN / FAIL, what was seen, what to do."""
+    rows = []
+
+    def add(item, status, seen, fix=""):
+        rows.append({"item": item, "status": status, "seen": seen, "fix": fix})
+
+    meta, samples, scans, pings = lap["meta"], lap["samples"], lap["scans"], lap["pings"]
+    add("wlan1 default route", "PASS" if meta.get("gateway") else "FAIL", meta.get("gateway") or "none",
+        "" if meta.get("gateway") else "wlan1 has no gateway, so no pings and no outage data: check DHCP on the test APs")
+    rate = len(samples) / seconds if seconds else 0.0
+    add("link samples", "FAIL" if not samples else "WARN" if rate < 0.5 / period else "PASS", f"{len(samples)} ({rate:.1f} per second)",
+        "" if samples and rate >= 0.5 / period else
+        ("nothing parsed: read the .stream.raw file, fix StreamParser, then reparse" if not samples else
+         "slower than asked: fine for positions, coarser for outages; note the real rate"))
+    conn = [s for s in samples if s.get("connected")]
+    add("associated on wlan1", "PASS" if conn else "FAIL", f"{len(conn)} of {len(samples)} samples",
+        "" if conn else "the car is not on the test network, or `iw dev wlan1 link` prints a different format")
+    for key, need in (("bssid", "FAIL"), ("signal_dbm", "FAIL"), ("freq_mhz", "WARN"), ("tx_bitrate_mbps", "WARN"),
+                      ("tx_retries", "WARN"), ("tx_failed", "WARN")):
+        got = sum(s.get(key) is not None for s in conn)
+        ok = bool(conn) and got >= 0.9 * len(conn)
+        add(f"field {key}", "PASS" if ok else need, f"{got} of {len(conn)}",
+            "" if ok else "format differs from the parser: compare .stream.raw with _NUM in hil/telemetry.py")
+    aps = max((len(s["aps"]) for s in scans), default=0)
+    add("scan snapshots", "PASS" if aps else "FAIL", f"{len(scans)} snapshots, up to {aps} APs",
+        "" if aps else "`sudo -n iw dev wlan1 scan dump` returned nothing: sudo rights, or the format differs")
+    want = 20.0 * seconds
+    add("gateway pings", "PASS" if len(pings) >= 0.5 * want else "WARN" if pings else "FAIL", f"{len(pings)} (expected about {want:.0f})",
+        "" if len(pings) >= 0.5 * want else
+        ("no replies parsed: sudo rights for ping, `ping -D` format, or no route" if not pings else
+         "fewer replies than sent: a lossy link, or ping is rate-limited without sudo"))
+    for key in ("stream_err", "ping_err"):
+        if meta.get(key) or lap.get("end", {}).get(key):
+            add(f"car error output ({key})", "WARN", (meta.get(key) or lap["end"][key])[:200], "read it: it usually names the cause")
+    return rows
 
 
 # --------------------------------------------------------------------------
@@ -200,7 +297,8 @@ def record_lap(link, write, *, gateway: str | None, seconds: int, period: float 
 def load_lap(path) -> dict:
     events = [json.loads(line) for line in open(path, encoding="utf-8") if line.strip()]
     head = next((e for e in events if e.get("event") == "lap_start"), {})
-    return {"meta": head, "samples": [e for e in events if e.get("event") == "sample"],
+    return {"meta": head, "end": next((e for e in events if e.get("event") == "lap_end"), {}),
+            "samples": [e for e in events if e.get("event") == "sample"],
             "scans": [e for e in events if e.get("event") == "scan"],
             "pings": [e for e in events if e.get("event") == "ping"],
             "marks": [e for e in events if e.get("event") == "mark"]}
