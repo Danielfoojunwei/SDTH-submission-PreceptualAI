@@ -135,6 +135,9 @@ The useful reading: how the robot acts on blockage matters as much as
 knowing about it. A fair oracle reference would move at once and hold the
 avoidance; that comparison has not been run on fresh scenes.
 
+## Later result: the rule does not survive moving blockers
+Under forklift-style shared blockage ([MOVING_BLOCKERS.md](MOVING_BLOCKERS.md), scenes 570–575) the rule made one-radio misses 27% worse in the realistic condition (406.4 → 516.1) and made two-path misses worse in both conditions. It still helped one radio in stress (27% fewer). Blockages there last under a second, so roaming away costs more than waiting. The rule is off by default; the results above hold only for blockage that lasts about 2 s.
+
 ## Next
 - Real signal: `hil.analyse` replays this rule over the laps recorded on 17 Nov ([REAL_SITE_PROTOCOL.md](REAL_SITE_PROTOCOL.md), item 7).
 - A learned detector has to beat this rule; on development scenes neither a logistic model nor a small network does ([OUTAGE_RISK.md](OUTAGE_RISK.md)).

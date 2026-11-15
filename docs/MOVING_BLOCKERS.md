@@ -83,3 +83,57 @@ arm degrades from the independent model; rescue counts; miss causes.
 
 Run: `python -m wirelessjev.native.run_fleet moving --workers 4`.
 Results are appended below after the run.
+
+## Results (15 Nov 2026)
+Scenes 570–575, 100 robots, 300 s, 600,000 control packets per scene per
+arm. Raw rows: `artifacts/native/moving_blockers.json`. Intervals are 95%
+bootstrap over the six scenes. All figures are simulation.
+
+**Verdicts**
+
+| # | Hypothesis | Result |
+|---|---|---|
+| M1 | Two AP paths ≤ 5G (`main`) | **Pass, 6/6** (14.4 against 171.4) |
+| M2 | Two AP paths ≤ Wi-Fi 8 (`main`) | **Pass, 6/6** (14.4 against 439.2) |
+| M3 | Two AP paths + relay ≤ 5G (`stress`) | **Pass, 6/6** (11.7 against 171.4) |
+| M4 | Two AP paths + relay + Bluetooth ≤ 5G (`stress`) | **Pass, 6/6** (2.2 against 171.4) |
+| M5 | One radio + relay + Bluetooth ≤ 5G (`stress`) | **Pass, 6/6** (4.4 against 171.4) |
+| M6 | Blockage rule cuts one-radio misses ≥ 10% in both conditions | **Fail**: 27% *more* misses in `main` (406.4 → 516.1); 27% fewer in `stress` (2,932.2 → 2,128.1) |
+
+**Missed control packets per million, moving blockers**
+
+| Arm | Realistic | Stress |
+|---|---|---|
+| Private 5G model | 171.4 [143.3–199.4] | 171.4 [143.3–199.4] |
+| Wi-Fi 8 model | 439.2 [361.7–525.0] | 1,096.9 [993.3–1,199.7] |
+| One radio | 406.4 [318.3–501.9] | 2,932.2 [2,420.3–3,685.6] |
+| One radio + blockage rule | 516.1 [432.2–620.0] | 2,128.1 [1,947.1–2,278.6] |
+| Two AP paths | 14.4 [8.1–21.1] | 255.0 [183.9–328.6] |
+| Two AP paths + blockage rule | 76.9 [53.6–119.2] | 458.9 [370.0–546.2] |
+| Two AP paths + relay | 0 | 11.7 [4.7–18.1] |
+| Two AP paths + relay + Bluetooth | 0 | 2.2 [0.6–3.9] |
+| One radio + relay + Bluetooth | 0 | 4.4 [1.7–7.5] |
+
+**How much each arm degrades** (same six scenes, independent → moving)
+
+| Arm | Realistic | Stress |
+|---|---|---|
+| Private 5G model | 52.2 → 171.4 (3.3×) | 52.2 → 171.4 (3.3×) |
+| Two AP paths | 3.1 → 14.4 (4.6×) | 123.6 → 255.0 (2.1×) |
+
+## What the results say
+1. **The headline claim survives shared blockage.** Two AP paths still beat the 5G model in the realistic condition in all six scenes, by 12× (it was 17× on these scenes under independent blockage). Uptime is 99.986% against 99.813%.
+2. **Path diversity is worth less than the independent model said.** Two-path misses rose 4.6× when the two paths could be blocked together; 45 of the 52 two-path misses happened with both paths blocked.
+3. **Everyone gets worse, including 5G.** The 5G model's misses rose 3.3×: shorter, more frequent blockages mean more handovers and more time on a blocked cell.
+4. **The stress condition needs the relay, and the relay is no longer perfect.** Two AP paths alone lose to 5G (255.0 against 171.4). With relay it is 11.7; with relay and Bluetooth 2.2. These are not zeros any more, because the same forklifts block relay links. One radio with relay and Bluetooth is at 4.4.
+5. **The blockage rule is not safe to ship as it is.** Under moving blockers it made one-radio misses 27% worse in the realistic condition, and made two-path misses worse in both conditions (14.4 → 76.9; 255.0 → 458.9). Blockages now last under a second, so leaving the AP costs more than waiting, and the rule's roams show up as "no radio up" and "weak link" misses. It helped only one radio in stress. It stays off by default.
+
+## What this changes
+- The rule was tuned and confirmed under independent blockage (`docs/BLOCKAGE_DETECTOR.md`), where events last about 2 s. Its benefit depends on blockage length, which is a property of the site. Tuesday's blockage trials measure that length on real signal.
+- A response that fits short blockages is to switch the packet to the other path, not to roam. The two-path arm already does this per packet, which is why it needs no detector.
+- Knowing a blockage is coming (`docs/OUTAGE_RISK.md`) is only useful with a response that is cheap when wrong.
+
+## Limits
+As listed above: AP and forklift dimensions are assumed, the relay keeps its
+same-slot and always-cooperates assumptions, and nothing has run on
+hardware.
