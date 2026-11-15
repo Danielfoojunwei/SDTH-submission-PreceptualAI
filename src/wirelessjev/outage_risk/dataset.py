@@ -121,3 +121,43 @@ def examples(tr: dict, window: int = WINDOW, fleet: bool = False):
     y = tr["blocked"][window - 1:]
     rule = rule_state(tr)[window - 1:]
     return x.reshape(-1, window * f.shape[2]), y.reshape(-1, y.shape[2]), rule.reshape(-1)
+
+
+def _rack_between(a: np.ndarray, b: np.ndarray) -> np.ndarray:
+    """a (n, 2), b (K, 2) -> (n, K): a rack stands on the straight line between them."""
+    from ..twin.warehouse import RACK_ROWS, RACK_SEGMENTS
+    ax, ay, bx, by = a[:, None, 0], a[:, None, 1], b[None, :, 0], b[None, :, 1]
+    out = np.zeros((len(a), len(b)), dtype=bool)
+    for yr in RACK_ROWS:
+        cross = (ay - yr) * (by - yr) < 0
+        x_at = ax + (yr - ay) / np.where(by == ay, 1.0, by - ay) * (bx - ax)
+        for x0, x1 in RACK_SEGMENTS:
+            out |= cross & (x_at >= x0) & (x_at <= x1)
+    return out
+
+
+def sensed_blocker_alarm(tr: dict, tracks: np.ndarray, sites: np.ndarray, ahead_ticks: int,
+                         range_m: float = 10.0, window: int = WINDOW, line_of_sight: bool = False) -> np.ndarray:
+    """A geometric predictor from the robot's own obstacle sensing, not from radio.
+
+    The robot sees blockers within `range_m` (a lidar), assumes each keeps its
+    current velocity, knows its own planned position `ahead_ticks` later, and
+    asks whether one of them will then sit on the line to its serving AP.
+    `tracks` is (ticks, K, 2) blocker positions at the telemetry ticks. Returns
+    rows aligned with `examples` (the first `window` - 1 ticks dropped).
+    `line_of_sight` drops blockers hidden from the robot behind a rack."""
+    from ..native.blockers import lines_blocked
+    pos, site = tr["pos"], tr["site"]
+    t_n, n = site.shape
+    out = np.zeros((t_n, n), dtype=bool)
+    for t in range(1, t_n):
+        vel = tracks[t] - tracks[t - 1]
+        future = tracks[t] + vel * ahead_ticks
+        own = pos[min(t + ahead_ticks, t_n - 1)]
+        seen = np.hypot(tracks[t][None, :, 0] - pos[t][:, None, 0], tracks[t][None, :, 1] - pos[t][:, None, 1]) < range_m
+        if line_of_sight:
+            seen &= ~_rack_between(pos[t], tracks[t])
+        hit = lines_blocked(own, sites[site[t]].astype(np.float32), future, per_blocker=True)        # (n, K)
+        out[t] = (hit & seen).any(1)
+    return out[window - 1:].reshape(-1)
+

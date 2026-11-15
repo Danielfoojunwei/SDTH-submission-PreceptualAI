@@ -248,3 +248,26 @@ def test_fleet_features_count_other_robots_alarms_only():
     x, y, rule = ds.examples(tr, fleet=True)
     assert x.shape == ((t_n - ds.WINDOW + 1) * n, ds.WINDOW * (ds.PER_TICK + ds.FLEET_PER_TICK))
 
+
+def test_sensed_blocker_alarm_predicts_a_crossing_and_respects_racks():
+    from wirelessjev.outage_risk import dataset as ds
+    t_n = 20
+    # One robot parked in the aisle at y = 13, AP 20 m east in the same aisle; a forklift in that aisle drives at it.
+    pos = np.tile(np.array([[[20.0, 13.0]]], dtype=np.float32), (t_n, 1, 1))
+    tr = {"pos": pos, "site": np.zeros((t_n, 1), dtype=int)}
+    near_ap = np.array([[40.0, 13.0]], dtype=np.float32)
+    tracks = np.zeros((t_n, 1, 2), dtype=np.float32)
+    tracks[:, 0, 0] = 31.0 - 0.2 * np.arange(t_n)             # westwards at 2 m/s; inside the vulnerable 7.7 m at tick 17
+    tracks[:, 0, 1] = 13.0
+    now = ds.sensed_blocker_alarm(tr, tracks, near_ap, 0, window=1)
+    soon = ds.sensed_blocker_alarm(tr, tracks, near_ap, 5, window=1)
+    seen = ds.sensed_blocker_alarm(tr, tracks, near_ap, 5, window=1, line_of_sight=True)
+    assert now.any() and int(np.argmax(soon)) == int(np.argmax(now)) - 5      # half a second of warning
+    assert np.array_equal(soon, seen)                                          # same aisle: nothing hides it
+    # A far AP: the line crosses the next aisle (y = 19), where a forklift is hidden behind the rack row at y = 16.
+    far_ap = np.array([[26.0, 32.0]], dtype=np.float32)
+    tracks[:, 0, 0] = 24.0 - 0.2 * np.arange(t_n)             # passes x = 21.9, where the line crosses y = 19
+    tracks[:, 0, 1] = 19.0
+    assert ds.sensed_blocker_alarm(tr, tracks, far_ap, 0, window=1).any()
+    assert not ds.sensed_blocker_alarm(tr, tracks, far_ap, 0, window=1, line_of_sight=True).any()
+    assert ds._rack_between(np.array([[20.0, 13.0]]), np.array([[20.0, 19.0], [25.0, 13.0], [60.0, 19.0]])).tolist() == [[True, False, False]]

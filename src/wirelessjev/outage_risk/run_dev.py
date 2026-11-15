@@ -44,6 +44,27 @@ def gather(scenes, cond: str, duration: float, cache=None, model: str = "indepen
     return np.concatenate(xs), np.concatenate(xfs), np.concatenate(ys), np.concatenate(rules)
 
 
+def sensing_check(scenes, cond: str, duration: float, cache) -> dict:
+    """Moving blockers only: the radio rule against a predictor that uses the robot's own obstacle sensing."""
+    from ..native.blockers import blocker_tracks
+    from ..native.sim import TELEMETRY_AHEAD_BLOCKS
+    from ..twin.warehouse import AP_SITES
+    sites = np.array(AP_SITES, dtype=np.float32)
+    ys, rules, alarms, los = [], [], {h: [] for h in TELEMETRY_AHEAD_BLOCKS}, {h: [] for h in TELEMETRY_AHEAD_BLOCKS}
+    for seed in scenes:
+        tr = dict(np.load(Path(cache) / f"telemetry_moving_{seed}_{cond}_{int(duration)}.npz"))
+        tracks = blocker_tracks(seed, int(duration / 0.1) + 1)[tr["slot"] // 10]
+        _, y, r = ds.examples(tr)
+        ys.append(y), rules.append(r)
+        for h in TELEMETRY_AHEAD_BLOCKS:
+            alarms[h].append(ds.sensed_blocker_alarm(tr, tracks, sites, h))
+            los[h].append(ds.sensed_blocker_alarm(tr, tracks, sites, h, line_of_sight=True))
+    y, rule = np.concatenate(ys), np.concatenate(rules)
+    return {f"{0.1 * h:.1f}": {"radio_rule": yes_no(rule, y[:, j]), "sensed_blockers_10m": yes_no(np.concatenate(alarms[h]), y[:, j]),
+                                "sensed_blockers_10m_line_of_sight": yes_no(np.concatenate(los[h]), y[:, j])}
+            for j, h in enumerate(TELEMETRY_AHEAD_BLOCKS)}
+
+
 def compare(train, test) -> dict:
     (xa, xfa, ya, _), (xb, xfb, yb, rule) = train, test
     out = {"train_rows": int(len(xa)), "test_rows": int(len(xb)), "horizons": {}}
@@ -78,12 +99,19 @@ def main(argv=None) -> int:
     ap.add_argument("--seconds", type=float, default=60.0)
     ap.add_argument("--blockage-model", default="independent", choices=("independent", "moving"))
     ap.add_argument("--conditions", default=",".join(CONDITIONS))
+    ap.add_argument("--sensing-only", action="store_true",
+                    help="moving blockers, cached telemetry: score a predictor that senses blockers within 10 m")
     ap.add_argument("--cache", help="directory for the simulated telemetry, so models can be rerun without the simulator")
     args = ap.parse_args(argv)
     rep = {"scenes": {"train": TRAIN, "test": TEST}, "seconds": args.seconds, "policy": "single radio, no detector",
            "blockage_model": args.blockage_model,
            "note": "development scenes only; telemetry comes from runs without a detector in the loop"}
     conds = args.conditions.split(",")
+    if args.sensing_only:
+        out = {c: sensing_check(TEST, c, args.seconds, args.cache) for c in conds}
+        (OUT / "outage_risk_dev_moving_sensing.json").write_text(json.dumps(out, indent=1, default=float))
+        print(json.dumps(out, indent=1, default=float))
+        return 0
     for cond in conds:
         rep[cond] = compare(gather(TRAIN, cond, args.seconds, args.cache, args.blockage_model),
                             gather(TEST, cond, args.seconds, args.cache, args.blockage_model))

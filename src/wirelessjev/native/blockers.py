@@ -65,16 +65,18 @@ def blocker_tracks(seed: int, n_blocks: int, n_blockers: int = N_BLOCKERS) -> np
 
 
 def lines_blocked(start: np.ndarray, end: np.ndarray, blockers: np.ndarray, frac: float = REACH_FRAC,
-                  radius: float = RADIUS_M) -> np.ndarray:
+                  radius: float = RADIUS_M, per_blocker: bool = False) -> np.ndarray:
     """start (..., 2), end (..., 2) broadcastable; blockers (K, 2). True where
     any blocker is within `radius` of the line start->end, inside its first
-    `frac` (measured from `start`) and ahead of `start`."""
+    `frac` (measured from `start`) and ahead of `start`. `per_blocker` keeps
+    the last axis (..., K) instead of reducing over blockers."""
     d = (end - start)[..., None, :]                               # (..., 1, 2)
     rel = blockers - start[..., None, :]                          # (..., K, 2)
     len2 = np.maximum((d * d).sum(-1), 1e-9)
     t = (rel * d).sum(-1) / len2                                  # (..., K) position along the line
     perp = np.abs(rel[..., 0] * d[..., 1] - rel[..., 1] * d[..., 0]) / np.sqrt(len2)
-    return ((t > 0) & (t <= frac) & (perp < radius)).any(-1)
+    hit = (t > 0) & (t <= frac) & (perp < radius)
+    return hit if per_blocker else hit.any(-1)
 
 
 def blocked_moving(world, n_blocks: int, n_blockers: int = N_BLOCKERS, pos_per_block: float = 0.5) -> np.ndarray:
