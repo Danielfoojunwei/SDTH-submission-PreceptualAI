@@ -3,11 +3,10 @@
 **Status:** development scenes only. Nothing here is a confirmation, and no
 learned model drives anything.
 
-**Result:** on development scenes the hand-written rule
-([BLOCKAGE_DETECTOR.md](BLOCKAGE_DETECTOR.md)) is not beaten as an alarm by
-a logistic model or a small neural network trained on the same telemetry.
-The learned models give better probabilities. All three get much worse
-when asked to look ahead.
+**Result:**
+- With independent blockage, the hand-written rule ([BLOCKAGE_DETECTOR.md](BLOCKAGE_DETECTOR.md)) is not beaten as an alarm by a logistic model or a small neural network. The learned models give better probabilities.
+- With moving blockers, the small network beats the rule on "blocked now" in the realistic condition and ties it in stress.
+- Under both, every radio-only detector gets much worse when asked to look ahead. A predictor that uses the robot's own obstacle sensing does not: it flags 95% of blockages one second ahead, with perfect sensing assumed.
 
 ## Why this comparison
 The headroom ladder ([JEPA_HEADROOM.md](JEPA_HEADROOM.md)) put the value in
