@@ -95,3 +95,49 @@ known). All foresight arms use the 20 m limit.
 
 Run: `python -m wirelessjev.native.run_fleet foresight --workers 4`.
 Results are appended below after the run.
+
+## Results (15 Nov 2026)
+Scenes 580–585, 100 robots, 300 s, 600,000 control packets per scene per
+arm. Raw rows: `artifacts/native/foresight.json`. Intervals are 95%
+bootstrap over the six scenes; ratio intervals are paired by scene. All
+figures are simulation, with simulated sensing.
+
+**Verdicts**
+
+| # | Hypothesis | Result |
+|---|---|---|
+| F1 | Two AP paths, `stress`: learned warnings cut misses ≥ 10%, in ≥ 4 of 6 scenes | **Pass**: 24% fewer (229.7 → 175.0), 5 of 6 scenes; ratio 0.76 [0.66–0.91] |
+| F2 | Headroom: perfect warnings cut them ≥ 30% | **Pass**: 41% fewer (229.7 → 136.7) |
+| F3 | No harm in `main` (within 5 per million) | **Pass**: 14.2 against 11.4 |
+| F4 | Learned ≤ hand-written rule (`stress`) | **Pass**: 175.0 against 187.2; ratio 0.94 [0.87–1.03] |
+| F5 | One radio not made worse in either condition | **Pass** (expected to fail): 366.7 against 383.9; 2,530.6 against 2,745.8 |
+
+**Missed control packets per million**
+
+| Arm | Realistic | Stress |
+|---|---|---|
+| Private 5G model | 148.9 [131.9–166.7] | 148.9 [131.9–166.7] |
+| One radio | 383.9 [316.7–455.0] | 2,745.8 [2,230.0–3,289.2] |
+| One radio + perfect warning | 189.2 [123.9–267.8] | 1,396.4 [1,225.3–1,587.5] |
+| One radio + learned warning | 366.7 [259.4–493.6] | 2,530.6 [2,061.4–3,061.9] |
+| Two AP paths | 11.4 [5.8–16.9] | 229.7 [187.2–268.6] |
+| Two AP paths + perfect warning | 10.6 [5.8–15.3] | 136.7 [99.7–186.7] |
+| Two AP paths + learned warning | 14.2 [6.1–25.3] | 175.0 [136.7–221.9] |
+| Two AP paths + hand-written warning | 14.7 [5.6–28.6] | 187.2 [138.9–245.0] |
+
+## What the results say
+1. **A learned model passed a pre-registered control test for the first time in this project.** With two AP paths in the stress condition, warnings from the learned predictor cut misses by 24%, in 5 of 6 scenes, and the paired interval excludes no change.
+2. **The gain is modest and local.** It captures a little over half of what a perfect warning gives (24% of a possible 41%). It does not make two AP paths beat the 5G model in stress on their own (175.0 against 148.9); the relay still does that.
+3. **In the realistic condition it does nothing measurable.** 14.2 against 11.4 is within noise (ratio 1.24 [0.77–2.06]), and one scene accounts for the difference. There is too little to prevent there.
+4. **The learned predictor ties the hand-written rule.** 175.0 against 187.2, with an interval that includes no difference. Its advantage is not accuracy. The hand-written rule was given the site's blocking geometry; the learned one was given none and recovered it from data.
+5. **One radio gains little:** 4% and 8% fewer misses, against 51% and 49% with a perfect warning. For one radio the limit is sensing range: a robot cannot vouch for an AP more than 20 m away.
+
+## What it does not show
+- That it works with a real lidar or camera. The sensing here is a model.
+- That it transfers to another site. Training and test scenes share one layout and one blocking geometry, which is exactly the thing the learned predictor is supposed to learn per site.
+- That it beats a hand-written rule when that rule is given the right geometry. It ties it.
+
+## Next
+- The largest remaining headroom is sensing range and quality, not the predictor: perfect warnings are worth 41–51%.
+- Fleet-shared sensing (a robot is told about forklifts other robots can see) would extend the range without new sensors. Not built.
+- A site-transfer test: train on one layout, test on another, against the hand-written rule with the wrong geometry.
