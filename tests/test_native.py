@@ -357,3 +357,25 @@ def test_foresight_move_limit_and_campaign_evaluation(world):
     assert e["F1"]["pass"] and e["F2"]["pass"] and e["F3"]["pass"] and e["F4"]["pass"] and e["F5"]["pass"]
     assert abs(e["F1"]["ratio"] - 0.75) < 1e-9 and e["F1"]["scenes"] == 6
 
+
+def test_relay_realism_knobs_only_weaken_the_relay(world):
+    from wirelessjev.native.run_fleet import RELAY_LEVELS, RELAY_SCENES, relay_eval
+    pol = {p.name: p for p in policies()}
+    nat = replace(pol["native"], gate=False, relay=True)
+    kw = dict(collision_lambda=0.03, interference=True, blockage_model="moving")
+    base = simulate(world, nat, **kw)
+    same = simulate(world, replace(nat, relay_delay_slots=0, relay_coop=1.0), **kw)
+    assert base["control_misses"] == same["control_misses"] and base["relay_rescues"] == same["relay_rescues"]
+    never = simulate(world, replace(nat, relay_delay_slots=5), **kw)          # always too late: no rescue ever counts
+    busy = simulate(world, replace(nat, relay_coop=0.0), **kw)                # no helper is ever free
+    assert never["relay_rescues"] == 0 and busy["relay_rescues"] == 0
+    none = simulate(world, replace(nat, relay=False), **kw)
+    assert never["control_misses"] == none["control_misses"]
+    real = simulate(world, replace(nat, **RELAY_LEVELS["realistic"]), **kw)
+    assert 0 < real["relay_rescues"] <= base["relay_rescues"] or base["relay_rescues"] == 0
+    miss = {"nr_30ms": 150, "shared": 250, "shared+relay[optimistic]": 10, "shared+relay[realistic]": 60, "shared+relay[pessimistic]": 180}
+    rows = [{"scene": s, "arm": a, "condition": c, "control_misses": m, "control_sent": 1_000_000, "control_miss": m / 1e6}
+            for s in RELAY_SCENES for a, m in miss.items() for c in ("main", "stress")]
+    e = relay_eval(rows)
+    assert e["R1"]["pass"] and not e["R2"]["pass"] and e["R3"]["pass"]
+

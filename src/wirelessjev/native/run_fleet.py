@@ -1,7 +1,7 @@
 """Headroom ladder (docs/JEPA_HEADROOM.md), fleet-only capabilities
 (docs/DIRECTIONS_123.md), the live blockage detector (docs/BLOCKAGE_DETECTOR.md)
 the moving-blocker stress test of the headline claims (docs/MOVING_BLOCKERS.md)
-and foresight from obstacle sensing (docs/FORESIGHT.md)."""
+foresight from obstacle sensing (docs/FORESIGHT.md) and relay realism (docs/RELAY_REALISM.md)."""
 from __future__ import annotations
 
 import argparse
@@ -19,6 +19,7 @@ LADDER_SCENES, FLEET_SCENES = (400, 401, 402, 403), tuple(range(550, 556))
 DETECT_SCENES = tuple(range(560, 566))
 MOVING_SCENES = tuple(range(570, 576))
 FORESIGHT_SCENES = tuple(range(580, 586))
+RELAY_SCENES = tuple(range(590, 596))
 DROP = ("per_robot_control_miss", "per_robot_video_on_time")
 
 
@@ -231,11 +232,48 @@ def foresight_eval(rows):
                    "pass": bool(all(m[c]["single+foresee[learned]"] <= m[c]["single"] for c in CONDITIONS))}}
 
 
+RELAY_LEVELS = {"optimistic": dict(relay_delay_slots=0, relay_coop=1.0),
+                "realistic": dict(relay_delay_slots=2, relay_coop=0.7),
+                "pessimistic": dict(relay_delay_slots=3, relay_coop=0.5)}
+
+
+def relay_scene(seed: int, duration: float):
+    """Moving blockers. The relay with its optimistic assumptions removed step by step."""
+    _, vert = _vert()
+    shared = replace(vert, dual_radio=True, radio2="shared")
+    arms = {"nr_30ms": Policy("nr_30ms", "nr", nr_ho_cost_s=0.03), "shared": shared}
+    arms |= {f"shared+relay[{k}]": replace(shared, relay=True, **v) for k, v in RELAY_LEVELS.items()}
+    rows = []
+    for cond, (lam, noise) in CONDITIONS.items():
+        w = build_world(seed, duration_s=duration, survey_s=60, noise_2g_extra_db=noise)
+        for name, p in arms.items():
+            r = simulate(w, replace(p, name=name), collision_lambda=lam, interference=True, blockage_model="moving")
+            rows.append({k: v for k, v in r.items() if k not in DROP} | {"arm": name, "condition": cond})
+    return rows
+
+
+def relay_eval(rows):
+    sc = sorted({r["scene"] for r in rows})
+    v = lambda c, a, s: next(r["control_miss"] for r in rows if r["condition"] == c and r["arm"] == a and r["scene"] == s)
+
+    def pooled(c, a):
+        rs = [r for r in rows if r["condition"] == c and r["arm"] == a]
+        return 1e6 * sum(r["control_misses"] for r in rs) / max(sum(r["control_sent"] for r in rs), 1)
+
+    arms = list(dict.fromkeys(r["arm"] for r in rows))
+    m = {c: {a: pooled(c, a) for a in arms} for c in CONDITIONS}
+    n = lambda c, a, b: int(sum(v(c, a, s) <= v(c, b, s) for s in sc))
+    res = {"R1": n("stress", "shared+relay[realistic]", "nr_30ms"), "R2": n("stress", "shared+relay[pessimistic]", "nr_30ms"),
+           "R3": n("stress", "shared+relay[pessimistic]", "shared")}
+    return {"scenes": sc, "misses_per_million": m, **{k: {"scenes": x, "pass": bool(x >= 5)} for k, x in res.items()}}
+
+
 STUDIES = {"ladder": (ladder_scene, LADDER_SCENES, 120.0, ladder_eval, "headroom_ladder.json", "docs/JEPA_HEADROOM.md"),
            "fleet": (fleet_scene, FLEET_SCENES, 300.0, fleet_eval, "fleet_directions.json", "docs/DIRECTIONS_123.md"),
            "detect": (detect_scene, DETECT_SCENES, 300.0, detect_eval, "blockage_detector.json", "docs/BLOCKAGE_DETECTOR.md"),
            "moving": (moving_scene, MOVING_SCENES, 300.0, moving_eval, "moving_blockers.json", "docs/MOVING_BLOCKERS.md"),
-           "foresight": (foresight_scene, FORESIGHT_SCENES, 300.0, foresight_eval, "foresight.json", "docs/FORESIGHT.md")}
+           "foresight": (foresight_scene, FORESIGHT_SCENES, 300.0, foresight_eval, "foresight.json", "docs/FORESIGHT.md"),
+           "relay": (relay_scene, RELAY_SCENES, 300.0, relay_eval, "relay_realism.json", "docs/RELAY_REALISM.md")}
 
 
 def main():

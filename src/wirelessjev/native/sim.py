@@ -101,6 +101,8 @@ class Policy:
     safe_plan_s: float = 0.0      # robot carries this many seconds of trajectory (0 = stop after 200 ms silence)
     link_aware_speed: bool = False  # halve speed where the link is predicted weak: the plan lasts twice as long
     relay: bool = False           # a nearby robot forwards control when own paths fail
+    relay_delay_slots: int = 0    # forwarding takes this many extra 10 ms slots (0 = same slot, optimistic)
+    relay_coop: float = 1.0       # share of 100 ms blocks in which a helper is free to forward
     ble: bool = False             # control also goes over Bluetooth LE to a gateway at an AP site
     # Live blockage detector (docs/BLOCKAGE_DETECTOR.md): a sudden drop on every band of the
     # serving AP at once is a blocked path, not fading. Uses only the robot's own lagged readings.
@@ -336,6 +338,7 @@ def simulate(world: World, policy: Policy, *, seed: int = 0, curves: LinkCurves 
     aux = np.random.default_rng(4242 + world.seed)        # relay and BLE fading, same for every policy
     rr_fade = np.zeros((n, n), dtype=np.float32)
     rr_snr = None
+    helper_free = np.ones(n, dtype=bool)
     tracks = None
     if blockage_model == "moving" and policy.relay:
         from .blockers import N_BLOCKERS, blocker_tracks, lines_blocked
@@ -745,6 +748,8 @@ def simulate(world: World, policy: Policy, *, seed: int = 0, curves: LinkCurves 
                     rr_snr = rr_snr - BLOCKAGE_DB * lines_blocked(xyf[:, None, :], xyf[None, :, :],
                                                                   tracks[k // BLOCK_SLOTS], frac=1.0)
                 rr_snr[(dist > RELAY_RANGE_M) | (dist == 0)] = -np.inf
+                if policy.relay_coop < 1.0:
+                    helper_free = aux.random(n) < policy.relay_coop     # busy helpers cannot forward this block
             if policy.ble:
                 mean2 = world.snr[min(k // slots_per_pos, world.snr.shape[0] - 1)][..., 0].copy()
                 mean2[ar, site] = -np.inf                      # a different site than the Wi-Fi primary: diversity
@@ -866,7 +871,12 @@ def simulate(world: World, policy: Policy, *, seed: int = 0, curves: LinkCurves 
             hop = curves.success("5g", np.zeros((n, RELAY_NEIGHBOURS), dtype=int),
                                  np.take_along_axis(rr_snr, order, axis=1).clip(-50, 60))
             hop = np.where(np.isfinite(np.take_along_axis(rr_snr, order, axis=1)), hop, 0.0)
+            if policy.relay_coop < 1.0:
+                helper_ok = helper_ok * helper_free
             p_relay = 1 - np.prod(1 - hop * helper_ok[order], axis=1)
+            if policy.relay_delay_slots > 0:
+                # A forwarded packet that would land after the deadline does not count.
+                p_relay = p_relay * ((ctrl_age + policy.relay_delay_slots) < CONTROL_DEADLINE)
             need = pend & (ok < 0.999)
             relay_used += float((need * (1 - ok) * p_relay).sum())
             t0 = (CONTROL_BITS / (curves.rates("5g")[0] * 1e6) + FRAME_OVERHEAD_S) / SLOT
