@@ -52,7 +52,7 @@ def rssi(x, y, ax, ay):
 def runbook_commands():
     text = RUNBOOK.read_text(encoding="utf-8")
     return [line.strip() for block in re.findall(r"```bash\n(.*?)```", text, re.S)
-            for line in block.splitlines() if line.strip()]
+            for line in block.splitlines() if line.strip() and not line.strip().startswith("cd ")]
 
 
 def argv_of(line, kh, wifi, bssid=APS[1][0], target="10.0.0.5"):
@@ -60,8 +60,9 @@ def argv_of(line, kh, wifi, bssid=APS[1][0], target="10.0.0.5"):
                      ("<AP or sink IP>", target)):
         line = line.replace(old, new)
     argv = shlex.split(line)
-    assert argv[:4] == ["uv", "run", "python", "-m"], line
-    return argv[4], argv[5:]
+    # The runbook uses the project's own Python, so no command depends on `uv` being on the path.
+    assert argv[:2] == [".venv/bin/python", "-m"], line
+    return argv[2], argv[3:]
 
 
 # --------------------------------------------------------------------------

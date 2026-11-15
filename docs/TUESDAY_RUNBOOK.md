@@ -50,7 +50,11 @@ Fill one row per BSSID and copy it into `site.json` (Codex's format: `python PC/
 **Waypoints:** tape markers A, B, C, … along the route, measure each, and save `waypoints.json` as `{"A": [x, y], "B": [x, y]}`.
 
 ## Commands
-**Before leaving home (needs internet):** run `uv sync` once in the repo. On site the laptop is on the car's hotspot and has no internet.
+**Run every command from the repo folder**, using the project's own Python at `.venv/bin/python`. Nothing on site needs the internet or the `uv` tool.
+```bash
+cd "/Users/danielfoojunwei/Preceptual.ai WirelessJEV"
+```
+The environment was synced and checked on 15 Nov. `uv` is installed at `~/.local/bin/uv`, which is not on the terminal's path; only if dependencies change before Tuesday, run `~/.local/bin/uv sync` at home.
 
 **Two files must exist on the laptop** (neither is in the repo; on 15 Nov neither was at these paths):
 - `~/smartcar_known_hosts`: the car's host key, copied from SmartCar.zip `PC/data/deploy_known_hosts` (see [ONE_CAR_TEST.md](ONE_CAR_TEST.md)).
@@ -60,23 +64,20 @@ Set once per terminal:
 ```bash
 export KH=~/smartcar_known_hosts
 ```
-```bash
-export UV_OFFLINE=1
-```
-`UV_OFFLINE=1` stops `uv` from trying the network. If preflight fails, it names the missing file.
+If preflight fails, it names the missing file.
 
 ### Block 1. Preflight and probes (read-only)
 ```bash
-uv run python -m wirelessjev.onecar preflight --known-hosts $KH --wifi-json ~/WiFi.json
+.venv/bin/python -m wirelessjev.onecar preflight --known-hosts $KH --wifi-json ~/WiFi.json
 ```
 ```bash
-uv run python -m wirelessjev.onecar status --known-hosts $KH --repeat 10
+.venv/bin/python -m wirelessjev.onecar status --known-hosts $KH --repeat 10
 ```
 ```bash
-uv run python -m wirelessjev.onecar capabilities --known-hosts $KH
+.venv/bin/python -m wirelessjev.onecar capabilities --known-hosts $KH
 ```
 ```bash
-uv run python -m wirelessjev.onecar handover-probe --known-hosts $KH
+.venv/bin/python -m wirelessjev.onecar handover-probe --known-hosts $KH
 ```
 **Read in the output:**
 - `two_clients_two_channels`: can one card hold two AP connections?
@@ -87,7 +88,7 @@ uv run python -m wirelessjev.onecar handover-probe --known-hosts $KH
 ### Block 1b. Format check (read-only, 10 minutes)
 The car's client radio must be on the test network first. If it is not, run the first command of block 3 to join it, then come back.
 ```bash
-uv run python -m wirelessjev.onecar check --known-hosts $KH
+.venv/bin/python -m wirelessjev.onecar check --known-hosts $KH
 ```
 It records a 10-second lap and prints one line per thing the day's analysis needs, each `PASS`, `WARN` or `FAIL`, with what to do.
 
@@ -105,60 +106,60 @@ It records a 10-second lap and prints one line per thing the day's analysis need
 
 **Nothing is lost if a format is wrong.** Each lap writes `*.stream.raw` and `*.ping.raw` next to its log. After a parser is fixed, rebuild the laps:
 ```bash
-uv run python -m wirelessjev.onecar reparse artifacts/onecar/*-lap-*.jsonl
+.venv/bin/python -m wirelessjev.onecar reparse artifacts/onecar/*-lap-*.jsonl
 ```
 
 ### Block 2. Survey laps (read-only; 3 or more)
 Start the lap, then drive. Type the waypoint letter and Enter as the car passes each marker. Upper or lower case both work; a letter that is not in `waypoints.json` is ignored. Each lap needs at least two marks to get positions.
 ```bash
-uv run python -m wirelessjev.onecar lap --known-hosts $KH --name survey1 --seconds 180
+.venv/bin/python -m wirelessjev.onecar lap --known-hosts $KH --name survey1 --seconds 180
 ```
 Also take Codex's parked, position-labelled captures at 10–20 spots for its map and shadow model (see `docs/SMARTCAR_NUMPY_DEPLOYMENT.md`, `PC/run.py capture`).
 
 ### Block 3. Handover timing (supervised; 5 or more of each)
 Today's switch:
 ```bash
-uv run python -m wirelessjev.onecar switch --timing --known-hosts $KH --wifi-json ~/WiFi.json --ssid "<SSID>" --bssid <bssid>
+.venv/bin/python -m wirelessjev.onecar switch --timing --known-hosts $KH --wifi-json ~/WiFi.json --ssid "<SSID>" --bssid <bssid>
 ```
 Unlock the profile once:
 ```bash
-uv run python -m wirelessjev.onecar switch --timing --known-hosts $KH --wifi-json ~/WiFi.json --ssid "<SSID>" --bssid any
+.venv/bin/python -m wirelessjev.onecar switch --timing --known-hosts $KH --wifi-json ~/WiFi.json --ssid "<SSID>" --bssid any
 ```
 Fast roam (refused, with nothing sent, until the profile has been unlocked by the step above):
 ```bash
-uv run python -m wirelessjev.onecar roam --known-hosts $KH --bssid <bssid>
+.venv/bin/python -m wirelessjev.onecar roam --known-hosts $KH --bssid <bssid>
 ```
 **Read in the `handover_timing` line:** `outage_s` (the longest silence in the gateway ping), `stages_s`, `ip_retained`. An outcome of `UNKNOWN` means read `status` again; do not repeat the command blindly.
 
 ### Block 4. Ten laps for the 10-robot fleet (read-only)
 Drive ten *different* routes, one lap each, named `r01` … `r10`:
 ```bash
-uv run python -m wirelessjev.onecar lap --known-hosts $KH --name r01 --seconds 180
+.venv/bin/python -m wirelessjev.onecar lap --known-hosts $KH --name r01 --seconds 180
 ```
 
 ### Block 5. Laps under fleet load (read-only on the car)
 On the laptop, joined to the test SSID, start nine ghost robots (about 50 Mb/s), then record a lap:
 ```bash
-uv run python -m wirelessjev.hil.ghosts send --target <AP or sink IP> --seconds 200
+.venv/bin/python -m wirelessjev.hil.ghosts send --target <AP or sink IP> --seconds 200
 ```
 ```bash
-uv run python -m wirelessjev.onecar lap --known-hosts $KH --name load1 --seconds 180
+.venv/bin/python -m wirelessjev.onecar lap --known-hosts $KH --name load1 --seconds 180
 ```
 The laptop needs a second network interface for this (USB Wi-Fi or the second laptop), because its built-in Wi-Fi is on the car's hotspot.
 
 ### Block 6. Blockage trials (read-only)
 Record laps while a person or cart stands between the car and its AP at marked spots. Note the times; add `--note "blocker at C 14:32"`.
 ```bash
-uv run python -m wirelessjev.onecar lap --known-hosts $KH --name block1 --seconds 180 --note "blocker at C"
+.venv/bin/python -m wirelessjev.onecar lap --known-hosts $KH --name block1 --seconds 180 --note "blocker at C"
 ```
 
 ### Block 7. Check the data before leaving
 ```bash
-uv run python -m wirelessjev.hil.analyse artifacts/onecar/*-lap-*.jsonl
+.venv/bin/python -m wirelessjev.hil.analyse artifacts/onecar/*-lap-*.jsonl
 ```
 Every lap should show samples, pings and at least two marks. The report's `blockage_rule_replay` section shows how many real outages the simulator's blockage rule would have caught, and its false alarms (see [BLOCKAGE_DETECTOR.md](BLOCKAGE_DETECTOR.md)). Block 6 is what tests it, so try to keep block 6.
 ```bash
-uv run python -m wirelessjev.hil.trace_twin artifacts/onecar/*-lap-r*.jsonl --site site.json --waypoints waypoints.json
+.venv/bin/python -m wirelessjev.hil.trace_twin artifacts/onecar/*-lap-r*.jsonl --site site.json --waypoints waypoints.json
 ```
 This already gives a first 10-robot result on the measured signals. With ten 180 s laps it takes about a minute.
 
