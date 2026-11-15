@@ -206,13 +206,23 @@ def load_lap(path) -> dict:
             "marks": [e for e in events if e.get("event") == "mark"]}
 
 
+def waypoint_of(label, waypoints: dict):
+    """The waypoints.json key a typed label refers to: an exact match, else the
+    one key that matches ignoring case (an operator typing "a" for "A")."""
+    if label in waypoints:
+        return label
+    hits = [k for k in waypoints if k.lower() == str(label).lower()]
+    return hits[0] if len(hits) == 1 else None
+
+
 def positions(times_car, marks, waypoints: dict, offset_s: float):
     """Linear interpolation of (x, y) between consecutive waypoint marks.
 
     `offset_s` is car clock minus Mac clock. Times outside the marked span
     return NaN: no position is invented before the first or after the last mark."""
     import numpy as np
-    pts = [(m["t_mac"] + offset_s, waypoints[m["label"]]) for m in marks if m["label"] in waypoints]
+    pts = [(m["t_mac"] + offset_s, waypoints[key]) for m in marks
+           if (key := waypoint_of(m["label"], waypoints)) is not None]
     pts.sort(key=lambda p: p[0])
     t = np.asarray(times_car, dtype=float)
     out = np.full((len(t), 2), np.nan)

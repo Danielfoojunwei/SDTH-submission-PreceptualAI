@@ -265,6 +265,22 @@ def test_journal_and_ping_parsing_ignore_wlan0_and_old_lines():
     assert 3.6 < gap["outage_s"] < 3.8
 
 
+def test_outage_is_found_when_replies_continue_after_submission():
+    # The connect is submitted at T0 + 2.0 but the link only drops 0.4 s later and returns at T0 + 5.7.
+    replies = ho.parse_ping(ping_text(T0 + 2.4, T0 + 5.7))
+    gap = ho.gap_around(replies, T0 + 2.0)
+    assert 3.25 < gap["outage_s"] < 3.45                     # not one 50 ms ping interval
+    assert 3.6 < gap["first_reply_after_s"] < 3.9 and 0.3 < gap["silence_started_after_s"] < 0.45
+    # No outage at all: the result is one ordinary interval straddling the submission.
+    steady = ho.gap_around(ho.parse_ping(ping_text(0, 0)), T0 + 2.0)
+    assert steady["outage_s"] == pytest.approx(0.05, abs=1e-3) and steady["first_reply_after_s"] <= 0.05
+    assert ho.gap_around([], T0)["outage_s"] is None
+    # One lost ping around a fast roam (a 100 ms silence 0.2 s after submission) is found too.
+    lost_one = [T0 + 0.05 * i for i in range(100) if i != 45]
+    quick = ho.gap_around(lost_one, T0 + 2.0)
+    assert quick["outage_s"] == pytest.approx(0.1, abs=1e-3) and quick["first_reply_after_s"] == pytest.approx(0.3, abs=1e-3)
+
+
 def test_fast_roam_applies_once_times_stages_and_keeps_ip(env):
     kh, _, tmp = env
     car = FakeCar()

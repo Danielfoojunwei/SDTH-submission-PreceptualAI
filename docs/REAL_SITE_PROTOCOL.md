@@ -28,5 +28,10 @@ Laps from `onecar lap`: 10 Hz link state, 20 Hz gateway ping, scan-cache snapsho
 
    The rule is "useful on real signal" only if it catches at least half of the `block*` outages with at most 1 false alarm per minute. One car reports only the link it is using, so this is the single-link form of the rule; the "every band at once" check is not testable on Tuesday.
 
+## Amendments made before the visit (15 Nov, from the dry run)
+The dry run against a fake car found two counting errors. Both are fixed before any real data exists.
+- **Item 1, handover outage.** The outage is the longest silence between ping replies after the command, not the gap up to the first reply after it. Replies keep arriving briefly before the link drops, so the old definition could report a 3.4 s outage as 0.05 s. If no silence exceeds 1.5× the usual reply interval, nothing was lost and the interval around the command is reported.
+- **Item 7, blockage rule.** One alarm is counted per dip: the rule fires when the signal has been low for 2 readings and not again until it recovers. The earlier code fired every 2 low readings, which would have counted one long dip as several false alarms. The usefulness mark is unchanged.
+
 ## What this cannot show
 Fleet interference between real robots, control by a learned model, or anything about private 5G.

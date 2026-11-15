@@ -83,7 +83,12 @@ def detector_replay(lap: dict, drop_db: float = DROP_DB, confirm: int = CONFIRM)
     car's own readings for `confirm` consecutive samples. One car reports only
     the link it is using, so this is the single-link form of the rule; the
     "every band at once" check needs a multi-link client. The baseline restarts
-    when the car changes AP and is not updated while the signal is low."""
+    when the car changes AP and is not updated while the signal is low.
+
+    One alarm per low episode: the rule fires when the run of low readings
+    reaches `confirm` and not again until the signal has recovered. In the
+    simulator the robot leaves the AP at the first alarm, so later readings of
+    the same dip are not separate alarms."""
     out, base, bssid, run = [], None, None, 0
     for s in lap["samples"]:
         sig = s.get("signal_dbm")
@@ -94,9 +99,8 @@ def detector_replay(lap: dict, drop_db: float = DROP_DB, confirm: int = CONFIRM)
             continue
         if base - sig > drop_db:
             run += 1
-            if run >= confirm:
+            if run == confirm:
                 out.append(s["t_car"])
-                run = 0
         else:
             run = 0
             base = 0.8 * base + 0.2 * sig

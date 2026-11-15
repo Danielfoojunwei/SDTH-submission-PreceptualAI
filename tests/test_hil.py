@@ -82,6 +82,12 @@ def test_positions_interpolate_and_never_extrapolate():
     xy = tel.positions([95.0, 100.0, 105.0, 110.0, 120.0], marks, WAYPOINTS, 0.0)
     assert np.isnan(xy[0]).all() and np.isnan(xy[4]).all()
     assert np.allclose(xy[2], [10.0, 6.0])
+    # A label typed in the other case still finds its waypoint; an unknown or ambiguous one does not.
+    typed = [{"t_mac": 100.0, "label": "a"}, {"t_mac": 105.0, "label": "zz"}, {"t_mac": 110.0, "label": "b"}]
+    assert np.allclose(tel.positions([105.0], typed, WAYPOINTS, 0.0), [[10.0, 6.0]])
+    assert tel.waypoint_of("a", {"A": [0, 0], "a": [1, 1]}) == "a" and tel.waypoint_of("B", {"b": [0, 0]}) == "b"
+    assert tel.waypoint_of("c", {"C": [0, 0], "c ": [1, 1]}) == "C" and tel.waypoint_of("x", WAYPOINTS) is None
+    assert tel.waypoint_of("q", {"Q": [0, 0], "q": [1, 1]}) == "q" and tel.waypoint_of("Q", {"q": 1, "Q": 2}) == "Q"
 
 
 def test_ghost_targets_and_caps():

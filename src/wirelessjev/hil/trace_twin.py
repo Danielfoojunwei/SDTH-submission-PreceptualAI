@@ -21,7 +21,7 @@ from __future__ import annotations
 import numpy as np
 
 from ..native.world import HORIZONS, POS_DT, World
-from .telemetry import positions
+from .telemetry import positions, waypoint_of
 
 FLOOR_DBM = -105.0
 CLIENT_TX_DBM = 15.0
@@ -73,7 +73,7 @@ def build_trace_world(laps: list[dict], site: dict, waypoints: dict, *, duration
         o = _lap_observations(lap, index)
         off = lap["meta"].get("car_minus_mac_s", 0.0)
         marks = sorted(lap["marks"], key=lambda m: m["t_mac"])
-        usable = [m for m in marks if m["label"] in waypoints]
+        usable = [m for m in marks if waypoint_of(m["label"], waypoints) is not None]
         if len(usable) < 2 or len(o) == 0:
             raise ValueError(f"lap {lap['meta'].get('name')!r} needs two waypoint marks and measurements")
         t0, t1 = usable[0]["t_mac"] + off, usable[-1]["t_mac"] + off

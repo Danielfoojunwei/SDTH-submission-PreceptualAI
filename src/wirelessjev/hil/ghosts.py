@@ -51,9 +51,12 @@ def fleet(n: int = 9, video: int = 1, bulk: int = 4) -> list[Ghost]:
 
 
 def check_target(target: str) -> str:
+    from ..carlink import MANAGEMENT_HOST
     ip = ipaddress.ip_address(target)
     if not (ip.is_private or ip.is_link_local) or ip.is_loopback or ip.is_multicast:
         raise ValueError("target must be a private or link-local unicast address on the test network")
+    if str(ip) == MANAGEMENT_HOST:
+        raise ValueError("target is the car's management address; ghost traffic must never go over the hotspot")
     return str(ip)
 
 
@@ -131,7 +134,7 @@ def sink(port: int, seconds: int) -> dict:
             "received_mbps": {k: round(v * 8 / 1e6 / seconds, 3) for k, v in sorted(got.items())}}
 
 
-def main(argv=None) -> int:
+def build_parser() -> argparse.ArgumentParser:
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     sub = ap.add_subparsers(dest="cmd", required=True)
     p = sub.add_parser("send")
@@ -144,7 +147,11 @@ def main(argv=None) -> int:
     p = sub.add_parser("sink")
     p.add_argument("--port", type=int, default=47000)
     p.add_argument("--seconds", type=int, default=120)
-    args = ap.parse_args(argv)
+    return ap
+
+
+def main(argv=None) -> int:
+    args = build_parser().parse_args(argv)
     if args.cmd == "send":
         out = send(args.target, args.port, fleet(args.ghosts, args.video, args.bulk), args.seconds)
     else:

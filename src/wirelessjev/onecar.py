@@ -64,8 +64,12 @@ def cmd_preflight(args) -> int:
     log = Log("preflight")
     ok = True
     if args.known_hosts:
-        pinned = known_hosts_has(args.known_hosts, args.host)
-        log.write("known_hosts", path=str(args.known_hosts), host=args.host, pinned=pinned)
+        try:
+            pinned = known_hosts_has(args.known_hosts, args.host)
+            log.write("known_hosts", path=str(args.known_hosts), host=args.host, pinned=pinned)
+        except OSError as exc:                       # a missing file is a failed check, not a crash
+            pinned = False
+            log.write("known_hosts_error", path=str(args.known_hosts), error=str(exc))
         ok &= pinned
     if args.wifi_json:
         try:
@@ -440,7 +444,7 @@ def cmd_capabilities(args, link=None) -> int:
     return 0
 
 
-def main(argv=None) -> int:
+def build_parser() -> argparse.ArgumentParser:
     ap = argparse.ArgumentParser(description=__doc__,
                                  formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--host", default="192.168.1.11")
@@ -484,7 +488,11 @@ def main(argv=None) -> int:
     p.add_argument("--period", type=float, default=0.1, choices=(0.1, 0.2, 0.5, 1.0))
     p.add_argument("--scan-every", type=int, default=30)
     p.add_argument("--note", default="")
-    args = ap.parse_args(argv)
+    return ap
+
+
+def main(argv=None) -> int:
+    args = build_parser().parse_args(argv)
     if args.cmd in ("switch", "roam") and not sys.stdin.isatty():
         print("switch needs an interactive terminal for the typed confirmation", file=sys.stderr)
         return 1
