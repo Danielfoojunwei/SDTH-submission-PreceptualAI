@@ -5,7 +5,7 @@ what a site owner asks about every other device on the floor: where is
 coverage weak, where is there no backup AP, and what happens if an AP fails.
 This is direction 8, "site-wide wireless intelligence".
 
-## What the report contains (`native/coverage.py`)
+## What the report contains (`native_ext/coverage.py`)
 From the learned map, on a 2 m grid over the floor the fleet drives:
 - **Coverage** at two service levels: basic (−75 dBm) and robot control (−67 dBm).
 - **Backup:** the share of floor where a second AP also reaches the level.
@@ -51,7 +51,7 @@ the report is built from the map and scored against ground truth.
 - **K4 (expected to fail):** exact weak-cell map with at least 70% right and 70% found. Development gave 53% and 59%. It is tested so the limit is on record.
 - **K5:** the AP whose failure loses the most covered floor is in the report's top three, in at least 5 of 6 scenes.
 
-Run: `python -m wirelessjev.native.coverage --campaign`.
+Run: `python -m wirelessjev.native_ext.coverage --campaign`.
 Results are appended below after the run.
 
 ## Results (15 Nov 2026)

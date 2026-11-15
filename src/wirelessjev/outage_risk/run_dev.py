@@ -14,7 +14,7 @@ from pathlib import Path
 import numpy as np
 
 from ..native.run import OUT
-from ..native.run_fleet import CONDITIONS, _vert
+from ..native_ext.run_fleet import CONDITIONS, _vert
 from ..native.world import build_world
 from . import dataset as ds
 from .models import Logistic, SmallNet, at_false_alarm_rate, auc, brier, yes_no
@@ -46,8 +46,8 @@ def gather(scenes, cond: str, duration: float, cache=None, model: str = "indepen
 
 def sensing_check(scenes, cond: str, duration: float, cache) -> dict:
     """Moving blockers only: the radio rule against a predictor that uses the robot's own obstacle sensing."""
-    from ..native.blockers import blocker_tracks
-    from ..native.sim import TELEMETRY_AHEAD_BLOCKS
+    from ..native_ext.blockers import blocker_tracks
+    from ..native_ext.sim_fleet import TELEMETRY_AHEAD_BLOCKS
     from ..twin.warehouse import AP_SITES
     sites = np.array(AP_SITES, dtype=np.float32)
     ys, rules, alarms, los = [], [], {h: [] for h in TELEMETRY_AHEAD_BLOCKS}, {h: [] for h in TELEMETRY_AHEAD_BLOCKS}

@@ -12,10 +12,10 @@ import json
 
 import numpy as np
 
-from ..native.blockers import blocker_tracks, truth_foresight
+from ..native_ext.blockers import blocker_tracks, truth_foresight
 from ..native.run import OUT
-from ..native.run_fleet import CONDITIONS, _vert
-from ..native.sim import BLOCK_SLOTS, SLOT, Policy, hidden_draws, simulate
+from ..native_ext.run_fleet import CONDITIONS, _vert
+from ..native_ext.sim_fleet import BLOCK_SLOTS, SLOT, Policy, hidden_draws, simulate
 from ..native.world import POS_DT, build_world
 from . import foresight as fo
 

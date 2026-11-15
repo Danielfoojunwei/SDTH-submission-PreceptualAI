@@ -13,10 +13,10 @@ import json
 
 import numpy as np
 
-from ..native.blockers import REACH_FRAC, blocker_tracks, reach_frac_for
+from ..native_ext.blockers import REACH_FRAC, blocker_tracks, reach_frac_for
 from ..native.run import OUT
-from ..native.run_fleet import CONDITIONS, _vert
-from ..native.sim import BLOCK_SLOTS, SLOT
+from ..native_ext.run_fleet import CONDITIONS, _vert
+from ..native_ext.sim_fleet import BLOCK_SLOTS, SLOT
 from ..native.world import build_world
 from . import dataset as ds
 from . import foresight as fo

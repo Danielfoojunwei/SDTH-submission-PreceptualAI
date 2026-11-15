@@ -6,7 +6,7 @@ The relay model was optimistic in two ways: a forwarded packet arrived in
 the same 10 ms slot, and a helper was always free to forward. This test
 removes both, in steps.
 
-## What changes (`native/sim.py`)
+## What changes (`native_ext/sim_fleet.py`)
 - **Delay** (`relay_delay_slots`): forwarding takes extra 10 ms slots. A control packet must arrive within 50 ms, so a forwarded packet that would land later does not count. With a 20 ms delay the relay has three tries per packet, not five; with 30 ms, two.
 - **Helper availability** (`relay_coop`): in each 100 ms block a helper is free to forward with this probability; otherwise it is busy with its own traffic.
 
@@ -44,7 +44,7 @@ moving blockers.
 
 **Reported, not tested:** the `main` condition for every arm; rescue counts; miss causes.
 
-Run: `python -m wirelessjev.native.run_fleet relay --workers 4`.
+Run: `python -m wirelessjev.native_ext.run_fleet relay --workers 4`.
 Results are appended below after the run.
 
 ## Results (15 Nov 2026)

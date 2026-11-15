@@ -3,7 +3,7 @@
 A second AP path is our strongest lever but can be copied. These three need
 control of the robot or a fleet, which 5G and Wi-Fi 8 do not have.
 
-## What is modelled (`src/wirelessjev/native/sim.py`)
+## What is modelled (`src/wirelessjev/native_ext/sim_fleet.py`)
 1. **Safe plan.** The robot carries `safe_plan_s` seconds of trajectory. It
    stops when the plan runs out, not after 200 ms of silence. With
    link-aware speed it halves its speed where the link is predicted weak, so

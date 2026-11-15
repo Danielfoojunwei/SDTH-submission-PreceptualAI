@@ -18,7 +18,7 @@ warning, and tests whether misses fall. Blockage is the moving-blocker model
 - **Hand-written rule, whole line:** the same, without knowing the AP height.
 - **Learned:** a small network (two hidden layers of 64). Inputs, in a frame aligned with the line to the AP: line length, the robot's planned velocity, and for the two nearest sensed forklifts their position and velocity along and across the line. No site geometry is given. Trained on scenes 400–401 (340,448 rows).
 
-**Response** (`native/sim.py`, `foresee`). A warning triggers an ordinary roam, done between packets, so a wrong warning costs a roam and not a miss.
+**Response** (`native_ext/sim_fleet.py`, `foresee`). A warning triggers an ordinary roam, done between packets, so a wrong warning costs a roam and not a miss.
 - One radio: leave a path that is about to be blocked if another AP scores better; do not plan a roam into a flagged path.
 - Two AP paths: the first path is left alone (the per-packet switch already covers it). The second path is re-pointed only when both paths are about to be blocked together.
 
@@ -93,7 +93,7 @@ known). All foresight arms use the 20 m limit.
 
 **Reported, not tested:** every arm against `nr_30ms`; moves per arm; miss causes.
 
-Run: `python -m wirelessjev.native.run_fleet foresight --workers 4`.
+Run: `python -m wirelessjev.native_ext.run_fleet foresight --workers 4`.
 Results are appended below after the run.
 
 ## Results (15 Nov 2026)
@@ -174,7 +174,7 @@ threshold 0.8, move limit 20 m, report latency 200 ms.
 - **S2:** fleet-shared warnings cut misses by at least 25% against no warning.
 - **S3 (`main`, no harm):** within 5 per million of no warning.
 
-Run: `python -m wirelessjev.native.run_fleet shared-sensing --workers 4`.
+Run: `python -m wirelessjev.native_ext.run_fleet shared-sensing --workers 4`.
 Results are appended below after the run.
 
 

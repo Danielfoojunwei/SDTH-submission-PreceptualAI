@@ -7,7 +7,7 @@ from __future__ import annotations
 
 import numpy as np
 
-from ..native.sim import TELEMETRY_AHEAD_BLOCKS, simulate
+from ..native_ext.sim_fleet import TELEMETRY_AHEAD_BLOCKS, simulate
 
 WINDOW = 5                      # ticks of history per example (0.5 s)
 PER_TICK = 9
@@ -146,7 +146,7 @@ def sensed_blocker_alarm(tr: dict, tracks: np.ndarray, sites: np.ndarray, ahead_
     `tracks` is (ticks, K, 2) blocker positions at the telemetry ticks. Returns
     rows aligned with `examples` (the first `window` - 1 ticks dropped).
     `line_of_sight` drops blockers hidden from the robot behind a rack."""
-    from ..native.blockers import lines_blocked
+    from ..native_ext.blockers import lines_blocked
     pos, site = tr["pos"], tr["site"]
     t_n, n = site.shape
     out = np.zeros((t_n, n), dtype=bool)

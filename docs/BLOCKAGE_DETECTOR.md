@@ -5,7 +5,7 @@ worth 9% on a single radio, and that knowing which paths are blocked *right
 now* is worth a further 63%. This is the first attempt to get that knowledge
 from signals the robot already has, with no learned model.
 
-## What is modelled (`src/wirelessjev/native/sim.py`, `block_detect`)
+## What is modelled (`src/wirelessjev/native_ext/sim_fleet.py`, `block_detect`)
 Every 100 ms the robot compares the level of its serving AP, averaged across
 that AP's bands, with a baseline.
 
@@ -79,7 +79,7 @@ on the same card); `shared+detect`.
 **Reported, not tested:** detections, roams, miss causes and stopped time
 for every arm.
 
-Run: `python -m wirelessjev.native.run_fleet detect --workers 4`.
+Run: `python -m wirelessjev.native_ext.run_fleet detect --workers 4`.
 Results are appended below after the run.
 
 ## Results (15 Nov 2026)

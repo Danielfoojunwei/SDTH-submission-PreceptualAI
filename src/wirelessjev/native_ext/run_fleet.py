@@ -10,9 +10,9 @@ from dataclasses import replace
 import json
 import time
 
-from .run import OUT
-from .sim import Policy, policies, simulate
-from .world import build_world
+from ..native.run import OUT
+from .sim_fleet import Policy, policies, simulate
+from ..native.world import build_world
 
 CONDITIONS = {"main": (0.01, 0.0), "stress": (0.03, 10.0)}
 LADDER_SCENES, FLEET_SCENES = (400, 401, 402, 403), tuple(range(550, 556))

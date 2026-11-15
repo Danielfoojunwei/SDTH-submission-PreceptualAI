@@ -4,7 +4,7 @@ The fleet's RadioMap exists to plan robot links. The same map answers
 questions the site owner has about every other device: where is coverage
 weak, where is there no backup AP, and what happens if an AP fails.
 
-    python -m wirelessjev.native.coverage --scene 400 --out artifacts/native/coverage_400
+    python -m wirelessjev.native_ext.coverage --scene 400 --out artifacts/native/coverage_400
 
 In the simulator the report is scored against ground truth. On a real site
 there is no ground truth; the same functions take any `predict(x, y)`.
@@ -18,7 +18,7 @@ from pathlib import Path
 import numpy as np
 
 from ..twin.warehouse import HEIGHT, WIDTH, make_warehouse
-from .world import BANDS, _path_losses, build_world
+from ..native.world import BANDS, _path_losses, build_world
 
 SERVICE_DBM = {"basic": -75.0, "control": -67.0}       # weakest usable level for each service
 CELL_M = 2.0
@@ -232,7 +232,7 @@ def main(argv=None) -> int:
     ap.add_argument("--dev", action="store_true", help="with --campaign: use development scenes 400-403 instead")
     args = ap.parse_args(argv)
     if args.campaign:
-        from .run import OUT
+        from ..native.run import OUT
         res = campaign((400, 401, 402, 403) if args.dev else COVERAGE_SCENES, args.survey_s)
         if not args.dev:
             (OUT / "coverage_report.json").write_text(json.dumps(res, indent=1))

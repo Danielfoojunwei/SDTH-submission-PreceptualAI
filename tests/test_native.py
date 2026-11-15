@@ -5,7 +5,7 @@ import numpy as np
 import pytest
 
 from wirelessjev.native.phy import LinkCurves, hierarchical_points
-from wirelessjev.native.sim import Policy, _chain, _mrr_chain, policies, simulate
+from wirelessjev.native_ext.sim_fleet import Policy, _chain, _mrr_chain, policies, simulate
 from wirelessjev.native.world import build_world
 
 
@@ -129,7 +129,7 @@ def test_blockage_detector_is_off_by_default_and_counts_detections(world):
 
 
 def test_detector_evaluation_uses_pooled_counts():
-    from wirelessjev.native.run_fleet import DETECT_SCENES, detect_arms, detect_eval
+    from wirelessjev.native_ext.run_fleet import DETECT_SCENES, detect_arms, detect_eval
     miss = {"nr_30ms": 50, "single": 300, "single+detect": 150, "single+oracle": 100, "shared": 4, "shared+detect": 4}
     rows = [{"scene": s, "arm": a, "condition": c, "control_misses": miss[a], "control_sent": 1_000_000,
              "control_miss": miss[a] / 1e6} for s in DETECT_SCENES for a in detect_arms() for c in ("main", "stress")]
@@ -192,8 +192,8 @@ def test_small_net_is_repeatable_and_rule_state_fires_on_a_sustained_drop():
 
 
 def test_moving_blockers_are_shared_deterministic_and_leave_the_default_alone(world):
-    from wirelessjev.native import blockers as bl
-    from wirelessjev.native.sim import hidden_draws
+    from wirelessjev.native_ext import blockers as bl
+    from wirelessjev.native_ext.sim_fleet import hidden_draws
     tr = bl.blocker_tracks(7, 300, 5)
     assert tr.shape == (300, 5, 2) and np.array_equal(tr, bl.blocker_tracks(7, 300, 5))
     step = np.linalg.norm(np.diff(tr, axis=0), axis=2)
@@ -274,8 +274,8 @@ def test_sensed_blocker_alarm_predicts_a_crossing_and_respects_racks():
 
 
 def test_foresight_is_inert_unless_asked_for_and_runs_with_warnings(world):
-    from wirelessjev.native.blockers import truth_foresight
-    from wirelessjev.native.sim import hidden_draws
+    from wirelessjev.native_ext.blockers import truth_foresight
+    from wirelessjev.native_ext.sim_fleet import hidden_draws
     b = np.zeros((6, 1, 1), dtype=bool)
     b[4] = True
     assert truth_foresight(b, ahead=2)[:, 0, 0].tolist() == [False, False, True, True, False, False]
@@ -336,9 +336,9 @@ def test_sensing_and_foresight_predictors(tmp_path):
 
 
 def test_foresight_move_limit_and_campaign_evaluation(world):
-    from wirelessjev.native.blockers import truth_foresight
-    from wirelessjev.native.run_fleet import FORESIGHT_SCENES, foresight_eval
-    from wirelessjev.native.sim import hidden_draws
+    from wirelessjev.native_ext.blockers import truth_foresight
+    from wirelessjev.native_ext.run_fleet import FORESIGHT_SCENES, foresight_eval
+    from wirelessjev.native_ext.sim_fleet import hidden_draws
     pol = {p.name: p for p in policies()}
     nat = replace(pol["native"], gate=True, cadence_roam=True, foresee=True)
     kw = dict(collision_lambda=0.01, interference=True, blockage_model="moving")
@@ -359,7 +359,7 @@ def test_foresight_move_limit_and_campaign_evaluation(world):
 
 
 def test_relay_realism_knobs_only_weaken_the_relay(world):
-    from wirelessjev.native.run_fleet import RELAY_LEVELS, RELAY_SCENES, relay_eval
+    from wirelessjev.native_ext.run_fleet import RELAY_LEVELS, RELAY_SCENES, relay_eval
     pol = {p.name: p for p in policies()}
     nat = replace(pol["native"], gate=False, relay=True)
     kw = dict(collision_lambda=0.03, interference=True, blockage_model="moving")
@@ -381,7 +381,7 @@ def test_relay_realism_knobs_only_weaken_the_relay(world):
 
 
 def test_coverage_report_on_a_known_floor():
-    from wirelessjev.native import coverage as cv
+    from wirelessjev.native_ext import coverage as cv
     gx, gy = cv.grid(2.0, width=20.0, height=10.0)
     assert gx.shape == (5, 10)
     # Two APs: one at the west end, one at the east end; level falls 3 dB per 2 m.
@@ -411,8 +411,8 @@ def test_coverage_report_on_a_known_floor():
 
 
 def test_site_geometry_setting_and_radio_labels(world):
-    from wirelessjev.native import blockers as bl
-    from wirelessjev.native.sim import hidden_draws
+    from wirelessjev.native_ext import blockers as bl
+    from wirelessjev.native_ext.sim_fleet import hidden_draws
     from wirelessjev.outage_risk import dataset as ds, foresight as fo
     assert abs(bl.reach_frac_for(6.0) - bl.REACH_FRAC) < 1e-9 and bl.reach_frac_for(10.0) < bl.REACH_FRAC
     n_slots = int(world.duration_s / 0.01)
@@ -431,4 +431,34 @@ def test_site_geometry_setting_and_radio_labels(world):
     # Rows are one per robot that senses something, for the AP it is using.
     has = sensed.seen[: len(tr["slot"]) - 10].any(axis=2)
     assert len(x) == int(has.sum())
+
+
+def test_extended_simulator_matches_the_pinned_one_by_default(world):
+    """sim.py is pinned by checksum in earlier evidence archives and must not be edited. sim_fleet.py
+    adds optional features; with none switched on it must give the same results."""
+    import subprocess
+    from pathlib import Path
+    from wirelessjev.native import sim as pinned
+    from wirelessjev.native_ext import sim_fleet as ext
+    old, new = {p.name: p for p in pinned.policies()}, {p.name: p for p in ext.policies()}
+    assert set(old) == set(new)
+    cases = [(name, {}) for name in ("legacy", "ft11r", "mlo_split", "native")]
+    cases += [("native", dict(gate=True, cadence_roam=True)), ("native", dict(gate=True, dual_radio=True, radio2="shared"))]
+    for name, extra in cases:
+        a = pinned.simulate(world, replace(old[name], **extra), collision_lambda=0.01, interference=True)
+        b = ext.simulate(world, replace(new[name], **extra), collision_lambda=0.01, interference=True)
+        assert set(a) <= set(b), name
+        for k, v in a.items():
+            assert b[k] == v or (v != v and b[k] != b[k]), (name, k)          # equal, or both NaN
+    for args, kw in ((("nr_30ms", "nr"), dict(nr_ho_cost_s=0.03)), (("wifi8", "wifi8"), dict(roam_cost_s=0.0, scan_period_s=30.0))):
+        a = pinned.simulate(world, pinned.Policy(*args, **kw), collision_lambda=0.01, interference=True)
+        b = ext.simulate(world, ext.Policy(*args, **kw), collision_lambda=0.01, interference=True)
+        assert all(b[k] == v or (v != v and b[k] != b[k]) for k, v in a.items()), args
+    # The pinned file is unchanged from the commit the archives were built on.
+    repo = Path(__file__).resolve().parents[1]
+    if (repo / ".git").exists():
+        r = subprocess.run(["git", "diff", "--quiet", "2a043e543b", "--", "src/wirelessjev/native/sim.py"], cwd=repo)
+        assert r.returncode in (0, 128, 129), "src/wirelessjev/native/sim.py was edited; put new features in native_ext/sim_fleet.py"
+        r = subprocess.run(["git", "diff", "--quiet", "2a043e543b", "--", "src/wirelessjev/native"], cwd=repo)
+        assert r.returncode in (0, 128, 129), "src/wirelessjev/native/ changed; earlier archives checksum every file in it"
 

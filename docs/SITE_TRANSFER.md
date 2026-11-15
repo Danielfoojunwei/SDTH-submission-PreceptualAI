@@ -61,5 +61,5 @@ which blocks whatever the AP height.
 - A learned model would earn its place here only if real obstacle sensing is messy in ways a geometric rule cannot handle. That is a question for real sensor data, not for this simulator.
 
 Code kept: `reach_frac` (site geometry), `radio_label_rows` (training with
-no ground truth), and the unrun `transfer` campaign in `run_fleet.py`.
+no ground truth), and the unrun `transfer` campaign in `native_ext/run_fleet.py`.
 Raw tuning rows: `artifacts/native/transfer_dev.jsonl`.

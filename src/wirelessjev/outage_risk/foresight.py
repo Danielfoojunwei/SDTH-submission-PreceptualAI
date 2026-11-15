@@ -19,7 +19,7 @@ from dataclasses import dataclass
 
 import numpy as np
 
-from ..native.blockers import FORESEE_BLOCKS, RADIUS_M, REACH_FRAC
+from ..native_ext.blockers import FORESEE_BLOCKS, RADIUS_M, REACH_FRAC
 from .dataset import _rack_between
 from .models import SmallNet
 
@@ -149,7 +149,7 @@ def pair_features(pos: np.ndarray, sites: np.ndarray, s: Sensed, t: int):
 def training_rows(pos, sites, s: Sensed, truth: np.ndarray, every: int = 2, near_m: float = np.inf):
     """(rows, N_FEATURES), (rows,) labels: pairs whose robot knows of an obstacle within `near_m`,
     every `every` ticks. Label: the path is blocked at some time in the next second."""
-    from ..native.blockers import truth_foresight
+    from ..native_ext.blockers import truth_foresight
     target = truth_foresight(truth, FORESEE_BLOCKS)
     xs, ys = [], []
     for t in range(0, pos.shape[0] - FORESEE_BLOCKS, every):

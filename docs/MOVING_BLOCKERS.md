@@ -6,7 +6,7 @@ path all rely on failing independently of the first path. Real blockers are
 objects. One forklift blocks several robots, and can block a robot's paths
 to two APs at once. This test puts the headline claims under that.
 
-## What is modelled (`src/wirelessjev/native/blockers.py`)
+## What is modelled (`src/wirelessjev/native_ext/blockers.py`)
 - **Blockers:** 13 forklifts. Each repeats: drive along its aisle to a random spot (1.0–2.5 m/s), stop there for 0–20 s half the time, drive to a cross aisle, drive along it to another aisle.
 - **Blocking rule:** a robot's path to an AP is blocked (15 dB, all bands, as before) when a forklift is within 0.75 m of the straight line between them, ahead of the robot, inside the first 38.6% of that line from the robot. That fraction is where the line runs below the top of a 2.5 m forklift for a 0.3 m robot antenna and a 6 m AP.
 - **Relay links:** the line between two robots is blocked by a forklift anywhere along it.
@@ -81,7 +81,7 @@ moving blockers with the settings above frozen.
 **Reported, not tested:** `shared+detect` against `shared`; how much each
 arm degrades from the independent model; rescue counts; miss causes.
 
-Run: `python -m wirelessjev.native.run_fleet moving --workers 4`.
+Run: `python -m wirelessjev.native_ext.run_fleet moving --workers 4`.
 Results are appended below after the run.
 
 ## Results (15 Nov 2026)
