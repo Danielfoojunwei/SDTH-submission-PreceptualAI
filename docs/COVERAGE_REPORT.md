@@ -53,3 +53,41 @@ the report is built from the map and scored against ground truth.
 
 Run: `python -m wirelessjev.native.coverage --campaign`.
 Results are appended below after the run.
+
+## Results (15 Nov 2026)
+Scenes 610–615, 100 robots, 60 s survey. Raw rows:
+`artifacts/native/coverage_report.json`. All figures are simulation.
+
+**Verdicts** (pooled over six scenes)
+
+| # | Hypothesis | Result |
+|---|---|---|
+| K1 | Strongest-AP level error ≤ 4.0 dB | **Pass**: 3.6 dB RMSE |
+| K2 | "No backup AP" map: ≥ 80% right, ≥ 90% found | **Pass**: 88% right, 95% found |
+| K3 | ≥ 60% of clearly weak cells found; ≤ 5% of clearly fine cells flagged | **Pass**: 77% found, 2.5% flagged |
+| K4 | Exact weak-cell map: ≥ 70% right and found (expected to fail) | **Fail**: 51% right, 59% found |
+| K5 | Worst AP failure in the report's top three, ≥ 5 of 6 scenes | **Pass**: 6 of 6 (ranked first in 4) |
+
+**Per scene**
+
+| Scene | Level error (dB) | Floor covered, control level | Floor with a backup AP | Largest hole (m²) | Report's rank of the worst AP failure |
+|---|---|---|---|---|---|
+| 610 | 3.40 | 89.0% | 12.3% | 92 | 1 |
+| 611 | 3.24 | 85.3% | 9.0% | 116 | 1 |
+| 612 | 3.58 | 84.8% | 9.7% | 152 | 1 |
+| 613 | 3.38 | 89.3% | 9.2% | 92 | 1 |
+| 614 | 4.46 | 87.6% | 13.7% | 120 | 3 |
+| 615 | 3.18 | 86.7% | 8.6% | 124 | 2 |
+
+Example map (scene 610): `docs/figures/coverage_scene610.png`.
+
+## What the results say
+1. **The report is reliable for the questions a site owner asks first.** Where there is no backup AP, where coverage is clearly weak, and which AP failure would hurt most: all three are answered correctly on fresh scenes from one minute of robot driving.
+2. **It is not a cell-exact survey.** The exact weak-cell map is right half the time, because most weak cells sit within 3 dB of the line and the map's error is 3.6 dB. The report should show a "marginal" band, not a sharp edge.
+3. **This is the place where a more accurate radio map pays.** Control did not improve with lower signal error; a coverage report does, directly. Codex's learned radio models cut signal error by about a quarter in its tests. Using one here is the natural next step, and the first product use where that accuracy matters.
+4. **A finding about the simulated site itself:** only about one tenth of the floor has a second AP at the control level (−67 dBm). Basic coverage (−75 dBm) is complete.
+
+## Not done
+- A version for real laps (the 17 Nov data), where there is no ground truth.
+- A "marginal" band in the report and the map.
+- Trying a learned radio model in place of RadioMap for this report.
