@@ -177,3 +177,37 @@ threshold 0.8, move limit 20 m, report latency 200 ms.
 Run: `python -m wirelessjev.native.run_fleet shared-sensing --workers 4`.
 Results are appended below after the run.
 
+
+## Results: fleet-shared sensing (15 Nov 2026)
+Scenes 600–605, 100 robots, 300 s, moving blockers, two AP paths. Raw rows:
+`artifacts/native/foresight_shared_sensing.json`. Intervals are 95%
+bootstrap over six scenes; ratio intervals are paired by scene.
+
+**Verdicts**
+
+| # | Hypothesis | Result |
+|---|---|---|
+| S1 | Fleet-shared warnings give no more misses than own-sensing warnings (`stress`) | **Fail**: 190.0 against 179.7; ratio 1.06 [0.97–1.16]; no more in only 2 of 6 scenes |
+| S2 | Fleet-shared warnings cut misses ≥ 25% against no warning (`stress`) | **Pass**: 41% fewer (320.0 → 190.0) |
+| S3 | No harm in `main` | **Pass**: 20.3 against 26.9 |
+
+**Missed control packets per million**
+
+| Arm | Realistic | Stress |
+|---|---|---|
+| Private 5G model | 160.8 [142.8–184.5] | 160.8 [142.8–184.5] |
+| Two AP paths | 26.9 [17.8–36.4] | 320.0 [261.9–377.2] |
+| + warnings, own sensing | 15.8 [11.7–20.0] | 179.7 [146.4–218.6] |
+| + warnings, fleet-shared sensing | 20.3 [10.6–32.5] | 190.0 [153.9–226.1] |
+| + perfect warnings | 11.4 [4.4–20.0] | 131.1 [98.3–167.8] |
+
+## What these results say
+1. **Sharing sensing across the fleet adds nothing.** Fleet-shared warnings were not better than a robot's own, in stress or in the realistic condition. The lead on the tuning scenes (127 against 148) did not hold on fresh scenes.
+2. **Why:** the response only acts on forklifts close to the robot (it only moves to APs within 20 m, and only when both paths are about to be blocked). A robot's own sensing already covers those. What sharing adds is knowledge of far forklifts, which this response cannot use, delivered 200 ms late.
+3. **Own-sensing foresight replicated, more strongly.** On this second, independent set of scenes it cut two-path misses in stress by 44% (320.0 → 179.7; ratio 0.56 [0.47–0.66]), against 24% in the first test. It also helped in the realistic condition here (26.9 → 15.8), where the first test saw nothing. Two tests now agree on the direction; the size is somewhere between a quarter and under a half.
+4. **Still short of the 5G model without the relay** in stress: 179.7 against 160.8, though the intervals now overlap.
+
+## Where this leaves foresight
+- Keep: warnings from a robot's own obstacle sensing, for robots with two AP paths.
+- Drop: fleet-shared sensing for this purpose.
+- The gap to a perfect warning (179.7 against 131.1) is now mostly sensing noise and missed detections within range, not range itself.
