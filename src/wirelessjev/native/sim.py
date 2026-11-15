@@ -108,6 +108,12 @@ class Policy:
     block_drop_db: float = 10.0   # drop below the robot's own recent level that counts as blocked
     block_confirm: int = 2        # consecutive 100 ms readings needed (one alone is usually a fade)
     block_hold_s: float = 2.0     # how long a flagged robot-AP path is avoided
+    # Foresight (docs/FORESIGHT.md): act on a warning that a path will be blocked within the next
+    # second, before it happens. The warning comes from outside the radio (obstacle sensing); the
+    # response is a normal between-packets roam, so a wrong warning costs little.
+    foresee: bool = False
+    foresee_max_m: float = 0.0    # only move to an AP this close (0 = any): a far AP's line can be blocked
+                                  # by an obstacle beyond the robot's sensing range, so "no warning" is not "clear"
 
 
 SCAN_S = 0.03
@@ -221,7 +227,10 @@ def simulate(world: World, policy: Policy, *, seed: int = 0, curves: LinkCurves 
              duration_s: float | None = None, blockage_rate: float = BLOCKAGE_RATE_PER_MIN,
              collision_lambda: float = 0.0, interference: bool = False,
              roam_gate=None, decision_trace=None, telemetry: list | None = None,
-             blockage_model: str = "independent", n_blockers: int | None = None) -> dict:
+             blockage_model: str = "independent", n_blockers: int | None = None,
+             foresight: np.ndarray | None = None) -> dict:
+    """foresight: (blocks, N, S) bool, the warning available at each 100 ms block that a robot-AP
+    path will be blocked within the next second. Only policies with `foresee` read it."""
     if policy.kind == "nr":
         return simulate_nr(world, policy, seed=seed, curves=curves, duration_s=duration_s,
                            blockage_rate=blockage_rate, blockage_model=blockage_model, n_blockers=n_blockers)
@@ -321,6 +330,9 @@ def simulate(world: World, policy: Policy, *, seed: int = 0, curves: LinkCurves 
     detections = 0
     fc_mean_sites = np.zeros((n, s))
     fc_bands = None
+    use_foresight = policy.kind == "native" and policy.foresee and foresight is not None
+    fs_now = None
+    foresight_moves = 0
     aux = np.random.default_rng(4242 + world.seed)        # relay and BLE fading, same for every policy
     rr_fade = np.zeros((n, n), dtype=np.float32)
     rr_snr = None
@@ -482,6 +494,10 @@ def simulate(world: World, policy: Policy, *, seed: int = 0, curves: LinkCurves 
                 score = score - policy.load_penalty * load[None, :]
                 if policy.block_detect:
                     score = score - BLOCKAGE_DB * (avoid_until > k)
+                if fs_now is not None:
+                    # Do not plan a roam into a path about to be blocked. Robots with a second path are
+                    # left alone: their per-packet switch already covers one blocked path.
+                    score = score - BLOCKAGE_DB * (fs_now & ~dual_mask[:, None])
                 best = np.argmax(score, axis=1)
                 gain = score[ar, best] - score[ar, site]
                 go = (gain >= policy.roam_gain_db) & (best != site) & (outage_until <= k)
@@ -559,6 +575,8 @@ def simulate(world: World, policy: Policy, *, seed: int = 0, curves: LinkCurves 
                 sc2 = (fc[:, :6].max(axis=3)).mean(1)              # (N,S)
                 if policy.block_detect:
                     sc2 = sc2 - BLOCKAGE_DB * (avoid_until > k)
+                if fs_now is not None:
+                    sc2 = sc2 - BLOCKAGE_DB * fs_now
                 sc2[ar, site] = -np.inf
                 cand = np.argmax(sc2, axis=1)
                 move2 = (site2 < 0) | ((cand != site2) & (sc2[ar, cand] - sc2[ar, np.maximum(site2, 0)] >= 5.0))
@@ -620,6 +638,33 @@ def simulate(world: World, policy: Policy, *, seed: int = 0, curves: LinkCurves 
                               "expected": fc_bands[ar, site].astype(np.float32), "roaming": outage_until > k,
                               "missed": ctrl_miss_r.copy(), "sent": ctrl_total_r.copy(),
                               "blocked": np.stack([blocked[a][ar, site] for a in ahead], axis=1)})
+
+        if use_foresight and k % BLOCK_SLOTS == 0 and k > 0:
+            fs_now = foresight[min(k // BLOCK_SLOTS, foresight.shape[0] - 1)]
+            alt = fc_mean_sites - BLOCKAGE_DB * fs_now
+            if policy.foresee_max_m > 0 and world.pos is not None:
+                xy_f = world.pos[min(k // slots_per_pos, world.pos.shape[0] - 1)]
+                far = np.hypot(xy_f[:, None, 0] - world.sites[None, :, 0], xy_f[:, None, 1] - world.sites[None, :, 1]) > policy.foresee_max_m
+                far[ar, site] = False                              # staying put is always allowed
+                alt = np.where(far, -np.inf, alt)
+            best_f = np.argmax(alt, axis=1)
+            # Primary: leave a path that is about to be blocked, between packets, if somewhere else is better.
+            leave = fs_now[ar, site] & (best_f != site) & (outage_until <= k) & (pending_roam < 0) & ~dual_mask
+            for i in np.nonzero(leave)[0]:
+                foresight_moves += 1
+                move_primary(i, int(best_f[i]), policy.roam_cost_s)
+            if dual:
+                # Second path: re-point it only when both paths are about to be blocked together.
+                alt2 = alt.copy()
+                alt2[ar, site] = -np.inf
+                cand = np.argmax(alt2, axis=1)
+                s2 = np.maximum(site2, 0)
+                move2 = (dual_mask & (site2 >= 0) & fs_now[ar, s2] & fs_now[ar, site] & (cand != site2)
+                         & ~fs_now[ar, cand] & (outage2_until <= k))
+                for i in np.nonzero(move2)[0]:
+                    foresight_moves += 1
+                    site2[i] = cand[i]
+                    outage2_until[i] = k + int(round(policy.roam_cost_s / SLOT))
 
         if policy.kind == "native" and policy.block_detect and k % BLOCK_SLOTS == 0 and k > 0:
             # Level of the serving AP across its bands, from the robot's own lagged measurement.
@@ -956,6 +1001,7 @@ def simulate(world: World, policy: Policy, *, seed: int = 0, curves: LinkCurves 
         "slow_fraction": float(slow_slots / (n_slots * n)),
         "task_throughput": float(1 - plan_stopped / (n_slots * n) - 0.5 * slow_slots / (n_slots * n)),
         "relay_rescues": relay_used, "ble_rescues": ble_used, "blockage_detections": detections,
+        "foresight_moves": foresight_moves,
         "per_robot_control_miss": (ctrl_miss_r / np.maximum(ctrl_total_r, 1)).round(6).tolist(),
         "per_robot_video_on_time": (video_ok_r / np.maximum(video_gen_r, 1e-9)).round(6).tolist(),
         "focus_control_miss": float(ctrl_miss_r[focus].sum() / max(ctrl_total_r[focus].sum(), 1)) if focus.any() else None,

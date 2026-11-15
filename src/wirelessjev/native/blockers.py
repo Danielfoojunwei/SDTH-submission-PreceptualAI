@@ -91,3 +91,16 @@ def blocked_moving(world, n_blocks: int, n_blockers: int = N_BLOCKERS, pos_per_b
         p = world.pos[min(int(k * pos_per_block), last)].astype(np.float32)
         out[k] = lines_blocked(p[:, None, :], sites[None, :, :], tracks[k])
     return out
+
+
+FORESEE_BLOCKS = 10                                              # one second of warning
+
+
+def truth_foresight(blocked: np.ndarray, ahead: int = FORESEE_BLOCKS) -> np.ndarray:
+    """Perfect warning: at each block, whether the path is blocked at any time in the next `ahead` blocks."""
+    out = np.zeros_like(blocked)
+    n = blocked.shape[0]
+    for j in range(1, ahead + 1):
+        out[:n - j] |= blocked[j:]
+    return out
+

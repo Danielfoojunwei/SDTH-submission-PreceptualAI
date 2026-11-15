@@ -271,3 +271,89 @@ def test_sensed_blocker_alarm_predicts_a_crossing_and_respects_racks():
     assert ds.sensed_blocker_alarm(tr, tracks, far_ap, 0, window=1).any()
     assert not ds.sensed_blocker_alarm(tr, tracks, far_ap, 0, window=1, line_of_sight=True).any()
     assert ds._rack_between(np.array([[20.0, 13.0]]), np.array([[20.0, 19.0], [25.0, 13.0], [60.0, 19.0]])).tolist() == [[True, False, False]]
+
+
+def test_foresight_is_inert_unless_asked_for_and_runs_with_warnings(world):
+    from wirelessjev.native.blockers import truth_foresight
+    from wirelessjev.native.sim import hidden_draws
+    b = np.zeros((6, 1, 1), dtype=bool)
+    b[4] = True
+    assert truth_foresight(b, ahead=2)[:, 0, 0].tolist() == [False, False, True, True, False, False]
+    pol = {p.name: p for p in policies()}
+    nat = replace(pol["native"], gate=True, cadence_roam=True)
+    kw = dict(collision_lambda=0.01, interference=True, blockage_model="moving")
+    _, blocked, _ = hidden_draws(world, int(world.duration_s / 0.01), blockage_model="moving")
+    fs = truth_foresight(blocked)
+    base = simulate(world, nat, **kw)
+    ignored = simulate(world, nat, foresight=fs, **kw)                               # warnings given, policy does not read them
+    silent = simulate(world, replace(nat, foresee=True), foresight=np.zeros_like(fs), **kw)   # reads them, none raised
+    assert base["control_misses"] == ignored["control_misses"] == silent["control_misses"]
+    assert base["foresight_moves"] == 0 and silent["foresight_moves"] == 0
+    for p in (replace(nat, foresee=True), replace(nat, foresee=True, dual_radio=True, radio2="shared")):
+        r = simulate(world, p, foresight=fs, **kw)
+        assert 0 <= r["control_miss"] <= 1 and r["foresight_moves"] >= 0
+
+
+def test_sensing_and_foresight_predictors(tmp_path):
+    from wirelessjev.outage_risk import foresight as fo
+    t_n = 30
+    # Robot parked at (20, 13); AP 20 m east in its aisle; a forklift drives at it from x = 31 at 2 m/s.
+    pos = np.tile(np.array([[[20.0, 13.0]]], dtype=np.float32), (t_n, 1, 1))
+    sites = np.array([[40.0, 13.0], [20.0, 33.0]], dtype=np.float32)
+    tracks = np.zeros((t_n, 2, 2), dtype=np.float32)
+    tracks[:, 0, 0], tracks[:, 0, 1] = 31.0 - 0.2 * np.arange(t_n), 13.0
+    tracks[:, 1] = (22.0, 19.0)                                    # a second forklift parked behind the rack row
+    perfect = fo.sense(pos, tracks, 1, p_detect=1.0, sigma_m=0.0)
+    assert perfect.seen[:, 0, 0].tolist() == [bool(31.0 - 0.2 * k - 20.0 < fo.RANGE_M) for k in range(t_n)]
+    assert not perfect.seen[:, 0, 1].any()                         # hidden by the rack
+    assert np.allclose(perfect.vel[11:, 0, 0], [-2.0, 0.0], atol=1e-3)       # first seen at tick 6, so known from 11
+    noisy = fo.sense(pos, tracks, 1)
+    again = fo.sense(pos, tracks, 1)
+    assert np.array_equal(noisy.seen, again.seen) and np.array_equal(noisy.pos, again.pos)
+    truth = fo.truth_blocked(pos, sites, tracks)
+    assert truth.shape == (t_n, 1, 2) and truth[:, 0, 0].any() and not truth[:, 0, 1].any()
+    first_blocked = int(np.argmax(truth[:, 0, 0]))
+    warn = fo.geometric_foresight(pos, sites, perfect)
+    first_warn = int(np.argmax(warn[:, 0, 0]))
+    assert warn[:, 0, 0].any() and 5 <= first_blocked - first_warn <= 10 and not warn[:, 0, 1].any()
+    # Not knowing the AP height (whole line counts) warns earlier.
+    assert int(np.argmax(fo.geometric_foresight(pos, sites, perfect, frac=1.0)[:, 0, 0])) < first_warn
+    f, has = fo.pair_features(pos, sites, perfect, 12)
+    assert f.shape == (1, 2, fo.N_FEATURES) and has.tolist() == [True]
+    assert abs(f[0, 0, 0] - 20.0) < 1e-4 and abs(f[0, 0, 3] - (31.0 - 2.4 - 20.0)) < 1e-3 and abs(f[0, 0, 5] + 2.0) < 1e-3
+    assert abs(f[0, 1, 4] + (31.0 - 2.4 - 20.0)) < 1e-3              # same forklift, seen across the line to the other AP
+    x, y = fo.training_rows(pos, sites, perfect, truth, every=1)
+    assert x.shape[1] == fo.N_FEATURES and len(x) == len(y) and y.any()
+    rng = np.random.default_rng(0)
+    xs = rng.normal(size=(2000, fo.N_FEATURES)).astype(np.float32)
+    ys = xs[:, 3] > 0.3
+    m = fo.LearnedForesight(epochs=15).fit(xs, ys)
+    m.save(tmp_path / "m.pt")
+    m2 = fo.LearnedForesight.load(tmp_path / "m.pt")
+    assert np.allclose(m.net.predict(xs), m2.net.predict(xs), atol=1e-6)
+    s = fo.score(np.array([True, True, False, False]), np.array([True, False, True, False]))
+    assert s["caught"] == 0.5 and s["false_alarm_rate"] == 0.5 and s["precision"] == 0.5
+
+
+def test_foresight_move_limit_and_campaign_evaluation(world):
+    from wirelessjev.native.blockers import truth_foresight
+    from wirelessjev.native.run_fleet import FORESIGHT_SCENES, foresight_eval
+    from wirelessjev.native.sim import hidden_draws
+    pol = {p.name: p for p in policies()}
+    nat = replace(pol["native"], gate=True, cadence_roam=True, foresee=True)
+    kw = dict(collision_lambda=0.01, interference=True, blockage_model="moving")
+    _, blocked, _ = hidden_draws(world, int(world.duration_s / 0.01), blockage_model="moving")
+    fs = truth_foresight(blocked)
+    free = simulate(world, nat, foresight=fs, **kw)
+    wide = simulate(world, replace(nat, foresee_max_m=1e6), foresight=fs, **kw)       # a limit nothing exceeds changes nothing
+    tight = simulate(world, replace(nat, foresee_max_m=0.5), foresight=fs, **kw)      # no AP is that close: never moves
+    assert free["control_misses"] == wide["control_misses"] and free["foresight_moves"] == wide["foresight_moves"]
+    assert tight["foresight_moves"] == 0
+    miss = {"nr_30ms": 170, "single": 3000, "single+foresee[truth]": 1700, "single+foresee[learned]": 2800, "shared": 200,
+            "shared+foresee[truth]": 110, "shared+foresee[learned]": 150, "shared+foresee[geometric]": 160}
+    rows = [{"scene": s, "arm": a, "condition": c, "control_misses": m, "control_sent": 1_000_000, "control_miss": m / 1e6}
+            for s in FORESIGHT_SCENES for a, m in miss.items() for c in ("main", "stress")]
+    e = foresight_eval(rows)
+    assert e["F1"]["pass"] and e["F2"]["pass"] and e["F3"]["pass"] and e["F4"]["pass"] and e["F5"]["pass"]
+    assert abs(e["F1"]["ratio"] - 0.75) < 1e-9 and e["F1"]["scenes"] == 6
+
