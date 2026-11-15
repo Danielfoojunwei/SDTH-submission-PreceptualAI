@@ -91,11 +91,11 @@ def _blocked_by(start, sites, blk, mask, frac, radius):
     return ((t > 0) & (t <= frac) & (perp < radius) & mask[:, None, :]).any(-1)
 
 
-def truth_blocked(pos: np.ndarray, sites: np.ndarray, tracks: np.ndarray) -> np.ndarray:
+def truth_blocked(pos: np.ndarray, sites: np.ndarray, tracks: np.ndarray, frac: float = REACH_FRAC) -> np.ndarray:
     """(T, N, S) bool: the moving-blocker truth, from positions alone."""
     full = np.ones((pos.shape[1], tracks.shape[1]), dtype=bool)
     return np.stack([_blocked_by(pos[t], sites, np.broadcast_to(tracks[t][None], (pos.shape[1],) + tracks[t].shape), full,
-                                 REACH_FRAC, RADIUS_M) for t in range(pos.shape[0])])
+                                 frac, RADIUS_M) for t in range(pos.shape[0])])
 
 
 def geometric_foresight(pos: np.ndarray, sites: np.ndarray, s: Sensed, *, frac: float = REACH_FRAC,
@@ -209,3 +209,29 @@ def score(pred: np.ndarray, truth_ahead: np.ndarray) -> dict:
     return {"caught": float(p[y].mean()) if y.any() else float("nan"),
             "false_alarm_rate": float(p[~y].mean()) if (~y).any() else float("nan"),
             "precision": float(y[p].mean()) if p.any() else float("nan"), "warnings": int(p.sum()), "events": int(y.sum())}
+
+
+def radio_label_rows(tr: dict, sites: np.ndarray, s: Sensed):
+    """Training rows a real site can produce, with no ground truth.
+
+    Input: what the robot's obstacle sensing reports now, for the AP it is
+    using. Label: its own radio rule (a drop on every band, see
+    dataset.rule_state) fires within the next second. The rule misses about a
+    third of blockages and has a few false alarms, so these labels are noisy.
+    `tr` is simulator telemetry; `s` is the sensing at the same ticks."""
+    from .dataset import rule_state
+    alarm, site, pos = rule_state(tr), tr["site"], tr["pos"]
+    t_n, n = alarm.shape
+    ahead = np.zeros_like(alarm)
+    for j in range(1, FORESEE_BLOCKS + 1):
+        ahead[:t_n - j] |= alarm[j:]
+    xs, ys = [], []
+    ar = np.arange(n)
+    for t in range(t_n - FORESEE_BLOCKS):
+        f, nearest = pair_features(pos, sites, s, t)
+        has = np.isfinite(nearest)
+        if has.any():
+            xs.append(f[ar, site[t]][has])
+            ys.append(ahead[t][has])
+    return np.concatenate(xs), np.concatenate(ys)
+

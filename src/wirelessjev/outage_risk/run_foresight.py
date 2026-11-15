@@ -31,14 +31,15 @@ def block_positions(world, n_blocks: int) -> np.ndarray:
     return world.pos[idx].astype(np.float32)
 
 
-def foresights_for(world, duration: float, model: fo.LearnedForesight | None = None, sources=SOURCES) -> dict:
+def foresights_for(world, duration: float, model: fo.LearnedForesight | None = None, sources=SOURCES,
+                   reach_frac: float | None = None) -> dict:
     """Every warning source for one world, as (blocks, N, S) arrays the simulator can read."""
     n_blocks = int(round(duration / SLOT)) // BLOCK_SLOTS + 1
     pos, sites = block_positions(world, n_blocks), world.sites.astype(np.float32)
     tracks = blocker_tracks(world.seed, n_blocks)
     out = {}
     if "truth" in sources:
-        _, blocked, _ = hidden_draws(world, int(round(duration / SLOT)), blockage_model="moving")
+        _, blocked, _ = hidden_draws(world, int(round(duration / SLOT)), blockage_model="moving", reach_frac=reach_frac)
         out["truth"] = truth_foresight(blocked)
     sensed = fo.sense(pos, tracks, world.seed)
     if "geometric_site_known" in sources:

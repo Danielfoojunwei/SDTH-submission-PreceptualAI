@@ -129,7 +129,7 @@ figures are simulation, with simulated sensing.
 1. **A learned model passed a pre-registered control test for the first time in this project.** With two AP paths in the stress condition, warnings from the learned predictor cut misses by 24%, in 5 of 6 scenes, and the paired interval excludes no change.
 2. **The gain is modest and local.** It captures a little over half of what a perfect warning gives (24% of a possible 41%). It does not make two AP paths beat the 5G model in stress on their own (175.0 against 148.9); the relay still does that.
 3. **In the realistic condition it does nothing measurable.** 14.2 against 11.4 is within noise (ratio 1.24 [0.77–2.06]), and one scene accounts for the difference. There is too little to prevent there.
-4. **The learned predictor ties the hand-written rule.** 175.0 against 187.2, with an interval that includes no difference. Its advantage is not accuracy. The hand-written rule was given the site's blocking geometry; the learned one was given none and recovered it from data.
+4. **The learned predictor ties the hand-written rule.** 175.0 against 187.2, with an interval that includes no difference. The hand-written rule was given the site's blocking geometry and the learned one was given none. *Correction, later the same day:* that geometry turned out not to matter for control ([SITE_TRANSFER.md](SITE_TRANSFER.md)), so needing none is not an advantage. A hand-written rule is as good as the learned predictor here.
 5. **One radio gains little:** 4% and 8% fewer misses, against 51% and 49% with a perfect warning. For one radio the limit is sensing range: a robot cannot vouch for an AP more than 20 m away.
 
 ## What it does not show

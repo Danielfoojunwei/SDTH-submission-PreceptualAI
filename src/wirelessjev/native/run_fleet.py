@@ -21,6 +21,7 @@ MOVING_SCENES = tuple(range(570, 576))
 FORESIGHT_SCENES = tuple(range(580, 586))
 RELAY_SCENES = tuple(range(590, 596))
 SHARED_SENSING_SCENES = tuple(range(600, 606))
+TRANSFER_SCENES = tuple(range(620, 626))
 DROP = ("per_robot_control_miss", "per_robot_video_on_time")
 
 
@@ -272,6 +273,46 @@ def shared_sensing_eval(rows):
             "S3": {"pass": bool(m["main"][F] <= m["main"]["shared"] + 5.0)}}
 
 
+def transfer_scene(seed: int, duration: float):
+    """A new site (APs at 10 m), moving blockers, two AP paths: which warning source copes?"""
+    from ..outage_risk import run_foresight as rf, run_transfer as rt
+    _, vert = _vert()
+    shared = replace(vert, dual_radio=True, radio2="shared")
+    act = replace(shared, foresee=True, foresee_max_m=rf.MAX_MOVE_M)
+    rows = []
+    for cond, (lam, noise) in CONDITIONS.items():
+        w = build_world(seed, duration_s=duration, survey_s=60, noise_2g_extra_db=noise)
+        arms = [("nr_30ms", Policy("nr_30ms", "nr", nr_ho_cost_s=0.03), None), ("shared", shared, None)]
+        arms += [(f"shared+foresee[{k}]", act, f) for k, f in rt.warnings_for(w, duration).items()]
+        for name, p, f in arms:
+            r = simulate(w, replace(p, name=name), collision_lambda=lam, interference=True, blockage_model="moving",
+                         foresight=f, reach_frac=rt.NEW_SITE_FRAC)
+            rows.append({k: v for k, v in r.items() if k not in DROP} | {"arm": name, "condition": cond})
+    return rows
+
+
+def transfer_eval(rows):
+    sc = sorted({r["scene"] for r in rows})
+    v = lambda c, a, s: next(r["control_miss"] for r in rows if r["condition"] == c and r["arm"] == a and r["scene"] == s)
+
+    def pooled(c, a):
+        rs = [r for r in rows if r["condition"] == c and r["arm"] == a]
+        return 1e6 * sum(r["control_misses"] for r in rs) / max(sum(r["control_sent"] for r in rs), 1)
+
+    arms = list(dict.fromkeys(r["arm"] for r in rows))
+    m = {c: {a: pooled(c, a) for a in arms} for c in CONDITIONS}
+    A = lambda k: f"shared+foresee[{k}]"
+    ratio = lambda a, b: m["stress"][a] / m["stress"][b] if m["stress"][b] > 0 else float("inf")
+    wins = lambda a, b: int(sum(v("stress", a, s) <= v("stress", b, s) for s in sc))
+    return {"scenes": sc, "misses_per_million": m,
+            "T1": {"scenes": wins(A("new_radio"), A("rule_old_geometry")), "ratio": ratio(A("new_radio"), A("rule_old_geometry")),
+                   "pass": bool(ratio(A("new_radio"), A("rule_old_geometry")) <= 1.0 and wins(A("new_radio"), A("rule_old_geometry")) >= 4)},
+            "T2": {"ratio": ratio(A("new_radio"), "shared"), "pass": bool(ratio(A("new_radio"), "shared") <= 0.90)},
+            "T3": {"ratio": ratio(A("new_radio"), A("rule_new_geometry")), "pass": bool(ratio(A("new_radio"), A("rule_new_geometry")) <= 1.10)},
+            "T4": {"ratio": ratio(A("new_radio"), A("new_true")), "pass": bool(ratio(A("new_radio"), A("new_true")) <= 1.15)},
+            "T5": {"pass": bool(m["main"][A("new_radio")] <= m["main"]["shared"] + 5.0)}}
+
+
 RELAY_LEVELS = {"optimistic": dict(relay_delay_slots=0, relay_coop=1.0),
                 "realistic": dict(relay_delay_slots=2, relay_coop=0.7),
                 "pessimistic": dict(relay_delay_slots=3, relay_coop=0.5)}
@@ -314,6 +355,7 @@ STUDIES = {"ladder": (ladder_scene, LADDER_SCENES, 120.0, ladder_eval, "headroom
            "moving": (moving_scene, MOVING_SCENES, 300.0, moving_eval, "moving_blockers.json", "docs/MOVING_BLOCKERS.md"),
            "foresight": (foresight_scene, FORESIGHT_SCENES, 300.0, foresight_eval, "foresight.json", "docs/FORESIGHT.md"),
            "relay": (relay_scene, RELAY_SCENES, 300.0, relay_eval, "relay_realism.json", "docs/RELAY_REALISM.md"),
+           "transfer": (transfer_scene, TRANSFER_SCENES, 300.0, transfer_eval, "site_transfer.json", "docs/SITE_TRANSFER.md"),
            "shared-sensing": (shared_sensing_scene, SHARED_SENSING_SCENES, 300.0, shared_sensing_eval, "foresight_shared_sensing.json",
                               "docs/FORESIGHT.md")}
 

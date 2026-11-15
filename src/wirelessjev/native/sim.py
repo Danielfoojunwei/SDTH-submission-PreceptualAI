@@ -198,7 +198,7 @@ def _mrr_chain(link, mcs, ar):
 
 
 def hidden_draws(world: World, n_slots: int, blockage_rate: float = BLOCKAGE_RATE_PER_MIN,
-                 blockage_model: str = "independent", n_blockers: int | None = None):
+                 blockage_model: str = "independent", n_blockers: int | None = None, reach_frac: float | None = None):
     """Fading (dB) and blockage per 100 ms block, never seen by any policy.
 
     blockage_model "independent": an on/off state per robot and AP. "moving":
@@ -218,8 +218,10 @@ def hidden_draws(world: World, n_slots: int, blockage_rate: float = BLOCKAGE_RAT
         blocked[k] = state
     if blockage_model == "moving":
         from .blockers import N_BLOCKERS, blocked_moving
+        from .blockers import REACH_FRAC
         blocked = blocked_moving(world, n_blocks, N_BLOCKERS if n_blockers is None else n_blockers,
-                                 pos_per_block=BLOCK_SLOTS * SLOT / POS_DT)
+                                 pos_per_block=BLOCK_SLOTS * SLOT / POS_DT,
+                                 frac=REACH_FRAC if reach_frac is None else reach_frac)
     elif blockage_model != "independent":
         raise ValueError("blockage_model must be 'independent' or 'moving'")
     return fade_db, blocked, hid
@@ -230,12 +232,13 @@ def simulate(world: World, policy: Policy, *, seed: int = 0, curves: LinkCurves 
              collision_lambda: float = 0.0, interference: bool = False,
              roam_gate=None, decision_trace=None, telemetry: list | None = None,
              blockage_model: str = "independent", n_blockers: int | None = None,
-             foresight: np.ndarray | None = None) -> dict:
+             foresight: np.ndarray | None = None, reach_frac: float | None = None) -> dict:
     """foresight: (blocks, N, S) bool, the warning available at each 100 ms block that a robot-AP
     path will be blocked within the next second. Only policies with `foresee` read it."""
     if policy.kind == "nr":
         return simulate_nr(world, policy, seed=seed, curves=curves, duration_s=duration_s,
-                           blockage_rate=blockage_rate, blockage_model=blockage_model, n_blockers=n_blockers)
+                           blockage_rate=blockage_rate, blockage_model=blockage_model, n_blockers=n_blockers,
+                           reach_frac=reach_frac)
     curves = curves or LinkCurves()
     rng = np.random.default_rng(1_000_003 * (world.seed + 1) + seed)   # same draws for all policies
     n, s = world.n, world.sites.shape[0]
@@ -251,7 +254,7 @@ def simulate(world: World, policy: Policy, *, seed: int = 0, curves: LinkCurves 
     ar = np.arange(n)
 
     # Hidden processes, identical across policies (own RNG streams).
-    fade_db, blocked, hid = hidden_draws(world, n_slots, blockage_rate, blockage_model, n_blockers)
+    fade_db, blocked, hid = hidden_draws(world, n_slots, blockage_rate, blockage_model, n_blockers, reach_frac)
     scan_phase = hid.integers(0, 10_000, size=n)
 
     noise_mw = 10 ** (world.noise_db / 10)
@@ -1023,7 +1026,7 @@ def simulate(world: World, policy: Policy, *, seed: int = 0, curves: LinkCurves 
 def simulate_nr(world: World, policy: Policy, *, seed: int = 0, curves: LinkCurves | None = None,
                 duration_s: float | None = None,
                 blockage_rate: float = BLOCKAGE_RATE_PER_MIN, blockage_model: str = "independent",
-                n_blockers: int | None = None) -> dict:
+                n_blockers: int | None = None, reach_frac: float | None = None) -> dict:
     """Private 5G baseline on the same truth, fading and blockage draws.
 
     One n78 carrier per site, uplink scheduled by the gNB: control gets its
@@ -1038,7 +1041,7 @@ def simulate_nr(world: World, policy: Policy, *, seed: int = 0, curves: LinkCurv
     n_slots = int(round(duration / SLOT))
     slots_per_pos = int(round(POS_DT / SLOT))
     ar = np.arange(n)
-    fade_db, blocked, hid = hidden_draws(world, n_slots, blockage_rate, blockage_model, n_blockers)
+    fade_db, blocked, hid = hidden_draws(world, n_slots, blockage_rate, blockage_model, n_blockers, reach_frac)
     phase = hid.integers(0, 10_000, size=n)
     rates = curves.rates("5g") * NR_RATE_SCALE
 

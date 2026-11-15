@@ -79,8 +79,15 @@ def lines_blocked(start: np.ndarray, end: np.ndarray, blockers: np.ndarray, frac
     return hit if per_blocker else hit.any(-1)
 
 
-def blocked_moving(world, n_blocks: int, n_blockers: int = N_BLOCKERS, pos_per_block: float = 0.5) -> np.ndarray:
-    """(n_blocks, N, S) bool: robot-AP paths blocked by the moving blockers."""
+def reach_frac_for(ap_height_m: float) -> float:
+    """Share of a robot-AP line, from the robot, that runs below the top of a forklift."""
+    return (BLOCKER_H_M - ROBOT_H_M) / (ap_height_m - ROBOT_H_M)
+
+
+def blocked_moving(world, n_blocks: int, n_blockers: int = N_BLOCKERS, pos_per_block: float = 0.5,
+                   frac: float = REACH_FRAC) -> np.ndarray:
+    """(n_blocks, N, S) bool: robot-AP paths blocked by the moving blockers. `frac` is the site's
+    geometry (AP height); the default is a 6 m AP."""
     if world.pos is None:
         raise ValueError("moving blockers need robot positions (a warehouse world)")
     tracks = blocker_tracks(world.seed, n_blocks, n_blockers)
@@ -89,7 +96,7 @@ def blocked_moving(world, n_blocks: int, n_blockers: int = N_BLOCKERS, pos_per_b
     last = world.pos.shape[0] - 1
     for k in range(n_blocks):
         p = world.pos[min(int(k * pos_per_block), last)].astype(np.float32)
-        out[k] = lines_blocked(p[:, None, :], sites[None, :, :], tracks[k])
+        out[k] = lines_blocked(p[:, None, :], sites[None, :, :], tracks[k], frac=frac)
     return out
 
 

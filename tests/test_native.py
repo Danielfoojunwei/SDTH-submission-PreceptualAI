@@ -409,3 +409,26 @@ def test_coverage_report_on_a_known_floor():
     m = cv.route_mask(gx, gy, pts, near_m=2.5)
     assert m[2, 0] and m[2, 9] and not m[2, 5]
 
+
+def test_site_geometry_setting_and_radio_labels(world):
+    from wirelessjev.native import blockers as bl
+    from wirelessjev.native.sim import hidden_draws
+    from wirelessjev.outage_risk import dataset as ds, foresight as fo
+    assert abs(bl.reach_frac_for(6.0) - bl.REACH_FRAC) < 1e-9 and bl.reach_frac_for(10.0) < bl.REACH_FRAC
+    n_slots = int(world.duration_s / 0.01)
+    _, old, _ = hidden_draws(world, n_slots, blockage_model="moving")
+    _, same, _ = hidden_draws(world, n_slots, blockage_model="moving", reach_frac=bl.REACH_FRAC)
+    _, high, _ = hidden_draws(world, n_slots, blockage_model="moving", reach_frac=bl.reach_frac_for(10.0))
+    assert np.array_equal(old, same) and high.sum() < old.sum() and not (high & ~old).any()   # a higher AP is blocked less, never more
+    pol = {p.name: p for p in policies()}
+    nat = replace(pol["native"], gate=True, cadence_roam=True)
+    tr = ds.collect(world, nat, collision_lambda=0.01, interference=True, blockage_model="moving", reach_frac=bl.reach_frac_for(10.0))
+    blocks = tr["slot"] // 10
+    tracks = bl.blocker_tracks(world.seed, int(blocks.max()) + 1)[blocks]
+    sensed = fo.sense(tr["pos"], tracks, world.seed)
+    x, y = fo.radio_label_rows(tr, world.sites.astype(np.float32), sensed)
+    assert x.shape[1] == fo.N_FEATURES and len(x) == len(y) and y.dtype == bool
+    # Rows are one per robot that senses something, for the AP it is using.
+    has = sensed.seen[: len(tr["slot"]) - 10].any(axis=2)
+    assert len(x) == int(has.sum())
+
