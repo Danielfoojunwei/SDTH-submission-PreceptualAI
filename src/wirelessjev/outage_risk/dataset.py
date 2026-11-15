@@ -11,6 +11,8 @@ from ..native.sim import TELEMETRY_AHEAD_BLOCKS, simulate
 
 WINDOW = 5                      # ticks of history per example (0.5 s)
 PER_TICK = 9
+FLEET_PER_TICK = 4
+NEAR_M, RECENT_TICKS = 10.0, 5      # a neighbour is within 10 m; a report is recent for 0.5 s
 HORIZONS_S = tuple(0.1 * h for h in TELEMETRY_AHEAD_BLOCKS)
 RULE_DROP_DB, RULE_CONFIRM = 10.0, 2
 
@@ -77,12 +79,45 @@ def tick_features(tr: dict) -> np.ndarray:
     return np.stack(f, axis=2).astype(np.float32)
 
 
-def examples(tr: dict, window: int = WINDOW):
-    """Flatten to (examples, window * PER_TICK) features, (examples, 3) labels
-    and the rule's yes/no for the same rows. The first `window` ticks are dropped."""
+def fleet_features(tr: dict) -> np.ndarray:
+    """(ticks, robots, FLEET_PER_TICK): what other robots' alarms say.
+
+    Each robot shares its position and whether the hand-written rule is firing.
+    Reports reach the others one tick (100 ms) late. Per robot: neighbours
+    within 10 m alarming now; neighbours alarming in the last 0.5 s; robots on
+    the same AP alarming in the last 0.5 s; closeness of the nearest robot that
+    alarmed in the last 0.5 s. A robot's own alarm is never counted."""
+    alarm, pos, site = rule_state(tr), tr["pos"], tr["site"]
+    t_n, n = alarm.shape
+    recent = np.zeros_like(alarm)
+    for j in range(RECENT_TICKS):
+        recent[j + 1:] |= alarm[:t_n - j - 1] if j + 1 < t_n else False
+    late = np.zeros_like(alarm)
+    late[1:] = alarm[:-1]
+    out = np.zeros((t_n, n, FLEET_PER_TICK), dtype=np.float32)
+    other = ~np.eye(n, dtype=bool)
+    for t in range(t_n):
+        if not recent[t].any():
+            continue
+        dist = np.hypot(pos[t][:, None, 0] - pos[t][None, :, 0], pos[t][:, None, 1] - pos[t][None, :, 1])
+        near = (dist < NEAR_M) & other
+        out[t, :, 0] = (near & late[t][None, :]).sum(1)
+        out[t, :, 1] = (near & recent[t][None, :]).sum(1)
+        out[t, :, 2] = ((site[t][:, None] == site[t][None, :]) & other & recent[t][None, :]).sum(1)
+        d = np.where(other & recent[t][None, :], dist, np.inf).min(1)
+        out[t, :, 3] = 1.0 / (1.0 + d)
+    return out
+
+
+def examples(tr: dict, window: int = WINDOW, fleet: bool = False):
+    """Flatten to (examples, window * features per tick) features, (examples, 3)
+    labels and the rule's yes/no for the same rows. `fleet` appends the other
+    robots' reports to each tick. The first `window` ticks are dropped."""
     f = tick_features(tr)
+    if fleet:
+        f = np.concatenate([f, fleet_features(tr)], axis=2)
     t_n, n, _ = f.shape
     x = np.concatenate([f[window - 1 - j: t_n - j] for j in range(window)], axis=2)   # newest first
     y = tr["blocked"][window - 1:]
     rule = rule_state(tr)[window - 1:]
-    return x.reshape(-1, window * PER_TICK), y.reshape(-1, y.shape[2]), rule.reshape(-1)
+    return x.reshape(-1, window * f.shape[2]), y.reshape(-1, y.shape[2]), rule.reshape(-1)

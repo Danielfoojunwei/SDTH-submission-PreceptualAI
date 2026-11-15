@@ -5,7 +5,7 @@ import numpy as np
 import pytest
 
 from wirelessjev.native.phy import LinkCurves, hierarchical_points
-from wirelessjev.native.sim import _chain, _mrr_chain, policies, simulate
+from wirelessjev.native.sim import Policy, _chain, _mrr_chain, policies, simulate
 from wirelessjev.native.world import build_world
 
 
@@ -189,4 +189,62 @@ def test_small_net_is_repeatable_and_rule_state_fires_on_a_sustained_drop():
     site2[5:] = 1
     tr2 = {"level": lvl2, "expected": np.full((12, 1, 3), 29.0), "site": site2}
     assert ds.rule_state(tr2)[6:, 0].all()
+
+
+def test_moving_blockers_are_shared_deterministic_and_leave_the_default_alone(world):
+    from wirelessjev.native import blockers as bl
+    from wirelessjev.native.sim import hidden_draws
+    tr = bl.blocker_tracks(7, 300, 5)
+    assert tr.shape == (300, 5, 2) and np.array_equal(tr, bl.blocker_tracks(7, 300, 5))
+    step = np.linalg.norm(np.diff(tr, axis=0), axis=2)
+    assert step.max() <= bl.SPEED_MPS[1] * bl.BLOCK_S + 1e-4 and (step > 0).any()      # they move, never faster than allowed
+    # A robot at the origin, AP 20 m east: a forklift 2 m ahead blocks, one behind or beyond the reach does not.
+    start, end = np.array([[0.0, 0.0]]), np.array([[20.0, 0.0]])
+    hit = lambda x, y: bool(bl.lines_blocked(start, end, np.array([[x, y]]))[0])
+    assert hit(2.0, 0.3) and not hit(-2.0, 0.0) and not hit(2.0, 1.5) and not hit(12.0, 0.0)
+    assert bool(bl.lines_blocked(start, end, np.array([[12.0, 0.0]]), frac=1.0)[0])      # robot-to-robot: whole line
+    # One forklift, two robots in line behind it: both blocked towards the same AP at once.
+    two = bl.lines_blocked(np.array([[0.0, 0.0], [1.0, 0.0]])[:, None, :], np.array([[20.0, 0.0]])[None, :, :],
+                           np.array([[3.0, 0.2]]))
+    assert two.shape == (2, 1) and two.all()
+    n_slots = int(world.duration_s / 0.01)
+    f0, b0, _ = hidden_draws(world, n_slots)
+    f1, b1, _ = hidden_draws(world, n_slots, blockage_model="moving")
+    assert np.array_equal(f0, f1) and b1.shape == b0.shape and b1.dtype == bool and not np.array_equal(b0, b1)
+    pol = {p.name: p for p in policies()}
+    nat = replace(pol["native"], gate=True, cadence_roam=True)
+    base = simulate(world, nat, collision_lambda=0.01, interference=True)
+    same = simulate(world, nat, collision_lambda=0.01, interference=True, blockage_model="independent")
+    assert base["control_misses"] == same["control_misses"] and base["blockage_model"] == "independent"
+    for p in (replace(nat, dual_radio=True, radio2="shared", relay=True, ble=True), pol["wifi8"] if "wifi8" in pol else nat,
+              Policy("nr_30ms", "nr", nr_ho_cost_s=0.03)):
+        r = simulate(world, p, collision_lambda=0.01, interference=True, blockage_model="moving")
+        assert 0 <= r["control_miss"] <= 1 and r["blockage_model"] == "moving"
+    with pytest.raises(ValueError):
+        simulate(world, nat, blockage_model="forklift")
+
+
+def test_fleet_features_count_other_robots_alarms_only():
+    from wirelessjev.outage_risk import dataset as ds
+    t_n, n = 20, 3
+    lvl = np.full((t_n, n, 3), 30.0)
+    lvl[8:14, 0] -= 15.0                                     # robot 0 is blocked from tick 8
+    pos = np.zeros((t_n, n, 2), dtype=np.float32)
+    pos[:, 1] = (4.0, 0.0)                                   # robot 1 is 4 m from robot 0
+    pos[:, 2] = (50.0, 0.0)                                  # robot 2 is far away, on the same AP as robot 0
+    site = np.zeros((t_n, n), dtype=int)
+    site[:, 1] = 1
+    tr = {"level": lvl, "expected": np.full((t_n, n, 3), 30.0), "site": site, "pos": pos,
+          "sent": np.zeros((t_n, n)), "missed": np.zeros((t_n, n)), "roaming": np.zeros((t_n, n), dtype=bool),
+          "blocked": np.zeros((t_n, n, 3), dtype=bool)}
+    alarm = ds.rule_state(tr)
+    assert alarm[9:14, 0].all() and not alarm[:, 1:].any()
+    f = ds.fleet_features(tr)
+    assert f.shape == (t_n, n, ds.FLEET_PER_TICK)
+    assert (f[:, 0] == 0).all()                              # robot 0 never counts its own alarm
+    assert f[9, 1, 0] == 0 and f[10, 1, 0] == 1 and f[10, 1, 1] == 1    # heard one tick late
+    assert f[10, 1, 2] == 0 and f[10, 2, 2] == 1 and f[10, 2, 0] == 0   # same AP but far; near but other AP
+    assert abs(f[10, 1, 3] - 1 / 5.0) < 1e-6 and f[19, 1, 1] == 0       # nearest alarmed robot 4 m away; forgotten after 0.5 s
+    x, y, rule = ds.examples(tr, fleet=True)
+    assert x.shape == ((t_n - ds.WINDOW + 1) * n, ds.WINDOW * (ds.PER_TICK + ds.FLEET_PER_TICK))
 

@@ -23,27 +23,29 @@ TRAIN, TEST = (400, 401), (402, 403)
 NET_SEEDS = (0, 1, 2)
 
 
-def gather(scenes, cond: str, duration: float, cache=None):
+def gather(scenes, cond: str, duration: float, cache=None, model: str = "independent"):
+    """Own-link features, the same rows with the fleet's reports appended, labels and the rule."""
     lam, noise = CONDITIONS[cond]
     _, vert = _vert()
-    xs, ys, rules = [], [], []
+    xs, xfs, ys, rules = [], [], [], []
     for seed in scenes:
-        f = None if cache is None else Path(cache) / f"telemetry_{seed}_{cond}_{int(duration)}.npz"
+        f = None if cache is None else Path(cache) / f"telemetry_{model}_{seed}_{cond}_{int(duration)}.npz"
         if f is not None and f.exists():
             tr = dict(np.load(f))
         else:
             w = build_world(seed, duration_s=duration, survey_s=60, noise_2g_extra_db=noise)
-            tr = ds.collect(w, replace(vert, name="single"), collision_lambda=lam, interference=True)
+            tr = ds.collect(w, replace(vert, name="single"), collision_lambda=lam, interference=True,
+                            blockage_model=model)
             if f is not None:
                 f.parent.mkdir(parents=True, exist_ok=True)
                 np.savez_compressed(f, **tr)
         x, y, r = ds.examples(tr)
-        xs.append(x), ys.append(y), rules.append(r)
-    return np.concatenate(xs), np.concatenate(ys), np.concatenate(rules)
+        xs.append(x), ys.append(y), rules.append(r), xfs.append(ds.examples(tr, fleet=True)[0])
+    return np.concatenate(xs), np.concatenate(xfs), np.concatenate(ys), np.concatenate(rules)
 
 
 def compare(train, test) -> dict:
-    (xa, ya, _), (xb, yb, rule) = train, test
+    (xa, xfa, ya, _), (xb, xfb, yb, rule) = train, test
     out = {"train_rows": int(len(xa)), "test_rows": int(len(xb)), "horizons": {}}
     newest = slice(0, ds.PER_TICK)                      # the latest tick only: no history
     for j, h in enumerate(ds.HORIZONS_S):
@@ -59,10 +61,14 @@ def compare(train, test) -> dict:
         for name, p in (("logistic_window", full), ("logistic_last_tick", last)):
             row[name] = {"auc": auc(p, y), "brier": brier(p, y),
                          "at_rule_false_alarm_rate": at_false_alarm_rate(p, y, r["false_alarm_rate"])}
-        nets = [SmallNet(seed=s).fit(xa, ya[:, j]).predict(xb) for s in NET_SEEDS]
-        row["small_net"] = {"seeds": list(NET_SEEDS), "auc": [auc(p, y) for p in nets], "brier": [brier(p, y) for p in nets],
-                            "caught_at_rule_false_alarm_rate":
-                                [at_false_alarm_rate(p, y, r["false_alarm_rate"])["caught"] for p in nets]}
+        pf = Logistic().fit(xfa, ya[:, j]).predict(xfb)
+        row["logistic_fleet"] = {"auc": auc(pf, y), "brier": brier(pf, y),
+                                 "at_rule_false_alarm_rate": at_false_alarm_rate(pf, y, r["false_alarm_rate"])}
+        for name, a, b in (("small_net", xa, xb), ("small_net_fleet", xfa, xfb)):
+            nets = [SmallNet(seed=s).fit(a, ya[:, j]).predict(b) for s in NET_SEEDS]
+            row[name] = {"seeds": list(NET_SEEDS), "auc": [auc(p, y) for p in nets], "brier": [brier(p, y) for p in nets],
+                         "caught_at_rule_false_alarm_rate":
+                             [at_false_alarm_rate(p, y, r["false_alarm_rate"])["caught"] for p in nets]}
         out["horizons"][f"{h:.1f}"] = row
     return out
 
@@ -70,20 +76,30 @@ def compare(train, test) -> dict:
 def main(argv=None) -> int:
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--seconds", type=float, default=60.0)
+    ap.add_argument("--blockage-model", default="independent", choices=("independent", "moving"))
+    ap.add_argument("--conditions", default=",".join(CONDITIONS))
     ap.add_argument("--cache", help="directory for the simulated telemetry, so models can be rerun without the simulator")
     args = ap.parse_args(argv)
     rep = {"scenes": {"train": TRAIN, "test": TEST}, "seconds": args.seconds, "policy": "single radio, no detector",
+           "blockage_model": args.blockage_model,
            "note": "development scenes only; telemetry comes from runs without a detector in the loop"}
-    for cond in CONDITIONS:
-        rep[cond] = compare(gather(TRAIN, cond, args.seconds, args.cache), gather(TEST, cond, args.seconds, args.cache))
+    conds = args.conditions.split(",")
+    for cond in conds:
+        rep[cond] = compare(gather(TRAIN, cond, args.seconds, args.cache, args.blockage_model),
+                            gather(TEST, cond, args.seconds, args.cache, args.blockage_model))
         for h, row in rep[cond]["horizons"].items():
-            ru, lw, sn = row["rule"], row["logistic_window"], row["small_net"]
+            ru, lw, sn, lf, sf = (row[k] for k in ("rule", "logistic_window", "small_net", "logistic_fleet", "small_net_fleet"))
             print(f"{cond} +{h}s blocked {row['blocked_share']:.4f} | rule caught {ru['caught']:.3f} "
                   f"false alarms {ru['false_alarm_rate']:.5f} brier {ru['brier']:.5f} | logistic caught "
                   f"{lw['at_rule_false_alarm_rate']['caught']:.3f} brier {lw['brier']:.5f} | net caught "
                   f"{[round(c, 3) for c in sn['caught_at_rule_false_alarm_rate']]} brier "
-                  f"{[round(b, 5) for b in sn['brier']]}", flush=True)
-    (OUT / "outage_risk_dev.json").write_text(json.dumps(rep, indent=1, default=float))
+                  f"{[round(b, 5) for b in sn['brier']]} || with fleet reports: logistic caught "
+                  f"{lf['at_rule_false_alarm_rate']['caught']:.3f} brier {lf['brier']:.5f} | net caught "
+                  f"{[round(c, 3) for c in sf['caught_at_rule_false_alarm_rate']]} brier "
+                  f"{[round(b, 5) for b in sf['brier']]}", flush=True)
+    name = "outage_risk_dev" + ("" if args.blockage_model == "independent" else "_" + args.blockage_model)
+    name += "" if len(conds) == len(CONDITIONS) else "_" + "_".join(conds)
+    (OUT / f"{name}.json").write_text(json.dumps(rep, indent=1, default=float))
     return 0
 
 

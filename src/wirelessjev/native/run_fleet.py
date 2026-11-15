@@ -1,5 +1,6 @@
 """Headroom ladder (docs/JEPA_HEADROOM.md), fleet-only capabilities
-(docs/DIRECTIONS_123.md) and the live blockage detector (docs/BLOCKAGE_DETECTOR.md)."""
+(docs/DIRECTIONS_123.md), the live blockage detector (docs/BLOCKAGE_DETECTOR.md)
+and the moving-blocker stress test of the headline claims (docs/MOVING_BLOCKERS.md)."""
 from __future__ import annotations
 
 import argparse
@@ -15,6 +16,7 @@ from .world import build_world
 CONDITIONS = {"main": (0.01, 0.0), "stress": (0.03, 10.0)}
 LADDER_SCENES, FLEET_SCENES = (400, 401, 402, 403), tuple(range(550, 556))
 DETECT_SCENES = tuple(range(560, 566))
+MOVING_SCENES = tuple(range(570, 576))
 DROP = ("per_robot_control_miss", "per_robot_video_on_time")
 
 
@@ -137,9 +139,55 @@ def detect_eval(rows):
             "B5": {"scenes": int(vs5g), "pass": bool(vs5g >= 5)}}
 
 
+def moving_arms() -> dict:
+    _, vert = _vert()
+    shared = replace(vert, dual_radio=True, radio2="shared")
+    return {"nr_30ms": Policy("nr_30ms", "nr", nr_ho_cost_s=0.03),
+            "wifi8": Policy("wifi8", "wifi8", roam_cost_s=0.0, scan_period_s=30.0),
+            "single": vert, "single+detect": replace(vert, block_detect=True),
+            "shared": shared, "shared+detect": replace(shared, block_detect=True),
+            "shared+relay": replace(shared, relay=True),
+            "shared+relay+ble": replace(shared, relay=True, ble=True),
+            "single+relay+ble": replace(vert, relay=True, ble=True)}
+
+
+def moving_scene(seed: int, duration: float):
+    """Every arm under moving blockers; the two-path arm also under the default model as a paired reference."""
+    rows = []
+    for cond, (lam, noise) in CONDITIONS.items():
+        w = build_world(seed, duration_s=duration, survey_s=60, noise_2g_extra_db=noise)
+        for name, p in moving_arms().items():
+            r = simulate(w, replace(p, name=name), collision_lambda=lam, interference=True, blockage_model="moving")
+            rows.append({k: v for k, v in r.items() if k not in DROP} | {"arm": name, "condition": cond})
+        for name in ("shared", "nr_30ms"):
+            r = simulate(w, replace(moving_arms()[name], name=name), collision_lambda=lam, interference=True)
+            rows.append({k: v for k, v in r.items() if k not in DROP} | {"arm": name + "@independent", "condition": cond})
+    return rows
+
+
+def moving_eval(rows):
+    sc = sorted({r["scene"] for r in rows})
+    v = lambda c, a, s: next(r["control_miss"] for r in rows if r["condition"] == c and r["arm"] == a and r["scene"] == s)
+
+    def pooled(c, a):
+        rs = [r for r in rows if r["condition"] == c and r["arm"] == a]
+        return 1e6 * sum(r["control_misses"] for r in rs) / max(sum(r["control_sent"] for r in rs), 1)
+
+    arms = list(dict.fromkeys(r["arm"] for r in rows))
+    m = {c: {a: pooled(c, a) for a in arms} for c in CONDITIONS}
+    n = lambda c, a, b: int(sum(v(c, a, s) <= v(c, b, s) for s in sc))
+    res = {"M1": n("main", "shared", "nr_30ms"), "M2": n("main", "shared", "wifi8"),
+           "M3": n("stress", "shared+relay", "nr_30ms"), "M4": n("stress", "shared+relay+ble", "nr_30ms"),
+           "M5": n("stress", "single+relay+ble", "nr_30ms")}
+    red = {c: 1 - m[c]["single+detect"] / m[c]["single"] if m[c]["single"] > 0 else 0.0 for c in CONDITIONS}
+    return {"scenes": sc, "misses_per_million": m, **{k: {"scenes": x, "pass": bool(x >= 5)} for k, x in res.items()},
+            "M6": {"pooled_reduction": red, "pass": bool(red["main"] >= 0.10 and red["stress"] >= 0.10)}}
+
+
 STUDIES = {"ladder": (ladder_scene, LADDER_SCENES, 120.0, ladder_eval, "headroom_ladder.json", "docs/JEPA_HEADROOM.md"),
            "fleet": (fleet_scene, FLEET_SCENES, 300.0, fleet_eval, "fleet_directions.json", "docs/DIRECTIONS_123.md"),
-           "detect": (detect_scene, DETECT_SCENES, 300.0, detect_eval, "blockage_detector.json", "docs/BLOCKAGE_DETECTOR.md")}
+           "detect": (detect_scene, DETECT_SCENES, 300.0, detect_eval, "blockage_detector.json", "docs/BLOCKAGE_DETECTOR.md"),
+           "moving": (moving_scene, MOVING_SCENES, 300.0, moving_eval, "moving_blockers.json", "docs/MOVING_BLOCKERS.md")}
 
 
 def main():

@@ -189,8 +189,13 @@ def _mrr_chain(link, mcs, ar):
     return links, np.stack([m, np.maximum(m - 2, 0), np.zeros_like(m)], 1)
 
 
-def hidden_draws(world: World, n_slots: int, blockage_rate: float = BLOCKAGE_RATE_PER_MIN):
-    """Fading (dB) and blockage per 100 ms block, never seen by any policy."""
+def hidden_draws(world: World, n_slots: int, blockage_rate: float = BLOCKAGE_RATE_PER_MIN,
+                 blockage_model: str = "independent", n_blockers: int | None = None):
+    """Fading (dB) and blockage per 100 ms block, never seen by any policy.
+
+    blockage_model "independent": an on/off state per robot and AP. "moving":
+    forklifts drive the aisles and block every line they cross (blockers.py);
+    fading and every later draw stay identical between the two models."""
     n, s = world.n, world.sites.shape[0]
     hid = np.random.default_rng(77 + world.seed)
     n_blocks = n_slots // BLOCK_SLOTS + 1
@@ -203,16 +208,23 @@ def hidden_draws(world: World, n_slots: int, blockage_rate: float = BLOCKAGE_RAT
         u = hid.random((n, s))
         state = np.where(state, u > p_off, u < p_on)
         blocked[k] = state
+    if blockage_model == "moving":
+        from .blockers import N_BLOCKERS, blocked_moving
+        blocked = blocked_moving(world, n_blocks, N_BLOCKERS if n_blockers is None else n_blockers,
+                                 pos_per_block=BLOCK_SLOTS * SLOT / POS_DT)
+    elif blockage_model != "independent":
+        raise ValueError("blockage_model must be 'independent' or 'moving'")
     return fade_db, blocked, hid
 
 
 def simulate(world: World, policy: Policy, *, seed: int = 0, curves: LinkCurves | None = None,
              duration_s: float | None = None, blockage_rate: float = BLOCKAGE_RATE_PER_MIN,
              collision_lambda: float = 0.0, interference: bool = False,
-             roam_gate=None, decision_trace=None, telemetry: list | None = None) -> dict:
+             roam_gate=None, decision_trace=None, telemetry: list | None = None,
+             blockage_model: str = "independent", n_blockers: int | None = None) -> dict:
     if policy.kind == "nr":
         return simulate_nr(world, policy, seed=seed, curves=curves, duration_s=duration_s,
-                           blockage_rate=blockage_rate)
+                           blockage_rate=blockage_rate, blockage_model=blockage_model, n_blockers=n_blockers)
     curves = curves or LinkCurves()
     rng = np.random.default_rng(1_000_003 * (world.seed + 1) + seed)   # same draws for all policies
     n, s = world.n, world.sites.shape[0]
@@ -228,7 +240,7 @@ def simulate(world: World, policy: Policy, *, seed: int = 0, curves: LinkCurves 
     ar = np.arange(n)
 
     # Hidden processes, identical across policies (own RNG streams).
-    fade_db, blocked, hid = hidden_draws(world, n_slots, blockage_rate)
+    fade_db, blocked, hid = hidden_draws(world, n_slots, blockage_rate, blockage_model, n_blockers)
     scan_phase = hid.integers(0, 10_000, size=n)
 
     noise_mw = 10 ** (world.noise_db / 10)
@@ -312,6 +324,10 @@ def simulate(world: World, policy: Policy, *, seed: int = 0, curves: LinkCurves 
     aux = np.random.default_rng(4242 + world.seed)        # relay and BLE fading, same for every policy
     rr_fade = np.zeros((n, n), dtype=np.float32)
     rr_snr = None
+    tracks = None
+    if blockage_model == "moving" and policy.relay:
+        from .blockers import N_BLOCKERS, blocker_tracks, lines_blocked
+        tracks = blocker_tracks(world.seed, fade_db.shape[0], N_BLOCKERS if n_blockers is None else n_blockers)
     ble_site = np.zeros(n, dtype=int)
     ble_noise = BLE_NOISE_DBM + float(world.noise_db[0] - NOISE_DBM["2g"])
     stop_events = 0
@@ -598,7 +614,9 @@ def simulate(world: World, policy: Policy, *, seed: int = 0, curves: LinkCurves 
             # will it be if the robot stays. For training and scoring detectors; never read back.
             kb_t = k // BLOCK_SLOTS
             ahead = [min(kb_t + h, blocked.shape[0] - 1) for h in TELEMETRY_AHEAD_BLOCKS]
+            kp_t = min(k // slots_per_pos, world.pos.shape[0] - 1) if world.pos is not None else 0
             telemetry.append({"slot": k, "site": site.copy(), "level": meas.astype(np.float32),
+                              "pos": (world.pos[kp_t] if world.pos is not None else np.zeros((n, 2))).astype(np.float32),
                               "expected": fc_bands[ar, site].astype(np.float32), "roaming": outage_until > k,
                               "missed": ctrl_miss_r.copy(), "sent": ctrl_total_r.copy(),
                               "blocked": np.stack([blocked[a][ar, site] for a in ahead], axis=1)})
@@ -676,6 +694,11 @@ def simulate(world: World, policy: Policy, *, seed: int = 0, curves: LinkCurves 
                 rr_fade = 10 * np.log10(aux.gamma(FADE_M, 1 / FADE_M, size=(n, n))).astype(np.float32)
                 rr_snr = (15.0 - (46.7 + 33.0 * np.log10(np.maximum(dist, 1.0)) + 3.5 * np.minimum(rows, 6))
                           - world.noise_db[1] + rr_fade)
+                if tracks is not None:
+                    # Both robots are low: a forklift anywhere on the line between them blocks it.
+                    xyf = xy.astype(np.float32)
+                    rr_snr = rr_snr - BLOCKAGE_DB * lines_blocked(xyf[:, None, :], xyf[None, :, :],
+                                                                  tracks[k // BLOCK_SLOTS], frac=1.0)
                 rr_snr[(dist > RELAY_RANGE_M) | (dist == 0)] = -np.inf
             if policy.ble:
                 mean2 = world.snr[min(k // slots_per_pos, world.snr.shape[0] - 1)][..., 0].copy()
@@ -907,7 +930,7 @@ def simulate(world: World, policy: Policy, *, seed: int = 0, curves: LinkCurves 
     vr = has_video
     return {
         "policy": policy.name, "scene": world.seed, "sigma_map": world.sigma_map,
-        "blind_world": world.blind, "blockage_rate_per_min": blockage_rate,
+        "blind_world": world.blind, "blockage_rate_per_min": blockage_rate, "blockage_model": blockage_model,
         "duration_s": duration,
         "control_miss": ctrl_missed / max(ctrl_sent, 1),
         "control_miss_worst_decile": float(worst.mean()),
@@ -943,7 +966,8 @@ def simulate(world: World, policy: Policy, *, seed: int = 0, curves: LinkCurves 
 
 def simulate_nr(world: World, policy: Policy, *, seed: int = 0, curves: LinkCurves | None = None,
                 duration_s: float | None = None,
-                blockage_rate: float = BLOCKAGE_RATE_PER_MIN) -> dict:
+                blockage_rate: float = BLOCKAGE_RATE_PER_MIN, blockage_model: str = "independent",
+                n_blockers: int | None = None) -> dict:
     """Private 5G baseline on the same truth, fading and blockage draws.
 
     One n78 carrier per site, uplink scheduled by the gNB: control gets its
@@ -958,7 +982,7 @@ def simulate_nr(world: World, policy: Policy, *, seed: int = 0, curves: LinkCurv
     n_slots = int(round(duration / SLOT))
     slots_per_pos = int(round(POS_DT / SLOT))
     ar = np.arange(n)
-    fade_db, blocked, hid = hidden_draws(world, n_slots, blockage_rate)
+    fade_db, blocked, hid = hidden_draws(world, n_slots, blockage_rate, blockage_model, n_blockers)
     phase = hid.integers(0, 10_000, size=n)
     rates = curves.rates("5g") * NR_RATE_SCALE
 
@@ -1079,7 +1103,7 @@ def simulate_nr(world: World, policy: Policy, *, seed: int = 0, curves: LinkCurv
     worst = np.sort(frac)[-max(1, n // 10):]
     return {
         "policy": policy.name, "scene": world.seed, "sigma_map": world.sigma_map,
-        "blind_world": world.blind, "blockage_rate_per_min": blockage_rate, "duration_s": duration,
+        "blind_world": world.blind, "blockage_rate_per_min": blockage_rate, "blockage_model": blockage_model, "duration_s": duration,
         "control_miss": ctrl_missed / max(ctrl_sent, 1),
         "control_miss_worst_decile": float(worst.mean()),
         "control_gap_p99_ms": float(np.percentile(gap_max, 99) * SLOT * 1000),
