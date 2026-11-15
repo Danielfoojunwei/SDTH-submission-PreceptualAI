@@ -55,6 +55,32 @@ def sense(pos: np.ndarray, tracks: np.ndarray, seed: int = 0, *, range_m: float 
     return Sensed(seen, est, vel)
 
 
+FLEET_LATENCY_TICKS = 2                # a shared report is 200 ms old when it arrives
+FLEET_NEAR_M = 25.0                    # the fleet model only looks at obstacles this close to the robot
+
+
+def sense_fleet(pos: np.ndarray, tracks: np.ndarray, seed: int = 0, *, latency_ticks: int = FLEET_LATENCY_TICKS, **kw) -> Sensed:
+    """Fleet-shared sensing: every robot is told about each forklift that any
+    robot detects. A shared report arrives `latency_ticks` late and is moved
+    forward along its estimated velocity; a robot's own fresh detection wins
+    over a shared one. No robot sees a forklift that no robot detects."""
+    own = sense(pos, tracks, seed, **kw)
+    t_n, n, k_n = own.seen.shape
+    seen, est, vel = own.seen.copy(), own.pos.copy(), own.vel.copy()
+    cols = np.arange(k_n)
+    for t in range(latency_ticks, t_n):
+        det = own.seen[t - latency_ticks]                          # (N, K)
+        who = np.argmax(det, axis=0)                               # one reporting robot per forklift
+        known = det.any(0)
+        v = own.vel[t - latency_ticks, who, cols]
+        p = own.pos[t - latency_ticks, who, cols] + v * (latency_ticks * TICK_S)
+        use = known[None, :] & ~own.seen[t]                        # shared report where the robot has none of its own
+        seen[t] |= use
+        est[t] = np.where(use[..., None], p[None], est[t])
+        vel[t] = np.where(use[..., None], v[None], vel[t])
+    return Sensed(seen, est, vel)
+
+
 def _blocked_by(start, sites, blk, mask, frac, radius):
     """start (N, 2), sites (S, 2), blk (N, K, 2), mask (N, K) -> (N, S)."""
     d = sites[None, :, :] - start[:, None, :]                      # (N, S, 2)
@@ -94,7 +120,7 @@ def pair_features(pos: np.ndarray, sites: np.ndarray, s: Sensed, t: int):
     line to the AP: line length; the robot's own planned velocity; then for the
     nearest sensed obstacles: distance along the line, distance off it, and
     velocity along and across it. No site geometry is given.
-    Returns (N, S, N_FEATURES) float32 and (N,) bool `any obstacle sensed`."""
+    Returns (N, S, N_FEATURES) float32 and (N,) distance to the nearest sensed obstacle (inf if none)."""
     t_n, n = pos.shape[0], pos.shape[1]
     d = sites[None, :, :] - pos[t][:, None, :]                              # (N, S, 2)
     length = np.maximum(np.hypot(d[..., 0], d[..., 1]), 1e-6)
@@ -117,17 +143,18 @@ def pair_features(pos: np.ndarray, sites: np.ndarray, s: Sensed, t: int):
         f[..., base + 2] = np.where(ok[:, None], v[:, None, 0] * ux + v[:, None, 1] * uy, 0.0)
         f[..., base + 3] = np.where(ok[:, None], -v[:, None, 0] * uy + v[:, None, 1] * ux, 0.0)
         f[..., base + 4] = ok[:, None]
-    return f, s.seen[t].any(1)
+    return f, dist.min(axis=1)
 
 
-def training_rows(pos, sites, s: Sensed, truth: np.ndarray, every: int = 2):
-    """(rows, N_FEATURES), (rows,) labels: pairs whose robot senses an obstacle, every `every` ticks.
-    Label: the path is blocked at some time in the next second."""
+def training_rows(pos, sites, s: Sensed, truth: np.ndarray, every: int = 2, near_m: float = np.inf):
+    """(rows, N_FEATURES), (rows,) labels: pairs whose robot knows of an obstacle within `near_m`,
+    every `every` ticks. Label: the path is blocked at some time in the next second."""
     from ..native.blockers import truth_foresight
     target = truth_foresight(truth, FORESEE_BLOCKS)
     xs, ys = [], []
     for t in range(0, pos.shape[0] - FORESEE_BLOCKS, every):
-        f, has = pair_features(pos, sites, s, t)
+        f, nearest = pair_features(pos, sites, s, t)
+        has = nearest < near_m
         if has.any():
             xs.append(f[has].reshape(-1, N_FEATURES))
             ys.append(target[t][has].reshape(-1))
@@ -137,9 +164,11 @@ def training_rows(pos, sites, s: Sensed, truth: np.ndarray, every: int = 2):
 class LearnedForesight:
     """Small network from sensed obstacles to "this path is blocked within a second"."""
 
-    def __init__(self, seed: int = 0, hidden: int = 64, epochs: int = 20, threshold: float = 0.5):
+    def __init__(self, seed: int = 0, hidden: int = 64, epochs: int = 20, threshold: float = 0.5,
+                 near_m: float = float("inf")):
         self.net = SmallNet(hidden=hidden, epochs=epochs, seed=seed)
         self.threshold = threshold
+        self.near_m = near_m           # only robots with a known obstacle this close are scored
 
     def fit(self, x: np.ndarray, y: np.ndarray) -> "LearnedForesight":
         self.net.fit(x, y)
@@ -149,7 +178,8 @@ class LearnedForesight:
         t_n = pos.shape[0]
         out = np.zeros((t_n, pos.shape[1], sites.shape[0]), dtype=bool)
         for t in range(t_n):
-            f, has = pair_features(pos, sites, s, t)
+            f, nearest = pair_features(pos, sites, s, t)
+            has = nearest < self.near_m
             if has.any():
                 p = self.net.predict(f[has].reshape(-1, N_FEATURES)).reshape(-1, sites.shape[0])
                 out[t][has] = p > self.threshold
@@ -158,13 +188,13 @@ class LearnedForesight:
     def save(self, path) -> None:
         import torch
         torch.save({"state": self.net.net.state_dict(), "mu": self.net.mu, "sd": self.net.sd, "hidden": self.net.hidden,
-                    "threshold": self.threshold}, path)
+                    "threshold": self.threshold, "near_m": self.near_m}, path)
 
     @classmethod
     def load(cls, path) -> "LearnedForesight":
         import torch
         d = torch.load(path, weights_only=False)
-        m = cls(hidden=d["hidden"], threshold=d["threshold"])
+        m = cls(hidden=d["hidden"], threshold=d["threshold"], near_m=d.get("near_m", float("inf")))
         m.net.mu, m.net.sd = d["mu"], d["sd"]
         m.net.net = torch.nn.Sequential(torch.nn.Linear(N_FEATURES, d["hidden"]), torch.nn.ReLU(),
                                         torch.nn.Linear(d["hidden"], d["hidden"]), torch.nn.ReLU(),

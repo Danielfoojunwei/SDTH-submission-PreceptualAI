@@ -50,6 +50,23 @@ def foresights_for(world, duration: float, model: fo.LearnedForesight | None = N
     return out
 
 
+MODEL_FLEET = OUT / "foresight_model_fleet.pt"
+
+
+def frozen_fleet_model() -> fo.LearnedForesight:
+    """The predictor trained on fleet-shared sensing (scenes 400-401), with the stricter threshold."""
+    m = fo.LearnedForesight.load(MODEL_FLEET)
+    m.threshold = STRICT_THRESHOLD
+    return m
+
+
+def fleet_foresight(world, duration: float, model: fo.LearnedForesight) -> np.ndarray:
+    """Warnings from fleet-shared sensing, as a (blocks, N, S) array."""
+    n_blocks = int(round(duration / SLOT)) // BLOCK_SLOTS + 1
+    pos, sites = block_positions(world, n_blocks), world.sites.astype(np.float32)
+    return model.foresight(pos, sites, fo.sense_fleet(pos, blocker_tracks(world.seed, n_blocks), world.seed))
+
+
 def frozen_model() -> fo.LearnedForesight:
     """The predictor trained on scenes 400-401, with the stricter warning threshold."""
     m = fo.LearnedForesight.load(MODEL)

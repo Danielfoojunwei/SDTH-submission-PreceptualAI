@@ -319,7 +319,7 @@ def test_sensing_and_foresight_predictors(tmp_path):
     # Not knowing the AP height (whole line counts) warns earlier.
     assert int(np.argmax(fo.geometric_foresight(pos, sites, perfect, frac=1.0)[:, 0, 0])) < first_warn
     f, has = fo.pair_features(pos, sites, perfect, 12)
-    assert f.shape == (1, 2, fo.N_FEATURES) and has.tolist() == [True]
+    assert f.shape == (1, 2, fo.N_FEATURES) and np.isfinite(has).tolist() == [True]      # distance to the nearest known obstacle
     assert abs(f[0, 0, 0] - 20.0) < 1e-4 and abs(f[0, 0, 3] - (31.0 - 2.4 - 20.0)) < 1e-3 and abs(f[0, 0, 5] + 2.0) < 1e-3
     assert abs(f[0, 1, 4] + (31.0 - 2.4 - 20.0)) < 1e-3              # same forklift, seen across the line to the other AP
     x, y = fo.training_rows(pos, sites, perfect, truth, every=1)
@@ -378,4 +378,34 @@ def test_relay_realism_knobs_only_weaken_the_relay(world):
             for s in RELAY_SCENES for a, m in miss.items() for c in ("main", "stress")]
     e = relay_eval(rows)
     assert e["R1"]["pass"] and not e["R2"]["pass"] and e["R3"]["pass"]
+
+
+def test_coverage_report_on_a_known_floor():
+    from wirelessjev.native import coverage as cv
+    gx, gy = cv.grid(2.0, width=20.0, height=10.0)
+    assert gx.shape == (5, 10)
+    # Two APs: one at the west end, one at the east end; level falls 3 dB per 2 m.
+    sites = np.array([[0.0, 5.0], [20.0, 5.0]])
+    lv = np.stack([-50.0 - 1.5 * np.abs(gx - sites[k, 0]) for k in range(2)], axis=-1)
+    best, backup, server = cv.best_and_backup(lv)
+    assert best.max() <= -50 and (server[:, 0] == 0).all() and (server[:, -1] == 1).all()
+    assert (cv.best_and_backup(lv, without=0)[0] <= best).all()
+    area = np.ones_like(gx, dtype=bool)
+    rep = cv.report(lv, np.full_like(lv, 2.0), gx, gy, area, sites)
+    ctl = rep["services"]["control"]
+    assert ctl["covered_share"] == 1.0 and ctl["with_backup_share"] < 1.0 and rep["not_enough_data_share"] == 0.0
+    assert rep["if_an_ap_fails"][0]["new_weak_m2"] > 0 and len(rep["if_an_ap_fails"]) == 2
+    weak = np.zeros_like(area)
+    weak[1:3, 2:4] = True
+    weak[4, 9] = True                                           # a single cell is too small to list
+    h = cv.holes(weak, gx, gy, best)
+    assert len(h) == 1 and h[0]["area_m2"] == 16.0
+    exact = cv.score(lv, lv, area)
+    assert exact["best_level_rmse_db"] == 0.0 and exact["worst_ap_failure"]["in_report_top3"]
+    low = cv.score(lv - 4.0, lv, area)                           # a map that reads 4 dB low over-flags
+    assert abs(low["best_level_bias_db"] + 4.0) < 1e-6 and low["no_backup_control"]["recall"] == 1.0
+    assert low["no_backup_control"]["precision"] < 1.0
+    pts = np.array([[[1.0, 5.0]], [[19.0, 5.0]]])
+    m = cv.route_mask(gx, gy, pts, near_m=2.5)
+    assert m[2, 0] and m[2, 9] and not m[2, 5]
 

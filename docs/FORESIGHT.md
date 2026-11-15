@@ -141,3 +141,39 @@ figures are simulation, with simulated sensing.
 - The largest remaining headroom is sensing range and quality, not the predictor: perfect warnings are worth 41–51%.
 - Fleet-shared sensing (a robot is told about forklifts other robots can see) would extend the range without new sensors. Not built.
 - A site-transfer test: train on one layout, test on another, against the hand-written rule with the wrong geometry.
+
+# Extension: fleet-shared sensing (pre-registered)
+
+The limit above was sensing range: a robot only knows about forklifts within
+10 m. Here every robot is told about each forklift that any robot detects.
+
+## What is modelled (`foresight.sense_fleet`)
+- A shared report arrives 200 ms late and is moved forward along its estimated velocity.
+- A robot's own fresh detection wins over a shared one.
+- No robot knows about a forklift that no robot detects.
+- The predictor is retrained on this sensing (scenes 400–401, 1,411,776 rows) and only looks at forklifts within 25 m of the robot.
+
+## Development (tuning scenes 402–403)
+- **What a robot knows:** with its own sensing, a given forklift is known 1.6–1.8% of the time; with sharing, 64–65%.
+- **Blockages foreseen across all APs:** about 30% → 60%, at the same share of right warnings (80%).
+- **In the loop, two AP paths, stress** (missed per million): no warning 196; own sensing 148; fleet-shared 127–133; perfect 110.
+- **One radio:** still no gain in the realistic condition (294 against 285).
+- **The 20 m move limit still matters:** without it, fleet-shared warnings were worse (146–169).
+
+These scenes were used to choose settings and support no claim.
+
+## Test
+Fresh scenes 600–605, 100 robots, 300 s, moving blockers, two AP paths.
+Frozen: both predictors (`foresight_model.pt`, `foresight_model_fleet.pt`),
+threshold 0.8, move limit 20 m, report latency 200 ms.
+
+**Arms:** `nr_30ms`, `shared`, `shared+foresee[own]`, `shared+foresee[fleet]`, `shared+foresee[truth]`.
+
+**Hypotheses** (`stress`, rates pooled over six scenes):
+- **S1:** fleet-shared warnings give no more misses than own-sensing warnings, and no more in at least 4 of 6 scenes.
+- **S2:** fleet-shared warnings cut misses by at least 25% against no warning.
+- **S3 (`main`, no harm):** within 5 per million of no warning.
+
+Run: `python -m wirelessjev.native.run_fleet shared-sensing --workers 4`.
+Results are appended below after the run.
+

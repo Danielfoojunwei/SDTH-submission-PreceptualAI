@@ -20,6 +20,7 @@ DETECT_SCENES = tuple(range(560, 566))
 MOVING_SCENES = tuple(range(570, 576))
 FORESIGHT_SCENES = tuple(range(580, 586))
 RELAY_SCENES = tuple(range(590, 596))
+SHARED_SENSING_SCENES = tuple(range(600, 606))
 DROP = ("per_robot_control_miss", "per_robot_video_on_time")
 
 
@@ -232,6 +233,45 @@ def foresight_eval(rows):
                    "pass": bool(all(m[c]["single+foresee[learned]"] <= m[c]["single"] for c in CONDITIONS))}}
 
 
+def shared_sensing_scene(seed: int, duration: float):
+    """Moving blockers, two AP paths: warnings from a robot's own sensing against fleet-shared sensing."""
+    from ..outage_risk import run_foresight as rf
+    _, vert = _vert()
+    shared = replace(vert, dual_radio=True, radio2="shared")
+    act = replace(shared, foresee=True, foresee_max_m=rf.MAX_MOVE_M)
+    own_model, fleet_model = rf.frozen_model(), rf.frozen_fleet_model()
+    rows = []
+    for cond, (lam, noise) in CONDITIONS.items():
+        w = build_world(seed, duration_s=duration, survey_s=60, noise_2g_extra_db=noise)
+        fs = rf.foresights_for(w, duration, own_model, sources=("truth", "learned"))
+        arms = [("nr_30ms", Policy("nr_30ms", "nr", nr_ho_cost_s=0.03), None), ("shared", shared, None),
+                ("shared+foresee[own]", act, fs["learned"]), ("shared+foresee[fleet]", act, rf.fleet_foresight(w, duration, fleet_model)),
+                ("shared+foresee[truth]", act, fs["truth"])]
+        for name, p, f in arms:
+            r = simulate(w, replace(p, name=name), collision_lambda=lam, interference=True, blockage_model="moving", foresight=f)
+            rows.append({k: v for k, v in r.items() if k not in DROP} | {"arm": name, "condition": cond})
+    return rows
+
+
+def shared_sensing_eval(rows):
+    sc = sorted({r["scene"] for r in rows})
+    v = lambda c, a, s: next(r["control_miss"] for r in rows if r["condition"] == c and r["arm"] == a and r["scene"] == s)
+
+    def pooled(c, a):
+        rs = [r for r in rows if r["condition"] == c and r["arm"] == a]
+        return 1e6 * sum(r["control_misses"] for r in rs) / max(sum(r["control_sent"] for r in rs), 1)
+
+    arms = list(dict.fromkeys(r["arm"] for r in rows))
+    m = {c: {a: pooled(c, a) for a in arms} for c in CONDITIONS}
+    F, O = "shared+foresee[fleet]", "shared+foresee[own]"
+    wins = int(sum(v("stress", F, s) <= v("stress", O, s) for s in sc))
+    ratio = lambda c, a, b: m[c][a] / m[c][b] if m[c][b] > 0 else float("inf")
+    return {"scenes": sc, "misses_per_million": m,
+            "S1": {"scenes": wins, "ratio": ratio("stress", F, O), "pass": bool(wins >= 4 and ratio("stress", F, O) <= 1.0)},
+            "S2": {"ratio": ratio("stress", F, "shared"), "pass": bool(ratio("stress", F, "shared") <= 0.75)},
+            "S3": {"pass": bool(m["main"][F] <= m["main"]["shared"] + 5.0)}}
+
+
 RELAY_LEVELS = {"optimistic": dict(relay_delay_slots=0, relay_coop=1.0),
                 "realistic": dict(relay_delay_slots=2, relay_coop=0.7),
                 "pessimistic": dict(relay_delay_slots=3, relay_coop=0.5)}
@@ -273,7 +313,9 @@ STUDIES = {"ladder": (ladder_scene, LADDER_SCENES, 120.0, ladder_eval, "headroom
            "detect": (detect_scene, DETECT_SCENES, 300.0, detect_eval, "blockage_detector.json", "docs/BLOCKAGE_DETECTOR.md"),
            "moving": (moving_scene, MOVING_SCENES, 300.0, moving_eval, "moving_blockers.json", "docs/MOVING_BLOCKERS.md"),
            "foresight": (foresight_scene, FORESIGHT_SCENES, 300.0, foresight_eval, "foresight.json", "docs/FORESIGHT.md"),
-           "relay": (relay_scene, RELAY_SCENES, 300.0, relay_eval, "relay_realism.json", "docs/RELAY_REALISM.md")}
+           "relay": (relay_scene, RELAY_SCENES, 300.0, relay_eval, "relay_realism.json", "docs/RELAY_REALISM.md"),
+           "shared-sensing": (shared_sensing_scene, SHARED_SENSING_SCENES, 300.0, shared_sensing_eval, "foresight_shared_sensing.json",
+                              "docs/FORESIGHT.md")}
 
 
 def main():
