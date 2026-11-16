@@ -1,0 +1,14 @@
+Traceback (most recent call last):
+  File "/workspace/SDTH-submission-PreceptualAI/scripts/run_measured_radio.py", line 43, in <module>
+    main()
+  File "/workspace/SDTH-submission-PreceptualAI/scripts/run_measured_radio.py", line 23, in main
+    result = run()
+             ^^^^^
+  File "/workspace/SDTH-submission-PreceptualAI/src/wirelessjev/measured_radio/study.py", line 470, in run
+    prepare()
+  File "/workspace/SDTH-submission-PreceptualAI/src/wirelessjev/measured_radio/study.py", line 90, in prepare
+    dataset = prepare_dataset(c.SOURCE, protocol)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/SDTH-submission-PreceptualAI/src/wirelessjev/measured_radio/data.py", line 289, in prepare_dataset
+    raise ValueError('Successful measurement count exceeds attempts')
+ValueError: Successful measurement count exceeds attempts

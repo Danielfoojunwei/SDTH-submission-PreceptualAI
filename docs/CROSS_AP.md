@@ -63,3 +63,33 @@ The same arms, conditions and hypotheses X1–X6 are run with 10 robots on the s
 - **Purpose:** check whether the conclusions hold for a 10-car fleet, the SmartCar milestone size.
 - **Difference from the original 10-car twin:** this is the warehouse twin with 10 robots, not the earlier 3-AP 10-car twin.
 - **Fewer fixed video robots:** the warehouse's three fixed video robots (indices 16, 41 and 77) do not exist in a 10-robot fleet, so video comes only from the random 4%. In the `heavy` condition, 15% of robots stream.
+
+## Results (100 robots, fresh scenes 540–545)
+Raw data: [`artifacts/native/cross_ap.json`](../artifacts/native/cross_ap.json). Misses are per million control packets (3.6 M per arm per condition).
+
+| Arm | Main | Stress | Heavy load |
+|---|---|---|---|
+| Private 5G, 30 ms | 58.9 | 58.9 | 58.9 |
+| Private 5G, make-before-break | 52.5 | 52.5 | 52.5 |
+| Wi-Fi 8, seamless switching | 244.2 | 777.8 | 371.4 |
+| Wi-Fi 7 fixed rule | 5,052.8 | 9,795.6 | 7,373.9 |
+| Vertical, single radio | 234.7 | 2,131.7 | 300.0 |
+| **Vertical, second association on the same card** | **5.0** | 110.8 | **6.9** |
+| Vertical + onboard radio | 7.8 | 344.2 | 13.3 |
+| Vertical + second BE200 | 5.0 | 110.8 | 6.7 |
+| Same-card path, extra levers off | 2.5 | 113.3 | 6.1 |
+
+| | Claim | Result |
+|---|---|---|
+| X1 | Same-card second path ≤ 5G (`main`) | **Pass, 6/6** (5.0 vs 58.9) |
+| X2 | Onboard radio ≤ 5G (`main`) | **Pass, 6/6** (7.8 vs 58.9) |
+| X3 | Same-card second path ≤ Wi-Fi 8 (`main`) | **Pass, 6/6** (5.0 vs 244.2) |
+| X4 | Same-card second path ≤ 5G (`stress`) | **Fail, 1/6** (110.8 vs 58.9) |
+| X5 | Onboard radio ≤ 5G (`stress`) | **Fail, 0/6** (344.2 vs 58.9) |
+| X6 | Same-card second path ≤ 5G (`heavy`) | **Pass, 6/6** (6.9 vs 58.9) |
+
+**What it shows:**
+- **The no-new-hardware routes work in the main and heavy-load conditions.** A time-shared second association matches a second card, and the onboard radio is close. Both beat the 5G model by about 8–12× and Wi-Fi 8 by 30–50×.
+- **Stress is still lost to 5G.** The development lead that the extra levers hurt under stress did not hold on fresh scenes (110.8 with them, 113.3 without).
+- **The stress misses are weak links, not blockage.** With the +10 dB 2.4 GHz noise, 331 of 399 same-card misses were "weak link". A second AP path does not fix a noisy band; a path on a different band or radio might.
+- **The 10-robot replication was stopped** at the user's request and is not reported.

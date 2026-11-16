@@ -1,5 +1,33 @@
 # WirelessJEV research handoff
 
+## Latest (15 Nov 2026): real-site kit, headroom ladder, fleet-only capabilities
+
+Branch `wirelessjev/real-site-fleet`, built on `codex/measured-radio-nuisance`.
+
+- **Site visit, Tuesday 17 Nov 2026:** one SmartCar, operator-supplied APs, one day. Runbook: [TUESDAY_RUNBOOK.md](TUESDAY_RUNBOOK.md). Analysis fixed in advance: [REAL_SITE_PROTOCOL.md](REAL_SITE_PROTOCOL.md).
+- **Dry run, 15 Nov:** the whole runbook now runs end to end against a fake car (`tests/test_runbook_dry_run.py`). It found seven problems, all fixed; two would have corrupted Tuesday's measurements (handover outage mis-measured; blockage-rule alarms over-counted). `~/smartcar_known_hosts` and `~/WiFi.json` must exist on the laptop before the first command works. Not verifiable without the car: real `iw`/`ping` output formats, `sudo -n` rights, whether `wlan1` has a default route, the real sample rate.
+- **Car not reachable before Tuesday.** The first on-site step is now `onecar check` (runbook block 1b): a 10-second read-only lap and a pass/fail line per thing the analysis needs. Every lap keeps the car's raw output (`*.stream.raw`, `*.ping.raw`), and `onecar reparse` rebuilds laps after a parser fix, so a format mismatch loses no data.
+- **New on-site tools** (`src/wirelessjev/hil/`, tested on fixtures only, never on the car):
+  - `onecar lap`: driving telemetry (10 Hz link state, 20 Hz gateway ping, scan cache, waypoint marks).
+  - `hil.ghosts`: nine ghost robots as real traffic load.
+  - `hil.trace_twin`: recorded laps replayed as a fleet in the unchanged simulator.
+  - `hil.analyse`: outages, plan-length stops, a replay of the blockage rule against real outages, the outage-prediction baseline.
+- **Cross-AP campaign finished** ([CROSS_AP.md](CROSS_AP.md)): the same-card and onboard second paths beat the 5G and Wi-Fi 8 models in realistic and heavy-load conditions (X1–X3, X6 pass); stress is still lost (X4, X5 fail).
+- **Headroom ladder** ([JEPA_HEADROOM.md](JEPA_HEADROOM.md)): a perfect static map is worth 9% on a single radio; knowing which path is blocked now is worth a further 63%. The learned-model target is therefore a live blockage/outage detector, not signal prediction.
+- **Live blockage detector** ([BLOCKAGE_DETECTOR.md](BLOCKAGE_DETECTOR.md)): a hand-written rule on the robot's own readings (a drop on every band of the serving AP at once). Fresh scenes 560–565: one-radio misses fall 30% (realistic) and 49% (stress); B1, B2, B4 pass. It does not make one radio beat 5G (B5 fails, 140 against 42.5 per million), and the oracle reference in B3 was too weak to be informative.
+- **Learned detector versus the rule** ([OUTAGE_RISK.md](OUTAGE_RISK.md), development scenes only): the hand-written rule catches 61% (realistic) and 68% (stress) of blocked moments at a false-alarm rate under 0.1%. A logistic model and a small network do not beat it as an alarm; they do give better probabilities. This is the bar for any JEPA detector.
+- **Moving blockers** ([MOVING_BLOCKERS.md](MOVING_BLOCKERS.md)): forklifts that block several robots and several AP paths at once, calibrated to the same blockage rate. Fresh scenes 570–575: M1–M5 pass in 6 of 6 scenes. Two AP paths still beat the 5G model in the realistic condition (14.4 against 171.4 per million, 12×, down from 17×). Stress needs the relay (255.0 alone, 11.7 with relay, against 171.4). M6 fails: the blockage rule made misses worse under short blockages, so it is off by default.
+- **Site transfer for foresight** ([SITE_TRANSFER.md](SITE_TRANSFER.md), development only, fresh-scene test not run): the premise failed. AP height barely changes blockage on the two paths a robot uses (both blocked together 0.46% of the time at 6 m, 0.42% at 20 m), so a hand-written rule with the wrong geometry is as good as with the right one, and there is no evidence the learned predictor is needed for foresight. Training from the robot's own radio rule works but gives warnings that are right only half the time.
+- **Fleet-shared sensing for foresight** ([FORESIGHT.md](FORESIGHT.md), extension): fails its main mark. On fresh scenes 600–605, warnings from fleet-shared sensing were no better than a robot's own (190.0 against 179.7 per million in stress). Dropped. The same test replicated own-sensing foresight more strongly: two AP paths in stress 320.0 → 179.7 (44% fewer; the first test gave 24%).
+- **Site coverage report** ([COVERAGE_REPORT.md](COVERAGE_REPORT.md), `native_ext/coverage.py`): coverage, backup, holes and AP-failure what-ifs from the learned map. Fresh scenes 610–615: 3.6 dB level error; the no-backup map is 88% right and finds 95%; 77% of clearly weak cells found; the worst AP failure is in the report's top three in 6 of 6 scenes. The exact weak-cell map fails as expected (51% right). This is where a more accurate learned radio map would pay directly.
+- **Relay realism** ([RELAY_REALISM.md](RELAY_REALISM.md)): the stress win does not depend on the optimistic relay. Fresh scenes 590–595, moving blockers: two AP paths + relay with a 20 ms delay and helpers free 70% of the time give 21.4 per million against 136.4 for the 5G model; with 30 ms and 50%, 56.7. R1–R3 pass in 6 of 6 scenes. Quote the realistic figure, not the optimistic 1.1.
+- **Foresight from obstacle sensing** ([FORESIGHT.md](FORESIGHT.md)): a small learned predictor turns sensed forklifts (10 m range, noisy, hidden by racks) into a one-second warning; the controller re-points the second AP path between packets. Fresh scenes 580–585: F1–F5 all pass. Two AP paths in stress: 229.7 → 175.0 per million (24% fewer, 5 of 6 scenes); a perfect warning gives 41%. No measurable effect in the realistic condition; it ties the hand-written rule that is given the site geometry; one radio gains 4–8%. This is the first learned model here to pass a pre-registered control test. Sensing is simulated.
+- **Radio cannot see blockage coming; obstacle sensing can** ([OUTAGE_RISK.md](OUTAGE_RISK.md), development only): one second ahead, no radio-only detector flags more than 20% of blockages, neighbours' alarms add little, and a predictor given nearby forklift positions flags 95%. This is headroom with perfect sensing, and is the proposed target for a learned perception-and-radio model.
+- **Fleet-only capabilities** ([DIRECTIONS_123.md](DIRECTIONS_123.md)): D1–D5 all pass on fresh scenes 550–555. In the stress condition, two AP paths alone lose to the 5G model (96.7 against 57.8 per million); with robot relay it is 1.7, and with relay and Bluetooth 0. A 2 s safe plan removes 94% or more of stops. Link-aware speed lowers throughput and should stay off. The zeros rest on optimistic assumptions (same-slot relay, free Bluetooth airtime, a Bluetooth gateway at each AP) and nothing is tested on hardware.
+- **Why the JEPA models have not overtaken RadioMap:** the diagnosis and plan are in the ladder document and in the approved plan summarised in this section's commits.
+- **Full test suite** ([TEST_SUITE.md](TEST_SUITE.md)): 4,298 pass, 16 fail; the same 16 fail on Codex's unchanged tip on this Mac (missing `/workspace`, missing LLVM library for Sionna, a Linux-only system call, platform numerics). Run with `--import-mode=importlib`. The first run found that this branch broke 25 tests by editing `native/sim.py` and adding files to `native/`, which earlier archives checksum. Fixed: `native/` is identical to Codex's tip again, and the fleet work lives in `src/wirelessjev/native_ext/` (`sim_fleet.py`, `blockers.py`, `run_fleet.py`, `coverage.py`).
+- **Not done:** nothing has run on the real car.
+
 ## Current system and execution status
 
 The canonical [architecture](research_status/CURRENT_SYSTEM.md) separates the
@@ -10,6 +38,21 @@ E1–E5 and corrected E7 have finished; E6 remains excluded. No interrupted
 original training worker needs restarting, and original large-model results
 still represent one training chain.
 
+The [measured Wi-Fi transfer assay](MEASURED_RADIO_RESULTS.md) is now complete:
+frozen RadioJEPA has **5.203916 versus 3.752246 dB RMSE** for the VAL-selected
+numerical map at 16 support locations, a **+1.451670 dB** gap. Both paired
+location and 5 m-block intervals favor numerical mapping. Working ±1.96std
+containment is only about 69%, so no calibrated confidence or control claim is
+supported. All 4,255 source summaries/33,901 selected reports and the retained prediction arrays,
+selections and score/cohort reductions have independent passing audits. The initial
+counter-contract preparation failure and separately published repair are
+preserved. No measured fit is running, no neural weights/defaults changed,
+and real SmartCar/hardware/SOTA qualification is still open. The current
+[tracked suite](../artifacts/measured_radio_review/software_suite_counterfix.json)
+passes **4,320 tests** across 170 modules, with 619 unchanged source/config/test
+hashes. This is an observed-link partial-input assay; future tuned models need
+reserved campaigns.
+
 The current [Torch-free SmartCar package](../artifacts/smartcar_numpy/README.md)
 adds NumPy/SciPy inference for the three exact released checkpoints. The
 [118,688-byte ZIP](../artifacts/smartcar_numpy/smartcar-wirelessJEV.zip) runs both
@@ -18,14 +61,14 @@ It preserves the same measurement, admission and separately confirmed control
 boundaries. Same-weight CPU-only software timing shows 1.92–3.98× faster
 conditioning/rendering and 4.30–4.65× lower peak process RSS; worker-entry timing
 excludes interpreter startup. These are synthetic software workloads, not
-physical-car performance or a new RF accuracy improvement. The latest
+physical-car performance or a new RF accuracy improvement. The PR29 portable
 [suite](../artifacts/smartcar_numpy_review/software_suite.json) passes **4,138
 tests** across 165 modules and 606 unchanged source/config/test files. The
 [portable proof](../artifacts/smartcar_numpy_review/portable_verification.json)
 runs all three models in an actual Torch-absent environment. Current setup is
 in [SMARTCAR_NUMPY_DEPLOYMENT.md](SMARTCAR_NUMPY_DEPLOYMENT.md); the preceding
 Torch package and its receipts below remain preserved. Hardware validation
-and matched external measured-RSSI/SOTA claims remain unfinished.
+and broader matched specialist comparisons/SOTA claims remain unfinished.
 
 The portable [SmartCar deployment workflow](SMARTCAR_DEPLOYMENT.md) now has a
 [downloadable ZIP](../artifacts/smartcar_deployment/smartcar-wirelessJEV.zip):

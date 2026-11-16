@@ -1,0 +1,74 @@
+{
+  "actual_admitted_phones": [
+    "GP10",
+    "S24U"
+  ],
+  "all_coordinate_joins_partitions_support_orders_and_frames_match": true,
+  "all_selected_rows_are_smallest_eight_eligible_identities": true,
+  "all_selected_source_values_status_carrier_clock_device_ap_and_hashes_match": true,
+  "all_summary_records_match_raw_source": true,
+  "android_versions_by_scenario_phone": {
+    "S01/GP10": [
+      16
+    ],
+    "S01/S24U": [
+      15
+    ],
+    "S02/GP10": [
+      16
+    ],
+    "S02/S24U": [
+      16
+    ],
+    "S03/GP10": [
+      16
+    ],
+    "S03/S24U": [
+      16
+    ]
+  },
+  "audit": {
+    "counter_inconsistent_rows": 8,
+    "eligible_counter_inconsistent_rows": 5,
+    "eligible_files": 629,
+    "eligible_groups": 4255,
+    "eligible_rows": 758456,
+    "failed_status_rows": 55686,
+    "frequency_missing_rows": 55686,
+    "frequency_other_rows": 0,
+    "frequency_unknown_rows": 830669,
+    "frequency_zero_rows": 2,
+    "invalid_rssi_rows": 0,
+    "selected_rows": 33901,
+    "sentinel_rssi_rows": 0,
+    "source_files": 944,
+    "source_rows": 1644814,
+    "successful_rows": 1589127,
+    "summary_records": 4255,
+    "zero_success_rows": 1
+  },
+  "audit_script_sha256": "1df3f1b2baf0e1a1dc588afcea202f70eaa2609e55ee59994ecd10c6f6904762",
+  "catalogue_sha256": "1fa2b3ffea69a978e47172d83b5a5bae3b601ca9256a787abec3897bdb77f170",
+  "data_receipt_sha256": "623422f0af5569a73cf23aba7ab132242ee83de547294afd0ac23140ceace875",
+  "dataset_sha256": "8f25daa91682937f59f12f862a53377d19ba119f05af3cf693c263c8e115e017",
+  "independent_stdlib_source_replay": true,
+  "model_forward_or_fit_calls": 0,
+  "official_license_metadata_sha256": "36539227b9ede5413b974de1e7fb91be1e17df4b841936df208706018414c931",
+  "original_failed_attempt_sha256": "ebbceb8ce9b6fb8a53c9c8dbf6af93a71c90fbd1c85a19caf39c97f79ee3fdf6",
+  "partition_locations": {
+    "test": 87,
+    "train": 112,
+    "validation": 29
+  },
+  "predictions_results_or_hyperparameters_read": false,
+  "protocol_sha256": "37c9520331486a173e948b583278ad160245076a534ab0939d67160b98f9fdb0",
+  "published_evidence_files_verified": 68,
+  "published_source_commit": "5faa3d4380eb0773772d407e58f06080e36e9fa7",
+  "registered_source_files_verified": 32,
+  "schema": 1,
+  "selected_summary_units_are_raw_measurements": false,
+  "source_archive_sha256": "0ff469b8bd9d58a7d37c77423fc40450916bf26bbe208010bfc2bdf075ccf9f5",
+  "source_license": "CC-BY-4.0",
+  "status": "passed",
+  "study_data_or_model_modules_imported": false
+}
