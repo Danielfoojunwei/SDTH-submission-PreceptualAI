@@ -332,3 +332,42 @@ def test_coverage_report_from_recorded_laps(tmp_path):
     with pytest.raises(ValueError):
         cv.from_laps([bare], SITE, WAYPOINTS)
 
+
+def test_live_viewer_summarises_a_lap_and_only_reads_known_files(tmp_path):
+    from wirelessjev.hil import viewer
+    lap = make_lap("v1", 6.0)
+    lap["pings"] = [{"event": "ping", "t_car": T0 + 0.05 * i, "rtt_ms": 3.0} for i in range(600) if not 200 <= i < 230]
+    events = ([{"event": "lap_start", "name": "v1", "t_mac": T0, "car_minus_mac_s": 0.0, "gateway": "10.0.0.1",
+                "period_s": 0.5, "seconds": 30, "note": ""}]
+              + lap["samples"] + lap["scans"] + lap["pings"]
+              + [{"event": "mark", "t_mac": T0 + 5.0, "label": "A"}, {"event": "mark", "t_mac": T0 + 25.0, "label": "B"}])
+    log = tmp_path / "20261117-101500-lap-v1.jsonl"
+    log.write_text("".join(json.dumps(e) + "\n" for e in events) + '{"event": "sample", "t_car": 9')   # half-written last line
+    d = viewer.summarise(viewer.read_events(log), now_mac=T0 + 30.0)
+    assert d["counts"] == {"samples": 60, "pings": 570, "scans": 15, "marks": 2, "roams": d["counts"]["roams"]}
+    assert d["outages"]["count"] == 1 and 1.4 < d["outages"]["longest_s"] < 1.6       # the 1.5 s silence at 10 s
+    assert d["now"]["connected"] and d["now"]["signal_dbm"] is not None and d["lap"]["finished"] is False
+    assert [m["label"] for m in d["marks"]] == ["A", "B"] and d["marks"][0]["t_s"] == 5.0
+    assert d["signal"] and all(0 <= s[0] <= viewer.WINDOW_S for s in d["signal"])
+    assert {c["item"] for c in d["checks"]} >= {"wlan1 default route", "link samples", "gateway pings"}
+    # A live silence: replies stopped 3 s ago and the lap has not ended.
+    assert viewer.summarise(viewer.read_events(log), now_mac=T0 + 32.95)["live_gap_s"] > 2.9
+    # Routing: the page, the lap list and the data are served; nothing else is.
+    st, ctype, body = viewer.route("/", tmp_path)
+    assert st == 200 and b"never connects to the car" in body and b"http" not in body.split(b"<script>")[1]
+    laps = json.loads(viewer.route("/laps", tmp_path)[2])
+    assert [l["name"] for l in laps] == ["v1"]
+    data = json.loads(viewer.route("/data", tmp_path, now_mac=T0 + 30.0)[2])
+    assert data["file"] == log.name and data["counts"]["samples"] == 60
+    (tmp_path / "secret.txt").write_text("x")
+    for bad in ("/data?lap=../secret.txt", "/data?lap=secret.txt", "/data?lap=%2e%2e%2fsecret.txt", "/secret.txt", "/../secret.txt"):
+        assert viewer.route(bad, tmp_path)[0] == 404, bad
+    empty = tmp_path / "empty"
+    empty.mkdir()
+    assert json.loads(viewer.route("/data", empty)[2])["lap"] is None
+    # The demo writes a lap the summary understands.
+    import threading
+    path = viewer.demo_lap(tmp_path / "demo", seconds=30.0, speed=1000.0, stop=threading.Event())
+    dd = viewer.summarise(viewer.read_events(path))
+    assert dd["lap"]["finished"] and dd["counts"]["samples"] == 300 and dd["outages"]["count"] >= 1 and dd["counts"]["marks"] >= 2
+

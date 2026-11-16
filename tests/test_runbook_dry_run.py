@@ -337,6 +337,8 @@ def test_every_runbook_command_parses_with_the_real_parsers(tmp_path):
             args = ghosts.build_parser().parse_args(rest)
             assert args.seconds <= ghosts.MAX_SECONDS
             assert sum(g.mbps for g in ghosts.fleet(args.ghosts, args.video, args.bulk)) <= ghosts.MAX_TOTAL_MBPS
+        elif module == "wirelessjev.hil.viewer":
+            assert rest == []                                   # the runbook starts it with its defaults (read only, 127.0.0.1)
         else:
             assert module in ("wirelessjev.hil.analyse", "wirelessjev.hil.trace_twin", "wirelessjev.native_ext.coverage"), module
     for sub in ("preflight", "status", "capabilities", "handover-probe", "lap", "switch", "roam"):

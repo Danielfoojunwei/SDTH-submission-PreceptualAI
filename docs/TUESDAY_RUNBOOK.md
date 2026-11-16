@@ -16,6 +16,15 @@ The car cannot be reached before Tuesday, so the first job on site is to find ou
 | Afternoon | 6, 5 | Blockage trials; laps under ghost load |
 | Last 20 min | 7 | Check the data before leaving |
 
+## Live view (optional, read only)
+In a second terminal, from the repo folder, start the viewer and leave it running all day:
+```bash
+.venv/bin/python -m wirelessjev.hil.viewer
+```
+Then open http://127.0.0.1:8765 in a browser on this laptop. It follows the newest lap as it is recorded: signal and AP, gateway ping and outages, waypoint marks, the last scan, and the same PASS/WARN/FAIL items as the format check. A banner appears when replies stop for more than a second, or when no new data arrives for 5 s.
+
+It only reads the lap files. It never connects to the car, so it cannot change anything, and it needs no internet. If it stops, the laps are unaffected. To rehearse tonight with a synthetic lap: add `--demo`.
+
 ## Safety rules (unchanged)
 - Client radio `wlan1` only. Never `wlan0` or 192.168.1.11's hotspot.
 - Pinned host key; SSH password typed at the prompt or in `WJ_SSH_PASSWORD`, never stored.
