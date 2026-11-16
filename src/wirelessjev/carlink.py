@@ -315,7 +315,9 @@ def _combinations(phy: str) -> dict:
         chans = re.search(r"#channels\s*<=\s*(\d+)", line)
         if managed > best_managed or (managed == best_managed and chans and int(chans.group(1)) > best_channels):
             best_managed, best_channels = managed, int(chans.group(1)) if chans else 1
-    return {"max_client_interfaces": best_managed, "max_concurrent_channels": best_channels}
+    return {"max_client_interfaces": best_managed, "max_concurrent_channels": best_channels,
+            # The one-line answer to "can one card hold two AP connections at once?"
+            "two_clients_two_channels": best_managed >= 2 and best_channels >= 2}
 
 
 def _float(pattern: str, text: str):

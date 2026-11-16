@@ -167,13 +167,34 @@ def parse_ping(text: str) -> list[float]:
 
 
 def gap_around(replies: list[float], t0: float) -> dict:
+    """The outage caused by a change submitted at `t0`: the longest silence
+    between consecutive ping replies, starting from the last reply before `t0`.
+
+    The link does not drop at the instant of submission (NetworkManager takes
+    time to tear the connection down), so replies can keep arriving for a
+    while after `t0`. Taking the first reply after `t0` as the end of the
+    outage would then report one normal ping interval. `first_reply_after_s`
+    is the first reply after that silence; `silence_started_after_s` is how
+    long after submission the last reply before it arrived (negative: before).
+
+    If no silence stands out (the longest is within 1.5x the usual reply
+    interval), nothing was lost: the interval straddling `t0` is reported."""
     before = [t for t in replies if t <= t0]
     after = [t for t in replies if t > t0]
     if not before or not after:
-        return {"last_reply_before_s": None, "first_reply_after_s": None, "outage_s": None}
+        return {"last_reply_before_s": None, "first_reply_after_s": None, "outage_s": None,
+                "silence_started_after_s": None}
+    seq = [before[-1]] + after
+    ordered = sorted(replies)
+    steps = sorted(b - a for a, b in zip(ordered, ordered[1:]))
+    usual = steps[len(steps) // 2]
+    k = max(range(len(seq) - 1), key=lambda i: seq[i + 1] - seq[i])
+    if seq[k + 1] - seq[k] <= 1.5 * usual:
+        k = 0
     return {"last_reply_before_s": round(t0 - before[-1], 3),
-            "first_reply_after_s": round(after[0] - t0, 3),
-            "outage_s": round(after[0] - before[-1], 3)}
+            "first_reply_after_s": round(seq[k + 1] - t0, 3),
+            "outage_s": round(seq[k + 1] - seq[k], 3),
+            "silence_started_after_s": round(seq[k] - t0, 3)}
 
 
 def stage_events(submitted: float, journal: dict, first_reply: float | None, gateway: str) -> list[dict]:

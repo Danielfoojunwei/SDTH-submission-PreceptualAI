@@ -1,0 +1,256 @@
+[
+ {
+  "scene": 403,
+  "condition": "main",
+  "arm": "nr_30ms",
+  "source": null,
+  "control_miss": 0.00020833333333333335,
+  "control_misses": 50,
+  "control_sent": 240000,
+  "availability_1s": 0.998,
+  "foresight_moves": 0,
+  "miss_causes": {
+   "no_radio_up": 6,
+   "all_paths_blocked": 35,
+   "weak_link": 9,
+   "contention": 0,
+   "other": 0
+  }
+ },
+ {
+  "scene": 403,
+  "condition": "main",
+  "arm": "single",
+  "source": null,
+  "control_miss": 0.0003291666666666667,
+  "control_misses": 79,
+  "control_sent": 240000,
+  "availability_1s": 0.9980833333333333,
+  "foresight_moves": 0,
+  "miss_causes": {
+   "no_radio_up": 0,
+   "all_paths_blocked": 67,
+   "weak_link": 12,
+   "contention": 0,
+   "other": 0
+  }
+ },
+ {
+  "scene": 403,
+  "condition": "main",
+  "arm": "single+foresee",
+  "source": "truth",
+  "control_miss": 0.00015833333333333332,
+  "control_misses": 38,
+  "control_sent": 240000,
+  "availability_1s": 0.9979166666666667,
+  "foresight_moves": 177,
+  "miss_causes": {
+   "no_radio_up": 0,
+   "all_paths_blocked": 21,
+   "weak_link": 17,
+   "contention": 0,
+   "other": 0
+  },
+  "warning_quality_all_paths": {
+   "caught": 1.0,
+   "false_alarm_rate": 0.0,
+   "precision": 1.0,
+   "warnings": 161555,
+   "events": 161555
+  }
+ },
+ {
+  "scene": 403,
+  "condition": "main",
+  "arm": "single+foresee",
+  "source": "geometric_site_known",
+  "control_miss": 0.0007375,
+  "control_misses": 177,
+  "control_sent": 240000,
+  "availability_1s": 0.99475,
+  "foresight_moves": 655,
+  "miss_causes": {
+   "no_radio_up": 0,
+   "all_paths_blocked": 130,
+   "weak_link": 47,
+   "contention": 0,
+   "other": 0
+  },
+  "warning_quality_all_paths": {
+   "caught": 0.2951069295286435,
+   "false_alarm_rate": 0.00526993282856807,
+   "precision": 0.8383772662528356,
+   "warnings": 56867,
+   "events": 161555
+  }
+ },
+ {
+  "scene": 403,
+  "condition": "main",
+  "arm": "single+foresee",
+  "source": "geometric_whole_line",
+  "control_miss": 0.0007583333333333333,
+  "control_misses": 182,
+  "control_sent": 240000,
+  "availability_1s": 0.99475,
+  "foresight_moves": 726,
+  "miss_causes": {
+   "no_radio_up": 0,
+   "all_paths_blocked": 131,
+   "weak_link": 51,
+   "contention": 0,
+   "other": 0
+  },
+  "warning_quality_all_paths": {
+   "caught": 0.29623967070038065,
+   "false_alarm_rate": 0.00608069172527085,
+   "precision": 0.8186063218390804,
+   "warnings": 58464,
+   "events": 161555
+  }
+ },
+ {
+  "scene": 403,
+  "condition": "main",
+  "arm": "single+foresee",
+  "source": "learned",
+  "control_miss": 0.0005208333333333333,
+  "control_misses": 125,
+  "control_sent": 240000,
+  "availability_1s": 0.9966666666666667,
+  "foresight_moves": 479,
+  "miss_causes": {
+   "no_radio_up": 2,
+   "all_paths_blocked": 94,
+   "weak_link": 29,
+   "contention": 0,
+   "other": 0
+  },
+  "warning_quality_all_paths": {
+   "caught": 0.33839868775339665,
+   "false_alarm_rate": 0.006581825583628863,
+   "precision": 0.8264675202950914,
+   "warnings": 66149,
+   "events": 161555
+  }
+ },
+ {
+  "scene": 403,
+  "condition": "main",
+  "arm": "shared",
+  "source": null,
+  "control_miss": 1.6666666666666667e-05,
+  "control_misses": 4,
+  "control_sent": 240000,
+  "availability_1s": 0.9998333333333334,
+  "foresight_moves": 0,
+  "miss_causes": {
+   "no_radio_up": 0,
+   "all_paths_blocked": 1,
+   "weak_link": 3,
+   "contention": 0,
+   "other": 0
+  }
+ },
+ {
+  "scene": 403,
+  "condition": "main",
+  "arm": "shared+foresee",
+  "source": "truth",
+  "control_miss": 2.0833333333333333e-05,
+  "control_misses": 5,
+  "control_sent": 240000,
+  "availability_1s": 0.99975,
+  "foresight_moves": 69,
+  "miss_causes": {
+   "no_radio_up": 0,
+   "all_paths_blocked": 2,
+   "weak_link": 3,
+   "contention": 0,
+   "other": 0
+  },
+  "warning_quality_all_paths": {
+   "caught": 1.0,
+   "false_alarm_rate": 0.0,
+   "precision": 1.0,
+   "warnings": 161555,
+   "events": 161555
+  }
+ },
+ {
+  "scene": 403,
+  "condition": "main",
+  "arm": "shared+foresee",
+  "source": "geometric_site_known",
+  "control_miss": 4.166666666666667e-06,
+  "control_misses": 1,
+  "control_sent": 240000,
+  "availability_1s": 0.9999166666666667,
+  "foresight_moves": 393,
+  "miss_causes": {
+   "no_radio_up": 0,
+   "all_paths_blocked": 1,
+   "weak_link": 0,
+   "contention": 0,
+   "other": 0
+  },
+  "warning_quality_all_paths": {
+   "caught": 0.2951069295286435,
+   "false_alarm_rate": 0.00526993282856807,
+   "precision": 0.8383772662528356,
+   "warnings": 56867,
+   "events": 161555
+  }
+ },
+ {
+  "scene": 403,
+  "condition": "main",
+  "arm": "shared+foresee",
+  "source": "geometric_whole_line",
+  "control_miss": 4.166666666666667e-06,
+  "control_misses": 1,
+  "control_sent": 240000,
+  "availability_1s": 0.9999166666666667,
+  "foresight_moves": 405,
+  "miss_causes": {
+   "no_radio_up": 0,
+   "all_paths_blocked": 1,
+   "weak_link": 0,
+   "contention": 0,
+   "other": 0
+  },
+  "warning_quality_all_paths": {
+   "caught": 0.29623967070038065,
+   "false_alarm_rate": 0.00608069172527085,
+   "precision": 0.8186063218390804,
+   "warnings": 58464,
+   "events": 161555
+  }
+ },
+ {
+  "scene": 403,
+  "condition": "main",
+  "arm": "shared+foresee",
+  "source": "learned",
+  "control_miss": 4.166666666666667e-06,
+  "control_misses": 1,
+  "control_sent": 240000,
+  "availability_1s": 0.9999166666666667,
+  "foresight_moves": 246,
+  "miss_causes": {
+   "no_radio_up": 0,
+   "all_paths_blocked": 1,
+   "weak_link": 0,
+   "contention": 0,
+   "other": 0
+  },
+  "warning_quality_all_paths": {
+   "caught": 0.33839868775339665,
+   "false_alarm_rate": 0.006581825583628863,
+   "precision": 0.8264675202950914,
+   "warnings": 66149,
+   "events": 161555
+  }
+ }
+]
