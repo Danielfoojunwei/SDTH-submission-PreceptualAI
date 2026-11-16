@@ -307,3 +307,28 @@ def test_site_check_fails_clearly_and_a_parser_fix_recovers_the_lap(tmp_path, mo
     with pytest.raises(FileNotFoundError):
         tel.reparse_lap(tmp_path / "missing-lap-x.jsonl")
 
+
+def test_coverage_report_from_recorded_laps(tmp_path):
+    from wirelessjev.native_ext import coverage as cv
+    laps = [make_lap(f"lap{i}", y) for i, y in enumerate((4.0, 6.0, 8.0))]
+    res = cv.from_laps(laps, SITE, WAYPOINTS)
+    rep, g = res["report"], res["_grids"]
+    assert g["pred"].shape == (12, 20, 3) and rep["aps"] == 3 and rep["source"]["laps"] == 3
+    assert 0 < rep["area_m2"] < 20 * 12                         # only the floor the car drove
+    # Along the route (y = 6) the level is strongest near an AP and weakest midway between APs
+    # (x = 6 and x = 14 are furthest from all three APs).
+    best = g["pred"].max(axis=2)
+    assert best[6, 1] > best[6, 6] and best[6, 18] > best[6, 14] and best[6, 10] > best[6, 6]
+    ctl = rep["services"]["control"]
+    assert set(ctl) >= {"covered_share", "with_backup_share", "marginal_share", "clearly_weak_share", "holes", "clearly_weak_holes"}
+    assert 0.0 <= ctl["marginal_share"] <= 1.0 and ctl["clearly_weak_share"] <= 1 - ctl["covered_share"] + 1e-9
+    assert len(rep["if_an_ap_fails"]) == 3
+    # Off the driven route, nothing is claimed.
+    assert not g["area"][0, 0] and not g["area"][11, 19]
+    cv.figure(res, tmp_path / "laps.png")
+    assert (tmp_path / "laps.png").stat().st_size > 10_000
+    # A lap without waypoint marks cannot be placed.
+    bare = dict(laps[0], marks=[])
+    with pytest.raises(ValueError):
+        cv.from_laps([bare], SITE, WAYPOINTS)
+

@@ -338,7 +338,7 @@ def test_every_runbook_command_parses_with_the_real_parsers(tmp_path):
             assert args.seconds <= ghosts.MAX_SECONDS
             assert sum(g.mbps for g in ghosts.fleet(args.ghosts, args.video, args.bulk)) <= ghosts.MAX_TOTAL_MBPS
         else:
-            assert module in ("wirelessjev.hil.analyse", "wirelessjev.hil.trace_twin"), module
+            assert module in ("wirelessjev.hil.analyse", "wirelessjev.hil.trace_twin", "wirelessjev.native_ext.coverage"), module
     for sub in ("preflight", "status", "capabilities", "handover-probe", "lap", "switch", "roam"):
         assert ("wirelessjev.onecar", sub) in seen, sub
     # The offered ghost load the runbook quotes must be the real default.
@@ -529,6 +529,7 @@ def test_runbook_end_to_end_against_a_fake_car(tmp_path, monkeypatch, capsys):
     site.write_text(json.dumps(SITE))
     waypoints.write_text(json.dumps(WAYPOINTS))
     (twin_argv,) = by_sub[("trace_twin", "")]
+    (coverage_argv,) = by_sub[("coverage", "")]
     assert twin_argv == ["artifacts/onecar/*-lap-r*.jsonl", "--site", "site.json", "--waypoints", "waypoints.json"]
     r_laps = sorted(logs.glob("*-lap-r*.jsonl"))
     assert len(r_laps) == 10                                    # the glob picks the ten route laps and nothing else
@@ -538,6 +539,16 @@ def test_runbook_end_to_end_against_a_fake_car(tmp_path, monkeypatch, capsys):
     assert set(twin["arms"]) == {"wifi7_fixed_rule", "single_radio", "second_path_same_card"}
     for arm in twin["arms"].values():
         assert arm["control_sent"] > 0 and 0.0 <= arm["control_miss"] <= 1.0
+
+    # ---- Coverage report from the same laps ----------------------------------
+    from wirelessjev.native_ext import coverage
+    assert coverage_argv[:2] == ["--laps", "artifacts/onecar/*-lap-*.jsonl"] and coverage_argv[-2:] == ["--out", "artifacts/onecar/coverage"]
+    out_prefix = tmp_path / "coverage_out" / "coverage"
+    all_laps = sorted(logs.glob("*-lap-*.jsonl"))
+    assert coverage.main(["--laps", *map(str, all_laps), "--site", str(site), "--waypoints", str(waypoints), "--out", str(out_prefix)]) == 0
+    cov = json.loads(capsys.readouterr().out)["report"]
+    assert cov["source"]["laps"] == len(all_laps) and cov["area_m2"] > 0
+    assert out_prefix.with_suffix(".png").exists() and out_prefix.with_suffix(".json").exists()
 
     # ---- Safety rules, over everything the dry run did -----------------------
     for cmd in car.commands:

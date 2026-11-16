@@ -163,6 +163,12 @@ Every lap should show samples, pings and at least two marks. The report's `block
 ```
 This already gives a first 10-robot result on the measured signals. With ten 180 s laps it takes about a minute.
 
+A coverage report for the site, from the same laps (writes a `.json` report and a `.png` map):
+```bash
+.venv/bin/python -m wirelessjev.native_ext.coverage --laps artifacts/onecar/*-lap-*.jsonl --site site.json --waypoints waypoints.json --out artifacts/onecar/coverage
+```
+It covers only the floor the car drove. Hatched areas on the map are within 3 dB of the −67 dBm line: read them as "marginal", not as weak or fine.
+
 ## If time runs short
 Never skip block 1b. Keep, in this order: blocks 1, 1b, 2, 3, 4, 6. Drop block 5 first. Block 6 (blockage trials) moved up on 15 Nov: simulation showed the blockage rule helps or hurts depending on how long real blockages last, and only block 6 measures that.
 

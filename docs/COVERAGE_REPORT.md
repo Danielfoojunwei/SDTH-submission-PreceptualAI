@@ -87,7 +87,30 @@ Example map (scene 610): `docs/figures/coverage_scene610.png`.
 3. **This is the place where a more accurate radio map pays.** Control did not improve with lower signal error; a coverage report does, directly. Codex's learned radio models cut signal error by about a quarter in its tests. Using one here is the natural next step, and the first product use where that accuracy matters.
 4. **A finding about the simulated site itself:** only about one tenth of the floor has a second AP at the control level (−67 dBm). Basic coverage (−75 dBm) is complete.
 
+## Added after the test (16 Nov)
+**A "marginal" band.** A cell whose estimate is within 3 dB of a threshold,
+or within the map's own uncertainty if that is larger, is reported as
+marginal instead of weak or fine. The report now gives, per service level,
+the share of floor that is clearly weak, marginal and covered, and lists
+"clearly weak" holes separately. The map hatches the marginal band.
+
+On scenes 610–611 at the control level: clearly weak 2.0% and 3.1% of the
+floor; marginal 27% and 29%. So about a quarter of the floor cannot be
+called either way from one minute of driving, which matches the failed
+cell-exact test (K4).
+
+**A version for real laps** (`coverage.from_laps`). It takes the lap logs,
+`site.json` and `waypoints.json` from the site visit. Each reading is placed
+by interpolating between waypoint marks; a cell's level for an AP is the
+mean of the nearest readings within 3 m, and its uncertainty is their
+spread plus a term for position error. It covers only floor within 1.5 m of
+where the car drove. There is no ground truth on a real site, so this
+version has not been scored; it is tested on fixture laps and runs as part
+of the runbook dry run.
+```bash
+.venv/bin/python -m wirelessjev.native_ext.coverage --laps artifacts/onecar/*-lap-*.jsonl --site site.json --waypoints waypoints.json --out artifacts/onecar/coverage
+```
+
 ## Not done
-- A version for real laps (the 17 Nov data), where there is no ground truth.
-- A "marginal" band in the report and the map.
 - Trying a learned radio model in place of RadioMap for this report.
+- Scoring the real-lap version against a handheld survey.
