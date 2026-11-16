@@ -31,15 +31,27 @@ It only reads the lap files. It never connects to the car, so it cannot change a
 - Every change needs the target re-typed. One request at a time. An UNKNOWN outcome is never resent.
 - No Wi-Fi or SSH passwords in the repo, logs or chat.
 
+## Driving the car
+The car is moved with the vendor's remote or driving app. None of our tools drive it.
+- **Use the vendor app only to drive.** Never press its AP buttons and keep its automatic Wi-Fi mode off. Either one changes `wlan1` without our typed confirmation and spoils the timing of every lap that follows. If you are unsure whether a vendor app has an automatic mode, do not open it on the laptop.
+- **Two people.** One drives; the other sits at the laptop, types the waypoint letter as the car passes each marker, and watches the live view. Typing marks while driving is how positions get lost.
+- **Slow and steady.** Pick one slow speed (about walking pace or less) and keep it between markers: positions are interpolated between marks, so a steady pace makes them accurate. Stop briefly at the end of the route, not between markers.
+- **Same route every lap**, and mark every marker on every lap, including the first and last.
+- **Note what drives the car** in each lap: add, for example, `--note "remote 2.4 GHz"` or `--note "phone app over hotspot"`. A remote or app on 2.4 GHz adds interference near the car; with test APs on 5 GHz it should not matter, but the note lets the analysis check.
+- **If the driving app uses the car's hotspot**, it shares the management link with the laptop. That does not touch `wlan1`, but if commands from the laptop start timing out, close the driving app and retry.
+
 ## Bring
 | Item | Why |
 |---|---|
-| SmartCar, charged, plus a power bank | The day is long |
+| SmartCar, charged, its charger, plus a power bank | The day is long |
+| The vendor remote (charged or with spare batteries) or the phone with the driving app | Moves the car |
 | 2–4 access points, one switch, cables, power strips | Overlapping cells; all on one subnet |
 | This laptop (management + ghosts) | Runs every command below |
 | A second laptop or phone (optional) | Ghost-traffic sink, or a second ghost station |
 | Tape and a tape measure | Waypoints and AP positions in metres |
+| A USB stick | Back up `artifacts/onecar/` before leaving; laps are not in git |
 | A cart or a person | Blockage trials |
+| A second person (a third helps) | One drives, one types marks; someone is the blocker |
 
 ## AP setup sheet
 Fill one row per BSSID and copy it into `site.json` (Codex's format: `python PC/run.py init-site`).
