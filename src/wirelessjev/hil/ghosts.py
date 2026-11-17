@@ -55,8 +55,8 @@ def check_target(target: str) -> str:
     ip = ipaddress.ip_address(target)
     if not (ip.is_private or ip.is_link_local) or ip.is_loopback or ip.is_multicast:
         raise ValueError("target must be a private or link-local unicast address on the test network")
-    if str(ip) == MANAGEMENT_HOST:
-        raise ValueError("target is the car's management address; ghost traffic must never go over the hotspot")
+    if str(ip) == MANAGEMENT_HOST or ip in ipaddress.ip_network(MANAGEMENT_HOST + "/24", strict=False):
+        raise ValueError("target is on the car's management hotspot (192.168.1.x); ghost traffic must never go over the hotspot")
     return str(ip)
 
 

@@ -166,7 +166,16 @@ On the laptop, joined to the test SSID, start nine ghost robots (about 50 Mb/s),
 ```bash
 .venv/bin/python -m wirelessjev.onecar lap --known-hosts $KH --name load1 --seconds 180
 ```
-The laptop needs a second network interface for this (USB Wi-Fi or the second laptop), because its built-in Wi-Fi is on the car's hotspot.
+The laptop's built-in Wi-Fi stays on the car's hotspot all day, so the ghost traffic needs another way onto the test network. Pick one:
+
+| Option | What you need | How |
+|---|---|---|
+| **A. Wired laptop + phone (recommended)** | A USB-C Ethernet adapter, one cable, any phone | Plug the laptop into the test network's switch or router. Join the phone to the test Wi-Fi, keep its screen on, and read its IP address in its Wi-Fi settings. Use that IP as `--target`. The traffic goes laptop → cable → AP → air → phone, so it loads the AP's radio like real robots would |
+| B. USB Wi-Fi adapter | An adapter with macOS drivers | Many USB Wi-Fi adapters have no macOS driver. Only rely on one you have already seen working on this Mac |
+| C. Second laptop | A laptop on the test Wi-Fi | Run the same ghost command on it |
+| D. None of the above | Nothing | Skip block 5. It is the first block to drop |
+
+With option A, put the phone near the AP that serves the stretch of route you drive under load: the load lands on whichever AP the phone is connected to. The target must never be the car's own address on the test network (that would load the car's link, not the airtime around it), and the command refuses any address on the car's hotspot (192.168.1.x).
 
 ### Block 6. Blockage trials (read-only)
 Record laps while a person or cart stands between the car and its AP at marked spots. Note the times; add `--note "blocker at C 14:32"`.

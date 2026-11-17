@@ -91,9 +91,9 @@ def test_positions_interpolate_and_never_extrapolate():
 
 
 def test_ghost_targets_and_caps():
-    for bad in ("8.8.8.8", "127.0.0.1", "224.0.0.1"):
+    for bad in ("8.8.8.8", "127.0.0.1", "224.0.0.1", "192.168.1.11", "192.168.1.25", "192.168.1.255"):
         with pytest.raises(ValueError):
-            ghosts.check_target(bad)
+            ghosts.check_target(bad)                            # public, loopback, multicast, or anywhere on the car's hotspot
     assert ghosts.check_target("192.168.50.1") == "192.168.50.1"
     f = ghosts.fleet(9)
     assert len(f) == 9 and sum(g.video_mbps > 0 for g in f) == 1
