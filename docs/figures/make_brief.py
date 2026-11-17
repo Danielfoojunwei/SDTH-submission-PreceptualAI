@@ -229,19 +229,24 @@ PAGE1 = """
 <p class="flag">Every result here is simulation: 100 robots, pre-registered tests on fresh scenes. Nothing has run on the real SmartCar yet; today's site visit is the first hardware test.</p>
 
 <h2>1. The system, and why it is capable</h2>
-<img src="architecture.png" width="543"/>
-<p class="cap">How the parts connect. RadioMap learns the site from robot scans; WirelessJEV plans each robot's radio and only acts when the map is sure; the Wi-Fi 7 stack keeps a second AP path ready for every packet; the fleet layer adds what a network alone cannot.</p>
-<p><span class="k">Why it is novel:</span> known pieces combined in a way no one ships. Per-packet diversity across APs on today's Wi-Fi 7 clients, fleet-wide; a learned map whose own error decides when the AI may act; fleet capabilities layered on the network (relay, safe plan, sensing-based warning); every claim pre-registered, with failures kept.</p>
+<img src="gen_architecture.jpg" width="505"/>
+<p class="cap">Robot scans train RadioMap, a signal map with its own uncertainty (it also yields a coverage report). WirelessJEV plans each robot's radio and acts only when the map is sure (shield: trust gate). The Wi-Fi 7 stack keeps a second AP path ready for every packet; the fleet layer adds relay, a 2 s safe plan and an obstacle-sensing warning.</p>
+<table class="img"><tr><td class="img"><img src="gen_paths.jpg" width="195"/></td><td class="img">
+<p><span class="k">The core idea.</span> What kills robot commands is a moment when the robot's only AP path is blocked, not congestion. A second path through a <i>different</i> AP is still clear, so the packet gets through.</p>
+<p><span class="k">Why it is novel:</span> known pieces combined in a way no one ships. Per-packet diversity across APs on today's Wi-Fi 7 clients, fleet-wide; a learned map whose own error decides when the AI may act; fleet capabilities layered on the network; every claim pre-registered, with failures kept.</p>
+</td></tr></table>
 
 <h2>2. What simulation shows</h2>
-<img src="results.png" width="543"/>
-<table class="img"><tr><td class="img"><img src="hardest.png" width="268"/></td><td class="img"><img src="foresight.png" width="268"/></td></tr></table>
-<p class="cap">Missed control packets per million (lower is better). 5G and Wi-Fi 8 are generous models of each, run in the same scenes. Left: in the noisiest, most crowded air, APs alone lose to 5G; robots relaying for each other win even when the relay is slow and unreliable. Right: a one-second warning from the robot's obstacle sensing, replicated in two tests.</p>
-<p>Also: uptime 99.995% against 99.933% for 5G (realistic); a 2 s safe plan cuts stopped time by 94% in the hardest condition; the coverage report's level error is 3.6 dB and its "no backup AP" map is 88% right, finding 95%.</p>
-<p><span class="k">Kept failures:</span> one radio alone loses to 5G (about 200 vs 55); the live blockage rule hurt under short blockages and is off; fleet-shared sensing added nothing; learned radio models (RadioJEPA) predicted signal better but did not control better; link-aware speed cost throughput.</p>
+<img src="results.png" width="455"/>
+<table class="img"><tr><td class="img"><img src="hardest.png" width="250"/></td><td class="img"><img src="foresight.png" width="250"/></td></tr></table>
+<p class="cap">Missed control packets per million (lower is better); 5G and Wi-Fi 8 are generous models of each, in the same scenes. Left: in the noisiest air, APs alone lose to 5G; robot relay wins even when slow and unreliable. Right: a one-second warning from obstacle sensing, in two tests.</p>
 """
 
 PAGE2 = """
+<h2>2b. More results, and what did not work</h2>
+<p>Also: uptime 99.995% against 99.933% for 5G (realistic); a 2 s safe plan cuts stopped time by 94% in the hardest condition; the coverage report's level error is 3.6 dB and its "no backup AP" map is 88% right, finding 95%.</p>
+<p><span class="k">Kept failures:</span> one radio alone loses to 5G (about 200 vs 55); the live blockage rule hurt under short blockages and is off; fleet-shared sensing added nothing; learned radio models (RadioJEPA) predicted signal better but did not control better; link-aware speed cost throughput.</p>
+
 <h2>3. What we must test today, and how</h2>
 <table class="small">
 <tr><th>Question</th><th>How (runbook block)</th><th>Why it matters</th></tr>
@@ -253,8 +258,8 @@ PAGE2 = """
 <tr><td>10-robot result and coverage on measured signals</td><td>Lap replay and coverage report (7)</td><td>First fleet estimate from real data</td></tr>
 </table>
 <p class="muted">Not testable today: two live AP paths, relay, Bluetooth path, obstacle sensing, a real 5G comparison.</p>
-<img src="site_setup.png" width="520"/>
-<p class="cap">Today's setup. The laptop's Wi-Fi stays on the car's hotspot to control it; the car's test radio roams between your APs; the laptop reaches the test network by cable to send ghost load to a phone.</p>
+<img src="gen_site.jpg" width="440"/>
+<p class="cap">Today's setup. Blue dashes: the laptop controls the car over the car's own hotspot. Orange dots: the car's test radio, roaming between your APs. One person drives with the remote, one blocks a path for the blockage trials; the phone receives ghost load sent from the laptop by cable through the router (cable not drawn).</p>
 
 <h2>4. Hardware</h2>
 <table class="small">
@@ -296,8 +301,7 @@ PAGE2 = """
 <li>10-robot trial, then a real 5G head-to-head</li>
 </ol></td></tr>
 </table>
-<table class="img"><tr><td class="img"><img src="coverage.png" width="330"/></td><td class="img"><img src="viewer.jpg" width="160"/></td></tr></table>
-<p class="cap">Left: coverage report from robot measurements (simulated site; orange line −67 dBm). Right: the read-only live lap viewer used on site (demo lap). Sources: docs/TUESDAY_RUNBOOK.md, CROSS_AP.md, DIRECTIONS_123.md, MOVING_BLOCKERS.md, RELAY_REALISM.md, FORESIGHT.md, COVERAGE_REPORT.md, BOM.md.</p>
+<p class="cap">Illustrations on both pages are generated artwork for explanation; every number comes from the charts' committed result files. Sources: docs/TUESDAY_RUNBOOK.md, CROSS_AP.md, DIRECTIONS_123.md, MOVING_BLOCKERS.md, RELAY_REALISM.md, FORESIGHT.md, COVERAGE_REPORT.md, BOM.md.</p>
 """
 
 
@@ -325,14 +329,12 @@ def build_pdf():
 
 def main():
     FIG.mkdir(parents=True, exist_ok=True)
-    architecture(FIG / "architecture.png")
-    site_setup(FIG / "site_setup.png")
+    # The architecture, site-setup and key-idea illustrations (gen_*.jpg) were made with an image generator
+    # (GPT Image 2.6) and checked by hand; architecture() and site_setup() remain as plain fallbacks.
     results(FIG / "results.png")
     hardest(FIG / "hardest.png")
     foresight(FIG / "foresight.png")
     timeline(FIG / "timeline.png")
-    (FIG / "coverage.png").write_bytes((ROOT / "docs/figures/coverage_scene610.png").read_bytes())
-    (FIG / "viewer.jpg").write_bytes((ROOT / "docs/figures/lap_viewer_demo.jpg").read_bytes())
     report = build_pdf()
     for n, overflow, y in report:
         print(f"page {n}: {'OVERFLOW' if overflow else 'fits'}; content ends at y = {y} of {pymupdf.paper_size('a4')[1] - 26}")
