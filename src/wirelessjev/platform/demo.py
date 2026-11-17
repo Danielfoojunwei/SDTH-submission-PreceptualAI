@@ -102,3 +102,17 @@ def demo_lap(log_dir: Path, seconds: float = 900.0, speed_mps: float = 0.6, stop
                 time.sleep(max(0.0, start + k * 0.1 - time.time()))
         w({"event": "lap_end", "t_mac": start + k * 0.1})
     return path
+
+
+def write_scan(log_dir: Path, at: str = "A") -> Path:
+    """A made-up scan-step log (as `onecar scan` writes one), heard from waypoint `at`."""
+    xy = WAYPOINTS[at]
+    aps = [{"ssid": a["ssid"], "bssid": a["bssid"], "frequency": a["frequency_mhz"], "signal": round(rssi(xy, a), 1)}
+           for a in SITE["aps"]]
+    current = max(aps, key=lambda a: a["signal"])["bssid"]
+    path = log_dir / time.strftime("%Y%m%d-%H%M%S-scan.jsonl")
+    with path.open("w", encoding="utf-8") as f:
+        f.write(json.dumps({"t": time.time(), "event": "snapshot", "aps": aps, "current_bssid": current,
+                            "note": "synthetic demo scan (made-up data)"}) + "\n")
+        f.write(json.dumps({"t": time.time(), "event": "scan_result", "passed": True, "visible_per_ssid": {"fleet": len(aps)}}) + "\n")
+    return path

@@ -1,56 +1,41 @@
 # WirelessJEV field kit: start here
 
-This kit runs the **Field Platform**: one page on your laptop that walks you through testing the SmartCar on a real site, step by step.
+This kit is the whole field system, ready to install. It runs the **Field Platform**: one page on your laptop that walks you through testing the SmartCar on a real site. It has the site setup, the car's checks and radio changes, laps with waypoint marks, a live radio map of the site, the analysis, and an assistant.
 
-- **Setup:** you fill in the site sheet and work through the router checklist.
-- **The car:** you run its read-only checks, and its radio changes behind a typed confirmation.
-- **Laps:** you record them while marking the taped waypoints.
-- **Map:** shows how the car is mapping the site's Wi-Fi.
-- **Assistant:** tells you what to do next and how to use any part.
+What is inside:
 
-You need:
+- **The platform and all its code.** RadioMap builds the site's radio map from the car's readings.
+- **WirelessJEV's d3-lite model** (in `hf-cache/`). It reads the mission in plain language and picks the AP it would use. It only advises (shadow mode); nothing is sent to the car.
+- **Every Python package** (in `wheels/`), for Apple-Silicon Macs with Python 3.12 and macOS 14 or newer.
 
-- a Mac or Linux laptop;
-- internet once, for setup;
-- about 15 minutes.
+You need a Mac or Linux laptop with **Python 3.12 or newer**. A stock Mac has an older Python; the script tells you how to install it. On an Apple-Silicon Mac with Python 3.12, setup needs no internet. Any other laptop needs internet once, to download the same packages (about 0.7 GB). Windows has not been tested.
 
-Windows has not been tested; use a Mac if you can.
+## 1. At home (once)
 
-## 1. At home, with internet (once)
-
-1. **Unzip the kit** anywhere, for example your Desktop. Open Terminal in the `wirelessjev-field-kit` folder. On a Mac, right-click the folder and choose New Terminal at Folder.
-2. **Rehearse:**
+1. **Unzip the kit** anywhere. It is about 1.9 GB, so give it a moment. Open Terminal in the `wirelessjev-field-kit` folder; on a Mac, right-click the folder and choose New Terminal at Folder.
+2. **Set up and rehearse:**
 
    ```bash
    ./field_platform.sh --demo
    ```
 
-   - **The first run** sets everything up. It needs Python 3.12 or newer; if it is missing, the script says where to get it.
-   - **When it is ready,** the platform opens in your browser with a made-up site and a car driving a loop.
-   - **Try every tab.** Start with the Help tab and the Map tab, and press "What next?".
-   - **To stop it,** press Ctrl+C in the Terminal.
-3. **Set up the assistant's local model.** On site the laptop has no internet, so this is the only way to get a smart assistant there; without it, you get the built-in guide.
-   1. Install Ollama from ollama.com.
-   2. In Terminal:
+   - The first run checks the model files, installs everything, and opens the platform with a made-up site, a car driving a loop, two route laps and a scan.
+   - Try every tab. On Analysis, press Lap analysis, 10-robot replay, Coverage report and WirelessJEV proposal; each should finish without an error. On Setup, the "WirelessJEV model" row should be green.
+   - Press Ctrl+C in Terminal to stop.
+3. **Optional, a smarter assistant:** install Ollama (ollama.com), pull a small instruct model, and set its name on Settings > Assistant. This needs internet once. Without it, the assistant uses its built-in guide, which works offline.
+4. **Get the car's two files privately** from Daniel, by AirDrop or USB stick:
+   - `smartcar_known_hosts`: put it in your home folder as `~/smartcar_known_hosts`;
+   - `WiFi.json`: put it in your home folder as `~/WiFi.json`. Open it in a text editor and add the test network's name and password, following the entries already in it.
 
-      ```bash
-      ollama pull <model name>
-      ```
-
-      Use a small instruct model; the platform's Help tab explains how to choose one.
-   3. Start the platform, go to Settings > Assistant, and type the model name.
-
-   The banner at the top of the platform goes away once this works.
-4. **Get the car's two files privately** from Daniel (not by chat or email in plain text, because they contain passwords):
-   - the host key, saved as `~/smartcar_known_hosts`;
-   - the Wi-Fi list, saved as `~/WiFi.json`.
-
-   Add the test network's name and password to `WiFi.json`. Never put these files in the kit folder or in a screenshot.
-5. **Read** `docs/TUESDAY_RUNBOOK.md`, sections "Bring" and "AP setup sheet". The same steps are in the platform's Help tab and its router checklist.
+   They contain passwords: never put them in the kit folder, a chat or a screenshot.
 
 ## 2. On site
 
-1. **Set up the routers in their own apps.** Use the router checklist on the platform's Setup tab: the same name and password on every router, AP or bridge mode, fixed and different channels, and not 192.168.1.x.
+1. **Set up the routers in their own apps.** Follow the router checklist on the platform's Setup tab:
+   - the same name and password on every router;
+   - AP or bridge mode;
+   - fixed and different channels;
+   - not 192.168.1.x.
 2. **Join the car's management hotspot** with the laptop, as the SmartCar instructions say.
 3. **Start the platform:**
 
@@ -58,29 +43,33 @@ Windows has not been tested; use a Mac if you can.
    ./field_platform.sh
    ```
 
-   It asks for the SmartCar SSH password in the Terminal; type it there, never into the page. Then the platform opens.
-4. **Follow the Plan tab from top to bottom.** The Next step box always says the one thing to do now; "What next?" explains why. Read-only steps have a Run button. Steps that change the car's radio make you type the target before anything is sent.
-5. **While a lap records,** press the waypoint letter (on screen, or on the keyboard) as the car passes each taped marker. That is how the map knows where each reading was taken.
+   It asks for the SmartCar SSH password in Terminal; type it there, never into the page.
+4. **Follow the Plan tab from top to bottom.** The Next step box always says the one thing to do now; "What next?" explains why. Steps that change the car's radio make you type the target before anything is sent.
+5. **While a lap records,** press the waypoint letter (on screen or on the keyboard) as the car passes each taped marker. That is how the map knows where each reading was taken.
 6. **Before leaving,** copy the `artifacts/onecar` folder inside the kit to a USB stick. The laps exist nowhere else.
 
 ## If something goes wrong
 
+- **"Python is too old":** install Python 3.12 from python.org, then run the script again.
+- **"Model files are damaged or incomplete":** the unzip did not finish. Unzip the kit again.
 - **The page says the platform is not answering:** the Terminal running it was closed. Run `./field_platform.sh` again; nothing recorded is lost.
 - **A step was refused:** the message says why. Common causes:
   - the SSH password was skipped (restart and type it);
   - demo mode;
   - a hold after an unknown outcome (run Car status).
-- **The format check failed:** the Next step box names the fix. Do not record laps until it passes.
-- **Setup failed on the first run:** check the internet connection, delete the `.field-venv` folder, and run the script again.
+- **Setup failed part-way:** delete the `.field-venv` folder and run the script again.
 - **Anything else:** ask the assistant, look at the Help tab, or open the Activity tab, which records every action, and send that to Daniel.
 
 ## What is in the kit
 
 | Item | Purpose |
 |---|---|
-| `field_platform.sh` | Sets up and starts the platform |
-| `requirements-field.txt` | The four Python packages it needs, pinned |
+| `field_platform.sh` | Sets up and starts the platform (`--demo` to rehearse, `--setup-only` to set up and stop) |
 | `src/` | The code |
+| `hf-cache/` | WirelessJEV's d3-lite model (vllm-sr/d3-lite, Apache-2.0; LICENSE and NOTICE inside) |
+| `MODEL_SHA256.txt` | Checksums the script verifies after unzipping |
+| `wheels/` | The Python packages for Apple-Silicon Macs with Python 3.12 |
+| `requirements-*.txt` | The same packages, pinned, for other laptops |
 | `docs/PLATFORM.md` | Everything the platform does, in detail |
 | `docs/TUESDAY_RUNBOOK.md` | The site day as terminal commands; the same steps as the Plan tab |
 | `docs/REAL_SITE_PROTOCOL.md` | The analysis that was fixed in advance |

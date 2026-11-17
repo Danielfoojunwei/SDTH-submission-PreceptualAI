@@ -276,3 +276,23 @@ def test_help_shown_command_and_field_kit():
     spec.loader.exec_module(kit)
     names = [f.name.lower() for f in kit.files()]
     assert "field_platform.sh" in names and not any(r in n for n in names for r in kit.REFUSE)
+
+
+def test_full_kit_carries_runtime_data_and_proposal_explains_a_missing_model(tmp_path, monkeypatch):
+    import importlib.util
+    spec = importlib.util.spec_from_file_location("kit", Path(__file__).resolve().parents[1] / "scripts" / "make_field_kit.py")
+    kit = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(kit)
+    names = {str(f.relative_to(kit.ROOT)) for f in kit.code_files()}
+    assert "artifacts/warehouse_v2/studies/wifi_link_curves.json" in names       # the 10-robot replay reads it
+    assert {"requirements-field.txt", "requirements-wirelessjev.txt", "field_platform.sh"} <= names
+    plat = make(tmp_path, monkeypatch)
+    demo.write_scan(plat.paths.log_dir)
+    cmd = st.command(st.BY_ID["propose"], plat.paths, {}, plat.cfg())
+    assert cmd[cmd.index("--scan-log") + 1].endswith("-scan.jsonl")
+    monkeypatch.setattr("wirelessjev.platform.steps.jev_status",
+                        lambda: {"ready": False, "reason": "not installed (torch missing)", "fix": "Start it with ./field_platform.sh"})
+    with pytest.raises(PermissionError, match="field_platform.sh"):
+        plat.run("propose", {})
+    status = st._jev_check()
+    assert set(status) == {"ready", "reason", "fix"}

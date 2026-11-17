@@ -1,0 +1,11 @@
+# Optional: WirelessJEV's d3-lite decision model (the "WirelessJEV proposal" step), text only.
+# About 0.5 GB of packages plus the 1.7 GB model, downloaded once with internet:
+#   ./field_platform.sh --with-wirelessjev
+# Pinned to the versions it was tested with; d3-lite's own requirements.txt lists GPU kernels and
+# image/video extras that text-only use does not need (transformers falls back to its reference code).
+torch==2.14.1
+transformers==5.17.0
+accelerate==1.15.0
+safetensors==0.8.0
+huggingface-hub==1.33.0
+einops==0.8.2

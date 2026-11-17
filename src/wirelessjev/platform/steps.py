@@ -206,3 +206,38 @@ def progress(step: Step, paths: Paths, done_ids: dict) -> dict:
     else:
         n = int(done_ids.get(step.id, 0))
     return {"done": n, "wanted": step.repeat, "complete": n >= step.repeat}
+
+
+_JEV_CACHE: dict = {}
+
+
+def jev_status() -> dict:
+    """Whether WirelessJEV's d3-lite model can run here (cached for a minute; the page asks often)."""
+    import time as _time
+    hit = _JEV_CACHE.get("v")
+    if hit and _time.time() - hit[0] < 60:
+        return hit[1]
+    out = _jev_check()
+    _JEV_CACHE["v"] = (_time.time(), out)
+    return out
+
+
+def _jev_check() -> dict:
+    """Checked without loading the model: the packages are installed and the pinned model revision
+    is in the local Hugging Face cache."""
+    import importlib.util
+    fix = ("Start the platform with ./field_platform.sh from the full field kit: it installs the packages and uses the "
+           "d3-lite model bundled in hf-cache/. From the repository: the .venv has the packages, and the model downloads with "
+           "huggingface_hub.snapshot_download.")
+    missing = [m for m in ("torch", "transformers", "huggingface_hub") if importlib.util.find_spec(m) is None]
+    if missing:
+        return {"ready": False, "reason": f"not installed ({', '.join(missing)} missing)", "fix": fix}
+    try:
+        from huggingface_hub import try_to_load_from_cache
+        from ..policy import MODEL_REPO, MODEL_REVISION
+        hit = try_to_load_from_cache(MODEL_REPO, "model-00001-of-00001.safetensors", revision=MODEL_REVISION)
+    except Exception as exc:                                        # an unexpected cache layout: say so, do not guess
+        return {"ready": False, "reason": f"model cache not readable ({type(exc).__name__})", "fix": fix}
+    if not isinstance(hit, str):
+        return {"ready": False, "reason": "packages installed, model not downloaded", "fix": fix}
+    return {"ready": True, "reason": f"d3-lite {MODEL_REVISION[:8]} downloaded; runs offline", "fix": ""}

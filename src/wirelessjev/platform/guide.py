@@ -16,6 +16,12 @@ def last_check(paths: Paths) -> list[dict] | None:
     return tel.check_lap(lap, 10, 0.1)
 
 
+def _jev_row() -> dict:
+    from .steps import jev_status
+    st = jev_status()
+    return {"item": "WirelessJEV model (d3-lite)", "ok": st["ready"], "seen": st["reason"], "fix": st["fix"]}
+
+
 def environment(paths: Paths, agent_status: dict) -> list[dict]:
     rows = [
         {"item": "Car host key", "ok": paths.known_hosts.exists(), "seen": str(paths.known_hosts),
@@ -29,6 +35,7 @@ def environment(paths: Paths, agent_status: dict) -> list[dict]:
          "seen": "saved" if paths.site_json.exists() else "not saved", "fix": "Fill the Setup tab and press Save"},
         {"item": "Assistant", "ok": agent_status.get("available", False), "seen": agent_status.get("reason", ""),
          "fix": agent_status.get("fix", "")},
+        _jev_row(),
     ]
     return rows
 

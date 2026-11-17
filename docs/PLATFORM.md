@@ -16,21 +16,29 @@ For the simulation evidence (every canonical campaign, its parameters and result
 
 ## Getting it to someone else (the field kit)
 
-The whole repository is too large to hand over (about 600 MB of files and a 4.8 GB history). The field kit is the part the platform needs, about 1.6 MB:
+The whole repository is too large to hand over (about 600 MB of files and a 4.8 GB history). The field kit carries the whole field system instead. Build it with:
 
 ```bash
-python3 scripts/make_field_kit.py
+.venv/bin/python scripts/make_field_kit.py
 ```
 
-This writes `artifacts/field_kit/wirelessjev-field-kit-<date>.zip`. It refuses to include anything that looks like car credentials, lap data or local settings.
+This writes `artifacts/field_kit/wirelessjev-field-kit-<date>.zip`, about 1.6 GB, containing:
 
-The recipient unzips it and follows `FIELD_KIT.md`, which takes them from download to the first lap. On the first run, `./field_platform.sh` does the setup:
+- **The code**, the starter script, the guides, and the one data file the field code reads at run time: `artifacts/warehouse_v2/studies/wifi_link_curves.json`, used by the 10-robot replay. That file was found by tracing every field command's file opens.
+- **WirelessJEV's d3-lite model.** `vllm-sr/d3-lite` at the pinned revision, Apache-2.0, with its LICENSE and NOTICE, as a ready Hugging Face cache including the saved file listing (`trees/`), so it loads with no internet. Every weight file is checked against its SHA-256 when the kit is built and again on first run.
+- **Every Python package as wheels** for Apple-Silicon Macs with Python 3.12 (macOS 14+): the pinned `requirements-field.txt` and `requirements-wirelessjev.txt` and their dependencies, 58 wheels, 204 MB. Build them once into `artifacts/field_kit/wheels-macos-arm64-py312` with `pip download --only-binary=:all: --platform macosx_14_0_arm64 --python-version 3.12 --implementation cp -r requirements-field.txt -r requirements-wirelessjev.txt`.
 
-- it creates `.field-venv` and installs the four pinned packages from `requirements-field.txt` (numpy, scipy, matplotlib, paramiko), so internet is needed once;
-- it makes the kit's code importable in that environment;
-- if the laptop's Python is older than 3.12 (a stock Mac has 3.9), it says what to install, or fetches 3.12 with `uv` if `uv` is present.
+`--code-only` builds the small kit without the model and the wheels, for updates. Builds refuse anything that looks like car credentials, lap data or local settings.
 
-On every run, it asks for the SSH password in the terminal, starts the platform and opens the browser. This was tested from an empty folder on this Mac, including the old-Python refusal. Windows is untested.
+The recipient unzips the kit and follows `FIELD_KIT.md`. On first run, `./field_platform.sh`:
+
+- checks the model files;
+- creates `.field-venv` and installs every package, from the bundled wheels on an Apple-Silicon Mac with Python 3.12 (no internet), or otherwise by downloading the same pinned versions once;
+- makes the kit's code importable.
+
+On every run it points the system at the bundled model and keeps it offline (`HF_HOME` is the kit's cache, with Hugging Face access switched off). `--setup-only` sets up and stops.
+
+Tested from an empty folder on this Mac: setup ran inside a sandbox with no internet, then lap analysis, the 10-robot replay, the coverage report and the WirelessJEV proposal all ran through the platform. A stock Mac's Python (3.9) gets a clear message. Windows and Intel Macs are untested; Intel Macs and Linux download the packages.
 
 ## Start it
 

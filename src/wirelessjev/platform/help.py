@@ -101,6 +101,10 @@ BEFORE_SITE = [
      "answers from the built-in guide only. Choosing: an instruct (chat) model of about 3 to 8 billion parameters is a good "
      "start; smaller answers faster on a laptop, larger follows instructions better. Try it in demo mode before the day.",
      "ollama pull <model name>\nollama serve"),
+    ("WirelessJEV model (included)", "The WirelessJEV proposal step uses d3-lite, a 0.8-billion-parameter decision model that "
+     "reads the mission in plain language and picks the AP it would use (shadow only: nothing is sent to the car). The full "
+     "field kit carries it (hf-cache/) and runs it offline; the Setup tab's 'WirelessJEV model' row shows it ready. If it "
+     "does not, unzip the full kit again (not the code-only update).", ""),
     ("Rehearse", "Start the platform with --demo and try every tab: a synthetic site and a car driving the loop.",
      "./field_platform.sh --demo"),
     ("Pack", "Charged SmartCar, its charger and a power bank; the vendor remote or the phone with the driving app; 2-4 routers or "
@@ -119,6 +123,9 @@ WHATS_NEW = [
         "further changes until a status read.",
         "Settings for every parameter, an Activity log of every action, a router checklist and router check.",
         "Assistant: a small model on this laptop first (Ollama or LM Studio), then Claude when online, then the built-in guide.",
+        "The field kit now carries the whole field system: the code, WirelessJEV's d3-lite model (runs offline) and, for "
+        "Apple-Silicon Macs with Python 3.12, every Python package, so setup there needs no internet.",
+        "Demo mode now has route laps and a scan, so the 10-robot replay, coverage report and WirelessJEV proposal can be rehearsed.",
         "Fixed: the Plan's lap box overrode the lap length from Settings.",
         "Fixed: a wrong confirmation (which sends nothing) held further changes as if the outcome were unknown.",
         "Fixed: typed lap notes were wiped every 1.5 s.",

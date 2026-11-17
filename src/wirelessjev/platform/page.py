@@ -681,7 +681,7 @@ let HELP = null;
 async function loadHelp(){
   try { HELP = HELP || await api("/api/help");
     const asst = S && S.environment.find(r => r.item === "Assistant");
-    $("before").innerHTML = HELP.before.map((b, i) => { const done = (i === 0) || (i === 1 && S && S.environment[0].ok && S.environment[1].ok) || (i === 2 && asst && asst.ok && !/guide/.test(asst.seen.split(";")[0]));
+    $("before").innerHTML = HELP.before.map((b, i) => { const done = (i === 0) || (i === 1 && S && S.environment[0].ok && S.environment[1].ok) || (i === 2 && asst && asst.ok && !/guide/.test(asst.seen.split(";")[0])) || (i === 3 && S && (S.environment.find(r => r.item.startsWith("WirelessJEV")) || {}).ok);
       return `<div class="step"><div class="n ${done ? "ok" : ""}">${done ? "✓" : i + 1}</div><div><b>${esc(b.title)}</b><div class="sub">${esc(b.text)}</div>${b.commands ? `<code class="cmd">${esc(b.commands)}</code>` : ""}${i === 2 && asst ? `<div class="sub" style="margin-top:4px">Now: ${esc(asst.seen)}</div>` : ""}</div></div>`; }).join("");
     drawTopics();
     $("news").innerHTML = HELP.whats_new.map(n => `<div><b>${esc(n.date)}</b><ul style="margin:6px 0 0 18px;padding:0">${n.items.map(x => `<li style="margin:3px 0">${esc(x)}</li>`).join("")}</ul></div>`).join("");

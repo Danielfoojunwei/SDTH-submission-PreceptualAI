@@ -7,6 +7,7 @@ import json
 import os
 from pathlib import Path
 import threading
+import time
 from urllib.parse import parse_qs, urlparse
 
 from ..carlink import BSSID_RE
@@ -200,6 +201,11 @@ class Platform:
             raise ValueError("seconds must be a whole number")
         if "name" in clean and not set(clean["name"]) <= LABEL_OK:
             raise ValueError("lap names use letters, digits, _ or -")
+        if step.id == "propose":
+            from .steps import jev_status
+            st = jev_status()
+            if not st["ready"]:
+                raise PermissionError(f"WirelessJEV's d3-lite model is {st['reason']}. {st['fix']}")
         if step.kind == "car_change":
             if self.hold:
                 raise PermissionError(f"Hold: {self.hold} Run Car status first; never repeat a change whose outcome is unknown.")
@@ -261,7 +267,10 @@ def make_handler(platform: Platform, port: int):
             self.send_header("Content-Length", str(len(body)))
             self.send_header("X-Content-Type-Options", "nosniff")
             self.end_headers()
-            self.wfile.write(body)
+            try:
+                self.wfile.write(body)
+            except (BrokenPipeError, ConnectionResetError):        # the browser or a probe hung up: nothing to do
+                pass
 
         def _json(self, status, obj):
             self._send(status, "application/json", json.dumps(obj, default=str).encode())
@@ -379,6 +388,9 @@ def main(argv=None) -> int:
         paths.wifi_json.write_text("{}\n")
         demo.write_site(paths.log_dir)
         demo.demo_lap(paths.log_dir, seconds=300, realtime=False, name="survey1")     # one finished lap for "All laps"
+        for i in (1, 2):                                                              # route laps for the 10-robot replay
+            demo.demo_lap(paths.log_dir, seconds=150, realtime=False, name=f"r0{i}")
+        demo.write_scan(paths.log_dir)                                                # a scan for the WirelessJEV proposal
         threading.Thread(target=demo.demo_lap, args=(paths.log_dir,), daemon=True).start()
     else:
         paths = Paths(repo, (repo / args.log_dir).resolve(), Path(args.known_hosts).expanduser(), Path(args.wifi_json).expanduser())
