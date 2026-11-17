@@ -306,12 +306,17 @@ def main(argv=None) -> int:
     ap.add_argument("--site", help="real site: site.json")
     ap.add_argument("--waypoints", help="real site: waypoints.json")
     ap.add_argument("--dev", action="store_true", help="with --campaign: use development scenes 400-403 instead")
+    ap.add_argument("--cell-m", type=float, default=1.0, help="real site: grid cell size in metres")
+    ap.add_argument("--knn", type=int, default=5, help="real site: readings averaged per cell")
+    ap.add_argument("--radius-m", type=float, default=3.0, help="real site: readings further than this are not used")
+    ap.add_argument("--near-m", type=float, default=1.5, help="real site: report floor this close to the driven route")
     args = ap.parse_args(argv)
     if args.laps:
         from ..hil.telemetry import load_lap
         from ..smartcar_runtime.contracts import validate_site
         res = from_laps([load_lap(p) for p in args.laps], validate_site(json.loads(Path(args.site).read_text())),
-                        json.loads(Path(args.waypoints).read_text()))
+                        json.loads(Path(args.waypoints).read_text()), cell_m=args.cell_m, knn=args.knn,
+                        radius_m=args.radius_m, near_m=args.near_m)
         public = {k: v for k, v in res.items() if not k.startswith("_")}
         if args.out:
             Path(args.out).parent.mkdir(parents=True, exist_ok=True)

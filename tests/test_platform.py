@@ -46,10 +46,10 @@ def test_step_commands_are_the_tested_cli_and_car_changes_are_never_run(tmp_path
     shown = st.shell_text(st.command(st.BY_ID["roam"], paths, {"bssid": "aa:bb:cc:00:00:02"}), paths.repo)
     assert shown.startswith(".venv/bin/python -m wirelessjev.onecar roam") and "aa:bb:cc:00:00:02" in shown
     plat = Platform(paths, assistant=agent_mod.Assistant(client=None))
+    monkeypatch.delenv("WJ_SSH_PASSWORD", raising=False)
     for sid in ("join", "switch", "roam"):
         with pytest.raises(PermissionError):
-            plat.run(sid, {})
-    monkeypatch.delenv("WJ_SSH_PASSWORD", raising=False)
+            plat.run(sid, {})                                     # car changes need the SSH password too
     with pytest.raises(PermissionError):
         plat.run("check", {})                                     # no SSH password: refuse, never prompt
     with pytest.raises(ValueError):
@@ -63,7 +63,7 @@ def test_jobs_run_one_at_a_time_feed_marks_and_record_completion(tmp_path, monke
     paths = make_paths(tmp_path)
     plat = Platform(paths, assistant=agent_mod.Assistant(client=None))
     echo = [sys.executable, "-c", "import sys\nfor line in sys.stdin:\n    print('got', line.strip(), flush=True)\n    if line.strip() == 'B': break"]
-    monkeypatch.setattr("wirelessjev.platform.server.command", lambda step, paths, extra=None: echo + ["lap"])
+    monkeypatch.setattr("wirelessjev.platform.server.command", lambda step, paths, extra=None, cfg=None, **kw: echo + ["lap"])
     job = plat.run("analyse", {})
     with pytest.raises(RuntimeError):
         plat.run("twin", {})                                      # one command at a time
@@ -87,6 +87,10 @@ def test_guide_orders_steps_and_reacts_to_a_failed_format_check(tmp_path):
     n = next_step(paths, {}, None)
     assert n["step"] == "site"                                    # measure the site first, as in the runbook
     Platform(paths, assistant=agent_mod.Assistant(client=None)).save_site({"site": SITE, "waypoints": {"A": [1, 6], "B": [19, 6]}})
+    n = next_step(paths, {}, None)
+    assert n["step"] == "routers"                                 # then the router checklist
+    for item, _ in __import__("wirelessjev.platform.sitecheck", fromlist=["CHECKLIST"]).CHECKLIST:
+        Platform(paths, assistant=agent_mod.Assistant(client=None)).tick(item, True)
     n = next_step(paths, {}, None)
     assert n["step"] == "preflight" and n["action"] == "run"
     n = next_step(paths, {"preflight": 1, "status": 1, "capabilities": 1, "probe": 1}, None)
@@ -158,6 +162,7 @@ def test_http_surface_refuses_other_origins(tmp_path, monkeypatch):
     from http.server import ThreadingHTTPServer
     from wirelessjev.platform.server import make_handler
     paths = make_paths(tmp_path)
+    monkeypatch.delenv("WJ_SSH_PASSWORD", raising=False)
     plat = Platform(paths, assistant=agent_mod.Assistant(client=None))
     try:
         srv = ThreadingHTTPServer(("127.0.0.1", 0), None)

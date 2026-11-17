@@ -17,7 +17,7 @@ The car cannot be reached before Tuesday, so the first job on site is to find ou
 | Last 20 min | 7 | Check the data before leaving |
 
 ## Field Platform (recommended)
-The whole day can run from one local page instead of typing each command: the steps below in order with progress, the site sheet, lap recording with waypoint buttons, the live view, the analysis, and an assistant that says what to do next (offline it uses a built-in guide). Steps that change the car are never run from the page; it shows their command for a terminal. Start it from the repo folder after setting the SSH password:
+The whole day can run from one local page instead of typing each command: the steps below in order with progress, the site sheet and router checklist, lap recording with waypoint buttons, a live site map with link health, the analysis, every setting in one place, a log of every action, and an assistant that says what to do next (a local model on the laptop if set up, else a built-in guide). Steps that change the car start from the page only after the car's state is read and you type the target to confirm. Start it from the repo folder after setting the SSH password:
 ```bash
 read -s WJ_SSH_PASSWORD; export WJ_SSH_PASSWORD
 .venv/bin/python -m wirelessjev.platform

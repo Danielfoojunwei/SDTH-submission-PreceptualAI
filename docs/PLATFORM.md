@@ -1,10 +1,18 @@
 # WirelessJEV Field Platform
 
-The Field Platform is the production tool for testing on a real site. It is one local web page that runs the whole field day: setting up the site, running the read-only car commands, recording laps with waypoint marks, watching the lap live, analysing it, and asking an assistant what to do next.
+The Field Platform is the production tool for testing on a real site. It is one local web page that runs the whole field day:
 
-It wraps the same tested commands as the runbook ([TUESDAY_RUNBOOK.md](TUESDAY_RUNBOOK.md)): `onecar`, `hil.analyse`, `hil.trace_twin` and `native_ext.coverage`. Everything the page runs, it shows as the exact command line, so the runbook and the page stay interchangeable.
+- **Setup:** the site sheet and the router checklist.
+- **The car:** read-only commands, and radio changes behind a typed confirmation.
+- **Laps:** recording them with waypoint marks, and watching each one live.
+- **Map:** how the car is mapping the site.
+- **Analysis.**
+- **Control:** every setting, with a record of everything done.
+- **Assistant:** ask it what to do next and how to use the platform.
 
-For the simulation evidence (every canonical campaign, its parameters and results), use the Studio instead. The platform is for real hardware only.
+It wraps the same tested commands as the runbook ([TUESDAY_RUNBOOK.md](TUESDAY_RUNBOOK.md)): `onecar`, `hil.analyse`, `hil.trace_twin` and `native_ext.coverage`. Every command the page runs is shown in full, so the runbook in a terminal and the page are interchangeable.
+
+For the simulation evidence (every canonical campaign, its parameters and results), use the Studio. The platform is for real hardware only.
 
 ## Start it
 
@@ -18,9 +26,16 @@ read -s WJ_SSH_PASSWORD; export WJ_SSH_PASSWORD
 .venv/bin/python -m wirelessjev.platform
 ```
 
-Then open http://127.0.0.1:8770 on this laptop. The terminal prints whether the SSH password is set and whether the assistant can use Claude.
+Then open http://127.0.0.1:8770 on this laptop. The terminal prints whether the SSH password is set and who will answer the assistant.
 
-Options: `--log-dir` (default `artifacts/onecar`), `--known-hosts` (default `~/smartcar_known_hosts`), `--wifi-json` (default `~/WiFi.json`), `--port` (default 8770).
+Options:
+
+| Option | Default |
+|---|---|
+| `--log-dir` | `artifacts/onecar` |
+| `--known-hosts` | `~/smartcar_known_hosts` |
+| `--wifi-json` | `~/WiFi.json` |
+| `--port` | 8770 |
 
 To rehearse without the car:
 
@@ -28,46 +43,199 @@ To rehearse without the car:
 .venv/bin/python -m wirelessjev.platform --demo
 ```
 
-Demo mode uses a temporary folder, placeholder car files and a synthetic lap. Commands that talk to the car are switched off; the Setup, Live lap and Analysis tabs work.
+Demo mode makes a synthetic site with three APs and a shelf row, plus one finished survey lap and a car driving the loop live. All of it is made-up data and labelled so. Commands that talk to the car are switched off; everything else works.
 
-## What is on the page
+## Tabs
 
 | Tab | What it does |
 |---|---|
-| Plan | The day as steps in runbook order, with progress (for example route laps 3 of 10). Read-only steps have a Run button; lap steps take seconds and a note. |
-| Setup | Checks this laptop (host key, Wi-Fi list, SSH password, site sheet, assistant). The site sheet: AP rows (BSSID, SSID, frequency, x/y/z, transmit power) and taped waypoints, validated before saving as `site.json` and `waypoints.json` in the log folder. |
+| Plan | The day as steps in runbook order, with progress (for example, route laps 3 of 10). Read-only steps have a Run button; lap steps take a length and a note. Car-changing steps have a target picker and a Start button (see Changing the car's radio). |
+| Map | The site drawn from the site sheet, with layers you can switch on and off (listed below), plus link health, a signal timeline, an AP table and an events list. |
+| Setup | This laptop's checks; the site sheet (AP rows and taped waypoints, validated before saving); the router checklist; the router check. |
 | Live lap | Waypoint buttons while a lap records (the letter key works too), and the live view of the newest lap. |
-| Analysis | Lap analysis, the 10-robot replay, the coverage report (with the map image) and the WirelessJEV proposal in shadow. All run on the laptop from recorded laps. |
-| Command output | The running command's output, a stop button, and recent commands. |
+| Analysis | Lap analysis, the 10-robot replay, the coverage report (with its map image) and the WirelessJEV proposal in shadow. All run on the laptop from recorded laps. |
+| Settings | Every parameter (see below). |
+| Activity | Every action, newest first (see Oversight). |
+| Command output | The running command's output, a stop button (press twice) and recent commands. |
 
-The side panel shows the next step, the assistant and the result of the last format check.
+The side panel shows the next step (red-edged during a hold), the assistant and the last format check.
+
+The Map tab's layers:
+
+- APs with their channels;
+- waypoints and the route;
+- the car (hollow and dashed when its place is estimated after the last mark);
+- measured signal as a heatmap or as single readings, coloured by signal grade or by serving AP;
+- roams (diamonds, red when bad);
+- outages (red rings).
+
+Pick one lap, or "All laps" for the radio map built so far. The rest of the Map tab:
+
+- **Link health:** a score, the share of good signal, gateway replies, latency (median and 95th percentile), roams and bad roams, and how many readings have a position.
+- **Signal timeline:** coloured by serving AP, with outage bands, roam lines and waypoint ticks.
+- **AP table:** for each AP, its share of serving time, signal, roams in and out, and its last scan reading.
+- **Events list:** marks, roams and outages.
+
+### How the map gets positions
+
+The car has no positioning of its own. Each reading is placed by interpolating in time between the operator's waypoint marks, the same rule the coverage report and the 10-robot replay use. Readings before the first mark or after the last one get no position: nothing is invented. While a lap records, the car's place after its last mark is an estimate (progress towards the next waypoint at the speed driven so far), drawn dashed. A lap with fewer than two marks cannot be mapped.
+
+### Link health
+
+- **Score:** the share of link samples at or above the Good signal setting, multiplied by the share of the lap with gateway replies. 100 means good signal and no reply gaps all lap.
+- **Outage:** a reply gap longer than the outage threshold.
+- **Bad roam:** a roam whose reply gap is longer than the Bad roam setting.
+
+The page shows these definitions next to the numbers.
+
+The layout follows patterns from Cisco Meraki's wireless health and roaming analytics:
+
+- connection and performance health;
+- a roaming timeline;
+- APs placed on a floor plan.
+
+Everything is scaled down to one car on one site.
+
+## Changing the car's radio
+
+Join, timed switch and fast roam start from the Plan tab:
+
+1. Pick the target from the site sheet and press **Start**.
+2. `onecar` reads the car's current state and prints exactly what it will change.
+3. The page shows that in a confirm box. You type the target yourself (the BSSID, or the SSID for join). The box is never pre-filled.
+4. A wrong or empty answer cancels with nothing sent, exactly as in a terminal.
+
+Rules:
+
+- **One change at a time.**
+- **No resending.** The connect is never resent.
+- **UNKNOWN hold.** If the outcome is UNKNOWN, unverified, or the command stops after you confirmed, further changes are held until a Car status read succeeds. The hold survives a restart.
+
+The terminal command is still shown under each step. Behind the scenes the page runs `onecar ... --confirm-stdin`. Without that flag, `onecar` still refuses to run a change outside a real terminal.
+
+## Routers set up in their own app
+
+Consumer routers (configured in a phone or web app) cannot be configured by the platform, so it does two things instead:
+
+- **Router checklist (Setup):** what to set in each app:
+  - the same SSID and password, with WPA2-Personal;
+  - extra routers in AP or bridge mode;
+  - not 192.168.1.x;
+  - fixed, different channels, not Auto;
+  - fast roaming (802.11r) on if offered;
+  - fixed transmit power;
+  - placement;
+  - the test network in `~/WiFi.json`.
+
+  Tick each item when it is done on every router. It is a plan step.
+- **Router check (Setup):** compares the newest scan the car made with the site sheet:
+  - an AP not heard;
+  - a different channel than the sheet says;
+  - a different SSID;
+  - an unknown AP broadcasting your SSID (usually another band of one router);
+  - two sheet APs on one channel;
+  - overlapping 2.4 GHz channels.
+
+## Settings
+
+Every value the commands, the map and the assistant use, in groups:
+
+- **Laps:** length, sample period, scan interval, format-check length.
+- **Car reads:** status reads, scan length.
+- **Radio changes:** timing on or off, verify reads, timing windows.
+- **Analysis:** outage threshold, replay collision rate, coverage grid (cell size, neighbours, reach, route margin), the WirelessJEV mission.
+- **Map and health:** Good and Fair signal, bad roam, good latency, heatmap cell.
+- **Ghost traffic:** target, count, video, bulk, duration. Settings builds the command for the second terminal.
+- **Assistant.**
+
+How changes work:
+
+- Each setting shows its default, its range and unit, what it does and which steps use it.
+- A save checks every change first and saves only if all of them are valid.
+- Saved values apply to the next command. They are kept in `platform_config.json` in the log folder; only differences from the default are stored.
+- Reset puts a setting back to the runbook's value.
+- The ghost target uses the ghost tool's own rule: a private address, never 192.168.1.x.
+- The total ghost load is capped.
+
+## Oversight
+
+Activity records, one line each:
+
+- every command started and how it ended (including the car's reported outcome);
+- confirmations (what was typed, and whether it cancelled);
+- holds and when they cleared;
+- setting changes (old and new);
+- site saves, checklist ticks and waypoint marks;
+- assistant questions (and who answered);
+- platform starts.
+
+It is saved as `platform_audit.jsonl` next to the laps. The log refuses any field that looks like a password.
 
 ## The assistant
 
-"What next?" and free questions are answered from the platform's live state: which steps are done, the environment checks, the last format check, the newest lap and the last commands' output.
+"What next?" and free questions ("How do I set the router channels?") are answered from the platform's live state:
 
-- **With internet and credentials**, it uses Claude (`claude-opus-5-5`) and answers with a short explanation and at most one suggested step, which you can run if it is read-only. To enable it: `.venv/bin/python -m pip install anthropic`, and `export ANTHROPIC_API_KEY=...` in the terminal before starting the platform.
-- **Offline, which is normal on site** (the laptop is on the car's hotspot), every answer comes from the built-in guide. The guide follows the runbook order, stops on a failed format check and names the fix. The answer says which source it came from.
+- steps done;
+- environment checks;
+- the last format check;
+- the newest lap's health and events;
+- the last commands' output;
+- any hold;
+- changed settings.
 
-The assistant only advises. It cannot run anything, and it is told never to suggest running a car-changing step from the page.
+Who answers, in the order set on Settings:
+
+1. **A small model on this laptop.** It works with no internet, the normal case on site, and the address must be on this laptop (127.0.0.1 or localhost), so site data never leaves it. The model is given the platform's manual (the built-in help topics) and a compact state, and replies in a fixed JSON shape. Supported servers:
+   - Ollama (`http://127.0.0.1:11434`);
+   - any OpenAI-compatible server (llama.cpp server on port 8080, LM Studio on port 1234).
+2. **Claude**, when the `anthropic` package, an API key and internet are available.
+3. **The built-in guide**, which always works. It follows the runbook order, stops on a failed format check or a hold, and answers "how do I" questions from the help topics.
+
+Every answer says which source it came from. The assistant only advises: it cannot run anything and never answers a confirmation.
+
+### Setting up the local model
+
+Do this at home, with internet, before the site day. The platform does not install anything itself:
+
+1. Install Ollama (ollama.com) or LM Studio.
+2. Pull a small instruct model, for example one of 3 to 8 billion parameters from a family your server lists. Ollama: `ollama pull <model>`. Smaller answers faster on a laptop CPU; larger follows instructions better.
+3. Start the server (`ollama serve`, or LM Studio's local server).
+4. On Settings > Assistant, set the server type, the address and the model name exactly as the server lists it.
+
+The Setup tab's Assistant row turns green when the model answers.
+
+This was tested against stand-in servers only. No real local model has been run with the platform yet.
 
 ## Safety model
 
-- **Read-only steps** (preflight, status, probes, format check, laps, scan) run from the page. They need `WJ_SSH_PASSWORD` set in the terminal that started the platform; the page never asks for a password.
-- **Steps that change the car** (join, switch, roam) are never run from the page. It shows the command; run it in a terminal, where it asks you to retype the target before sending.
-- **One command at a time.** A second Run is refused until the first finishes or is stopped.
-- **Local only.** It listens on 127.0.0.1. Every action request must come from the page itself (checked by origin and content type), so another website cannot drive it.
-- The existing rules still hold: `wlan1` only, never `wlan0` or the 192.168.1.x hotspot; the pinned host key; an UNKNOWN outcome is never resent; the learned model runs in shadow only.
+- **Read-only steps** run from the page. They need `WJ_SSH_PASSWORD` set in the terminal that started the platform; the page never asks for a password.
+- **Car-changing steps** need the same password, plus a target from the site sheet and your typed confirmation. They are refused in demo mode and during a hold.
+- **One command at a time.**
+- **Local only.** It listens on 127.0.0.1. Every action request must come from the page itself (checked by origin and content type). The local model address must be on this laptop.
+- **The existing rules still hold:**
+  - `wlan1` only, never `wlan0` or the 192.168.1.x hotspot;
+  - the pinned host key;
+  - an UNKNOWN outcome is never resent;
+  - the learned model runs in shadow only.
 
 ## Code
 
 `src/wirelessjev/platform/`:
 
-- `steps.py`: the step list and the exact command for each step.
+- `steps.py`: the step list and the exact command for each step, built from the settings.
+- `params.py`: every setting, with its validation.
 - `guide.py`: the offline next-step logic and environment checks.
-- `agent.py`: the assistant (Claude when available, otherwise the guide).
-- `jobs.py`: runs one command at a time and feeds waypoint marks to a recording lap.
+- `help.py`: the help topics (offline answers and the local model's manual).
+- `agent.py`: the assistant (local model, Claude, guide).
+- `mapview.py`: positions, roams, outages, per-AP figures, health and the heatmap.
+- `sitecheck.py`: the router checklist and the router check.
+- `jobs.py`: runs one command at a time; waypoint marks; typed confirmations.
+- `audit.py`: the activity log.
+- `demo.py`: the rehearsal site and lap.
 - `server.py`: the local web server and its safety checks.
 - `page.py`: the page itself (one file, no internet needed).
 
-Tests: `tests/test_platform.py` (no car, no network).
+Tests (no car, no network):
+
+- `tests/test_platform.py`
+- `tests/test_platform_control.py`

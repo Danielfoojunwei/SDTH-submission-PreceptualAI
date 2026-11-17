@@ -49,6 +49,15 @@ class Log:
         print(json.dumps(record, ensure_ascii=False))
 
 
+CONFIRM_MARK = "CONFIRM> "
+
+
+def _stdin_ask(prompt: str) -> str:
+    """A confirmation prompt on its own line (marked, so the platform can find it), answer from stdin."""
+    print(CONFIRM_MARK + prompt, flush=True)
+    return sys.stdin.readline().strip()
+
+
 def ssh_password() -> str:
     return os.environ.get("WJ_SSH_PASSWORD") or getpass.getpass("Raspbot SSH password: ")
 
@@ -510,6 +519,8 @@ def build_parser() -> argparse.ArgumentParser:
     p.add_argument("--timing", action="store_true",
                    help="ping the wlan1 gateway and read the journal to time each stage")
     p.add_argument("--window", type=int, default=20)
+    p.add_argument("--confirm-stdin", action="store_true",
+                   help="read the typed confirmation from stdin (the Field Platform's confirm box) instead of a terminal")
     p = sub.add_parser("handover-probe")
     p.add_argument("--known-hosts", required=True)
     p = sub.add_parser("roam")
@@ -517,6 +528,8 @@ def build_parser() -> argparse.ArgumentParser:
     p.add_argument("--bssid", required=True)
     p.add_argument("--verify-reads", type=int, default=5)
     p.add_argument("--window", type=int, default=10)
+    p.add_argument("--confirm-stdin", action="store_true",
+                   help="read the typed confirmation from stdin (the Field Platform's confirm box) instead of a terminal")
     p = sub.add_parser("check", help="first thing on site: short read-only lap, then pass/fail per item")
     p.add_argument("--known-hosts", required=True)
     p.add_argument("--seconds", type=int, default=10)
@@ -534,9 +547,14 @@ def build_parser() -> argparse.ArgumentParser:
 
 def main(argv=None) -> int:
     args = build_parser().parse_args(argv)
-    if args.cmd in ("switch", "roam") and not sys.stdin.isatty():
-        print("switch needs an interactive terminal for the typed confirmation", file=sys.stderr)
-        return 1
+    if args.cmd in ("switch", "roam"):
+        if args.confirm_stdin:
+            # The Field Platform shows this prompt and sends back what the operator typed in its
+            # confirm box. A wrong or empty answer cancels with nothing sent, as in a terminal.
+            return {"switch": cmd_switch, "roam": cmd_roam}[args.cmd](args, ask=_stdin_ask)
+        if not sys.stdin.isatty():
+            print("switch needs an interactive terminal for the typed confirmation", file=sys.stderr)
+            return 1
     return {"preflight": cmd_preflight, "status": cmd_status, "scan": cmd_scan,
             "propose": cmd_propose, "switch": cmd_switch,
             "capabilities": cmd_capabilities, "handover-probe": cmd_handover_probe,

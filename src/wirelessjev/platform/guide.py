@@ -27,14 +27,19 @@ def environment(paths: Paths, agent_status: dict) -> list[dict]:
          "fix": "Stop the platform, run: read -s WJ_SSH_PASSWORD; export WJ_SSH_PASSWORD  then start it again"},
         {"item": "Site sheet", "ok": paths.site_json.exists() and paths.waypoints_json.exists(),
          "seen": "saved" if paths.site_json.exists() else "not saved", "fix": "Fill the Setup tab and press Save"},
-        {"item": "Assistant (Claude)", "ok": agent_status.get("available", False), "seen": agent_status.get("reason", ""),
+        {"item": "Assistant", "ok": agent_status.get("available", False), "seen": agent_status.get("reason", ""),
          "fix": agent_status.get("fix", "")},
     ]
     return rows
 
 
-def next_step(paths: Paths, done_ids: dict, running: dict | None, extra: dict | None = None) -> dict:
+def next_step(paths: Paths, done_ids: dict, running: dict | None, extra: dict | None = None,
+              cfg: dict | None = None, hold: str | None = None) -> dict:
     """The one thing to do now, with the reason."""
+    if running and running.get("confirm"):
+        return {"step": running["step"], "action": "confirm",
+                "text": "The car is waiting for your confirmation: read what will change and type the target in the "
+                        "confirm box (or cancel; nothing is sent until you confirm)."}
     if running:
         step = BY_ID.get(running["step"])
         tip = " Press the waypoint letter as the car passes each marker." if step and step.lap_prefix else ""
@@ -42,6 +47,9 @@ def next_step(paths: Paths, done_ids: dict, running: dict | None, extra: dict | 
                 "text": f"Wait: {step.title if step else running['step']} is running.{tip}"}
     if not (paths.known_hosts.exists() and paths.wifi_json.exists()):
         return {"step": "files", "action": "setup", "text": "Put the car's host key and Wi-Fi list on this laptop (Setup tab shows the commands)."}
+    if hold:
+        return {"step": "status", "action": "run",
+                "text": f"Hold: {hold} Run Car status and read the real state before any other change. Never repeat the command."}
     check = last_check(paths)
     fails = [r for r in (check or []) if r["status"] == "FAIL"]
     if fails:
@@ -61,8 +69,12 @@ def next_step(paths: Paths, done_ids: dict, running: dict | None, extra: dict | 
         out = {"step": step.id, "action": "run" if step.kind in ("read", "analysis") else step.kind,
                "text": f"{step.title} ({p['done']} of {p['wanted']} done). {step.why}"}
         if step.kind == "car_change":
-            out["command"] = shell_text(command(step, paths, extra), paths.repo)
-            out["text"] += " Run the command below in a terminal; it asks you to retype the target before sending."
+            out["command"] = shell_text(command(step, paths, extra, cfg), paths.repo)
+            out["text"] += (" Pick the target on the Plan tab and press Start: the car's state is read first, then you type "
+                            "the target to confirm. (Or run the command below in a terminal.)")
+        if step.id == "routers":
+            out["text"] = ("Work through the router checklist (Setup tab) in each router's app, then tick each item. "
+                           "After the car joins, the Router check compares what it hears with the site sheet.")
         if step.kind == "setup" and step.id == "site":
             out["text"] = "Fill the site sheet (Setup tab): each AP's BSSID, channel and position, and the taped waypoints."
         return out
