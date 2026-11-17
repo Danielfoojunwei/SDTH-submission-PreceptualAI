@@ -31,6 +31,13 @@ It only reads the lap files. It never connects to the car, so it cannot change a
 - Every change needs the target re-typed. One request at a time. An UNKNOWN outcome is never resent.
 - No Wi-Fi or SSH passwords in the repo, logs or chat.
 
+## What today does not test: the second radio
+The headline result needs a second AP path on the car. Today does **not** test it on hardware, and no second radio is needed for today's blocks:
+- The car's onboard radio (`wlan0`) is the management hotspot and must stay that way, so it cannot be the second path.
+- Today answers whether one is needed: the capabilities probe prints `two_clients_two_channels`, which says whether the existing card can hold two AP connections at once. If yes, no extra radio has to be bought (BOM item 3); if no, a USB Wi-Fi adapter with an in-kernel Linux driver is the route.
+- The ten route laps also record the signal to every AP from scans, and the trace twin replays them with a "second path on the same card" arm. That is an estimate from measured signals, not a hardware measurement.
+- Measuring two live paths on the car needs software that is not built: joining a second interface to the test network and logging both at once. If you bring a USB Wi-Fi adapter, do not plug it into the car today.
+
 ## Driving the car
 The car is moved with the vendor's remote or driving app. None of our tools drive it.
 - **Use the vendor app only to drive.** Never press its AP buttons and keep its automatic Wi-Fi mode off. Either one changes `wlan1` without our typed confirmation and spoils the timing of every lap that follows. If you are unsure whether a vendor app has an automatic mode, do not open it on the laptop.
