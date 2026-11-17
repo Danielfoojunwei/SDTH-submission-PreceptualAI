@@ -2,38 +2,25 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Preceptual WirelessJEV Studio</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>WirelessJEV Studio</title>
 <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-<div class="shell">
-  <aside class="rail" aria-label="Navigation">
-    <div class="brand"><span class="mark">P</span>Preceptual AI</div>
-    <div class="brand-sub">WirelessJEV Studio</div>
-    <div class="site-card"><b>Warehouse twin · 100 AMRs</b>SmartCar hardware · BSSID control only</div>
-    <h6>Workspace</h6>
-    <a class="nav" href="#overview">Overview</a>
-    <a class="nav" href="#map">Fleet map</a>
-    <a class="nav" href="#decisions">Decisions</a>
-    <a class="nav" href="#evidence">Evidence</a>
-    <a class="nav" href="#native">Native stack</a>
-    <a class="nav" href="#swarm">Swarm &amp; trust</a>
-    <h6>System</h6>
-    <a class="nav" href="#execution">Execution</a>
-    <a class="nav" href="#research">Research map</a>
-    <a class="nav" href="#data">Hardware &amp; data</a>
-  </aside>
-  <div class="main">
-    <header class="topbar">
-      <span class="crumb">Workspace · <b id="crumb">Overview</b></span>
-      <span class="spacer"></span>
-      <span class="badge" id="evidence-badge">DIGITAL TWIN · SYNTHETIC</span>
-      <button id="theme" title="Toggle light/dark">◐</button>
-    </header>
-    <main id="view" class="page" aria-live="polite">Loading…</main>
+<header class="top">
+  <div class="top-in">
+    <a class="brand" href="#overview"><span class="mark" aria-hidden="true">P</span><span><b>WirelessJEV Studio</b><small>Simulation evidence</small></span></a>
+    <nav class="tabs" aria-label="Sections">
+      <a href="#overview" data-tab="overview">Overview</a>
+      <a href="#campaigns" data-tab="campaigns">Campaigns</a>
+      <a href="#setups" data-tab="setups">Setups</a>
+      <a href="#learned" data-tab="learned">Learned models</a>
+      <a href="#method" data-tab="method">Method</a>
+    </nav>
+    <button id="theme" type="button" aria-label="Switch light or dark theme" title="Switch light or dark theme">◐</button>
   </div>
-</div>
+</header>
+<main id="view" class="page" aria-live="polite">Loading…</main>
 <script type="module" src="app.js"></script>
 </body>
 </html>

@@ -1,569 +1,329 @@
-// Preceptual WirelessJEV Studio. Every number on screen comes from
-// data/bundle.json, built by `python -m wirelessjev.studio_data` from real run
-// artifacts. Missing artifacts are shown as missing, never invented.
+// WirelessJEV Studio: simulation evidence only.
+// Every number on screen comes from data/evidence.json, written by studio/build_bundle.py
+// from the committed result files in artifacts/native/ and the campaign code. Nothing is typed in here.
 
 const view = document.getElementById("view");
-const crumb = document.getElementById("crumb");
 let B = null;
-let player = null;
 
 const esc = (s) => String(s ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
-const fmt = (x, d = 3) => (typeof x === "number" && isFinite(x) ? x.toFixed(d) : "—");
-const pct = (x, d = 0) => (typeof x === "number" ? (100 * x).toFixed(d) + "%" : "—");
-const md = (s) => esc(s).replace(/\*([^*]+)\*/g, "<em>$1</em>").replace(/`([^`]+)`/g, "<code>$1</code>");
-const get = (o, path) => path.split(".").reduce((a, k) => (a == null ? undefined : a[k]), o);
-const missing = (what, cmd) => `<div class="callout"><b>${esc(what)} not available yet.</b> Generate it with <code>${esc(cmd)}</code>, then rebuild the bundle with <code>uv run python -m wirelessjev.studio_data</code>.</div>`;
+const num = (x, d) => {
+  if (typeof x !== "number" || !isFinite(x)) return "—";
+  if (d === undefined) d = x === 0 ? 0 : Math.abs(x) >= 100 ? 0 : 1;
+  return x.toLocaleString("en-US", { minimumFractionDigits: d, maximumFractionDigits: d });
+};
+const pct = (x, d = 1) => (typeof x === "number" ? (100 * x).toFixed(d) + "%" : "—");
+const slug = (id) => "c-" + id.replace(/_/g, "-");
+const FAM = { "WirelessJEV": "--ours", "5G model": "--nr", "Wi-Fi 8 model": "--w8", "Wi-Fi 7 baseline": "--base", "Wi-Fi baseline": "--base" };
+const famColor = (f) => `var(${FAM[f] || "--base"})`;
+const src = (p) => (p ? `<span class="src">${esc(p)}</span>` : "");
+const statusChip = (s) => (s === "development" ? `<span class="chip dev" title="Development scenes: used to build and tune, not a pre-registered fresh test">development scenes</span>` : `<span class="chip fresh" title="Pre-registered test on scenes never used in development">fresh scenes</span>`);
 
-function table(head, rows) {
-  return `<div class="wrap"><table><tr>${head.map((h) => `<th>${esc(h)}</th>`).join("")}</tr>${rows
-    .map((r) => `<tr${r.hl ? ' class="hl"' : ""}>${(r.cells || r).map((c) => `<td>${c}</td>`).join("")}</tr>`)
-    .join("")}</table></div>`;
+// ---------------------------------------------------------------- log-axis charts
+function logScale(maxV) {
+  const top = Math.max(maxV, 8) * 1.35;
+  const x = (v) => (v <= 1 ? 0 : (100 * Math.log10(v)) / Math.log10(top));
+  const ticks = [];
+  for (let t = 1; t <= top; t *= 10) ticks.push(t);
+  return { x, ticks, top };
 }
-function kpi(label, value, note = "", cls = "") {
-  return `<div class="card kpi"><div class="label">${esc(label)}</div><div class="value ${cls}">${value}</div><div class="note">${note}</div></div>`;
+function axis(sc, caption) {
+  const lab = (t) => (t >= 1000 ? (t >= 1e6 ? t / 1e6 + "M" : t / 1000 + "k") : String(t));
+  return `<div class="axis"><span></span><div class="ticks">${sc.ticks.map((t) => `<span style="left:${sc.x(t)}%">${lab(t)}</span>`).join("")}</div><span></span>
+    <div class="cap">${esc(caption)}</div></div>`;
 }
-function spark(series, colors, h = 120) {
-  const all = series.flatMap((s) => s.values);
-  if (!all.length) return "";
-  const lo = Math.min(...all), hi = Math.max(...all), n = Math.max(...series.map((s) => s.values.length));
-  const X = (i) => (i / Math.max(n - 1, 1)) * 100, Y = (v) => h - 8 - ((v - lo) / Math.max(hi - lo, 1e-9)) * (h - 16);
-  const paths = series.map((s, k) => `<path stroke="${colors[k]}" d="${s.values.map((v, i) => `${i ? "L" : "M"}${X(i).toFixed(2)},${Y(v).toFixed(2)}`).join("")}"/>`).join("");
-  const legend = series.map((s, k) => `<span><i style="background:${colors[k]}"></i>${esc(s.name)}</span>`).join("");
-  return `<svg class="spark" viewBox="0 0 100 ${h}" preserveAspectRatio="none">${paths}</svg><div class="legend">${legend}<span>range ${fmt(lo, 2)} – ${fmt(hi, 2)}</span></div>`;
-}
-const css = (v) => getComputedStyle(document.documentElement).getPropertyValue(v).trim();
+const gridLines = (sc) => sc.ticks.map((t) => `<span class="grid" style="left:${sc.x(t)}%"></span>`).join("");
 
-// ------------------------------------------------------------------ pages
-const STEPS = [
-  ["map", "Twin & site", "100 AMRs, racked hall, 32 customer BSSIDs"],
-  ["decisions", "Candidate plans", "Exact oracles build complete fleet options"],
-  ["decisions", "WirelessJEV decides", "Frozen d3-lite picks a plan from the mission text"],
-  ["swarm", "Validate & share", "Swarm merge must beat the live release"],
-  ["execution", "Supervised execution", "SmartCarCmd transactions, never resent"],
-];
+function barChart(rows, caption = "missed control packets per million · log scale · whiskers: 95% interval over scenes") {
+  const maxV = Math.max(...rows.map((r) => Math.max(r.mpm ?? 0, r.ci ? r.ci[1] : 0)));
+  const sc = logScale(maxV);
+  const body = rows.map((r) => {
+    const w = sc.x(r.mpm);
+    const ci = r.ci ? `<span class="ci" style="left:${sc.x(r.ci[0])}%;width:${Math.max(sc.x(r.ci[1]) - sc.x(r.ci[0]), 0.4)}%"></span>` : "";
+    const bar = r.mpm > 0 ? `<span class="bar" style="width:${Math.max(w, 0.6)}%;background:${famColor(r.family)}"></span>` : `<span class="zero">0</span>`;
+    return `<div class="row"><div class="lab">${esc(r.label)}<small>${esc(r.id)}</small></div>
+      <div class="track" role="img" aria-label="${esc(r.label)}: ${num(r.mpm)} per million">${gridLines(sc)}${bar}${ci}</div>
+      <div class="val">${num(r.mpm)}</div></div>`;
+  }).join("");
+  return `<div class="chart">${body}${axis(sc, caption)}</div>`;
+}
+function legend(fams) {
+  return `<div class="legend">${fams.map((f) => `<span><i style="background:${famColor(f)}"></i>${esc(f)}</span>`).join("")}</div>`;
+}
 
+// ---------------------------------------------------------------- overview
 function overview() {
-  const t = B.bench_10car, w = B.bench_warehouse, cl = B.closedloop_10car;
-  const k = [];
-  if (t) {
-    const d = t.fleet_distilled.metrics, z = t.fleet_zero_shot_single_choice;
-    k.push(kpi("10-car regret · distilled WirelessJEV", fmt(d.jev_regret), `MILP ${fmt(z.baseline_milp_regret)} · legacy ${fmt(z.baseline_legacy_regret)} · ${d.n_test_cases} test decisions`, "good"));
-    k.push(kpi("Intent-flip (distilled)", pct(t.fleet_distilled.intent_flip.directionally_correct_flips), "choice changes the right way when only the mission text changes"));
-  }
-  if (B.bench_intent) {
-    const it = B.bench_intent;
-    k.push(kpi("100-robot plan gap · intent + fast planner", fmt(it.plan_regret_vs_best_known.fast_intent_distilled), `previous ${fmt(it.plan_regret_vs_best_known.old_optionwise_choice)} · MILP ${fmt(it.plan_regret_vs_best_known.milp)} · ${it.latency_ms.planner_search_mean.toFixed(0)} ms/decision`, "good"));
-  } else if (w) {
-    const cands = [["warehouse", w.distilled_warehouse], ["combined", w.combined_on_warehouse]].filter((x) => x[1]);
-    const [name, c] = cands.reduce((a, b) => (b[1].jev_regret < a[1].jev_regret ? b : a));
-    k.push(kpi(`100-robot regret · ${name} adapter`, fmt(c.jev_regret), `MILP ${fmt(w.zero_shot_single_choice.baseline_milp_regret)} · legacy ${fmt(w.zero_shot_single_choice.baseline_legacy_regret)}`, "good"));
-  } else k.push(kpi("100-robot benchmark", "pending", "run bench_warehouse"));
-  if (cl) k.push(kpi("10-car closed loop utility", fmt(cl.summary.wirelessjev.mean_utility, 2), `MILP ${fmt(cl.summary.milp.mean_utility, 2)} · legacy ${fmt(cl.summary.legacy.mean_utility, 2)}`));
-  return `<h1>WirelessJEV workspace</h1>
-  <p class="lede">Mission-conditioned Wi-Fi coordination for a Raspbot/AMR fleet. The numeric layer builds complete association plans; a frozen open decision model (<code>${esc(B.model.repo)}@${esc(B.model.revision.slice(0, 7))}</code>) chooses one from the mission text; the swarm layer only releases updates that beat what is live; execution uses the existing SmartCarCmd protocol.</p>
-  <div class="steps">${STEPS.map((s, i) => `<div class="step${i === 0 ? " active" : ""}" data-go="${s[0]}"><div class="t"><span class="n">${i + 1}</span>${esc(s[1])}</div><div class="d">${esc(s[2])}</div></div>`).join("")}</div>
-  <div class="grid k4">${k.join("")}</div>
-  <div class="callout"><b>Claim discipline.</b> ${esc(B.evidence_class)}. Regret is measured against the exact oracle on held-out twin scenes. Inference latency, RF handover time and application interruption are separate measurements; none of these results is a field acceptance test. The one-car real test is <b>${esc(B.one_car_test.status)}</b>.</div>
-  <div class="grid k2">
-    <div class="card"><h3>What runs where</h3>${table(["Layer", "Implementation", "Learns?"], [
-      ["Twin", "120 × 80 m racked hall, 16 dual-band AP sites, route-planned AMRs", "no"],
-      ["Oracles", "Exact evaluator; Shen/Li/Lam reward families; MILP, Hungarian, colouring", "no"],
-      ["Decision", "d3-lite option-wise yes/no scoring over complete plans", "readout only (1024 params)"],
-      ["Swarm", "Leader election, weighted merge, validate-vs-live, HMAC hash-chained log", "no"],
-      ["Execution", "SmartCarCmd status/connect; APPLIED / NOT_APPLIED / UNKNOWN", "no"],
-    ])}</div>
-    <div class="card"><h3>Not in this build</h3><ul class="note">
-      <li>Motion control: SmartCar.zip ships no motor/camera interface.</li>
-      <li>OCUDU / 5G NR / custom PHY execution (needs Linux + SDR).</li>
-      <li>Sub-10 ms control: d3-lite decides in seconds on the M5; the fast loop stays conventional.</li>
-      <li>Channel planning on customer APs (modelled, disabled).</li></ul></div>
-  </div>`;
-}
+  const C = B.campaigns;
+  const hyps = C.flatMap((c) => c.hypotheses);
+  const pass = hyps.filter((h) => h.pass).length;
+  const fresh = C.filter((c) => c.status === "fresh");
+  const scenes = C.reduce((a, c) => a + (c.setup.n_scenes || 0), 0);
+  const L = B.learned;
+  let s = `<div class="eyebrow">Proof of record</div><h1>Every canonical simulation, with its setup and its verdicts</h1>
+    <p class="lede">${C.length} campaigns on the 100-robot warehouse simulator, each with pre-registered hypotheses scored on scenes it was not tuned on, plus ${L.ours.length + L.codex.length} learned-model studies. Losses are kept next to wins.</p>
+    <div class="scope"><b>Scope</b><span>${esc(B.scope)}</span></div>
+    <div class="tiles">
+      <div class="card tile"><div class="k">Campaigns</div><div class="v">${C.length}</div><div class="n">${fresh.length} on fresh scenes, ${C.length - fresh.length} on development scenes</div></div>
+      <div class="card tile"><div class="k">Hypotheses scored</div><div class="v">${pass}<span style="color:var(--faint)">/${hyps.length}</span></div><div class="n">passed; ${hyps.length - pass} failed and kept</div></div>
+      <div class="card tile"><div class="k">Scenes simulated</div><div class="v">${scenes}</div><div class="n">100 robots each, 120–300 s</div></div>
+      <div class="card tile"><div class="k">Learned-model studies</div><div class="v">${L.ours.length + L.codex.length}</div><div class="n">${L.ours.length} ours · ${L.codex.length} Codex · none promoted</div></div>
+    </div>`;
 
-function mapPage() {
-  const cl = B.closedloop_warehouse;
-  const runs = (cl?.runs || []).filter((r) => r.frames);
-  if (!runs.length) return `<h1>Fleet map</h1>` + missing("Warehouse replay", "uv run python -m wirelessjev.closedloop --warehouse --total 600 --out artifacts/closedloop_warehouse.json");
-  const pref = runs.find((r) => r.policy === "wirelessjev_fast") || runs.find((r) => r.policy === "wirelessjev") || runs[0];
-  setTimeout(() => mountMap(runs, pref.policy), 0);
-  return `<h1>Fleet map</h1>
-  <p class="lede">Replay of a 10-minute warehouse shift in the twin: 100 robots on planned aisle routes, mission changes, a robot exceeding its power cap, and a 30 s coordinator outage. Click a robot to see its link.</p>
-  ${cl.provisional ? `<div class="callout">${esc(cl.provisional)}.</div>` : ""}
-  <div class="grid map"><div class="card"><div id="mission" class="mission"></div><div class="mapbox" id="mapbox"></div>
-    <div class="controls"><button id="play" class="primary">▶ Play</button><input id="scrub" type="range" min="0" value="0"><span id="clock" class="mono"></span>
-      <select id="policy">${runs.map((r) => `<option value="${r.policy}"${r.policy === pref.policy ? " selected" : ""}>${esc(r.policy)}</option>`).join("")}</select>
-      <select id="colour"><option value="sat">colour: service</option><option value="rssi">colour: signal</option><option value="band">colour: band</option></select></div>
-    <div class="legend" id="legend"></div></div>
-    <div><div class="card" id="frame-stats"></div><div class="card" id="robot" style="margin-top:12px"><h3>Robot</h3><p class="note">Select a robot on the map.</p></div></div></div>
-  <div class="card" style="margin-top:16px"><h3>Mission utility over the shift</h3>${spark(runs.map((r) => ({ name: r.policy, values: r.timeline.map((s) => s.utility) })), [css("--accent"), css("--warn"), css("--muted")])}</div>`;
-}
-
-function floorSVG(aps) {
-  const L = B.layout, W = L.width, H = L.height;
-  let s = `<svg class="floor" viewBox="-2 -2 ${W + 4} ${H + 4}" role="img" aria-label="Warehouse floor plan">`;
-  for (let x = 0; x <= W; x += 10) s += `<line class="grid-l" x1="${x}" y1="0" x2="${x}" y2="${H}"/><text class="lbl" x="${x}" y="${H + 1.8}">${x}</text>`;
-  for (let y = 0; y <= H; y += 10) s += `<line class="grid-l" x1="0" y1="${y}" x2="${W}" y2="${y}"/>`;
-  for (const x of L.cross_aisles) s += `<rect class="xaisle" x="${x - 2}" y="0" width="4" height="${H}"/>`;
-  L.rack_rows.forEach((y, i) => { for (const [a, b] of L.rack_segments) s += `<rect class="rack" x="${a}" y="${y - 0.6}" width="${b - a}" height="1.2"/>`; s += `<text class="lbl" x="${L.rack_segments[0][0] - 4}" y="${y + 0.8}">R${String(i + 1).padStart(2, "0")}</text>`; });
-  s += `<text class="lbl" x="12" y="2.6">SHIPPING · DROP POINTS</text><text class="lbl" x="12" y="${H - 0.8}">RECEIVING</text><text class="lbl" x="0.3" y="12">CHARGE</text>`;
-  for (const [x, y] of L.drop_points) s += `<rect x="${x - 1.5}" y="${y - 1}" width="3" height="2" fill="none" stroke="${css("--muted")}" stroke-width=".3"/>`;
-  for (const [x, y] of L.receive_points) s += `<rect x="${x - 1.5}" y="${y - 1}" width="3" height="2" fill="none" stroke="${css("--muted")}" stroke-width=".3"/>`;
-  for (const [x, y] of L.chargers) s += `<rect x="${x - 1}" y="${y - 1}" width="2" height="2" fill="none" stroke="${css("--good")}" stroke-width=".3"/>`;
-  const sites = {};
-  aps.forEach((a) => (sites[a.site] = a));
-  for (const a of Object.values(sites)) s += `<rect class="ap" x="${a.x - 1.2}" y="${a.y - 1.2}" width="2.4" height="2.4" rx=".4"/><text class="lbl" x="${a.x + 1.6}" y="${a.y - 1.2}">${esc(a.site.toUpperCase())}</text>`;
-  return s + `<g id="links"></g><g id="robots"></g></svg>`;
-}
-
-function mountMap(runs, policy) {
-  const byPolicy = Object.fromEntries(runs.map((r) => [r.policy, r]));
-  let run = byPolicy[policy], k = 0, sel = null;
-  const box = document.getElementById("mapbox");
-  const scrub = document.getElementById("scrub");
-  box.innerHTML = floorSVG(run.aps);
-  scrub.max = run.frames.length - 1;
-  const colourSel = document.getElementById("colour");
-  const colour = (f, i) => {
-    const mode = colourSel.value;
-    if (mode === "band") return run.aps[f.ap[i]].band === "5g" ? css("--accent") : css("--warn");
-    const v = mode === "sat" ? f.sat[i] : f.rssi[i];
-    const [g, w] = mode === "sat" ? [0.98, 0.8] : [-65, -75];
-    return v >= g ? css("--good") : v >= w ? css("--warn") : css("--bad");
+  // headline
+  const H = B.headline;
+  const vals = H.flatMap((h) => [h.ours, h.nr, h.wifi8].filter(Boolean).flatMap((v) => [v.mpm, v.ci ? v.ci[1] : 0]));
+  const sc = logScale(Math.max(...vals));
+  const dot = (v, fam, name) => {
+    if (!v) return "";
+    const ci = v.ci ? `<span class="ci" style="left:${sc.x(v.ci[0])}%;width:${Math.max(sc.x(v.ci[1]) - sc.x(v.ci[0]), 0.4)}%;background:${famColor(fam)};opacity:.6"></span>` : "";
+    return `${ci}<span class="dot" title="${esc(name)}: ${num(v.mpm)}" style="left:${sc.x(v.mpm)}%;background:${famColor(fam)}"></span>`;
   };
-  const legends = { sat: ["service ≥ 98%", "80–98%", "< 80%"], rssi: ["signal ≥ −65 dBm", "−65 to −75", "< −75 dBm"], band: ["5 GHz", "2.4 GHz"] };
-  function draw() {
-    const f = run.frames[k], tl = run.timeline[k];
-    const g = document.getElementById("robots"), links = document.getElementById("links");
-    const q = new Set(f.quarantined);
-    let out = "";
-    f.xy.forEach(([x, y], i) => {
-      const id = run.robots[i];
-      out += `<circle class="robot${sel === i ? " sel" : ""}" data-i="${i}" cx="${x}" cy="${y}" r="0.9" fill="${colour(f, i)}"><title>${id}</title></circle>`;
-      if (q.has(id)) out += `<circle class="quar" cx="${x}" cy="${y}" r="1.8"/>`;
-    });
-    g.innerHTML = out;
-    links.innerHTML = sel == null ? "" : (() => { const a = run.aps[f.ap[sel]], [x, y] = f.xy[sel]; return `<line class="link" x1="${x}" y1="${y}" x2="${a.x}" y2="${a.y}"/>`; })();
-    const mission = B.missions?.[tl.mission];
-    document.getElementById("mission").innerHTML = `<b>${esc(tl.mission)}</b>${mission ? " — " + esc(mission.intent) : ""}${tl.coordinator_up ? "" : ' <span class="badge bad">COORDINATOR OFFLINE · local fallback</span>'}`;
-    document.getElementById("clock").textContent = `t = ${tl.t.toFixed(0)} s`;
-    const dec = run.decisions.filter((d) => d.t <= tl.t).slice(-1)[0];
-    document.getElementById("frame-stats").innerHTML = `<h3>This step · ${esc(run.policy)}</h3><dl class="dl">
-      <dt>Mission utility</dt><dd>${fmt(tl.utility, 3)}</dd><dt>Handovers this step</dt><dd>${tl.handovers}</dd>
-      <dt>Critical flows below floor</dt><dd>${tl.critical_violations}</dd><dt>Fleet delivered</dt><dd>${fmt(tl.total_mbps, 0)} Mbps</dd>
-      <dt>Quarantined</dt><dd>${f.quarantined.length ? esc(f.quarantined.join(", ")) : "none"}</dd>
-      <dt>Last fleet decision</dt><dd>${dec ? `t=${dec.t}s${dec.choice ? " · " + esc(dec.choice) : ""}${dec.latency_ms ? " · " + dec.latency_ms.toFixed(0) + " ms" : ""}` : "—"}</dd></dl>
-      <p class="note">Shift mean utility ${fmt(run.mean_utility, 3)} · ${run.total_handovers} handovers · ${fmt(run.mean_critical_violations, 2)} critical violations/step.</p>`;
-    if (sel != null) {
-      const a = run.aps[f.ap[sel]];
-      document.getElementById("robot").innerHTML = `<h3>${esc(run.robots[sel])}</h3><dl class="dl">
-        <dt>BSSID</dt><dd>${esc(a.id)}</dd><dt>Band · channel</dt><dd>${a.band === "5g" ? "5 GHz" : "2.4 GHz"} · ${a.channel}</dd>
-        <dt>Signal</dt><dd>${fmt(f.rssi[sel], 1)} dBm</dd><dt>Service</dt><dd>${pct(f.sat[sel])} of demand</dd>
-        <dt>Position</dt><dd>${f.xy[sel][0]}, ${f.xy[sel][1]} m</dd><dt>Status</dt><dd>${q.has(run.robots[sel]) ? '<span class="badge bad">QUARANTINED</span>' : '<span class="badge ok">TRUSTED</span>'}</dd></dl>`;
-    }
-    const swatch = colourSel.value === "band" ? [css("--accent"), css("--warn")] : [css("--good"), css("--warn"), css("--bad")];
-    document.getElementById("legend").innerHTML = legends[colourSel.value].map((t, i) => `<span><i style="background:${swatch[i]}"></i>${t}</span>`).join("") + `<span><i style="background:none;border:1.5px solid ${css("--bad")}"></i>quarantined</span><span>■ AP site (5 + 2.4 GHz)</span>`;
-    scrub.value = k;
+  s += `<h2>As the setup gets harsher: our stack against the 5G and Wi-Fi 8 models</h2>
+    <p class="lede">Same scenes for every arm in a row. Each row names the campaign and its scenes. Ours is the WirelessJEV stack with the second path named in the row; the 5G and Wi-Fi 8 arms are generous models of each.</p>
+    <div class="card hlchart">${legend(["WirelessJEV", "5G model", "Wi-Fi 8 model"])}<div class="chart">`;
+  for (const h of H) {
+    s += `<div class="stage"><div class="row"><div class="lab"><b>${esc(h.stage)}</b><small>${esc(h.ours_label)} · <a href="#${slug(h.campaign)}">${esc(h.campaign)}</a> · ${esc(h.condition)} · scenes ${esc(h.scenes)}</small></div>
+      <div class="track">${gridLines(sc)}${dot(h.wifi8, "Wi-Fi 8 model", "Wi-Fi 8")}${dot(h.nr, "5G model", "5G")}${dot(h.ours, "WirelessJEV", "Ours")}</div>
+      <div class="val" style="color:var(--ours)">${num(h.ours?.mpm)}</div></div>
+      <div class="row" style="padding:0"><span></span><div class="src" style="font-size:.72rem">5G ${num(h.nr?.mpm)}${h.wifi8 ? ` · Wi-Fi 8 ${num(h.wifi8.mpm)}` : " · Wi-Fi 8 not in this test"} · ${esc(h.source)}</div><span></span></div></div>`;
   }
-  box.addEventListener("click", (e) => { const i = e.target.dataset?.i; if (i != null) { sel = +i; draw(); } });
-  scrub.oninput = () => { k = +scrub.value; draw(); };
-  colourSel.onchange = draw;
-  document.getElementById("policy").onchange = (e) => { run = byPolicy[e.target.value]; k = Math.min(k, run.frames.length - 1); scrub.max = run.frames.length - 1; draw(); };
-  const btn = document.getElementById("play");
-  btn.onclick = () => {
-    if (player) { clearInterval(player); player = null; btn.textContent = "▶ Play"; return; }
-    btn.textContent = "❚❚ Pause";
-    player = setInterval(() => { k = (k + 1) % run.frames.length; draw(); }, matchMedia("(prefers-reduced-motion: reduce)").matches ? 900 : 350);
+  s += `</div>${axis(sc, "missed control packets per million · log scale · lines: 95% interval over scenes")}</div>
+    <p class="foot">Where ours loses: two AP paths alone lose the hardest condition (row 4) and need robot relay; a single radio loses to 5G under independent blockage (see <a href="#c-wifi-vs-5g">Wi-Fi vs private 5G</a>, V4).</p>`;
+
+  // scoreboard
+  s += `<h2>Verdict scoreboard</h2><p class="lede">Each pre-registered hypothesis as written before the run, scored by the campaign's own evaluation. Green passed, red outline failed.</p>
+    <div class="wrap board"><table><tr><th>Campaign</th><th>Scenes</th><th>Hypotheses</th><th class="num">Passed</th></tr>`;
+  for (const c of C) {
+    const p = c.hypotheses.filter((h) => h.pass).length;
+    s += `<tr><td><a href="#${slug(c.id)}">${esc(c.title)}</a> ${c.status === "development" ? `<span class="chip dev">dev</span>` : ""}<div class="src">${esc(c.family)}</div></td>
+      <td class="mono">${esc(c.setup.scenes)}</td>
+      <td><div class="pips">${c.hypotheses.map((h) => `<span class="pip ${h.pass ? "pass" : "fail"}" title="${esc(h.id)}: ${esc(h.text)}">${esc(h.id)}</span>`).join("")}</div></td>
+      <td class="num">${p}/${c.hypotheses.length}</td></tr>`;
+  }
+  s += `</table></div>`;
+  return s;
+}
+
+// ---------------------------------------------------------------- campaigns
+const FAMILY_ORDER = ["Native stack", "Against 5G and Wi-Fi 8", "Fleet capabilities", "Learned models"];
+function sideNav(cur) {
+  const C = B.campaigns;
+  let nav = "", opts = "";
+  for (const f of FAMILY_ORDER) {
+    const cs = C.filter((c) => c.family === f);
+    if (!cs.length) continue;
+    nav += `<h6>${esc(f)}</h6>` + cs.map((c) => `<a href="#${slug(c.id)}" class="${c.id === cur ? "on" : ""}">${esc(c.title)}<small>${esc(c.setup.scenes)}${c.status === "development" ? " · dev" : ""}</small></a>`).join("");
+    opts += `<optgroup label="${esc(f)}">${cs.map((c) => `<option value="${slug(c.id)}" ${c.id === cur ? "selected" : ""}>${esc(c.title)}</option>`).join("")}</optgroup>`;
+  }
+  return `<aside class="side"><nav>${nav}</nav><select id="pick" aria-label="Choose a campaign">${opts}</select></aside>`;
+}
+function fmtParam(k, v) {
+  if (v === true) return `<span class="p">${esc(k)}</span>`;
+  if (v === false) return `<span class="p off">${esc(k)}</span>`;
+  if (Array.isArray(v)) v = v.join("–");
+  return `<span class="p">${esc(k)}=${esc(v)}</span>`;
+}
+function condParams(o) {
+  return Object.entries(o || {}).map(([k, v]) => fmtParam(k, v)).join(" ");
+}
+function blockageText(b) {
+  if (!b) return "—";
+  if (b.model === "independent") return `Independent per robot: ${b.rate_per_robot_min}/robot-min, ${b.depth_db} dB, mean ${b.mean_s} s`;
+  return `Moving forklifts: ${b.blockers} blockers, radius ${b.radius_m} m, ${b.speed_mps.join("–")} m/s, ${b.depth_db} dB`;
+}
+function campaign(id) {
+  const c = B.campaigns.find((x) => x.id === id) || B.campaigns[0];
+  const S = c.setup;
+  let d = `<div class="meta"><span class="eyebrow">${esc(c.family)}</span>${statusChip(c.status)}</div>
+    <h1>${esc(c.title)}</h1><p class="q">${esc(c.question)}</p>
+    <div class="src">results ${esc(c.sources.results)} · protocol ${esc(c.sources.protocol)}${c.sources.results_doc && c.sources.results_doc !== c.sources.protocol ? ` · write-up ${esc(c.sources.results_doc)}` : ""}</div>
+    <h2>Setup</h2><div class="setup">
+      <div class="card"><div class="k">Scenes</div><div class="v mono">${esc(S.scenes)} <span style="color:var(--faint)">(${S.n_scenes})</span></div></div>
+      <div class="card"><div class="k">Robots per scene</div><div class="v mono">${esc(S.robots)}</div></div>
+      <div class="card"><div class="k">Simulated time per scene</div><div class="v mono">${S.duration_s ? num(S.duration_s, 0) + " s" : S.survey_s ? "survey " + num(S.survey_s, 0) + " s" : "—"}</div></div>
+      <div class="card"><div class="k">Radio map</div><div class="v">${esc(S.map)}</div></div>
+      <div class="card"><div class="k">Blockage</div><div class="v">${esc(blockageText(S.blockage))}</div><div class="src">${esc(S.blockage?.source)}</div></div>
+      ${S.sensing ? `<div class="card"><div class="k">Obstacle sensing</div><div class="v">${esc(S.sensing)}</div></div>` : ""}
+    </div>
+    <h3>Conditions</h3><div class="wrap"><table><tr><th>Condition</th><th>Parameters</th></tr>
+      ${Object.entries(S.conditions || {}).map(([k, v]) => `<tr><td class="mono">${esc(k)}</td><td><div class="params">${condParams(v)}</div></td></tr>`).join("")}</table></div>`;
+
+  if (c.arms.length) {
+    const ours = c.arms.filter((a) => a.family === "WirelessJEV");
+    const same = (a, b) => JSON.stringify(a) === JSON.stringify(b);
+    const common = ours.length > 1 ? Object.entries(ours[0].params).filter(([k, v]) => ours.every((a) => k in a.params && same(a.params[k], v))) : [];
+    const ck = new Set(common.map(([k]) => k));
+    d += `<h2>Arms and their parameters</h2><p class="lede">Each arm is a policy. Parameters shown are the ones that differ from the policy defaults in the simulator, read from the campaign code. Struck through means switched off.</p>
+      ${common.length ? `<div class="card" style="margin-bottom:10px"><div class="k" style="font-size:.78rem;color:var(--muted);margin-bottom:6px">Shared by every WirelessJEV arm in this campaign</div><div class="params" style="display:flex;flex-wrap:wrap;gap:4px">${common.map(([k, v]) => fmtParam(k, v)).join("")}</div></div>` : ""}
+      <div class="wrap"><table><tr><th>Arm</th><th>Family</th><th>${common.length ? "Parameters (WirelessJEV arms: beyond the shared set)" : "Parameters"}</th></tr>
+      ${c.arms.map((a) => {
+        const ps = Object.entries(a.params).filter(([k]) => !(a.family === "WirelessJEV" && ck.has(k)));
+        return `<tr><td style="min-width:200px">${esc(a.label)}<div class="src">${esc(a.id)}</div></td><td style="white-space:nowrap"><span class="legend" style="margin:0"><span><i style="background:${famColor(a.family)}"></i>${esc(a.family)}</span></span></td>
+        <td><div class="params">${ps.length ? ps.map(([k, v]) => fmtParam(k, v)).join("") : "<span class='src'>shared set only</span>"}</div></td></tr>`;
+      }).join("")}</table></div>`;
+  }
+
+  if (Object.keys(c.results).length) {
+    const conds = Object.keys(c.results);
+    d += `<h2>Results</h2><div class="seg" role="tablist">${conds.map((k, i) => `<button type="button" data-cond="${esc(k)}" class="${i ? "" : "on"}">${esc(k)}</button>`).join("")}</div>
+      <div id="res"></div>`;
+  }
+  if (c.table) d += `<h2>Results</h2>${tableResults(c)}`;
+
+  if (c.hypotheses.length) {
+    d += `<h2>Pre-registered hypotheses</h2><ul class="hyps">${c.hypotheses.map((h) => `<li><div><span class="id">${esc(h.id)}</span><br><span class="chip ${h.pass ? "pass" : "fail"}">${h.pass ? "passed" : "failed"}</span></div>
+      <div>${esc(h.text) || "<i>text not found in the protocol</i>"}${Object.keys(h.detail || {}).length ? `<details><summary>numbers from the evaluation</summary><div>${Object.entries(h.detail).map(([k, v]) => `${esc(k)}: ${esc(typeof v === "number" ? +v.toFixed(4) : v)}`).join(" · ")}</div></details>` : ""}</div></li>`).join("")}</ul>
+      <div class="src" style="margin-top:6px">text: ${esc(c.sources.protocol)} · verdicts: ${esc(c.sources.results)}</div>`;
+  }
+  if (c.says.length) d += `<h2>What it says</h2><ul class="says">${c.says.map((x) => `<li>${esc(x)}</li>`).join("")}</ul><div class="src" style="margin-top:6px">${esc(c.sources.results_doc || c.sources.protocol)}</div>`;
+  return `<div class="split">${sideNav(c.id)}<div class="detail">${d}</div></div>`;
+}
+function resultsFor(c, cond) {
+  const R = c.results[cond];
+  const armById = Object.fromEntries(c.arms.map((a) => [a.id, a]));
+  const rows = Object.entries(R).map(([id, st]) => ({ id, label: armById[id]?.label || id, family: armById[id]?.family || "WirelessJEV", ...st }))
+    .sort((a, b) => a.mpm - b.mpm);
+  const fams = [...new Set(rows.map((r) => r.family))];
+  const hasCounts = rows.some((r) => r.misses !== undefined);
+  const extra = [["availability_1s", "1 s uptime", (v) => pct(v, 3)], ["safety_stop_fraction", "stopped", (v) => pct(v, 3)], ["control_gap_p99_ms", "p99 gap ms", (v) => num(v, 0)], ["airtime_domain_sum", "airtime", (v) => num(v, 2)]]
+    .filter(([k]) => rows.some((r) => r[k] !== undefined));
+  let s = `<div class="card">${legend(fams)}${barChart(rows)}</div>
+    <div class="wrap" style="margin-top:10px"><table><tr><th>Arm</th><th class="num">per million</th><th class="num">95% interval</th>${hasCounts ? `<th class="num">missed / sent</th>` : ""}${extra.map((e) => `<th class="num">${e[1]}</th>`).join("")}<th>per scene</th></tr>
+    ${rows.map((r) => `<tr><td style="min-width:200px">${esc(r.label)}</td><td class="num">${num(r.mpm)}</td><td class="num">${r.ci ? `${num(r.ci[0])}–${num(r.ci[1])}` : "—"}</td>
+      ${hasCounts ? `<td class="num">${r.misses !== undefined ? `${r.misses.toLocaleString()} / ${r.sent.toLocaleString()}` : "—"}</td>` : ""}
+      ${extra.map(([k, , f]) => `<td class="num">${r[k] !== undefined ? f(r[k]) : "—"}</td>`).join("")}
+      <td class="mono" style="font-size:.72rem;white-space:nowrap">${(r.per_scene || []).map((v) => num(v)).join(" · ")}</td></tr>`).join("")}</table></div>
+    <div class="src" style="margin-top:6px">${esc(rows[0]?.pooling === "mean of scene rates" ? "Older result file without counts: per-million figure is the mean of per-scene rates." : "Pooled: total missed ÷ total sent across scenes.")} Source ${esc(c.sources.results)}, condition ${esc(cond)}.</div>`;
+  return s;
+}
+function tableResults(c) {
+  const t = c.table;
+  const keys = Object.keys(t[0]);
+  const lab = { scene: "scene", level_rmse_db: "level RMSE dB", level_bias_db: "bias dB", no_backup_precision: "no-backup right", no_backup_recall: "no-backup found", weak_precision: "weak right", weak_recall: "weak found",
+    clearly_weak_found: "clearly weak found", clearly_fine_flagged: "clearly fine flagged", worst_ap_rank: "worst-AP rank", covered_control: "control covered", with_backup_control: "control with backup",
+    survey_s: "survey s", prior: "prior", rmse_db: "map RMSE dB", coverage_90: "90% coverage", sites: "test sites" };
+  return `<div class="wrap"><table><tr>${keys.map((k) => `<th class="${k === "prior" ? "" : "num"}">${esc(lab[k] || k)}</th>`).join("")}</tr>
+    ${t.map((r) => `<tr>${keys.map((k) => `<td class="${k === "prior" ? "" : "num"}">${typeof r[k] === "number" ? (r[k] <= 1 && !/rmse|bias|scene|rank|survey|sites/.test(k) ? pct(r[k], 0) : num(r[k], Number.isInteger(r[k]) ? 0 : 2)) : esc(r[k])}</td>`).join("")}</tr>`).join("")}</table></div>
+    <div class="src" style="margin-top:6px">${esc(c.sources.results)}</div>`;
+}
+
+// ---------------------------------------------------------------- setups
+function setups() {
+  const C = B.campaigns;
+  let s = `<div class="eyebrow">How the setups differ</div><h1>Setup matrix</h1>
+    <p class="lede">Every campaign runs the same simulator core (10 ms slots, 100 robots, a 50 ms control deadline). What changes between them is listed here, read from the result files and the campaign code.</p>
+    <div class="wrap"><table><tr><th>Campaign</th><th>Status</th><th>Scenes</th><th class="num">Time</th><th>Conditions</th><th>Blockage</th><th>Radio map</th><th class="num">Arms</th><th>Compared against</th></tr>`;
+  for (const c of C) {
+    const fams = [...new Set(c.arms.map((a) => a.family))].filter((f) => f !== "WirelessJEV");
+    s += `<tr><td><a href="#${slug(c.id)}">${esc(c.title)}</a></td><td>${statusChip(c.status)}</td><td class="mono">${esc(c.setup.scenes)}</td>
+      <td class="num">${c.setup.duration_s ? num(c.setup.duration_s, 0) + " s" : "—"}</td>
+      <td>${Object.keys(c.setup.conditions || {}).map((k) => `<span class="p">${esc(k)}</span>`).join(" ")}</td>
+      <td>${c.setup.blockage?.model === "independent" ? "independent" : "moving forklifts"}</td><td style="min-width:200px">${esc(c.setup.map)}</td>
+      <td class="num">${c.arms.length || "—"}</td><td>${fams.length ? legend(fams) : "<span class='src'>within our stack</span>"}</td></tr>`;
+  }
+  s += `</table></div>`;
+
+  // conditions glossary
+  const conds = {};
+  for (const c of C) for (const [k, v] of Object.entries(c.setup.conditions || {})) {
+    const key = k + JSON.stringify(v);
+    (conds[key] ||= { name: k, params: v, used: [] }).used.push(c);
+  }
+  s += `<h2>Every named condition</h2><p class="lede">The same name can mean different things in different campaigns; each distinct definition is listed once.</p>
+    <div class="wrap"><table><tr><th>Name</th><th>Parameters</th><th>Used in</th></tr>
+    ${Object.values(conds).map((x) => `<tr><td class="mono">${esc(x.name)}</td><td><div class="params">${condParams(x.params)}</div></td><td>${x.used.map((c) => `<a href="#${slug(c.id)}">${esc(c.title)}</a>`).join(", ")}</td></tr>`).join("")}</table></div>`;
+
+  // parameter usage
+  const P = {};
+  for (const c of C) for (const a of c.arms) for (const [k, v] of Object.entries(a.params)) {
+    if (k === "kind") continue;
+    const e = (P[k] ||= { arms: 0, camps: new Set(), vals: new Set() });
+    e.arms++; e.camps.add(c.title); e.vals.add(Array.isArray(v) ? v.join("–") : String(v));
+  }
+  const rows = Object.entries(P).sort((a, b) => b[1].arms - a[1].arms);
+  s += `<h2>Policy parameters in use</h2><p class="lede">Each parameter that any arm changes from the simulator default, how many arms change it, and the values used.</p>
+    <div class="wrap"><table><tr><th>Parameter</th><th class="num">Arms</th><th class="num">Campaigns</th><th>Values used</th></tr>
+    ${rows.map(([k, e]) => `<tr><td class="mono">${esc(k)}</td><td class="num">${e.arms}</td><td class="num">${e.camps.size}</td><td class="mono" style="font-size:.76rem">${[...e.vals].slice(0, 12).map(esc).join(" · ")}</td></tr>`).join("")}</table></div>
+    <div class="src" style="margin-top:6px">Defaults: src/wirelessjev/native/sim.py and src/wirelessjev/native_ext/sim_fleet.py (Policy).</div>`;
+  return s;
+}
+
+// ---------------------------------------------------------------- learned models
+function learned() {
+  const L = B.learned;
+  const oc = (o) => ({ "rf-win": "better signal prediction", win: "win", neutral: "no clear effect", loss: "loss", finding: "headroom finding" }[o] || o);
+  const counts = (list) => Object.entries(list.reduce((a, x) => ((a[x.outcome] = (a[x.outcome] || 0) + 1), a), {}))
+    .map(([k, n]) => `<span class="chip ${k}">${n} ${oc(k)}</span>`).join("");
+  const mini = (vals, unit) => {
+    const e = Object.entries(vals || {}).filter(([, v]) => typeof v === "number");
+    if (!e.length) return "";
+    const mx = Math.max(...e.map(([, v]) => v)) || 1;
+    return e.map(([k, v]) => `<div class="mini"><span>${esc(k)}</span><span class="t"><i style="width:${(100 * v) / mx}%"></i></span><span class="n">${num(v, v >= 100 ? 0 : v >= 10 ? 1 : 2)}</span></div>`).join("") + `<div class="src">${esc(unit)}</div>`;
   };
-  draw();
+  const card = (x) => `<div class="card study"><div class="meta"><span class="chip ${x.outcome}">${esc(oc(x.outcome))}</span>${x.owner === "ours" ? statusChip(x.status) : `<span class="chip">Codex</span>`}</div>
+    <h3>${esc(x.title)}</h3><div style="font-size:.86rem">${esc(x.verdict)}</div>
+    <dl><dt>Model</dt><dd>${esc(x.model)}</dd><dt>Trained on</dt><dd>${esc(x.trained_on)}</dd><dt>Baseline</dt><dd>${esc(x.baseline)}</dd><dt>Metric</dt><dd>${esc(x.metric)}</dd></dl>
+    ${mini(x.values, x.unit)}${x.quote ? `<div class="quote">“${esc(x.quote)}”</div>` : ""}<div class="src" style="margin-top:6px">${esc(x.source)}</div></div>`;
+  return `<div class="eyebrow">Learned models and RadioJEPA</div><h1>What learned models have and have not shown</h1>
+    <div class="default"><b>${esc(L.default)}</b> <span class="src">(${esc(L.default_source)})</span></div>
+    <p class="lede">Learned radio models have repeatedly predicted signal better than RadioMap without controlling better, because a perfect static map is worth only about 9% of misses (<a href="#c-headroom-ladder">headroom ladder</a>). The gain sits in knowing what is blocked now and next, which is where the one learned control win (foresight) came from.</p>
+    <h2>Ours</h2><p class="lede">Numbers computed from the result files.</p><div class="counts">${counts(L.ours)}</div><div class="cards">${L.ours.map(card).join("")}</div>
+    <h2>Codex's RadioJEPA and world-model line</h2><p class="lede">These results exist only in Codex's documents; each figure is quoted with its document path and a short quote.</p><div class="counts">${counts(L.codex)}</div>
+    <div class="cards">${L.codex.map(card).join("")}</div>
+    <p class="foot">Not simulation, so not shown here: ${L.not_simulation.map((x) => `${esc(x.title)} (<span class="src">${esc(x.doc)}</span>)`).join("; ")}.</p>`;
 }
 
-function decisionsPage() {
-  const cl = B.closedloop_warehouse;
-  const run = (cl?.runs || []).find((r) => r.policy === "wirelessjev" && r.decisions?.some((d) => d.options));
-  if (!run) return `<h1>Decisions</h1>` + missing("WirelessJEV warehouse decisions", "uv run python -m wirelessjev.closedloop --warehouse --adapter artifacts/warehouse/adapters/combined --total 600 --out artifacts/closedloop_warehouse.json");
-  const decs = run.decisions.filter((d) => d.options);
-  setTimeout(() => {
-    const show = (i) => {
-      const d = decs[i];
-      document.querySelectorAll(".list-btn").forEach((b, j) => b.classList.toggle("active", j === i));
-      const opts = [...d.options].sort((a, b) => b.p_true - a.p_true);
-      const maxP = Math.max(...opts.map((o) => o.p_true), 1e-9);
-      document.getElementById("dec-detail").innerHTML = `<div class="mission"><b>${esc(d.mission)}</b> — ${esc(d.intent)}</div>
-        <p class="note">t = ${d.t} s · ${d.options.length} options · decision latency ${d.latency_ms.toFixed(0)} ms · regret vs oracle-best <b class="${d.regret <= 1e-6 ? "good" : d.regret < 0.1 ? "warn" : "bad"}">${fmt(d.regret, 3)}</b>${d.pinned.length ? ` · pinned (quarantined): ${esc(d.pinned.join(", "))}` : ""}</p>
-        ${opts.map((o) => `<div class="opt${o.id === d.choice ? " chosen" : ""}"><div class="head"><b>${esc(o.id)}</b>
-          ${o.id === d.choice ? '<span class="badge info">WIRELESSJEV CHOICE</span>' : ""}${o.id === d.oracle_best ? '<span class="badge ok">ORACLE BEST</span>' : ""}
-          <span class="spacer"></span><span class="note">P(true) ${fmt(o.p_true, 3)} · oracle ${fmt(o.oracle, 3)} · moves ${o.moves}</span></div>
-          <div class="bar" style="margin-top:6px"><span style="width:${(100 * o.p_true / maxP).toFixed(1)}%"></span></div>
-          <div class="text">${esc(o.text)}</div></div>`).join("")}`;
-    };
-    document.querySelectorAll(".list-btn").forEach((b, i) => (b.onclick = () => show(i)));
-    show(0);
-  }, 0);
-  const regrets = decs.map((d) => d.regret);
-  return `<h1>Decisions</h1>
-  <p class="lede">Every fleet decision in the recorded warehouse shift: the mission text the model saw, each complete plan with its digested consequences, the model's option-wise P(true), and the exact oracle's score. The model never sees which teacher produced an option.</p>
-  <div class="grid k4">${kpi("Decisions", decs.length)}${kpi("Mean regret", fmt(regrets.reduce((a, b) => a + b, 0) / regrets.length))}${kpi("Matched oracle-best", pct(decs.filter((d) => d.regret <= 1e-6).length / decs.length))}${kpi("Mean latency", (decs.reduce((a, d) => a + d.latency_ms, 0) / decs.length / 1000).toFixed(1) + " s", B.bench_warehouse?.latency_ms?.device || "")}</div>
-  <div class="grid map" style="margin-top:16px"><div class="card" id="dec-detail"></div>
-  <div class="card"><h3>Shift decisions</h3>${decs.map((d) => `<button class="list-btn">t=${d.t}s · ${esc(d.mission)} · ${esc(d.choice)} <span class="${d.regret <= 1e-6 ? "good" : "warn"}">(${fmt(d.regret, 2)})</span></button>`).join("")}</div></div>`;
+// ---------------------------------------------------------------- method
+function method() {
+  return `<div class="method"><div class="eyebrow">Method</div><h1>How the numbers are made</h1>
+    <h2>The metric</h2><p>${esc(B.metric)} <span class="src">${esc(B.metric_source)}</span></p>
+    <h2>Intervals</h2><p>${esc(B.intervals)}</p>
+    <h2>Fresh and development scenes</h2><p>Each campaign's hypotheses were written down before it ran and are scored on scenes that were not used to build or tune anything ("fresh"). The headroom ladder runs on development scenes 400–403 on purpose, because it measures a ceiling rather than testing a claim.</p>
+    <h2>Arms and parameters</h2><p>Result files record an arm's name. Its parameters are rebuilt by importing the same arm definitions the campaign used and listing the fields that differ from the policy defaults. The ladder, foresight and shared-sensing arms are built inline in their runners; they are rebuilt here from the same constants.</p>
+    <h2>Codex's studies</h2><p>Codex's learned-model studies are recorded only in documents. They are listed with quoted figures and the document path, never recomputed.</p>
+    <h2>Rebuild</h2><p><code>.venv/bin/python studio/build_bundle.py</code> then <code>.venv/bin/python studio/build_artifact.py</code>.</p>
+    <p class="src">Bundle generated ${esc(B.generated)}${B.commit ? ` at commit ${esc(B.commit)}` : ""}. Sources: ${[...new Set(B.campaigns.flatMap((c) => [c.sources.results, c.sources.protocol]))].map(esc).join(" · ")}</p>
+    <p class="foot">Field testing (the real SmartCar, radio mapping on site, running WirelessJEV live) lives in the field platform, not in this Studio.</p></div>`;
 }
 
-function regretRows(m, label, hl) {
-  return { hl, cells: [esc(label), `<b>${fmt(m.jev_regret)}</b>`, pct(m.jev_top1), pct(m.defer_rate), m.n_test_cases] };
-}
-function researchResults() {
-  let html = "";
-  const native = B.warehouse_native;
-  if (native?.state === "completed") {
-    const groups = [["Stay", ["stay"]], ["Map signal", ["budgeted_map_signal"]],
-      ["Numerical", ["numerical"]], ["Linear residual", ["ridge"]],
-      ["MLP · three seeds", ["mlp-0", "mlp-1", "mlp-2"]],
-      ["AP/channel graph · three seeds", ["graph-0", "graph-1", "graph-2"]]];
-    const average = (names, key) => {
-      const values = names.map((name) => native.summary[name]?.[key]).filter((v) => Number.isFinite(v));
-      return values.length ? values.reduce((a, b) => a + b, 0) / values.length : null;
-    };
-    const interval = native.crossed_family_differences.graph;
-    const audit = native.postrun_audit;
-    const overlapsZero = interval.ci95[0] <= 0 && interval.ci95[1] >= 0;
-    const allMiss = audit && Object.values(audit.critical_floor_event_counts).every((c) => c.n > 0 && c.miss === c.n);
-    html += `<div class="card" style="margin-top:16px"><h3>Full-window native packet learning</h3>
-      <p class="sub">${native.native_progress.development.completed + native.native_progress.test.completed} native simulations · ${native.robots} simulated robots · ${native.duration_s}-second decisions · ${native.model_checkpoints_finished} trained models · ${native.test_scenes} fresh test scenes.</p>
-      ${table(["Method", "Utility ↑", "Mean service ↑", "Timely critical demand ↑", "Worst decile ↑", "Forecast RMSE ↓"],
-        groups.map(([name, methods]) => [esc(name), ...["utility", "mean_service", "critical_ontime_demand_fraction", "worst_decile_service", "forecast_rmse"].map((key) => {
-          const value = average(methods, key); return value === null ? "—" : fmt(value, 4);
-        })]))}
-      <p class="note">Validation-selected default: <b>${esc(native.research_default)}</b>. Graph utility difference versus numerical: ${fmt(interval.mean, 4)}, with 95% crossed seed/scene interval [${fmt(interval.ci95[0], 4)}, ${fmt(interval.ci95[1], 4)}]. ${overlapsZero ? "This interval includes zero. A reliable learned-controller advantage is not established." : "This interval excludes zero; qualification still follows the frozen validation gates."}</p>
-      <p class="note">${audit ? `Validation accepted ${audit.trained_models_accepted_on_validation}/6 neural models. ${audit.all_six_models_choose_identical_test_plans ? "All six models chose identical test plans; these are repeated model evaluations on the same six scenes." : "Training seeds share native scene outcomes."}` : "Post-run label audit unavailable."}</p>
-      <p class="note">${allMiss ? "Every critical-floor event label is a miss. Zero neural Brier/ECE matches an always-miss predictor and does not demonstrate risk discrimination or calibrated physical risk." : "Risk metrics require a separate label and calibration audit."}</p>
-      <p class="note">Utility gives equal weight to service and critical demand met within 50 ms. Known-map simulation, one fixed-association intervention and assumed four-second application muting; no measured handover, WPA/DHCP, persistent roaming, physical-car qualification or SOTA claim.</p></div>`;
-  } else if (native) {
-    html += `<div class="card" style="margin-top:16px"><h3>Native packet campaign: ${esc(native.state)}</h3><p class="note">Data collection, training or evaluation remains incomplete. Progress is not a held-out result.</p></div>`;
-  }
-  const audit = B.warehouse_v3;
-  if (audit) {
-    html += `<div class="card" style="margin-top:16px"><h3>Compositional missions and radio representations</h3>
-      <p class="sub">Wi-Fi warehouse simulation · three independently trained seeds per compact architecture · held-out layout, traffic and fleet-size regimes.</p>
-      ${table(["Domain", "Radio model", "Service RMSE ↓", "Proposal coverage", "False feasibility, all cases ↓"],
-        audit.core_models.map((r) => [esc(r.domain), esc(r.model), fmt(r.service_rmse), pct(r.proposal_coverage), pct(r.false_feasible_fraction)]))}
-      <p class="note">Whole-mission d3 family gate: ${audit.d3_answered}/${audit.d3_total} answered. A separately designed clause reader answered ${audit.clause_reader_answered}/${audit.clause_reader_total} fresh canonical statements. These are different small text sets. The complete controlled grammar is the default; answer probabilities are not physical-risk probabilities.</p>
-      <p class="note">Forecast gains do not establish better control. Predicted floors can defer; candidate-set infeasibility is not global infeasibility. The full-priority text/no-text graph scorers use separate fresh environments; offline ranking is not a release qualification.</p></div>
-      <div class="card" style="margin-top:16px"><h3>Native moving Wi-Fi audit</h3>
-      <p class="sub">${audit.native_executions} actual native executions · ${audit.unique_native_conditions} distinct input/seed/RTS conditions · three held-out test scenes. The learned policy uses one predeclared model seed.</p>
-      ${table(["Policy", "RTS/CTS", "Service ↑", "Worst decile ↑", "Critical deadline misses ↓"],
-        audit.native_packet_audit.map((r) => [esc(r.policy), r.rts_cts ? "on" : "off", fmt(r.mean_service),
-          fmt(r.worst_decile_service), pct(r.critical_deadline_miss_fraction_generated)]))}
-      <p class="note">Matched NIST/VHT80/HT20/two-stream profile; eight-second route prefix with assumed switch muting. Rack/material calibration, real authentication and hardware qualification remain absent. Deadlines count actual generated packets; ungenerated muted demand is charged through service. Repeated identical inputs are not independent fleets.</p>
-      <p class="note">Pooled shared gates: ${audit.pooled_gates_accepted}/3 accepted. FedAvg gates: ${audit.federation_gates_accepted}/3 accepted. Approximate removal equals clean retraining in ${audit.approximate_removal_equals_retrain}/3 seeds; attack diagnostics do not certify deletion.</p>
-      ${table(["Observed packet-event predictor", "Late-event Brier ↓", "ECE ↓", "Throughput MAE (Mbps) ↓"], [
-        ["persistence", fmt(audit.packet_persistence.late_arrival_risk.brier), fmt(audit.packet_persistence.late_arrival_risk.ece), fmt(audit.packet_persistence.throughput_mae_mbps)],
-        ...audit.packet_predictors.map((r) => [esc(r.model), fmt(r.calibrated_late_event_brier), fmt(r.calibrated_late_event_ece), fmt(r.throughput_mae_mbps)])])}
-      <p class="note">Packet probabilities concern a late received critical packet in the next second. No-arrival bins are included; this is not packet-loss probability. Calibration uses validation data only, with three held-out native scenes.</p>
-      ${audit.packet_event_discrimination_testable ? "" : '<p class="note">The packet-event holdout lacks both labels, so it cannot establish event discrimination.</p>'}
-      <p class="note">The implementation remains Wi-Fi-specific. No physical-car, protocol-agnostic, foundation-model or SOTA claim is established.</p></div>`;
-  }
-  const horizon = B.warehouse_horizon;
-  if (horizon) {
-    html += `<div class="card" style="margin-top:16px"><h3>Thirty-second route-aware planning</h3>
-      <p class="sub">Six forecast offsets · three independent model seeds crossed with three held-out simulated environments.</p>
-      ${table(["Controller", "Runs", "Service fraction ↑", "Worst-decile service ↑", "Critical-violation robot-steps ↓", "Budget violations"],
-        horizon.summary.map((r) => [esc(r.method), r.runs, fmt(r.mean_service), fmt(r.worst_decile_service),
-          fmt(r.critical_violation_robot_steps, 1), r.constraint_violations]))}
-      <p class="note">Twelve switches per decision is an operator-policy scenario, not a hardware rate limit. Unconstrained strongest-scan has higher service and violates that budget. Learned residuals improve forecasts but do not reliably improve closed-loop control; their worst-decile service regresses. All observations and actions are simulated.</p></div>`;
-  }
-  const selector = B.warehouse_horizon_selector;
-  if (selector) {
-    html += `<div class="card" style="margin-top:16px"><h3>Prospective proposal guard · ${selector.accepted_learned_models}/${selector.candidate_models} learned models accepted</h3>
-      <p class="sub">${selector.validation_rollouts} validation rollouts, then ${selector.audit_rollouts} audit rollouts on three fresh environments. Designed after the original holdout; sealed before this audit.</p>
-      ${table(["Audit controller", "Runs", "Service fraction ↑", "Worst-decile service ↑", "Critical-violation robot-steps ↓"],
-        selector.summary.map((r) => [esc(r.method), r.runs, fmt(r.mean_service), fmt(r.worst_decile_service),
-          fmt(r.critical_violation_robot_steps, 1)]))}
-      <p class="note">Rejected residuals use the numerical planner. The ${selector.verified_identical_fallbacks} identical fallback outcomes are not independent learned successes. The interface writes proposals only; no physical-car qualification or safety guarantee is established.</p></div>`;
-  }
-  const next = B.warehouse_v2;
-  if (next) {
-    html += `<div class="card" style="margin-top:16px"><h3>Warehouse v2 · observed-input research</h3>
-      <p class="sub">Three compact-model training seeds · simulated observations and interventions. These metrics belong to a new protocol; compare models within each row group.</p>
-      ${table(["Split", "Model", "Mean normalized candidate regret ↓", "Service RMSE ↓"],
-        next.core_models.map((r) => [esc(r.split), esc(r.arm), fmt(r.mean_regret), fmt(r.service_rmse)]))}
-      <p class="note">The compact non-graph baseline wins plan selection in this protocol. No physical-car result or SOTA claim is established.</p>
-      ${table(["Prospective closed-loop policy", "Service fraction ↑", "Worst-decile service ↑", "Reconnections ↓", "Critical-violation robot-steps ↓"],
-        next.prospective_closedloop.map((r) => [esc(r.policy), fmt(r.mean_service), fmt(r.worst_decile_mean_service),
-          fmt(r.reconnections, 1), fmt(r.critical_violation_robot_steps, 1)]))}
-      <p class="note">Three new 100-robot simulated rollouts per policy. The horizon correction is evaluated separately from the initial failure. Compare the strongest-scan baseline and service/continuity trade-offs; a fleet average does not establish benefit to every robot.</p></div>`;
-  }
-  const run = B.training_run;
-  if (run) {
-    html += `<div class="card" style="margin-top:16px"><h3>Full RadioJEV rerun · ${esc(run.status)}</h3>
-      <p class="sub">Seed ${esc(run.seed)} · snapshot ${run.captured_at ? esc(run.captured_at) : "at bundle export"}, not a live monitor. Historical results below remain separate from this rerun.</p>
-      ${table(["Stage", "Status", "Epochs recorded", "Best validation regret", "Completed held-out result"],
-        Object.entries(run.stages).map(([name, stage]) => {
-          const history = stage.history || [], result = run.results[name];
-          const best = history.length ? Math.min(...history.map((entry) => entry.val_regret)) : undefined;
-          const metric = result?.test?.regret ?? result?.test?.norm_regret;
-          const normalized = result?.test?.norm_regret != null ? " normalized regret" : "";
-          return [esc(name), esc(stage.status === "pending" ? "queued" : stage.status),
-            history.length ? history[history.length - 1].epoch : "—", fmt(best),
-            result?.test?.n && metric != null ? `${fmt(metric)}${normalized} (n=${result.test.n})` : result ? "available" : "pending"];
-        }))}
-      <p class="note">Validation progress is not a held-out test result. Only completed stages contribute new test metrics; an interrupted process is marked interrupted when exported on the training machine.</p></div>`;
-  }
-  const radio = B.radiojev || {};
-  const arms = [["e1_radio_lora", "RadioJEV LoRA"], ["e1_radio_frozen", "RadioJEV frozen"],
-    ["e1_intent", "Intent baseline"], ["e1_no_llm", "Numeric encoder (no LLM)"]];
-  if (arms.some(([key]) => radio[key])) {
-    html += `<div class="card" style="margin-top:16px"><h3>Published RadioJEV E1 · native radio inputs</h3>${table(
-      ["Arm", "Held-out regret ± 95% CI", "n", "New-mission regret ± 95% CI", "n", "Held-out latency"],
-      arms.map(([key, label]) => {
-        const r = radio[key];
-        if (!r) return [esc(label), "pending", "—", "pending", "—", "—"];
-        const interval = (m) => m?.n ? `${fmt(m.regret)} ± ${fmt(m.regret_ci95)}` : "not evaluated";
-        return [esc(label), interval(r.test), r.test?.n ?? "—", interval(r.novel), r.novel?.n ?? "—",
-          r.test?.n ? `${fmt(r.test.latency_ms, 0)} ms` : "—"];
-      }))}<p class="note">E1 LoRA is a completed exploratory result, not evidence that native radio inputs beat intent + planning. The separate intent benchmark reports shortlist regret 0.027 at about 134 ms per re-plan; it is not a paired E1 comparison. The numeric-only arm has no new-mission evaluation. Latencies are from the original experiment machine.</p>
-      ${table(["Remaining experiment", "Status"], [["e2_radio_q", "E2 radio Q"], ["e2_e1_zero", "E2 E1 zero-shot"],
-        ["e2_intent", "E2 intent"], ["e3", "E3 multitask"], ["e45", "E4/E5 swarm + unlearning"]]
-        .map(([key, label]) => [label, radio[key] ? "result available" : "pending"]))}</div>`;
-  }
-  const multitask = run?.results?.e3 || radio.e3;
-  if (multitask) {
-    const before = multitask.shared_before, after = multitask.shared_after;
-    const admission = B.radiojev_audits?.e3?.admission?.test;
-    html += `<div class="card" style="margin-top:16px"><h3>RadioJEV E3 · multitask result</h3>
-      ${table(["Task and metric", "Before E3", "After E3", "Baseline"], [
-        ["Association normalized regret ↓", fmt(before.assoc_norm_regret), fmt(after.assoc_norm_regret), "—"],
-        ["DSA greedy reward ↑", "—", fmt(multitask.dsa_radiojev.greedy_mean_reward),
-          `MLP 1,500 / 20,000 steps: ${fmt(multitask.dsa_baselines.ddqn_mlp_1500_steps.greedy_mean_reward)} / ${fmt(multitask.dsa_baselines.ddqn_mlp_20000_steps.greedy_mean_reward)}`],
-        ["Admission accuracy ↑", pct(before.admission_acc), pct(after.admission_acc), `rule: ${pct(multitask.admission_rule_acc)}`],
-        ...["trend", "event", "volatility"].map((key) => [`Traffic ${key} accuracy ↑`,
-          pct(before.traffic_acc[key]), pct(after.traffic_acc[key]), `rule: ${pct(multitask.traffic_rule_acc[key])}`])
-      ])}
-      <p class="note">Mixed multitask evidence: traffic accuracy remains below the rules on all three questions. DSA uses one 500-step evaluation episode; these results use one training seed.</p>
-      ${admission ? `<p class="note">Admission label audit: ${admission.n} test cases; majority-class accuracy ${pct(admission.majority_accuracy)}.${Object.keys(admission.labels).length === 1 ? " All test cases share one label, so 100% accuracy does not establish admission-policy generalisation." : ""}</p>` : ""}</div>`;
-  }
-  const sites = run?.results?.e45 || radio.e45;
-  if (sites) {
-    const e5 = sites.e5;
-    html += `<div class="card" style="margin-top:16px"><h3>RadioJEV E4/E5 · warehouse sites</h3>
-      ${table(["E4 arm", "Mean normalized regret", "Worst site", "Signed log verifies"],
-        ["local", "fedavg_all", "swarm_pers"].map((arm) => [esc(arm), fmt(sites[arm].mean),
-          fmt(sites[arm].worst), sites[arm].log_verifies ? "yes" : "no"]))}
-      <p class="sub">E5 forgotten site: ${esc(e5.forgotten_site)}</p>
-      ${table(["State", "Membership-inference AUC", "Retained normalized regret"], [
-        ["Before", fmt(e5.mia_auc_before), fmt(e5.retained_regret_before)],
-        ["Retrain without site", fmt(e5.mia_auc_exact_retrain), fmt(e5.retained_regret_exact)],
-        ["Retained-data distillation", fmt(e5.mia_auc_gated_distill), fmt(e5.retained_regret_distill)],
-        ["Initial model", fmt(e5.mia_auc_never_trained), "—"]])}
-      <p class="note">Synthetic, single-seed evidence. AUC tests one membership attack and does not certify deletion. Distillation has no separate final release gate; the historical report field names are retained. The experiment targets the shared component and reuses retained-site personal states for its retained-service evaluation.</p>
-      ${sites.swarm_pers.rounds?.length && !sites.swarm_pers.rounds.some((row) => row.released) ? `<p class="note">No shared merge was accepted in E4. E5 therefore does not demonstrate removing an accepted site update from the shared model.</p>` : ""}</div>`;
-  }
-  const env = B.envlearn;
-  if (env) {
-    const s = env.summary;
-    const corrected = env.method === "measured-top8-censored-gaussian-v2";
-    html += `<div class="card" style="margin-top:16px"><h3>E7 · learning the radio environment</h3>
-      <p class="sub">${s.n_envs} synthetic environments · ${corrected ? "corrected scan censoring and Gaussian likelihood" : "legacy pipeline; censoring defect known"}. RMSE is evaluated on audible paths (truth RSSI ≥ −90 dBm); robust RMSE includes the pessimistic planning margin.</p>
-      ${table(["Planner belief", "Audible RMSE (dB)", "Unheard RMSE (dB)", "Plan gap to truth search"],
-        Object.keys(s.map_rmse_db).map((name) => [esc(name), fmt(s.map_rmse_db[name], 2),
-          fmt(s.map_rmse_unheard_db?.[name], 2), fmt(s.regret_vs_truth_oracle[name])]))}
-      <p class="note">The truth planner uses local search, not a proven global optimum. Lower plan gap does not establish lower map error. Unheard paths remain weakly constrained; these simulation results do not calibrate a real site.</p>`;
-    if (corrected && B.envlearn_legacy) {
-      const old = B.envlearn_legacy.summary.map_rmse_db;
-      html += `<p class="note">Historical audible RMSE with the defective pipeline: ${fmt(old.learned_1min, 2)} dB at 1 minute → ${fmt(old.learned_15min, 2)} dB at 15 minutes. The original report is retained separately.</p>`;
-    }
-    html += "</div>";
-  }
-  const calibration = B.envlearn_calibration;
-  if (calibration) {
-    html += `<div class="card" style="margin-top:16px"><h3>E7 calibration study · new environments</h3>
-      <p class="sub">${calibration.seeds.length} new environment seeds · matched surveys · map error only. Global censored calibration with nominal rack geometry is compared with E7 v2; it does not replace the default planner.</p>
-      ${table(["Survey budget", "V2 audible RMSE", "Candidate audible RMSE", "V2 inaudible RMSE", "Candidate inaudible RMSE"],
-        Object.entries(calibration.summary).map(([budget, results]) => [
-          `${esc(budget)} min`, fmt(results.v2.audible, 2), fmt(results.geometry_censored.audible, 2),
-          fmt(results.v2.inaudible, 2), fmt(results.geometry_censored.inaudible, 2)]))}
-      <p class="note">Known AP positions/powers/height and nominal floor layout are inputs; hidden walls, materials and truth coefficients are not fitted from the evaluator. Improved map RMSE does not establish a better plan, a real-site calibration, or monotonic improvement with more data.</p></div>`;
-  }
-  return html;
-}
-function evidencePage() {
-  const t = B.bench_10car, w = B.bench_warehouse;
-  let s = `<h1>Evidence</h1><p class="lede">Held-out benchmark results. Regret = gap to the best option under the exact oracle (lower is better). Every WirelessJEV number comes from executing the pinned model; parity between the captured features and the model's own probabilities is checked on every case.</p>`;
-  if (t) {
-    const z = t.fleet_zero_shot_single_choice;
-    s += `<div class="card"><h3>10-car fleet · ${t.n_cases} decisions</h3><div class="sub">parity error ≤ ${t.parity_err_max.toExponential(1)} · ${esc(t.model.device)}</div>${table(["Policy", "Mean regret", "Top-1", "DEFER", "n"], [
-      regretRows(t.fleet_distilled.metrics, "WirelessJEV distilled (option-wise)", true),
-      regretRows(z, "WirelessJEV zero-shot single choice"), regretRows(t.fleet_zero_shot_optionwise, "WirelessJEV zero-shot option-wise"),
-      ...["milp", "legacy", "local_greedy", "coloring", "hungarian", "random", "strongest_rssi"].map((b) => [esc("Baseline: " + b), fmt(z[`baseline_${b}_regret`]), "—", "—", z.n_test_cases]),
-    ])}</div>`;
-    const b = t.bias_audit, d = t.fleet_distilled;
-    s += `<div class="grid k3" style="margin-top:16px">
-      <div class="card"><h3>Intent-flip</h3>${table(["Model", "Changes", "Right way"], [["zero-shot", pct(t.intent_flip_zero_shot_single_choice.model_flips_when_oracle_differs), pct(t.intent_flip_zero_shot_single_choice.directionally_correct_flips)], ["distilled", pct(d.intent_flip.model_flips_when_oracle_differs), `<b>${pct(d.intent_flip.directionally_correct_flips)}</b>`]])}<p class="note">${d.intent_flip.oracle_differs} pairs where the oracle's choice changes.</p></div>
-      <div class="card"><h3>Bias audit</h3>${table(["Probe", "Rate"], [["same choice, order reversed", pct(b.order_reversal_consistency)], ["padding captures choice", pct(b.length_padding_capture)], ["“senior engineer” captures", pct(b.authority_wording_capture)], ["chance capture", pct(b.chance_capture)]])}</div>
-      <div class="card"><h3>Privacy (MIA AUC)</h3>${table(["Readout", "AUC"], [["released", fmt(d.mia_auc_base_readout)], ["distilled", fmt(d.mia_auc_distilled)], ["region R0 before unlearning", fmt(d.mia_auc_region_before_unlearning)], ["region R0 after unlearning", fmt(d.mia_auc_region_after_unlearning)]])}<p class="note">0.5 = no membership leakage.</p></div></div>`;
-    const tr = t.traffic, la = tr.label_accuracy;
-    s += `<div class="grid k2" style="margin-top:16px"><div class="card"><h3>Traffic labels (Chen, Lam &amp; Li framework)</h3>${table(["Label", "Jev raw", "Jev digest", "Jev distilled", "Rules"], Object.keys(la.rule).map((k) => [k, pct(la.jev_raw[k]), pct(la.jev_digest[k]), `<b>${pct(tr.label_distillation_test_accuracy[k].distilled)}</b>`, pct(la.rule[k])]))}<p class="note">Chronos-Bolt MAE ${fmt(tr.forecast_mae.chronos_bolt_small, 2)} vs naive ${fmt(tr.forecast_mae.naive_last_value, 2)} Mbps.</p></div>
-      <div class="card"><h3>Admission level (price-step)</h3>${table(["Policy", "Best one-step move"], [["WirelessJEV", pct(t.admission.jev_local_direction_accuracy)], ["demand rule", pct(t.admission.demand_rule_accuracy)], ["chance", pct(t.admission.chance)]])}<p class="note">An honest weak spot: numeric comparison even with stated consequences.</p></div></div>`;
-  } else s += missing("10-car benchmark", "uv run python -m wirelessjev.bench --scenes 80");
-  if (w) {
-    const z = w.zero_shot_single_choice;
-    const rows = [regretRows(z, "zero-shot single choice"), regretRows(w.zero_shot_optionwise, "zero-shot option-wise")];
-    if (w.transfer_10car_adapter) rows.push(regretRows(w.transfer_10car_adapter, "10-car adapter, unchanged (transfer)"));
-    const best = Math.min(w.distilled_warehouse.jev_regret, w.combined_on_warehouse?.jev_regret ?? Infinity);
-    rows.push(regretRows(w.distilled_warehouse, "warehouse-distilled adapter", w.distilled_warehouse.jev_regret === best));
-    if (w.combined_on_warehouse) rows.push(regretRows(w.combined_on_warehouse, "combined adapter (both sites)", w.combined_on_warehouse.jev_regret === best));
-    ["milp", "legacy", "local_greedy", "coloring"].forEach((b) => rows.push([esc("Baseline: " + b), fmt(z[`baseline_${b}_regret`]), "—", "—", z.n_test_cases]));
-    s += `<div class="card" style="margin-top:16px"><h3>100-robot warehouse · ${w.n_cases} decisions · route-aware oracle</h3><div class="sub">decision latency ${(w.latency_ms.optionwise_mean / 1000).toFixed(1)} s mean on ${esc(w.latency_ms.device)}</div>${table(["Policy", "Mean regret", "Top-1", "DEFER", "n"], rows)}${w.combined_on_10car ? `<p class="note">The combined adapter on the 10-car test split: regret ${fmt(w.combined_on_10car.jev_regret)}.</p>` : ""}</div>`;
-  } else s += missing("100-robot warehouse benchmark", "uv run python -m wirelessjev.bench_warehouse --scenes 50");
-  const it = B.bench_intent;
-  if (it) {
-    const sr = it.shortlist_regret, pr = it.plan_regret_vs_best_known, nv = it.novel_mission_plan_regret, la = it.intent_level_accuracy, lt = it.latency_ms;
-    s += `<div class="card" style="margin-top:16px"><h3>Intent-to-objective WirelessJEV · ${it.n_decisions} warehouse decisions</h3><div class="sub">d3-lite reads the mission into objective weights (once per mission); an exact batched planner optimises them every step.</div>
-      <div class="grid k3"><div>${table(["Shortlist regret", ""], [["option-wise distilled (previous)", fmt(sr.old_optionwise_distilled)], ["intent zero-shot", fmt(sr.intent_zero_shot)], ["intent distilled, held-out paraphrase", `<b class="good">${fmt(sr.intent_distilled_heldout_paraphrase)}</b>`], ["intent distilled, seen wording", fmt(sr.intent_distilled)]])}</div>
-      <div>${table(["Gap to best known plan", ""], [["fast planner, intent distilled", `<b class="good">${fmt(pr.fast_intent_distilled)}</b>`], ["fast planner, intent zero-shot", fmt(pr.fast_intent_zero_shot)], ["best shortlist option", fmt(pr.best_shortlist)], ["previous option-wise choice", fmt(pr.old_optionwise_choice)], ["MILP", fmt(pr.milp)], ["legacy", fmt(pr.legacy)]])}</div>
-      <div>${table(["Never-seen missions", ""], [["fast planner, intent distilled", `<b class="good">${fmt(nv.fast_intent_distilled)}</b>`], ["fast planner, intent zero-shot", fmt(nv.fast_intent_zero_shot)], ["MILP", fmt(nv.milp)], ["legacy", fmt(nv.legacy)]])}
-      <p class="note">Intent level accuracy: held-out ${pct(la.test.zero_shot)} → ${pct(la.test.distilled)}; novel ${pct(la.novel.zero_shot)} → ${pct(la.novel.distilled)}.</p></div></div>
-      <p class="note">Latency: planner ${lt.planner_setup_mean.toFixed(0)} ms setup + ${lt.planner_search_mean.toFixed(0)} ms search (p90 ${lt.planner_search_p90.toFixed(0)} ms) per decision; intent read ${(lt.intent_read_once_per_mission / 1000).toFixed(1)} s once per mission change; previously ~15 s per decision.</p></div>`;
-  }
-  s += researchResults();
-  const cls = [["10-car (300 s)", B.closedloop_10car], ["warehouse shift (600 s)", B.closedloop_warehouse]].filter((x) => x[1]);
-  s += `<div class="card" style="margin-top:16px"><h3>Closed loop</h3>${table(["Scenario", "Policy", "Mean utility", "Handovers", "Critical violations / step", "Decision latency", "Connect resends"], cls.flatMap(([name, c]) => Object.entries(c.summary).sort((a, b) => b[1].mean_utility - a[1].mean_utility).map(([p, v]) => [esc(name), esc(p), fmt(v.mean_utility, 3), v.total_handovers, fmt(v.mean_critical_violations, 2), v.decision_latency_ms_mean ? (v.decision_latency_ms_mean >= 1000 ? (v.decision_latency_ms_mean / 1000).toFixed(1) + " s" : v.decision_latency_ms_mean.toFixed(0) + " ms") : "—", v.connects_beyond_one_per_txn ?? "—"])))}</div>`;
-  return s;
-}
-
-function verdicts(ev, keys) {
-  if (!ev) return "";
-  return `<div class="legend">${keys.filter((k) => ev[k]).map((k) => `<span><b>${k}</b> ${ev[k].pass ? '<span class="badge ok">PASS</span>' : '<span class="badge bad">FAIL</span>'}</span>`).join("")}</div>`;
-}
-function armRows(arms, cond, focus) {
-  return arms.filter((a) => !cond || a.condition === cond).map((a) => ({
-    hl: a.arm === focus,
-    cells: [esc(a.arm), pct(a.control_miss, 3), pct(a.control_miss_worst_decile, 3), fmt(a.control_gap_p99_ms, 0), fmt(a.airtime_domain_sum, 2), fmt(a.roams, 0)],
-  }));
-}
-const ARM_HEAD = ["Arm", "Control misses", "Worst-decile robot", "p99 gap (ms)", "Airtime", "Roams"];
-
-function nativePage() {
-  const N = B.native_stack;
-  let s = `<h1>Native stack</h1><p class="lede">WirelessJEV and RadioMap acting across the Wi-Fi stack: multi-link traffic mapping, planned pre-keyed roams, a learned radio map, and a trust gate that falls back to a fixed rule where the map is uncertain. Every campaign was pre-registered before its test scenes ran. Simulation only; no car or radio was touched.</p>`;
-  if (!N) return s + missing("Native-stack campaigns", "uv run python -m wirelessjev.native.run");
-  const CANON = { nr_30ms: "Private 5G (30 ms handover)", nr_daps: "Private 5G (make-before-break)", wifi8: "Wi-Fi 8 seamless multi-AP", mlo_split: "Wi-Fi 7 fixed rule", vertical_single: "WirelessJEV, one radio", vertical_shared: "WirelessJEV, second association on the same card", vertical_onboard: "WirelessJEV + onboard radio", vertical_client: "WirelessJEV + second BE200", "vertical_shared-levers": "Same, extra levers off" };
-  const canon = (c, label) => c ? `<div class="card" style="margin-top:16px"><h3>${label}</h3><div class="sub">${esc(c.protocol)} · fresh scenes 540–545, 300 s each · misses = control packets later than 50 ms</div>${verdicts(c.evaluation, ["X1", "X2", "X3", "X4", "X5", "X6"])}
-    ${[...new Set(c.arms.map((a) => a.condition))].map((cond) => `<h3 style="margin-top:12px">${esc(cond)}</h3>${table(["System", "Misses / million", "Worst-decile robot", "p99 gap (ms)", "1 s uptime", "Safety-stop time"], c.arms.filter((a) => a.condition === cond).map((a) => ({ hl: a.arm === "vertical_shared", cells: [esc(CANON[a.arm] || a.arm), fmt(1e6 * a.control_miss, 1), pct(a.control_miss_worst_decile, 3), fmt(a.control_gap_p99_ms, 0), pct(a.availability_1s, 3), pct(a.safety_stop_fraction, 3)] })))}`).join("")}</div>` : "";
-  s += canon(N.canonical100, "Canonical: WirelessJEV vs private 5G and Wi-Fi 8 · 100 robots") + canon(N.canonical10, "Canonical: the same comparison · 10 robots");
-  if (N.canonical100) s += `<h2 style="margin-top:28px">How we got here</h2><p class="lede">Earlier pre-registered campaigns, kept for the record.</p>`;
-  const st = N.stack, byArm = Object.fromEntries((st?.arms || []).map((a) => [a.arm, a]));
-  if (st) {
-    s += `<div class="grid k4">${[["Legacy, 4 s roam", "legacy"], ["802.11r, 60 ms", "ft11r"], ["Default multi-link", "mlo_default"], ["Native stack", "native"]].map(([l, k], i) =>
-      kpi(l, pct(byArm[k]?.control_miss, 3), "control packets missed", i === 3 ? "good" : "")).join("")}</div>
-    <div class="card" style="margin-top:16px"><h3>Native stack · scenes 500–505</h3><div class="sub">${esc(st.protocol)} · fleet means over six scenes, 100 robots, 300 s each</div>${verdicts(st.evaluation, ["H1", "H2", "H3", "H4", "H5"])}${table(ARM_HEAD, armRows(st.arms, null, "native"))}
-    <p class="note">Handover cost dominates; a fixed control/bulk split (mlo_split) captures most of the multi-link gain. Route-as-pilot (H4) and risk-gated duplication were falsified. Under uniform map error only; see the trust gate below for realistic maps.</p></div>`;
-  }
-  const g = N.gate;
-  if (g) {
-    const conds = [...new Set(g.arms.map((a) => a.condition))];
-    s += `<div class="card" style="margin-top:16px"><h3>Trust gate · scenes 510–515</h3><div class="sub">${esc(g.protocol)} · spatially varying map error; the gate was given the true local error</div>${verdicts(g.evaluation, ["G1", "G2", "B1"])}${conds.map((c) => `<h3 style="margin-top:12px">${esc(c)}</h3>${table(ARM_HEAD, armRows(g.arms, c, "native_gated"))}`).join("")}
-    <p class="note">Ungated planning fails under realistic map error; the gated planner beats the fixed rule in every condition. The layered safety broadcast (B1) failed against plain MCS 0 multicast.</p></div>`;
-  }
-  const l = N.learned;
-  if (l) {
-    const conds = [...new Set(l.arms.map((a) => a.condition))];
-    const cal = l.calibration || [];
-    const cm = (k, c) => { const v = cal.filter((x) => x.condition === c).map((x) => x[k]); return v.length ? v.reduce((a, b) => a + b, 0) / v.length : null; };
-    s += `<div class="card" style="margin-top:16px"><h3>RadioMap v0 drives the gate · scenes 520–525</h3><div class="sub">${esc(l.protocol)} · map and uncertainty learned from capped robot scans (censored Tobit EM + held-out discrepancy)</div>${verdicts(l.evaluation, ["L1", "L2", "L3", "L4"])}
-    ${table(["Survey", "Map RMSE (dB)", "Bias (dB)", "Predicted std (dB)", "90% interval coverage"], [...new Set(cal.map((x) => x.condition))].map((c) => [esc(c), fmt(cm("rmse_db", c), 2), fmt(cm("bias_db", c), 2), fmt(cm("mean_predicted_std_db", c), 2), pct(cm("coverage_90", c), 0)]))}
-    ${conds.map((c) => `<h3 style="margin-top:12px">${esc(c)}</h3>${table(ARM_HEAD, armRows(l.arms, c, "gated_learned"))}`).join("")}</div>`;
-  } else s += `<div class="callout">RadioMap v0 campaign not in this bundle yet.</div>`;
-  const v = N.vs5g;
-  if (v) {
-    const conds = [...new Set(v.arms.map((a) => a.condition))];
-    s += `<div class="card" style="margin-top:16px"><h3>Vertical Wi-Fi stack vs private 5G · scenes 530–535</h3><div class="sub">${esc(v.protocol)} · 5G modelled generously: scheduled, licensed, 23 dBm devices, no inter-cell interference</div>${verdicts(v.evaluation, ["V1", "V2", "V3", "V4", "V5"])}
-    ${conds.map((c) => `<h3 style="margin-top:12px">${esc(c)}</h3>${table(["Arm", "Misses / million", "Worst-decile robot", "p99 gap (ms)", "1 s uptime", "Safety-stop time"], v.arms.filter((a) => a.condition === c).map((a) => ({ hl: a.arm === "vertical_client", cells: [esc(a.arm), fmt(1e6 * a.control_miss, 1), pct(a.control_miss_worst_decile, 3), fmt(a.control_gap_p99_ms, 0), pct(a.availability_1s, 3), pct(a.safety_stop_fraction, 3)] })))}`).join("")}
-    <p class="note">With a second client radio per robot (make-before-break across APs), Wi-Fi beats the 5G model in the main and lenient conditions. Existing single-radio hardware does not (V4), and heavy contention with a noisy 2.4 GHz band still favours 5G (V5).</p></div>`;
-  }
-  if (N.phy) {
-    s += `<div class="card" style="margin-top:16px"><h3>Layered modulation (Sionna LDPC, hierarchical 16-QAM)</h3><div class="sub">SNR (dB) for 1% block error, equal symbols and power</div>${table(["Channel", "Scheme", "Critical bits", "Bulk bits"], Object.entries(N.phy).flatMap(([ch, v]) => Object.entries(v).map(([k, r]) => [esc(ch), esc(k), fmt(r.critical, 0), fmt(r.bulk, 0)])))}<p class="note">Real link-level gain for critical bits; little system-level value where Wi-Fi retries already protect control.</p></div>`;
-  }
-  const h = B.handover_tooling;
-  if (h) {
-    s += `<div class="card" style="margin-top:16px"><h3>Handover on the SmartCar · <span class="badge">${esc(h.status.toUpperCase())}</span></h3><p>${esc(h.root_cause)}</p>${table(["Command", "What it does", "Changes the car?"], h.commands.map(([c, d, m]) => [`<code>onecar ${esc(c)}</code>`, esc(d), esc(m)]))}</div>`;
-  }
-  return s;
-}
-
-function swarmPage() {
-  const sw = B.bench_10car?.swarm;
-  let s = `<h1>Swarm &amp; trust</h1><p class="lede">Serverless merge following Li/Wang/Shen/Lam's swarm-learning DSA: admission check, leader by performance score, weighted merge, and validation against the <b>currently live</b> release before anything is released. Cars violating their contract (MSN 2024 reputation rule) are excluded from merges and pinned to their BSSID.</p>`;
-  if (!sw) return s + missing("Swarm rounds", "uv run python -m wirelessjev.bench");
-  const r1 = sw.round1, r2 = sw.round2_poisoned_updates;
-  s += `<div class="grid k2"><div class="card"><h3>Round 1 · trusted cars</h3><p>${r1.released ? '<span class="badge ok">RELEASED</span>' : '<span class="badge bad">REJECTED</span>'} leader <b>${esc(r1.leader)}</b></p><dl class="dl"><dt>Participants</dt><dd>${r1.participants.length}</dd><dt>Excluded</dt><dd>${esc(r1.excluded_low_reputation.join(", ") || "none")}</dd><dt>Validation regret</dt><dd>${fmt(r1.validation.val_regret)}</dd><dt>Live regret</dt><dd>${fmt(r1.validation.live_val_regret ?? r1.validation.base_val_regret)}</dd></dl></div>
-  <div class="card"><h3>Round 2 · poisoned updates</h3><p>${r2.released ? '<span class="badge bad">RELEASED</span>' : '<span class="badge ok">REJECTED</span>'} ${esc(r2.reason)}</p><dl class="dl"><dt>Validation regret</dt><dd>${fmt(r2.validation.val_regret)}</dd><dt>Live regret</dt><dd>${fmt(r2.validation.live_val_regret ?? r2.validation.base_val_regret)}</dd></dl><p class="note">A merge must beat what is live, not just the released base model.</p></div></div>
-  <div class="grid k2" style="margin-top:16px"><div class="card"><h3>Audit log</h3><p>${sw.log_entries} entries · hash chain and HMAC ${sw.log_verifies ? '<span class="badge ok">VERIFIED</span>' : '<span class="badge bad">BROKEN</span>'}</p><p class="note">Append-only, hash-chained, HMAC-signed. The papers use a permissioned blockchain; one site does not need adversarial consensus.</p></div>
-  <div class="card"><h3>Reputation</h3>${table(["Car", "Score", "Trusted"], Object.entries(sw.reputation).map(([k, v]) => [esc(k), fmt(v, 2), v >= 0.5 ? "yes" : '<span class="bad">no</span>']))}</div></div>`;
-  const run = (B.closedloop_warehouse?.runs || []).find((r) => r.frames);
-  if (run) {
-    const first = run.frames.find((f) => f.quarantined.length);
-    s += `<div class="callout">Warehouse shift: ${first ? `<b>${esc(first.quarantined.join(", "))}</b> quarantined from t = ${first.t} s (power above its contract cap)` : "no robot quarantined"}.</div>`;
-  }
-  return s;
-}
-
-function executionPage() {
-  const c = B.smartcarcmd_contract;
-  const runs = [...(B.closedloop_10car?.runs || []).map((r) => ["10-car", r]), ...(B.closedloop_warehouse?.runs || []).map((r) => ["warehouse", r])];
-  return `<h1>Execution</h1><p class="lede">WirelessJEV only proposes; execution is a separate, supervised step through the existing on-car <code>SmartCarCmd.py</code>. The management hotspot radio (wlan0, 192.168.1.11) is never touched; only the BE200 client radio (wlan1) changes BSSID.</p>
-  <div class="grid k2"><div class="card"><h3>Wire contract</h3><div class="sub">invocation over SSH (host key pinned)</div><pre>${esc(c.invocation)}</pre><pre>${esc(JSON.stringify(c.status))}</pre><pre>${esc(JSON.stringify(c.connect, null, 1))}</pre></div>
-  <div class="card"><h3>Outcome semantics</h3>${table(["Outcome", "Meaning"], Object.entries(c.outcomes).map(([k, v]) => [`<b>${k}</b>`, esc(v)]))}<p class="note">A timeout after sending is never treated as “nothing happened” and a connect is never resent.</p></div></div>
-  <div class="card" style="margin-top:16px"><h3>Transactions in the closed-loop runs</h3>${table(["Scenario", "Policy", "Outcomes", "Connect resends"], runs.map(([n, r]) => [n, esc(r.policy), esc(Object.entries(r.transactions).map(([k, v]) => `${k} ${v}`).join(" · ")), r.connects_beyond_one_per_txn]))}</div>
-  <div class="card" style="margin-top:16px"><h3>One-car real test · <span class="badge">${esc(B.one_car_test.status.toUpperCase())}</span></h3>${table(["Step", "Command", "Changes the car?"], [
-    ["0 Preflight", "<code>onecar preflight</code>", "no (offline)"], ["1 Status", "<code>onecar status --repeat 10</code>", "no"],
-    ["2 Scan", "<code>onecar scan --seconds 20</code>", "no"], ["3 Propose", "<code>onecar propose</code>", "no (local)"],
-    ["4 Switch", "<code>onecar switch</code> + typed BSSID", "<b>yes — one connect</b>"], ["5 Return", "<code>onecar switch</code> to original", "yes — separate, confirmed"]])}<p class="note">Plan: <code>${esc(B.one_car_test.plan)}</code>. ${B.one_car_test.logs.length ? "Logs: " + esc(B.one_car_test.logs.join(", ")) : "No real-car logs yet."}</p></div>`;
-}
-
-function researchPage() {
-  return `<h1>Research map</h1><p class="lede">How each Bowen Shen / Feng Li / Kwok-Yan Lam paper is used. FT = full text read; Abs = abstract only. Learned components in the papers (DQN, PPO, GNN, LSTM, LLaMA-LoRA) are replaced by their formulation as an exact oracle, a frozen open model, or counting statistics.</p>
-  <div class="card">${table(["Paper", "Read", "Mechanism used", "Where in the code"], B.papers.map((p) => [md(p.paper), esc(p.status), md(p.mechanism), md(p.code)]))}</div>`;
-}
-
-function dataPage() {
-  const h = B.hardware;
-  return `<h1>Hardware &amp; data</h1><p class="lede">Every robot is SmartCar hardware. This bundle was generated ${esc(B.generated_at)} from local artifacts.</p>
-  <div class="grid k2"><div class="card"><h3>Robot hardware (SmartCar.zip)</h3><dl class="dl">${Object.entries(h).map(([k, v]) => `<dt>${esc(k.replace(/_/g, " "))}</dt><dd>${esc(Array.isArray(v) ? v.join(", ") : v)}</dd>`).join("")}</dl></div>
-  <div class="card"><h3>Model</h3><dl class="dl"><dt>Decision model</dt><dd><code>${esc(B.model.repo)}</code></dd><dt>Pinned revision</dt><dd class="mono">${esc(B.model.revision)}</dd><dt>Backbone</dt><dd>frozen</dd><dt>Adapters</dt><dd>1024-parameter readout direction, distilled from exact oracles</dd></dl>
-  <h3 style="margin-top:14px">Regenerate</h3><pre>uv run python -m wirelessjev.bench --scenes 80
-uv run python -m wirelessjev.bench_warehouse --scenes 50
-uv run python -m wirelessjev.closedloop --warehouse --total 600 \\
-  --adapter artifacts/warehouse/adapters/combined \\
-  --out artifacts/closedloop_warehouse.json
-uv run python -m wirelessjev.studio_data</pre></div></div>
-  <div class="card" style="margin-top:16px"><h3>Warehouse layout</h3><dl class="dl"><dt>Hall</dt><dd>${B.layout.width} × ${B.layout.height} m</dd><dt>Rack rows</dt><dd>${B.layout.rack_rows.length}, cross-aisles at x = ${B.layout.cross_aisles.join(", ")} m</dd><dt>Rack loss</dt><dd>${B.layout.rack_db["5g"]} dB (5 GHz) / ${B.layout.rack_db["2g"]} dB (2.4 GHz) per row crossed</dd><dt>AP sites</dt><dd>${B.layout.ap_sites.length} ceiling sites, dual-band</dd></dl></div>`;
-}
-
-// ------------------------------------------------------------------ router
-const PAGES = { overview: ["Overview", overview], map: ["Fleet map", mapPage], decisions: ["Decisions", decisionsPage], evidence: ["Evidence", evidencePage], native: ["Native stack", nativePage], swarm: ["Swarm & trust", swarmPage], execution: ["Execution", executionPage], research: ["Research map", researchPage], data: ["Hardware & data", dataPage] };
-
+// ---------------------------------------------------------------- routing
 function route() {
-  if (player) { clearInterval(player); player = null; }
-  const key = (location.hash || "#overview").slice(1);
-  const [title, fn] = PAGES[key] || PAGES.overview;
-  crumb.textContent = title;
-  document.querySelectorAll(".rail a.nav").forEach((a) => a.classList.toggle("active", a.getAttribute("href") === "#" + key));
-  try { view.innerHTML = fn(); } catch (e) { view.innerHTML = `<div class="callout"><b>Could not render this view.</b> ${esc(e.message)}</div>`; console.error(e); }
-  view.querySelectorAll("[data-go]").forEach((el) => (el.onclick = () => (location.hash = el.dataset.go)));
+  const h = (location.hash || "#overview").slice(1);
+  let tab = h, html;
+  if (h.startsWith("c-")) { tab = "campaigns"; html = campaign(h.slice(2).replace(/-/g, "_")); }
+  else if (h === "campaigns") html = campaign(B.campaigns[0].id);
+  else if (h === "setups") html = setups();
+  else if (h === "learned") html = learned();
+  else if (h === "method") html = method();
+  else { tab = "overview"; html = overview(); }
+  view.innerHTML = html;
+  document.querySelectorAll(".tabs a").forEach((a) => a.classList.toggle("on", a.dataset.tab === tab));
+  const pick = document.getElementById("pick");
+  if (pick) pick.onchange = () => (location.hash = pick.value);
+  const res = document.getElementById("res");
+  if (res) {
+    const id = h.startsWith("c-") ? h.slice(2).replace(/-/g, "_") : B.campaigns[0].id;
+    const c = B.campaigns.find((x) => x.id === id) || B.campaigns[0];
+    const show = (cond) => {
+      res.innerHTML = resultsFor(c, cond);
+      document.querySelectorAll(".seg button").forEach((b) => b.classList.toggle("on", b.dataset.cond === cond));
+    };
+    document.querySelectorAll(".seg button").forEach((b) => (b.onclick = () => show(b.dataset.cond)));
+    show(Object.keys(c.results)[0]);
+  }
   window.scrollTo(0, 0);
 }
 
-document.getElementById("theme").onclick = () => {
-  const r = document.documentElement, cur = r.dataset.theme || (matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
-  r.dataset.theme = cur === "dark" ? "light" : "dark";
-  route();
+// theme: system by default; the button pins the opposite of what is showing
+const themeBtn = document.getElementById("theme");
+try { const t = localStorage.getItem("studio-theme"); if (t) document.documentElement.dataset.theme = t; } catch (e) {}
+themeBtn.onclick = () => {
+  const dark = document.documentElement.dataset.theme ? document.documentElement.dataset.theme === "dark" : matchMedia("(prefers-color-scheme: dark)").matches;
+  const next = dark ? "light" : "dark";
+  document.documentElement.dataset.theme = next;
+  try { localStorage.setItem("studio-theme", next); } catch (e) {}
 };
 
 const embedded = document.getElementById("bundle");
-const loadBundle = embedded
-  ? Promise.resolve().then(() => JSON.parse(embedded.textContent))
-  : fetch("data/bundle.json", { cache: "no-store" }).then((r) => { if (!r.ok) throw new Error(`bundle.json: HTTP ${r.status}`); return r.json(); });
-loadBundle.then((b) => {
-  B = b;
-  window.addEventListener("hashchange", route);
-  route();
-}).catch((e) => { view.innerHTML = `<div class="callout"><b>No data bundle.</b> Run <code>uv run python -m wirelessjev.studio_data</code> and serve <code>studio/</code> over HTTP. (${esc(e.message)})</div>`; });
+(embedded ? Promise.resolve(JSON.parse(embedded.textContent)) : fetch("data/evidence.json", { cache: "no-store" }).then((r) => { if (!r.ok) throw new Error(`HTTP ${r.status}`); return r.json(); }))
+  .then((b) => { B = b; route(); window.addEventListener("hashchange", route); })
+  .catch((e) => { view.innerHTML = `<div class="card"><b>No data bundle.</b> Run <code>.venv/bin/python studio/build_bundle.py</code> and serve <code>studio/</code> over HTTP. (${esc(e.message)})</div>`; });

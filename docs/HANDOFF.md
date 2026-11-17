@@ -1,9 +1,10 @@
 # WirelessJEV research handoff
 
-## Latest (17 Nov 2026): Field Platform
+## Latest (17 Nov 2026): Field Platform and the simulation-only Studio
 
 - **The site visit did not happen on 17 Nov:** the car is not available. Nothing has run on the real car yet.
 - **Field Platform** ([PLATFORM.md](PLATFORM.md), `src/wirelessjev/platform/`): the production tool for real testing. One local page runs the runbook's steps in order with progress, the site sheet, lap recording with waypoint buttons (and letter keys), the live lap view, the analysis, and an assistant that answers "what next?" from the live state: Claude when the laptop has internet and credentials, otherwise a built-in guide. Read-only steps run from the page; join, switch and roam are only shown as commands for a terminal. Local only, one command at a time, requests from other origins refused. `--demo` rehearses without the car. Tested in `tests/test_platform.py` and in a browser in demo mode; not yet used with the car.
+- **Studio is now the simulation record only** (`studio/`, published at https://claude.ai/artifact/NiohoyLYJsy5vEKE5BBswC): 14 canonical campaigns, each with its scenes, conditions, every arm's exact parameters, results with 95% intervals and its pre-registered hypotheses (46 of 59 pass; the 13 failures are kept); a matrix of how the setups differ; 30 learned-model studies (8 computed from our result files, 22 of Codex's quoted word for word from their docs, checked at build time). `studio/build_bundle.py` writes `studio/data/evidence.json` from `artifacts/native/*.json`; `studio/build_artifact.py` makes the single-file page. The legacy `studio/data/bundle.json` is left as it was, because Codex's research export and `studio_data.py` use it.
 
 ## Latest (15 Nov 2026): real-site kit, headroom ladder, fleet-only capabilities
 
