@@ -33,7 +33,7 @@ button.act{font:inherit;font-size:13px;padding:5px 12px;border-radius:6px;border
 button.act:disabled{opacity:.45;cursor:not-allowed}
 button.ghost{font:inherit;font-size:13px;padding:5px 10px;border-radius:6px;border:1px solid var(--line);background:var(--panel);color:var(--ink);cursor:pointer}
 code,.mono{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:12px}
-.cmd{display:block;background:var(--panel2);border:1px solid var(--line);border-radius:6px;padding:6px 8px;overflow-wrap:anywhere;margin-top:4px}
+.cmd{display:block;white-space:pre-wrap;background:var(--panel2);border:1px solid var(--line);border-radius:6px;padding:6px 8px;overflow-wrap:anywhere;margin-top:4px}
 pre.out{background:#0E1820;color:#D7E1E7;border-radius:8px;padding:10px;max-height:380px;overflow:auto;font-size:12px;margin:0;white-space:pre-wrap;overflow-wrap:anywhere}
 .ok{color:var(--good)}.bad{color:var(--bad)}.warnc{color:var(--warn)}
 .next{border-left:4px solid var(--accent);background:var(--accent2)}
@@ -51,6 +51,15 @@ img.cov{max-width:100%;border:1px solid var(--line);border-radius:8px}
 #aps td:first-child{min-width:150px}
 #toast{position:fixed;left:50%;bottom:20px;transform:translateX(-50%);max-width:min(640px,calc(100vw - 32px));background:var(--bad);color:#fff;padding:10px 14px;border-radius:8px;font-size:13.5px;box-shadow:0 6px 24px rgba(0,0,0,.25);z-index:10;cursor:pointer}
 #toast.hide{display:none}
+#banner{display:flex;gap:8px;align-items:center;flex-wrap:wrap;padding:8px 20px;background:var(--accent2);border-bottom:1px solid var(--line);font-size:13.5px}
+#banner.hide{display:none}
+.step{display:grid;grid-template-columns:28px 1fr;gap:8px;padding:8px 0;border-bottom:1px solid var(--line)}
+.step .n{width:24px;height:24px;border-radius:50%;background:var(--ink);color:var(--panel);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700}
+.step .ok{background:var(--good)}
+#maptip{position:absolute;pointer-events:none;background:var(--panel);color:var(--ink);border:1px solid var(--line);border-radius:8px;padding:6px 8px;font-size:12px;line-height:1.4;box-shadow:0 4px 16px rgba(0,0,0,.18);white-space:nowrap;z-index:5}
+#maptip.hide{display:none}
+.scale{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--muted);flex-wrap:wrap}
+.scale .bar{height:10px;flex:1;min-width:160px;border-radius:3px;border:1px solid var(--line)}
 .tiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(128px,1fr));gap:8px}
 .tile{background:var(--panel2);border:1px solid var(--line);border-radius:8px;padding:8px 10px;min-width:0}
 .tile .v{font-size:20px;font-weight:700;font-variant-numeric:tabular-nums}.tile .l{font-size:11.5px;color:var(--muted)}
@@ -79,12 +88,13 @@ details summary{cursor:pointer}
   <div><h1>WirelessJEV Field Platform</h1><div class="sub" id="sub">Real SmartCar testing · radio mapping · WirelessJEV in shadow</div></div>
   <div class="sub" id="envbadges"></div>
 </header>
+<div id="banner" class="hide"><span id="bannertext"></span> <button class="ghost" id="bannergo">How to set it up</button> <button class="ghost" id="bannerx" aria-label="Hide this notice">Hide</button></div>
 <div class="layout">
 <main>
   <nav id="tabs">
     <button data-tab="plan" class="on">Plan</button><button data-tab="map">Map</button><button data-tab="setup">Setup</button>
     <button data-tab="live">Live lap</button><button data-tab="analysis">Analysis</button><button data-tab="settings">Settings</button>
-    <button data-tab="activity">Activity</button><button data-tab="output">Command output</button>
+    <button data-tab="activity">Activity</button><button data-tab="output">Command output</button><button data-tab="help">Help</button>
   </nav>
 
   <section id="tab-plan">
@@ -97,19 +107,24 @@ details summary{cursor:pointer}
   <section id="tab-map" class="hide">
     <div class="card">
       <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center;justify-content:space-between">
-        <h2 style="margin:0">Site map</h2>
-        <label style="display:flex;gap:6px;align-items:center;font-size:13px">Lap <select id="maplap"></select></label>
+        <h2 style="margin:0">Site radio map</h2>
+        <div style="display:flex;gap:10px;flex-wrap:wrap">
+          <label style="display:flex;gap:6px;align-items:center;font-size:13px">Show <select id="mapview"></select></label>
+          <label style="display:flex;gap:6px;align-items:center;font-size:13px">Lap <select id="maplap"></select></label></div>
       </div>
       <div class="layers" id="layers">
-        <label><input type="checkbox" data-layer="heat" checked>Signal heatmap</label>
-        <label><input type="checkbox" data-layer="dots">Readings</label>
-        <label><input type="checkbox" data-layer="serving">Colour by serving AP</label>
+        <label><input type="checkbox" data-layer="fade" checked>Fade where not measured</label>
+        <label><input type="checkbox" data-layer="contours" checked>Good / Fair lines</label>
+        <label><input type="checkbox" data-layer="boxes" checked>Obstructions</label>
+        <label><input type="checkbox" data-layer="dots">Car's readings</label>
         <label><input type="checkbox" data-layer="route" checked>Route</label>
         <label><input type="checkbox" data-layer="roams" checked>Roams</label>
         <label><input type="checkbox" data-layer="outages" checked>Outages</label>
         <label><input type="checkbox" data-layer="car" checked>Car</label>
       </div>
-      <svg id="map" class="map" viewBox="0 0 24 14" role="img" aria-label="Site map"></svg>
+      <div style="position:relative"><svg id="map" class="map" viewBox="0 0 24 14" role="img" aria-label="Site radio map"></svg>
+        <div id="maptip" class="hide"></div></div>
+      <div id="mapscale" style="margin-top:8px"></div>
       <div class="legend" id="maplegend"></div>
       <div class="sub" id="mapnote" style="margin-top:6px"></div>
     </div>
@@ -181,6 +196,13 @@ details summary{cursor:pointer}
       <div class="scroll"><table id="activity" style="margin-top:6px"></table></div></div>
   </section>
 
+  <section id="tab-help" class="hide">
+    <div class="card"><h2>Before the site day (needs internet)</h2><div id="before"></div></div>
+    <div class="card"><h2>How to use the platform</h2>
+      <input id="helpq" placeholder="Search: map, confirm, settings, router, UNKNOWN…" autocomplete="off">
+      <div id="topics" style="margin-top:8px"></div></div>
+    <div class="card"><h2>What's new</h2><div id="news"></div></div>
+  </section>
   <section id="tab-output" class="hide">
     <div class="card"><h2 id="outtitle">Command output</h2>
       <div class="sub mono" id="outcmd"></div>
@@ -222,10 +244,11 @@ document.querySelectorAll("#tabs button").forEach(b => b.onclick = () => {
   document.querySelectorAll("#tabs button").forEach(x => x.classList.toggle("on", x === b));
   document.querySelectorAll("main > section").forEach(s => s.classList.toggle("hide", s.id !== "tab-" + b.dataset.tab));
   const t = b.dataset.tab;
-  if (t === "map") { loadLaps(); refreshMap(true); }
+  if (t === "map") { loadLaps(); refreshMap(true); refreshSpectrum(true); }
   if (t === "setup") loadRouters();
   if (t === "settings") loadSettings();
   if (t === "activity") loadActivity();
+  if (t === "help") loadHelp();
 });
 const visible = t => !$("tab-" + t).classList.contains("hide");
 function show(tab){ document.querySelector(`#tabs button[data-tab="${tab}"]`).click(); }
@@ -423,7 +446,71 @@ $("stopbtn").onclick = async () => {
 
 // ================= map =================
 const LAYERS = {}; document.querySelectorAll("[data-layer]").forEach(i => { LAYERS[i.dataset.layer] = i.checked; i.onchange = () => { LAYERS[i.dataset.layer] = i.checked; drawMap(); }; });
-let M = null, mapBusy = false, mapAt = 0;
+let M = null, mapBusy = false, mapAt = 0, SP = null, spAt = 0, spBusy = false;
+const VIRIDIS = ["#440154","#482878","#3e4989","#31688e","#26828e","#1f9e89","#35b779","#6ece58","#b5de2b","#fde725"];
+const GREYS = ["#f2f4f6","#d5dbe1","#b3bdc7","#8d9aa7","#687786","#475566"];
+const VIEWS = {
+  best: {label: "Signal strength (best AP)", unit: "dBm", lo: -90, hi: -35, ramp: VIRIDIS, key: "best",
+         help: "The strongest AP's signal at each spot: what the car's radio would hear there."},
+  bestap: {label: "Best AP (who serves where)", kind: "ap", help: "Which AP is strongest at each spot."},
+  backup: {label: "Backup signal (second AP location)", unit: "dBm", lo: -90, hi: -35, ramp: VIRIDIS, key: "backup",
+           help: "The strongest AP at a different place from the best one: the second path WirelessJEV relies on."},
+  snr: {label: "SNR", unit: "dB", lo: 0, hi: 50, ramp: VIRIDIS, key: "snr", help: "Best signal minus the site sheet's noise floor."},
+  sinr: {label: "SINR (with co-channel APs)", unit: "dB", lo: -5, hi: 45, ramp: VIRIDIS, key: "sinr",
+         help: "Best signal against noise plus every other AP on the same channel."},
+  cochan: {label: "Co-channel APs heard", kind: "count", key: "cochan", help: "Other APs on the serving AP's channel heard at or above −82 dBm: they share airtime."},
+  uncertainty: {label: "Uncertainty (RadioMap)", unit: "± dB", lo: 0, hi: 8, ramp: GREYS, key: "uncertainty",
+                help: "RadioMap's own estimate of its error. It can be optimistic; use it with the fade."},
+  measured: {label: "Measured readings only", kind: "measured", help: "Only what the car measured on the chosen lap, averaged per cell. No model."},
+};
+function viewOptions(){
+  const sel = $("mapview"), cur = sel.value || "best";
+  let opts = Object.entries(VIEWS).map(([k, v]) => `<option value="${k}">${v.label}</option>`).join("");
+  if (SP) opts += SP.aps.map((a, i) => `<option value="ap${i}">Signal: AP${i + 1} ${esc(a.bssid)} (ch ${a.channel})</option>`).join("");
+  if (sel.dataset.n !== String(SP ? SP.aps.length : 0)){ sel.innerHTML = opts; sel.dataset.n = String(SP ? SP.aps.length : 0); sel.value = cur; if (!sel.value) sel.value = "best"; }
+}
+$("mapview") && ($("mapview").onchange = () => drawMap());
+async function refreshSpectrum(force){
+  if (spBusy || (!force && Date.now() - spAt < 10000)) return;
+  spBusy = true; spAt = Date.now();
+  try { SP = await api("/api/spectrum"); viewOptions(); drawMap(); }
+  catch (e){ SP = null; viewOptions(); $("mapnote").textContent = e.message; }
+  finally { spBusy = false; }
+}
+function hexrgb(h){ h = h.trim(); if (h.startsWith("#")) { const n = parseInt(h.slice(1), 16); return [n >> 16 & 255, n >> 8 & 255, n & 255]; }
+  const m = h.match(/\d+/g); return m ? m.slice(0, 3).map(Number) : [128, 128, 128]; }
+function rampAt(ramp, f){ f = Math.max(0, Math.min(1, f)); const x = f * (ramp.length - 1), i = Math.min(ramp.length - 2, Math.floor(x)), t = x - i;
+  const a = hexrgb(ramp[i]), b = hexrgb(ramp[i + 1]); return a.map((v, k) => Math.round(v + t * (b[k] - v))); }
+function raster(view){
+  const g = SP.grid, L = SP.layers, n = g.nx * g.ny, cv = document.createElement("canvas"); cv.width = g.nx; cv.height = g.ny;
+  const ctx = cv.getContext("2d"), img = ctx.createImageData(g.nx, g.ny), V = VIEWS[view];
+  const apcols = SP.aps.map((a, i) => hexrgb(css("--ap" + (i % 5 + 1))));
+  const vals = view.startsWith("ap") ? L.per_ap[+view.slice(2)] : V && V.key ? L[V.key] : null;
+  const lo = view.startsWith("ap") ? -90 : V.lo, hi = view.startsWith("ap") ? -35 : V.hi, ramp = view.startsWith("ap") ? VIRIDIS : V.ramp;
+  for (let i = 0; i < n; i++){
+    let rgb = null, a = 215;
+    if (view === "bestap") { rgb = apcols[L.best_ap[i]]; a = 170; }
+    else if (view === "cochan") { const c = L.cochan[i]; if (c > 0) rgb = hexrgb(c === 1 ? css("--warn") : css("--bad")); a = c > 0 ? 190 : 0; }
+    else { const v = vals[i]; if (v != null && !(view !== "uncertainty" && v < lo - 8)) rgb = rampAt(ramp, (v - lo) / (hi - lo)); }
+    if (!rgb) { img.data[i * 4 + 3] = 0; continue; }
+    if (LAYERS.fade) { const d = L.near_m[i]; a = Math.round(a * (d <= 3 ? 1 : Math.max(0.28, 1 - (d - 3) / 7))); }
+    img.data.set([rgb[0], rgb[1], rgb[2], a], i * 4);
+  }
+  ctx.putImageData(img, 0, 0);
+  return cv.toDataURL("image/png");
+}
+function drawScale(view){
+  const V = VIEWS[view] || {label: "Signal", unit: "dBm", lo: -90, hi: -35, ramp: VIRIDIS};
+  let h = "";
+  if (view === "bestap" && SP) h = `<div class="legend">${SP.aps.map((a, i) => `<span><span class="sw" style="background:var(--ap${i % 5 + 1})"></span>AP${i + 1} ${esc(a.bssid)} · ch ${a.channel}</span>`).join("")}</div>`;
+  else if (view === "cochan") h = `<div class="legend"><span><span class="sw" style="background:var(--warn)"></span>1 other AP on the channel</span><span><span class="sw" style="background:var(--bad)"></span>2 or more</span><span>clear: none</span></div>`;
+  else if (view !== "measured") {
+    const grad = `linear-gradient(90deg, ${V.ramp.join(",")})`;
+    h = `<div class="scale"><span>${V.lo} ${V.unit}</span><div class="bar" style="background:${grad}"></div><span>${V.hi} ${V.unit}</span></div>`;
+  }
+  const help = (VIEWS[view] || {}).help || "This AP's signal at each spot.";
+  $("mapscale").innerHTML = h + `<div class="sub" style="margin-top:4px">${esc(help)}</div>`;
+}
 const css = v => getComputedStyle(document.documentElement).getPropertyValue(v).trim();
 function apColor(b, list){ const i = list.indexOf((b || "").toLowerCase()); return i < 0 ? css("--muted") : css("--ap" + (i % 5 + 1)); }
 function sigColor(v, th){ return v >= th.good_dbm ? css("--good") : v >= th.fair_dbm ? css("--warn") : css("--bad"); }
@@ -455,10 +542,21 @@ function drawMap(){
   g += `<rect x="0" y="0" width="${W}" height="${H}" fill="none" stroke="${css("--line")}" stroke-width="0.08"/>`;
   for (let x = 0; x <= W; x += 2) g += `<line x1="${x}" y1="0" x2="${x}" y2="${H}" stroke="${css("--line")}" stroke-width="0.02"/>`;
   for (let y = 0; y <= H; y += 2) g += `<line x1="0" y1="${y}" x2="${W}" y2="${y}" stroke="${css("--line")}" stroke-width="0.02"/>`;
-  if (LAYERS.heat) for (const [x, y, v, n] of (M.cells || [])) {
+  const view = $("mapview").value || "best";
+  if (SP && view !== "measured" && SP.grid.width === W) {
+    g += `<image href="${raster(view)}" x="0" y="0" width="${W}" height="${H}" preserveAspectRatio="none" style="image-rendering:auto"/>`;
+    if (LAYERS.contours && (view === "best" || view === "bestap")) {
+      for (const [name, col] of [["good", css("--ink")], ["fair", css("--muted")]])
+        for (const [x1, y1, x2, y2] of SP.contours[name]) g += `<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="${col}" stroke-width="0.07" ${name === "fair" ? 'stroke-dasharray="0.25 0.18"' : ""}/>`;
+    }
+  }
+  if (LAYERS.boxes && SP) for (const [lo, hi] of SP.boxes)
+    g += `<rect x="${Math.min(lo[0], hi[0])}" y="${Math.min(lo[1], hi[1])}" width="${Math.abs(hi[0] - lo[0])}" height="${Math.abs(hi[1] - lo[1])}" fill="${css("--ink")}" fill-opacity="0.55"><title>Obstruction from the site sheet</title></rect>`;
+  drawScale(view);
+  if (view === "measured") for (const [x, y, v, n] of (M.cells || [])) {
     const c = M.cell_m; g += `<rect x="${x - c / 2}" y="${y - c / 2}" width="${c}" height="${c}" fill="${sigColor(v, th)}" fill-opacity="0.45"><title>${v} dBm mean of ${n} readings</title></rect>`; }
-  if (LAYERS.dots || LAYERS.serving) for (const [x, y, v, b, t] of (M.points || [])) {
-    const col = LAYERS.serving ? apColor(b, apList) : sigColor(v, th);
+  if (LAYERS.dots) for (const [x, y, v, b, t] of (M.points || [])) {
+    const col = sigColor(v, th);
     g += `<circle cx="${x}" cy="${y}" r="0.13" fill="${col}"><title>${v} dBm via ${esc(b)} at ${t} s</title></circle>`; }
   const wps = M.waypoints || {}, names = Object.keys(wps);
   if (LAYERS.route && names.length > 1) g += `<polyline points="${names.concat(names[0]).map(k => wps[k].join(",")).join(" ")}" fill="none" stroke="${css("--muted")}" stroke-width="0.07" stroke-dasharray="0.4 0.3"/>`;
@@ -476,14 +574,26 @@ function drawMap(){
     g += `<circle cx="${c.x}" cy="${c.y}" r="0.95" fill="${col}" fill-opacity="0.15"/><circle cx="${c.x}" cy="${c.y}" r="0.42" fill="${c.estimated ? css("--panel") : col}" stroke="${col}" stroke-width="0.14" ${c.estimated ? 'stroke-dasharray="0.25 0.15"' : ""}><title>SmartCar${c.estimated ? " (estimated after mark " + esc(c.last_mark) + ")" : ""}: ${c.signal_dbm} dBm via ${esc(c.bssid)}</title></circle>`; }
   svg.innerHTML = g;
   const apLeg = (M.site.aps || []).map((a, i) => `<span><span class="sw" style="background:var(--ap${i % 5 + 1})"></span>AP${i + 1} ${esc(a.bssid)}</span>`).join("");
-  $("maplegend").innerHTML = `<span><span class="sw" style="background:var(--good)"></span>Good ≥ ${th.good_dbm} dBm</span><span><span class="sw" style="background:var(--warn)"></span>Fair ≥ ${th.fair_dbm}</span><span><span class="sw" style="background:var(--bad)"></span>Weak</span>
+  $("maplegend").innerHTML = `<span>── Good ${th.good_dbm} dBm line</span><span>- - Fair ${th.fair_dbm} dBm line</span><span><span class="sw" style="background:var(--ink);opacity:.55"></span>obstruction</span>
     <span>◇ roam (red: bad)</span><span style="color:var(--bad)">○</span><span>outage</span><span style="color:var(--accent)">●</span><span>car (dashed: estimated)</span>${apLeg}`;
   let note = "";
-  if (M.mode === "all") note = `${M.laps} laps merged: ${M.readings} positioned readings${M.readings > (M.points || []).length ? ` (${(M.points || []).length} drawn as dots; the heatmap uses all)` : ""}.`;
-  else if (M.empty) note = "No lap recorded yet.";
-  else if (M.lap) note = `Lap ${esc(M.lap.name)}${M.lap.finished ? "" : " (recording)"} · ${M.lap.marks} marks · ${M.lap.samples} samples. Positions are interpolated between waypoint marks; readings before the first or after the last mark have none.`;
+  if (SP) { const f = SP.fit; note += f.readings ? `Radio map: RadioMap fitted to ${f.readings.toLocaleString()} positioned readings from ${f.laps_used} lap(s) across ${f.aps_measured} AP bands, over the whole floor. Faded: more than 3 m from any reading, so mostly the model's guess. ` : "Radio map: no positioned readings yet, so this is the site sheet's physics only (distance, power, obstructions). "; }
+  if (M.mode === "all") note += `${M.laps} laps merged: ${M.readings} positioned readings${M.readings > (M.points || []).length ? ` (${(M.points || []).length} drawn as dots; the heatmap uses all)` : ""}.`;
+  else if (M.empty) note += "No lap recorded yet.";
+  else if (M.lap) note += `Lap ${esc(M.lap.name)}${M.lap.finished ? "" : " (recording)"} · ${M.lap.marks} marks · ${M.lap.samples} samples. Positions are interpolated between waypoint marks; readings before the first or after the last mark have none.`;
   $("mapnote").innerHTML = note;
 }
+$("map").addEventListener("mousemove", e => {
+  const tip = $("maptip"); if (!SP || !M) { tip.classList.add("hide"); return; }
+  const svg = $("map"), pt = svg.createSVGPoint(); pt.x = e.clientX; pt.y = e.clientY;
+  const p = pt.matrixTransform(svg.getScreenCTM().inverse()), g = SP.grid;
+  const i = Math.floor(p.x / g.cell), j = Math.floor(p.y / g.cell);
+  if (i < 0 || j < 0 || i >= g.nx || j >= g.ny) { tip.classList.add("hide"); return; }
+  const k = j * g.nx + i, L = SP.layers, ap = L.best_ap[k];
+  tip.innerHTML = `<b>${p.x.toFixed(1)}, ${p.y.toFixed(1)} m</b><br>Best AP${ap + 1}: ${L.best[k]} dBm · backup ${L.backup[k] ?? "–"} dBm<br>SNR ${L.snr[k]} dB · SINR ${L.sinr[k]} dB · co-channel ${L.cochan[k]}<br>± ${L.uncertainty[k]} dB · nearest reading ${L.near_m[k] >= 99 ? "none" : L.near_m[k] + " m"}`;
+  const box = svg.getBoundingClientRect(); tip.style.left = Math.min(box.width - 230, e.clientX - box.left + 14) + "px"; tip.style.top = (e.clientY - box.top + 14) + "px"; tip.classList.remove("hide");
+});
+$("map").addEventListener("mouseleave", () => $("maptip").classList.add("hide"));
 function chan(f){ f = +f; if (!f) return "?"; if (f < 3000) return f === 2484 ? 14 : Math.round((f - 2407) / 5); if (f < 5925) return Math.round((f - 5000) / 5); return Math.round((f - 5950) / 5); }
 function pct(v){ return v == null ? "–" : Math.round(v * 100) + "%"; }
 function drawHealth(){
@@ -554,7 +664,7 @@ $("setsave").onclick = async () => {
   const changes = {};
   document.querySelectorAll("[data-set]").forEach(i => { const p = SET.find(x => x.id === i.dataset.set); if (String(i.value) !== String(p.value)) changes[p.id] = p.kind === "bool" ? i.value === "true" : i.value; });
   if (!Object.keys(changes).length){ $("setmsg").textContent = "Nothing changed."; return; }
-  try { const r = await api("/api/config", {changes}); SET = r.settings; drawSettings(); $("setmsg").innerHTML = `<span class="ok">Saved ${r.changed.length} change(s); they apply to the next command.</span>`; mapAt = 0; tick(); }
+  try { const r = await api("/api/config", {changes}); SET = r.settings; drawSettings(); $("setmsg").innerHTML = `<span class="ok">Saved ${r.changed.length} change(s); they apply to the next command.</span>`; mapAt = 0; spAt = 0; tick(); }
   catch (e){ $("setmsg").innerHTML = `<span class="bad">Not saved: ${esc(e.message)}</span>`; }
 };
 $("setundo").onclick = () => { drawSettings(); $("setmsg").textContent = "Unsaved edits undone."; };
@@ -566,13 +676,41 @@ async function loadActivity(){
       return `<tr><td class="mono">${new Date(t * 1000).toLocaleTimeString()}</td><td><b>${esc(action.replace(/_/g, " "))}</b></td><td class="mono" style="overflow-wrap:anywhere">${esc(Object.entries(d).map(([k, v]) => `${k}=${typeof v === "object" ? JSON.stringify(v) : v}`).join("  "))}</td></tr>`; }).join("");
   } catch (e){}
 }
+// ================= help and the setup banner =================
+let HELP = null;
+async function loadHelp(){
+  try { HELP = HELP || await api("/api/help");
+    const asst = S && S.environment.find(r => r.item === "Assistant");
+    $("before").innerHTML = HELP.before.map((b, i) => { const done = (i === 0) || (i === 1 && S && S.environment[0].ok && S.environment[1].ok) || (i === 2 && asst && asst.ok && !/guide/.test(asst.seen.split(";")[0]));
+      return `<div class="step"><div class="n ${done ? "ok" : ""}">${done ? "✓" : i + 1}</div><div><b>${esc(b.title)}</b><div class="sub">${esc(b.text)}</div>${b.commands ? `<code class="cmd">${esc(b.commands)}</code>` : ""}${i === 2 && asst ? `<div class="sub" style="margin-top:4px">Now: ${esc(asst.seen)}</div>` : ""}</div></div>`; }).join("");
+    drawTopics();
+    $("news").innerHTML = HELP.whats_new.map(n => `<div><b>${esc(n.date)}</b><ul style="margin:6px 0 0 18px;padding:0">${n.items.map(x => `<li style="margin:3px 0">${esc(x)}</li>`).join("")}</ul></div>`).join("");
+  } catch (e){ toast(e.message); }
+}
+function drawTopics(){
+  if (!HELP) return; const q = $("helpq").value.toLowerCase().trim();
+  const hits = HELP.topics.filter(t => !q || (t.title + " " + t.text + " " + t.keys).toLowerCase().includes(q));
+  $("topics").innerHTML = hits.length ? hits.map(t => `<details ${q ? "open" : ""} style="padding:6px 0;border-bottom:1px solid var(--line)"><summary><b>${esc(t.title)}</b></summary><div class="sub" style="margin-top:4px">${esc(t.text)}</div></details>`).join("") : '<div class="sub">No topic matches; ask the assistant instead.</div>';
+}
+$("helpq").oninput = drawTopics;
+let bannerHidden = false; try { bannerHidden = sessionStorage.getItem("wj-banner") === "hidden"; } catch (e) {}
+function renderBanner(){
+  const asst = S.environment.find(r => r.item === "Assistant");
+  const needs = asst && (!asst.ok || /built-in guide/.test(asst.seen.split(";")[0]));
+  const missingFiles = !S.environment[0].ok || !S.environment[1].ok;
+  const msg = missingFiles ? "The car's files are not on this laptop yet." : needs ? "The assistant has no local model, so on site (no internet) it can only use the built-in guide. Set one up before the site day; it needs internet." : "";
+  $("bannertext").textContent = msg;
+  $("banner").classList.toggle("hide", !msg || bannerHidden);
+}
+$("bannergo").onclick = () => show("help");
+$("bannerx").onclick = () => { bannerHidden = true; try { sessionStorage.setItem("wj-banner", "hidden"); } catch (e) {} $("banner").classList.add("hide"); };
 let slowAt = 0;
 let busy = false;
 async function tick(){
   if (busy) return; busy = true;
-  try { S = await api("/api/state"); renderSteps(); renderEnv(); renderNext(); renderCheck(); renderMarks(); renderAnalysis(); renderJobs(); loadSite(); renderModal();
+  try { S = await api("/api/state"); renderSteps(); renderEnv(); renderNext(); renderCheck(); renderMarks(); renderAnalysis(); renderJobs(); loadSite(); renderModal(); renderBanner();
     $("ghostcmd").textContent = S.ghost_command;
-    if (visible("map")) refreshMap(false);
+    if (visible("map")) { refreshMap(false); refreshSpectrum(false); }
     if (Date.now() - slowAt > 8000){ slowAt = Date.now(); if (visible("activity")) loadActivity(); if (visible("setup")) loadRouters(); if (visible("map")) loadLaps(); }
     if (!$("tab-output").classList.contains("hide") || S.running) await renderOutput(); }
   catch (e){ $("nexttext").textContent = "The platform process is not answering. Is it still running in the terminal?"; }

@@ -8,11 +8,11 @@ from pathlib import Path
 import threading
 import time
 
-SITE = {"schema": 1, "site_id": "demo-hall (synthetic)", "dimensions_m": [24.0, 14.0, 4.0],
+SITE = {"schema": 1, "site_id": "demo-hall-synthetic", "dimensions_m": [24.0, 14.0, 4.0],
         "aps": [{"bssid": "aa:bb:cc:00:00:01", "ssid": "fleet", "xyz_m": [3.0, 2.0, 3.0], "frequency_mhz": 5180, "tx_power_dbm": 12.0},
                 {"bssid": "aa:bb:cc:00:00:02", "ssid": "fleet", "xyz_m": [21.0, 2.0, 3.0], "frequency_mhz": 5260, "tx_power_dbm": 12.0},
                 {"bssid": "aa:bb:cc:00:00:03", "ssid": "fleet", "xyz_m": [12.0, 12.5, 3.0], "frequency_mhz": 5500, "tx_power_dbm": 12.0}],
-        "cad_boxes_m": [], "receiver": {"noise_floor_dbm": -92.0, "offset_db": 0.0, "quantization_db": 1.0, "reference_gauge_assumed": True}}
+        "cad_boxes_m": [[[6.0, 6.6, 0.0], [18.0, 7.4, 2.5]]], "receiver": {"noise_floor_dbm": -92.0, "offset_db": 0.0, "quantization_db": 1.0, "reference_gauge_assumed": True}}
 WAYPOINTS = {"A": [2.0, 4.0], "B": [12.0, 4.0], "C": [22.0, 4.0], "D": [22.0, 10.0], "E": [12.0, 10.0], "F": [2.0, 10.0]}
 RACK = (6.0, 18.0, 6.6, 7.4)               # a shelf row between the two aisles: x0, x1, y0, y1
 

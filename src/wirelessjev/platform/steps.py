@@ -169,17 +169,21 @@ def command(step: Step, paths: Paths, extra: dict | None = None, cfg: dict | Non
     raise ValueError(f"step {step.id!r} has no command")
 
 
-def ghost_command(cfg: dict | None = None) -> str:
+def ghost_command(cfg: dict | None = None, repo: Path | None = None) -> str:
     """The ghost-traffic command for a second terminal (it runs alongside a lap)."""
     c = cfg or _defaults()
     target = c["ghost_target"] or "<AP or sink IP>"
-    return (f".venv/bin/python -m wirelessjev.hil.ghosts send --target {target} --ghosts {c['ghost_count']} "
+    return (f"{shell_text([PY], repo or Path.cwd())} -m wirelessjev.hil.ghosts send --target {target} --ghosts {c['ghost_count']} "
             f"--video {c['ghost_video']} --bulk {c['ghost_bulk']} --seconds {c['ghost_seconds']}")
 
 
 def shell_text(cmd: list[str], repo: Path) -> str:
-    """A command as the user would type it from the repo folder."""
-    shown = [".venv/bin/python" if c == PY else c for c in cmd]
+    """A command as the user would type it from the platform's folder, with the Python actually in use."""
+    try:
+        py = str(Path(PY).relative_to(Path(repo).resolve()))
+    except ValueError:
+        py = PY
+    shown = [py if c == PY else c for c in cmd]
     return " ".join(shlex.quote(c) for c in shown)
 
 

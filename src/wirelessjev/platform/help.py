@@ -87,3 +87,47 @@ def is_next_question(question: str) -> bool:
 
 def manual() -> str:
     return "\n".join(f"- {t}: {x}" for t, _, x in TOPICS)
+
+
+# ---- shown on the Help tab --------------------------------------------------------------------
+BEFORE_SITE = [
+    ("Get the platform", "Done if this page is open. To update it later: unzip the newer field kit over this folder (the laps "
+     "in artifacts/onecar are kept), or git pull if you run it from the repository, then start it again.", ""),
+    ("Car files on this laptop", "The car's host key and Wi-Fi list from the SmartCar package (ask whoever holds it; it contains "
+     "passwords, so it never goes in the repo, a chat or a screenshot).",
+     "cp <SmartCar>/PC/data/deploy_known_hosts ~/smartcar_known_hosts\ncp <SmartCar>/PI/config/WiFi.json ~/WiFi.json"),
+    ("Local assistant model (needs internet, do it at home)", "Install Ollama from ollama.com (or LM Studio), pull a small instruct "
+     "model, then set its name on Settings > Assistant. On site the laptop has no internet, so without this the assistant "
+     "answers from the built-in guide only. Choosing: an instruct (chat) model of about 3 to 8 billion parameters is a good "
+     "start; smaller answers faster on a laptop, larger follows instructions better. Try it in demo mode before the day.",
+     "ollama pull <model name>\nollama serve"),
+    ("Rehearse", "Start the platform with --demo and try every tab: a synthetic site and a car driving the loop.",
+     "./field_platform.sh --demo"),
+    ("Pack", "Charged SmartCar, its charger and a power bank; the vendor remote or the phone with the driving app; 2-4 routers or "
+     "APs, a switch, cables, power strips; this laptop and its charger; tape and a tape measure; a USB stick to back up "
+     "artifacts/onecar before leaving; a cart or a person for blockage trials; a second person to type marks.", ""),
+    ("SSH password on the day", "Typed into the terminal that starts the platform; the starter script asks for it. Never type it "
+     "into the page.", ""),
+]
+
+WHATS_NEW = [
+    ("17 Nov 2026", [
+        "Site radio map: RadioMap fitted to every positioned reading and drawn over the whole floor, with views for signal, "
+        "best AP, backup signal from a second AP location, SNR, SINR, co-channel APs and uncertainty; faded where nothing was "
+        "measured; hover for the values at any spot.",
+        "Car changes (join, switch, roam) start from the page; you type the target in a confirm box. An UNKNOWN outcome holds "
+        "further changes until a status read.",
+        "Settings for every parameter, an Activity log of every action, a router checklist and router check.",
+        "Assistant: a small model on this laptop first (Ollama or LM Studio), then Claude when online, then the built-in guide.",
+        "Fixed: the Plan's lap box overrode the lap length from Settings.",
+        "Fixed: a wrong confirmation (which sends nothing) held further changes as if the outcome were unknown.",
+        "Fixed: typed lap notes were wiped every 1.5 s.",
+        "Fixed: error messages and the stop button relied on browser pop-ups that some browsers hide.",
+    ]),
+]
+
+
+def page_help() -> dict:
+    return {"before": [{"title": t, "text": x, "commands": c} for t, x, c in BEFORE_SITE],
+            "topics": [{"title": t, "text": x, "keys": k} for t, k, x in TOPICS],
+            "whats_new": [{"date": d, "items": items} for d, items in WHATS_NEW]}

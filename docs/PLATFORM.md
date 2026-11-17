@@ -14,6 +14,24 @@ It wraps the same tested commands as the runbook ([TUESDAY_RUNBOOK.md](TUESDAY_R
 
 For the simulation evidence (every canonical campaign, its parameters and results), use the Studio. The platform is for real hardware only.
 
+## Getting it to someone else (the field kit)
+
+The whole repository is too large to hand over (about 600 MB of files and a 4.8 GB history). The field kit is the part the platform needs, about 1.6 MB:
+
+```bash
+python3 scripts/make_field_kit.py
+```
+
+This writes `artifacts/field_kit/wirelessjev-field-kit-<date>.zip`. It refuses to include anything that looks like car credentials, lap data or local settings.
+
+The recipient unzips it and follows `FIELD_KIT.md`, which takes them from download to the first lap. On the first run, `./field_platform.sh` does the setup:
+
+- it creates `.field-venv` and installs the four pinned packages from `requirements-field.txt` (numpy, scipy, matplotlib, paramiko), so internet is needed once;
+- it makes the kit's code importable in that environment;
+- if the laptop's Python is older than 3.12 (a stock Mac has 3.9), it says what to install, or fetches 3.12 with `uv` if `uv` is present.
+
+On every run, it asks for the SSH password in the terminal, starts the platform and opens the browser. This was tested from an empty folder on this Mac, including the old-Python refusal. Windows is untested.
+
 ## Start it
 
 From the repo folder, in a terminal you will keep open all day:
@@ -50,7 +68,7 @@ Demo mode makes a synthetic site with three APs and a shelf row, plus one finish
 | Tab | What it does |
 |---|---|
 | Plan | The day as steps in runbook order, with progress (for example, route laps 3 of 10). Read-only steps have a Run button; lap steps take a length and a note. Car-changing steps have a target picker and a Start button (see Changing the car's radio). |
-| Map | The site drawn from the site sheet, with layers you can switch on and off (listed below), plus link health, a signal timeline, an AP table and an events list. |
+| Map | The site's radio map over the whole floor, fitted by RadioMap to the car's readings, with views and layers (listed below), plus link health, a signal timeline, an AP table and an events list. |
 | Setup | This laptop's checks; the site sheet (AP rows and taped waypoints, validated before saving); the router checklist; the router check. |
 | Live lap | Waypoint buttons while a lap records (the letter key works too), and the live view of the newest lap. |
 | Analysis | Lap analysis, the 10-robot replay, the coverage report (with its map image) and the WirelessJEV proposal in shadow. All run on the laptop from recorded laps. |
@@ -60,12 +78,37 @@ Demo mode makes a synthetic site with three APs and a shelf row, plus one finish
 
 The side panel shows the next step (red-edged during a hold), the assistant and the last format check.
 
+### The radio map
+
+The map is the site's radio map, the kind a site-survey tool shows. Every positioned reading is used: the serving AP's link samples, and every AP in each scan snapshot. These are fitted with RadioMap, the system's own map model, separately for each AP and band. The model is Bayesian: log distance, the obstructions drawn as boxes on the site sheet, and random features for shadowing nobody knows, with each AP's real transmit power from the sheet. It is then evaluated over the whole floor.
+
+The Show list picks the view:
+
+| View | What it shows |
+|---|---|
+| Signal strength (best AP) | The strongest AP's signal at each spot |
+| Best AP | Which AP serves where |
+| Backup signal | The strongest AP at a different location from the best one: the second path WirelessJEV relies on |
+| SNR | Best signal against the noise floor |
+| SINR | Best signal against noise plus every AP on the same channel |
+| Co-channel APs | Other APs on the serving channel heard at or above −82 dBm, which share airtime |
+| Uncertainty | RadioMap's own error estimate |
+| Measured readings only | The chosen lap's readings averaged per cell, no model |
+| Signal: one AP | Each AP on its own |
+
+Colours use a perceptually uniform scale. Lines mark the Good and Fair signal thresholds. Hovering anywhere shows every value for that spot, plus the distance to the nearest real reading.
+
+**Fade where not measured** (on by default) fades everything more than 3 m from any reading, because there the map is mostly the model's guess. With no laps yet, the map is the site sheet's physics alone, and the page says so.
+
+On the demo, the fitted map is within about 1 dB of the synthetic truth on the route and 2 to 5 m from it. That is the easy case: the demo's physics are the model's own family, with no fading. It says nothing yet about a real site. RadioMap's uncertainty was somewhat optimistic there, which is why the fade uses distance to real readings rather than the model's confidence.
+
 The Map tab's layers:
 
 - APs with their channels;
 - waypoints and the route;
 - the car (hollow and dashed when its place is estimated after the last mark);
-- measured signal as a heatmap or as single readings, coloured by signal grade or by serving AP;
+- obstructions from the site sheet, the Good and Fair lines, and the fade;
+- the car's own readings, coloured by signal grade;
 - roams (diamonds, red when bad);
 - outages (red rings).
 
@@ -227,7 +270,8 @@ This was tested against stand-in servers only. No real local model has been run 
 - `guide.py`: the offline next-step logic and environment checks.
 - `help.py`: the help topics (offline answers and the local model's manual).
 - `agent.py`: the assistant (local model, Claude, guide).
-- `mapview.py`: positions, roams, outages, per-AP figures, health and the heatmap.
+- `mapview.py`: positions, roams, outages, per-AP figures, health and the measured cells.
+- `spectrum.py`: the radio map (RadioMap with the site sheet's obstructions) and its views.
 - `sitecheck.py`: the router checklist and the router check.
 - `jobs.py`: runs one command at a time; waypoint marks; typed confirmations.
 - `audit.py`: the activity log.

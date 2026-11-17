@@ -219,3 +219,60 @@ def test_audit_never_records_password_fields(tmp_path):
     with pytest.raises(ValueError):
         a.write("oops", ssh_password="x")
     assert [r["action"] for r in a.tail()] == ["setting"]
+
+
+def test_spectrum_map_covers_the_floor_and_matches_the_synthetic_truth(tmp_path):
+    from wirelessjev.platform import spectrum
+    import numpy as np
+    demo.write_site(tmp_path)
+    demo.demo_lap(tmp_path, seconds=300, realtime=False, name="survey1")
+    cfg = {p.id: p.default for p in params.PARAMS}
+    cache = spectrum.Cache()
+    out = cache.get(tmp_path, demo.SITE, demo.WAYPOINTS, cfg, time.time())
+    g = out["grid"]
+    n = g["nx"] * g["ny"]
+    assert all(len(out["layers"][k]) == n for k in ("best", "best_ap", "backup", "snr", "sinr", "cochan", "uncertainty", "near_m"))
+    assert len(out["layers"]["per_ap"]) == 3 and out["fit"]["readings"] > 1000 and out["fit"]["aps_measured"] == 3
+    assert set(out["layers"]["best_ap"]) == {0, 1, 2}                    # every AP serves part of the floor
+    # The map is a fit to the car's readings: compare it with the generator's own physics near the route.
+    near = np.array(out["layers"]["near_m"]).reshape(g["ny"], g["nx"])
+    err = []
+    for i, ap in enumerate(demo.SITE["aps"]):
+        P = np.array(out["layers"]["per_ap"][i], dtype=float).reshape(g["ny"], g["nx"])
+        for j, k in zip(*np.nonzero(near <= 2.0)):
+            err.append(P[j, k] - demo.rssi(((k + 0.5) * g["cell"], (j + 0.5) * g["cell"]), ap))
+    assert np.sqrt(np.mean(np.square(err))) < 3.0
+    # Backup comes from another AP location, so it is never stronger than the best AP.
+    b = np.array([v if v is not None else -999 for v in out["layers"]["best"]])
+    k = np.array([v if v is not None else -999 for v in out["layers"]["backup"]])
+    assert (k <= b + 1).all()
+    assert cache.get(tmp_path, demo.SITE, demo.WAYPOINTS, cfg, time.time()) is out   # cached until a lap changes
+    # Without any lap: the site sheet's physics only, said so.
+    empty = tmp_path / "empty"
+    empty.mkdir()
+    assert spectrum.Cache().get(empty, demo.SITE, demo.WAYPOINTS, cfg, time.time())["fit"]["source"] == "site sheet only"
+    with pytest.raises(ValueError):
+        spectrum.Cache().get(empty, None, None, cfg, time.time())
+
+
+def test_obstruction_counts_boxes_on_the_path():
+    from wirelessjev.platform.spectrum import obstruction
+    import numpy as np
+    boxes = [[[6.0, 6.6], [18.0, 7.4]]]
+    n = obstruction(12.0, 2.0, np.array([12.0, 12.0, 2.0]), np.array([12.0, 4.0, 2.5]), boxes)
+    assert n.tolist() == [1.0, 0.0, 0.0]
+
+
+def test_help_shown_command_and_field_kit():
+    from wirelessjev.platform.help import page_help
+    h = page_help()
+    assert any("local" in b["title"].lower() for b in h["before"]) and h["whats_new"][0]["items"]
+    assert any("Fixed" in x for x in h["whats_new"][0]["items"])
+    shown = st.shell_text([st.PY, "-m", "wirelessjev.onecar", "status"], Path.cwd())
+    assert shown.split()[0] in (".venv/bin/python", st.PY) and shown.endswith("-m wirelessjev.onecar status")
+    import importlib.util
+    spec = importlib.util.spec_from_file_location("kit", Path(__file__).resolve().parents[1] / "scripts" / "make_field_kit.py")
+    kit = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(kit)
+    names = [f.name.lower() for f in kit.files()]
+    assert "field_platform.sh" in names and not any(r in n for n in names for r in kit.REFUSE)

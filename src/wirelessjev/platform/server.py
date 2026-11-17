@@ -12,7 +12,7 @@ from urllib.parse import parse_qs, urlparse
 from ..carlink import BSSID_RE
 from ..hil import viewer
 from . import agent as agent_mod
-from . import mapview, sitecheck
+from . import mapview, sitecheck, spectrum
 from .audit import Audit
 from .guide import environment, last_check, next_step
 from .page import PAGE
@@ -56,6 +56,7 @@ class Platform:
         self.audit = Audit(paths.log_dir / "platform_audit.jsonl")
         self.runner = Runner(cwd=str(paths.repo), on_finish=self._finished)
         self.assistant = assistant or agent_mod.Assistant()
+        self.spectrum = spectrum.Cache()
 
     # ---- persistence -----------------------------------------------------
     def _load_state(self) -> dict:
@@ -110,7 +111,7 @@ class Platform:
                 "environment": environment(self.paths, agent_mod.status(cfg)), "check": last_check(self.paths),
                 "jobs": [j.summary(tail=0) for j in self.runner.jobs[-12:]], "site": site,
                 "targets": sorted({(a["ssid"], a["bssid"]) for a in (site["site"] or {}).get("aps", []) if a.get("ssid")}),
-                "hold": self.hold, "ghost_command": ghost_command(cfg), "lap_seconds": cfg["lap_seconds"],
+                "hold": self.hold, "ghost_command": ghost_command(cfg, self.paths.repo), "lap_seconds": cfg["lap_seconds"],
                 "log_dir": str(self.paths.log_dir), "demo": self.demo}
 
     def site(self) -> dict:
@@ -285,6 +286,14 @@ def make_handler(platform: Platform, port: int):
                     return self._json(200, platform.map((q.get("lap") or ["newest"])[0]))
                 if p == "/api/config":
                     return self._json(200, {"settings": platform.config.view()})
+                if p == "/api/spectrum":
+                    site = platform.site()
+                    import time as _t
+                    return self._json(200, platform.spectrum.get(platform.paths.log_dir, site["site"], site["waypoints"],
+                                                                 platform.cfg(), _t.time()))
+                if p == "/api/help":
+                    from .help import page_help
+                    return self._json(200, page_help())
                 if p == "/api/activity":
                     return self._json(200, {"activity": platform.audit.tail(300)})
                 if p == "/api/routers":
