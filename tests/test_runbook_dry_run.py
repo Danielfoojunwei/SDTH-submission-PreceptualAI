@@ -52,7 +52,7 @@ def rssi(x, y, ax, ay):
 def runbook_commands():
     text = RUNBOOK.read_text(encoding="utf-8")
     return [line.strip() for block in re.findall(r"```bash\n(.*?)```", text, re.S)
-            for line in block.splitlines() if line.strip() and not line.strip().startswith("cd ")]
+            for line in block.splitlines() if line.strip() and not line.strip().startswith(("cd ", "read -s "))]
 
 
 def argv_of(line, kh, wifi, bssid=APS[1][0], target="10.0.0.5"):
@@ -339,6 +339,8 @@ def test_every_runbook_command_parses_with_the_real_parsers(tmp_path):
             assert sum(g.mbps for g in ghosts.fleet(args.ghosts, args.video, args.bulk)) <= ghosts.MAX_TOTAL_MBPS
         elif module == "wirelessjev.hil.viewer":
             assert rest == []                                   # the runbook starts it with its defaults (read only, 127.0.0.1)
+        elif module == "wirelessjev.platform":
+            assert rest == []                                   # defaults: 127.0.0.1:8770, artifacts/onecar, ~/smartcar_known_hosts
         else:
             assert module in ("wirelessjev.hil.analyse", "wirelessjev.hil.trace_twin", "wirelessjev.native_ext.coverage"), module
     for sub in ("preflight", "status", "capabilities", "handover-probe", "lap", "switch", "roam"):

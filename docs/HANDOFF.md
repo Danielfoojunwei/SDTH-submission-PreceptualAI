@@ -1,5 +1,10 @@
 # WirelessJEV research handoff
 
+## Latest (17 Nov 2026): Field Platform
+
+- **The site visit did not happen on 17 Nov:** the car is not available. Nothing has run on the real car yet.
+- **Field Platform** ([PLATFORM.md](PLATFORM.md), `src/wirelessjev/platform/`): the production tool for real testing. One local page runs the runbook's steps in order with progress, the site sheet, lap recording with waypoint buttons (and letter keys), the live lap view, the analysis, and an assistant that answers "what next?" from the live state: Claude when the laptop has internet and credentials, otherwise a built-in guide. Read-only steps run from the page; join, switch and roam are only shown as commands for a terminal. Local only, one command at a time, requests from other origins refused. `--demo` rehearses without the car. Tested in `tests/test_platform.py` and in a browser in demo mode; not yet used with the car.
+
 ## Latest (15 Nov 2026): real-site kit, headroom ladder, fleet-only capabilities
 
 Branch `wirelessjev/real-site-fleet`, built on `codex/measured-radio-nuisance`.

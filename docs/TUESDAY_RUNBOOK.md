@@ -16,6 +16,14 @@ The car cannot be reached before Tuesday, so the first job on site is to find ou
 | Afternoon | 6, 5 | Blockage trials; laps under ghost load |
 | Last 20 min | 7 | Check the data before leaving |
 
+## Field Platform (recommended)
+The whole day can run from one local page instead of typing each command: the steps below in order with progress, the site sheet, lap recording with waypoint buttons, the live view, the analysis, and an assistant that says what to do next (offline it uses a built-in guide). Steps that change the car are never run from the page; it shows their command for a terminal. Start it from the repo folder after setting the SSH password:
+```bash
+read -s WJ_SSH_PASSWORD; export WJ_SSH_PASSWORD
+.venv/bin/python -m wirelessjev.platform
+```
+Then open http://127.0.0.1:8770. Details and the safety model: [PLATFORM.md](PLATFORM.md). The commands below remain the reference, and the page shows each one before it runs.
+
 ## Live view (optional, read only)
 In a second terminal, from the repo folder, start the viewer and leave it running all day:
 ```bash
